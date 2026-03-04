@@ -1,0 +1,14 @@
+.DS_Store
+.idea/
+.vscode/
+*.iml
+.env
+node_modules/
+dist/
+.build/
+.next/
+coverage/
+target/
+.venv/
+__pycache__/
+*.pyc
