@@ -1,43 +1,128 @@
-# Engineering Decisions Log (Append-only)
+# Engineering Decisions Log
 
 Record irreversible or high-impact decisions here.
+
+---
+
 
 ### Decision Entry Template
 
 ---
 
-## Title
-### Date: YYYY-MM-DD
+### ► Title
+###### YYYY-MM-DD
 
-### Decision: one sentence describing the decision
+----
 
-### Rationale:
-- why
+###### Decision: 
+One paragraph describing the decision
 
-### Implications:
-- what this enforces or forbids
---- 
+###### Rationale:
+- List of reasons why this decision was made
+
+###### Implications:
+- List of outcomes this decision enforces or forbids
+
+---
 
 
-## Decision Entry
 
-### Date: 2026-03-04
+## Decisions
 
-### Decision: 
-Platform framing uses broad civic language. The core domain
-concept is **Event** rather than protest/rally, and the platform is
-framed as a **civil action platform** rather than a single-issue
-political site.
+---
 
-### Rationale:
-- Keeps the platform durable beyond a single political
-moment. 
-- Allows coverage of multiple civic domains (climate, volunteering, community organizing, local government engagement). 
-- Maintains flexibility for current content to lean politically without structurally constraining the product. 
-- Supports clearer and more inclusive product language.
+---
 
-### Implications:
-- The primary domain entity is **Event**.
-- Terms like **protest** and **rally** become optional event *types* rather than the core platform concept. 
-- UI labels, routes, schemas, and documentation should default to neutral civic language (Events, Actions, Topics). 
-- Data ingestion or submissions that include protests/rallies should normalize into the Event model.
+### ► Platform centers on Actions
+###### 2026-03-06 
+
+---
+
+###### Decision
+The platform centers on **Actions** as the primary domain concept.  
+**Events remain a separate entity** representing scheduled real-world participation opportunities.
+
+###### Rationale
+- The core purpose of the platform is to help users take concrete civic actions.
+- Events are one type of action but contain unique data (time, location).
+- Separating Events keeps the data model cleaner.
+
+###### Implications
+- Core entities include:
+
+  - Topic
+  - Article
+  - Action
+  - Event
+  - Submission
+
+- Articles, Actions, and Events are organized by **Topics**.
+
+---
+
+---
+
+### ► Topics are first‑class entities
+###### 2026-03-06
+
+---
+
+######  Decision
+Topics are first‑class entities and visible user-facing pages.
+
+######  Rationale
+- Topics provide the primary organizational structure for the platform and support discovery.
+
+######  Implications
+- Each topic may contain:
+
+  - Articles
+  - Actions
+  - Events
+
+- Topic pages are publicly visible.
+
+---
+
+---
+
+### ► Curated but community‑extendable model
+###### 2026-03-06
+
+---
+
+###### Decision
+- The platform accepts community submissions but uses moderation to maintain quality.
+
+###### Implications
+
+- Visitors may submit:
+
+  - Events
+  - Articles
+
+- Submissions are anonymous in Release 1.
+
+- All submissions enter a moderation queue.
+
+---
+
+---
+
+### ► Actions are curated
+###### 2026-03-06
+
+###### Decision
+Actions are created by administrators only in Release 1.
+
+###### Rationale
+- Actions represent curated civic recommendations.
+
+###### Implications
+- Community may submit:
+
+  - Events
+  - Articles
+
+- Administrators create and manage Actions.
+
