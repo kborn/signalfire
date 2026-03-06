@@ -14,6 +14,13 @@ Start here:
 1. Copy `.env.example` → `.env` (if needed)
 2. Run workspace tasks from the repository root (`npm run dev`, `npm run lint`, `npm run test`)
 
+## AI session start
+- IDE chat: prompt `read AGENTS.md`
+- ChatGPT Staff Engineer: prompt `read .ai/session/START_AS_STAFF_ENGINEER.md`
+- ChatGPT Chief Strategist: prompt `read .ai/session/START_AS_CHIEF_STRATEGIST.md`
+- ChatGPT PM: prompt `read .ai/session/START_AS_PM.md`
+- Reference guide: `.ai/session/README.md`
+
 ## Repository Layout
 - `apps/api/` — NestJS backend API service
 - `apps/web/` — Next.js frontend application

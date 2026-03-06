@@ -1,32 +1,26 @@
-# Agent Bootstrap
+# Agent Bootstrap (Canonical Human Guide)
 
-This document explains how new AI agent sessions should digest:
-- high level project context
-- how they should interact with the project
-- the current state of implementation
-- the decisions made that lead to the to the current state
+This document explains the bootstrap process in human-readable form.
+The machine-enforced contract lives in `.ai/bootstrap/SESSION_BOOTSTRAP.md`.
 
----
+## Intent
+- Ensure every session starts from canonical project state.
+- Keep responses concise by default.
+- Pull additional context only when needed for the active task.
 
-## Default Interaction Mode
+## Required startup flow
+1. Read `.ai/bootstrap/SESSION_BOOTSTRAP.md`.
+2. Read all files in its required read order.
+3. Read the active role file (default IDE role: `.ai/roles/STAFF_ENGINEER.md`).
+4. Return the required first response contract exactly as defined in `SESSION_BOOTSTRAP.md`.
 
-AI responses should prioritize clarity and brevity.
+## Operating rules after bootstrap
+- Treat `docs/agent-governance/` as the source of truth for project state.
+- Stay within the active phase unless the user explicitly approves scope expansion.
+- For implementation/architecture questions, read relevant architecture/spec docs before answering.
+- Keep answers focused and concise; load extra files only when the user request requires them.
 
-Default behavior:
-- Answer the question directly
-- Avoid tangential suggestions unless deemed critical
-- Avoid proposing additional improvements unless explicitly requested
-- Avoid long explanations unless the human asks for reasoning
+## Failure behavior
+If a required bootstrap file is missing or unreadable, return:
 
-When editing text:
-Return the edited text only without explanation about why the edited version was chosen
-
----     
-
-## Session bootstrap
-- Read `project-context.md` → understand high level project description and architecture
-- Read `ai-usage.md` → understand agent roles, guardrails and document authority
-- Read `progress.md` → identify the active phase and open Phase Tasks
-- Read `decisions.md` → understand non-negotiables and rationale
-- Confirm the next action with the human before expanding scope
----
+`BOOTSTRAP_BLOCKED <missing_or_unreadable_paths>`
