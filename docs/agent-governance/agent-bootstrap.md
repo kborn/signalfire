@@ -24,9 +24,31 @@ Return the edited text only without explanation about why the edited version was
 ---     
 
 ## Session bootstrap
-- Read `project-context.md` → understand high level project description and architecture
-- Read `ai-usage.md` → understand agent roles, guardrails and document authority
-- Read `progress.md` → identify the active phase and open Phase Tasks
-- Read `decisions.md` → understand non-negotiables and rationale
+You MUST complete reading the following required files before moving on
+
+- Read `docs/agent-governance/project-context.md` → understand high level project description and architecture
+- Read `docs/agent-governanceai-usage.md` → understand agent roles, guardrails and document authority
+- Read `docs/agent-governanceprogress.md` → identify the active phase and open Phase Tasks
+- Read `docs/agent-governancedecisions.md` → understand non-negotiables and rationale
 - Confirm the next action with the human before expanding scope
 ---
+
+## Additional Context (read only when needed)
+- `docs/architecture/` — system architecture, domain model, architecture intent
+- `docs/specs/` — feature specs, release scope, roadmap
+
+Read these only when your task requires deeper technical understanding.
+___
+
+## Agent Conventions
+
+Agents should consult the repository conventions file:
+
+.ai/conventions.md
+
+This file contains preferences for:
+
+- response verbosity
+- git commit message style
+- pull request usage
+- formatting conventions
