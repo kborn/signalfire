@@ -149,7 +149,66 @@ Establish the repository structure, governance documentation, and initial archit
 ###### Goal
 Create the monorepo structure, basic frontend and backend applications, shared tooling, and development environment.
 
+###### Definition of Done
+- [ ] Monorepo structure established with shared tooling and root workspace configuration
+- [ ] Frontend (Next.js) and backend (NestJS) apps scaffolded and runnable
+- [ ] Development environment configured (database, scripts)
+- [ ] CI pipeline configured (lint, typecheck, tests)
+- [ ] Local setup and run instructions documented
+
 ---
+
+#### ▸ Phase 1.1 - Monorepo Structure ⏳
+###### Phase Tasks:
+- [ ] Select monorepo tooling (Turborepo)
+- [ ] Create directory structure (apps/, packages/, docs/)
+- [ ] Configure root workspace and task pipeline (workspaces + turbo config + root scripts)
+- [ ] Configure shared TypeScript, ESLint, and Prettier baseline
+
+---
+
+#### ▸ Phase 1.2 - Frontend Scaffold ⏳
+###### Phase Tasks:
+- [ ] Initialize Next.js app in apps/web
+- [ ] Configure TypeScript
+- [ ] Set up linting and formatting
+- [ ] Verify dev server runs
+
+---
+
+#### ▸ Phase 1.3 - Backend Scaffold ⏳
+###### Phase Tasks:
+- [ ] Initialize NestJS app in apps/api
+- [ ] Configure TypeScript
+- [ ] Set up linting and formatting
+- [ ] Verify dev server runs
+
+---
+
+#### ▸ Phase 1.4 - Development Environment ⏳
+###### Phase Tasks:
+- [ ] Configure PostgreSQL via Docker Compose
+- [ ] Add database connection configuration
+- [ ] Create startup scripts
+- [ ] Define local env contract (.env.example and required variables)
+
+---
+
+#### ▸ Phase 1.5 - Pipeline CI ⏳
+###### Phase Tasks:
+- [ ] Configure ESLint for both apps
+- [ ] Configure TypeScript type-checking
+- [ ] Establish baseline test runners (Vitest for frontend, Jest for backend)
+- [ ] Create GitHub Actions workflow (PR + push)
+- [ ] Verify CI runs lint, typecheck, and tests for both apps
+
+---
+
+#### Notes:
+- Frontend: Next.js 14+ with App Router
+- Backend: NestJS with TypeScript
+- Database: PostgreSQL (local dev via Docker)
+- Monorepo tool: Turborepo
 
 ---
 
