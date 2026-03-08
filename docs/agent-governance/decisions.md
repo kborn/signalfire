@@ -126,3 +126,20 @@ Actions are created by administrators only in Release 1.
 
 - Administrators create and manage Actions.
 
+---
+
+### ► Monorepo package manager is pnpm
+###### 2026-03-07
+
+###### Decision
+Phase 1 monorepo package management uses `pnpm`.
+
+###### Rationale
+- `pnpm` pairs well with Turborepo for monorepo workflows.
+- It provides fast installs and efficient dependency storage.
+- Workspace behavior is explicit and reliable for multi-app repos.
+
+###### Implications
+- Root workspace scripts should use `pnpm`.
+- Setup/run documentation should assume `pnpm` commands.
+- CI setup in later Phase 1 tasks should install and use `pnpm`.

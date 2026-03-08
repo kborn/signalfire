@@ -161,6 +161,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 #### ▸ Phase 1.1 - Monorepo Structure ⏳
 ###### Phase Tasks:
 - [ ] Select monorepo tooling (Turborepo)
+- [ ] Select package manager (pnpm)
 - [ ] Create directory structure (apps/, packages/, docs/)
 - [ ] Configure root workspace and task pipeline (workspaces + turbo config + root scripts)
 - [ ] Configure shared TypeScript, ESLint, and Prettier baseline
@@ -209,6 +210,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 - Backend: NestJS with TypeScript
 - Database: PostgreSQL (local dev via Docker)
 - Monorepo tool: Turborepo
+- Package manager: pnpm
 
 ---
 
