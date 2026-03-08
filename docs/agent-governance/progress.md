@@ -170,10 +170,10 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 #### ▸ Phase 1.2 - Frontend Scaffold 🚧
 ###### Phase Tasks:
-- [ ] Initialize Next.js app in apps/web
-- [ ] Configure TypeScript
-- [ ] Set up linting and formatting
-- [ ] Verify dev server runs
+- [x] Initialize Next.js app in apps/web
+- [x] Configure TypeScript
+- [x] Set up linting and formatting
+- [x] Verify dev server runs
 
 ---
 
