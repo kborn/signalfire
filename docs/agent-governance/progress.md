@@ -150,24 +150,25 @@ Establish the repository structure, governance documentation, and initial archit
 Create the monorepo structure, basic frontend and backend applications, shared tooling, and development environment.
 
 ###### Definition of Done
-- [ ] Monorepo structure established with shared tooling and root workspace configuration
-- [ ] Frontend (Next.js) and backend (NestJS) apps scaffolded and runnable
+- [x] Monorepo structure established with shared tooling and root workspace configuration
+- [x] Frontend (Next.js) and backend (NestJS) apps scaffolded and runnable
 - [ ] Development environment configured (database, scripts)
 - [ ] CI pipeline configured (lint, typecheck, tests)
 - [ ] Local setup and run instructions documented
 
 ---
 
-#### ▸ Phase 1.1 - Monorepo Structure ⏳
+#### ▸ Phase 1.1 - Monorepo Structure ✅
 ###### Phase Tasks:
-- [ ] Select monorepo tooling (Turborepo)
-- [ ] Create directory structure (apps/, packages/, docs/)
-- [ ] Configure root workspace and task pipeline (workspaces + turbo config + root scripts)
-- [ ] Configure shared TypeScript, ESLint, and Prettier baseline
+- [x] Select monorepo tooling (Turborepo)
+- [x] Select package manager (pnpm)
+- [x] Create directory structure (apps/, packages/, docs/)
+- [x] Configure root workspace and task pipeline (workspaces + turbo config + root scripts)
+- [x] Configure shared TypeScript, ESLint, and Prettier baseline
 
 ---
 
-#### ▸ Phase 1.2 - Frontend Scaffold ⏳
+#### ▸ Phase 1.2 - Frontend Scaffold 🚧
 ###### Phase Tasks:
 - [ ] Initialize Next.js app in apps/web
 - [ ] Configure TypeScript
@@ -209,6 +210,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 - Backend: NestJS with TypeScript
 - Database: PostgreSQL (local dev via Docker)
 - Monorepo tool: Turborepo
+- Package manager: pnpm
 
 ---
 
