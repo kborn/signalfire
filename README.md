@@ -12,7 +12,7 @@ Start here:
 
 ## Quick start
 1. Copy `.env.example` → `.env` (if needed)
-2. Run workspace tasks from the repository root (`npm run dev`, `npm run lint`, `npm run test`)
+2. Run workspace tasks from the repository root (`pnpm dev`, `pnpm lint`, `pnpm test`)
 
 ## Repository Layout
 - `apps/api/` — NestJS backend API service
