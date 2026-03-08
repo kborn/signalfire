@@ -168,7 +168,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.2 - Frontend Scaffold 🚧
+#### ▸ Phase 1.2 -  Frontend Scaffold ✅
 ###### Phase Tasks:
 - [x] Initialize Next.js app in apps/web
 - [x] Configure TypeScript
@@ -177,16 +177,16 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.3 - Backend Scaffold ⏳
+#### ▸ Phase 1.3 - Backend Scaffold ✅
 ###### Phase Tasks:
-- [ ] Initialize NestJS app in apps/api
-- [ ] Configure TypeScript
-- [ ] Set up linting and formatting
-- [ ] Verify dev server runs
+- [x] Initialize NestJS app in apps/api
+- [x] Configure TypeScript
+- [x] Set up linting and formatting
+- [x] Verify dev server runs
 
 ---
 
-#### ▸ Phase 1.4 - Development Environment ⏳
+#### ▸ Phase 1.4 - Development Environment 🚧
 ###### Phase Tasks:
 - [ ] Configure PostgreSQL via Docker Compose
 - [ ] Add database connection configuration
