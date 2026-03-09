@@ -112,6 +112,8 @@ Topics are first‑class entities and visible user-facing pages.
 ### ► Actions are curated
 ###### 2026-03-06
 
+---
+
 ###### Decision
 Actions are created by administrators only in Release 1.
 
@@ -128,8 +130,12 @@ Actions are created by administrators only in Release 1.
 
 ---
 
+---
+
 ### ► Monorepo package manager is pnpm
 ###### 2026-03-07
+
+---
 
 ###### Decision
 Phase 1 monorepo package management uses `pnpm`.
@@ -143,3 +149,21 @@ Phase 1 monorepo package management uses `pnpm`.
 - Root workspace scripts should use `pnpm`.
 - Setup/run documentation should assume `pnpm` commands.
 - CI setup in later Phase 1 tasks should install and use `pnpm`.
+
+---
+
+---
+
+### ► Backend persistence layer will use Prisma ORM
+###### 2026-03-08
+
+---
+
+###### Decision
+Release 1 backend persistence will use Prisma ORM with PostgreSQL.
+
+###### Rationale
+- Fastest path to type-safe persistence, migrations, and productive NestJS integration for the current project scope.
+
+###### Implications
+- Phase 2 should standardize on Prisma schema, Prisma Migrate, and Prisma Client patterns for backend data access.
