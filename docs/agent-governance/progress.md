@@ -222,18 +222,18 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.5 - Development Environment 🚧
+#### ▸ Phase 1.5 - Development Environment ✅
 
 ###### Phase Tasks:
 
-- [ ] Configure PostgreSQL via Docker Compose
-- [ ] Add database connection configuration
-- [ ] Create startup scripts
-- [ ] Define local env contract (.env.example and required variables)
+- [x] Configure PostgreSQL via Docker Compose
+- [x] Add database connection configuration
+- [x] Create startup scripts
+- [x] Define local env contract (.env.example and required variables)
 
 ---
 
-#### ▸ Phase 1.6 - Pipeline CI ⏳
+#### ▸ Phase 1.6 - Pipeline CI 🚧
 
 ###### Phase Tasks:
 
