@@ -1,15 +1,40 @@
 name: ci
 
 on:
-  push:
   pull_request:
+  push:
+    branches: [ main ]
+
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Placeholder
-        run: |
-          echo "Configure CI once the stack is chosen."
-          echo "Suggested: backend build + frontend build + tests + docs checks."
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Monorepo
+        run: pnpm install
+
+      - name: Monorepo lint
+        continue-on-error: true
+        run: pnpm lint
+
+      - name: Monorepo typecheck
+        continue-on-error: true
+        run: pnpm typecheck
+
+      - name: Monorepo build
+        run: pnpm build
+
+      - name: Monorepo test
+        run: pnpm test
