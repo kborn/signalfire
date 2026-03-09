@@ -262,6 +262,57 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
+###### Definition of Done
+
+- [ ] Backend module structure is defined and documented for Phase 2 scope
+- [ ] Prisma is integrated with the NestJS backend and database connectivity is validated
+- [ ] Initial migration workflow is established and verified end-to-end locally
+- [ ] Health endpoint(s) exist and include database readiness verification
+- [ ] Backend foundation setup is documented sufficiently for Phase 3 implementation
+
+---
+
+#### ▸ Phase 2.1 - Service Structure & Configuration 🚧
+
+###### Phase Tasks:
+
+- [ ] Define backend module/service structure for infrastructure concerns (config, db, health)
+- [ ] Establish environment variable contract for backend runtime configuration
+- [ ] Add runtime configuration validation and fail-fast behavior for missing required variables
+- [ ] Create one concise backend foundations doc covering Phase 2 modules, ownership boundaries, out-of-scope items for Phase 3, and config/Prisma/health interaction
+
+---
+
+#### ▸ Phase 2.2 - Prisma Integration & Migration Baseline 🚧
+
+###### Phase Tasks:
+
+- [ ] Integrate Prisma into the NestJS backend application
+- [ ] Configure Prisma schema and database datasource for local development
+- [ ] Create and apply a minimal infrastructure-only migration to validate Prisma connectivity and migration workflow without introducing core domain schema decisions
+- [ ] Ensure Prisma client generation is part of the backend workflow
+- [ ] Document migration and client-generation commands for local development
+- [ ] Validate migration workflow end-to-end locally; add CI migration execution only if low complexity, otherwise document deferral rationale
+
+---
+
+#### ▸ Phase 2.3 - Health & Readiness Endpoints 🚧
+
+###### Phase Tasks:
+
+- [ ] Implement liveness endpoint for backend process health
+- [ ] Implement readiness endpoint including database connectivity check
+- [ ] Add tests for health/readiness success and failure scenarios
+- [ ] Document endpoint contract and expected response behavior
+
+---
+
+#### Notes:
+
+- Decision: Phase 2 is limited to backend infrastructure foundations only. Core domain entity modeling and Release 1 domain persistence begin in Phase 3.
+
+---
+
 ---
 
 ### ► Phase 3 — Core Domain Model ⏳
