@@ -237,10 +237,8 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ###### Phase Tasks:
 
-- [ ] Configure ESLint for both apps
-- [ ] Configure TypeScript type-checking
-- [ ] Establish baseline test runners (Vitest for frontend, Jest for backend)
-- [ ] Create GitHub Actions workflow (PR + push)
+- [x] Establish baseline test runners (Vitest for frontend, Jest for backend)
+- [x] Create GitHub Actions workflow (PR + push)
 - [ ] Verify CI runs lint, typecheck, and tests for both apps
 
 ---
