@@ -5,23 +5,23 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name | Status |
-|---------------------------------------------------|------|------|
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap | ✅ |
+| Phase                                             | Name                               | Status        |
+| ------------------------------------------------- | ---------------------------------- | ------------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                     | ✅            |
 | **[1](#-phase-1--platform-skeleton-)**            | **Repository & Platform Skeleton** | **🚧 ACTIVE** |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations | ⏳ |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model | ⏳ |
-| [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs | ⏳ |
-| [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI | ⏳ |
-| [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs | ⏳ |
-| [7](#-phase-7--event-ui-)                         | Event UI | ⏳ |
-| [8](#-phase-8--submission-system-)                | Submission System | ⏳ |
-| [9](#-phase-9--moderation-workflow-)              | Moderation Workflow | ⏳ |
-| [10](#-phase-10--admin-interface-)                | Admin Interface | ⏳ |
-| [11](#-phase-11--search--discovery-improvements-) | Search & Discovery Improvements | ⏳ |
-| [12](#-phase-12--deployment-infrastructure-)      | Deployment Infrastructure | ⏳ |
-| [13](#-phase-13--release-stabilization-)          | Release Stabilization | ⏳ |
-| [14](#-phase-14--public-launch-)                  | Public Launch | ⏳ |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations                | ⏳            |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model                  | ⏳            |
+| [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs               | ⏳            |
+| [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI               | ⏳            |
+| [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs                | ⏳            |
+| [7](#-phase-7--event-ui-)                         | Event UI                           | ⏳            |
+| [8](#-phase-8--submission-system-)                | Submission System                  | ⏳            |
+| [9](#-phase-9--moderation-workflow-)              | Moderation Workflow                | ⏳            |
+| [10](#-phase-10--admin-interface-)                | Admin Interface                    | ⏳            |
+| [11](#-phase-11--search--discovery-improvements-) | Search & Discovery Improvements    | ⏳            |
+| [12](#-phase-12--deployment-infrastructure-)      | Deployment Infrastructure          | ⏳            |
+| [13](#-phase-13--release-stabilization-)          | Release Stabilization              | ⏳            |
+| [14](#-phase-14--public-launch-)                  | Public Launch                      | ⏳            |
 
 ---
 
@@ -58,36 +58,45 @@ When a phase is completed:
 ## Phase Entry Format (Required)
 
 ### ► Phase N — `Name` `Status`
-###### Goal 
+
+###### Goal
+
 One sentence description of the high level goal of this phase
 
 ###### Definition of Done
-- [ ] Architecture documented 
+
+- [ ] Architecture documented
 - [ ] Stack decided
 - [ ] Implementation can begin
 
 ---
 
 #### Phase N.1 - `Name` `Status`
+
 ###### Phase Tasks:
+
 - [ ] `task1`
 - [ ] `task2`
 
 ---
 
 #### Phase N.2 - `Name` `Status`
+
 ###### Phase Tasks:
+
 - [ ] `task1`
 - [ ] `task2`
 
 ---
 
 #### Notes (optional; keep short):
+
 - `temporary reminders / blockers; link to decisions.md for rationale`
 
 ---
 
 #### Links (optional):
+
 - Implementation: `PR`
 - Tests: `path`
 - Decisions: `section link`
@@ -97,6 +106,7 @@ One sentence description of the high level goal of this phase
 ---
 
 ### ► Phase N+1 — `Name` `Status`
+
 ...
 
 ---
@@ -104,7 +114,9 @@ One sentence description of the high level goal of this phase
 ## Phase Overview
 
 ### ► Phase 0 — Repo Bootstrap ✅
+
 ###### Goal
+
 Establish the repository structure, governance documentation, and initial architectural decisions required to begin implementation.
 
 ###### Definition of Done
@@ -121,7 +133,9 @@ Establish the repository structure, governance documentation, and initial archit
 ---
 
 #### ▸ Phase 0.1 - AI Governance docs ✅
+
 ###### Phase Tasks:
+
 - [x] Establish high level repository structure
 - [x] Create the governance docs needed to create a guardrail-first approach to leveraging AI agents
 - [x] Decide on a tech stack and record in project-context.md
@@ -129,27 +143,32 @@ Establish the repository structure, governance documentation, and initial archit
 ---
 
 #### ▸ Phase 0.2 - Complete pre-implementation documentation ✅
+
 ###### Phase Tasks:
+
 - [x] All anticipated phases necessary to reach release 1 are defined in `progress.md`
 - [x] High level architecture project architecture
 
 ---
 
 ###### Notes:
-- This PR establishes the repo structure, technology stack AI governance decisions and docs and high level
-   project overview and architecture docs
-- This PR only adds or updates docs - No code is written and no technology is introduced
 
+- This PR establishes the repo structure, technology stack AI governance decisions and docs and high level
+  project overview and architecture docs
+- This PR only adds or updates docs - No code is written and no technology is introduced
 
 ---
 
---- 
+---
 
 ### ► Phase 1 — Platform Skeleton 🚧
+
 ###### Goal
+
 Create the monorepo structure, basic frontend and backend applications, shared tooling, and development environment.
 
 ###### Definition of Done
+
 - [x] Monorepo structure established with shared tooling and root workspace configuration
 - [x] Frontend (Next.js) and backend (NestJS) apps scaffolded and runnable
 - [ ] Development environment configured (database, scripts)
@@ -159,7 +178,9 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 ---
 
 #### ▸ Phase 1.1 - Monorepo Structure ✅
+
 ###### Phase Tasks:
+
 - [x] Select monorepo tooling (Turborepo)
 - [x] Select package manager (pnpm)
 - [x] Create directory structure (apps/, packages/, docs/)
@@ -168,8 +189,10 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.2 -  Frontend Scaffold ✅
+#### ▸ Phase 1.2 - Frontend Scaffold ✅
+
 ###### Phase Tasks:
+
 - [x] Initialize Next.js app in apps/web
 - [x] Configure TypeScript
 - [x] Set up linting and formatting
@@ -178,7 +201,9 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 ---
 
 #### ▸ Phase 1.3 - Backend Scaffold ✅
+
 ###### Phase Tasks:
+
 - [x] Initialize NestJS app in apps/api
 - [x] Configure TypeScript
 - [x] Set up linting and formatting
@@ -186,8 +211,21 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.4 - Development Environment 🚧
+#### ▸ Phase 1.4 - Validation & Tooling Baseline ✅
+
 ###### Phase Tasks:
+
+- [x] Add shared tooling baseline (tsconfig.base.json, Prettier configs)
+- [x] Update app configs to extend root baseline where possible
+- [x] Run root commands: lint, test, build
+- [x] Verify dev fanout works (pnpm run dev)
+
+---
+
+#### ▸ Phase 1.5 - Development Environment 🚧
+
+###### Phase Tasks:
+
 - [ ] Configure PostgreSQL via Docker Compose
 - [ ] Add database connection configuration
 - [ ] Create startup scripts
@@ -195,8 +233,10 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.5 - Pipeline CI ⏳
+#### ▸ Phase 1.6 - Pipeline CI ⏳
+
 ###### Phase Tasks:
+
 - [ ] Configure ESLint for both apps
 - [ ] Configure TypeScript type-checking
 - [ ] Establish baseline test runners (Vitest for frontend, Jest for backend)
@@ -206,6 +246,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 ---
 
 #### Notes:
+
 - Frontend: Next.js 14+ with App Router
 - Backend: NestJS with TypeScript
 - Database: PostgreSQL (local dev via Docker)
@@ -215,7 +256,9 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 ---
 
 ### ► Phase 2 — Backend Foundations ⏳
+
 ###### Goal
+
 Establish backend service structure, database connection, migrations, and health endpoints.
 
 ---
@@ -223,7 +266,9 @@ Establish backend service structure, database connection, migrations, and health
 ---
 
 ### ► Phase 3 — Core Domain Model ⏳
+
 ###### Goal
+
 Implement database schema and persistence layer for core entities.
 
 Entities include:
@@ -239,7 +284,9 @@ Entities include:
 ---
 
 ### ► Phase 4 — Topic & Content APIs ⏳
+
 ###### Goal
+
 Create APIs for reading Topics, Articles, and Actions.
 
 Capabilities:
@@ -255,7 +302,9 @@ Capabilities:
 ---
 
 ### ► Phase 5 — Content Discovery UI ⏳
+
 ###### Goal
+
 Implement public browsing UI for topics, articles, and actions.
 
 Capabilities:
@@ -270,7 +319,9 @@ Capabilities:
 ---
 
 ### ► Phase 6 — Event Domain & APIs ⏳
+
 ###### Goal
+
 Implement Event persistence and APIs.
 
 Capabilities:
@@ -284,7 +335,9 @@ Capabilities:
 ---
 
 ### ► Phase 7 — Event UI ⏳
+
 ###### Goal
+
 Allow users to browse and view events.
 
 Capabilities:
@@ -298,7 +351,9 @@ Capabilities:
 ---
 
 ### ► Phase 8 — Submission System ⏳
+
 ###### Goal
+
 Implement anonymous submission workflow for events and articles.
 
 Capabilities:
@@ -312,7 +367,9 @@ Capabilities:
 ---
 
 ### ► Phase 9 — Moderation Workflow ⏳
+
 ###### Goal
+
 Provide moderation queue and approval tools.
 
 Capabilities:
@@ -326,7 +383,9 @@ Capabilities:
 ---
 
 ### ► Phase 10 — Admin Interface ⏳
+
 ###### Goal
+
 Administrative tools for managing content.
 
 Capabilities:
@@ -341,7 +400,9 @@ Capabilities:
 ---
 
 ### ► Phase 11 — Search & Discovery Improvements ⏳
+
 ###### Goal
+
 Improve browsing and filtering across topics, actions, and events.
 
 ---
@@ -349,7 +410,9 @@ Improve browsing and filtering across topics, actions, and events.
 ---
 
 ### ► Phase 12 — Deployment Infrastructure ⏳
+
 ###### Goal
+
 Configure hosting, environment management, and CI/CD.
 
 ---
@@ -357,7 +420,9 @@ Configure hosting, environment management, and CI/CD.
 ---
 
 ### ► Phase 13 — Release Stabilization ⏳
+
 ###### Goal
+
 Bug fixes, polish, and observability improvements.
 
 ---
@@ -365,5 +430,7 @@ Bug fixes, polish, and observability improvements.
 ---
 
 ### ► Phase 14 — Public Launch ⏳
+
 ###### Goal
+
 Deployment verification, documentation completion, and launch readiness.

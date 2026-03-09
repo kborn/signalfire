@@ -12,3 +12,11 @@ target/
 .venv/
 __pycache__/
 *.pyc
+
+.turbo/*
+apps/api/.turbo
+apps/web/.turbo
+
+# Personal cheatsheet
+docs/tech-stack-cheatsheet.md
+
