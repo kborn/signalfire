@@ -5,23 +5,23 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                               | Status        |
-| ------------------------------------------------- | ---------------------------------- | ------------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                     | ✅            |
-| **[1](#-phase-1--platform-skeleton-)**            | **Repository & Platform Skeleton** | **🚧 ACTIVE** |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations                | ⏳            |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model                  | ⏳            |
-| [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs               | ⏳            |
-| [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI               | ⏳            |
-| [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs                | ⏳            |
-| [7](#-phase-7--event-ui-)                         | Event UI                           | ⏳            |
-| [8](#-phase-8--submission-system-)                | Submission System                  | ⏳            |
-| [9](#-phase-9--moderation-workflow-)              | Moderation Workflow                | ⏳            |
-| [10](#-phase-10--admin-interface-)                | Admin Interface                    | ⏳            |
-| [11](#-phase-11--search--discovery-improvements-) | Search & Discovery Improvements    | ⏳            |
-| [12](#-phase-12--deployment-infrastructure-)      | Deployment Infrastructure          | ⏳            |
-| [13](#-phase-13--release-stabilization-)          | Release Stabilization              | ⏳            |
-| [14](#-phase-14--public-launch-)                  | Public Launch                      | ⏳            |
+| Phase                                             | Name                            | Status        |
+|---------------------------------------------------|---------------------------------| ------------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
+| **[2](#-phase-2--backend-foundations-)**          | **Backend Foundations**         | **🚧 ACTIVE** |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ⏳            |
+| [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
+| [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
+| [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
+| [7](#-phase-7--event-ui-)                         | Event UI                        | ⏳            |
+| [8](#-phase-8--submission-system-)                | Submission System               | ⏳            |
+| [9](#-phase-9--moderation-workflow-)              | Moderation Workflow             | ⏳            |
+| [10](#-phase-10--admin-interface-)                | Admin Interface                 | ⏳            |
+| [11](#-phase-11--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
+| [12](#-phase-12--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
+| [13](#-phase-13--release-stabilization-)          | Release Stabilization           | ⏳            |
+| [14](#-phase-14--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -171,9 +171,9 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 - [x] Monorepo structure established with shared tooling and root workspace configuration
 - [x] Frontend (Next.js) and backend (NestJS) apps scaffolded and runnable
-- [ ] Development environment configured (database, scripts)
-- [ ] CI pipeline configured (lint, typecheck, tests)
-- [ ] Local setup and run instructions documented
+- [x] Development environment configured (database, scripts)
+- [x] CI pipeline configured (lint, typecheck, tests)
+- [x] Local setup and run instructions documented
 
 ---
 
@@ -233,13 +233,14 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.6 - Pipeline CI 🚧
+#### ▸ Phase 1.6 - Pipeline CI  ✅
 
 ###### Phase Tasks:
 
 - [x] Establish baseline test runners (Vitest for frontend, Jest for backend)
 - [x] Create GitHub Actions workflow (PR + push)
-- [ ] Verify CI runs lint, typecheck, and tests for both apps
+- [x] Verify CI runs lint, typecheck, and tests for both apps
+- [x] Create pre-commit linter and typecheck checks 
 
 ---
 
@@ -253,7 +254,7 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-### ► Phase 2 — Backend Foundations ⏳
+### ► Phase 2 — Backend Foundations 🚧
 
 ###### Goal
 
