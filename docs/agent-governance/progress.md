@@ -5,12 +5,12 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status        |
-|---------------------------------------------------|---------------------------------| ------------- |
+| Phase                                             | Name                            | Status       |
+|---------------------------------------------------|---------------------------------|--------------|
 | [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
 | [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
-| **[2](#-phase-2--backend-foundations-)**          | **Backend Foundations**         | **🚧 ACTIVE** |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ⏳            |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
+| **[3](#-phase-3--core-domain-model-)**            | **Core Domain Model**           | **🚧 ACTIVE** |
 | [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
 | [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
 | [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
@@ -264,11 +264,11 @@ Establish backend service structure, database connection, migrations, and health
 
 ###### Definition of Done
 
-- [ ] Backend module structure is defined and documented for Phase 2 scope
-- [ ] Prisma is integrated with the NestJS backend and database connectivity is validated
-- [ ] Initial migration workflow is established and verified end-to-end locally
-- [ ] Health endpoint(s) exist and include database readiness verification
-- [ ] Backend foundation setup is documented sufficiently for Phase 3 implementation
+- [x] Backend module structure is defined and documented for Phase 2 scope
+- [x] Prisma is integrated with the NestJS backend and database connectivity is validated
+- [x] Initial migration workflow is established and verified end-to-end locally
+- [x] Health endpoint(s) exist and include database readiness verification
+- [x] Backend foundation setup is documented sufficiently for Phase 3 implementation
 
 ---
 
@@ -298,14 +298,14 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
-#### ▸ Phase 2.3 - Health & Readiness Endpoints 🚧
+#### ▸ Phase 2.3 - Health & Readiness Endpoints ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement liveness endpoint for backend process health
-- [ ] Implement readiness endpoint including database connectivity check
-- [ ] Add tests for health/readiness success and failure scenarios
-- [ ] Document endpoint contract and expected response behavior
+- [x] Implement liveness endpoint for backend process health
+- [x] Implement readiness endpoint including database connectivity check
+- [x] Add tests for health/readiness success and failure scenarios
+- [x] Document endpoint contract and expected response behavior
 
 ---
 
@@ -317,7 +317,7 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
-### ► Phase 3 — Core Domain Model ⏳
+### ► Phase 3 — Core Domain Model 🚧
 
 ###### Goal
 
