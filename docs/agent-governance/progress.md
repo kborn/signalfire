@@ -272,7 +272,7 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
-#### ▸ Phase 2.1 - Service Structure & Configuration 🚧
+#### ▸ Phase 2.1 - Service Structure & Configuration ✅
 
 ###### Phase Tasks:
 
@@ -283,16 +283,18 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
-#### ▸ Phase 2.2 - Prisma Integration & Migration Baseline 🚧
+#### ▸ Phase 2.2 - Prisma Integration & Migration Baseline ✅
 
 ###### Phase Tasks:
 
-- [ ] Integrate Prisma into the NestJS backend application
-- [ ] Configure Prisma schema and database datasource for local development
-- [ ] Create and apply a minimal infrastructure-only migration to validate Prisma connectivity and migration workflow without introducing core domain schema decisions
-- [ ] Ensure Prisma client generation is part of the backend workflow
-- [ ] Document migration and client-generation commands for local development
-- [ ] Validate migration workflow end-to-end locally; add CI migration execution only if low complexity, otherwise document deferral rationale
+- [x] Integrate Prisma into the NestJS backend application
+- [x] Configure Prisma schema and database datasource for local development
+- [x] Create and apply a minimal infrastructure-only migration to validate Prisma connectivity and migration workflow without introducing core domain schema decisions
+- [x] Ensure Prisma client generation is part of the backend workflow
+- [x] Document migration and client-generation commands for local development
+- [x] Validate migration workflow end-to-end locally 
+- [ ] ~~add CI migration execution only if low complexity, otherwise document deferral rationale~~
+  - This has been deferred and documented in [decisions.md](decisions.md#2026-03-10)
 
 ---
 

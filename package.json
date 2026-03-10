@@ -9,7 +9,11 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "prepare": "husky"
+    "prepare": "husky",
+    "api:dev": "pnpm --filter api dev",
+    "api:prisma:generate": "pnpm --filter api prisma:generate",
+    "api:prisma:migrate:dev": "pnpm --filter api prisma:migrate:dev",
+    "api:prisma:migrate:deploy": "pnpm --filter api prisma:migrate:deploy"
   },
   "keywords": [],
   "author": "",

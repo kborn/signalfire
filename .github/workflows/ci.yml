@@ -23,7 +23,12 @@ jobs:
           cache: 'pnpm'
 
       - name: Install Monorepo
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
 
       - name: Monorepo lint
         continue-on-error: true
