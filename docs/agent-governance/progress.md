@@ -276,10 +276,10 @@ Establish backend service structure, database connection, migrations, and health
 
 ###### Phase Tasks:
 
-- [ ] Define backend module/service structure for infrastructure concerns (config, db, health)
-- [ ] Establish environment variable contract for backend runtime configuration
-- [ ] Add runtime configuration validation and fail-fast behavior for missing required variables
-- [ ] Create one concise backend foundations doc covering Phase 2 modules, ownership boundaries, out-of-scope items for Phase 3, and config/Prisma/health interaction
+- [x] Define backend module/service structure for infrastructure concerns (config, db, health)
+- [x] Establish environment variable contract for backend runtime configuration
+- [x] Add runtime configuration validation and fail-fast behavior for missing required variables
+- [x] Create one concise backend foundations doc covering Phase 2 modules, ownership boundaries, out-of-scope items for Phase 3, and config/Prisma/health interaction
 
 ---
 
