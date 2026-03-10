@@ -167,3 +167,32 @@ Release 1 backend persistence will use Prisma ORM with PostgreSQL.
 
 ###### Implications
 - Phase 2 should standardize on Prisma schema, Prisma Migrate, and Prisma Client patterns for backend data access.
+
+---
+
+---
+
+## Decisions
+
+---
+
+---
+
+### ► CI migration execution deferred to Deployment Infrastructure
+###### 2026-03-10
+
+---
+
+###### Decision
+Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 12 unless a low-complexity path is available earlier.
+
+###### Rationale
+- Phase 2 is focused on backend foundations, not CI infrastructure expansion.
+- Adding CI service-database orchestration now introduces avoidable implementation drag.
+- Local migration validation already proves schema/migration workflow viability for current scope.
+
+###### Implications
+- Phase 2 completion does not require CI database migration execution.
+- Phase 12 must define deployment-time and CI migration strategy as part of infrastructure hardening.
+- Teams may still add CI migration smoke checks earlier if implementation complexity remains low.
+- Phase 2 should avoid implicit Prisma execution hooks in generic workflows (for example `prebuild`/`predev`) and use explicit Prisma commands instead.
