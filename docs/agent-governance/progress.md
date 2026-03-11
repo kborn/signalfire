@@ -339,13 +339,13 @@ patterns for Release 1 domain entities.
 
 ###### Phase Tasks:
 
-- [ ] Define and document a Release 1 relationship matrix (required vs optional/deferred) for Topic, Article, Action, Event, and Submission as the Phase 3 implementation contract
-- [ ] Define Prisma models for Topic, Article, Action, Event, and Submission
-- [ ] Define and implement unique public identifiers (slug fields) for Topics, Articles, and Actions to support stable URL routing
-- [ ] Implement Topic relationships to Articles, Actions, and Events
-- [ ] Implement the required cross-entity relationships among Articles, Actions, and Events according to the relationship matrix (above)
-- [ ] Model Submission as pending Article or pending Event content
-- [ ] Add constraints/indexes needed for relationship integrity and baseline read performance
+- [x] Define and document a Release 1 relationship matrix (required vs optional/deferred) for Topic, Article, Action, Event, and Submission as the Phase 3 implementation contract
+- [x] Define Prisma models for Topic, Article, Action, Event, and Submission
+- [x] Define and implement unique public identifiers (slug fields) for Topics, Articles, and Actions to support stable URL routing
+- [x] Implement Topic relationships to Articles, Actions, and Events
+- [x] Implement the required cross-entity relationships among Articles, Actions, and Events according to the relationship matrix (above)
+- [x] Model Submission as pending Article or pending Event content
+- [x] Add constraints/indexes needed for relationship integrity and baseline read performance
 
 ---
 
