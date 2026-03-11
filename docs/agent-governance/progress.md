@@ -321,15 +321,67 @@ Establish backend service structure, database connection, migrations, and health
 
 ###### Goal
 
-Implement database schema and persistence layer for core entities.
+Implement the core domain persistence model in Prisma, including schema,
+entity relationships, migration workflow, and repository/service layer
+patterns for Release 1 domain entities.
 
-Entities include:
+###### Definition of Done
 
-- Topic
-- Article
-- Action
-- Event
-- Submission
+- [ ] Prisma models exist for Topic, Article, Action, Event, and Submission
+- [ ] Core relationships are implemented and validated via migrations
+- [ ] Initial Phase 3 migration(s) are applied locally and reproducible
+- [ ] Repository/service layer boundaries and baseline persistence patterns are documented and implemented for current scope
+- [ ] Phase 3 scope boundaries are documented and enforced
+
+---
+
+#### ▸ Phase 3.1 - Core Entity Schema & Relationships 🚧
+
+###### Phase Tasks:
+
+- [ ] Define and document a Release 1 relationship matrix (required vs optional/deferred) for Topic, Article, Action, Event, and Submission as the Phase 3 implementation contract
+- [ ] Define Prisma models for Topic, Article, Action, Event, and Submission
+- [ ] Define and implement unique public identifiers (slug fields) for Topics, Articles, and Actions to support stable URL routing
+- [ ] Implement Topic relationships to Articles, Actions, and Events
+- [ ] Implement the required cross-entity relationships among Articles, Actions, and Events according to the relationship matrix (above)
+- [ ] Model Submission as pending Article or pending Event content
+- [ ] Add constraints/indexes needed for relationship integrity and baseline read performance
+
+---
+
+#### ▸ Phase 3.2 - Migrations & Persistence Validation 🚧
+
+###### Phase Tasks:
+
+- [ ] Generate and apply Prisma migration(s) for Phase 3 domain schema
+- [ ] Validate migration workflow end-to-end locally (create, apply, reset, re-apply)
+- [ ] Ensure Prisma client is regenerated and aligned with Phase 3 schema
+- [ ] Add tests that validate relationship persistence and basic integrity constraints
+- [ ] Seed [topics](decisions.md#2026-03-10-1)
+
+---
+
+#### ▸ Phase 3.3 - Repository & Service Layer Patterns 🚧
+
+###### Phase Tasks:
+
+- [ ] Define repository/service boundaries for Topic, Article, Action, Event, and Submission persistence flows
+- [ ] Implement repository patterns for core CRUD/read operations required by upcoming Phase 4 APIs
+- [ ] Keep service layer focused on domain orchestration and relationship-aware access patterns
+- [ ] Document conventions for Prisma usage in repositories/services (query composition, includes/selects, transaction boundaries)
+
+---
+
+#### Notes:
+
+- In scope: database schema for core entities, entity relationships, Prisma models, migrations, repository/service layer patterns.
+- Out of scope for Phase 3: UI behavior, search, moderation tooling, submission UX, ingestion systems, and complex geospatial queries.
+- Out of scope for Phase 3: moderation workflow behavior beyond persistence fields/states needed for future approval flows
+- Canonical relationship rules for this phase:
+  - Topics organize Articles, Actions, and Events.
+  - Articles may reference Topics, Actions, and Events.
+  - Actions may reference Topics, Articles, and Events.
+  - Submissions represent pending Article or Event content.
 
 ---
 
@@ -446,6 +498,10 @@ Capabilities:
 - publish articles
 - manage events
 - moderate submissions
+
+###### Notes:
+
+- Topic data management is deferred to a post-Release-1 phase; Release 1 topics remain seed-defined and non-editable.
 
 ---
 

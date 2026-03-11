@@ -11,6 +11,7 @@
 
 ## V3
 
+- Topic Administration via Admin UI
 - Topic subscriptions
 - Email or SMS notifications
 - Improved discovery filters

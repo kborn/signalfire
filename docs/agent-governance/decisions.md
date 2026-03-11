@@ -196,3 +196,31 @@ Phase 2 requires local end-to-end Prisma migration validation, but CI migration 
 - Phase 12 must define deployment-time and CI migration strategy as part of infrastructure hardening.
 - Teams may still add CI migration smoke checks earlier if implementation complexity remains low.
 - Phase 2 should avoid implicit Prisma execution hooks in generic workflows (for example `prebuild`/`predev`) and use explicit Prisma commands instead.
+
+---
+
+---
+
+### ► Topics are seeded and immutable in Release 1
+###### 2026-03-10
+
+---
+
+###### Decision
+Phase 3 will seed the initial Topic dataset, and Topic records will not be editable in Release 1.
+
+###### Rationale
+- Topics are the primary discovery structure and should remain stable during initial rollout.
+- A fixed set of seeded topics reduces schema and admin-surface complexity in Release 1.
+
+###### Implications
+- Phase 3 must include seed data for the initial topics:
+  - Democracy - Issues related to democratic institutions, voting rights, election integrity, and civic participation in government.
+  - Consumer Activism - Actions focused on influencing corporate behavior through consumer choices such as boycotts, ethical purchasing, and corporate accountability campaigns.
+  - Climate - Issues related to climate change, environmental protection, sustainability, and policies affecting the planet’s ecological systems.
+  - Civil Rights - Issues involving the protection and advancement of equal rights and liberties, including racial justice, gender equality, LGBTQ+ rights, and disability rights.
+  - Economic Justice - Issues related to economic fairness, inequality, labor conditions, housing affordability, wages, and access to economic opportunity.
+  - Education - Issues involving public education systems, school policy, curriculum debates, student rights, and education funding.
+  - Local Community - Community-level civic engagement including local organizing, mutual aid, neighborhood initiatives, and grassroots participation.
+- Release 1 excludes topic editing through admin tooling.
+- Topic administration (create/edit/deprecate) is deferred to a post-Release-1 roadmap phase.
