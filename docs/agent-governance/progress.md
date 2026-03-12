@@ -355,7 +355,7 @@ patterns for Release 1 domain entities.
 
 - [x] Generate and apply Prisma migration(s) for Phase 3 domain schema
 - [x] Validate migration workflow end-to-end locally (create, apply, reset, re-apply)
-- [ ] Ensure Prisma client is regenerated and aligned with Phase 3 schema
+- [x] Ensure Prisma client is regenerated and aligned with Phase 3 schema
 - [ ] Add tests that validate relationship persistence and basic integrity constraints
 - [x] Remove InfrastructureProbe model
 - [x] Seed [topics](decisions.md#2026-03-10-1)
