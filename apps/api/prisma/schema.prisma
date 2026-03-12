@@ -45,13 +45,6 @@ enum EventType {
   MEETING
 }
 
-model InfrastructureProbe {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-
-  @@map("_infrastructure_probe")
-}
-
 model Topic {
   id   Int    @id @default(autoincrement())
   slug String @unique
