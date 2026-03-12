@@ -358,7 +358,7 @@ patterns for Release 1 domain entities.
 - [ ] Ensure Prisma client is regenerated and aligned with Phase 3 schema
 - [ ] Add tests that validate relationship persistence and basic integrity constraints
 - [x] Remove InfrastructureProbe model
-- [ ] Seed [topics](decisions.md#2026-03-10-1)
+- [x] Seed [topics](decisions.md#2026-03-10-1)
 
 ---
 
