@@ -12,9 +12,223 @@ datasource db {
   provider = "postgresql"
 }
 
+enum SubmissionType {
+  EVENT
+  ARTICLE
+}
+
+enum SubmissionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum EntityStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum ActionType {
+  GUIDE
+  LINK
+  CONTACT
+  DONATE
+  VOLUNTEER
+}
+
+enum EventType {
+  PROTEST
+  RALLY
+  VOLUNTEER
+  TOWN_HALL
+  WORKSHOP
+  MEETING
+}
+
 model InfrastructureProbe {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
   @@map("_infrastructure_probe")
+}
+
+model Topic {
+  id   Int    @id @default(autoincrement())
+  slug String @unique
+  name String
+
+  description   String
+  createdAt     DateTime       @default(now())
+  topicArticles TopicArticle[]
+  topicActions  TopicAction[]
+  topicEvents   TopicEvent[]
+
+  @@map("_topic")
+}
+
+model Article {
+  id             Int             @id @default(autoincrement())
+  slug           String          @unique
+  title          String
+  summary        String
+  content        String
+  status         EntityStatus
+  author         String
+  createdAt      DateTime        @default(now())
+  publishedAt    DateTime
+  updatedAt      DateTime        @updatedAt
+  submission     Submission?
+  topicArticles  TopicArticle[]
+  articleActions ArticleAction[]
+  articleEvents  ArticleEvent[]
+
+  @@map("_article")
+}
+
+model Action {
+  id             Int             @id @default(autoincrement())
+  slug           String          @unique
+  title          String
+  summary        String
+  description    String
+  actionType     ActionType
+  status         EntityStatus
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  topicActions   TopicAction[]
+  articleActions ArticleAction[]
+  actionEvents   ActionEvent[]
+
+  @@map("_action")
+}
+
+model Event {
+  id            Int            @id @default(autoincrement())
+  title         String
+  summary       String
+  description   String
+  eventType     EventType
+  status        EntityStatus
+  startTime     DateTime
+  endTime       DateTime?
+  locationName  String
+  addressRaw    String
+  city          String?
+  region        String?
+  postalCode    String?
+  country       String?
+  latitude      Decimal?
+  longitude     Decimal?
+  submission    Submission?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  topicEvents   TopicEvent[]
+  articleEvents ArticleEvent[]
+  actionEvents  ActionEvent[]
+
+  @@map("_event")
+}
+
+model Submission {
+  id                 Int              @id @default(autoincrement())
+  submissionType     SubmissionType
+  status             SubmissionStatus
+  title              String
+  summary            String
+  submittedContent   String
+  eventType          EventType?
+  startTime          DateTime?
+  endTime            DateTime?
+  locationName       String?
+  addressRaw         String?
+  city               String?
+  region             String?
+  postalCode         String?
+  country            String?
+  website            String?
+  contactEmail       String?
+  submitterFirstName String
+  submitterLastName  String
+  submitterEmail     String
+  reviewNotes        String?
+  article            Article?         @relation(fields: [articleId], references: [id])
+  articleId          Int?             @unique
+  event              Event?           @relation(fields: [eventId], references: [id])
+  eventId            Int?             @unique
+  submittedAt        DateTime         @default(now())
+  reviewedAt         DateTime?
+
+  @@map("_submission")
+}
+
+model TopicArticle {
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    Int
+  article    Article  @relation(fields: [articleId], references: [id])
+  articleId  Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([topicId, articleId])
+  @@map("_topic_article")
+}
+
+model TopicAction {
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    Int
+  action     Action   @relation(fields: [actionId], references: [id])
+  actionId   Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([topicId, actionId])
+  @@map("_topic_action")
+}
+
+model TopicEvent {
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    Int
+  event      Event    @relation(fields: [eventId], references: [id])
+  eventId    Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([topicId, eventId])
+  @@map("_topic_event")
+}
+
+model ArticleAction {
+  article    Article  @relation(fields: [articleId], references: [id])
+  articleId  Int
+  action     Action   @relation(fields: [actionId], references: [id])
+  actionId   Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([articleId, actionId])
+  @@map("_article_action")
+}
+
+model ArticleEvent {
+  article    Article  @relation(fields: [articleId], references: [id])
+  articleId  Int
+  event      Event    @relation(fields: [eventId], references: [id])
+  eventId    Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([articleId, eventId])
+  @@map("_article_event")
+}
+
+model ActionEvent {
+  action     Action   @relation(fields: [actionId], references: [id])
+  actionId   Int
+  event      Event    @relation(fields: [eventId], references: [id])
+  eventId    Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+
+  @@id([actionId, eventId])
+  @@map("_action_event")
 }
