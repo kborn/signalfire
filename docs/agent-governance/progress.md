@@ -11,17 +11,18 @@ It is the canonical answer to: “Where are we in the plan?”
 | [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
 | [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
 | **[3](#-phase-3--core-domain-model-)**            | **Core Domain Model**           | **🚧 ACTIVE** |
-| [4](#-phase-4--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
-| [5](#-phase-5--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
-| [6](#-phase-6--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
-| [7](#-phase-7--event-ui-)                         | Event UI                        | ⏳            |
-| [8](#-phase-8--submission-system-)                | Submission System               | ⏳            |
-| [9](#-phase-9--moderation-workflow-)              | Moderation Workflow             | ⏳            |
-| [10](#-phase-10--admin-interface-)                | Admin Interface                 | ⏳            |
-| [11](#-phase-11--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
-| [12](#-phase-12--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
-| [13](#-phase-13--release-stabilization-)          | Release Stabilization           | ⏳            |
-| [14](#-phase-14--public-launch-)                  | Public Launch                   | ⏳            |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ⏳            |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
+| [9](#-phase-9--submission-system-)                | Submission System               | ⏳            |
+| [10](#-phase-10--moderation-workflow-)            | Moderation Workflow             | ⏳            |
+| [11](#-phase-11--admin-interface-)                | Admin Interface                 | ⏳            |
+| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
+| [13](#-phase-13--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
+| [14](#-phase-14--release-stabilization-)          | Release Stabilization           | ⏳            |
+| [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -349,24 +350,24 @@ patterns for Release 1 domain entities.
 
 ---
 
-#### ▸ Phase 3.2 - Migrations & Persistence Validation 🚧
+#### ▸ Phase 3.2 - Migrations & Persistence Validation ✅
 
 ###### Phase Tasks:
 
-- [ ] Generate and apply Prisma migration(s) for Phase 3 domain schema
-- [ ] Validate migration workflow end-to-end locally (create, apply, reset, re-apply)
-- [ ] Ensure Prisma client is regenerated and aligned with Phase 3 schema
-- [ ] Add tests that validate relationship persistence and basic integrity constraints
-- [ ] Seed [topics](decisions.md#2026-03-10-1)
+- [x] Generate and apply Prisma migration(s) for Phase 3 domain schema
+- [x] Validate migration workflow end-to-end locally (create, apply, reset, re-apply)
+- [x] Ensure Prisma client is regenerated and aligned with Phase 3 schema
+- [x] Remove InfrastructureProbe model
+- [x] Seed [topics](decisions.md#2026-03-10-1)
 
 ---
 
-#### ▸ Phase 3.3 - Repository & Service Layer Patterns ⏳
+#### ▸ Phase 3.3 - Repository & Service Layer Patterns 🚧
 
 ###### Phase Tasks:
 
 - [ ] Define repository/service boundaries for Topic, Article, Action, Event, and Submission persistence flows
-- [ ] Implement repository patterns for core CRUD/read operations required by upcoming Phase 4 APIs
+- [ ] Implement repository patterns for core CRUD/read operations required by upcoming Phase 5 APIs
 - [ ] Keep service layer focused on domain orchestration and relationship-aware access patterns
 - [ ] Document conventions for Prisma usage in repositories/services (query composition, includes/selects, transaction boundaries)
 
@@ -387,7 +388,53 @@ patterns for Release 1 domain entities.
 
 ---
 
-### ► Phase 4 — Topic & Content APIs ⏳
+### ► Phase 4 — Test Infrastructure ⏳
+
+###### Goal
+
+Establish an ephemeral integration database workflow and wire persistence-level integration tests into automated validation.
+
+###### Definition of Done
+
+- [ ] Ephemeral backend integration database strategy is documented and implemented
+- [ ] Integration test commands run against isolated non-development database instances
+- [ ] Core persistence integration tests run locally and in CI
+- [ ] Local and CI integration workflows use the same isolation model
+
+---
+
+#### ▸ Phase 4.1 - Ephemeral Integration Database ⏳
+
+###### Phase Tasks:
+
+- [ ] Define the ephemeral integration database approach for backend tests
+- [ ] Add a backend test environment contract for ephemeral database execution
+- [ ] Ensure migrations can be applied/reset safely against ephemeral integration database instances
+- [ ] Document local developer workflow for running integration tests against ephemeral databases
+
+---
+
+#### ▸ Phase 4.2 - Integration Test Harness & CI ⏳
+
+###### Phase Tasks:
+
+- [ ] Add persistence integration tests for required relationships and baseline integrity constraints
+- [ ] Add test setup/teardown utilities that isolate integration test state
+- [ ] Wire backend integration tests into CI validation
+- [ ] Keep unit tests and integration tests separable in local and CI workflows
+
+---
+
+#### Notes:
+
+- Phase 4 adopts ephemeral integration databases as the immediate strategy.
+- Integration tests must remain isolated from the primary local development database.
+
+---
+
+---
+
+### ► Phase 5 — Topic & Content APIs ⏳
 
 ###### Goal
 
@@ -405,7 +452,7 @@ Capabilities:
 
 ---
 
-### ► Phase 5 — Content Discovery UI ⏳
+### ► Phase 6 — Content Discovery UI ⏳
 
 ###### Goal
 
@@ -422,7 +469,7 @@ Capabilities:
 
 ---
 
-### ► Phase 6 — Event Domain & APIs ⏳
+### ► Phase 7 — Event Domain & APIs ⏳
 
 ###### Goal
 
@@ -438,7 +485,7 @@ Capabilities:
 
 ---
 
-### ► Phase 7 — Event UI ⏳
+### ► Phase 8 — Event UI ⏳
 
 ###### Goal
 
@@ -454,7 +501,7 @@ Capabilities:
 
 ---
 
-### ► Phase 8 — Submission System ⏳
+### ► Phase 9 — Submission System ⏳
 
 ###### Goal
 
@@ -470,7 +517,7 @@ Capabilities:
 
 ---
 
-### ► Phase 9 — Moderation Workflow ⏳
+### ► Phase 10 — Moderation Workflow ⏳
 
 ###### Goal
 
@@ -486,7 +533,7 @@ Capabilities:
 
 ---
 
-### ► Phase 10 — Admin Interface ⏳
+### ► Phase 11 — Admin Interface ⏳
 
 ###### Goal
 
@@ -507,7 +554,7 @@ Capabilities:
 
 ---
 
-### ► Phase 11 — Search & Discovery Improvements ⏳
+### ► Phase 12 — Search & Discovery Improvements ⏳
 
 ###### Goal
 
@@ -517,7 +564,7 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-### ► Phase 12 — Deployment Infrastructure ⏳
+### ► Phase 13 — Deployment Infrastructure ⏳
 
 ###### Goal
 
@@ -527,7 +574,7 @@ Configure hosting, environment management, and CI/CD.
 
 ---
 
-### ► Phase 13 — Release Stabilization ⏳
+### ► Phase 14 — Release Stabilization ⏳
 
 ###### Goal
 
@@ -537,7 +584,7 @@ Bug fixes, polish, and observability improvements.
 
 ---
 
-### ► Phase 14 — Public Launch ⏳
+### ► Phase 15 — Public Launch ⏳
 
 ###### Goal
 

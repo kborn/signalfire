@@ -295,3 +295,26 @@ instead of `SERIAL NOT NULL`.
 - When creating migrations with `--create-only`, review generated SQL and replace `SERIAL` PK definitions with identity-column definitions before applying.
 - Do not add manual duplicate sequence creation statements for those identity-backed PKs.
 - This convention applies to Phase 3 core-domain tables and future Postgres migrations in this repo.
+
+---
+
+---
+
+### ► Integration tests use ephemeral databases
+###### 2026-03-12
+
+---
+
+###### Decision
+Backend persistence integration tests will use ephemeral database instances as the immediate strategy for local and CI execution.
+
+###### Rationale
+- Phase 3 requires persistence-level confidence, but true integration tests need database isolation from development data.
+- Ephemeral databases provide strong isolation without relying on a long-lived shared test database.
+- Using the same isolation model locally and in CI reduces environment drift and hidden state between test runs.
+
+###### Implications
+- Integration tests must not run against the primary local development database.
+- The project should define an ephemeral database creation, migration, and teardown workflow for backend integration tests.
+- CI should execute backend integration tests against ephemeral database instances once the Phase 4 test harness is added.
+- Test commands should keep unit and integration workflows separable while preserving the same database isolation model across environments.
