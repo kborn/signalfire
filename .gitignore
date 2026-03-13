@@ -18,5 +18,6 @@ apps/api/.turbo
 apps/web/.turbo
 
 # Personal cheatsheet
-docs/tech-stack-cheatsheet.md
+docs/.learnings/
+docs/.agent_phase_notes
 
