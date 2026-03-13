@@ -5,7 +5,8 @@ This document explains **how AI tools are used intentionally**.
 ---
 
 ## Principles
-- AI accelerates execution by 
+
+- AI accelerates execution by
   - Providing guidance on architectural decisions
   - Reviewing code
   - Generating documentation
@@ -18,7 +19,9 @@ This document explains **how AI tools are used intentionally**.
 ## Roles in Practice
 
 ### Chief Strategist
+
 Used for:
+
 - Guiding initial discussions which define the project
   - Defining the goal of the project
   - Defining the stack
@@ -29,12 +32,14 @@ Used for:
 - Writing documentation
 
 Not used for:
+
 - Day to day decisions
 - Writing Code
 
-
 ### Staff Engineer
+
 Used for:
+
 - Architecture validation
 - Feature implementation decisions
 - Low level stack and tool decisions
@@ -44,11 +49,14 @@ Used for:
 - Defining project structure
 
 Not Used for:
+
 - Writing code
 - Git integration
 
 ### Project Manager
+
 Used for:
+
 - Feature shaping
 - UI/UX decisions
 - Deciding when and how to add new features
@@ -56,22 +64,26 @@ Used for:
 - Writing documentation
 
 Not used for:
+
 - Project shaping
 - Stack or tooling decisions
 - Implementation decisions
 - Project scope decisions
 
-
 ### Builder
+
 Used for:
+
 - small implementation tasks
 - refactoring
 - tests
 
-Not used for: 
+Not used for:
+
 - designing features or large implementations
 
 ---
+
 ## Implementation Guardrails
 
 AI agents should not generate repository additions (code, configuration,
@@ -131,8 +143,7 @@ The human is the only authority that may approve scope expansion.
 This ensures the project remains focused and prevents uncontrolled
 feature creep during development.
 
---- 
-
+---
 
 ## Context Authority Rule
 
@@ -145,6 +156,4 @@ the current project state.
 If any information conflicts with the canonical documents,
 the documents take precedence.
 
---- 
-
-
+---

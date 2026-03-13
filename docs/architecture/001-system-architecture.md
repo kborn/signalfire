@@ -49,7 +49,6 @@ The system consists of:
 - PostgreSQL stores events, content, and moderation data.
 - Future ingestion sources plug into domain services rather than directly into the database.
 
-
 ```mermaid
 flowchart LR
     A[Frontend<br/>Next.js / React / TypeScript]

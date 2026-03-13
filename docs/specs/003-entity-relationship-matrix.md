@@ -1,4 +1,5 @@
 # Release 1 Relationship Matrix
+
 Phase 3 Implementation Contract
 
 ## Purpose
@@ -44,19 +45,19 @@ Submissions represent pending content awaiting moderation.
 
 Legend:
 
-| Symbol | Meaning |
-|------|------|
-| **Required** | Must exist for Release 1 |
+| Symbol       | Meaning                      |
+| ------------ | ---------------------------- |
+| **Required** | Must exist for Release 1     |
 | **Optional** | May be implemented if useful |
-| **Deferred** | Not required for Release 1 |
+| **Deferred** | Not required for Release 1   |
 
-| From → To | Topic | Article | Action | Event | Submission |
-|-----------|------|------|------|------|------|
-| **Topic** | — | Required | Required | Required | Deferred |
-| **Article** | Required | — | Optional | Optional | Deferred |
-| **Action** | Required | Optional | — | Optional | Deferred |
-| **Event** | Required | Optional | Optional | — | Deferred |
-| **Submission** | Deferred | Required (Article submission) | Deferred | Required (Event submission) | — |
+| From → To      | Topic    | Article                       | Action   | Event                       | Submission |
+| -------------- | -------- | ----------------------------- | -------- | --------------------------- | ---------- |
+| **Topic**      | —        | Required                      | Required | Required                    | Deferred   |
+| **Article**    | Required | —                             | Optional | Optional                    | Deferred   |
+| **Action**     | Required | Optional                      | —        | Optional                    | Deferred   |
+| **Event**      | Required | Optional                      | Optional | —                           | Deferred   |
+| **Submission** | Deferred | Required (Article submission) | Deferred | Required (Event submission) | —          |
 
 ---
 
@@ -65,30 +66,38 @@ Legend:
 These relationships must exist because they directly support **content discovery**.
 
 ### Topic → Article
+
 Articles must belong to one or more Topics.
 
 Used for:
+
 - Topic pages
 - Article discovery by issue
 
 ### Topic → Action
+
 Actions must belong to one or more Topics.
 
 Used for:
+
 - Topic pages
 - Action discovery by issue
 
 ### Topic → Event
+
 Events must belong to one or more Topics.
 
 Used for:
+
 - Topic event discovery
 - filtering by issue
 
 ### Submission → Article
+
 A submission may represent a **pending Article**.
 
 ### Submission → Event
+
 A submission may represent a **pending Event**.
 
 These relationships support the moderation workflow.

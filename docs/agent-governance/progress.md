@@ -5,8 +5,8 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status       |
-|---------------------------------------------------|---------------------------------|--------------|
+| Phase                                             | Name                            | Status        |
+| ------------------------------------------------- | ------------------------------- | ------------- |
 | [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
 | [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
 | [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
@@ -234,14 +234,14 @@ Create the monorepo structure, basic frontend and backend applications, shared t
 
 ---
 
-#### ▸ Phase 1.6 - Pipeline CI  ✅
+#### ▸ Phase 1.6 - Pipeline CI ✅
 
 ###### Phase Tasks:
 
 - [x] Establish baseline test runners (Vitest for frontend, Jest for backend)
 - [x] Create GitHub Actions workflow (PR + push)
 - [x] Verify CI runs lint, typecheck, and tests for both apps
-- [x] Create pre-commit linter and typecheck checks 
+- [x] Create pre-commit linter and typecheck checks
 
 ---
 
@@ -293,7 +293,7 @@ Establish backend service structure, database connection, migrations, and health
 - [x] Create and apply a minimal infrastructure-only migration to validate Prisma connectivity and migration workflow without introducing core domain schema decisions
 - [x] Ensure Prisma client generation is part of the backend workflow
 - [x] Document migration and client-generation commands for local development
-- [x] Validate migration workflow end-to-end locally 
+- [x] Validate migration workflow end-to-end locally
 - [ ] ~~add CI migration execution only if low complexity, otherwise document deferral rationale~~
   - This has been deferred and documented in [decisions.md](decisions.md#2026-03-10)
 

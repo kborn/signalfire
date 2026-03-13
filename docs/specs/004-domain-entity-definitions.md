@@ -1,4 +1,5 @@
 # Phase 3 Domain Entity Definitions
+
 Release 1 Minimum Entity Contract
 
 ## Purpose
@@ -168,12 +169,13 @@ In Release 1 submissions may represent:
 - Article content
 - Event content
 
-Submissions are moderation workflow records. They need to contain only enough proposed data for 
+Submissions are moderation workflow records. They need to contain only enough proposed data for
 moderation and conversion
 
-
 ### Minimum fields
+
 Common fields
+
 - id
 - submission_type
 - status
@@ -187,6 +189,7 @@ Common fields
 - reviewed_at
 
 Event-specific optional fields
+
 - event_type
 - start_time
 - end_time
@@ -198,7 +201,6 @@ Event-specific optional fields
 - country
 - website
 - contact_email
-
 
 ### Notes
 

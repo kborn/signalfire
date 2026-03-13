@@ -4,28 +4,29 @@ Record irreversible or high-impact decisions here.
 
 ---
 
-
 ### Decision Entry Template
 
 ---
 
 ### ► Title
+
 ###### YYYY-MM-DD
-
-----
-
-###### Decision: 
-One paragraph describing the decision
-
-###### Rationale:
-- List of reasons why this decision was made
-
-###### Implications:
-- List of outcomes this decision enforces or forbids
 
 ---
 
+###### Decision:
 
+One paragraph describing the decision
+
+###### Rationale:
+
+- List of reasons why this decision was made
+
+###### Implications:
+
+- List of outcomes this decision enforces or forbids
+
+---
 
 ## Decisions
 
@@ -34,22 +35,25 @@ One paragraph describing the decision
 ---
 
 ### ► Platform centers on Actions
-###### 2026-03-06 
+
+###### 2026-03-06
 
 ---
 
 ###### Decision
+
 The platform centers on **Actions** as the primary domain concept.  
 **Events remain a separate entity** representing scheduled real-world participation opportunities.
 
 ###### Rationale
+
 - The core purpose of the platform is to help users take concrete civic actions.
 - Events are one type of action but contain unique data (time, location).
 - Separating Events keeps the data model cleaner.
 
 ###### Implications
-- Core entities include:
 
+- Core entities include:
   - Topic
   - Article
   - Action
@@ -63,19 +67,22 @@ The platform centers on **Actions** as the primary domain concept.
 ---
 
 ### ► Topics are first‑class entities
+
 ###### 2026-03-06
 
 ---
 
-######  Decision
+###### Decision
+
 Topics are first‑class entities and visible user-facing pages.
 
-######  Rationale
+###### Rationale
+
 - Topics provide the primary organizational structure for the platform and support discovery.
 
-######  Implications
-- Each topic may contain:
+###### Implications
 
+- Each topic may contain:
   - Articles
   - Actions
   - Events
@@ -87,17 +94,18 @@ Topics are first‑class entities and visible user-facing pages.
 ---
 
 ### ► Curated but community‑extendable model
+
 ###### 2026-03-06
 
 ---
 
 ###### Decision
+
 - The platform accepts community submissions but uses moderation to maintain quality.
 
 ###### Implications
 
 - Visitors may submit:
-
   - Events
   - Articles
 
@@ -110,19 +118,22 @@ Topics are first‑class entities and visible user-facing pages.
 ---
 
 ### ► Actions are curated
+
 ###### 2026-03-06
 
 ---
 
 ###### Decision
+
 Actions are created by administrators only in Release 1.
 
 ###### Rationale
+
 - Actions represent curated civic recommendations.
 
 ###### Implications
-- Community may submit:
 
+- Community may submit:
   - Events
   - Articles
 
@@ -133,19 +144,23 @@ Actions are created by administrators only in Release 1.
 ---
 
 ### ► Monorepo package manager is pnpm
+
 ###### 2026-03-07
 
 ---
 
 ###### Decision
+
 Phase 1 monorepo package management uses `pnpm`.
 
 ###### Rationale
+
 - `pnpm` pairs well with Turborepo for monorepo workflows.
 - It provides fast installs and efficient dependency storage.
 - Workspace behavior is explicit and reliable for multi-app repos.
 
 ###### Implications
+
 - Root workspace scripts should use `pnpm`.
 - Setup/run documentation should assume `pnpm` commands.
 - CI setup in later Phase 1 tasks should install and use `pnpm`.
@@ -155,17 +170,21 @@ Phase 1 monorepo package management uses `pnpm`.
 ---
 
 ### ► Backend persistence layer will use Prisma ORM
+
 ###### 2026-03-08
 
 ---
 
 ###### Decision
+
 Release 1 backend persistence will use Prisma ORM with PostgreSQL.
 
 ###### Rationale
+
 - Fastest path to type-safe persistence, migrations, and productive NestJS integration for the current project scope.
 
 ###### Implications
+
 - Phase 2 should standardize on Prisma schema, Prisma Migrate, and Prisma Client patterns for backend data access.
 
 ---
@@ -179,19 +198,23 @@ Release 1 backend persistence will use Prisma ORM with PostgreSQL.
 ---
 
 ### ► CI migration execution deferred to Deployment Infrastructure
+
 ###### 2026-03-10
 
 ---
 
 ###### Decision
+
 Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 12 unless a low-complexity path is available earlier.
 
 ###### Rationale
+
 - Phase 2 is focused on backend foundations, not CI infrastructure expansion.
 - Adding CI service-database orchestration now introduces avoidable implementation drag.
 - Local migration validation already proves schema/migration workflow viability for current scope.
 
 ###### Implications
+
 - Phase 2 completion does not require CI database migration execution.
 - Phase 12 must define deployment-time and CI migration strategy as part of infrastructure hardening.
 - Teams may still add CI migration smoke checks earlier if implementation complexity remains low.
@@ -202,18 +225,22 @@ Phase 2 requires local end-to-end Prisma migration validation, but CI migration 
 ---
 
 ### ► Topics are seeded and immutable in Release 1
+
 ###### 2026-03-10
 
 ---
 
 ###### Decision
+
 Phase 3 will seed the initial Topic dataset, and Topic records will not be editable in Release 1.
 
 ###### Rationale
+
 - Topics are the primary discovery structure and should remain stable during initial rollout.
 - A fixed set of seeded topics reduces schema and admin-surface complexity in Release 1.
 
 ###### Implications
+
 - Phase 3 must include seed data for the initial topics:
   - Democracy - Issues related to democratic institutions, voting rights, election integrity, and civic participation in government.
   - Consumer Activism - Actions focused on influencing corporate behavior through consumer choices such as boycotts, ethical purchasing, and corporate accountability campaigns.
@@ -225,32 +252,36 @@ Phase 3 will seed the initial Topic dataset, and Topic records will not be edita
 - Release 1 excludes topic editing through admin tooling.
 - Topic administration (create/edit/deprecate) is deferred to a post-Release-1 roadmap phase.
 
-
 ---
 
 ---
 
 ### ► ActionType and EventType use fixed Prisma enums in Release 1
+
 ###### 2026-03-11
 
 ---
 
 ###### Decision
+
 Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather than admin-managed reference tables. These values are controlled vocabularies for schema validation, filtering, and consistent UI behavior.
 
 ###### Rationale
+
 - Release 1 requires a small, stable set of content categories
 - Enum values provide stronger consistency than free-text fields
 - Admin-managed type systems would add unnecessary scope and UI complexity
 - Actions and Events are separate entities and should maintain distinct classification systems
 
 ###### Implications
+
 - `ActionType` and `EventType` will be implemented directly in Prisma
 - These values are not admin-editable in Release 1
 - Frontend code may map enum values to user-friendly display labels
 - Detailed editorial guidance for these values may live in docs before being introduced into UI copy later
 
 ###### ActionType values
+
 - `GUIDE` — instructional civic action explaining how a user can take action
 - `LINK` — action primarily completed by following an external destination
 - `CONTACT` — action focused on contacting representatives, officials, organizations, or companies
@@ -258,6 +289,7 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 - `VOLUNTEER` — action centered on giving time or participating outside a specific scheduled event
 
 ###### EventType values
+
 - `PROTEST` — demonstration, march, protest, or direct public action event
 - `RALLY` — organized public gathering centered on a cause or campaign
 - `VOLUNTEER` — scheduled volunteer/service opportunity
@@ -266,7 +298,9 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 - `MEETING` — organizing meeting or general civic gathering
 
 ###### Clarification
+
 `ActionType.GUIDE` includes instructional content such as:
+
 - how to reduce personal climate impact
 - how to contact representatives
 - how to organize a protest
@@ -277,21 +311,25 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 ---
 
 ### ► Use Postgres IDENTITY columns in Prisma migration SQL for PKs
+
 ###### 2026-03-11
 
 ---
 
 ###### Decision
+
 For Postgres primary key integer columns generated by Prisma migrations, migration SQL should use:
 `INT GENERATED BY DEFAULT AS IDENTITY NOT NULL`
 instead of `SERIAL NOT NULL`.
 
 ###### Rationale
+
 - `SERIAL` introduced repeat sequence-normalization migrations in local Prisma workflows.
 - Explicit identity columns align with modern Postgres behavior and avoid sequence drift loops.
 - This keeps migration history stable when running `prisma migrate dev` repeatedly.
 
 ###### Implications
+
 - When creating migrations with `--create-only`, review generated SQL and replace `SERIAL` PK definitions with identity-column definitions before applying.
 - Do not add manual duplicate sequence creation statements for those identity-backed PKs.
 - This convention applies to Phase 3 core-domain tables and future Postgres migrations in this repo.
@@ -301,19 +339,23 @@ instead of `SERIAL NOT NULL`.
 ---
 
 ### ► Integration tests use ephemeral databases
+
 ###### 2026-03-12
 
 ---
 
 ###### Decision
+
 Backend persistence integration tests will use ephemeral database instances as the immediate strategy for local and CI execution.
 
 ###### Rationale
+
 - Phase 3 requires persistence-level confidence, but true integration tests need database isolation from development data.
 - Ephemeral databases provide strong isolation without relying on a long-lived shared test database.
 - Using the same isolation model locally and in CI reduces environment drift and hidden state between test runs.
 
 ###### Implications
+
 - Integration tests must not run against the primary local development database.
 - The project should define an ephemeral database creation, migration, and teardown workflow for backend integration tests.
 - CI should execute backend integration tests against ephemeral database instances once the Phase 4 test harness is added.
