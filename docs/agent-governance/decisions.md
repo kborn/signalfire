@@ -360,3 +360,34 @@ Backend persistence integration tests will use ephemeral database instances as t
 - The project should define an ephemeral database creation, migration, and teardown workflow for backend integration tests.
 - CI should execute backend integration tests against ephemeral database instances once the Phase 4 test harness is added.
 - Test commands should keep unit and integration workflows separable while preserving the same database isolation model across environments.
+
+---
+
+---
+
+### ► Phase 4 integration isolation uses one database per test run
+
+###### 2026-03-15
+
+---
+
+###### Decision
+
+Phase 4 backend persistence integration tests will use a database-per-run isolation
+model on transient Postgres instances. Each local or CI execution creates a unique
+database, applies committed migrations, runs tests, and then drops that database.
+
+###### Rationale
+
+- This is the clearest way to guarantee integration tests cannot mutate the development database.
+- It validates the real migration path from empty state on every run.
+- It preserves the same logical isolation model across local and CI environments.
+- It avoids introducing a long-lived shared test database that can accumulate hidden state.
+
+###### Implications
+
+- Phase 4 must define an administrative connection contract for create/drop operations.
+- Integration test automation must fail closed when pointed at non-test databases.
+- CI must provision transient Postgres infrastructure capable of database creation and teardown.
+- Unit tests, persistence integration tests, and HTTP smoke tests should remain separately invocable.
+- Phase 4 exit criteria require coverage of required Release 1 relationships and baseline uniqueness constraints already present in the Prisma schema.
