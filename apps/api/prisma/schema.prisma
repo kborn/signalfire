@@ -141,8 +141,8 @@ model Submission {
   website            String?
   contactEmail       String?
   submitterFirstName String
-  submitterLastName  String
-  submitterEmail     String
+  submitterLastName  String?
+  submitterEmail     String?
   reviewNotes        String?
   article            Article?         @relation(fields: [articleId], references: [id])
   articleId          Int?             @unique

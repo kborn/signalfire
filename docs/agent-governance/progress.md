@@ -10,8 +10,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
 | [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
 | [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
-| **[3](#-phase-3--core-domain-model-)**            | **Core Domain Model**           | **🚧 ACTIVE** |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ⏳            |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
+| **[4](#-phase-4--test-infrastructure-)**          | **Test Infrastructure**         | **🚧 ACTIVE** |
 | [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
 | [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
@@ -318,7 +318,7 @@ Establish backend service structure, database connection, migrations, and health
 
 ---
 
-### ► Phase 3 — Core Domain Model 🚧
+### ► Phase 3 — Core Domain Model ✅
 
 ###### Goal
 
@@ -328,11 +328,11 @@ patterns for Release 1 domain entities.
 
 ###### Definition of Done
 
-- [ ] Prisma models exist for Topic, Article, Action, Event, and Submission
-- [ ] Core relationships are implemented and validated via migrations
-- [ ] Initial Phase 3 migration(s) are applied locally and reproducible
-- [ ] Repository/service layer boundaries and baseline persistence patterns are documented and implemented for current scope
-- [ ] Phase 3 scope boundaries are documented and enforced
+- [x] Prisma models exist for Topic, Article, Action, Event, and Submission
+- [x] Core relationships are implemented and validated via migrations
+- [x] Initial Phase 3 migration(s) are applied locally and reproducible
+- [x] Repository/service layer boundaries and baseline persistence patterns are documented and implemented for current scope
+- [x] Phase 3 scope boundaries are documented and enforced
 
 ---
 
@@ -362,14 +362,14 @@ patterns for Release 1 domain entities.
 
 ---
 
-#### ▸ Phase 3.3 - Repository & Service Layer Patterns 🚧
+#### ▸ Phase 3.3 - Repository & Service Layer Patterns ✅
 
 ###### Phase Tasks:
 
-- [ ] Define repository/service boundaries for Topic, Article, Action, Event, and Submission persistence flows
-- [ ] Implement repository patterns for core CRUD/read operations required by upcoming Phase 5 APIs
-- [ ] Keep service layer focused on domain orchestration and relationship-aware access patterns
-- [ ] Document conventions for Prisma usage in repositories/services (query composition, includes/selects, transaction boundaries)
+- [x] Define repository/service boundaries for Topic, Article, Action, Event, and Submission persistence flows
+- [x] Implement repository patterns for core CRUD/read operations required by upcoming Phase 5 APIs
+- [x] Keep service layer focused on domain orchestration and relationship-aware access patterns
+- [x] Document conventions for Prisma usage in repositories/services (query composition, includes/selects, transaction boundaries)
 
 ---
 
@@ -388,7 +388,7 @@ patterns for Release 1 domain entities.
 
 ---
 
-### ► Phase 4 — Test Infrastructure ⏳
+### ► Phase 4 — Test Infrastructure 🚧
 
 ###### Goal
 
