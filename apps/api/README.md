@@ -36,6 +36,13 @@ pnpm --filter api typecheck
 pnpm --filter api lint
 ```
 
+## Phase 4 Test Infrastructure
+
+Phase 4 persistence integration workflow documentation lives in:
+
+- `docs/architecture/007-phase-4-test-infrastructure.md`
+- `docs/runbooks/phase-4-integration-test-workflow.md`
+
 ## Phase 2 Notes
 
 - Local end-to-end migration validation is required.

@@ -403,14 +403,15 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
-#### ▸ Phase 4.1 - Ephemeral Integration Database ⏳
+#### ▸ Phase 4.1 - Ephemeral Integration Database 🚧
 
 ###### Phase Tasks:
 
-- [ ] Define the ephemeral integration database approach for backend tests
-- [ ] Add a backend test environment contract for ephemeral database execution
-- [ ] Ensure migrations can be applied/reset safely against ephemeral integration database instances
-- [ ] Document local developer workflow for running integration tests against ephemeral databases
+- [ ] Define the backend integration isolation model as database-per-test-run on ephemeral Postgres instances
+- [ ] Define the backend integration environment contract (`DATABASE_URL`, admin connection for create/drop lifecycle, run identifier, test mode guardrails)
+- [ ] Define the migration lifecycle for create, migrate, test, and teardown against ephemeral integration database instances
+- [ ] Document the local developer workflow for provisioning a transient Postgres instance and running integration tests
+- [ ] Document CI database provisioning and confirm it uses the same database isolation model as local execution
 
 ---
 
@@ -418,10 +419,20 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ###### Phase Tasks:
 
-- [ ] Add persistence integration tests for required relationships and baseline integrity constraints
-- [ ] Add test setup/teardown utilities that isolate integration test state
-- [ ] Wire backend integration tests into CI validation
-- [ ] Keep unit tests and integration tests separable in local and CI workflows
+- [ ] Add persistence integration tests for required Release 1 relationships:
+  - Topic -> Article
+  - Topic -> Action
+  - Topic -> Event
+  - Submission -> Article
+  - Submission -> Event
+- [ ] Add persistence integration tests for baseline integrity constraints:
+  - unique slugs on Topic, Article, and Action
+  - one-to-one uniqueness on Submission article/event links
+  - composite join-table uniqueness on required topic relationship tables
+- [ ] Add test setup/teardown utilities that create, migrate, and destroy isolated integration databases per run
+- [ ] Add backend integration commands that are distinct from unit-test and HTTP smoke-test commands
+- [ ] Wire backend persistence integration tests into CI validation
+- [ ] Keep unit tests, persistence integration tests, and HTTP smoke tests separable in local and CI workflows
 
 ---
 
@@ -429,6 +440,14 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 - Phase 4 adopts ephemeral integration databases as the immediate strategy.
 - Integration tests must remain isolated from the primary local development database.
+- Phase 4 covers persistence integration confidence only; controller/API feature coverage belongs to later API phases.
+- Optional Phase 3 relationships (`Article -> Action`, `Article -> Event`, `Action -> Event`) may be covered if implementation relies on them, but they are not phase-exit blockers.
+
+#### Links:
+
+- Architecture: `docs/architecture/007-phase-4-test-infrastructure.md`
+- Runbook: `docs/runbooks/phase-4-integration-test-workflow.md`
+- Decisions: `docs/agent-governance/decisions.md`
 
 ---
 
