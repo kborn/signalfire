@@ -42,3 +42,6 @@ jobs:
 
       - name: Monorepo test
         run: pnpm test
+
+      - name: API Integration test
+        run: pnpm --filter api test:integration
