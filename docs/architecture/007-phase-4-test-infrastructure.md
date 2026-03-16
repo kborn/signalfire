@@ -28,88 +28,82 @@ It does not introduce:
 
 Phase 4 uses:
 
-- one transient Postgres server per execution environment
-- one unique logical database per integration test run
-- create -> migrate -> test -> drop lifecycle for every integration run
+- one transient Postgres container per integration test execution
+- one application database inside that container for the run
+- start container -> migrate -> seed -> test -> stop container lifecycle for every integration run
 
 This means:
 
-- local and CI both execute against disposable databases
+- local and CI both execute against disposable Postgres infrastructure
 - integration tests never point at the primary development database
-- test isolation is enforced at the database level, not only through row cleanup
+- test isolation is enforced by replacing the whole database runtime for each run
 
-## Why Database-Per-Run
+## Why Container-Per-Run
 
-Database-per-run isolation is the narrowest practical choice for the current repo.
+Container-per-run isolation is the clearest implementation path for the current repo.
 
 It provides:
 
 - strong protection against development-data contamination
-- realistic migration validation on fresh databases
-- predictable teardown behavior
-- parity between local and CI execution without requiring a permanent test database
+- realistic migration validation on a fresh Postgres instance
+- predictable teardown behavior with a single cleanup step
+- parity between local and CI execution through the same Testcontainers workflow
 
-Schema-per-run isolation is not chosen because Phase 4 should validate the full
-database lifecycle, including creation and migration application from empty state.
+Database-per-run on a shared server is not chosen because the current implementation
+does not need a separate admin connection contract or create/drop orchestration when
+the entire Postgres runtime can be created and destroyed per integration execution.
 
 ## Execution Environments
 
 ### Local
 
-Local execution requires access to a disposable Postgres server instance.
+Local execution requires a working container runtime that Testcontainers can use.
 
-Acceptable local provisioning options:
+Expected local provisioning path:
 
-- a developer-run Docker container
-- a local Postgres installation
-- another disposable local Postgres process
+- Docker Desktop, Colima, Podman, or another compatible Testcontainers runtime
 
-The provisioning mechanism may differ, but the isolation model must remain the same:
+The local workflow remains:
 
-- create a unique test database
+- start a transient Postgres container
+- point `DATABASE_URL` at that container database
 - apply migrations
+- seed required baseline data
 - run integration tests
-- drop the database
+- stop the container
 
 ### CI
 
-CI should provision a transient Postgres service for the job and then follow the
-same logical flow used locally:
+CI should provide a working container runtime and then follow the same logical flow
+used locally:
 
-- create a unique test database name for the run
-- apply migrations to that database
+- start a transient Postgres container through Testcontainers
+- apply migrations to the container database
+- seed required baseline data
 - execute persistence integration tests
-- drop the database before job completion when feasible
+- stop the container before job completion
 
-The CI provisioning layer may be a GitHub Actions service container or another
-ephemeral CI-native Postgres mechanism. The important contract is database-per-run isolation.
+The important contract is that local and CI both use the same container-per-run isolation model.
 
 ## Environment Contract
 
-Phase 4 should standardize the backend integration environment around two classes
-of connection information.
+Phase 4 standardizes the backend integration environment around the application connection.
 
 ### Application connection
 
 - `DATABASE_URL`
   - points to the ephemeral integration database used by Prisma and application code during the test run
 
-### Administrative connection
-
-- `INTEGRATION_DATABASE_ADMIN_URL`
-  - points to the transient Postgres server with enough privilege to create and drop per-run databases
-
 ### Execution metadata
 
-- `INTEGRATION_DATABASE_NAME`
-  - unique database name for the current run
 - `NODE_ENV=test`
   - required for integration execution
 - `CI`
   - optional environment signal used only for runner behavior differences
 
-If implementation later prefers deriving `DATABASE_URL` from an admin URL plus
-database name, that is acceptable as long as the contract remains explicit and documented.
+The current implementation does not require a separate admin URL or explicit
+database-name variable because Testcontainers provisions the transient Postgres
+runtime and exposes the final application connection string directly.
 
 ## Safety Guardrails
 
@@ -119,20 +113,20 @@ Required safety behavior:
 
 - refuse to run if `DATABASE_URL` targets the known development database name
 - refuse destructive reset/drop behavior unless `NODE_ENV=test`
-- generate a unique database name for every run to avoid cross-run collisions
+- use a fresh transient Postgres container for every integration run
 - ensure teardown still runs after test failure when possible
 
 ## Migration Lifecycle Contract
 
 Every integration run should follow this sequence:
 
-1. Provision or connect to the transient Postgres server.
-2. Create a unique integration database.
-3. Point `DATABASE_URL` at that database.
-4. Run Prisma generate if needed by the execution path.
-5. Apply committed migrations to the fresh database.
+1. Start a transient Postgres container.
+2. Point `DATABASE_URL` at the container database.
+3. Run Prisma generate if needed by the execution path.
+4. Apply committed migrations to the fresh database.
+5. Seed required baseline data for integration tests.
 6. Execute persistence integration tests.
-7. Drop the integration database.
+7. Stop the integration container.
 
 Phase 4 should validate migrations from empty state on every integration run.
 

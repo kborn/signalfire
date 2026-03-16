@@ -396,26 +396,32 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ###### Definition of Done
 
-- [ ] Ephemeral backend integration database strategy is documented and implemented
-- [ ] Integration test commands run against isolated non-development database instances
-- [ ] Core persistence integration tests run locally and in CI
-- [ ] Local and CI integration workflows use the same isolation model
+- [x] Ephemeral backend integration database strategy is documented and implemented
+- [x] Integration test commands run against isolated non-development database instances
+- [x] Core persistence integration tests run locally and in CI
+- [x] Local and CI integration workflows use the same isolation model
+- [ ] Comprehensive integration test coverage of existing API functionality
 
 ---
 
-#### ▸ Phase 4.1 - Ephemeral Integration Database 🚧
+#### ▸ Phase 4.1 - Integration Harness & First Proof ✅
 
 ###### Phase Tasks:
 
-- [ ] Define the backend integration isolation model as database-per-test-run on ephemeral Postgres instances
-- [ ] Define the backend integration environment contract (`DATABASE_URL`, admin connection for create/drop lifecycle, run identifier, test mode guardrails)
-- [ ] Define the migration lifecycle for create, migrate, test, and teardown against ephemeral integration database instances
-- [ ] Document the local developer workflow for provisioning a transient Postgres instance and running integration tests
-- [ ] Document CI database provisioning and confirm it uses the same database isolation model as local execution
+- [x] Define the backend integration isolation model as container-per-test-run on ephemeral Postgres instances
+- [x] Define the backend integration environment contract (`DATABASE_URL`, container runtime requirements, test-mode guardrails)
+- [x] Define the migration lifecycle for container start, migrate, seed, test, and teardown against ephemeral integration database instances
+- [x] Add backend integration commands that are distinct from unit-test and HTTP smoke-test commands
+- [x] Add test setup/teardown utilities that provision, migrate, seed, and destroy isolated integration databases per run
+- [x] Wire backend persistence integration tests into CI validation
+- [x] Keep unit tests, persistence integration tests, and HTTP smoke tests separable in local and CI workflows
+- [x] Add one minimal persistence integration proof test that validates the harness end to end
+- [x] Document the local developer workflow for provisioning a transient Postgres instance and running integration tests
+- [x] Document CI database provisioning and confirm it uses the same database isolation model as local execution
 
 ---
 
-#### ▸ Phase 4.2 - Integration Test Harness & CI ⏳
+#### ▸ Phase 4.2 - Persistence Coverage Expansion 🚧
 
 ###### Phase Tasks:
 
@@ -429,10 +435,7 @@ Establish an ephemeral integration database workflow and wire persistence-level 
   - unique slugs on Topic, Article, and Action
   - one-to-one uniqueness on Submission article/event links
   - composite join-table uniqueness on required topic relationship tables
-- [ ] Add test setup/teardown utilities that create, migrate, and destroy isolated integration databases per run
-- [ ] Add backend integration commands that are distinct from unit-test and HTTP smoke-test commands
-- [ ] Wire backend persistence integration tests into CI validation
-- [ ] Keep unit tests, persistence integration tests, and HTTP smoke tests separable in local and CI workflows
+- [ ] Add additional fixture/setup helpers only if coverage growth makes the current harness too repetitive
 
 ---
 

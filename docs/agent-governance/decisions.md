@@ -365,7 +365,7 @@ Backend persistence integration tests will use ephemeral database instances as t
 
 ---
 
-### ► Phase 4 integration isolation uses one database per test run
+### ► Phase 4 integration isolation uses one Postgres container per test run
 
 ###### 2026-03-15
 
@@ -373,21 +373,22 @@ Backend persistence integration tests will use ephemeral database instances as t
 
 ###### Decision
 
-Phase 4 backend persistence integration tests will use a database-per-run isolation
-model on transient Postgres instances. Each local or CI execution creates a unique
-database, applies committed migrations, runs tests, and then drops that database.
+Phase 4 backend persistence integration tests will use a container-per-run isolation
+model through Testcontainers. Each local or CI execution starts a fresh Postgres
+container, applies committed migrations, seeds required baseline data, runs tests,
+and then stops that container.
 
 ###### Rationale
 
 - This is the clearest way to guarantee integration tests cannot mutate the development database.
 - It validates the real migration path from empty state on every run.
 - It preserves the same logical isolation model across local and CI environments.
-- It avoids introducing a long-lived shared test database that can accumulate hidden state.
+- It avoids introducing a long-lived shared test database or a separate admin database-management layer.
 
 ###### Implications
 
-- Phase 4 must define an administrative connection contract for create/drop operations.
+- Phase 4 must document the required container runtime contract for local and CI execution.
 - Integration test automation must fail closed when pointed at non-test databases.
-- CI must provision transient Postgres infrastructure capable of database creation and teardown.
+- CI must provide a working container runtime so Testcontainers can provision transient Postgres infrastructure.
 - Unit tests, persistence integration tests, and HTTP smoke tests should remain separately invocable.
 - Phase 4 exit criteria require coverage of required Release 1 relationships and baseline uniqueness constraints already present in the Prisma schema.
