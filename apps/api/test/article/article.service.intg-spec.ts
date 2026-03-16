@@ -1,0 +1,118 @@
+import { ArticleModule } from '../../src/article/article.module';
+import { ArticleService } from '../../src/article/article.service';
+import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaService } from '../../src/prisma/prisma.service';
+import { EntityStatus } from '@prisma/client';
+import { TopicModule } from '../../src/topic/topic.module';
+import { createArticle } from '../factories/article.factory';
+import { createAction } from '../factories/action.factory';
+import { TopicService } from '../../src/topic/topic.service';
+import { linkArticleAction, linkTopicArticle } from '../factories/relation.factory';
+
+describe('Article Service Integration Test', () => {
+  let service: ArticleService;
+  let prisma: PrismaService;
+  let module: TestingModule;
+  let topicService: TopicService;
+
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
+      imports: [ArticleModule, TopicModule],
+    }).compile();
+    service = module.get(ArticleService);
+    prisma = module.get(PrismaService);
+    topicService = module.get(TopicService);
+  });
+
+  afterAll(async () => {
+    await module.close();
+  });
+
+  it('returns draft article by slug from unrestricted lookup', async () => {
+    // test that we don't filter by published status when calling getArticleDetail
+    const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const article = await service.getArticleDetail(createdArticle.slug);
+    expect(article).toEqual(
+      expect.objectContaining({
+        id: createdArticle.id,
+        title: 'Test article',
+        summary: 'Summary',
+      }),
+    );
+  });
+
+  it('returns published article by slug from published lookup', async () => {
+    const createdArticle = await createArticle(prisma);
+    const article = await service.getPublishedArticleDetail(createdArticle.slug);
+    expect(article).toEqual(
+      expect.objectContaining({
+        id: createdArticle.id,
+        title: 'Test article',
+        summary: 'Summary',
+      }),
+    );
+  });
+
+  it('returns null for draft article from published lookup', async () => {
+    // test that unpublished articles are not returned
+    const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const article = await service.getPublishedArticleDetail(createdArticle.slug);
+    expect(article).toBeNull();
+  });
+
+  it('returns published articles by related topic', async () => {
+    const createdArticle1 = await createArticle(prisma);
+    const createdArticle2 = await createArticle(prisma);
+    // this article is used to ensure only the published articles linked with the article are returned
+    // it is not otherwise used
+    const createdArticle3 = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    // this article is used to ensure only the articles linked with the article are returned
+    // it is not otherwise used
+    const createdArticle4 = await createArticle(prisma);
+    const topic = (await topicService.getTopics())[0];
+    await linkTopicArticle(prisma, topic.id, createdArticle1.id);
+    await linkTopicArticle(prisma, topic.id, createdArticle2.id);
+    await linkTopicArticle(prisma, topic.id, createdArticle3.id);
+    const articles = await service.getArticlesForTopic(topic.slug);
+
+    const articleIds = articles.map((article) => article.id);
+    expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
+    expect(articleIds).not.toContain(createdArticle3.id);
+    expect(articleIds).not.toContain(createdArticle4.id);
+    expect(articles).toHaveLength(2);
+  });
+
+  it('returns an empty array when no articles are related to article', async () => {
+    const topic = (await topicService.getTopics())[1];
+    const articles = await service.getArticlesForTopic(topic.slug);
+    expect(articles.length).toEqual(0);
+  });
+
+  it('returns published articles by related action', async () => {
+    const createdArticle1 = await createArticle(prisma);
+    const createdArticle2 = await createArticle(prisma);
+    // this article is used to ensure only the published articles linked with the action are returned
+    // it is not otherwise used
+    const createdArticle3 = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    // this article is used to ensure only the articles linked with the action are returned
+    // it is not otherwise used
+    const createdArticle4 = await createArticle(prisma);
+    const createdAction = await createAction(prisma);
+    await linkArticleAction(prisma, createdArticle1.id, createdAction.id);
+    await linkArticleAction(prisma, createdArticle2.id, createdAction.id);
+    await linkArticleAction(prisma, createdArticle3.id, createdAction.id);
+    const articles = await service.getArticlesForAction(createdAction.id);
+
+    const articleIds = articles.map((article) => article.id);
+    expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
+    expect(articleIds).not.toContain(createdArticle3.id);
+    expect(articleIds).not.toContain(createdArticle4.id);
+    expect(articles).toHaveLength(2);
+  });
+
+  it('returns an empty array when no articles are related to action', async () => {
+    const createdAction = await createAction(prisma);
+    const articles = await service.getArticlesForAction(createdAction.id);
+    expect(articles.length).toEqual(0);
+  });
+});
