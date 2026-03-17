@@ -1,6 +1,5 @@
 import { ArticleModule } from '../../src/article/article.module';
 import { ArticleService } from '../../src/article/article.service';
-import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../src/prisma/prisma.service';
 import { EntityStatus } from '@prisma/client';
 import { TopicModule } from '../../src/topic/topic.module';
@@ -8,30 +7,18 @@ import { createArticle } from '../factories/article.factory';
 import { createAction } from '../factories/action.factory';
 import { TopicService } from '../../src/topic/topic.service';
 import { linkArticleAction, linkTopicArticle } from '../factories/relation.factory';
+import { setupIntegrationTest } from '../harness/integration.harness';
 
 describe('Article Service Integration Test', () => {
-  let service: ArticleService;
-  let prisma: PrismaService;
-  let module: TestingModule;
-  let topicService: TopicService;
-
-  beforeAll(async () => {
-    module = await Test.createTestingModule({
-      imports: [ArticleModule, TopicModule],
-    }).compile();
-    service = module.get(ArticleService);
-    prisma = module.get(PrismaService);
-    topicService = module.get(TopicService);
-  });
-
-  afterAll(async () => {
-    await module.close();
-  });
+  const harness = setupIntegrationTest([ArticleModule, TopicModule]);
 
   it('returns draft article by slug from unrestricted lookup', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const prisma = harness.module.get(PrismaService);
+
     // test that we don't filter by published status when calling getArticleDetail
     const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
-    const article = await service.getArticleDetail(createdArticle.slug);
+    const article = await articleService.getArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
         id: createdArticle.id,
@@ -42,8 +29,11 @@ describe('Article Service Integration Test', () => {
   });
 
   it('returns published article by slug from published lookup', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const prisma = harness.module.get(PrismaService);
+
     const createdArticle = await createArticle(prisma);
-    const article = await service.getPublishedArticleDetail(createdArticle.slug);
+    const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
         id: createdArticle.id,
@@ -54,13 +44,20 @@ describe('Article Service Integration Test', () => {
   });
 
   it('returns null for draft article from published lookup', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const prisma = harness.module.get(PrismaService);
+
     // test that unpublished articles are not returned
     const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
-    const article = await service.getPublishedArticleDetail(createdArticle.slug);
+    const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
     expect(article).toBeNull();
   });
 
   it('returns published articles by related topic', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const topicService = harness.module.get(TopicService);
+    const prisma = harness.module.get(PrismaService);
+
     const createdArticle1 = await createArticle(prisma);
     const createdArticle2 = await createArticle(prisma);
     // this article is used to ensure only the published articles linked with the article are returned
@@ -69,11 +66,15 @@ describe('Article Service Integration Test', () => {
     // this article is used to ensure only the articles linked with the article are returned
     // it is not otherwise used
     const createdArticle4 = await createArticle(prisma);
-    const topic = (await topicService.getTopics())[0];
+    const topic = await topicService.getTopicDetail('democracy');
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
     await linkTopicArticle(prisma, topic.id, createdArticle1.id);
     await linkTopicArticle(prisma, topic.id, createdArticle2.id);
     await linkTopicArticle(prisma, topic.id, createdArticle3.id);
-    const articles = await service.getArticlesForTopic(topic.slug);
+    const articles = await articleService.getArticlesForTopic(topic.slug);
 
     const articleIds = articles.map((article) => article.id);
     expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
@@ -83,12 +84,24 @@ describe('Article Service Integration Test', () => {
   });
 
   it('returns an empty array when no articles are related to article', async () => {
-    const topic = (await topicService.getTopics())[1];
-    const articles = await service.getArticlesForTopic(topic.slug);
+    const articleService = harness.module.get(ArticleService);
+    const topicService = harness.module.get(TopicService);
+
+    const topic = await topicService.getTopicDetail('democracy');
+
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+
+    const articles = await articleService.getArticlesForTopic(topic.slug);
     expect(articles.length).toEqual(0);
   });
 
   it('returns published articles by related action', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const prisma = harness.module.get(PrismaService);
+
     const createdArticle1 = await createArticle(prisma);
     const createdArticle2 = await createArticle(prisma);
     // this article is used to ensure only the published articles linked with the action are returned
@@ -101,7 +114,7 @@ describe('Article Service Integration Test', () => {
     await linkArticleAction(prisma, createdArticle1.id, createdAction.id);
     await linkArticleAction(prisma, createdArticle2.id, createdAction.id);
     await linkArticleAction(prisma, createdArticle3.id, createdAction.id);
-    const articles = await service.getArticlesForAction(createdAction.id);
+    const articles = await articleService.getArticlesForAction(createdAction.id);
 
     const articleIds = articles.map((article) => article.id);
     expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
@@ -111,8 +124,11 @@ describe('Article Service Integration Test', () => {
   });
 
   it('returns an empty array when no articles are related to action', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const prisma = harness.module.get(PrismaService);
+
     const createdAction = await createAction(prisma);
-    const articles = await service.getArticlesForAction(createdAction.id);
+    const articles = await articleService.getArticlesForAction(createdAction.id);
     expect(articles.length).toEqual(0);
   });
 });
