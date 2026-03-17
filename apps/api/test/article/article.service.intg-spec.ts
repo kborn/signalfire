@@ -1,11 +1,10 @@
 import { ArticleModule } from '../../src/article/article.module';
 import { ArticleService } from '../../src/article/article.service';
-import { PrismaService } from '../../src/prisma/prisma.service';
 import { EntityStatus } from '@prisma/client';
 import { TopicModule } from '../../src/topic/topic.module';
-import { createArticle } from '../factories/article.factory';
-import { createAction } from '../factories/action.factory';
 import { TopicService } from '../../src/topic/topic.service';
+import { createAction } from '../factories/action.factory';
+import { createArticle } from '../factories/article.factory';
 import { linkArticleAction, linkTopicArticle } from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
 
@@ -14,7 +13,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns draft article by slug from unrestricted lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     // test that we don't filter by published status when calling getArticleDetail
     const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
@@ -30,7 +29,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns published article by slug from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     const createdArticle = await createArticle(prisma);
     const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
@@ -45,7 +44,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns null for draft article from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     // test that unpublished articles are not returned
     const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
@@ -56,14 +55,14 @@ describe('Article Service Integration Test', () => {
   it('returns published articles by related topic', async () => {
     const articleService = harness.module.get(ArticleService);
     const topicService = harness.module.get(TopicService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     const createdArticle1 = await createArticle(prisma);
     const createdArticle2 = await createArticle(prisma);
-    // this article is used to ensure only the published articles linked with the article are returned
+    // this article is used to ensure only the published articles linked with the topic are returned
     // it is not otherwise used
     const createdArticle3 = await createArticle(prisma, { status: EntityStatus.DRAFT });
-    // this article is used to ensure only the articles linked with the article are returned
+    // this article is used to ensure only the articles linked with the topic are returned
     // it is not otherwise used
     const createdArticle4 = await createArticle(prisma);
     const topic = await topicService.getTopicDetail('democracy');
@@ -74,16 +73,17 @@ describe('Article Service Integration Test', () => {
     await linkTopicArticle(prisma, topic.id, createdArticle1.id);
     await linkTopicArticle(prisma, topic.id, createdArticle2.id);
     await linkTopicArticle(prisma, topic.id, createdArticle3.id);
-    const articles = await articleService.getArticlesForTopic(topic.slug);
 
+    const articles = await articleService.getArticlesForTopic(topic.slug);
     const articleIds = articles.map((article) => article.id);
+
     expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
     expect(articleIds).not.toContain(createdArticle3.id);
     expect(articleIds).not.toContain(createdArticle4.id);
     expect(articles).toHaveLength(2);
   });
 
-  it('returns an empty array when no articles are related to article', async () => {
+  it('returns an empty array when no articles are related to topic', async () => {
     const articleService = harness.module.get(ArticleService);
     const topicService = harness.module.get(TopicService);
 
@@ -100,7 +100,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns published articles by related action', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     const createdArticle1 = await createArticle(prisma);
     const createdArticle2 = await createArticle(prisma);
@@ -111,12 +111,14 @@ describe('Article Service Integration Test', () => {
     // it is not otherwise used
     const createdArticle4 = await createArticle(prisma);
     const createdAction = await createAction(prisma);
+
     await linkArticleAction(prisma, createdArticle1.id, createdAction.id);
     await linkArticleAction(prisma, createdArticle2.id, createdAction.id);
     await linkArticleAction(prisma, createdArticle3.id, createdAction.id);
-    const articles = await articleService.getArticlesForAction(createdAction.id);
 
+    const articles = await articleService.getArticlesForAction(createdAction.id);
     const articleIds = articles.map((article) => article.id);
+
     expect(articleIds).toEqual(expect.arrayContaining([createdArticle1.id, createdArticle2.id]));
     expect(articleIds).not.toContain(createdArticle3.id);
     expect(articleIds).not.toContain(createdArticle4.id);
@@ -125,7 +127,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns an empty array when no articles are related to action', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.module.get(PrismaService);
+    const prisma = harness.prisma;
 
     const createdAction = await createAction(prisma);
     const articles = await articleService.getArticlesForAction(createdAction.id);

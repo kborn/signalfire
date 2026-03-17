@@ -53,3 +53,13 @@ export async function linkTopicArticle(prisma: PrismaService, topicId: number, a
     },
   });
 }
+
+export async function linkTopicAction(prisma: PrismaService, topicId: number, actionId: number) {
+  return prisma.topicAction.create({
+    data: {
+      topicId: topicId,
+      actionId: actionId,
+      assignedBy: 'admin',
+    },
+  });
+}
