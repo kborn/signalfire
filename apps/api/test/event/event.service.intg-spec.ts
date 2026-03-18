@@ -5,9 +5,10 @@ import { EntityStatus, EventType } from '@prisma/client';
 import { createEvent } from '../factories/event.factory';
 import { createArticle } from '../factories/article.factory';
 import { createAction } from '../factories/action.factory';
-import { linkActionEvent, linkArticleEvent } from '../factories/relation.factory';
+import { linkActionEvent, linkArticleEvent, linkTopicEvent } from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { TopicModule } from '../../src/topic/topic.module';
+import { TopicService } from '../../src/topic/topic.service';
 
 describe('Event Service Integration Test', () => {
   const harness = setupIntegrationTest([EventModule, TopicModule]);
@@ -119,5 +120,22 @@ describe('Event Service Integration Test', () => {
     const createdAction = await createAction(prisma);
     const events = await eventService.getEventsByAction(createdAction.id);
     expect(events.length).toEqual(0);
+  });
+
+  // this test is arbitrarily contained in this suite. It could also live in apps/api/test/topic/topic.service.intg-spec.ts
+  it('throws exception when trying to link event and topic redundantly', async () => {
+    const topicService = harness.module.get(TopicService);
+    const prisma = harness.prisma;
+
+    const createdEvent1 = await createEvent(prisma);
+    const createdEvent2 = await createEvent(prisma);
+    const topic = await topicService.getTopicDetail('democracy');
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+    await linkTopicEvent(prisma, topic.id, createdEvent1.id);
+    await linkTopicEvent(prisma, topic.id, createdEvent2.id);
+    await expect(linkTopicEvent(prisma, topic.id, createdEvent1.id)).toThrowUniqueViolation();
   });
 });

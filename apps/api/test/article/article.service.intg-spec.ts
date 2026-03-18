@@ -5,8 +5,13 @@ import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
 import { createAction } from '../factories/action.factory';
 import { createArticle } from '../factories/article.factory';
-import { linkArticleAction, linkTopicArticle } from '../factories/relation.factory';
+import {
+  linkArticleAction,
+  linkArticleEvent,
+  linkTopicArticle,
+} from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
+import { createEvent } from '../factories/event.factory';
 
 describe('Article Service Integration Test', () => {
   const harness = setupIntegrationTest([ArticleModule, TopicModule]);
@@ -132,5 +137,36 @@ describe('Article Service Integration Test', () => {
     const createdAction = await createAction(prisma);
     const articles = await articleService.getArticlesForAction(createdAction.id);
     expect(articles.length).toEqual(0);
+  });
+
+  // this test is arbitrarily contained in this suite. It could also live in apps/api/test/topic/topic.service.intg-spec.ts
+  it('throws exception when trying to link article and topic redundantly', async () => {
+    const topicService = harness.module.get(TopicService);
+    const prisma = harness.prisma;
+
+    const createdArticle1 = await createArticle(prisma);
+    const createdArticle2 = await createArticle(prisma);
+    const topic = await topicService.getTopicDetail('democracy');
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+    await linkTopicArticle(prisma, topic.id, createdArticle1.id);
+    await linkTopicArticle(prisma, topic.id, createdArticle2.id);
+    await expect(linkTopicArticle(prisma, topic.id, createdArticle1.id)).toThrowUniqueViolation();
+  });
+
+  // this test is arbitrarily contained in this suite. It could also live in apps/api/test/event/event.service.intg-spec.ts
+  it('throws exception when trying to link article and event redundantly', async () => {
+    const prisma = harness.prisma;
+
+    const createdArticle1 = await createArticle(prisma);
+    const createdArticle2 = await createArticle(prisma);
+    const createdEvent = await createEvent(prisma);
+    await linkArticleEvent(prisma, createdArticle1.id, createdEvent.id);
+    await linkArticleEvent(prisma, createdArticle2.id, createdEvent.id);
+    await expect(
+      linkArticleEvent(prisma, createdArticle1.id, createdEvent.id),
+    ).toThrowUniqueViolation();
   });
 });
