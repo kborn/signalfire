@@ -11,8 +11,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
 | [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
 | [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
-| **[4](#-phase-4--test-infrastructure-)**          | **Test Infrastructure**         | **🚧 ACTIVE** |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ⏳            |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
+| **[5](#-phase-5--topic--content-apis-)**          | **Topic & Content APIs**        | **🚧 ACTIVE** |
 | [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
 | [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
@@ -439,7 +439,7 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
-#### ▸ Phase 4.3 - Transaction Rollback Guarantees 🚧
+#### ▸ Phase 4.3 - Transaction Rollback Guarantees ✅
 
 ###### Phase Tasks:
 
@@ -449,7 +449,8 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 - [x] Prove the rollback pilot leaves no persisted test data behind between tests
 - [x] Roll the rollback pattern out to additional eligible integration specs
 - [x] Define which specs remain on truncation cleanup and why
-- [ ] Revisit integration runner concurrency settings after
+- [x] Decide whether integration tests remain serialized or can run with multiple Jest workers under rollback isolation
+  - Serialized integration tests are not needed now. This can be revisited if integration testing becomes sluggish
 
 ---
 
@@ -472,7 +473,7 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
-### ► Phase 5 — Topic & Content APIs ⏳
+### ► Phase 5 — Topic & Content APIs 🚧
 
 ###### Goal
 
