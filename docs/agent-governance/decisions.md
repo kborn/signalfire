@@ -392,3 +392,39 @@ and then stops that container.
 - CI must provide a working container runtime so Testcontainers can provision transient Postgres infrastructure.
 - Unit tests, persistence integration tests, and HTTP smoke tests should remain separately invocable.
 - Phase 4 exit criteria require coverage of required Release 1 relationships and baseline uniqueness constraints already present in the Prisma schema.
+
+---
+
+---
+
+### ► Phase 4.3 pilots per-test transaction rollback in the integration harness
+
+###### 2026-03-18
+
+---
+
+###### Decision
+
+Phase 4.3 will evaluate per-test transaction rollback as an integration-test
+isolation strategy, starting with a narrow pilot in one spec while retaining the
+current truncation-based reset path as the default fallback.
+
+###### Rationale
+
+- The current integration harness uses one ephemeral Postgres database per test run
+  and truncates mutable tables after each test.
+- That strategy becomes unsafe if integration specs execute concurrently against the
+  same database instance because one test can erase another test's data mid-run.
+- Per-test rollback may provide safer isolation and faster cleanup, but the repo
+  should prove the pattern in a small pilot before adopting it broadly.
+
+###### Implications
+
+- Truncation-based cleanup remains the working fallback until rollback-based test
+  isolation is proven stable.
+- Phase 4.3 should implement rollback in one integration spec first and document
+  the required usage pattern and limitations.
+- The harness must clearly define which tests are eligible for rollback-based
+  isolation and which still require database reset cleanup.
+- Concurrency and worker behavior for integration tests must remain explicit until
+  the isolation strategy is standardized across the suite.

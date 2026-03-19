@@ -1,12 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../src/prisma/prisma.service';
 import { SubmissionType, SubmissionStatus } from '@prisma/client';
 
-export async function createSubmission(
-  prisma: PrismaService,
-  overrides: Partial<Prisma.SubmissionCreateInput> = {},
-) {
-  return prisma.submission.create({
+export async function createSubmission(overrides: Partial<Prisma.SubmissionCreateInput> = {}) {
+  return jestPrisma.client.submission.create({
     data: {
       submissionType: SubmissionType.ARTICLE,
       status: SubmissionStatus.PENDING,

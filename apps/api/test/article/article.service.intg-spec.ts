@@ -18,10 +18,9 @@ describe('Article Service Integration Test', () => {
 
   it('returns draft article by slug from unrestricted lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.prisma;
 
     // test that we don't filter by published status when calling getArticleDetail
-    const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
     const article = await articleService.getArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
@@ -34,9 +33,7 @@ describe('Article Service Integration Test', () => {
 
   it('returns published article by slug from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.prisma;
-
-    const createdArticle = await createArticle(prisma);
+    const createdArticle = await createArticle();
     const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
@@ -49,10 +46,8 @@ describe('Article Service Integration Test', () => {
 
   it('returns null for draft article from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.prisma;
-
     // test that unpublished articles are not returned
-    const createdArticle = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
     const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
     expect(article).toBeNull();
   });
@@ -60,24 +55,23 @@ describe('Article Service Integration Test', () => {
   it('returns published articles by related topic', async () => {
     const articleService = harness.module.get(ArticleService);
     const topicService = harness.module.get(TopicService);
-    const prisma = harness.prisma;
 
-    const createdArticle1 = await createArticle(prisma);
-    const createdArticle2 = await createArticle(prisma);
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
     // this article is used to ensure only the published articles linked with the topic are returned
     // it is not otherwise used
-    const createdArticle3 = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const createdArticle3 = await createArticle({ status: EntityStatus.DRAFT });
     // this article is used to ensure only the articles linked with the topic are returned
     // it is not otherwise used
-    const createdArticle4 = await createArticle(prisma);
+    const createdArticle4 = await createArticle();
     const topic = await topicService.getTopicDetail('democracy');
     expect(topic).not.toBeNull();
     if (!topic) {
       throw new Error('Seeded topic unexpectedly null');
     }
-    await linkTopicArticle(prisma, topic.id, createdArticle1.id);
-    await linkTopicArticle(prisma, topic.id, createdArticle2.id);
-    await linkTopicArticle(prisma, topic.id, createdArticle3.id);
+    await linkTopicArticle(topic.id, createdArticle1.id);
+    await linkTopicArticle(topic.id, createdArticle2.id);
+    await linkTopicArticle(topic.id, createdArticle3.id);
 
     const articles = await articleService.getArticlesForTopic(topic.slug);
     const articleIds = articles.map((article) => article.id);
@@ -105,21 +99,20 @@ describe('Article Service Integration Test', () => {
 
   it('returns published articles by related action', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.prisma;
 
-    const createdArticle1 = await createArticle(prisma);
-    const createdArticle2 = await createArticle(prisma);
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
     // this article is used to ensure only the published articles linked with the action are returned
     // it is not otherwise used
-    const createdArticle3 = await createArticle(prisma, { status: EntityStatus.DRAFT });
+    const createdArticle3 = await createArticle({ status: EntityStatus.DRAFT });
     // this article is used to ensure only the articles linked with the action are returned
     // it is not otherwise used
-    const createdArticle4 = await createArticle(prisma);
-    const createdAction = await createAction(prisma);
+    const createdArticle4 = await createArticle();
+    const createdAction = await createAction();
 
-    await linkArticleAction(prisma, createdArticle1.id, createdAction.id);
-    await linkArticleAction(prisma, createdArticle2.id, createdAction.id);
-    await linkArticleAction(prisma, createdArticle3.id, createdAction.id);
+    await linkArticleAction(createdArticle1.id, createdAction.id);
+    await linkArticleAction(createdArticle2.id, createdAction.id);
+    await linkArticleAction(createdArticle3.id, createdAction.id);
 
     const articles = await articleService.getArticlesForAction(createdAction.id);
     const articleIds = articles.map((article) => article.id);
@@ -132,9 +125,8 @@ describe('Article Service Integration Test', () => {
 
   it('returns an empty array when no articles are related to action', async () => {
     const articleService = harness.module.get(ArticleService);
-    const prisma = harness.prisma;
 
-    const createdAction = await createAction(prisma);
+    const createdAction = await createAction();
     const articles = await articleService.getArticlesForAction(createdAction.id);
     expect(articles.length).toEqual(0);
   });
@@ -142,38 +134,31 @@ describe('Article Service Integration Test', () => {
   // this test is arbitrarily contained in this suite. It could also live in apps/api/test/topic/topic.service.intg-spec.ts
   it('throws exception when trying to link article and topic redundantly', async () => {
     const topicService = harness.module.get(TopicService);
-    const prisma = harness.prisma;
 
-    const createdArticle1 = await createArticle(prisma);
-    const createdArticle2 = await createArticle(prisma);
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
     const topic = await topicService.getTopicDetail('democracy');
     expect(topic).not.toBeNull();
     if (!topic) {
       throw new Error('Seeded topic unexpectedly null');
     }
-    await linkTopicArticle(prisma, topic.id, createdArticle1.id);
-    await linkTopicArticle(prisma, topic.id, createdArticle2.id);
-    await expect(linkTopicArticle(prisma, topic.id, createdArticle1.id)).toThrowUniqueViolation();
+    await linkTopicArticle(topic.id, createdArticle1.id);
+    await linkTopicArticle(topic.id, createdArticle2.id);
+    await expect(linkTopicArticle(topic.id, createdArticle1.id)).toThrowUniqueViolation();
   });
 
   // this test is arbitrarily contained in this suite. It could also live in apps/api/test/event/event.service.intg-spec.ts
   it('throws exception when trying to link article and event redundantly', async () => {
-    const prisma = harness.prisma;
-
-    const createdArticle1 = await createArticle(prisma);
-    const createdArticle2 = await createArticle(prisma);
-    const createdEvent = await createEvent(prisma);
-    await linkArticleEvent(prisma, createdArticle1.id, createdEvent.id);
-    await linkArticleEvent(prisma, createdArticle2.id, createdEvent.id);
-    await expect(
-      linkArticleEvent(prisma, createdArticle1.id, createdEvent.id),
-    ).toThrowUniqueViolation();
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
+    const createdEvent = await createEvent();
+    await linkArticleEvent(createdArticle1.id, createdEvent.id);
+    await linkArticleEvent(createdArticle2.id, createdEvent.id);
+    await expect(linkArticleEvent(createdArticle1.id, createdEvent.id)).toThrowUniqueViolation();
   });
 
   it('throws exception when trying to create multiple articles with the same slug', async () => {
-    const prisma = harness.prisma;
-
-    await createArticle(prisma, { slug: 'test' });
-    await expect(createArticle(prisma, { slug: 'test' })).toThrowUniqueViolation();
+    await createArticle({ slug: 'test' });
+    await expect(createArticle({ slug: 'test' })).toThrowUniqueViolation();
   });
 });
