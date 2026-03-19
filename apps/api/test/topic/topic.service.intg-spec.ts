@@ -1,6 +1,7 @@
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
 import { setupIntegrationTest } from '../harness/integration.harness';
+import { createTopic } from '../factories/topic.factory';
 
 describe('TopicService', () => {
   const harness = setupIntegrationTest([TopicModule]);
@@ -27,5 +28,11 @@ describe('TopicService', () => {
     const topic = await service.getTopicDetail('fail');
 
     expect(topic).toBeNull();
+  });
+
+  it('throws error when trying to create multiple topics with identical slugs', async () => {
+    const prisma = harness.prisma;
+    await createTopic(prisma, { slug: 'test' });
+    await expect(createTopic(prisma, { slug: 'test' })).toThrowUniqueViolation();
   });
 });

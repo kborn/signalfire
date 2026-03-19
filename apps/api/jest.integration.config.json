@@ -9,5 +9,6 @@
   "coverageDirectory": "../coverage",
   "testEnvironment": "node",
   "globalSetup": "<rootDir>/intg-config/globalSetup.js",
-  "globalTeardown": "<rootDir>/intg-config/globalTeardown.js"
+  "globalTeardown": "<rootDir>/intg-config/globalTeardown.js",
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
 }

@@ -1,6 +1,7 @@
 import { ModuleMetadata } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../src/prisma/prisma.service';
+import { resetIntegrationDatabase } from './database-reset';
 
 export type IntegrationHarness = {
   readonly module: TestingModule;
@@ -17,6 +18,12 @@ export function setupIntegrationTest(imports: ModuleMetadata['imports'] = []): I
     }).compile();
 
     prisma = module.get(PrismaService);
+  });
+
+  afterEach(async () => {
+    if (prisma) {
+      await resetIntegrationDatabase(prisma);
+    }
   });
 
   afterAll(async () => {
