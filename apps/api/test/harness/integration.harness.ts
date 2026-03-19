@@ -1,32 +1,24 @@
 import { ModuleMetadata } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../../src/prisma/prisma.service';
-import { resetIntegrationDatabase } from './database-reset';
 
 export type IntegrationHarness = {
   readonly module: TestingModule;
-  readonly prisma: PrismaService;
 };
 
 export function setupIntegrationTest(imports: ModuleMetadata['imports'] = []): IntegrationHarness {
   let module: TestingModule | undefined;
-  let prisma: PrismaService | undefined;
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     module = await Test.createTestingModule({
       imports,
-    }).compile();
-
-    prisma = module.get(PrismaService);
+    })
+      .overrideProvider(PrismaService)
+      .useValue(jestPrisma.client as PrismaService)
+      .compile();
   });
 
   afterEach(async () => {
-    if (prisma) {
-      await resetIntegrationDatabase(prisma);
-    }
-  });
-
-  afterAll(async () => {
     if (module) {
       await module.close();
     }
@@ -39,13 +31,6 @@ export function setupIntegrationTest(imports: ModuleMetadata['imports'] = []): I
       }
 
       return module;
-    },
-    get prisma(): PrismaService {
-      if (!prisma) {
-        throw new Error('Integration harness prisma accessed before setup completed.');
-      }
-
-      return prisma;
     },
   };
 }

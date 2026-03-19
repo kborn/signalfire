@@ -1,13 +1,9 @@
-import { PrismaService } from '../../src/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 import { EntityStatus } from '@prisma/client';
 import { generateRandomString } from './factory.utilities';
 
-export async function createArticle(
-  prisma: PrismaService,
-  overrides: Partial<Prisma.ArticleCreateInput> = {},
-) {
-  return prisma.article.create({
+export async function createArticle(overrides: Partial<Prisma.ArticleCreateInput> = {}) {
+  return jestPrisma.client.article.create({
     data: {
       slug: `article-${generateRandomString()}`,
       title: 'Test article',

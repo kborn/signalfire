@@ -1,7 +1,5 @@
-import { PrismaService } from '../../src/prisma/prisma.service';
-
-export async function linkArticleEvent(prisma: PrismaService, articleId: number, eventId: number) {
-  return prisma.articleEvent.create({
+export async function linkArticleEvent(articleId: number, eventId: number) {
+  return jestPrisma.client.articleEvent.create({
     data: {
       articleId: articleId,
       eventId: eventId,
@@ -10,8 +8,8 @@ export async function linkArticleEvent(prisma: PrismaService, articleId: number,
   });
 }
 
-export async function linkActionEvent(prisma: PrismaService, actionId: number, eventId: number) {
-  return prisma.actionEvent.create({
+export async function linkActionEvent(actionId: number, eventId: number) {
+  return jestPrisma.client.actionEvent.create({
     data: {
       actionId: actionId,
       eventId: eventId,
@@ -20,8 +18,8 @@ export async function linkActionEvent(prisma: PrismaService, actionId: number, e
   });
 }
 
-export async function linkTopicEvent(prisma: PrismaService, topicId: number, eventId: number) {
-  return prisma.topicEvent.create({
+export async function linkTopicEvent(topicId: number, eventId: number) {
+  return jestPrisma.client.topicEvent.create({
     data: {
       topicId: topicId,
       eventId: eventId,
@@ -30,12 +28,8 @@ export async function linkTopicEvent(prisma: PrismaService, topicId: number, eve
   });
 }
 
-export async function linkArticleAction(
-  prisma: PrismaService,
-  articleId: number,
-  actionId: number,
-) {
-  return prisma.articleAction.create({
+export async function linkArticleAction(articleId: number, actionId: number) {
+  return jestPrisma.client.articleAction.create({
     data: {
       articleId: articleId,
       actionId: actionId,
@@ -44,8 +38,8 @@ export async function linkArticleAction(
   });
 }
 
-export async function linkTopicArticle(prisma: PrismaService, topicId: number, articleId: number) {
-  return prisma.topicArticle.create({
+export async function linkTopicArticle(topicId: number, articleId: number) {
+  return jestPrisma.client.topicArticle.create({
     data: {
       topicId: topicId,
       articleId: articleId,
@@ -54,8 +48,8 @@ export async function linkTopicArticle(prisma: PrismaService, topicId: number, a
   });
 }
 
-export async function linkTopicAction(prisma: PrismaService, topicId: number, actionId: number) {
-  return prisma.topicAction.create({
+export async function linkTopicAction(topicId: number, actionId: number) {
+  return jestPrisma.client.topicAction.create({
     data: {
       topicId: topicId,
       actionId: actionId,
@@ -64,12 +58,8 @@ export async function linkTopicAction(prisma: PrismaService, topicId: number, ac
   });
 }
 
-export async function linkEventToSubmission(
-  prisma: PrismaService,
-  submission_id: number,
-  eventId: number,
-) {
-  return prisma.submission.update({
+export async function linkEventToSubmission(submission_id: number, eventId: number) {
+  return jestPrisma.client.submission.update({
     where: { id: submission_id },
     data: {
       event: {
@@ -79,12 +69,8 @@ export async function linkEventToSubmission(
   });
 }
 
-export async function linkArticleToSubmission(
-  prisma: PrismaService,
-  submission_id: number,
-  articleId: number,
-) {
-  return prisma.submission.update({
+export async function linkArticleToSubmission(submission_id: number, articleId: number) {
+  return jestPrisma.client.submission.update({
     where: { id: submission_id },
     data: {
       article: {

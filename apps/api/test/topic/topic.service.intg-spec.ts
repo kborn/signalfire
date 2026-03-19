@@ -31,8 +31,7 @@ describe('TopicService', () => {
   });
 
   it('throws error when trying to create multiple topics with identical slugs', async () => {
-    const prisma = harness.prisma;
-    await createTopic(prisma, { slug: 'test' });
-    await expect(createTopic(prisma, { slug: 'test' })).toThrowUniqueViolation();
+    await createTopic({ slug: 'test' });
+    await expect(createTopic({ slug: 'test' })).toThrowUniqueViolation();
   });
 });

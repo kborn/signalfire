@@ -1,6 +1,9 @@
-import { Prisma } from '@prisma/client';
+import type { PrismaClient } from '@prisma/client';
+import type { JestPrisma } from '@quramy/jest-prisma-core';
 
 declare global {
+  var jestPrisma: JestPrisma<PrismaClient>;
+
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
@@ -18,18 +21,17 @@ expect.extend({
         message: () => 'Expected a Unique Violation (P2002), but the database operation succeeded.',
       };
     } catch (error: unknown) {
-      const isP2002 =
-        error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
+      const code =
+        typeof error === 'object' && error !== null && 'code' in error
+          ? (error as { code?: string }).code
+          : undefined;
 
-      if (isP2002) {
-        return { pass: true, message: () => '' };
-      }
-
-      const code = error instanceof Prisma.PrismaClientKnownRequestError ? error.code : 'unknown';
       const message = error instanceof Error ? error.message : String(error);
 
+      const isUniqueViolation = code === 'P2002' || /Unique constraint failed/i.test(message);
+
       return {
-        pass: false,
+        pass: isUniqueViolation,
         message: () =>
           `Expected Unique Violation (P2002), but caught a different error: [${code}] ${message}`,
       };

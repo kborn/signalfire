@@ -1,12 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../src/prisma/prisma.service';
 import { generateRandomString } from './factory.utilities';
 
-export async function createTopic(
-  prisma: PrismaService,
-  overrides: Partial<Prisma.TopicCreateInput> = {},
-) {
-  return prisma.topic.create({
+export async function createTopic(overrides: Partial<Prisma.TopicCreateInput> = {}) {
+  return jestPrisma.client.topic.create({
     data: {
       slug: `topic-${generateRandomString()}`,
       name: 'Name',
