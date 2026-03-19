@@ -447,8 +447,8 @@ Establish an ephemeral integration database workflow and wire persistence-level 
       model when integration specs execute concurrently
 - [x] Implement per-test transaction rollback in one integration spec only
 - [x] Prove the rollback pilot leaves no persisted test data behind between tests
-- [ ] Roll the rollback pattern out to additional eligible integration specs
-- [ ] Define which specs remain on truncation cleanup and why
+- [x] Roll the rollback pattern out to additional eligible integration specs
+- [x] Define which specs remain on truncation cleanup and why
 - [ ] Revisit integration runner concurrency settings after
 
 ---

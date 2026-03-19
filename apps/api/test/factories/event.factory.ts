@@ -1,11 +1,7 @@
-import { PrismaService } from '../../src/prisma/prisma.service';
 import { EntityStatus, EventType, Prisma } from '@prisma/client';
 
-export async function createEvent(
-  prisma: PrismaService,
-  overrides: Partial<Prisma.EventCreateInput> = {},
-) {
-  return prisma.event.create({
+export async function createEvent(overrides: Partial<Prisma.EventCreateInput> = {}) {
+  return jestPrisma.client.event.create({
     data: {
       title: 'Test event',
       summary: 'Summary',
