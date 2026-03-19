@@ -421,21 +421,21 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
-#### ▸ Phase 4.2 - Persistence Coverage Expansion 🚧
+#### ▸ Phase 4.2 - Persistence Coverage Expansion ✅
 
 ###### Phase Tasks:
 
-- [ ] Add persistence integration tests for required Release 1 relationships:
+- [x] Add persistence integration tests for required Release 1 relationships:
   - Topic -> Article
   - Topic -> Action
   - Topic -> Event
   - Submission -> Article
   - Submission -> Event
-- [ ] Add persistence integration tests for baseline integrity constraints:
+- [x] Add persistence integration tests for baseline integrity constraints:
   - unique slugs on Topic, Article, and Action
   - one-to-one uniqueness on Submission article/event links
   - composite join-table uniqueness on required topic relationship tables
-- [ ] Add additional fixture/setup helpers only if coverage growth makes the current harness too repetitive
+- [x] Add additional fixture/setup helpers only if coverage growth makes the current harness too repetitive
 
 ---
 
