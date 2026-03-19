@@ -400,7 +400,7 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 - [x] Integration test commands run against isolated non-development database instances
 - [x] Core persistence integration tests run locally and in CI
 - [x] Local and CI integration workflows use the same isolation model
-- [ ] Comprehensive integration test coverage of existing API functionality
+- [x] Comprehensive integration test coverage of existing API functionality
 
 ---
 
@@ -479,13 +479,83 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 Create APIs for reading Topics, Articles, and Actions.
 
-Capabilities:
+###### Definition of Done
 
-- topic listing
-- topic detail
-- article retrieval
-- action retrieval
-- relationships between topics, articles, and actions
+- [ ] Public read endpoints exist for Topic, Article, and Action resources within Release 1 Phase 5 scope
+- [ ] Topic list and topic detail API contracts are implemented and validated
+- [ ] Article detail API contract is implemented and validated
+- [ ] Action detail API contract is implemented and validated
+- [ ] Topic, Article, and Action read paths expose the required published-content relationships for current discovery needs
+- [ ] Controller/API tests cover success, not-found, and publication-filter behavior for Phase 5 endpoints
+- [ ] Phase 5 API contracts and scope boundaries are documented for downstream UI work in Phase 6
+
+---
+
+#### ▸ Phase 5.1 - API Contracts & Controller Baseline 🚧
+
+###### Phase Tasks:
+
+- [ ] Define the public API surface for Phase 5 endpoints, including route structure and response shape boundaries
+- [ ] Decide and document where response shaping lives between controllers, services, and repository methods for Phase 5 read paths
+- [ ] Introduce controller modules for Topic, Article, and Action domains using existing Phase 3 repository/service boundaries
+- [ ] Add baseline controller-level tests and fixtures/helpers needed for Phase 5 endpoint coverage
+- [ ] Document explicit out-of-scope items for Phase 5 to prevent accidental expansion into Event APIs, search, pagination, or admin CRUD
+
+---
+
+#### ▸ Phase 5.2 - Topic Read APIs ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement topic listing endpoint for public topic discovery
+- [ ] Implement topic detail endpoint by slug
+- [ ] Define the topic detail payload to include the topic entity plus required related published content summaries for Phase 5 scope
+- [ ] Ensure topic detail only exposes published related Articles and Actions
+- [ ] Add endpoint tests for topic listing/detail success and topic detail not-found behavior
+
+---
+
+#### ▸ Phase 5.3 - Article Read APIs ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement article detail endpoint by slug
+- [ ] Restrict public article retrieval to published articles only
+- [ ] Expose article-to-topic relationships required for discovery and cross-linking
+- [ ] Expose article-to-action relationships required for discovery and cross-linking
+- [ ] Add endpoint tests for article detail success, unpublished filtering, and not-found behavior
+
+---
+
+#### ▸ Phase 5.4 - Action Read APIs ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement action detail endpoint by slug
+- [ ] Restrict public action retrieval to published actions only
+- [ ] Expose action-to-topic relationships required for discovery and cross-linking
+- [ ] Expose action-to-article relationships required for discovery and cross-linking
+- [ ] Add endpoint tests for action detail success, unpublished filtering, and not-found behavior
+
+---
+
+#### ▸ Phase 5.5 - Relationship Validation & Phase Handoff ⏳
+
+###### Phase Tasks:
+
+- [ ] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
+- [ ] Verify public read paths consistently apply publication rules across direct and related content
+- [ ] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
+- [ ] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
+- [ ] Update phase status and notes when all Phase 5 tasks are complete
+
+---
+
+#### Notes:
+
+- Phase 5 is limited to public read APIs for Topics, Articles, and Actions.
+- Event read APIs belong to Phase 7 even though Events remain part of the overall discovery model.
+- Search, pagination, filtering beyond basic entity lookup, and admin/editorial write paths remain out of scope for this phase.
 
 ---
 
