@@ -7,7 +7,7 @@
   },
   "collectCoverageFrom": ["**/*.(t|j)s"],
   "coverageDirectory": "../coverage",
-  "testEnvironment": "node",
+  "testEnvironment": "<rootDir>/intg-config/prisma-pg.environment.js",
   "globalSetup": "<rootDir>/intg-config/globalSetup.js",
   "globalTeardown": "<rootDir>/intg-config/globalTeardown.js",
   "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
