@@ -63,3 +63,33 @@ export async function linkTopicAction(prisma: PrismaService, topicId: number, ac
     },
   });
 }
+
+export async function linkEventToSubmission(
+  prisma: PrismaService,
+  submission_id: number,
+  eventId: number,
+) {
+  return prisma.submission.update({
+    where: { id: submission_id },
+    data: {
+      event: {
+        connect: { id: eventId },
+      },
+    },
+  });
+}
+
+export async function linkArticleToSubmission(
+  prisma: PrismaService,
+  submission_id: number,
+  articleId: number,
+) {
+  return prisma.submission.update({
+    where: { id: submission_id },
+    data: {
+      article: {
+        connect: { id: articleId },
+      },
+    },
+  });
+}

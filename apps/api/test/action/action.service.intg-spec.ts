@@ -178,4 +178,11 @@ describe('Action Service Integration test', () => {
       linkActionEvent(prisma, createdAction1.id, createdEvent.id),
     ).toThrowUniqueViolation();
   });
+
+  it('throws exception when trying to create multiple actions with the same slug', async () => {
+    const prisma = harness.prisma;
+
+    await createAction(prisma, { slug: 'test' });
+    await expect(createAction(prisma, { slug: 'test' })).toThrowUniqueViolation();
+  });
 });

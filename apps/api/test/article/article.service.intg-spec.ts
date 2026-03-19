@@ -169,4 +169,11 @@ describe('Article Service Integration Test', () => {
       linkArticleEvent(prisma, createdArticle1.id, createdEvent.id),
     ).toThrowUniqueViolation();
   });
+
+  it('throws exception when trying to create multiple articles with the same slug', async () => {
+    const prisma = harness.prisma;
+
+    await createArticle(prisma, { slug: 'test' });
+    await expect(createArticle(prisma, { slug: 'test' })).toThrowUniqueViolation();
+  });
 });
