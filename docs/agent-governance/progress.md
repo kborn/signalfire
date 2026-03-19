@@ -445,8 +445,8 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 - [x] Document the current risk in the shared-database plus per-test truncation
       model when integration specs execute concurrently
-- [ ] Implement per-test transaction rollback in one integration spec only
-- [ ] Prove the rollback pilot leaves no persisted test data behind between tests
+- [x] Implement per-test transaction rollback in one integration spec only
+- [x] Prove the rollback pilot leaves no persisted test data behind between tests
 - [ ] Document the rollback pilot usage pattern, constraints, and cases where tests
       must still use truncation-based cleanup
 - [ ] Decide whether rollback is clean enough to roll out more broadly or should

@@ -1,0 +1,14 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "test",
+  "testMatch": ["<rootDir>/action/action.rollback.pilot.spec.ts"],
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "collectCoverageFrom": ["**/*.(t|j)s"],
+  "coverageDirectory": "../coverage",
+  "testEnvironment": "<rootDir>/intg-config/prisma-pg.environment.js",
+  "globalSetup": "<rootDir>/intg-config/globalSetup.js",
+  "globalTeardown": "<rootDir>/intg-config/globalTeardown.js",
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
+}
