@@ -38,6 +38,32 @@ This means:
 - integration tests never point at the primary development database
 - test isolation is enforced by replacing the whole database runtime for each run
 
+## Current Harness Risk
+
+The current integration harness shares one ephemeral Postgres database across the
+entire Jest integration run and resets mutable tables after each test by truncation.
+
+This is acceptable only while integration execution remains effectively serialized.
+
+If multiple integration spec files execute concurrently against that shared database,
+one test can truncate rows that another test still depends on.
+
+That creates a concrete flake risk:
+
+- test A inserts rows and begins assertions
+- test B finishes earlier and triggers shared-table truncation in `afterEach`
+- test A observes missing data or inconsistent state mid-test
+
+The risk is in the interaction between:
+
+- one database per integration run
+- shared mutable tables
+- per-test truncation cleanup
+- Jest worker parallelism across spec files
+
+Phase 4.3 evaluates per-test transaction rollback as a safer isolation strategy for
+eligible specs while keeping truncation as the fallback cleanup path.
+
 ## Why Container-Per-Run
 
 Container-per-run isolation is the clearest implementation path for the current repo.

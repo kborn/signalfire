@@ -439,12 +439,29 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
+#### ▸ Phase 4.3 - Transaction Rollback Guarantees 🚧
+
+###### Phase Tasks:
+
+- [x] Document the current risk in the shared-database plus per-test truncation
+      model when integration specs execute concurrently
+- [ ] Implement per-test transaction rollback in one integration spec only
+- [ ] Prove the rollback pilot leaves no persisted test data behind between tests
+- [ ] Document the rollback pilot usage pattern, constraints, and cases where tests
+      must still use truncation-based cleanup
+- [ ] Decide whether rollback is clean enough to roll out more broadly or should
+      remain a targeted optimization
+
+---
+
 #### Notes:
 
 - Phase 4 adopts ephemeral integration databases as the immediate strategy.
 - Integration tests must remain isolated from the primary local development database.
 - Phase 4 covers persistence integration confidence only; controller/API feature coverage belongs to later API phases.
 - Optional Phase 3 relationships (`Article -> Action`, `Article -> Event`, `Action -> Event`) may be covered if implementation relies on them, but they are not phase-exit blockers.
+- Phase 4.3 focuses on harness-level test isolation and cleanup guarantees, not
+  application-level moderation workflow transactions.
 
 #### Links:
 
