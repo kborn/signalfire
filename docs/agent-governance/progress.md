@@ -495,11 +495,16 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Phase Tasks:
 
-- [ ] Define the public API surface for Phase 5 endpoints, including route structure and response shape boundaries
-- [ ] Decide and document where response shaping lives between controllers, services, and repository methods for Phase 5 read paths
-- [ ] Introduce controller modules for Topic, Article, and Action domains using existing Phase 3 repository/service boundaries
-- [ ] Add baseline controller-level tests and fixtures/helpers needed for Phase 5 endpoint coverage
-- [ ] Document explicit out-of-scope items for Phase 5 to prevent accidental expansion into Event APIs, search, pagination, or admin CRUD
+- [x] Define the public API surface for Phase 5 endpoints, including route structure and response shape boundaries
+- [x] Decide and document where response shaping lives between controllers, services, and repository methods for Phase 5 read paths
+- [x] Introduce controller modules for Topic, Article, and Action domains using existing Phase 3 repository/service boundaries
+- [x] Add baseline controller-level tests and fixtures/helpers needed for Phase 5 endpoint coverage
+- [x] Document explicit out-of-scope items for Phase 5 to prevent accidental expansion into Event APIs, search, pagination, or admin CRUD
+
+###### Notes:
+
+- Phase 5.1 establishes controller routing, service wiring, baseline not-found behavior, and controller tests.
+- Final response shaping and relationship payload assembly remain the responsibility of Phase 5.2 through Phase 5.4 and are not required to complete Phase 5.1.
 
 ---
 
