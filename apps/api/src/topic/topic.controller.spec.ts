@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
-import { NotFoundException } from '@nestjs/common';
 
 const topic_democracy = {
   id: 1,
@@ -21,7 +20,7 @@ const topic_climate = {
 
 describe('TopicController', () => {
   let topicController: TopicController;
-  const serviceMock = {
+  const topicServiceMock = {
     getTopics: jest.fn(),
     getTopicDetail: jest.fn(),
   };
@@ -31,33 +30,26 @@ describe('TopicController', () => {
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [TopicController],
-      providers: [{ provide: TopicService, useValue: serviceMock }],
+      providers: [{ provide: TopicService, useValue: topicServiceMock }],
     }).compile();
 
     topicController = app.get<TopicController>(TopicController);
   });
 
   it('findTopic', async () => {
-    serviceMock.getTopicDetail.mockResolvedValue(topic_democracy);
+    topicServiceMock.getTopicDetail.mockResolvedValue(topic_democracy);
     const slug = 'test';
     const ret = await topicController.findTopic(slug);
     expect(ret).toEqual(topic_democracy);
-    expect(serviceMock.getTopicDetail).toHaveBeenCalledWith(slug);
-  });
-
-  it('findTopicNotFound', async () => {
-    serviceMock.getTopicDetail.mockResolvedValue(null);
-
-    const slug = 'test';
-    await expect(topicController.findTopic(slug)).rejects.toThrow(NotFoundException);
+    expect(topicServiceMock.getTopicDetail).toHaveBeenCalledWith(slug);
   });
 
   it('findTopics', async () => {
-    serviceMock.getTopics.mockResolvedValue([topic_democracy, topic_climate]);
+    topicServiceMock.getTopics.mockResolvedValue({ items: [topic_democracy, topic_climate] });
 
     const ret = await topicController.findTopics();
-    const slugs = ret.map((ret) => ret.slug);
+    const slugs = ret.items.map((ret) => ret.slug);
     expect(slugs).toEqual(expect.arrayContaining([topic_democracy.slug, topic_climate.slug]));
-    expect(serviceMock.getTopics).toHaveBeenCalled();
+    expect(topicServiceMock.getTopics).toHaveBeenCalled();
   });
 });

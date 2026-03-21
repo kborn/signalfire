@@ -1,4 +1,4 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { TopicService } from './topic.service';
 
 @Controller('topics')
@@ -11,10 +11,6 @@ export class TopicController {
 
   @Get('/:slug')
   async findTopic(@Param('slug') slug: string) {
-    const topic = await this.topicService.getTopicDetail(slug);
-    if (!topic) {
-      throw new NotFoundException(`No topic found with slug ${slug}`);
-    }
-    return topic;
+    return this.topicService.getTopicDetail(slug);
   }
 }
