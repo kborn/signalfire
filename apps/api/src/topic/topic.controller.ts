@@ -1,20 +1,17 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { TopicService } from './topic.service';
+import { TopicDetailResponse, TopicListResponse } from './topic.types';
 
 @Controller('topics')
 export class TopicController {
   constructor(private readonly topicService: TopicService) {}
   @Get()
-  async findTopics() {
+  async findTopics(): Promise<TopicListResponse> {
     return this.topicService.getTopics();
   }
 
   @Get('/:slug')
-  async findTopic(@Param('slug') slug: string) {
-    const topic = await this.topicService.getTopicDetail(slug);
-    if (!topic) {
-      throw new NotFoundException(`No topic found with slug ${slug}`);
-    }
-    return topic;
+  async findTopic(@Param('slug') slug: string): Promise<TopicDetailResponse> {
+    return this.topicService.getTopicDetail(slug);
   }
 }
