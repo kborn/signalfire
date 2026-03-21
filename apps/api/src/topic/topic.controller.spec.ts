@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
+import { NotFoundException } from '@nestjs/common';
 
 const topic_democracy = {
   id: 1,
   slug: 'democracy',
   name: 'Democracy',
   description: 'desc',
-  createdAt: new Date(),
 };
 
 const topic_climate = {
@@ -15,7 +15,6 @@ const topic_climate = {
   slug: 'climate',
   name: 'Climate',
   description: 'desc',
-  createdAt: new Date(),
 };
 
 describe('TopicController', () => {
@@ -51,5 +50,12 @@ describe('TopicController', () => {
     const slugs = ret.items.map((ret) => ret.slug);
     expect(slugs).toEqual(expect.arrayContaining([topic_democracy.slug, topic_climate.slug]));
     expect(topicServiceMock.getTopics).toHaveBeenCalled();
+  });
+
+  it('findTopicNotFound', async () => {
+    topicServiceMock.getTopicDetail.mockRejectedValue(new NotFoundException());
+
+    const slug = 'test';
+    await expect(topicController.findTopic(slug)).rejects.toThrow(NotFoundException);
   });
 });
