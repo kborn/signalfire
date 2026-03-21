@@ -512,11 +512,11 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Phase Tasks:
 
-- [ ] Implement topic listing endpoint for topic discovery
-- [ ] Implement topic detail endpoint by slug
-- [ ] Define the topic detail payload to include the topic entity plus required related published content summaries for Phase 5 scope
-- [ ] Ensure topic detail only exposes published related Articles and Actions
-- [ ] Add endpoint tests for topic listing/detail success and topic detail not-found behavior
+- [x] Implement topic listing endpoint for topic discovery
+- [x] Implement topic detail endpoint by slug
+- [x] Define the topic detail payload to include the topic entity plus required related published content summaries for Phase 5 scope
+- [x] Ensure topic detail only exposes published related Articles and Actions
+- [x] Add endpoint tests for topic listing/detail success and topic detail not-found behavior
 
 ---
 
