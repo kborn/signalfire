@@ -2,18 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
 import { NotFoundException } from '@nestjs/common';
-
-const action = {
-  id: 1,
-  slug: 'call-your-representative',
-  title: 'Call Your Representative',
-  summary: 'A short action summary.',
-  description: 'A longer action description.',
-  actionType: 'CONTACT',
-  status: 'PUBLISHED',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+import { buildActionDetailResponse } from './action.test-fixtures';
 
 describe('ActionController', () => {
   let actionController: ActionController;
@@ -33,11 +22,12 @@ describe('ActionController', () => {
   });
 
   it('findAction', async () => {
-    serviceMock.getPublishedActionDetail.mockResolvedValue(action);
+    const actionDetailResponse = buildActionDetailResponse();
+    serviceMock.getPublishedActionDetail.mockResolvedValue(actionDetailResponse);
 
     const slug = 'test';
     const ret = await actionController.findAction(slug);
-    expect(ret).toEqual(action);
+    expect(ret).toEqual(actionDetailResponse);
     expect(serviceMock.getPublishedActionDetail).toHaveBeenCalledWith(slug);
   });
 

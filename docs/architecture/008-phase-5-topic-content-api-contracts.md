@@ -225,6 +225,7 @@ Status: `200 OK`
   "slug": "how-local-climate-policy-works",
   "title": "How Local Climate Policy Works",
   "summary": "A guide to city-level climate policy.",
+  "author": "SignalFire Staff",
   "content": "Full article body...",
   "publishedAt": "2026-03-10T00:00:00.000Z",
   "updatedAt": "2026-03-12T00:00:00.000Z",
@@ -251,6 +252,7 @@ Status: `200 OK`
 #### Response Rules
 
 - Includes full article content for the requested article
+- Includes the article author for display in the public UI
 - Includes related topic summaries and action summaries
 - Excludes Events in Phase 5
 - Only published articles are retrievable through this public route
@@ -400,7 +402,7 @@ Used in the article detail endpoint.
 
 Fields:
 
-- core article fields: `id`, `slug`, `title`, `summary`, `content`, `publishedAt`, `updatedAt`
+- core article fields: `id`, `slug`, `title`, `summary`, `author`, `content`, `publishedAt`, `updatedAt`
 - related topics shape: `Topic Summary[]`
 - related actions shape: `Action Summary[]`
 

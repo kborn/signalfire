@@ -1,60 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
-import { ActionType, EntityStatus } from '@prisma/client';
 import { NotFoundException } from '@nestjs/common';
-
-const date = new Date('2025-12-17T03:24:00');
-const article = {
-  id: 1,
-  slug: 'protect-voting-rights',
-  title: 'Protect Voting Rights',
-  summary: 'A short article summary.',
-  content: 'Full article content.',
-  status: 'PUBLISHED',
-  author: 'SignalFire Staff',
-  createdAt: date,
-  publishedAt: date,
-  updatedAt: date,
-};
-
-const publishedArticleDetail = {
-  ...article,
-  topicArticles: [
-    {
-      topicId: 1,
-      articleId: 1,
-      assignedAt: date,
-      assignedBy: 'SignalFire Staff',
-      topic: {
-        id: 1,
-        slug: 'democracy',
-        name: 'Democracy',
-        description: 'desc',
-        createdAt: date,
-      },
-    },
-  ],
-  articleActions: [
-    {
-      articleId: 1,
-      actionId: 1,
-      assignedAt: date,
-      assignedBy: 'SignalFire Staff',
-      action: {
-        id: 1,
-        slug: 'call-your-representative',
-        title: 'Call Your Representative',
-        summary: 'A short action summary.',
-        description: 'A longer action description.',
-        actionType: ActionType.CONTACT,
-        status: EntityStatus.PUBLISHED,
-        createdAt: date,
-        updatedAt: date,
-      },
-    },
-  ],
-};
+import {
+  buildArticleDetailRecord,
+  buildArticleDetailResponse,
+  buildArticleEntity,
+} from './article.test-fixtures';
 
 describe('ArticleService', () => {
   let service: ArticleService;
@@ -75,6 +27,7 @@ describe('ArticleService', () => {
   });
 
   it('getArticleDetail', async () => {
+    const article = buildArticleEntity();
     repoMock.findBySlug.mockResolvedValue(article);
 
     const slug = 'test';
@@ -85,30 +38,13 @@ describe('ArticleService', () => {
   });
 
   it('getPublishedArticleDetail', async () => {
+    const publishedArticleDetail = buildArticleDetailRecord();
     repoMock.findPublishedBySlug.mockResolvedValue(publishedArticleDetail);
 
     const slug = 'test';
     const ret = await service.getPublishedArticleDetail(slug);
 
-    expect(ret).toEqual({
-      id: 1,
-      slug: 'protect-voting-rights',
-      title: 'Protect Voting Rights',
-      summary: 'A short article summary.',
-      content: 'Full article content.',
-      publishedAt: date.toISOString(),
-      updatedAt: date.toISOString(),
-      topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
-      actions: [
-        {
-          id: 1,
-          slug: 'call-your-representative',
-          title: 'Call Your Representative',
-          summary: 'A short action summary.',
-          actionType: ActionType.CONTACT,
-        },
-      ],
-    });
+    expect(ret).toEqual(buildArticleDetailResponse());
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
   });
 
@@ -119,6 +55,7 @@ describe('ArticleService', () => {
   });
 
   it('getArticlesForTopic', async () => {
+    const article = buildArticleEntity();
     repoMock.findPublishedByTopicSlug.mockResolvedValue([article]);
 
     const slug = 'test';
@@ -129,6 +66,7 @@ describe('ArticleService', () => {
   });
 
   it('getArticlesForAction', async () => {
+    const article = buildArticleEntity();
     repoMock.findPublishedByActionId.mockResolvedValue([article]);
 
     const id = 1;

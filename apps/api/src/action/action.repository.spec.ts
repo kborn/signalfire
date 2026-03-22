@@ -2,18 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActionRepository } from './action.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import { EntityStatus } from '@prisma/client';
-
-const action = {
-  id: 1,
-  slug: 'call-your-representative',
-  title: 'Call Your Representative',
-  summary: 'A short action summary.',
-  description: 'A longer action description.',
-  actionType: 'CONTACT',
-  status: 'PUBLISHED',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+import { buildActionEntity } from './action.test-fixtures';
 
 describe('ActionRepository', () => {
   let repository: ActionRepository;
@@ -33,6 +22,7 @@ describe('ActionRepository', () => {
   });
 
   it('findBySlug', async () => {
+    const action = buildActionEntity();
     prismaMock.action.findUnique.mockResolvedValue(action);
 
     const slug = 'test';
@@ -43,6 +33,7 @@ describe('ActionRepository', () => {
   });
 
   it('findPublishedBySlug', async () => {
+    const action = buildActionEntity();
     prismaMock.action.findUnique.mockResolvedValue(action);
 
     const slug = 'test';
@@ -67,6 +58,7 @@ describe('ActionRepository', () => {
   });
 
   it('findPublishedByTopicSlug', async () => {
+    const action = buildActionEntity();
     prismaMock.action.findMany.mockResolvedValue([action]);
 
     const slug = 'test';
@@ -88,10 +80,11 @@ describe('ActionRepository', () => {
   });
 
   it('findPublishedByArticleId', async () => {
+    const action = buildActionEntity();
     prismaMock.action.findMany.mockResolvedValue([action]);
 
     const id = 1;
-    const ret = await repository.findPublishedByArticleId(1);
+    const ret = await repository.findPublishedByArticleId(id);
 
     expect(ret).toEqual([action]);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({

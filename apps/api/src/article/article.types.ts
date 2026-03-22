@@ -20,6 +20,7 @@ export type ArticleDetailResponse = {
   slug: string;
   title: string;
   summary: string;
+  author: string;
   content: string;
   publishedAt: string;
   updatedAt: string;

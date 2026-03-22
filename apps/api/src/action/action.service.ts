@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ActionDetailRecord, ActionRepository } from './action.repository';
+import { ActionRepository } from './action.repository';
 import { Action } from '@prisma/client';
 import { ActionDetailResponse } from './action.types';
+import { ActionDetailRecord } from './action.repository.types';
 
 @Injectable()
 export class ActionService {

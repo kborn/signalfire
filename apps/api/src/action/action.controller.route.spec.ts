@@ -3,29 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
-import { ActionDetailResponse } from './action.types';
-
-const date = new Date('2025-12-17T03:24:00');
-
-const actionDetailResponse: ActionDetailResponse = {
-  id: 1,
-  slug: 'call-your-representative',
-  title: 'Call Your Representative',
-  summary: 'A short action summary.',
-  description: 'A longer action description.',
-  actionType: 'CONTACT',
-  updatedAt: date.toISOString(),
-  topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
-  articles: [
-    {
-      id: 1,
-      slug: 'protect-voting-rights',
-      title: 'Protect Voting Rights',
-      summary: 'A short article summary.',
-      publishedAt: date.toISOString(),
-    },
-  ],
-};
+import { buildActionDetailResponse } from './action.test-fixtures';
 
 describe('ActionController HTTP', () => {
   let app: INestApplication;
@@ -56,9 +34,13 @@ describe('ActionController HTTP', () => {
   });
 
   it('GET /actions/:slug returns the action detail payload', async () => {
+    const actionDetailResponse = buildActionDetailResponse();
     actionServiceMock.getPublishedActionDetail.mockResolvedValue(actionDetailResponse);
 
-    await request(httpServer).get('/actions/democracy').expect(200).expect(actionDetailResponse);
+    await request(httpServer)
+      .get(`/actions/${actionDetailResponse.slug}`)
+      .expect(200)
+      .expect(actionDetailResponse);
   });
 
   it('GET /actions/:slug returns 404 when the action is missing', async () => {
