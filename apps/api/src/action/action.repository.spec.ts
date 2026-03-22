@@ -51,6 +51,18 @@ describe('ActionRepository', () => {
     expect(ret).toEqual(action);
     expect(prismaMock.action.findUnique).toHaveBeenCalledWith({
       where: { slug: slug, status: EntityStatus.PUBLISHED },
+      include: {
+        topicActions: {
+          include: {
+            topic: true,
+          },
+        },
+        articleActions: {
+          include: {
+            article: true,
+          },
+        },
+      },
     });
   });
 

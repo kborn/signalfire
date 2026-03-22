@@ -1,15 +1,12 @@
-import { Controller, Get, NotFoundException, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ActionService } from './action.service';
+import { ActionDetailResponse } from './action.types';
 
 @Controller('actions')
 export class ActionController {
   constructor(private readonly actionService: ActionService) {}
   @Get('/:slug')
-  async findAction(@Param('slug') slug: string) {
-    const article = await this.actionService.getPublishedActionDetail(slug);
-    if (!article) {
-      throw new NotFoundException(`No published action found with slug ${slug}`);
-    }
-    return article;
+  async findAction(@Param('slug') slug: string): Promise<ActionDetailResponse> {
+    return await this.actionService.getPublishedActionDetail(slug);
   }
 }
