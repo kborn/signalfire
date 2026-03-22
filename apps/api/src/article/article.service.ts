@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { ArticleRepository } from './article.repository';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ArticleDetailRecord, ArticleRepository } from './article.repository';
 import { Article } from '@prisma/client';
+import { ArticleDetailResponse } from './article.types';
 
 @Injectable()
 export class ArticleService {
@@ -10,8 +11,13 @@ export class ArticleService {
     return this.repository.findBySlug(slug);
   }
 
-  getPublishedArticleDetail(slug: string): Promise<Article | null> {
-    return this.repository.findPublishedBySlug(slug);
+  async getPublishedArticleDetail(slug: string): Promise<ArticleDetailResponse> {
+    const article = await this.repository.findPublishedBySlug(slug);
+    if (!article) {
+      throw new NotFoundException(`No published article found with slug ${slug}`);
+    }
+
+    return this.toArticleDetailResponse(article);
   }
 
   getArticlesForTopic(topicSlug: string): Promise<Article[]> {
@@ -20,5 +26,34 @@ export class ArticleService {
 
   getArticlesForAction(actionId: number): Promise<Article[]> {
     return this.repository.findPublishedByActionId(actionId);
+  }
+
+  private toArticleDetailResponse(article: ArticleDetailRecord): ArticleDetailResponse {
+    const topics = article.topicArticles.map(({ topic }) => ({
+      id: topic.id,
+      slug: topic.slug,
+      name: topic.name,
+      description: topic.description,
+    }));
+
+    const actions = article.articleActions.map(({ action }) => ({
+      id: action.id,
+      slug: action.slug,
+      title: action.title,
+      summary: action.summary,
+      actionType: action.actionType,
+    }));
+
+    return {
+      id: article.id,
+      slug: article.slug,
+      title: article.title,
+      summary: article.summary,
+      content: article.content,
+      publishedAt: article.publishedAt.toISOString(),
+      updatedAt: article.updatedAt.toISOString(),
+      topics,
+      actions,
+    };
   }
 }

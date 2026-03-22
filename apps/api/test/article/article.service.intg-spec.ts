@@ -12,6 +12,7 @@ import {
 } from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { createEvent } from '../factories/event.factory';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Article Service Integration Test', () => {
   const harness = setupIntegrationTest([ArticleModule, TopicModule]);
@@ -48,8 +49,9 @@ describe('Article Service Integration Test', () => {
     const articleService = harness.module.get(ArticleService);
     // test that unpublished articles are not returned
     const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
-    const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
-    expect(article).toBeNull();
+    await expect(articleService.getPublishedArticleDetail(createdArticle.slug)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published articles by related topic', async () => {
