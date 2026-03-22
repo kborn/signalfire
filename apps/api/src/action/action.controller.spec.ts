@@ -42,7 +42,7 @@ describe('ActionController', () => {
   });
 
   it('findActionNotFound', async () => {
-    serviceMock.getPublishedActionDetail.mockResolvedValue(null);
+    serviceMock.getPublishedActionDetail.mockRejectedValue(new NotFoundException());
 
     const slug = 'test';
     await expect(actionController.findAction(slug)).rejects.toThrow(NotFoundException);

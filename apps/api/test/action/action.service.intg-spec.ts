@@ -8,6 +8,7 @@ import { createArticle } from '../factories/article.factory';
 import { linkActionEvent, linkArticleAction, linkTopicAction } from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { createEvent } from '../factories/event.factory';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Action Service Integration test', () => {
   const harness = setupIntegrationTest([ActionModule, TopicModule]);
@@ -40,13 +41,14 @@ describe('Action Service Integration test', () => {
     );
   });
 
-  it('returns null for draft action from published lookup', async () => {
+  it('throws NotFoundException for draft action from published lookup', async () => {
     const actionService = harness.module.get(ActionService);
 
     // test that unpublished articles are not returned
     const createdAction = await createAction({ status: EntityStatus.DRAFT });
-    const action = await actionService.getPublishedActionDetail(createdAction.slug);
-    expect(action).toBeNull();
+    await expect(actionService.getPublishedActionDetail(createdAction.slug)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published actions by related topic', async () => {
