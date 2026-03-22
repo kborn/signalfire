@@ -42,7 +42,7 @@ describe('ArticleController', () => {
   });
 
   it('findArticleNotFound', async () => {
-    serviceMock.getPublishedArticleDetail.mockResolvedValue(null);
+    serviceMock.getPublishedArticleDetail.mockRejectedValue(new NotFoundException());
 
     const slug = 'test';
     await expect(articleController.findArticle(slug)).rejects.toThrow(NotFoundException);

@@ -1,7 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
+import { TopicService } from '../topic/topic.service';
+import { ActionType, EntityStatus } from '@prisma/client';
+import { ActionService } from '../action/action.service';
 
+const date = new Date('2025-12-17T03:24:00');
 const article = {
   id: 1,
   slug: 'protect-voting-rights',
@@ -10,9 +14,29 @@ const article = {
   content: 'Full article content.',
   status: 'PUBLISHED',
   author: 'SignalFire Staff',
-  createdAt: new Date(),
-  publishedAt: new Date(),
-  updatedAt: new Date(),
+  createdAt: date,
+  publishedAt: date,
+  updatedAt: date,
+};
+
+const topic = {
+  id: 1,
+  slug: 'democracy',
+  name: 'Democracy',
+  description: 'desc',
+  createdAt: date,
+};
+
+const action = {
+  id: 1,
+  slug: 'call-your-representative',
+  title: 'Call Your Representative',
+  summary: 'A short action summary.',
+  description: 'A longer action description.',
+  actionType: ActionType.CONTACT,
+  status: EntityStatus.PUBLISHED,
+  createdAt: date,
+  updatedAt: date,
 };
 
 describe('ArticleService', () => {
@@ -23,12 +47,23 @@ describe('ArticleService', () => {
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByActionId: jest.fn(),
   };
+  const topicServiceMock = {
+    getTopicsForArticle: jest.fn(),
+  };
+  const actionServiceMock = {
+    getActionsForArticle: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ArticleService, { provide: ArticleRepository, useValue: repoMock }],
+      providers: [
+        ArticleService,
+        { provide: ArticleRepository, useValue: repoMock },
+        { provide: TopicService, useValue: topicServiceMock },
+        { provide: ActionService, useValue: actionServiceMock },
+      ],
     }).compile();
     service = module.get(ArticleService);
   });
@@ -45,11 +80,31 @@ describe('ArticleService', () => {
 
   it('getPublishedArticleDetail', async () => {
     repoMock.findPublishedBySlug.mockResolvedValue(article);
+    actionServiceMock.getActionsForArticle.mockResolvedValue([action]);
+    topicServiceMock.getTopicsForArticle.mockResolvedValue([topic]);
 
     const slug = 'test';
     const ret = await service.getPublishedArticleDetail(slug);
 
-    expect(ret).toEqual(article);
+    expect(ret).toEqual({
+      id: 1,
+      slug: 'protect-voting-rights',
+      title: 'Protect Voting Rights',
+      summary: 'A short article summary.',
+      content: 'Full article content.',
+      publishedAt: date.toISOString(),
+      updatedAt: date.toISOString(),
+      topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
+      actions: [
+        {
+          id: 1,
+          slug: 'call-your-representative',
+          title: 'Call Your Representative',
+          summary: 'A short action summary.',
+          actionType: ActionType.CONTACT,
+        },
+      ],
+    });
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
   });
 

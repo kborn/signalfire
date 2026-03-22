@@ -3,6 +3,7 @@ import { TopicRepository } from './topic.repository';
 import { ArticleService } from '../article/article.service';
 import { ActionService } from '../action/action.service';
 import { TopicListResponse, TopicDetailResponse } from './topic.types';
+import { Topic } from '@prisma/client';
 
 @Injectable()
 export class TopicService {
@@ -59,5 +60,9 @@ export class TopicService {
       articles: formattedArticles,
       actions: formattedActions,
     };
+  }
+
+  getTopicsForArticle(articleId: number): Promise<Topic[]> {
+    return this.repository.findByArticleSlug(articleId);
   }
 }
