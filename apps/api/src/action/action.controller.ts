@@ -7,6 +7,6 @@ export class ActionController {
   constructor(private readonly actionService: ActionService) {}
   @Get('/:slug')
   async findAction(@Param('slug') slug: string): Promise<ActionDetailResponse> {
-    return await this.actionService.getPublishedActionDetail(slug);
+    return this.actionService.getPublishedActionDetail(slug);
   }
 }

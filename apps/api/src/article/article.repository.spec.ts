@@ -2,19 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { ArticleRepository } from './article.repository';
 import { EntityStatus } from '@prisma/client';
-
-const article = {
-  id: 1,
-  slug: 'protect-voting-rights',
-  title: 'Protect Voting Rights',
-  summary: 'A short article summary.',
-  content: 'Full article content.',
-  status: 'PUBLISHED',
-  author: 'SignalFire Staff',
-  createdAt: new Date(),
-  publishedAt: new Date(),
-  updatedAt: new Date(),
-};
+import { buildArticleEntity } from './article.test-fixtures';
 
 describe('ArticleRepository', () => {
   let repository: ArticleRepository;
@@ -35,6 +23,7 @@ describe('ArticleRepository', () => {
   });
 
   it('findBySlug', async () => {
+    const article = buildArticleEntity();
     prismaMock.article.findUnique.mockResolvedValue(article);
 
     const slug = 'test';
@@ -47,6 +36,7 @@ describe('ArticleRepository', () => {
   });
 
   it('findPublishedBySlug', async () => {
+    const article = buildArticleEntity();
     prismaMock.article.findUnique.mockResolvedValue(article);
 
     const slug = 'test';
@@ -71,6 +61,7 @@ describe('ArticleRepository', () => {
   });
 
   it('findPublishedByTopicSlug', async () => {
+    const article = buildArticleEntity();
     prismaMock.article.findMany.mockResolvedValue([article]);
 
     const slug = 'test';
@@ -92,6 +83,7 @@ describe('ArticleRepository', () => {
   });
 
   it('findPublishedByActionId', async () => {
+    const article = buildArticleEntity();
     prismaMock.article.findMany.mockResolvedValue([article]);
 
     const id = 1;

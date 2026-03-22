@@ -3,50 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
-import { TopicDetailResponse, TopicListResponse } from './topic.types';
-import { ActionType } from '@prisma/client';
-
-const topicListResponse: TopicListResponse = {
-  items: [
-    {
-      id: 1,
-      slug: 'democracy',
-      name: 'Democracy',
-      description: 'desc',
-    },
-    {
-      id: 2,
-      slug: 'climate',
-      name: 'Climate',
-      description: 'desc',
-    },
-  ],
-};
-
-const topicDetailResponse: TopicDetailResponse = {
-  id: 1,
-  slug: 'democracy',
-  name: 'Democracy',
-  description: 'desc',
-  articles: [
-    {
-      id: 11,
-      slug: 'protect-voting-rights',
-      title: 'Protect Voting Rights',
-      summary: 'A short article summary.',
-      publishedAt: '2026-03-20T15:30:00.000Z',
-    },
-  ],
-  actions: [
-    {
-      id: 21,
-      slug: 'call-your-representative',
-      title: 'Call Your Representative',
-      summary: 'A short action summary.',
-      actionType: ActionType.CONTACT,
-    },
-  ],
-};
+import { buildTopicDetailResponse, buildTopicListResponse } from './topic.test-fixtures';
 
 describe('TopicController HTTP', () => {
   let app: INestApplication;
@@ -75,15 +32,20 @@ describe('TopicController HTTP', () => {
   });
 
   it('GET /topics returns the topic discovery list', async () => {
+    const topicListResponse = buildTopicListResponse();
     topicServiceMock.getTopics.mockResolvedValue(topicListResponse);
 
     await request(httpServer).get('/topics').expect(200).expect(topicListResponse);
   });
 
   it('GET /topics/:slug returns the topic detail payload', async () => {
+    const topicDetailResponse = buildTopicDetailResponse();
     topicServiceMock.getTopicDetail.mockResolvedValue(topicDetailResponse);
 
-    await request(httpServer).get('/topics/democracy').expect(200).expect(topicDetailResponse);
+    await request(httpServer)
+      .get(`/topics/${topicDetailResponse.slug}`)
+      .expect(200)
+      .expect(topicDetailResponse);
   });
 
   it('GET /topics/:slug returns 404 when the topic is missing', async () => {

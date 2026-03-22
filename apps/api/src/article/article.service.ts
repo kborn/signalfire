@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ArticleDetailRecord, ArticleRepository } from './article.repository';
+import { ArticleRepository } from './article.repository';
 import { Article } from '@prisma/client';
-import { ArticleDetailResponse } from './article.types';
+import type { ArticleDetailResponse } from './article.types';
+import type { ArticleDetailRecord } from './article.repository.types';
 
 @Injectable()
 export class ArticleService {
@@ -49,6 +50,7 @@ export class ArticleService {
       slug: article.slug,
       title: article.title,
       summary: article.summary,
+      author: article.author,
       content: article.content,
       publishedAt: article.publishedAt.toISOString(),
       updatedAt: article.updatedAt.toISOString(),

@@ -2,20 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
 import { NotFoundException } from '@nestjs/common';
-
-const topic_democracy = {
-  id: 1,
-  slug: 'democracy',
-  name: 'Democracy',
-  description: 'desc',
-};
-
-const topic_climate = {
-  id: 1,
-  slug: 'climate',
-  name: 'Climate',
-  description: 'desc',
-};
+import { buildTopicDetailResponse, buildTopicListResponse } from './topic.test-fixtures';
 
 describe('TopicController', () => {
   let topicController: TopicController;
@@ -36,19 +23,21 @@ describe('TopicController', () => {
   });
 
   it('findTopic', async () => {
-    topicServiceMock.getTopicDetail.mockResolvedValue(topic_democracy);
+    const topicDetailResponse = buildTopicDetailResponse();
+    topicServiceMock.getTopicDetail.mockResolvedValue(topicDetailResponse);
     const slug = 'test';
     const ret = await topicController.findTopic(slug);
-    expect(ret).toEqual(topic_democracy);
+    expect(ret).toEqual(topicDetailResponse);
     expect(topicServiceMock.getTopicDetail).toHaveBeenCalledWith(slug);
   });
 
   it('findTopics', async () => {
-    topicServiceMock.getTopics.mockResolvedValue({ items: [topic_democracy, topic_climate] });
+    const topicListResponse = buildTopicListResponse();
+    topicServiceMock.getTopics.mockResolvedValue(topicListResponse);
 
     const ret = await topicController.findTopics();
     const slugs = ret.items.map((ret) => ret.slug);
-    expect(slugs).toEqual(expect.arrayContaining([topic_democracy.slug, topic_climate.slug]));
+    expect(slugs).toEqual(expect.arrayContaining(['democracy', 'climate']));
     expect(topicServiceMock.getTopics).toHaveBeenCalled();
   });
 

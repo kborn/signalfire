@@ -2,19 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { NotFoundException } from '@nestjs/common';
-
-const article = {
-  id: 1,
-  slug: 'protect-voting-rights',
-  title: 'Protect Voting Rights',
-  summary: 'A short article summary.',
-  content: 'Full article content.',
-  status: 'PUBLISHED',
-  author: 'SignalFire Staff',
-  createdAt: new Date(),
-  publishedAt: new Date(),
-  updatedAt: new Date(),
-};
+import { buildArticleDetailResponse } from './article.test-fixtures';
 
 describe('ArticleController', () => {
   let articleController: ArticleController;
@@ -34,10 +22,11 @@ describe('ArticleController', () => {
   });
 
   it('findArticle', async () => {
-    serviceMock.getPublishedArticleDetail.mockResolvedValue(article);
+    const articleDetailResponse = buildArticleDetailResponse();
+    serviceMock.getPublishedArticleDetail.mockResolvedValue(articleDetailResponse);
     const slug = 'test';
     const ret = await articleController.findArticle(slug);
-    expect(ret).toEqual(article);
+    expect(ret).toEqual(articleDetailResponse);
     expect(serviceMock.getPublishedArticleDetail).toHaveBeenCalledWith(slug);
   });
 

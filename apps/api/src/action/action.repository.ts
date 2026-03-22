@@ -1,23 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Action, EntityStatus, Prisma } from '@prisma/client';
-
-const actionDetailInclude = {
-  topicActions: {
-    include: {
-      topic: true,
-    },
-  },
-  articleActions: {
-    include: {
-      article: true,
-    },
-  },
-} satisfies Prisma.ActionInclude;
-
-export type ActionDetailRecord = Prisma.ActionGetPayload<{
-  include: typeof actionDetailInclude;
-}>;
+import { Action, EntityStatus } from '@prisma/client';
+import { ActionDetailRecord, actionDetailInclude } from './action.repository.types';
 
 @Injectable()
 export class ActionRepository {
