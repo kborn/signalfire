@@ -69,4 +69,12 @@ describe('ArticleController HTTP', () => {
 
     await request(httpServer).get('/articles/missing').expect(404);
   });
+
+  it('GET /articles/:slug returns 404 when the article is unpublished', async () => {
+    articleServiceMock.getPublishedArticleDetail.mockRejectedValue(
+      new NotFoundException('No published article found with slug draft-article'),
+    );
+
+    await request(httpServer).get('/articles/draft-article').expect(404);
+  });
 });

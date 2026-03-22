@@ -524,11 +524,11 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Phase Tasks:
 
-- [ ] Implement article detail endpoint by slug
-- [ ] Restrict public article retrieval to published articles only
-- [ ] Expose article-to-topic relationships required for discovery and cross-linking
-- [ ] Expose article-to-action relationships required for discovery and cross-linking
-- [ ] Add endpoint tests for article detail success, unpublished filtering, and not-found behavior
+- [x] Implement article detail endpoint by slug
+- [x] Restrict public article retrieval to published articles only
+- [x] Expose article-to-topic relationships required for discovery and cross-linking
+- [x] Expose article-to-action relationships required for discovery and cross-linking
+- [x] Add endpoint tests for article detail success, unpublished filtering, and not-found behavior
 
 ---
 
