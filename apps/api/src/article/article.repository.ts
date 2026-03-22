@@ -1,7 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EntityStatus } from '@prisma/client';
-import { Article } from '@prisma/client';
+import { Article, EntityStatus, Prisma } from '@prisma/client';
+
+const articleDetailInclude = {
+  topicArticles: {
+    include: {
+      topic: true,
+    },
+  },
+  articleActions: {
+    include: {
+      action: true,
+    },
+  },
+} satisfies Prisma.ArticleInclude;
+
+export type ArticleDetailRecord = Prisma.ArticleGetPayload<{
+  include: typeof articleDetailInclude;
+}>;
 
 @Injectable()
 export class ArticleRepository {
@@ -15,12 +31,13 @@ export class ArticleRepository {
     });
   }
 
-  findPublishedBySlug(slug: string): Promise<Article | null> {
+  findPublishedBySlug(slug: string): Promise<ArticleDetailRecord | null> {
     return this.prisma.article.findUnique({
       where: {
         status: EntityStatus.PUBLISHED,
         slug: slug,
       },
+      include: articleDetailInclude,
     });
   }
 
