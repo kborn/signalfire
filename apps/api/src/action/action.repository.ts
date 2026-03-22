@@ -1,6 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Action, EntityStatus } from '@prisma/client';
+import { Action, EntityStatus, Prisma } from '@prisma/client';
+
+const actionDetailInclude = {
+  topicActions: {
+    include: {
+      topic: true,
+    },
+  },
+  articleActions: {
+    include: {
+      article: true,
+    },
+  },
+} satisfies Prisma.ActionInclude;
+
+export type ActionDetailRecord = Prisma.ActionGetPayload<{
+  include: typeof actionDetailInclude;
+}>;
 
 @Injectable()
 export class ActionRepository {
@@ -14,12 +31,13 @@ export class ActionRepository {
     });
   }
 
-  findPublishedBySlug(slug: string): Promise<Action | null> {
+  findPublishedBySlug(slug: string): Promise<ActionDetailRecord | null> {
     return this.prisma.action.findUnique({
       where: {
         status: EntityStatus.PUBLISHED,
         slug: slug,
       },
+      include: actionDetailInclude,
     });
   }
 
