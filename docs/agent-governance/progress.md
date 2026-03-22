@@ -544,7 +544,20 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.5 - Relationship Validation & Phase Handoff ⏳
+#### ▸ Phase 5.5 - API Polish & Parity Review ⏳
+
+###### Phase Tasks:
+
+- [ ] Review Phase 5.1 through 5.4 implementations for consistency across Topic, Article, and Action read paths
+- [ ] Bring Topic controller/service/repository test coverage into parity with the Article and Action detail-path patterns where appropriate
+- [ ] Resolve known controller-spec contract drift so unit/controller tests reflect the actual public detail response shapes
+- [ ] Extract repository-specific Prisma payload types into dedicated repository type files where that improves clarity without weakening boundary ownership
+- [ ] Identify and extract duplicated mock detail payload builders/shared fixtures used across service and route tests where reuse improves clarity
+- [ ] Document any intentional pattern differences that remain between Topic, Article, and Action read APIs after the review
+
+---
+
+#### ▸ Phase 5.6 - Relationship Validation & Phase Handoff ⏳
 
 ###### Phase Tasks:
 
