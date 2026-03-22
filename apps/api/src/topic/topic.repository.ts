@@ -15,18 +15,4 @@ export class TopicRepository {
       where: { slug: slug },
     });
   }
-
-  findByArticleSlug(articleId: number): Promise<Topic[]> {
-    return this.prisma.topic.findMany({
-      where: {
-        topicArticles: {
-          some: {
-            article: {
-              id: articleId,
-            },
-          },
-        },
-      },
-    });
-  }
 }

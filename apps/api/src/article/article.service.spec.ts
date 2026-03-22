@@ -1,9 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
-import { TopicService } from '../topic/topic.service';
 import { ActionType, EntityStatus } from '@prisma/client';
-import { ActionService } from '../action/action.service';
+import { NotFoundException } from '@nestjs/common';
 
 const date = new Date('2025-12-17T03:24:00');
 const article = {
@@ -19,24 +18,42 @@ const article = {
   updatedAt: date,
 };
 
-const topic = {
-  id: 1,
-  slug: 'democracy',
-  name: 'Democracy',
-  description: 'desc',
-  createdAt: date,
-};
-
-const action = {
-  id: 1,
-  slug: 'call-your-representative',
-  title: 'Call Your Representative',
-  summary: 'A short action summary.',
-  description: 'A longer action description.',
-  actionType: ActionType.CONTACT,
-  status: EntityStatus.PUBLISHED,
-  createdAt: date,
-  updatedAt: date,
+const publishedArticleDetail = {
+  ...article,
+  topicArticles: [
+    {
+      topicId: 1,
+      articleId: 1,
+      assignedAt: date,
+      assignedBy: 'SignalFire Staff',
+      topic: {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: date,
+      },
+    },
+  ],
+  articleActions: [
+    {
+      articleId: 1,
+      actionId: 1,
+      assignedAt: date,
+      assignedBy: 'SignalFire Staff',
+      action: {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        description: 'A longer action description.',
+        actionType: ActionType.CONTACT,
+        status: EntityStatus.PUBLISHED,
+        createdAt: date,
+        updatedAt: date,
+      },
+    },
+  ],
 };
 
 describe('ArticleService', () => {
@@ -47,23 +64,12 @@ describe('ArticleService', () => {
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByActionId: jest.fn(),
   };
-  const topicServiceMock = {
-    getTopicsForArticle: jest.fn(),
-  };
-  const actionServiceMock = {
-    getActionsForArticle: jest.fn(),
-  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ArticleService,
-        { provide: ArticleRepository, useValue: repoMock },
-        { provide: TopicService, useValue: topicServiceMock },
-        { provide: ActionService, useValue: actionServiceMock },
-      ],
+      providers: [ArticleService, { provide: ArticleRepository, useValue: repoMock }],
     }).compile();
     service = module.get(ArticleService);
   });
@@ -79,9 +85,7 @@ describe('ArticleService', () => {
   });
 
   it('getPublishedArticleDetail', async () => {
-    repoMock.findPublishedBySlug.mockResolvedValue(article);
-    actionServiceMock.getActionsForArticle.mockResolvedValue([action]);
-    topicServiceMock.getTopicsForArticle.mockResolvedValue([topic]);
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticleDetail);
 
     const slug = 'test';
     const ret = await service.getPublishedArticleDetail(slug);
@@ -106,6 +110,12 @@ describe('ArticleService', () => {
       ],
     });
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
+  });
+
+  it('getPublishedArticleDetailNotFound', async () => {
+    repoMock.findPublishedBySlug.mockResolvedValue(null);
+
+    await expect(service.getPublishedArticleDetail('missing')).rejects.toThrow(NotFoundException);
   });
 
   it('getArticlesForTopic', async () => {
