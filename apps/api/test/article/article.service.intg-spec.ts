@@ -17,6 +17,43 @@ import { NotFoundException } from '@nestjs/common';
 describe('Article Service Integration Test', () => {
   const harness = setupIntegrationTest([ArticleModule, TopicModule]);
 
+  it('returns published articles', async () => {
+    const service = harness.module.get(ArticleService);
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
+    const createdDraftArticle = await createArticle({ status: EntityStatus.DRAFT });
+    const articles = await service.getPublishedArticleList();
+
+    expect(articles.items.length).toBeGreaterThan(0);
+    expect(articles.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: createdArticle1.slug }),
+        expect.objectContaining({ slug: createdArticle2.slug }),
+      ]),
+    );
+    expect(articles.items).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ slug: createdDraftArticle.slug })]),
+    );
+  });
+
+  it('returns published articles ordered by newest publishedAt first', async () => {
+    const service = harness.module.get(ArticleService);
+    const olderArticle = await createArticle({
+      publishedAt: new Date('2026-01-01T00:00:00.000Z'),
+    });
+    const newerArticle = await createArticle({
+      publishedAt: new Date('2026-01-02T00:00:00.000Z'),
+    });
+
+    const articles = await service.getPublishedArticleList();
+    const olderIndex = articles.items.findIndex((article) => article.slug === olderArticle.slug);
+    const newerIndex = articles.items.findIndex((article) => article.slug === newerArticle.slug);
+
+    expect(olderIndex).toBeGreaterThan(-1);
+    expect(newerIndex).toBeGreaterThan(-1);
+    expect(newerIndex).toBeLessThan(olderIndex);
+  });
+
   it('returns draft article by slug from unrestricted lookup', async () => {
     const articleService = harness.module.get(ArticleService);
 

@@ -2,11 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
 import { NotFoundException } from '@nestjs/common';
-import { buildActionDetailResponse } from './action.test-fixtures';
+import { buildActionDetailResponse, buildActionListResponse } from './action.test-fixtures';
 
 describe('ActionController', () => {
   let actionController: ActionController;
   const serviceMock = {
+    getPublishedActionList: jest.fn(),
     getPublishedActionDetail: jest.fn(),
   };
 
@@ -29,6 +30,15 @@ describe('ActionController', () => {
     const ret = await actionController.findAction(slug);
     expect(ret).toEqual(actionDetailResponse);
     expect(serviceMock.getPublishedActionDetail).toHaveBeenCalledWith(slug);
+  });
+
+  it('findActions', async () => {
+    const actionListResponse = buildActionListResponse();
+    serviceMock.getPublishedActionList.mockResolvedValue(actionListResponse);
+
+    const ret = await actionController.findActions();
+    expect(ret).toEqual(actionListResponse);
+    expect(serviceMock.getPublishedActionList).toHaveBeenCalled();
   });
 
   it('findActionNotFound', async () => {

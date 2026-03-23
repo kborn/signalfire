@@ -491,7 +491,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.1 - API Contracts & Controller Baseline 🚧
+#### ▸ Phase 5.1 - API Contracts & Controller Baseline ✅
 
 ###### Phase Tasks:
 
@@ -508,7 +508,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.2 - Topic Read APIs ⏳
+#### ▸ Phase 5.2 - Topic Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -520,7 +520,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.3 - Article Read APIs ⏳
+#### ▸ Phase 5.3 - Article Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -532,7 +532,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.4 - Action Read APIs ⏳
+#### ▸ Phase 5.4 - Action Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -544,7 +544,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.5 - API Polish & Parity Review ⏳
+#### ▸ Phase 5.5 - API Polish & Parity Review ✅
 
 ###### Phase Tasks:
 
@@ -557,21 +557,21 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.6 - Article & Action Collection APIs ⏳
+#### ▸ Phase 5.6 - Article & Action Collection APIs ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement article listing endpoint for top-level content discovery
-- [ ] Implement action listing endpoint for top-level action discovery
-- [ ] Define and document summary response shapes for article and action collection routes
-- [ ] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
-- [ ] Apply published-only filtering to article and action collection routes
-- [ ] Define default collection ordering as newest `publishedAt` first for article and action lists
-- [ ] Add endpoint tests for article/action list success and publication-filter behavior
+- [x] Implement article listing endpoint for top-level content discovery
+- [x] Implement action listing endpoint for top-level action discovery
+- [x] Define and document summary response shapes for article and action collection routes
+- [x] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
+- [x] Apply published-only filtering to article and action collection routes
+- [x] Define default collection ordering as newest `publishedAt` first for article and action lists
+- [x] Add endpoint tests for article/action list success and publication-filter behavior
 
 ---
 
-#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff ⏳
+#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff 🚧
 
 ###### Phase Tasks:
 

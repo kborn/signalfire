@@ -38,6 +38,7 @@ const action = {
   status: 'PUBLISHED',
   createdAt: date,
   updatedAt: date,
+  publishedAt: date,
 };
 
 describe('TopicService', () => {
@@ -99,6 +100,7 @@ describe('TopicService', () => {
           title: 'Call Your Representative',
           summary: 'A short action summary.',
           actionType: ActionType.CONTACT,
+          publishedAt: date.toISOString(),
         },
       ],
     });
