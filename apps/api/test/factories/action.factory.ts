@@ -11,6 +11,7 @@ export async function createAction(overrides: Partial<Prisma.ActionCreateInput> 
       description: 'Description',
       actionType: ActionType.DONATE,
       status: EntityStatus.PUBLISHED,
+      publishedAt: new Date(),
       ...overrides,
     },
   });

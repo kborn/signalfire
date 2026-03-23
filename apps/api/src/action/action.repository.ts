@@ -22,7 +22,7 @@ export class ActionRepository {
         status: EntityStatus.PUBLISHED,
       },
       orderBy: {
-        createdAt: 'desc',
+        publishedAt: 'desc',
       },
     });
   }

@@ -8,6 +8,14 @@ import type { ActionDetailRecord } from './action.repository.types';
 export class ActionService {
   constructor(private repository: ActionRepository) {}
 
+  private requirePublishedAt(publishedAt: Date | null): Date {
+    if (!publishedAt) {
+      throw new Error('Published entity is missing publishedAt');
+    }
+
+    return publishedAt;
+  }
+
   async getPublishedActionList(): Promise<ActionListResponse> {
     const actions = await this.repository.findPublished();
     return {
@@ -17,6 +25,7 @@ export class ActionService {
         title: action.title,
         summary: action.summary,
         actionType: action.actionType,
+        publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
       })),
     };
   }
@@ -54,7 +63,7 @@ export class ActionService {
       slug: article.slug,
       title: article.title,
       summary: article.summary,
-      publishedAt: article.publishedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
     }));
 
     return {

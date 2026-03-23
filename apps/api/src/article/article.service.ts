@@ -8,6 +8,14 @@ import type { ArticleDetailRecord } from './article.repository.types';
 export class ArticleService {
   constructor(private repository: ArticleRepository) {}
 
+  private requirePublishedAt(publishedAt: Date | null): Date {
+    if (!publishedAt) {
+      throw new Error('Published article is missing publishedAt');
+    }
+
+    return publishedAt;
+  }
+
   async getPublishedArticleList(): Promise<ArticleListResponse> {
     const articles = await this.repository.findPublished();
     return {
@@ -16,7 +24,7 @@ export class ArticleService {
         slug: article.slug,
         title: article.title,
         summary: article.summary,
-        publishedAt: article.publishedAt.toISOString(),
+        publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
       })),
     };
   }
@@ -64,7 +72,7 @@ export class ArticleService {
       summary: article.summary,
       author: article.author,
       content: article.content,
-      publishedAt: article.publishedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
       updatedAt: article.updatedAt.toISOString(),
       topics,
       actions,

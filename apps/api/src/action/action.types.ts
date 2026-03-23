@@ -6,6 +6,7 @@ export type ActionListItem = {
   title: string;
   summary: string;
   actionType: ActionType;
+  publishedAt: string;
 };
 
 export type ActionListResponse = {

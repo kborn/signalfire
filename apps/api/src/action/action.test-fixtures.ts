@@ -14,6 +14,7 @@ export function buildActionEntity(overrides: Partial<ActionDetailRecord> = {}) {
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     createdAt: ACTION_TEST_DATE,
+    publishedAt: ACTION_TEST_DATE,
     updatedAt: ACTION_TEST_DATE,
     topicActions: [],
     articleActions: [],
@@ -75,6 +76,7 @@ export function buildActionListResponse(
         title: 'Call Your Representative',
         summary: 'A short action summary.',
         actionType: ActionType.CONTACT,
+        publishedAt: ACTION_TEST_DATE.toISOString(),
       },
       {
         id: 2,
@@ -82,6 +84,7 @@ export function buildActionListResponse(
         title: 'Join A Neighborhood Climate Coalition',
         summary: 'Work with local residents on recurring climate pressure campaigns.',
         actionType: ActionType.VOLUNTEER,
+        publishedAt: ACTION_TEST_DATE.toISOString(),
       },
     ],
     ...overrides,

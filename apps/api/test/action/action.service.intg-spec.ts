@@ -31,13 +31,13 @@ describe('Action Service Integration test', () => {
     );
   });
 
-  it('returns published actions ordered by newest createdAt first', async () => {
+  it('returns published actions ordered by newest publishedAt first', async () => {
     const actionService = harness.module.get(ActionService);
     const olderAction = await createAction({
-      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      publishedAt: new Date('2026-01-01T00:00:00.000Z'),
     });
     const newerAction = await createAction({
-      createdAt: new Date('2026-01-02T00:00:00.000Z'),
+      publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
     const actions = await actionService.getPublishedActionList();

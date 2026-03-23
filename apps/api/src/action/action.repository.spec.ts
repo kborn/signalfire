@@ -29,6 +29,7 @@ describe('ActionRepository', () => {
       title: 'Join A Neighborhood Climate Coalition',
       summary: 'Work with local residents on recurring climate pressure campaigns.',
       actionType: ActionType.VOLUNTEER,
+      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
@@ -40,7 +41,7 @@ describe('ActionRepository', () => {
         status: EntityStatus.PUBLISHED,
       },
       orderBy: {
-        createdAt: 'desc',
+        publishedAt: 'desc',
       },
     });
   });

@@ -56,6 +56,7 @@ export function buildArticleDetailRecord(
           actionType: ActionType.CONTACT,
           status: EntityStatus.PUBLISHED,
           createdAt: ARTICLE_TEST_DATE,
+          publishedAt: ARTICLE_TEST_DATE,
           updatedAt: ARTICLE_TEST_DATE,
         },
       },
