@@ -15,7 +15,9 @@
     "api:dev": "pnpm --filter api dev",
     "api:prisma:generate": "pnpm --filter api prisma:generate",
     "api:prisma:migrate:dev": "pnpm --filter api prisma:migrate:dev",
-    "api:prisma:migrate:deploy": "pnpm --filter api prisma:migrate:deploy"
+    "api:prisma:migrate:deploy": "pnpm --filter api prisma:migrate:deploy",
+    "api:prisma:migrate:seed": "pnpm --filter api prisma:migrate:seed",
+    "api:prisma:migrate:seed:demo": "pnpm --filter api prisma:migrate:seed:demo"
   },
   "keywords": [],
   "author": "",

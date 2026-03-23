@@ -428,3 +428,37 @@ current truncation-based reset path as the default fallback.
   isolation and which still require database reset cleanup.
 - Concurrency and worker behavior for integration tests must remain explicit until
   the isolation strategy is standardized across the suite.
+
+---
+
+---
+
+### ► Development seed data is environment-scoped
+
+###### 2026-03-22
+
+---
+
+###### Decision
+
+Prisma seed behavior is environment-scoped. The baseline seed remains
+production-safe and inserts only the canonical Topic dataset. Optional demo seed
+content may be added for local development environments, but that content must
+not be required for production or CI correctness.
+
+###### Rationale
+
+- Local API and UI development benefit from realistic Article, Action, and Event
+  data without requiring manual content creation.
+- Production seeding should remain minimal, stable, and safe to run repeatedly.
+- CI and integration workflows should not depend on heavier demo content unless a
+  specific test suite explicitly opts into it.
+
+###### Implications
+
+- Topic seed data remains the baseline seed path for all environments.
+- Demo content seed paths are allowed for local development only.
+- Seed behavior should default safely to the baseline path when no explicit demo
+  mode is selected.
+- Production deploy and migration workflows should continue using only the
+  baseline seed path.
