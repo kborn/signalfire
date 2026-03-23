@@ -1,5 +1,5 @@
 import { ActionType, EntityStatus } from '@prisma/client';
-import { ActionDetailResponse } from './action.types';
+import { ActionDetailResponse, ActionListResponse } from './action.types';
 import { ActionDetailRecord } from './action.repository.types';
 
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
@@ -62,6 +62,30 @@ export function buildActionDetailRecord(
     ],
     ...overrides,
   });
+}
+
+export function buildActionListResponse(
+  overrides: Partial<ActionListResponse> = {},
+): ActionListResponse {
+  return {
+    items: [
+      {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        actionType: ActionType.CONTACT,
+      },
+      {
+        id: 2,
+        slug: 'join-neighborhood-climate-coalition',
+        title: 'Join A Neighborhood Climate Coalition',
+        summary: 'Work with local residents on recurring climate pressure campaigns.',
+        actionType: ActionType.VOLUNTEER,
+      },
+    ],
+    ...overrides,
+  };
 }
 
 export function buildActionDetailResponse(

@@ -1,5 +1,17 @@
 import { ActionType } from '@prisma/client';
 
+export type ActionListItem = {
+  id: number;
+  slug: string;
+  title: string;
+  summary: string;
+  actionType: ActionType;
+};
+
+export type ActionListResponse = {
+  items: ActionListItem[];
+};
+
 export type ActionDetailTopic = {
   id: number;
   slug: string;

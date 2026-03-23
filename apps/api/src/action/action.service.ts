@@ -1,12 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ActionRepository } from './action.repository';
 import { Action } from '@prisma/client';
-import { ActionDetailResponse } from './action.types';
-import { ActionDetailRecord } from './action.repository.types';
+import type { ActionDetailResponse, ActionListResponse } from './action.types';
+import type { ActionDetailRecord } from './action.repository.types';
 
 @Injectable()
 export class ActionService {
   constructor(private repository: ActionRepository) {}
+
+  async getPublishedActionList(): Promise<ActionListResponse> {
+    const actions = await this.repository.findPublished();
+    return {
+      items: actions.map((action) => ({
+        id: action.id,
+        slug: action.slug,
+        title: action.title,
+        summary: action.summary,
+        actionType: action.actionType,
+      })),
+    };
+  }
 
   getActionDetail(slug: string): Promise<Action | null> {
     return this.repository.findBySlug(slug);

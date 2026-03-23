@@ -13,6 +13,42 @@ import { NotFoundException } from '@nestjs/common';
 describe('Action Service Integration test', () => {
   const harness = setupIntegrationTest([ActionModule, TopicModule]);
 
+  it('returns published actions', async () => {
+    const actionService = harness.module.get(ActionService);
+    const createdAction1 = await createAction();
+    const createdAction2 = await createAction();
+    const createdDraftAction = await createAction({ status: EntityStatus.DRAFT });
+    const actions = await actionService.getPublishedActionList();
+
+    expect(actions.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: createdAction1.slug }),
+        expect.objectContaining({ slug: createdAction2.slug }),
+      ]),
+    );
+    expect(actions.items).not.toEqual(
+      expect.arrayContaining([expect.objectContaining({ slug: createdDraftAction.slug })]),
+    );
+  });
+
+  it('returns published actions ordered by newest createdAt first', async () => {
+    const actionService = harness.module.get(ActionService);
+    const olderAction = await createAction({
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+    });
+    const newerAction = await createAction({
+      createdAt: new Date('2026-01-02T00:00:00.000Z'),
+    });
+
+    const actions = await actionService.getPublishedActionList();
+    const olderIndex = actions.items.findIndex((action) => action.slug === olderAction.slug);
+    const newerIndex = actions.items.findIndex((action) => action.slug === newerAction.slug);
+
+    expect(olderIndex).toBeGreaterThan(-1);
+    expect(newerIndex).toBeGreaterThan(-1);
+    expect(newerIndex).toBeLessThan(olderIndex);
+  });
+
   it('returns draft action by slug from unrestricted lookup', async () => {
     const actionService = harness.module.get(ActionService);
     // test that we don't filter by published status when calling getActionDetail

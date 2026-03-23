@@ -3,15 +3,18 @@ import { ActionService } from './action.service';
 import { ActionRepository } from './action.repository';
 import { NotFoundException } from '@nestjs/common';
 import {
+  buildActionListResponse,
   buildActionDetailRecord,
   buildActionDetailResponse,
   buildActionEntity,
 } from './action.test-fixtures';
+import { ActionType } from '@prisma/client';
 
 describe('ActionService', () => {
   let service: ActionService;
   const repoMock = {
     findBySlug: jest.fn(),
+    findPublished: jest.fn(),
     findPublishedBySlug: jest.fn(),
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByArticleId: jest.fn(),
@@ -24,6 +27,23 @@ describe('ActionService', () => {
       providers: [ActionService, { provide: ActionRepository, useValue: repoMock }],
     }).compile();
     service = module.get(ActionService);
+  });
+
+  it('getPublishedActionList', async () => {
+    const action1 = buildActionEntity();
+    const action2 = buildActionEntity({
+      id: 2,
+      slug: 'join-neighborhood-climate-coalition',
+      title: 'Join A Neighborhood Climate Coalition',
+      summary: 'Work with local residents on recurring climate pressure campaigns.',
+      actionType: ActionType.VOLUNTEER,
+    });
+    repoMock.findPublished.mockResolvedValue([action1, action2]);
+
+    const ret = await service.getPublishedActionList();
+
+    expect(ret).toEqual(buildActionListResponse());
+    expect(repoMock.findPublished).toHaveBeenCalled();
   });
 
   it('getActionDetail', async () => {
