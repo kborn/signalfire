@@ -575,10 +575,10 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Phase Tasks:
 
-- [ ] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
-- [ ] Verify public read paths consistently apply publication rules across direct and related content
+- [x] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
+- [x] Verify public read paths consistently apply publication rules across direct and related content
 - [ ] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
-- [ ] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
+- [x] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
 - [ ] Update phase status and notes when all Phase 5 tasks are complete
 
 ---
@@ -589,6 +589,10 @@ Create APIs for reading Topics, Articles, and Actions.
 - Event read APIs belong to Phase 7 even though Events remain part of the overall discovery model.
 - Article and Action collection routes are included in late Phase 5 to support Phase 6 top-level discovery UI needs.
 - Search, pagination, filtering beyond basic entity lookup, and admin/editorial write paths remain out of scope for this phase.
+- Closure rationale for the non-code Phase 5.7 items is documented in
+  `docs/architecture/008-phase-5-topic-content-api-contracts.md`.
+- Phase 5 remains open because the final public route set still lacks dedicated
+  full-app integration/e2e coverage for all six Phase 5 endpoints.
 
 ---
 

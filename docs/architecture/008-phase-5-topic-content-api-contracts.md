@@ -727,6 +727,152 @@ Define the minimum test coverage required before Phase 5 can be considered compl
 - [ ] unpublished-content filtering behavior
 - [ ] relationship payload behavior
 
+### Phase 5.7 Handoff Assessment
+
+This section records which Phase 5.7 non-code checklist items can be closed from
+the current documented contract and existing test evidence, and which items must
+remain open.
+
+#### Closed: coherent discovery graph for Phase 6 UI consumption
+
+Status: Closed
+
+Decision drivers:
+
+- The Phase 5 route inventory defines a complete public discovery surface for
+  Phase 6: `/topics`, `/topics/:slug`, `/articles`, `/articles/:slug`,
+  `/actions`, and `/actions/:slug`.
+- Relationship inclusion rules create a one-level discovery graph across the
+  three Phase 5 domains:
+  - topic detail includes related article and action summaries
+  - article detail includes related topic and action summaries
+  - action detail includes related topic and article summaries
+- This aligns with the active product model and Release 1 scope:
+  - Topics are first-class discovery pages
+  - Actions are the platform center
+  - Events remain excluded from Phase 5 and deferred to Phase 7
+- Existing evidence in route and integration tests confirms those paths are
+  implemented and shaped as expected:
+  - `apps/api/src/topic/topic.controller.route.spec.ts`
+  - `apps/api/src/article/article.controller.route.spec.ts`
+  - `apps/api/src/action/action.controller.route.spec.ts`
+  - `apps/api/test/topic/topic.service.intg-spec.ts`
+  - `apps/api/test/article/article.service.intg-spec.ts`
+  - `apps/api/test/action/action.service.intg-spec.ts`
+
+Reason for closure:
+
+- Phase 6 needs predictable public navigation and cross-linking, not deeper
+  recursive relationship graphs.
+- The current contract provides the required entry points and summary-level
+  relationship payloads without expanding scope into Events, search, or
+  pagination.
+
+#### Closed: publication rules consistently apply across direct and related content
+
+Status: Closed
+
+Decision drivers:
+
+- The publication rules section already defines the intended public visibility
+  policy:
+  - unpublished detail resources resolve as `404`
+  - unpublished related resources are excluded from nested arrays
+  - missing and unpublished public detail resources are intentionally
+    indistinguishable
+- Existing route specs verify public detail `404` behavior for missing and
+  unpublished Article and Action routes.
+- Existing integration specs verify published-only filtering for:
+  - article and action collection routes
+  - topic nested article/action relationships
+  - article nested action relationships
+  - action nested article relationships
+
+Reason for closure:
+
+- The documented policy and current test evidence agree on the core public
+  visibility model for all Phase 5 domains.
+- No additional non-code clarification is needed before Phase 6 consumes these
+  APIs.
+
+#### Closed: final endpoint contracts, relationship behavior, and known deferrals documented
+
+Status: Closed
+
+Decision drivers:
+
+- This document now serves as the canonical Phase 5 handoff artifact covering:
+  - final route inventory
+  - route-by-route response contracts
+  - relationship inclusion rules
+  - publication and visibility rules
+  - boundary decisions
+  - testing expectations
+  - phase deferrals
+- The contract stays inside the approved Phase 5 boundary and matches the
+  governance docs that prevent scope expansion into Event APIs, admin CRUD,
+  search, filtering, or pagination.
+
+Reason for closure:
+
+- Downstream Phase 6 UI work has enough contract detail to proceed without
+  reinterpreting payload shape or relationship behavior.
+
+#### Open: add or refine integration/e2e coverage for the final Phase 5 endpoint set
+
+Status: Open
+
+Why it remains open:
+
+- Current coverage is split between controller-route specs and service
+  integration specs, but there is no end-to-end verification for the final
+  Phase 5 route set through the full Nest application.
+- The only current e2e spec is `apps/api/test/app.e2e-spec.ts`, which exercises
+  the root app route only.
+
+What still needs to be added:
+
+- Add Phase 5 API e2e coverage for all public routes:
+  - `GET /topics`
+  - `GET /topics/:slug`
+  - `GET /articles`
+  - `GET /articles/:slug`
+  - `GET /actions`
+  - `GET /actions/:slug`
+- Run those tests against the real `AppModule` with the standard test app boot
+  path rather than isolated controller-only modules.
+- Use seeded or fixture-created data that exercises both direct entities and
+  related entities in the same run.
+- Assert the final HTTP contract, not just service return values:
+  - collection payload shape
+  - detail payload shape
+  - `404` behavior for missing resources
+  - `404` behavior for unpublished article/action detail
+  - published-only nested relationship filtering on topic, article, and action
+    detail routes
+  - article/action collection ordering by newest `publishedAt` first
+- Prefer one discovery-graph scenario that validates cross-link coherence in
+  HTTP responses:
+  - a topic exposing published article and action summaries
+  - an article exposing related published topics and actions
+  - an action exposing related published topics and articles
+
+Recommended minimum spec split:
+
+- one e2e spec for Topic routes
+- one e2e spec for Article routes
+- one e2e spec for Action routes
+
+#### Open: update phase status and notes when all Phase 5 tasks are complete
+
+Status: Open
+
+Why it remains open:
+
+- Phase 5.7 still has unfinished test work.
+- The phase cannot be marked complete while the final integration/e2e coverage
+  task remains open.
+
 ### Out Of Scope For This Phase
 
 - load/performance testing
