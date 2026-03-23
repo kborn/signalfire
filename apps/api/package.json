@@ -13,6 +13,7 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:migrate:seed": "prisma db seed",
+    "prisma:migrate:seed:demo": "SEED_MODE=demo prisma db seed",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",

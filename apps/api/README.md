@@ -18,6 +18,7 @@ From repository root:
 pnpm api:prisma:generate
 pnpm api:prisma:migrate:dev --name <migration_name>
 pnpm api:prisma:migrate:deploy
+pnpm api:prisma:migrate:seed
 ```
 
 Phase 2.2 baseline migration example:
@@ -25,6 +26,27 @@ Phase 2.2 baseline migration example:
 ```bash
 pnpm api:prisma:migrate:dev --name infrastructure_probe
 ```
+
+## Seed Modes
+
+Baseline seed:
+
+```bash
+pnpm api:prisma:migrate:seed
+```
+
+Demo seed for local development:
+
+```bash
+pnpm api:prisma:migrate:seed:demo
+```
+
+Behavior:
+
+- baseline seed inserts seeded Topics only
+- demo seed inserts Topics plus local demo Articles, Actions, Events, and relationships
+- production should use baseline seed only
+- integration tests should use baseline seed unless a test suite explicitly needs demo content
 
 ## Validation
 
