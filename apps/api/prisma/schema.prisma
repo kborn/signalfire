@@ -115,7 +115,7 @@ model Event {
   longitude     Decimal?
   submission    Submission?
   createdAt     DateTime       @default(now())
-  publishedAt    DateTime?
+  publishedAt   DateTime?
   updatedAt     DateTime       @updatedAt
   topicEvents   TopicEvent[]
   articleEvents ArticleEvent[]
