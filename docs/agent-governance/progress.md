@@ -491,7 +491,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.1 - API Contracts & Controller Baseline 🚧
+#### ▸ Phase 5.1 - API Contracts & Controller Baseline ✅
 
 ###### Phase Tasks:
 
@@ -508,7 +508,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.2 - Topic Read APIs ⏳
+#### ▸ Phase 5.2 - Topic Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -520,7 +520,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.3 - Article Read APIs ⏳
+#### ▸ Phase 5.3 - Article Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -532,7 +532,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.4 - Action Read APIs ⏳
+#### ▸ Phase 5.4 - Action Read APIs ✅
 
 ###### Phase Tasks:
 
@@ -544,7 +544,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.5 - API Polish & Parity Review ⏳
+#### ▸ Phase 5.5 - API Polish & Parity Review ✅
 
 ###### Phase Tasks:
 
@@ -557,7 +557,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.6 - Article & Action Collection APIs ⏳
+#### ▸ Phase 5.6 - Article & Action Collection APIs ✅
 
 ###### Phase Tasks:
 
@@ -571,7 +571,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff ⏳
+#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff 🚧
 
 ###### Phase Tasks:
 
