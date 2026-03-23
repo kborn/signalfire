@@ -78,14 +78,16 @@ List every Phase 5 endpoint here.
 | ------- | ------ | ----------------- | --------------------------------------------------------------------- | -------- |
 | Topic   | `GET`  | `/topics`         | Return the public list of seeded topics for topic discovery.          | Proposed |
 | Topic   | `GET`  | `/topics/:slug`   | Return one topic plus related published article and action summaries. | Proposed |
+| Article | `GET`  | `/articles`       | Return the public list of published articles for top-level discovery. | Proposed |
 | Article | `GET`  | `/articles/:slug` | Return one published article plus related topic and action summaries. | Proposed |
+| Action  | `GET`  | `/actions`        | Return the public list of published actions for top-level discovery.  | Proposed |
 | Action  | `GET`  | `/actions/:slug`  | Return one published action plus related topic and article summaries. | Proposed |
 
 Decisions:
 
 - These are the complete Phase 5 public routes.
 - Slug routes are sufficient for all public reads in this phase.
-- No additional list endpoints are included in Phase 5 beyond `/topics`.
+- Phase 5 includes collection routes for `/topics`, `/articles`, and `/actions`.
 
 ---
 
@@ -199,6 +201,50 @@ Status: `200 OK`
 #### Notes
 
 - This route satisfies the topic-detail and cross-linking needs for Phase 5 and Phase 6
+
+---
+
+### `GET /articles`
+
+#### Purpose
+
+Return the public list of published articles for top-level article discovery.
+
+#### Inputs
+
+- Path params:
+  - none
+- Query params:
+  - none in Phase 5
+
+#### Success Response
+
+Status: `200 OK`
+
+```json
+{
+  "items": [
+    {
+      "id": 10,
+      "slug": "how-local-climate-policy-works",
+      "title": "How Local Climate Policy Works",
+      "summary": "A guide to city-level climate policy.",
+      "publishedAt": "2026-03-10T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+#### Response Rules
+
+- Includes article summary fields only
+- Returns published articles only
+- Ordered by `publishedAt` descending in Phase 5
+- Does not include related Topics or Actions in the collection response
+
+#### Failure Behavior
+
+- `400 Bad Request`: not applicable for the Phase 5 contract
 
 ---
 
@@ -334,6 +380,51 @@ Status: `200 OK`
 
 ---
 
+### `GET /actions`
+
+#### Purpose
+
+Return the public list of published actions for top-level action discovery.
+
+#### Inputs
+
+- Path params:
+  - none
+- Query params:
+  - none in Phase 5
+
+#### Success Response
+
+Status: `200 OK`
+
+```json
+{
+  "items": [
+    {
+      "id": 25,
+      "slug": "contact-city-council-about-transit",
+      "title": "Contact City Council About Transit",
+      "summary": "Ask local officials to expand public transit funding.",
+      "actionType": "CONTACT",
+      "publishedAt": "2026-03-12T00:00:00.000Z"
+    }
+  ]
+}
+```
+
+#### Response Rules
+
+- Includes action summary fields only
+- Returns published actions only
+- Ordered by `publishedAt` descending in Phase 5
+- Does not include related Topics or Articles in the collection response
+
+#### Failure Behavior
+
+- `400 Bad Request`: not applicable for the Phase 5 contract
+
+---
+
 ## Domain Response Shapes
 
 Define the canonical response shape for each public entity in Phase 5.
@@ -395,6 +486,17 @@ Decisions:
 
 ---
 
+### Article List Response
+
+Purpose:
+Used in the article collection endpoint.
+
+Fields:
+
+- `items: Article Summary[]`
+
+---
+
 ### Article Detail
 
 Purpose:
@@ -425,10 +527,23 @@ Fields:
 - `title`
 - `summary`
 - `actionType`
+- `publishedAt`
 
 Decisions:
 
 - action summaries include `actionType` because it is useful for discovery UI labeling
+- action summaries include `publishedAt` so publication metadata is consistent across public action responses
+
+---
+
+### Action List Response
+
+Purpose:
+Used in the action collection endpoint.
+
+Fields:
+
+- `items: Action Summary[]`
 
 ---
 
@@ -439,13 +554,14 @@ Used in the action detail endpoint.
 
 Fields:
 
-- core action fields: `id`, `slug`, `title`, `summary`, `description`, `actionType`, `updatedAt`
+- core action fields: `id`, `slug`, `title`, `summary`, `description`, `actionType`, `publishedAt`, `updatedAt`
 - related topics shape: `Topic Summary[]`
 - related articles shape: `Article Summary[]`
 
 Decisions:
 
 - `actionType` is exposed as the persisted enum value in Phase 5
+- `publishedAt` is exposed on action detail for consistent public publication metadata
 
 ---
 
@@ -457,7 +573,9 @@ Define what relationship data is included on each endpoint.
 | ----------------- | -------------- | ---------------- | --------------- | ---------------------------------------- |
 | `/topics`         | no             | no               | no              | direct topic summaries only              |
 | `/topics/:slug`   | no             | yes              | yes             | nested article and action summaries only |
+| `/articles`       | no             | no               | no              | direct article summaries only            |
 | `/articles/:slug` | yes            | no               | yes             | nested topic and action summaries only   |
+| `/actions`        | no             | no               | no              | direct action summaries only             |
 | `/actions/:slug`  | yes            | yes              | no              | nested topic and article summaries only  |
 
 Decisions:
@@ -592,7 +710,6 @@ Define the minimum test coverage required before Phase 5 can be considered compl
 Record anything intentionally left for later phases.
 
 - Event-related read contracts and payloads
-- Article and Action collection/list endpoints
 - Pagination, sorting, and filtering contracts
 - Search-oriented API surfaces
 - Custom error envelope standardization
