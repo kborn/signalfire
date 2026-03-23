@@ -102,6 +102,7 @@ export function buildActionDetailResponse(
     description: 'A longer action description.',
     actionType: ActionType.CONTACT,
     updatedAt: ACTION_TEST_DATE.toISOString(),
+    publishedAt: ACTION_TEST_DATE.toISOString(),
     topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
     articles: [
       {

@@ -3,6 +3,7 @@ import { ArticleListResponse, ArticleDetailResponse } from './article.types';
 import { ArticleDetailRecord } from './article.repository.types';
 
 export const ARTICLE_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
+export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 
 export function buildArticleEntity(overrides: Partial<ArticleDetailRecord> = {}) {
   return {
@@ -109,6 +110,7 @@ export function buildArticleDetailResponse(
         title: 'Call Your Representative',
         summary: 'A short action summary.',
         actionType: ActionType.CONTACT,
+        publishedAt: ACTION_TEST_DATE.toISOString(),
       },
     ],
     ...overrides,

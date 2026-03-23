@@ -36,6 +36,7 @@ export type ActionDetailResponse = {
   description: string;
   actionType: ActionType;
   updatedAt: string;
+  publishedAt: string;
   topics: ActionDetailTopic[];
   articles: ActionDetailArticle[];
 };

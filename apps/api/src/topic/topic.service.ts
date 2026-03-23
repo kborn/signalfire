@@ -57,6 +57,7 @@ export class TopicService {
       title: action.title,
       summary: action.summary,
       actionType: action.actionType,
+      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
     }));
 
     return {

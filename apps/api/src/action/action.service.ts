@@ -74,6 +74,7 @@ export class ActionService {
       description: action.description,
       actionType: action.actionType,
       updatedAt: action.updatedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
       topics,
       articles,
     };

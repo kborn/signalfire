@@ -47,6 +47,7 @@ export function buildTopicDetailResponse(
         title: 'Call Your Representative',
         summary: 'A short action summary.',
         actionType: ActionType.CONTACT,
+        publishedAt: '2026-03-20T15:30:00.000Z',
       },
     ],
     ...overrides,

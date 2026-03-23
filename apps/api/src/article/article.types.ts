@@ -25,6 +25,7 @@ export type ArticleDetailAction = {
   title: string;
   summary: string;
   actionType: ActionType;
+  publishedAt: string;
 };
 
 export type ArticleDetailResponse = {
