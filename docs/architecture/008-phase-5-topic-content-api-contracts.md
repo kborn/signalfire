@@ -138,7 +138,7 @@ Status: `200 OK`
 
 #### Notes
 
-- `/topics` is the only collection route in this phase
+- `/topics`, `/articles`, and `/actions` are the Phase 5 collection routes
 
 ---
 
@@ -180,7 +180,8 @@ Status: `200 OK`
       "slug": "contact-city-council-about-transit",
       "title": "Contact City Council About Transit",
       "summary": "Ask local officials to expand public transit funding.",
-      "actionType": "CONTACT"
+      "actionType": "CONTACT",
+      "publishedAt": "2026-03-12T00:00:00.000Z"
     }
   ]
 }
@@ -289,7 +290,8 @@ Status: `200 OK`
       "slug": "contact-city-council-about-transit",
       "title": "Contact City Council About Transit",
       "summary": "Ask local officials to expand public transit funding.",
-      "actionType": "CONTACT"
+      "actionType": "CONTACT",
+      "publishedAt": "2026-03-12T00:00:00.000Z"
     }
   ]
 }
@@ -340,6 +342,7 @@ Status: `200 OK`
   "summary": "Ask local officials to expand public transit funding.",
   "description": "Call or email your local council member and ask for transit investment.",
   "actionType": "CONTACT",
+  "publishedAt": "2026-03-12T00:00:00.000Z",
   "updatedAt": "2026-03-12T00:00:00.000Z",
   "topics": [
     {
@@ -470,7 +473,7 @@ Decisions:
 ### Article Summary
 
 Purpose:
-Used when an Article appears as related content inside another response.
+Used in article collection responses and when an Article appears as related content inside another response.
 
 Fields:
 
@@ -495,6 +498,19 @@ Fields:
 
 - `items: Article Summary[]`
 
+Item shape:
+
+- `id`
+- `slug`
+- `title`
+- `summary`
+- `publishedAt`
+
+Decisions:
+
+- article collection responses reuse the same `Article Summary` shape used in nested related content
+- collection items do not include full article content, author, topics, or actions
+
 ---
 
 ### Article Detail
@@ -518,7 +534,7 @@ Decisions:
 ### Action Summary
 
 Purpose:
-Used when an Action appears as related content inside another response.
+Used in action collection responses and when an Action appears as related content inside another response.
 
 Fields:
 
@@ -544,6 +560,20 @@ Used in the action collection endpoint.
 Fields:
 
 - `items: Action Summary[]`
+
+Item shape:
+
+- `id`
+- `slug`
+- `title`
+- `summary`
+- `actionType`
+- `publishedAt`
+
+Decisions:
+
+- action collection responses reuse the same `Action Summary` shape used in nested related content
+- collection items do not include full action descriptions, topics, or articles
 
 ---
 

@@ -46,13 +46,13 @@ describe('TopicService', () => {
       title: 'Draft Article',
       summary: 'Draft article summary',
       status: EntityStatus.DRAFT,
-      publishedAt: new Date('2026-03-20T16:30:00.000Z'),
     });
     const publishedAction = await createAction({
       slug: 'published-action',
       title: 'Published Action',
       summary: 'Published action summary',
       actionType: ActionType.CONTACT,
+      publishedAt: new Date('2026-03-20T15:30:00.000Z'),
     });
     const draftAction = await createAction({
       slug: 'draft-action',
@@ -90,6 +90,7 @@ describe('TopicService', () => {
           title: 'Published Action',
           summary: 'Published action summary',
           actionType: ActionType.CONTACT,
+          publishedAt: '2026-03-20T15:30:00.000Z',
         },
       ],
     });

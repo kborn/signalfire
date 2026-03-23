@@ -2,12 +2,13 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { NotFoundException } from '@nestjs/common';
-import { buildArticleDetailResponse } from './article.test-fixtures';
+import { buildArticleListResponse, buildArticleDetailResponse } from './article.test-fixtures';
 
 describe('ArticleController', () => {
   let articleController: ArticleController;
   const serviceMock = {
     getPublishedArticleDetail: jest.fn(),
+    getPublishedArticleList: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -19,6 +20,14 @@ describe('ArticleController', () => {
     }).compile();
 
     articleController = app.get<ArticleController>(ArticleController);
+  });
+
+  it('findArticles', async () => {
+    const articleListResponse = buildArticleListResponse();
+    serviceMock.getPublishedArticleList.mockResolvedValue(articleListResponse);
+    const ret = await articleController.findArticles();
+    expect(ret).toEqual(articleListResponse);
+    expect(serviceMock.getPublishedArticleList).toHaveBeenCalled();
   });
 
   it('findArticle', async () => {

@@ -3,6 +3,8 @@ import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
 import { NotFoundException } from '@nestjs/common';
 import {
+  ARTICLE_TEST_DATE,
+  buildArticleListResponse,
   buildArticleDetailRecord,
   buildArticleDetailResponse,
   buildArticleEntity,
@@ -12,6 +14,7 @@ describe('ArticleService', () => {
   let service: ArticleService;
   const repoMock = {
     findBySlug: jest.fn(),
+    findPublished: jest.fn(),
     findPublishedBySlug: jest.fn(),
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByActionId: jest.fn(),
@@ -24,6 +27,42 @@ describe('ArticleService', () => {
       providers: [ArticleService, { provide: ArticleRepository, useValue: repoMock }],
     }).compile();
     service = module.get(ArticleService);
+  });
+
+  it('getPublishedArticleList', async () => {
+    const article1 = buildArticleEntity();
+    const article2 = buildArticleEntity({
+      id: 2,
+      slug: 'how-local-climate-policy-works',
+      title: 'How Local Climate Policy Works',
+      summary: 'A guide to city-level climate policy.',
+      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
+    });
+    repoMock.findPublished.mockResolvedValue([article1, article2]);
+
+    const ret = await service.getPublishedArticleList();
+
+    expect(ret).toEqual(
+      buildArticleListResponse({
+        items: [
+          {
+            id: 1,
+            slug: 'protect-voting-rights',
+            title: 'Protect Voting Rights',
+            summary: 'A short article summary.',
+            publishedAt: ARTICLE_TEST_DATE.toISOString(),
+          },
+          {
+            id: 2,
+            slug: 'how-local-climate-policy-works',
+            title: 'How Local Climate Policy Works',
+            summary: 'A guide to city-level climate policy.',
+            publishedAt: new Date('2025-12-18T03:24:00.000Z').toISOString(),
+          },
+        ],
+      }),
+    );
+    expect(repoMock.findPublished).toHaveBeenCalled();
   });
 
   it('getArticleDetail', async () => {

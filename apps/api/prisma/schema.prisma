@@ -68,7 +68,7 @@ model Article {
   status         EntityStatus
   author         String
   createdAt      DateTime        @default(now())
-  publishedAt    DateTime
+  publishedAt    DateTime?
   updatedAt      DateTime        @updatedAt
   submission     Submission?
   topicArticles  TopicArticle[]
@@ -87,6 +87,7 @@ model Action {
   actionType     ActionType
   status         EntityStatus
   createdAt      DateTime        @default(now())
+  publishedAt    DateTime?
   updatedAt      DateTime        @updatedAt
   topicActions   TopicAction[]
   articleActions ArticleAction[]
@@ -114,6 +115,7 @@ model Event {
   longitude     Decimal?
   submission    Submission?
   createdAt     DateTime       @default(now())
+  publishedAt   DateTime?
   updatedAt     DateTime       @updatedAt
   topicEvents   TopicEvent[]
   articleEvents ArticleEvent[]

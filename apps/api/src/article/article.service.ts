@@ -1,13 +1,33 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleRepository } from './article.repository';
 import { Article } from '@prisma/client';
-import type { ArticleDetailResponse } from './article.types';
+import type { ArticleDetailResponse, ArticleListResponse } from './article.types';
 import type { ArticleDetailRecord } from './article.repository.types';
 
 @Injectable()
 export class ArticleService {
   constructor(private repository: ArticleRepository) {}
 
+  private requirePublishedAt(publishedAt: Date | null): Date {
+    if (!publishedAt) {
+      throw new Error('Published article is missing publishedAt');
+    }
+
+    return publishedAt;
+  }
+
+  async getPublishedArticleList(): Promise<ArticleListResponse> {
+    const articles = await this.repository.findPublished();
+    return {
+      items: articles.map((article) => ({
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        summary: article.summary,
+        publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
+      })),
+    };
+  }
   getArticleDetail(slug: string): Promise<Article | null> {
     return this.repository.findBySlug(slug);
   }
@@ -43,6 +63,7 @@ export class ArticleService {
       title: action.title,
       summary: action.summary,
       actionType: action.actionType,
+      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
     }));
 
     return {
@@ -52,7 +73,7 @@ export class ArticleService {
       summary: article.summary,
       author: article.author,
       content: article.content,
-      publishedAt: article.publishedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
       updatedAt: article.updatedAt.toISOString(),
       topics,
       actions,

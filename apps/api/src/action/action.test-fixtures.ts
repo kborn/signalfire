@@ -1,5 +1,5 @@
 import { ActionType, EntityStatus } from '@prisma/client';
-import { ActionDetailResponse } from './action.types';
+import { ActionDetailResponse, ActionListResponse } from './action.types';
 import { ActionDetailRecord } from './action.repository.types';
 
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
@@ -14,6 +14,7 @@ export function buildActionEntity(overrides: Partial<ActionDetailRecord> = {}) {
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     createdAt: ACTION_TEST_DATE,
+    publishedAt: ACTION_TEST_DATE,
     updatedAt: ACTION_TEST_DATE,
     topicActions: [],
     articleActions: [],
@@ -64,6 +65,32 @@ export function buildActionDetailRecord(
   });
 }
 
+export function buildActionListResponse(
+  overrides: Partial<ActionListResponse> = {},
+): ActionListResponse {
+  return {
+    items: [
+      {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        actionType: ActionType.CONTACT,
+        publishedAt: ACTION_TEST_DATE.toISOString(),
+      },
+      {
+        id: 2,
+        slug: 'join-neighborhood-climate-coalition',
+        title: 'Join A Neighborhood Climate Coalition',
+        summary: 'Work with local residents on recurring climate pressure campaigns.',
+        actionType: ActionType.VOLUNTEER,
+        publishedAt: ACTION_TEST_DATE.toISOString(),
+      },
+    ],
+    ...overrides,
+  };
+}
+
 export function buildActionDetailResponse(
   overrides: Partial<ActionDetailResponse> = {},
 ): ActionDetailResponse {
@@ -75,6 +102,7 @@ export function buildActionDetailResponse(
     description: 'A longer action description.',
     actionType: ActionType.CONTACT,
     updatedAt: ACTION_TEST_DATE.toISOString(),
+    publishedAt: ACTION_TEST_DATE.toISOString(),
     topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
     articles: [
       {

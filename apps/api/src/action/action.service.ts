@@ -1,12 +1,34 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ActionRepository } from './action.repository';
 import { Action } from '@prisma/client';
-import { ActionDetailResponse } from './action.types';
-import { ActionDetailRecord } from './action.repository.types';
+import type { ActionDetailResponse, ActionListResponse } from './action.types';
+import type { ActionDetailRecord } from './action.repository.types';
 
 @Injectable()
 export class ActionService {
   constructor(private repository: ActionRepository) {}
+
+  private requirePublishedAt(publishedAt: Date | null): Date {
+    if (!publishedAt) {
+      throw new Error('Published entity is missing publishedAt');
+    }
+
+    return publishedAt;
+  }
+
+  async getPublishedActionList(): Promise<ActionListResponse> {
+    const actions = await this.repository.findPublished();
+    return {
+      items: actions.map((action) => ({
+        id: action.id,
+        slug: action.slug,
+        title: action.title,
+        summary: action.summary,
+        actionType: action.actionType,
+        publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
+      })),
+    };
+  }
 
   getActionDetail(slug: string): Promise<Action | null> {
     return this.repository.findBySlug(slug);
@@ -41,7 +63,7 @@ export class ActionService {
       slug: article.slug,
       title: article.title,
       summary: article.summary,
-      publishedAt: article.publishedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
     }));
 
     return {
@@ -52,6 +74,7 @@ export class ActionService {
       description: action.description,
       actionType: action.actionType,
       updatedAt: action.updatedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
       topics,
       articles,
     };

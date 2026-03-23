@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActionRepository } from './action.repository';
 import { PrismaService } from '../prisma/prisma.service';
-import { EntityStatus } from '@prisma/client';
+import { ActionType, EntityStatus } from '@prisma/client';
 import { buildActionEntity } from './action.test-fixtures';
 
 describe('ActionRepository', () => {
@@ -19,6 +19,31 @@ describe('ActionRepository', () => {
       providers: [ActionRepository, { provide: PrismaService, useValue: prismaMock }],
     }).compile();
     repository = module.get(ActionRepository);
+  });
+
+  it('findPublished', async () => {
+    const action1 = buildActionEntity();
+    const action2 = buildActionEntity({
+      id: 2,
+      slug: 'join-neighborhood-climate-coalition',
+      title: 'Join A Neighborhood Climate Coalition',
+      summary: 'Work with local residents on recurring climate pressure campaigns.',
+      actionType: ActionType.VOLUNTEER,
+      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
+    });
+    prismaMock.action.findMany.mockResolvedValue([action1, action2]);
+
+    const ret = await repository.findPublished();
+
+    expect(ret).toEqual([action1, action2]);
+    expect(prismaMock.action.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
   });
 
   it('findBySlug', async () => {

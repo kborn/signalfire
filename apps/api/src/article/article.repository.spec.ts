@@ -22,6 +22,30 @@ describe('ArticleRepository', () => {
     repository = module.get(ArticleRepository);
   });
 
+  it('findPublished', async () => {
+    const article1 = buildArticleEntity();
+    const article2 = buildArticleEntity({
+      id: 2,
+      slug: 'how-local-climate-policy-works',
+      title: 'How Local Climate Policy Works',
+      summary: 'A guide to city-level climate policy.',
+      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
+    });
+    prismaMock.article.findMany.mockResolvedValue([article1, article2]);
+
+    const ret = await repository.findPublished();
+
+    expect(ret).toEqual([article1, article2]);
+    expect(prismaMock.article.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
+  });
+
   it('findBySlug', async () => {
     const article = buildArticleEntity();
     prismaMock.article.findUnique.mockResolvedValue(article);

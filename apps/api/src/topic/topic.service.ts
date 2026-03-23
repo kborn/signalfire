@@ -12,6 +12,14 @@ export class TopicService {
     private articleService: ArticleService,
   ) {}
 
+  private requirePublishedAt(publishedAt: Date | null): Date {
+    if (!publishedAt) {
+      throw new Error('Published article is missing publishedAt');
+    }
+
+    return publishedAt;
+  }
+
   async getTopics(): Promise<TopicListResponse> {
     const topics = await this.repository.findAll();
     return {
@@ -40,7 +48,7 @@ export class TopicService {
       slug: article.slug,
       title: article.title,
       summary: article.summary,
-      publishedAt: article.publishedAt.toISOString(),
+      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
     }));
 
     const formattedActions = actions.map((action) => ({
@@ -49,6 +57,7 @@ export class TopicService {
       title: action.title,
       summary: action.summary,
       actionType: action.actionType,
+      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
     }));
 
     return {

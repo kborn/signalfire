@@ -3,6 +3,7 @@ import { ActionType, EntityStatus } from '@prisma/client';
 import { generateRandomString } from './factory.utilities';
 
 export async function createAction(overrides: Partial<Prisma.ActionCreateInput> = {}) {
+  const status = overrides.status ?? EntityStatus.PUBLISHED;
   return jestPrisma.client.action.create({
     data: {
       slug: `action-${generateRandomString()}`,
@@ -10,7 +11,8 @@ export async function createAction(overrides: Partial<Prisma.ActionCreateInput> 
       summary: 'Summary',
       description: 'Description',
       actionType: ActionType.DONATE,
-      status: EntityStatus.PUBLISHED,
+      status,
+      publishedAt: overrides.publishedAt ?? (status === EntityStatus.PUBLISHED ? new Date() : null),
       ...overrides,
     },
   });

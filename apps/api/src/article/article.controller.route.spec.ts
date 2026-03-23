@@ -3,17 +3,21 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
-import { buildArticleDetailResponse } from './article.test-fixtures';
+import { buildArticleDetailResponse, buildArticleListResponse } from './article.test-fixtures';
 
 describe('ArticleController HTTP', () => {
   let app: INestApplication;
   let httpServer: Parameters<typeof request>[0];
 
   const articleServiceMock: jest.Mocked<
-    Pick<ArticleService, 'getArticleDetail' | 'getPublishedArticleDetail'>
+    Pick<
+      ArticleService,
+      'getArticleDetail' | 'getPublishedArticleDetail' | 'getPublishedArticleList'
+    >
   > = {
     getArticleDetail: jest.fn(),
     getPublishedArticleDetail: jest.fn(),
+    getPublishedArticleList: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -31,6 +35,13 @@ describe('ArticleController HTTP', () => {
 
   afterEach(async () => {
     await app.close();
+  });
+
+  it('GET /articles returns the article discovery list', async () => {
+    const articleListResponse = buildArticleListResponse();
+    articleServiceMock.getPublishedArticleList.mockResolvedValue(articleListResponse);
+
+    await request(httpServer).get('/articles').expect(200).expect(articleListResponse);
   });
 
   it('GET /articles/:slug returns the article detail payload', async () => {
