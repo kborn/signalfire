@@ -1,13 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleRepository } from './article.repository';
 import { Article } from '@prisma/client';
-import type { ArticleDetailResponse } from './article.types';
+import type { ArticleDetailResponse, ArticleListResponse } from './article.types';
 import type { ArticleDetailRecord } from './article.repository.types';
 
 @Injectable()
 export class ArticleService {
   constructor(private repository: ArticleRepository) {}
 
+  async getPublishedArticleList(): Promise<ArticleListResponse> {
+    const articles = await this.repository.findPublished();
+    return {
+      items: articles.map((article) => ({
+        id: article.id,
+        slug: article.slug,
+        title: article.title,
+        summary: article.summary,
+        publishedAt: article.publishedAt.toISOString(),
+      })),
+    };
+  }
   getArticleDetail(slug: string): Promise<Article | null> {
     return this.repository.findBySlug(slug);
   }

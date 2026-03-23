@@ -561,7 +561,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Phase Tasks:
 
-- [ ] Implement article listing endpoint for top-level content discovery
+- [x] Implement article listing endpoint for top-level content discovery
 - [ ] Implement action listing endpoint for top-level action discovery
 - [ ] Define and document summary response shapes for article and action collection routes
 - [ ] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads

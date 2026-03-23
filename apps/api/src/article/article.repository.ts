@@ -16,6 +16,17 @@ export class ArticleRepository {
     });
   }
 
+  findPublished(): Promise<Article[]> {
+    return this.prisma.article.findMany({
+      where: {
+        status: EntityStatus.PUBLISHED,
+      },
+      orderBy: {
+        publishedAt: 'desc',
+      },
+    });
+  }
+
   findPublishedBySlug(slug: string): Promise<ArticleDetailRecord | null> {
     return this.prisma.article.findUnique({
       where: {
