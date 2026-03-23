@@ -557,19 +557,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.6 - Relationship Validation & Phase Handoff ⏳
-
-###### Phase Tasks:
-
-- [ ] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
-- [ ] Verify public read paths consistently apply publication rules across direct and related content
-- [ ] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
-- [ ] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
-- [ ] Update phase status and notes when all Phase 5 tasks are complete
-
----
-
-#### ▸ Phase 5.7 - Article & Action Collection APIs ⏳
+#### ▸ Phase 5.6 - Article & Action Collection APIs ⏳
 
 ###### Phase Tasks:
 
@@ -580,6 +568,18 @@ Create APIs for reading Topics, Articles, and Actions.
 - [ ] Apply published-only filtering to article and action collection routes
 - [ ] Define default collection ordering as newest `publishedAt` first for article and action lists
 - [ ] Add endpoint tests for article/action list success and publication-filter behavior
+
+---
+
+#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff ⏳
+
+###### Phase Tasks:
+
+- [ ] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
+- [ ] Verify public read paths consistently apply publication rules across direct and related content
+- [ ] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
+- [ ] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
+- [ ] Update phase status and notes when all Phase 5 tasks are complete
 
 ---
 
