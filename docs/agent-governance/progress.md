@@ -563,8 +563,8 @@ Create APIs for reading Topics, Articles, and Actions.
 
 - [x] Implement article listing endpoint for top-level content discovery
 - [x] Implement action listing endpoint for top-level action discovery
-- [ ] Define and document summary response shapes for article and action collection routes
-- [ ] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
+- [x] Define and document summary response shapes for article and action collection routes
+- [x] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
 - [x] Apply published-only filtering to article and action collection routes
 - [x] Define default collection ordering as newest `publishedAt` first for article and action lists
 - [x] Add endpoint tests for article/action list success and publication-filter behavior
