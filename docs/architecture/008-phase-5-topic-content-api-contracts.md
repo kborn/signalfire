@@ -138,7 +138,7 @@ Status: `200 OK`
 
 #### Notes
 
-- `/topics` is the only collection route in this phase
+- `/topics`, `/articles`, and `/actions` are the Phase 5 collection routes
 
 ---
 
@@ -180,7 +180,8 @@ Status: `200 OK`
       "slug": "contact-city-council-about-transit",
       "title": "Contact City Council About Transit",
       "summary": "Ask local officials to expand public transit funding.",
-      "actionType": "CONTACT"
+      "actionType": "CONTACT",
+      "publishedAt": "2026-03-12T00:00:00.000Z"
     }
   ]
 }
@@ -289,7 +290,8 @@ Status: `200 OK`
       "slug": "contact-city-council-about-transit",
       "title": "Contact City Council About Transit",
       "summary": "Ask local officials to expand public transit funding.",
-      "actionType": "CONTACT"
+      "actionType": "CONTACT",
+      "publishedAt": "2026-03-12T00:00:00.000Z"
     }
   ]
 }
