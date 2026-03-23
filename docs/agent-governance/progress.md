@@ -562,12 +562,12 @@ Create APIs for reading Topics, Articles, and Actions.
 ###### Phase Tasks:
 
 - [x] Implement article listing endpoint for top-level content discovery
-- [ ] Implement action listing endpoint for top-level action discovery
+- [x] Implement action listing endpoint for top-level action discovery
 - [ ] Define and document summary response shapes for article and action collection routes
 - [ ] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
-- [ ] Apply published-only filtering to article and action collection routes
-- [ ] Define default collection ordering as newest `publishedAt` first for article and action lists
-- [ ] Add endpoint tests for article/action list success and publication-filter behavior
+- [x] Apply published-only filtering to article and action collection routes
+- [x] Define default collection ordering as newest `publishedAt` first for article and action lists
+- [x] Add endpoint tests for article/action list success and publication-filter behavior
 
 ---
 
