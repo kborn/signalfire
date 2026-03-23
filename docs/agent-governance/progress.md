@@ -569,10 +569,25 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
+#### ▸ Phase 5.7 - Article & Action Collection APIs ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement article listing endpoint for top-level content discovery
+- [ ] Implement action listing endpoint for top-level action discovery
+- [ ] Define and document summary response shapes for article and action collection routes
+- [ ] Standardize Action publication metadata by exposing `publishedAt` on Action detail and Action summary payloads
+- [ ] Apply published-only filtering to article and action collection routes
+- [ ] Define default collection ordering as newest `publishedAt` first for article and action lists
+- [ ] Add endpoint tests for article/action list success and publication-filter behavior
+
+---
+
 #### Notes:
 
 - Phase 5 is limited to public read APIs for Topics, Articles, and Actions.
 - Event read APIs belong to Phase 7 even though Events remain part of the overall discovery model.
+- Article and Action collection routes are included in late Phase 5 to support Phase 6 top-level discovery UI needs.
 - Search, pagination, filtering beyond basic entity lookup, and admin/editorial write paths remain out of scope for this phase.
 
 ---
