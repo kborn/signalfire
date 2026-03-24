@@ -7,7 +7,11 @@ export class TopicRepository {
   constructor(private prisma: PrismaService) {}
 
   findAll(): Promise<Topic[]> {
-    return this.prisma.topic.findMany();
+    return this.prisma.topic.findMany({
+      orderBy: {
+        id: 'asc',
+      },
+    });
   }
 
   findBySlug(slug: string): Promise<Topic | null> {

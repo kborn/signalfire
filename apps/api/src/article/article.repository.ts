@@ -21,9 +21,7 @@ export class ArticleRepository {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   }
 
@@ -49,6 +47,9 @@ export class ArticleRepository {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   }
 
@@ -63,6 +64,9 @@ export class ArticleRepository {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   }

@@ -21,9 +21,7 @@ export class ActionRepository {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   }
 
@@ -49,6 +47,9 @@ export class ActionRepository {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   }
 
@@ -63,6 +64,9 @@ export class ActionRepository {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   }

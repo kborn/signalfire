@@ -66,11 +66,44 @@ describe('ActionController (e2e)', () => {
     expect(newerIndex).toBeLessThan(olderIndex);
   });
 
+  it('/actions (GET) uses ascending id as the tie-breaker when publishedAt matches', async () => {
+    const sharedPublishedAt = new Date('2026-01-03T00:00:00.000Z');
+    const firstAction = await createAction({
+      slug: 'first-tie-action',
+      title: 'First Tie Action',
+      summary: 'First tie action summary',
+      actionType: ActionType.DONATE,
+      publishedAt: sharedPublishedAt,
+    });
+    const secondAction = await createAction({
+      slug: 'second-tie-action',
+      title: 'Second Tie Action',
+      summary: 'Second tie action summary',
+      actionType: ActionType.CONTACT,
+      publishedAt: sharedPublishedAt,
+    });
+
+    const response = await request(harness.httpServer).get('/actions').expect(200);
+    const body = response.body as ActionListResponse;
+    const firstIndex = body.items.findIndex((action) => action.slug === firstAction.slug);
+    const secondIndex = body.items.findIndex((action) => action.slug === secondAction.slug);
+
+    expect(firstAction.id).toBeLessThan(secondAction.id);
+    expect(firstIndex).toBeGreaterThan(-1);
+    expect(secondIndex).toBeGreaterThan(-1);
+    expect(firstIndex).toBeLessThan(secondIndex);
+  });
+
   it('/actions/:slug (GET) returns the published action detail payload', async () => {
-    const topic = await createTopic({
-      slug: 'action-topic',
-      name: 'Action Topic',
-      description: 'Topic used for action detail assertions',
+    const firstTopic = await createTopic({
+      slug: 'action-topic-first',
+      name: 'Action Topic First',
+      description: 'First topic used for action detail assertions',
+    });
+    const secondTopic = await createTopic({
+      slug: 'action-topic-second',
+      name: 'Action Topic Second',
+      description: 'Second topic used for action detail assertions',
     });
     const action = await createAction({
       slug: 'published-action',
@@ -80,11 +113,17 @@ describe('ActionController (e2e)', () => {
       actionType: ActionType.CONTACT,
       publishedAt: new Date('2026-03-12T00:00:00.000Z'),
     });
-    const publishedArticle = await createArticle({
-      slug: 'published-article',
-      title: 'Published Article',
-      summary: 'Published article summary',
+    const firstPublishedArticle = await createArticle({
+      slug: 'published-article-first',
+      title: 'Published Article First',
+      summary: 'Published article summary first',
       publishedAt: new Date('2026-03-10T00:00:00.000Z'),
+    });
+    const secondPublishedArticle = await createArticle({
+      slug: 'published-article-second',
+      title: 'Published Article Second',
+      summary: 'Published article summary second',
+      publishedAt: new Date('2026-03-11T00:00:00.000Z'),
     });
     const draftArticle = await createArticle({
       slug: 'draft-article',
@@ -93,8 +132,10 @@ describe('ActionController (e2e)', () => {
       status: EntityStatus.DRAFT,
     });
 
-    await linkTopicAction(topic.id, action.id);
-    await linkArticleAction(publishedArticle.id, action.id);
+    await linkTopicAction(firstTopic.id, action.id);
+    await linkTopicAction(secondTopic.id, action.id);
+    await linkArticleAction(firstPublishedArticle.id, action.id);
+    await linkArticleAction(secondPublishedArticle.id, action.id);
     await linkArticleAction(draftArticle.id, action.id);
 
     const response = await request(harness.httpServer).get(`/actions/${action.slug}`).expect(200);
@@ -111,19 +152,32 @@ describe('ActionController (e2e)', () => {
       publishedAt: action.publishedAt?.toISOString(),
       topics: [
         {
-          id: topic.id,
-          slug: topic.slug,
-          name: topic.name,
-          description: topic.description,
+          id: firstTopic.id,
+          slug: firstTopic.slug,
+          name: firstTopic.name,
+          description: firstTopic.description,
+        },
+        {
+          id: secondTopic.id,
+          slug: secondTopic.slug,
+          name: secondTopic.name,
+          description: secondTopic.description,
         },
       ],
       articles: [
         {
-          id: publishedArticle.id,
-          slug: publishedArticle.slug,
-          title: publishedArticle.title,
-          summary: publishedArticle.summary,
-          publishedAt: publishedArticle.publishedAt?.toISOString(),
+          id: firstPublishedArticle.id,
+          slug: firstPublishedArticle.slug,
+          title: firstPublishedArticle.title,
+          summary: firstPublishedArticle.summary,
+          publishedAt: firstPublishedArticle.publishedAt?.toISOString(),
+        },
+        {
+          id: secondPublishedArticle.id,
+          slug: secondPublishedArticle.slug,
+          title: secondPublishedArticle.title,
+          summary: secondPublishedArticle.summary,
+          publishedAt: secondPublishedArticle.publishedAt?.toISOString(),
         },
       ],
     });

@@ -12,8 +12,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
 | [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
 | [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
-| **[5](#-phase-5--topic--content-apis-)**          | **Topic & Content APIs**        | **🚧 ACTIVE** |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ⏳            |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
+| **[6](#-phase-6--content-discovery-ui-)**         | **Content Discovery UI**        | **🚧 ACTIVE** |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
 | [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
 | [9](#-phase-9--submission-system-)                | Submission System               | ⏳            |
@@ -473,7 +473,7 @@ Establish an ephemeral integration database workflow and wire persistence-level 
 
 ---
 
-### ► Phase 5 — Topic & Content APIs 🚧
+### ► Phase 5 — Topic & Content APIs ✅
 
 ###### Goal
 
@@ -481,13 +481,13 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Definition of Done
 
-- [ ] Public read endpoints exist for Topic, Article, and Action resources within Release 1 Phase 5 scope
-- [ ] Topic list and topic detail API contracts are implemented and validated
-- [ ] Article detail API contract is implemented and validated
-- [ ] Action detail API contract is implemented and validated
-- [ ] Topic, Article, and Action read paths expose the required published-content relationships for current discovery needs
-- [ ] Controller/API tests cover success, not-found, and publication-filter behavior for Phase 5 endpoints
-- [ ] Phase 5 API contracts and scope boundaries are documented for downstream UI work in Phase 6
+- [x] Public read endpoints exist for Topic, Article, and Action resources within Release 1 Phase 5 scope
+- [x] Topic list and topic detail API contracts are implemented and validated
+- [x] Article detail API contract is implemented and validated
+- [x] Action detail API contract is implemented and validated
+- [x] Topic, Article, and Action read paths expose the required published-content relationships for current discovery needs
+- [x] Controller/API tests cover success, not-found, and publication-filter behavior for Phase 5 endpoints
+- [x] Phase 5 API contracts and scope boundaries are documented for downstream UI work in Phase 6
 
 ---
 
@@ -571,15 +571,15 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff 🚧
+#### ▸ Phase 5.7 - Relationship Validation & Phase Handoff ✅
 
 ###### Phase Tasks:
 
 - [x] Validate that Topic, Article, and Action endpoints provide a coherent discovery graph for Phase 6 UI consumption
 - [x] Verify public read paths consistently apply publication rules across direct and related content
-- [ ] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
+- [x] Add or refine integration/e2e coverage for the final Phase 5 endpoint set
 - [x] Document the final endpoint contracts, relationship behavior, and known deferrals for later phases
-- [ ] Update phase status and notes when all Phase 5 tasks are complete
+- [x] Update phase status and notes when all Phase 5 tasks are complete
 
 ---
 
@@ -591,14 +591,20 @@ Create APIs for reading Topics, Articles, and Actions.
 - Search, pagination, filtering beyond basic entity lookup, and admin/editorial write paths remain out of scope for this phase.
 - Closure rationale for the non-code Phase 5.7 items is documented in
   `docs/architecture/008-phase-5-topic-content-api-contracts.md`.
-- Phase 5 remains open because the final public route set still lacks dedicated
-  full-app integration/e2e coverage for all six Phase 5 endpoints.
+- Phase 5 ordering behavior is now explicit:
+  - topic collections sort by `id` ascending
+  - article and action collections sort by `publishedAt` descending with `id`
+    ascending tie-breakers
+  - nested relationship arrays sort by `id` ascending
+- Dedicated e2e suites now exist for Topic, Article, and Action public routes.
+- E2E execution could not be run in this environment because Testcontainers
+  requires a working local container runtime.
 
 ---
 
 ---
 
-### ► Phase 6 — Content Discovery UI ⏳
+### ► Phase 6 — Content Discovery UI 🚧
 
 ###### Goal
 

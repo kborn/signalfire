@@ -40,9 +40,7 @@ describe('ActionRepository', () => {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   });
 
@@ -69,11 +67,21 @@ describe('ActionRepository', () => {
       where: { slug: slug, status: EntityStatus.PUBLISHED },
       include: {
         topicActions: {
+          orderBy: {
+            topic: {
+              id: 'asc',
+            },
+          },
           include: {
             topic: true,
           },
         },
         articleActions: {
+          orderBy: {
+            article: {
+              id: 'asc',
+            },
+          },
           include: {
             article: true,
           },
@@ -101,6 +109,9 @@ describe('ActionRepository', () => {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   });
 
@@ -122,6 +133,9 @@ describe('ActionRepository', () => {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   });
