@@ -10,12 +10,8 @@ describe('ArticleController HTTP', () => {
   let httpServer: Parameters<typeof request>[0];
 
   const articleServiceMock: jest.Mocked<
-    Pick<
-      ArticleService,
-      'getArticleDetail' | 'getPublishedArticleDetail' | 'getPublishedArticleList'
-    >
+    Pick<ArticleService, 'getPublishedArticleDetail' | 'getPublishedArticleList'>
   > = {
-    getArticleDetail: jest.fn(),
     getPublishedArticleDetail: jest.fn(),
     getPublishedArticleList: jest.fn(),
   };

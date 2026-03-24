@@ -10,9 +10,8 @@ describe('ActionController HTTP', () => {
   let httpServer: Parameters<typeof request>[0];
 
   const actionServiceMock: jest.Mocked<
-    Pick<ActionService, 'getActionDetail' | 'getPublishedActionDetail' | 'getPublishedActionList'>
+    Pick<ActionService, 'getPublishedActionDetail' | 'getPublishedActionList'>
   > = {
-    getActionDetail: jest.fn(),
     getPublishedActionDetail: jest.fn(),
     getPublishedActionList: jest.fn(),
   };

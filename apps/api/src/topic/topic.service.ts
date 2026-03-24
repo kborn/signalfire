@@ -14,7 +14,7 @@ export class TopicService {
 
   private requirePublishedAt(publishedAt: Date | null): Date {
     if (!publishedAt) {
-      throw new Error('Published article is missing publishedAt');
+      throw new Error('Published entity is missing publishedAt');
     }
 
     return publishedAt;
