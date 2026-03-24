@@ -9,6 +9,10 @@ This project has two goals:
 
 The system should both improve the developer's skills and produce a usable public platform.
 
+AI is intentionally used as a teaching and coaching aid in this project.
+When useful, implementation work may be accompanied by curated learning
+artifacts that help the developer understand the stack and the task being built.
+
 ---
 
 # Platform Description

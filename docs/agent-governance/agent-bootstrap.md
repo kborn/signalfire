@@ -22,6 +22,7 @@ The machine-enforced contract lives in `.ai/bootstrap/SESSION_BOOTSTRAP.md`.
 - Stay within the active phase unless the user explicitly approves scope expansion.
 - For implementation/architecture questions, read relevant architecture/spec docs before answering.
 - Keep answers focused and concise; load extra files only when the user request requires them.
+- During implementation-oriented sessions, be aware of the learning workflow in `docs/learnings/` and briefly offer to generate or refresh a syllabus for the current subtask when that would help the human learn through the work.
 
 ## Failure behavior
 
