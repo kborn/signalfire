@@ -34,7 +34,11 @@ describe('TopicRepository', () => {
     const ret = await repository.findAll();
 
     expect(ret).toEqual([topic]);
-    expect(prismaMock.topic.findMany).toHaveBeenCalled();
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      orderBy: {
+        id: 'asc',
+      },
+    });
   });
 
   it('getTopicDetail', async () => {
@@ -45,5 +49,45 @@ describe('TopicRepository', () => {
 
     expect(ret).toEqual(topic);
     expect(prismaMock.topic.findUnique).toHaveBeenCalledWith({ where: { slug: slug } });
+  });
+
+  it('findByArticleId', async () => {
+    prismaMock.topic.findMany.mockResolvedValue([topic]);
+
+    const ret = await repository.findByArticleId(1);
+
+    expect(ret).toEqual([topic]);
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        topicArticles: {
+          some: {
+            articleId: 1,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  });
+
+  it('findByActionId', async () => {
+    prismaMock.topic.findMany.mockResolvedValue([topic]);
+
+    const ret = await repository.findByActionId(1);
+
+    expect(ret).toEqual([topic]);
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        topicActions: {
+          some: {
+            actionId: 1,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
   });
 });

@@ -74,14 +74,14 @@ This document should not define:
 
 List every Phase 5 endpoint here.
 
-| Domain  | Method | Route             | Purpose                                                               | Status   |
-| ------- | ------ | ----------------- | --------------------------------------------------------------------- | -------- |
-| Topic   | `GET`  | `/topics`         | Return the public list of seeded topics for topic discovery.          | Proposed |
-| Topic   | `GET`  | `/topics/:slug`   | Return one topic plus related published article and action summaries. | Proposed |
-| Article | `GET`  | `/articles`       | Return the public list of published articles for top-level discovery. | Proposed |
-| Article | `GET`  | `/articles/:slug` | Return one published article plus related topic and action summaries. | Proposed |
-| Action  | `GET`  | `/actions`        | Return the public list of published actions for top-level discovery.  | Proposed |
-| Action  | `GET`  | `/actions/:slug`  | Return one published action plus related topic and article summaries. | Proposed |
+| Domain  | Method | Route             | Purpose                                                               | Status      |
+| ------- | ------ | ----------------- | --------------------------------------------------------------------- | ----------- |
+| Topic   | `GET`  | `/topics`         | Return the public list of seeded topics for topic discovery.          | Implemented |
+| Topic   | `GET`  | `/topics/:slug`   | Return one topic plus related published article and action summaries. | Implemented |
+| Article | `GET`  | `/articles`       | Return the public list of published articles for top-level discovery. | Implemented |
+| Article | `GET`  | `/articles/:slug` | Return one published article plus related topic and action summaries. | Implemented |
+| Action  | `GET`  | `/actions`        | Return the public list of published actions for top-level discovery.  | Implemented |
+| Action  | `GET`  | `/actions/:slug`  | Return one published action plus related topic and article summaries. | Implemented |
 
 Decisions:
 
@@ -130,7 +130,7 @@ Status: `200 OK`
 
 - Includes topic summary fields only
 - Does not include related articles, actions, or counts in Phase 5
-- Ordering may be implementation-defined in Phase 5 unless explicitly documented later
+- Ordered by `id` ascending in Phase 5
 
 #### Failure Behavior
 
@@ -192,6 +192,7 @@ Status: `200 OK`
 - Includes core topic fields plus nested article and action summary arrays
 - Nested related content must be published-only
 - Nested content uses summary payloads only, not full article bodies or full action descriptions
+- Nested article and action summaries are ordered by `id` ascending
 - Events are excluded from Phase 5 topic detail even though Topics may relate to Events in the data model
 
 #### Failure Behavior
@@ -240,7 +241,7 @@ Status: `200 OK`
 
 - Includes article summary fields only
 - Returns published articles only
-- Ordered by `publishedAt` descending in Phase 5
+- Ordered by `publishedAt` descending, then `id` ascending in Phase 5
 - Does not include related Topics or Actions in the collection response
 
 #### Failure Behavior
@@ -302,6 +303,8 @@ Status: `200 OK`
 - Includes full article content for the requested article
 - Includes the article author for display in the public UI
 - Includes related topic summaries and action summaries
+- Related topic summaries are ordered by `id` ascending
+- Related action summaries are ordered by `id` ascending
 - Excludes Events in Phase 5
 - Only published articles are retrievable through this public route
 - Nested related actions must also be published-only
@@ -368,6 +371,8 @@ Status: `200 OK`
 
 - Includes full action detail for the requested action
 - Includes related topic summaries and article summaries
+- Related topic summaries are ordered by `id` ascending
+- Related article summaries are ordered by `id` ascending
 - Excludes Events in Phase 5
 - Only published actions are retrievable through this public route
 - Nested related articles must also be published-only
@@ -419,7 +424,7 @@ Status: `200 OK`
 
 - Includes action summary fields only
 - Returns published actions only
-- Ordered by `publishedAt` descending in Phase 5
+- Ordered by `publishedAt` descending, then `id` ascending in Phase 5
 - Does not include related Topics or Articles in the collection response
 
 #### Failure Behavior
@@ -613,6 +618,7 @@ Decisions:
 - Detail endpoints return nested related entities
 - Collection endpoints return direct entity fields only
 - Nested payload depth stops at one level of summary objects; nested summaries do not recursively include their own relationships
+- Topic collections and nested relationship arrays use deterministic ordering to keep HTTP responses stable for Phase 6 consumers
 
 ---
 
@@ -722,10 +728,145 @@ Define the minimum test coverage required before Phase 5 can be considered compl
 
 ### Controller/API Coverage
 
-- [ ] success cases for each endpoint
-- [ ] not-found cases for slug detail endpoints
-- [ ] unpublished-content filtering behavior
-- [ ] relationship payload behavior
+- [x] success cases for each endpoint
+- [x] not-found cases for slug detail endpoints
+- [x] unpublished-content filtering behavior
+- [x] relationship payload behavior
+
+### Phase 5.7 Handoff Assessment
+
+This section records which Phase 5.7 non-code checklist items can be closed from
+the current documented contract and existing test evidence, and which items must
+remain open.
+
+#### Closed: coherent discovery graph for Phase 6 UI consumption
+
+Status: Closed
+
+Decision drivers:
+
+- The Phase 5 route inventory defines a complete public discovery surface for
+  Phase 6: `/topics`, `/topics/:slug`, `/articles`, `/articles/:slug`,
+  `/actions`, and `/actions/:slug`.
+- Relationship inclusion rules create a one-level discovery graph across the
+  three Phase 5 domains:
+  - topic detail includes related article and action summaries
+  - article detail includes related topic and action summaries
+  - action detail includes related topic and article summaries
+- This aligns with the active product model and Release 1 scope:
+  - Topics are first-class discovery pages
+  - Actions are the platform center
+  - Events remain excluded from Phase 5 and deferred to Phase 7
+- Existing evidence in route and integration tests confirms those paths are
+  implemented and shaped as expected:
+  - `apps/api/src/topic/topic.controller.route.spec.ts`
+  - `apps/api/src/article/article.controller.route.spec.ts`
+  - `apps/api/src/action/action.controller.route.spec.ts`
+  - `apps/api/test/topic/topic.service.intg-spec.ts`
+  - `apps/api/test/article/article.service.intg-spec.ts`
+  - `apps/api/test/action/action.service.intg-spec.ts`
+
+Reason for closure:
+
+- Phase 6 needs predictable public navigation and cross-linking, not deeper
+  recursive relationship graphs.
+- The current contract provides the required entry points and summary-level
+  relationship payloads without expanding scope into Events, search, or
+  pagination.
+
+#### Closed: publication rules consistently apply across direct and related content
+
+Status: Closed
+
+Decision drivers:
+
+- The publication rules section already defines the intended public visibility
+  policy:
+  - unpublished detail resources resolve as `404`
+  - unpublished related resources are excluded from nested arrays
+  - missing and unpublished public detail resources are intentionally
+    indistinguishable
+- Existing route specs verify public detail `404` behavior for missing and
+  unpublished Article and Action routes.
+- Existing integration specs verify published-only filtering for:
+  - article and action collection routes
+  - topic nested article/action relationships
+  - article nested action relationships
+  - action nested article relationships
+
+Reason for closure:
+
+- The documented policy and current test evidence agree on the core public
+  visibility model for all Phase 5 domains.
+- No additional non-code clarification is needed before Phase 6 consumes these
+  APIs.
+
+#### Closed: final endpoint contracts, relationship behavior, and known deferrals documented
+
+Status: Closed
+
+Decision drivers:
+
+- This document now serves as the canonical Phase 5 handoff artifact covering:
+  - final route inventory
+  - route-by-route response contracts
+  - relationship inclusion rules
+  - publication and visibility rules
+  - boundary decisions
+  - testing expectations
+  - phase deferrals
+- The contract stays inside the approved Phase 5 boundary and matches the
+  governance docs that prevent scope expansion into Event APIs, admin CRUD,
+  search, filtering, or pagination.
+
+Reason for closure:
+
+- Downstream Phase 6 UI work has enough contract detail to proceed without
+  reinterpreting payload shape or relationship behavior.
+
+#### Closed: integration/e2e coverage added for the final Phase 5 endpoint set
+
+Status: Closed
+
+Decision drivers:
+
+- Dedicated e2e suites now exist for the final Phase 5 endpoint set:
+  - `apps/api/test/topic/topic.e2e-spec.ts`
+  - `apps/api/test/article/article.e2e-spec.ts`
+  - `apps/api/test/action/action.e2e-spec.ts`
+- These suites exercise the real `AppModule` while overriding `PrismaService`
+  with `jestPrisma.client` so factory-created records and HTTP reads share the
+  same per-test transaction boundary.
+- The e2e coverage now asserts the final HTTP contract for:
+  - all six public Phase 5 routes
+  - collection payloads
+  - detail payloads
+  - missing-resource `404` behavior
+  - unpublished Article/Action detail `404` behavior
+  - published-only nested relationship filtering
+  - deterministic ordering on topic, article, and action reads
+
+Reason for closure:
+
+- Phase 5 now has full-app HTTP coverage in addition to controller-route and
+  service integration coverage, which closes the remaining confidence gap for
+  the final public endpoint set.
+
+Validation note:
+
+- The e2e suites could not be executed in this environment because Testcontainers
+  requires a working local container runtime. The suites are implemented and
+  linted, and should be run in a Docker-capable local or CI environment.
+
+#### Closed: phase status and notes updated after Phase 5 completion
+
+Status: Closed
+
+Decision drivers:
+
+- The remaining 5.7 documentation and e2e coverage work has been completed.
+- The Phase 5 contracts, ordering behavior, and phase handoff notes are now
+  recorded in the canonical Phase 5 contract document and `progress.md`.
 
 ### Out Of Scope For This Phase
 

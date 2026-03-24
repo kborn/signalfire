@@ -40,9 +40,7 @@ describe('ActionRepository', () => {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   });
 
@@ -67,18 +65,6 @@ describe('ActionRepository', () => {
     expect(ret).toEqual(action);
     expect(prismaMock.action.findUnique).toHaveBeenCalledWith({
       where: { slug: slug, status: EntityStatus.PUBLISHED },
-      include: {
-        topicActions: {
-          include: {
-            topic: true,
-          },
-        },
-        articleActions: {
-          include: {
-            article: true,
-          },
-        },
-      },
     });
   });
 
@@ -101,6 +87,9 @@ describe('ActionRepository', () => {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   });
 
@@ -122,6 +111,9 @@ describe('ActionRepository', () => {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   });

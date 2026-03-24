@@ -71,6 +71,20 @@ describe('TopicService', () => {
     expect(repoMock.findAll).toHaveBeenCalled();
   });
 
+  it('getTopics preserves repository ordering for deterministic topic responses', async () => {
+    const laterTopic = {
+      ...topic,
+      id: 2,
+      slug: 'climate',
+      name: 'Climate',
+    };
+    repoMock.findAll.mockResolvedValue([topic, laterTopic]);
+
+    const ret = await service.getTopics();
+
+    expect(ret.items.map((item) => item.slug)).toEqual(['democracy', 'climate']);
+  });
+
   it('getTopicDetail', async () => {
     repoMock.findBySlug.mockResolvedValue(topic);
     actionServiceMock.getActionsForTopic.mockResolvedValue([action]);
@@ -105,6 +119,38 @@ describe('TopicService', () => {
       ],
     });
     expect(repoMock.findBySlug).toHaveBeenCalledWith(slug);
+  });
+
+  it('getTopicDetail preserves related-content ordering returned by published lookups', async () => {
+    const secondArticle = {
+      ...article,
+      id: 2,
+      slug: 'second-article',
+      title: 'Second Article',
+      summary: 'Second summary.',
+    };
+    const secondAction = {
+      ...action,
+      id: 2,
+      slug: 'second-action',
+      title: 'Second Action',
+      summary: 'Second action summary.',
+      actionType: ActionType.DONATE,
+    };
+    repoMock.findBySlug.mockResolvedValue(topic);
+    articleServiceMock.getArticlesForTopic.mockResolvedValue([article, secondArticle]);
+    actionServiceMock.getActionsForTopic.mockResolvedValue([action, secondAction]);
+
+    const ret = await service.getTopicDetail('democracy');
+
+    expect(ret.articles.map((item) => item.slug)).toEqual([
+      'protect-voting-rights',
+      'second-article',
+    ]);
+    expect(ret.actions.map((item) => item.slug)).toEqual([
+      'call-your-representative',
+      'second-action',
+    ]);
   });
 
   it('findTopicNotFound', async () => {
