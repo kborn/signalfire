@@ -10,42 +10,77 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install Monorepo
-        run: pnpm install --frozen-lockfile
-
-      - name: Prisma generate
-        env:
-          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
-        run: pnpm api:prisma:generate
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
 
       - name: Monorepo lint
-        continue-on-error: true
         run: pnpm lint
 
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
+
       - name: Monorepo typecheck
-        continue-on-error: true
         run: pnpm typecheck
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
 
       - name: Monorepo build
         run: pnpm build
 
-      - name: Monorepo test
-        run: pnpm test
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: Web unit test
+        run: pnpm --filter web test
+
+      - name: API unit test
+        run: pnpm --filter api test:unit
+
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
 
       - name: API Integration test
         run: pnpm --filter api test:integration
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup monorepo
+        uses: ./.github/actions/setup-monorepo
+
+      - name: E2E test
+        run: pnpm --filter api test:e2e
