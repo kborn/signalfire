@@ -10,7 +10,39 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Monorepo lint
+        continue-on-error: true
+        run: pnpm lint
+
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Monorepo typecheck
+        continue-on-error: true
+        run: pnpm typecheck
+
+  unit-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,22 +65,60 @@ jobs:
           DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
         run: pnpm api:prisma:generate
 
-      - name: Monorepo lint
-        continue-on-error: true
-        run: pnpm lint
-
-      - name: Monorepo typecheck
-        continue-on-error: true
-        run: pnpm typecheck
-
       - name: Monorepo build
         run: pnpm build
 
       - name: Monorepo test
         run: pnpm test
 
+  integration-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Monorepo
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
+
+      - name: Monorepo build
+        run: pnpm build
+
       - name: API Integration test
         run: pnpm --filter api test:integration
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Install Monorepo
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
+
+      - name: Monorepo build
+        run: pnpm build
 
       - name: E2E test
         run: pnpm --filter api test:e2e
