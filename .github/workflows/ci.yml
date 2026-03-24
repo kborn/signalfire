@@ -13,6 +13,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
@@ -22,6 +25,9 @@ jobs:
   typecheck:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
@@ -31,6 +37,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
@@ -40,6 +49,9 @@ jobs:
   unit-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
@@ -52,6 +64,9 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
@@ -61,6 +76,9 @@ jobs:
   e2e-test:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
