@@ -17,7 +17,5 @@ __pycache__/
 apps/api/.turbo
 apps/web/.turbo
 
-# Personal cheatsheet
-docs/.learnings/
+# Personal working notes
 docs/.agent_phase_notes
-
