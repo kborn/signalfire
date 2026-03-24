@@ -28,6 +28,11 @@ jobs:
       - name: Install Monorepo
         run: pnpm install --frozen-lockfile
 
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
+
       - name: Monorepo lint
         run: pnpm lint
 
@@ -48,6 +53,11 @@ jobs:
 
       - name: Install Monorepo
         run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
 
       - name: Monorepo typecheck
         run: pnpm typecheck
