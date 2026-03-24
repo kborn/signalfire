@@ -26,6 +26,7 @@ describe('ArticleService', () => {
   };
   const actionRepoMock = {
     findPublishedByArticleId: jest.fn(),
+    findBySlug: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -123,6 +124,48 @@ describe('ArticleService', () => {
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
     expect(topicRepoMock.findByArticleId).toHaveBeenCalledWith(1);
     expect(actionRepoMock.findPublishedByArticleId).toHaveBeenCalledWith(1);
+    expect(actionRepoMock.findBySlug).not.toHaveBeenCalled();
+  });
+
+  it('getPublishedArticleDetail only includes related actions returned by the published lookup', async () => {
+    const publishedArticle = buildArticleEntity();
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticle);
+    topicRepoMock.findByArticleId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+    actionRepoMock.findPublishedByArticleId.mockResolvedValue([
+      {
+        id: 2,
+        slug: 'published-related-action',
+        title: 'Published Related Action',
+        summary: 'Published related action summary.',
+        description: 'Published related action description.',
+        actionType: ActionType.CONTACT,
+        status: 'PUBLISHED',
+        createdAt: ARTICLE_TEST_DATE,
+        publishedAt: ARTICLE_TEST_DATE,
+        updatedAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+
+    const ret = await service.getPublishedArticleDetail('test');
+
+    expect(ret.actions).toEqual([
+      {
+        id: 2,
+        slug: 'published-related-action',
+        title: 'Published Related Action',
+        summary: 'Published related action summary.',
+        actionType: ActionType.CONTACT,
+        publishedAt: ARTICLE_TEST_DATE.toISOString(),
+      },
+    ]);
   });
 
   it('getPublishedArticleDetailNotFound', async () => {
