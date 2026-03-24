@@ -16,13 +16,15 @@ It is the canonical answer to: “Where are we in the plan?”
 | **[6](#-phase-6--content-discovery-ui-)**         | **Content Discovery UI**        | **🚧 ACTIVE** |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
 | [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
-| [9](#-phase-9--submission-system-)                | Submission System               | ⏳            |
-| [10](#-phase-10--moderation-workflow-)            | Moderation Workflow             | ⏳            |
-| [11](#-phase-11--admin-interface-)                | Admin Interface                 | ⏳            |
-| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
-| [13](#-phase-13--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
-| [14](#-phase-14--release-stabilization-)          | Release Stabilization           | ⏳            |
-| [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ⏳            |
+| [10](#-phase-10--submission-system-)              | Submission System               | ⏳            |
+| [11](#-phase-11--moderation-workflow-)            | Moderation Workflow             | ⏳            |
+| [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳            |
+| [13](#-phase-13--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
+| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
+| [15](#-phase-15--analytics-)                      | Analytics                       | ⏳            |
+| [16](#-phase-16--release-stabilization-)          | Release Stabilization           | ⏳            |
+| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -608,14 +610,102 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ###### Goal
 
-Implement public browsing UI for topics, articles, and actions.
+Implement a minimal public discovery UI for topics, articles, and actions
+using the existing Phase 5 public APIs.
 
-Capabilities:
+###### Definition of Done
 
-- topic pages
-- article pages
-- action pages
-- cross-linking between content
+- [ ] Users can browse topics and view topic detail pages
+- [ ] Users can browse articles and view article detail pages
+- [ ] Users can browse actions and view action detail pages
+- [ ] Users can navigate between related topics, articles, and actions
+- [ ] UI consumes the current Phase 5 public APIs without requiring backend scope expansion
+- [ ] No Phase 6 work depends on Events, search, filtering, pagination, or unpublished-content handling
+
+---
+
+#### ▸ Phase 6.1 - Routing & Page Structure ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement Next.js routes for `/`, `/topics`, `/topics/[slug]`, `/articles`, `/articles/[slug]`, `/actions`, and `/actions/[slug]`
+- [ ] Add global navigation linking Home, Topics, Articles, and Actions
+- [ ] Add a shared application layout wrapper sufficient for public browsing flows
+
+---
+
+#### ▸ Phase 6.2 - Topic Discovery Flow ⏳
+
+###### Phase Tasks:
+
+- [ ] Render the topic listing page from `GET /topics`
+- [ ] Render topic detail pages from `GET /topics/:slug`
+- [ ] Show topic name and description plus related article and action summaries
+- [ ] Link related article and action summaries to their detail pages
+
+---
+
+#### ▸ Phase 6.3 - Article Experience ⏳
+
+###### Phase Tasks:
+
+- [ ] Render the article listing page from `GET /articles`
+- [ ] Render article detail pages from `GET /articles/:slug`
+- [ ] Display full article content plus related topics and related actions
+- [ ] Make related topics and actions clearly discoverable and clickable
+
+---
+
+#### ▸ Phase 6.4 - Action Discovery ⏳
+
+###### Phase Tasks:
+
+- [ ] Render the action listing page from `GET /actions`
+- [ ] Render action detail pages from `GET /actions/:slug`
+- [ ] Display full action detail plus related topics and related articles
+- [ ] Make related topics and articles clearly discoverable and clickable
+
+---
+
+#### ▸ Phase 6.5 - Cross-Link Navigation Model ⏳
+
+###### Phase Tasks:
+
+- [ ] Support Topic -> Article navigation
+- [ ] Support Topic -> Action navigation
+- [ ] Support Article -> Topic navigation
+- [ ] Support Article -> Action navigation
+- [ ] Support Action -> Topic navigation
+- [ ] Support Action -> Article navigation
+
+---
+
+#### ▸ Phase 6.6 - UI Behavior Constraints ⏳
+
+###### Phase Tasks:
+
+- [ ] Rely on API-level published-only guarantees and do not add draft-state UI
+- [ ] Do not add pagination in Phase 6
+- [ ] Do not add search in Phase 6
+- [ ] Do not add filtering in Phase 6
+- [ ] Do not add Event UI in Phase 6
+
+---
+
+#### ▸ Phase 6.7 - Minimal Home Page ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement a simple home page that explains the platform at a high level
+- [ ] Link prominently to Topics, Articles, and Actions from the home page
+
+---
+
+###### Notes:
+
+- Phase 6 should emphasize the Learn -> Decide -> Act discovery loop without turning the product into a generic blog UI.
+- Keep implementation intentionally simple; avoid introducing a design system, component library, advanced animation work, or other scope-expanding UI infrastructure unless explicitly approved.
+- Working guidance for the Phase 6 baseline UI versus later polish is captured in `docs/.agent_phase_notes/phase6-ui-baseline-vs-phase8-polish.md`.
 
 ---
 
@@ -653,7 +743,28 @@ Capabilities:
 
 ---
 
-### ► Phase 9 — Submission System ⏳
+### ► Phase 9 — UI Polish ⏳
+
+###### Goal
+
+Refine the public product UI so the platform feels intentional, cohesive, and ready for broader user-facing evaluation.
+
+Capabilities:
+
+- visual polish across public browsing pages
+- improved layout consistency and hierarchy
+- stronger calls to action and discovery affordances
+- responsive behavior refinement
+
+###### Notes:
+
+- Use `docs/.agent_phase_notes/phase6-ui-baseline-vs-phase8-polish.md` as temporary working guidance for what should remain baseline structure in Phase 6 versus polish work deferred to this phase.
+
+---
+
+---
+
+### ► Phase 10 — Submission System ⏳
 
 ###### Goal
 
@@ -669,7 +780,7 @@ Capabilities:
 
 ---
 
-### ► Phase 10 — Moderation Workflow ⏳
+### ► Phase 11 — Moderation Workflow ⏳
 
 ###### Goal
 
@@ -685,7 +796,7 @@ Capabilities:
 
 ---
 
-### ► Phase 11 — Admin Interface ⏳
+### ► Phase 12 — Admin Interface ⏳
 
 ###### Goal
 
@@ -706,7 +817,7 @@ Capabilities:
 
 ---
 
-### ► Phase 12 — Search & Discovery Improvements ⏳
+### ► Phase 13 — Search & Discovery Improvements ⏳
 
 ###### Goal
 
@@ -716,7 +827,7 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-### ► Phase 13 — Deployment Infrastructure ⏳
+### ► Phase 14 — Deployment Infrastructure ⏳
 
 ###### Goal
 
@@ -726,7 +837,24 @@ Configure hosting, environment management, and CI/CD.
 
 ---
 
-### ► Phase 14 — Release Stabilization ⏳
+### ► Phase 15 — Analytics ⏳
+
+###### Goal
+
+Implement basic product analytics so the team can measure visitor volume, acquisition sources, and core discovery-to-action traffic patterns.
+
+Capabilities:
+
+- visitor traffic measurement
+- traffic source attribution
+- basic page and flow analytics across the public site
+- baseline reporting to support launch decisions
+
+---
+
+---
+
+### ► Phase 16 — Release Stabilization ⏳
 
 ###### Goal
 
@@ -736,7 +864,7 @@ Bug fixes, polish, and observability improvements.
 
 ---
 
-### ► Phase 15 — Public Launch ⏳
+### ► Phase 17 — Public Launch ⏳
 
 ###### Goal
 
