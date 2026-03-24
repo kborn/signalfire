@@ -49,3 +49,6 @@ jobs:
 
       - name: API Integration test
         run: pnpm --filter api test:integration
+
+      - name: E2E test
+        run: pnpm --filter api test:e2e
