@@ -49,14 +49,34 @@ jobs:
       - name: Install Monorepo
         run: pnpm install --frozen-lockfile
 
+      - name: Monorepo typecheck
+        run: pnpm typecheck
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Monorepo typecheck
-        run: pnpm typecheck
+      - name: Install Monorepo
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        env:
+          DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+        run: pnpm api:prisma:generate
+
+      - name: Monorepo build
+        run: pnpm build
 
   unit-test:
     runs-on: ubuntu-latest
@@ -81,11 +101,11 @@ jobs:
           DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
         run: pnpm api:prisma:generate
 
-      - name: Monorepo build
-        run: pnpm build
+      - name: Web unit test
+        run: pnpm --filter web test
 
-      - name: Monorepo test
-        run: pnpm test
+      - name: API unit test
+        run: pnpm --filter api test:unit
 
   integration-test:
     runs-on: ubuntu-latest
@@ -109,9 +129,6 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
         run: pnpm api:prisma:generate
-
-      - name: Monorepo build
-        run: pnpm build
 
       - name: API Integration test
         run: pnpm --filter api test:integration
@@ -138,9 +155,6 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
         run: pnpm api:prisma:generate
-
-      - name: Monorepo build
-        run: pnpm build
 
       - name: E2E test
         run: pnpm --filter api test:e2e
