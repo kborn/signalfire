@@ -21,4 +21,4 @@ It does not define bootstrap order or required session initialization steps.
 - No scope expansion without explicit human approval
 - Keep responses concise and directly actionable
 - During implementation-oriented sessions, be aware of the learning workflow in `docs/learnings/` and prompt the user if they want a syllabus refreshed or generated for the current subtask
-- Treat `docs/.agent_phase_notes/` as optional, non-canonical working context when relevant to the active phase; do not let it override canonical governance, spec, or architecture docs
+- Treat `.ai/phase-notes/` as optional working context when relevant to the active phase and follow `.ai/bootstrap/DOC_AUTHORITY.md` for documentation authority rules

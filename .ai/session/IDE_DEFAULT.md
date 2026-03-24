@@ -14,18 +14,11 @@ It is not a role definition and does not replace `.ai/roles/` files.
 ## Optional phase context
 
 After bootstrap is complete and the active phase is known, optionally check
-`docs/.agent_phase_notes/<phase>/` or similarly named files for the current
+`.ai/phase-notes/<phase>/` or similarly named files for the current
 phase when they exist and are relevant to the user's request.
 
-Phase notes are:
-
-- optional local working context
-- non-blocking
-- non-canonical
-- never allowed to override `docs/agent-governance/`, `docs/specs/`, or `docs/architecture/`
-
-If guidance in a phase note becomes durable or implementation-critical, promote
-it into a canonical document rather than relying on the local note during init.
+Authority and usage rules for canonical versus non-canonical docs are defined in
+`.ai/bootstrap/DOC_AUTHORITY.md`.
 
 ## Role switching
 

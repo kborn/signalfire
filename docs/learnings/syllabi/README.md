@@ -6,6 +6,9 @@ Each syllabus should be tied to a real phase, feature, or subtask in the
 project and should teach the concepts needed to complete that work in a
 practical order.
 
+Syllabi are committed repo artifacts, so their references should point only to
+committed repo files, not `.ai/` paths.
+
 Examples:
 
 - `phase-6-discovery-ui-syllabus.md`

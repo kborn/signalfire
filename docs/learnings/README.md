@@ -57,10 +57,12 @@ This prompt should be lightweight. It is an offer, not a mandatory detour.
 - Prefer practical, repo-specific teaching over generic framework tutorials.
 - Avoid creating large numbers of cards for one-off trivia.
 - Update existing cards when possible instead of duplicating concepts.
+- Learning artifacts committed under `docs/` must cite only committed repo
+  documents. Do not reference `.ai/` paths from committed learning docs.
 - Keep this directory curated. It is not a dumping ground for raw agent notes,
   throwaway drafts, or transient session output.
 - Temporary working notes that are not durable enough for repo review belong in
-  `docs/.agent_phase_notes/`, not here.
+  `.ai/phase-notes/`, not here.
 
 ## Related Docs
 

@@ -51,6 +51,10 @@ Examples:
 - `phase-6-routing-and-data-fetching-syllabus.md`
 - `phase-10-moderation-review-flow-syllabus.md`
 
+Because syllabi are committed repo artifacts, they must reference only
+committed repo files. Agents may use `.ai/` materials during live reasoning,
+but final syllabus content must not cite `.ai/` paths.
+
 ## Syllabus Requirements
 
 Each syllabus should stay practical and should teach only what is relevant to
@@ -131,6 +135,9 @@ They do not override:
 
 If a syllabus depends on canonical product or architecture decisions, link to
 the relevant source documents.
+
+If useful guidance exists only in `.ai/` notes, promote the durable rule into a
+committed canonical or repo-visible doc before citing it from a syllabus.
 
 ## Curation Rule
 
