@@ -1,14 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
+import { TopicRepository } from '../topic/topic.repository';
+import { ActionRepository } from '../action/action.repository';
 import { NotFoundException } from '@nestjs/common';
 import {
   ARTICLE_TEST_DATE,
   buildArticleListResponse,
-  buildArticleDetailRecord,
   buildArticleDetailResponse,
   buildArticleEntity,
 } from './article.test-fixtures';
+import { ActionType } from '@prisma/client';
 
 describe('ArticleService', () => {
   let service: ArticleService;
@@ -19,12 +21,24 @@ describe('ArticleService', () => {
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByActionId: jest.fn(),
   };
+  const topicRepoMock = {
+    findByArticleId: jest.fn(),
+  };
+  const actionRepoMock = {
+    findPublishedByArticleId: jest.fn(),
+    findBySlug: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ArticleService, { provide: ArticleRepository, useValue: repoMock }],
+      providers: [
+        ArticleService,
+        { provide: ArticleRepository, useValue: repoMock },
+        { provide: TopicRepository, useValue: topicRepoMock },
+        { provide: ActionRepository, useValue: actionRepoMock },
+      ],
     }).compile();
     service = module.get(ArticleService);
   });
@@ -77,14 +91,81 @@ describe('ArticleService', () => {
   });
 
   it('getPublishedArticleDetail', async () => {
-    const publishedArticleDetail = buildArticleDetailRecord();
-    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticleDetail);
+    const publishedArticle = buildArticleEntity();
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticle);
+    topicRepoMock.findByArticleId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+    actionRepoMock.findPublishedByArticleId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        description: 'A longer action description.',
+        actionType: ActionType.CONTACT,
+        status: 'PUBLISHED',
+        createdAt: ARTICLE_TEST_DATE,
+        publishedAt: ARTICLE_TEST_DATE,
+        updatedAt: ARTICLE_TEST_DATE,
+      },
+    ]);
 
     const slug = 'test';
     const ret = await service.getPublishedArticleDetail(slug);
 
     expect(ret).toEqual(buildArticleDetailResponse());
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
+    expect(topicRepoMock.findByArticleId).toHaveBeenCalledWith(1);
+    expect(actionRepoMock.findPublishedByArticleId).toHaveBeenCalledWith(1);
+    expect(actionRepoMock.findBySlug).not.toHaveBeenCalled();
+  });
+
+  it('getPublishedArticleDetail only includes related actions returned by the published lookup', async () => {
+    const publishedArticle = buildArticleEntity();
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticle);
+    topicRepoMock.findByArticleId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+    actionRepoMock.findPublishedByArticleId.mockResolvedValue([
+      {
+        id: 2,
+        slug: 'published-related-action',
+        title: 'Published Related Action',
+        summary: 'Published related action summary.',
+        description: 'Published related action description.',
+        actionType: ActionType.CONTACT,
+        status: 'PUBLISHED',
+        createdAt: ARTICLE_TEST_DATE,
+        publishedAt: ARTICLE_TEST_DATE,
+        updatedAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+
+    const ret = await service.getPublishedArticleDetail('test');
+
+    expect(ret.actions).toEqual([
+      {
+        id: 2,
+        slug: 'published-related-action',
+        title: 'Published Related Action',
+        summary: 'Published related action summary.',
+        actionType: ActionType.CONTACT,
+        publishedAt: ARTICLE_TEST_DATE.toISOString(),
+      },
+    ]);
   });
 
   it('getPublishedArticleDetailNotFound', async () => {

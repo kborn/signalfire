@@ -1,11 +1,10 @@
-import { ActionType, EntityStatus } from '@prisma/client';
+import { ActionType, Article, EntityStatus } from '@prisma/client';
 import { ArticleListResponse, ArticleDetailResponse } from './article.types';
-import { ArticleDetailRecord } from './article.repository.types';
 
 export const ARTICLE_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 
-export function buildArticleEntity(overrides: Partial<ArticleDetailRecord> = {}) {
+export function buildArticleEntity(overrides: Partial<Article> = {}) {
   return {
     id: 1,
     slug: 'protect-voting-rights',
@@ -17,53 +16,8 @@ export function buildArticleEntity(overrides: Partial<ArticleDetailRecord> = {})
     createdAt: ARTICLE_TEST_DATE,
     publishedAt: ARTICLE_TEST_DATE,
     updatedAt: ARTICLE_TEST_DATE,
-    topicArticles: [],
-    articleActions: [],
     ...overrides,
-  } satisfies ArticleDetailRecord;
-}
-
-export function buildArticleDetailRecord(
-  overrides: Partial<ArticleDetailRecord> = {},
-): ArticleDetailRecord {
-  return buildArticleEntity({
-    topicArticles: [
-      {
-        topicId: 1,
-        articleId: 1,
-        assignedAt: ARTICLE_TEST_DATE,
-        assignedBy: 'SignalFire Staff',
-        topic: {
-          id: 1,
-          slug: 'democracy',
-          name: 'Democracy',
-          description: 'desc',
-          createdAt: ARTICLE_TEST_DATE,
-        },
-      },
-    ],
-    articleActions: [
-      {
-        articleId: 1,
-        actionId: 1,
-        assignedAt: ARTICLE_TEST_DATE,
-        assignedBy: 'SignalFire Staff',
-        action: {
-          id: 1,
-          slug: 'call-your-representative',
-          title: 'Call Your Representative',
-          summary: 'A short action summary.',
-          description: 'A longer action description.',
-          actionType: ActionType.CONTACT,
-          status: EntityStatus.PUBLISHED,
-          createdAt: ARTICLE_TEST_DATE,
-          publishedAt: ARTICLE_TEST_DATE,
-          updatedAt: ARTICLE_TEST_DATE,
-        },
-      },
-    ],
-    ...overrides,
-  });
+  } satisfies Article;
 }
 
 export function buildArticleListResponse(

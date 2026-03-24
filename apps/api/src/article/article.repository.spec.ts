@@ -40,9 +40,7 @@ describe('ArticleRepository', () => {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   });
 
@@ -69,18 +67,6 @@ describe('ArticleRepository', () => {
     expect(ret).toEqual(article);
     expect(prismaMock.article.findUnique).toHaveBeenCalledWith({
       where: { slug: slug, status: EntityStatus.PUBLISHED },
-      include: {
-        topicArticles: {
-          include: {
-            topic: true,
-          },
-        },
-        articleActions: {
-          include: {
-            action: true,
-          },
-        },
-      },
     });
   });
 
@@ -103,6 +89,9 @@ describe('ArticleRepository', () => {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   });
 
@@ -124,6 +113,9 @@ describe('ArticleRepository', () => {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   });

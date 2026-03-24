@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Action, EntityStatus } from '@prisma/client';
-import type { ActionDetailRecord } from './action.repository.types';
-import { actionDetailInclude } from './action.repository.types';
 
 @Injectable()
 export class ActionRepository {
@@ -21,19 +19,16 @@ export class ActionRepository {
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: {
-        publishedAt: 'desc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   }
 
-  findPublishedBySlug(slug: string): Promise<ActionDetailRecord | null> {
+  findPublishedBySlug(slug: string): Promise<Action | null> {
     return this.prisma.action.findUnique({
       where: {
         status: EntityStatus.PUBLISHED,
         slug: slug,
       },
-      include: actionDetailInclude,
     });
   }
 
@@ -49,6 +44,9 @@ export class ActionRepository {
           },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     });
   }
 
@@ -63,6 +61,9 @@ export class ActionRepository {
             },
           },
         },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   }

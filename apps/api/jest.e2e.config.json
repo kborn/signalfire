@@ -1,9 +1,12 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": "test",
-  "testEnvironment": "node",
+  "testEnvironment": "<rootDir>/intg-config/prisma-pg.environment.js",
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
-  }
+  },
+  "globalSetup": "<rootDir>/intg-config/globalSetup.js",
+  "globalTeardown": "<rootDir>/intg-config/globalTeardown.js",
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"]
 }
