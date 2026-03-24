@@ -67,28 +67,6 @@ describe('ArticleRepository', () => {
     expect(ret).toEqual(article);
     expect(prismaMock.article.findUnique).toHaveBeenCalledWith({
       where: { slug: slug, status: EntityStatus.PUBLISHED },
-      include: {
-        topicArticles: {
-          orderBy: {
-            topic: {
-              id: 'asc',
-            },
-          },
-          include: {
-            topic: true,
-          },
-        },
-        articleActions: {
-          orderBy: {
-            action: {
-              id: 'asc',
-            },
-          },
-          include: {
-            action: true,
-          },
-        },
-      },
     });
   });
 

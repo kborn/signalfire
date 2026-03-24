@@ -1,15 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActionService } from './action.service';
 import { ActionRepository } from './action.repository';
+import { TopicRepository } from '../topic/topic.repository';
+import { ArticleRepository } from '../article/article.repository';
 import { NotFoundException } from '@nestjs/common';
 import {
   ACTION_TEST_DATE,
   buildActionListResponse,
-  buildActionDetailRecord,
   buildActionDetailResponse,
   buildActionEntity,
 } from './action.test-fixtures';
-import { ActionType } from '@prisma/client';
+import { ActionType, EntityStatus } from '@prisma/client';
 
 describe('ActionService', () => {
   let service: ActionService;
@@ -20,12 +21,23 @@ describe('ActionService', () => {
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByArticleId: jest.fn(),
   };
+  const topicRepoMock = {
+    findByActionId: jest.fn(),
+  };
+  const articleRepoMock = {
+    findPublishedByActionId: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ActionService, { provide: ActionRepository, useValue: repoMock }],
+      providers: [
+        ActionService,
+        { provide: ActionRepository, useValue: repoMock },
+        { provide: TopicRepository, useValue: topicRepoMock },
+        { provide: ArticleRepository, useValue: articleRepoMock },
+      ],
     }).compile();
     service = module.get(ActionService);
   });
@@ -81,8 +93,31 @@ describe('ActionService', () => {
   });
 
   it('getPublishedActionDetail', async () => {
-    const publishedActionDetail = buildActionDetailRecord();
-    repoMock.findPublishedBySlug.mockResolvedValue(publishedActionDetail);
+    const publishedAction = buildActionEntity();
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedAction);
+    topicRepoMock.findByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ACTION_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'SignalFire Staff',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
 
     const slug = 'test';
     const ret = await service.getPublishedActionDetail(slug);
@@ -90,6 +125,8 @@ describe('ActionService', () => {
     expect(ret).toEqual(buildActionDetailResponse());
 
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
+    expect(topicRepoMock.findByActionId).toHaveBeenCalledWith(1);
+    expect(articleRepoMock.findPublishedByActionId).toHaveBeenCalledWith(1);
   });
 
   it('getActionsForTopic', async () => {

@@ -19,4 +19,34 @@ export class TopicRepository {
       where: { slug: slug },
     });
   }
+
+  findByArticleId(articleId: number): Promise<Topic[]> {
+    return this.prisma.topic.findMany({
+      where: {
+        topicArticles: {
+          some: {
+            articleId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
+
+  findByActionId(actionId: number): Promise<Topic[]> {
+    return this.prisma.topic.findMany({
+      where: {
+        topicActions: {
+          some: {
+            actionId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
 }

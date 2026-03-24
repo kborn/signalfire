@@ -2,11 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ActionRepository } from './action.repository';
 import { Action } from '@prisma/client';
 import type { ActionDetailResponse, ActionListResponse } from './action.types';
-import type { ActionDetailRecord } from './action.repository.types';
+import { TopicRepository } from '../topic/topic.repository';
+import { ArticleRepository } from '../article/article.repository';
 
 @Injectable()
 export class ActionService {
-  constructor(private repository: ActionRepository) {}
+  constructor(
+    private repository: ActionRepository,
+    private topicRepository: TopicRepository,
+    private articleRepository: ArticleRepository,
+  ) {}
 
   private requirePublishedAt(publishedAt: Date | null): Date {
     if (!publishedAt) {
@@ -39,7 +44,11 @@ export class ActionService {
     if (!action) {
       throw new NotFoundException(`No published action found with slug ${slug}`);
     }
-    return this.toActionDetailResponse(action);
+    const [topics, articles] = await Promise.all([
+      this.topicRepository.findByActionId(action.id),
+      this.articleRepository.findPublishedByActionId(action.id),
+    ]);
+    return this.toActionDetailResponse(action, topics, articles);
   }
 
   getActionsForTopic(topicSlug: string): Promise<Action[]> {
@@ -50,15 +59,19 @@ export class ActionService {
     return this.repository.findPublishedByArticleId(articleId);
   }
 
-  private toActionDetailResponse(action: ActionDetailRecord): ActionDetailResponse {
-    const topics = action.topicActions.map(({ topic }) => ({
+  private toActionDetailResponse(
+    action: Action,
+    topics: Awaited<ReturnType<TopicRepository['findByActionId']>>,
+    articles: Awaited<ReturnType<ArticleRepository['findPublishedByActionId']>>,
+  ): ActionDetailResponse {
+    const topicSummaries = topics.map((topic) => ({
       id: topic.id,
       slug: topic.slug,
       name: topic.name,
       description: topic.description,
     }));
 
-    const articles = action.articleActions.map(({ article }) => ({
+    const articleSummaries = articles.map((article) => ({
       id: article.id,
       slug: article.slug,
       title: article.title,
@@ -75,8 +88,8 @@ export class ActionService {
       actionType: action.actionType,
       updatedAt: action.updatedAt.toISOString(),
       publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
-      topics,
-      articles,
+      topics: topicSummaries,
+      articles: articleSummaries,
     };
   }
 }
