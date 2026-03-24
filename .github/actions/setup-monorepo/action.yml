@@ -1,0 +1,35 @@
+name: Setup Monorepo
+description: Checkout code, install pnpm, setup Node with pnpm cache, install dependencies, and optionally generate Prisma client.
+
+inputs:
+  node-version:
+    description: Node.js version to use.
+    required: false
+    default: '20'
+  generate-prisma:
+    description: Whether to run Prisma client generation for the API workspace.
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+
+    - name: Install Monorepo
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
+    - name: Prisma generate
+      if: ${{ inputs.generate-prisma == 'true' }}
+      shell: bash
+      env:
+        DATABASE_URL: postgresql://postgres:dummy@dummy:5432/signalfire?schema=public
+      run: pnpm api:prisma:generate
