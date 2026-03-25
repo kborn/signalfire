@@ -624,17 +624,17 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.1 - Routing & Page Structure ⏳
+#### ▸ Phase 6.1 - Routing & Page Structure ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement Next.js routes for `/`, `/topics`, `/topics/[slug]`, `/articles`, `/articles/[slug]`, `/actions`, and `/actions/[slug]`
-- [ ] Add global navigation linking Home, Topics, Articles, and Actions
-- [ ] Add a shared application layout wrapper sufficient for public browsing flows
+- [x] Implement Next.js routes for `/`, `/topics`, `/topics/[slug]`, `/articles`, `/articles/[slug]`, `/actions`, and `/actions/[slug]`
+- [x] Add global navigation linking Home, Topics, Articles, and Actions
+- [x] Add a shared application layout wrapper sufficient for public browsing flows
 
 ---
 
-#### ▸ Phase 6.2 - Topic Discovery Flow ⏳
+#### ▸ Phase 6.2 - Topic Discovery Flow 🚧
 
 ###### Phase Tasks:
 

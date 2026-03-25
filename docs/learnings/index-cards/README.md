@@ -30,6 +30,13 @@ These cards may be created or updated alongside task-linked syllabi in
 - [08-async-does-not-fix-cpu.md](./08-async-does-not-fix-cpu.md) - Why `async` does not make CPU-heavy synchronous work non-blocking
 - [14-who-tracks-async-work.md](./14-who-tracks-async-work.md) - Who coordinates pending async work in Node
 - [15-sequential-vs-parallel-awaits.md](./15-sequential-vs-parallel-awaits.md) - Sequential vs parallel async request patterns
+- [16-layout-vs-page-in-next-app-router.md](./16-layout-vs-page-in-next-app-router.md) - What belongs in `layout.tsx` vs `page.tsx` in the Next App Router
+- [17-dynamic-slug-routes.md](./17-dynamic-slug-routes.md) - How `[slug]` folders map to dynamic route values
+- [18-semantic-html-page-structure.md](./18-semantic-html-page-structure.md) - What `header`, `nav`, `main`, and `section` mean in page structure
+- [19-div-vs-section-vs-main.md](./19-div-vs-section-vs-main.md) - When to use `div`, `section`, and `main`
+- [20-layout-containers.md](./20-layout-containers.md) - What a shared layout container does
+- [21-spacing-and-vertical-rhythm.md](./21-spacing-and-vertical-rhythm.md) - Why consistent spacing matters before polish
+- [22-css-class-selectors.md](./22-css-class-selectors.md) - How CSS classes connect styles to JSX elements
 
 Rule of thumb:
 
