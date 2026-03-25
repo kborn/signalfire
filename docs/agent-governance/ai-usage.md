@@ -47,6 +47,8 @@ Used for:
 - Code reviews
 - Writing documentation
 - Defining project structure
+- Teaching-oriented guidance tied to active implementation work
+- Creating practical learning syllabi, implementation guides, walkthroughs, and concept reminders when helpful
 
 Not Used for:
 

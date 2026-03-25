@@ -310,6 +310,36 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 
 ---
 
+### ► Curated learning artifacts live in `docs/learnings/`
+
+###### 2026-03-24
+
+---
+
+###### Decision
+
+The repository includes a visible `docs/learnings/` directory for curated
+learning artifacts that show how AI was used to teach and coach implementation
+work in the project.
+
+###### Rationale
+
+- Professional development is a core project goal alongside product delivery.
+- Repo-visible learning artifacts make the learning process explicit instead of hidden in chat history.
+- This supports portfolio review by showing how concepts were learned and applied during real work.
+- A curated directory is higher signal than leaving scattered or gitignored learning notes.
+
+###### Implications
+
+- `docs/learnings/` may contain durable syllabi, implementation guides, walkthroughs, concept cards, and concise teaching aids tied to real tasks.
+- `docs/learnings/` does not override canonical project authority in governance, architecture, or spec docs.
+- `docs/learnings/` is not an agent dumping ground; low-signal or temporary notes belong in `.ai/phase-notes/`.
+- Staff Engineer guidance may reference `docs/learnings/` during implementation-oriented sessions.
+
+---
+
+---
+
 ### ► Use Postgres IDENTITY columns in Prisma migration SQL for PKs
 
 ###### 2026-03-11

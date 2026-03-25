@@ -705,7 +705,7 @@ using the existing Phase 5 public APIs.
 
 - Phase 6 should emphasize the Learn -> Decide -> Act discovery loop without turning the product into a generic blog UI.
 - Keep implementation intentionally simple; avoid introducing a design system, component library, advanced animation work, or other scope-expanding UI infrastructure unless explicitly approved.
-- Working guidance for the Phase 6 baseline UI versus later polish is captured in `docs/.agent_phase_notes/phase6-ui-baseline-vs-phase8-polish.md`.
+- Keep Phase 6 focused on baseline public browsing structure and clear navigation; defer broader visual polish and presentation refinement to Phase 9 unless explicitly approved.
 
 ---
 
@@ -758,7 +758,7 @@ Capabilities:
 
 ###### Notes:
 
-- Use `docs/.agent_phase_notes/phase6-ui-baseline-vs-phase8-polish.md` as temporary working guidance for what should remain baseline structure in Phase 6 versus polish work deferred to this phase.
+- Phase 9 is where broader visual polish, stronger presentation treatment, and refinement beyond the Phase 6 baseline should occur.
 
 ---
 
