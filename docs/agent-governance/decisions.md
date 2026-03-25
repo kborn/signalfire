@@ -331,7 +331,7 @@ work in the project.
 
 ###### Implications
 
-- `docs/learnings/` may contain durable syllabi, concept cards, and concise teaching aids tied to real tasks.
+- `docs/learnings/` may contain durable syllabi, implementation guides, walkthroughs, concept cards, and concise teaching aids tied to real tasks.
 - `docs/learnings/` does not override canonical project authority in governance, architecture, or spec docs.
 - `docs/learnings/` is not an agent dumping ground; low-signal or temporary notes belong in `.ai/phase-notes/`.
 - Staff Engineer guidance may reference `docs/learnings/` during implementation-oriented sessions.

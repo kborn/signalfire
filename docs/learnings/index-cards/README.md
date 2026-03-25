@@ -3,7 +3,9 @@
 Tiny reminders for stack concepts that are easy to forget.
 
 These cards may be created or updated alongside task-linked syllabi in
-`docs/learnings/syllabi/` when a concept is likely to recur.
+`docs/learnings/syllabi/`, implementation guides in
+`docs/learnings/implementation-guides/`, or walkthroughs in
+`docs/learnings/walkthroughs/` when a concept is likely to recur.
 
 ## Start Here
 

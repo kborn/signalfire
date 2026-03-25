@@ -48,7 +48,7 @@ Used for:
 - Writing documentation
 - Defining project structure
 - Teaching-oriented guidance tied to active implementation work
-- Creating practical learning syllabi and concept reminders when helpful
+- Creating practical learning syllabi, implementation guides, walkthroughs, and concept reminders when helpful
 
 Not Used for:
 
