@@ -310,36 +310,6 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 
 ---
 
-### ► Curated learning artifacts live in `docs/learnings/`
-
-###### 2026-03-24
-
----
-
-###### Decision
-
-The repository includes a visible `docs/learnings/` directory for curated
-learning artifacts that show how AI was used to teach and coach implementation
-work in the project.
-
-###### Rationale
-
-- Professional development is a core project goal alongside product delivery.
-- Repo-visible learning artifacts make the learning process explicit instead of hidden in chat history.
-- This supports portfolio review by showing how concepts were learned and applied during real work.
-- A curated directory is higher signal than leaving scattered or gitignored learning notes.
-
-###### Implications
-
-- `docs/learnings/` may contain durable syllabi, implementation guides, walkthroughs, concept cards, and concise teaching aids tied to real tasks.
-- `docs/learnings/` does not override canonical project authority in governance, architecture, or spec docs.
-- `docs/learnings/` is not an agent dumping ground; low-signal or temporary notes belong in `.ai/phase-notes/`.
-- Staff Engineer guidance may reference `docs/learnings/` during implementation-oriented sessions.
-
----
-
----
-
 ### ► Use Postgres IDENTITY columns in Prisma migration SQL for PKs
 
 ###### 2026-03-11
@@ -492,3 +462,70 @@ not be required for production or CI correctness.
   mode is selected.
 - Production deploy and migration workflows should continue using only the
   baseline seed path.
+
+---
+
+---
+
+### ► Curated learning artifacts live in `docs/learnings/`
+
+###### 2026-03-24
+
+---
+
+###### Decision
+
+The repository includes a visible `docs/learnings/` directory for curated
+learning artifacts that show how AI was used to teach and coach implementation
+work in the project.
+
+###### Rationale
+
+- Professional development is a core project goal alongside product delivery.
+- Repo-visible learning artifacts make the learning process explicit instead of hidden in chat history.
+- This supports portfolio review by showing how concepts were learned and applied during real work.
+- A curated directory is higher signal than leaving scattered or gitignored learning notes.
+
+###### Implications
+
+- `docs/learnings/` may contain durable syllabi, implementation guides, walkthroughs, concept cards, and concise teaching aids tied to real tasks.
+- `docs/learnings/` does not override canonical project authority in governance, architecture, or spec docs.
+- `docs/learnings/` is not an agent dumping ground; low-signal or temporary notes belong in `.ai/phase-notes/`.
+- Staff Engineer guidance may reference `docs/learnings/` during implementation-oriented sessions.
+
+---
+
+---
+
+### ► User-facing discovery terminology is context-specific but fixed
+
+###### 2026-03-25
+
+---
+
+###### Decision
+
+User-facing discovery terminology is fixed by context. Navigation and page
+titles should use the canonical content-type label `Articles`, while in-page
+discovery sections may use action-oriented language such as `Learn` or `Learn
+More`. `Take Action` remains the standard CTA language for Actions, and
+`Related Topics` remains the standard cross-link label for Topics.
+
+###### Rationale
+
+- Consistent terminology makes the public browsing experience feel more
+  intentional and easier to understand.
+- Navigation and page titles should reflect the actual content type so the
+  information architecture stays clear.
+- In-page discovery language should feel action-oriented rather than sounding
+  like internal content-model terminology.
+- Stable CTA and cross-link language reduces UI drift across phases.
+
+###### Implications
+
+- Navigation labels should use `Articles`.
+- Article index and detail page titles should use `Articles` where the content
+  type itself is being named.
+- In-page article discovery sections may use `Learn` or `Learn More`.
+- Action CTAs should use `Take Action`.
+- Topic relationship blocks should use `Related Topics`.
