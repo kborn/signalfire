@@ -4,7 +4,8 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'CivicSignal',
-  description: 'Replace me with something meaningful. Im not sure where this ends up',
+  description:
+    'Explore civic issues, understand their impact, and find clear actions you can take to make a meaningful difference.',
 };
 
 export default function RootLayout({
