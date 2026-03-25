@@ -34,6 +34,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [17-dynamic-slug-routes.md](./17-dynamic-slug-routes.md) - How `[slug]` folders map to dynamic route values
 - [18-semantic-html-page-structure.md](./18-semantic-html-page-structure.md) - What `header`, `nav`, `main`, and `section` mean in page structure
 - [19-div-vs-section-vs-main.md](./19-div-vs-section-vs-main.md) - When to use `div`, `section`, and `main`
+- [20-layout-containers.md](./20-layout-containers.md) - What a shared layout container does
+- [21-spacing-and-vertical-rhythm.md](./21-spacing-and-vertical-rhythm.md) - Why consistent spacing matters before polish
+- [22-css-class-selectors.md](./22-css-class-selectors.md) - How CSS classes connect styles to JSX elements
 
 Rule of thumb:
 

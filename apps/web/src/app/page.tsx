@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <section>
+    <section className="page-section">
       <h1>Learn what matters. Take meaningful action.</h1>
       <p>Explore civic issues, understand their impact, and find clear actions you can take.</p>
       <div>
