@@ -529,3 +529,35 @@ More`. `Take Action` remains the standard CTA language for Actions, and
 - In-page article discovery sections may use `Learn` or `Learn More`.
 - Action CTAs should use `Take Action`.
 - Topic relationship blocks should use `Related Topics`.
+
+---
+
+---
+
+### ► Repository name and user-facing product name are distinct
+
+###### 2026-03-25
+
+---
+
+###### Decision
+
+`SignalFire` remains the repository and internal project name, while
+`CivicSignal` is the user-facing site and product name used in the public UI,
+metadata, and other externally visible product language.
+
+###### Rationale
+
+- The repository is already established under the name `SignalFire`.
+- The public product language should be free to evolve independently from the
+  repository name.
+- Making the distinction explicit avoids drift between internal references and
+  user-facing branding.
+
+###### Implications
+
+- Public UI copy should use `CivicSignal` unless there is a specific internal or
+  technical reason to reference the repository name.
+- Page metadata and browser-visible naming should use `CivicSignal`.
+- Internal documentation, repo paths, and implementation references may still
+  use `SignalFire` where the repository/project identity is what matters.
