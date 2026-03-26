@@ -1,18 +1,9 @@
 import { ApiError } from '@/lib/api/error';
 
-const envApiBase = {
-  development: 'http://localhost:3001',
-};
-
-function getEnv() {
-  return process.env.NODE_ENV;
-}
-
 function getApiBase() {
-  const env = getEnv();
-  const apiBase = envApiBase[env];
+  const apiBase = process.env.API_BASE_URL;
   if (!apiBase) {
-    throw Error();
+    throw new Error('No API base URL configured!');
   }
   return apiBase;
 }

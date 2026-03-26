@@ -1,22 +1,21 @@
 import Link from 'next/link';
 import { getTopicsList } from '@/lib/api/topics';
-import { ApiError } from '@/lib/api/error';
-import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
-async function fetchTopicsList() {
-  try {
-    return await getTopicsList();
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) {
-      notFound();
-    }
-    throw error;
-  }
+function getNoResultsResponse() {
+  return (
+    <section className="page-section">
+      <h1>Topics</h1>
+      <p>No topics available yet.</p>
+    </section>
+  );
 }
 
 export default async function TopicListPage() {
-  const data = await fetchTopicsList();
+  const data = await getTopicsList();
+  if (data.items.length === 0) {
+    return getNoResultsResponse();
+  }
   return (
     <section className="page-section">
       <h1>Topics</h1>

@@ -48,6 +48,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [31-ts-constructor-parameter-properties.md](./31-ts-constructor-parameter-properties.md) - How `public status: number` in a constructor creates an instance field automatically
 - [32-triple-equals-vs-double-equals.md](./32-triple-equals-vs-double-equals.md) - Why `===` is the normal equality operator and how it differs from `==`
 - [33-default-function-exports.md](./33-default-function-exports.md) - What `export default function` means and why Next route files use it
+- [34-next-special-route-files-and-nearest-wins.md](./34-next-special-route-files-and-nearest-wins.md) - Which App Router filenames are special and how route-local files override broader ones
 
 Rule of thumb:
 
