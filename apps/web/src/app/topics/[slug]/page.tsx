@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getTopicDetails } from '@/lib/api/topics';
+export const dynamic = 'force-dynamic';
 
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
