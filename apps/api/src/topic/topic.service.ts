@@ -2,7 +2,10 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { TopicRepository } from './topic.repository';
 import { ArticleService } from '../article/article.service';
 import { ActionService } from '../action/action.service';
-import { TopicListResponse, TopicDetailResponse } from './topic.types';
+import {
+  TopicListResponse,
+  TopicDetailResponse,
+} from '../../../../packages/api-contracts/topic.types';
 
 @Injectable()
 export class TopicService {

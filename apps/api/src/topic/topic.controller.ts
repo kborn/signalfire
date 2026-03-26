@@ -1,6 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { TopicService } from './topic.service';
-import { TopicDetailResponse, TopicListResponse } from './topic.types';
+import {
+  TopicDetailResponse,
+  TopicListResponse,
+} from '../../../../packages/api-contracts/topic.types';
 
 @Controller('topics')
 export class TopicController {
