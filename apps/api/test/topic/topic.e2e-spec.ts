@@ -1,9 +1,6 @@
 import { ActionType, EntityStatus } from '@prisma/client';
 import request from 'supertest';
-import type {
-  TopicDetailResponse,
-  TopicListResponse,
-} from '../../../../packages/api-contracts/topic.types';
+import type { TopicDetailResponse, TopicListResponse } from '@signal-fire/api-contracts';
 import { createAction } from '../factories/action.factory';
 import { createArticle } from '../factories/article.factory';
 import { createTopic } from '../factories/topic.factory';

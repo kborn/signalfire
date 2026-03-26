@@ -1,4 +1,4 @@
-import { ActionType } from './common.types';
+import type { ActionType } from './common.types.js';
 
 type TopicListItem = {
   id: number;

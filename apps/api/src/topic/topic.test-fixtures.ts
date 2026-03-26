@@ -1,8 +1,5 @@
 import { ActionType } from '@prisma/client';
-import {
-  TopicDetailResponse,
-  TopicListResponse,
-} from '../../../../packages/api-contracts/topic.types';
+import { TopicDetailResponse, TopicListResponse } from '@signal-fire/api-contracts';
 
 export function buildTopicListResponse(
   overrides: Partial<TopicListResponse> = {},

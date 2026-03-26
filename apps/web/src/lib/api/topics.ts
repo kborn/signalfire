@@ -1,8 +1,5 @@
 import { makeRequest } from '@/lib/api/base';
-import {
-  TopicDetailResponse,
-  TopicListResponse,
-} from '../../../../../packages/api-contracts/topic.types';
+import { TopicDetailResponse, TopicListResponse } from '@signal-fire/api-contracts';
 
 export async function getTopicsList(): Promise<TopicListResponse> {
   return await makeRequest<TopicListResponse>('topics');
