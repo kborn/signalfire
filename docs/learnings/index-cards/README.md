@@ -45,6 +45,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [28-react-list-keys.md](./28-react-list-keys.md) - Why React needs stable `key` values for items rendered from `.map(...)`
 - [29-jsx-inline-style-syntax.md](./29-jsx-inline-style-syntax.md) - How inline styles work in JSX and why raw CSS syntax does not belong in element attributes
 - [30-rem-vs-em-vs-px.md](./30-rem-vs-em-vs-px.md) - What `rem`, `em`, and `px` mean and when each unit is a better fit
+- [31-ts-constructor-parameter-properties.md](./31-ts-constructor-parameter-properties.md) - How `public status: number` in a constructor creates an instance field automatically
+- [32-triple-equals-vs-double-equals.md](./32-triple-equals-vs-double-equals.md) - Why `===` is the normal equality operator and how it differs from `==`
+- [33-default-function-exports.md](./33-default-function-exports.md) - What `export default function` means and why Next route files use it
 
 Rule of thumb:
 

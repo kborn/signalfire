@@ -1,10 +1,23 @@
 import Link from 'next/link';
 import { getTopicDetails } from '@/lib/api/topics';
+import { ApiError } from '@/lib/api/error';
+import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
-export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+async function fetchTopicDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
-  const topic = await getTopicDetails(slug);
+  try {
+    return await getTopicDetails(slug);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
+  }
+}
+
+export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const topic = await fetchTopicDetails(params);
   return (
     <div className="page-section">
       <section>
