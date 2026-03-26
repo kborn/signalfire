@@ -1,213 +1,188 @@
 # Phase 6.3 Article Markdown Rendering Guide
 
-This guide explains the part of Phase 6.3 that is different from Phase 6.2:
-article detail does not just render summary fields. It renders stored article
-content, and the canonical architecture says Release 1 stores that content as
-Markdown and converts it during rendering.
+This guide covers the one part of Phase 6.3 that is materially different from
+Phase 6.2: article detail pages render long-form body content, and in this
+project that body content is stored as Markdown.
+
+The important practical answer is simple:
+
+- do not write your own Markdown parser
+- do not treat Markdown text as HTML
+- use a Markdown rendering library in the article-detail display layer
+
+For this repo, the right default is `react-markdown`.
 
 ## Concepts To Understand Now
 
-- Markdown is a storage format, not a UI component
-- rendering Markdown is a server-side transformation step
-- raw HTML injection is not the same thing as Markdown rendering
-- article body rendering should stay separate from list/detail data fetching
-- safe baseline rendering is more important than rich formatting in Phase 6
+- Markdown is stored source text
+- the article API should keep returning that source text as a string
+- the web app should render Markdown at the article-body display boundary
+- `react-markdown` turns Markdown into React elements
+- styling rendered Markdown is separate from parsing it correctly
 
 ## Plain-Language Explanations
 
-### Markdown is content, not presentation code
+### Markdown is the article source format
 
-An article `content` field stores author-written text in Markdown syntax. That
-means the database value is the source text, not already-rendered HTML and not
-already-split JSX.
+The database stores article `content` as Markdown text.
 
-Examples of Markdown source:
-
-```md
-# Why county meetings matter
-
-Residents can influence local decisions more directly than they often think.
-
-- attend the meeting
-- bring one specific ask
-- follow up in writing
-```
-
-The job of the web app is to turn that source text into rendered page content.
-
-### Rendering happens at the display boundary
-
-The article API should keep returning content as text. The web app should
-decide how to render it for the browser.
-
-In this repo, that means the rendering boundary belongs near:
-
-- `apps/web/src/app/articles/[slug]/page.tsx`
-- or one small helper/component used by that page
-
-It does not belong in:
-
-- Prisma models
-- API contracts
-- generic fetch helpers
-
-### Raw HTML injection is a different tool
-
-If you already had trusted HTML, `dangerouslySetInnerHTML` would insert that
-HTML into the page. That is not the same thing as taking Markdown source and
-rendering it correctly.
-
-Important distinction:
-
-- Markdown source: `## Heading`
-- HTML output: `<h2>Heading</h2>`
-
-If you skip the Markdown-to-HTML step and inject raw strings, you either:
-
-- render literal Markdown text with no formatting
-- or start trusting arbitrary HTML too early
-
-### Server rendering is the right first home
-
-Phase 6 article pages are already server-rendered detail pages. That makes the
-article detail route the simplest first place to render Markdown.
-
-That keeps the flow straightforward:
-
-1. fetch article detail
-2. read `article.content`
-3. transform Markdown for display
-4. render the body
-
-You do not need a client component just to support Markdown display.
-
-## Tiny Worked Examples
-
-### Mental model: current plain-text fallback
-
-```tsx
-const paragraphs = splitArticleContent(article.content);
-
-return paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>);
-```
-
-This works for plain text and double-line-break paragraphs. It does not support
-Markdown syntax such as headings, lists, emphasis, or links.
-
-### Mental model: Markdown render boundary
-
-```tsx
-const renderedBody = renderArticleMarkdown(article.content);
-
-return <article>{renderedBody}</article>;
-```
-
-Important idea:
-The page still owns fetching. Only the body rendering step changes.
-
-### Tiny example: what should change
-
-Markdown source:
+Example stored content:
 
 ```md
 ## What to do next
 
-- call your county clerk
-- attend the next board meeting
+- call city hall
+- attend the board meeting
+
+[Read more](/topics/climate)
 ```
 
-Desired browser result:
+That stored value is not already HTML and not already JSX. It is just text with
+Markdown syntax.
 
-- one `h2`
+### The renderer belongs in the web app, not the API contract
+
+The API contract should keep returning article content as text. That keeps the
+backend responsible for content retrieval and the frontend responsible for
+display.
+
+In this repo, the render boundary belongs near:
+
+- `apps/web/src/app/articles/[slug]/page.tsx`
+- `apps/web/src/components/article-body.tsx`
+
+It does not belong in:
+
+- Prisma models
+- shared API contract types
+- generic fetch helpers
+
+### `react-markdown` is the normal React solution
+
+`react-markdown` parses Markdown and renders safe React elements.
+
+That means you can do this:
+
+```tsx
+<ReactMarkdown>{article.content}</ReactMarkdown>
+```
+
+instead of:
+
+- writing a parser yourself
+- generating raw HTML strings by hand
+- using `dangerouslySetInnerHTML` for plain Markdown text
+
+### `dangerouslySetInnerHTML` solves a different problem
+
+If you already had trusted HTML, `dangerouslySetInnerHTML` would insert that
+HTML into the page. That is not what you have here.
+
+Here you have Markdown source.
+
+Important distinction:
+
+- Markdown source: `## Heading`
+- rendered result: a real `h2`
+
+If you skip the parse/render step, the page will just show the literal `##`.
+
+## Tiny Worked Examples
+
+### Wrong mental model
+
+```tsx
+<p>{article.content}</p>
+```
+
+This only prints the raw text. If the content includes Markdown syntax, the
+syntax stays visible instead of becoming structured output.
+
+### Correct mental model
+
+```tsx
+function ArticleBody({ content }: { content: string }) {
+  return <ReactMarkdown>{content}</ReactMarkdown>;
+}
+```
+
+Important idea:
+fetching does not change. Only the body-rendering step changes.
+
+### What success looks like
+
+Markdown source:
+
+```md
+## Next step
+
+- call city hall
+- show up with one specific ask
+```
+
+Correct rendered output:
+
+- one heading
 - one unordered list
 - two list items
 
-If the page still shows `##` and `-`, Markdown support is not actually wired.
+If the browser still shows `##` and `-`, Markdown is not actually wired.
 
 ## How This Appears In The Repo Today
 
-Current article-detail rendering lives in:
+Relevant files:
 
 - `apps/web/src/app/articles/[slug]/page.tsx`
+- `apps/web/src/components/article-body.tsx`
+- `apps/web/src/app/globals.css`
 
-Current helper logic lives in:
+The article page should:
 
-- `apps/web/src/lib/articles.ts`
+1. fetch the article detail
+2. format article metadata
+3. render the article body through `ArticleBody`
+4. keep related topics and related actions below the body
 
-Right now the page:
-
-- formats metadata dates
-- splits article content into paragraphs
-- renders body text as repeated `<p>` elements
-
-That is a good Phase 6.3 baseline because it proves the route, API contract,
-and page structure. Markdown support should replace the body-rendering helper
-without changing the overall route flow.
+That preserves the Phase 6 discovery flow while using the correct content
+rendering tool.
 
 Canonical architecture context:
 
 - `docs/architecture/003-architecture-intent.md` says articles are stored as
   Markdown in text fields and converted during rendering
 
-## Practical Options In This Repo
+## Practical Recommendation For This Repo
 
-### Option 1: keep the current paragraph fallback for now
+Use `react-markdown` in a small dedicated component such as
+`apps/web/src/components/article-body.tsx`.
 
-Use this when:
+That is the right middle ground because it:
 
-- content is still mostly plain text
-- you want to finish baseline discovery flow first
-- you do not want another dependency yet
-
-Tradeoff:
-
-- easy and safe
-- not true Markdown support
-
-### Option 2: add a Markdown rendering helper on the server
-
-Use this when:
-
-- article content will begin using headings, lists, links, and emphasis
-- you want the web app to match the architecture intent
-
-Good shape:
-
-- keep fetching in `page.tsx`
-- add one small `renderArticleMarkdown(...)` helper or dedicated article-body
-  component
-- keep Markdown-specific logic isolated from generic API code
-
-### Option 3: add custom styling after rendering works
-
-Do this later, not first.
-
-Sequence:
-
-1. make Markdown render correctly
-2. style headings, lists, blockquotes, and links
-3. improve article presentation if needed in Phase 9
+- uses a standard library instead of custom parsing
+- keeps Markdown logic out of API helpers
+- keeps the route page focused on data fetching and page structure
+- gives you one obvious place to style article content later
 
 ## Tiny Rules Of Thumb
 
-- Store Markdown as content; do not store pre-rendered HTML as the source of truth.
-- Keep the render transformation near the article-detail display boundary.
-- Do not put Markdown parsing logic in API helpers.
-- Finish correctness before body-style polish.
-- If you introduce a renderer, test one heading, one list, and one link.
-- If a renderer requires unsafe HTML behavior, slow down and justify it first.
+- Store Markdown as text; render it at the article-body boundary.
+- Use `react-markdown` before considering anything more custom.
+- Keep fetch logic in the page and body rendering in a small component/helper.
+- Do not use `dangerouslySetInnerHTML` just to display Markdown.
+- Test one heading, one list, and one link so you know real Markdown is working.
+- Style the rendered output after parsing correctness is in place.
 
 ## Common Mistakes
 
-- treating Markdown text as though it were already-rendered HTML
-- putting Markdown conversion in the backend contract layer
-- converting Markdown everywhere instead of only where article bodies display
-- overbuilding a rich-text system when Phase 6 only needs public article display
-- spending more time on article-body design than on correct rendering behavior
+- treating Markdown text like pre-rendered HTML
+- hand-rolling a parser for basic article rendering
+- moving Markdown logic into API contracts or fetch helpers
+- mixing parsing concerns with page-fetching concerns
+- assuming paragraph splitting counts as Markdown support
 
 ## Pointed Questions To Ask When Blocked
 
-- Am I trying to solve Markdown storage, parsing, and styling all at once?
-- Can this stay a server-rendering concern in the article detail page?
-- What is the smallest place in the repo where Markdown conversion can live?
-- Does this change improve article-body correctness, or only visual polish?
+- Am I actually rendering Markdown, or just printing its raw text?
+- Can this stay a small `ArticleBody` component instead of spreading across the route?
+- Am I reaching for HTML injection when a Markdown renderer is the correct tool?
+- Is the current problem parsing correctness, or only styling?

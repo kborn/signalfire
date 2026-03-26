@@ -1,7 +1,7 @@
 # Markdown Storage Vs Rendering Boundary
 
 Store article content as Markdown source, then render it at the display
-boundary.
+boundary with a Markdown library such as `react-markdown`.
 
 Why it matters here:
 `/articles/[slug]` should fetch article text from the API, but the web app
@@ -11,5 +11,5 @@ paragraphs.
 Rule of thumb:
 
 - database/API: text source
-- article page or article-body helper: render step
+- article-body component: `react-markdown` render step
 - CSS: presentation of the rendered output

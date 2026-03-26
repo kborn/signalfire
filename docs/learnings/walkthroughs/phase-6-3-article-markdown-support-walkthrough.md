@@ -2,28 +2,31 @@
 
 ## What You Are Building
 
-You are upgrading article detail from plain-text paragraph rendering to real
-Markdown rendering without changing the Phase 6 route structure or discovery
-flow.
+You are replacing raw article-body text rendering with real Markdown rendering
+on the article detail route.
 
-The target outcome is:
+The intended end state is:
 
-- `GET /articles/:slug` still provides the article data
-- `apps/web/src/app/articles/[slug]/page.tsx` still owns the fetch
-- article `content` renders Markdown elements correctly
-- related topics and actions remain unchanged
+- the API still returns article `content` as text
+- the article detail page still owns the fetch
+- a small `ArticleBody` component renders that text with `react-markdown`
+- related topics and actions stay in the same page flow
 
-This walkthrough is about repo edit order for Markdown support, not broad UI
-polish and not a CMS/editor project.
+This is a rendering upgrade, not a backend contract change and not a CMS task.
 
 ## Files And Folders Involved
 
-Current repo files to start from:
+Primary repo files:
 
 - `apps/web/src/app/articles/[slug]/page.tsx`
+- `apps/web/src/components/article-body.tsx`
 - `apps/web/src/lib/articles.ts`
-- `apps/web/src/lib/articles.test.ts`
 - `apps/web/src/app/globals.css`
+- `apps/web/src/components/article-body.test.tsx`
+
+Dependency surface:
+
+- `apps/web/package.json`
 
 Canonical docs to keep open:
 
@@ -33,37 +36,35 @@ Canonical docs to keep open:
 
 ## Edit Order
 
-### Step 1: Confirm the rendering boundary before choosing a package
+### Step 1: Install the Markdown renderer before writing custom code
 
-Write down the current responsibility split:
+Add:
 
-- API returns article `content` as text
-- article page fetches the article
-- helper logic formats that content for display
+- `react-markdown`
 
 Why first:
 
-If you do not lock this mental model first, it is easy to spread Markdown logic
-into fetch helpers or contracts where it does not belong.
+This task should use a standard library. If you skip this step, you are likely
+to drift into ad hoc parsing logic that you will replace later anyway.
 
-### Step 2: Replace paragraph splitting with one Markdown-focused helper
+### Step 2: Create one article-body rendering component
 
-Open:
+Create or open:
 
-- `apps/web/src/lib/articles.ts`
+- `apps/web/src/components/article-body.tsx`
 
 What to do:
 
-- keep date formatting where it is
-- replace or supplement `splitArticleContent(...)` with one Markdown-rendering
-  function or one article-body helper component
+- accept `content: string`
+- render it with `react-markdown`
+- keep the component small
 
 Why second:
 
-This isolates the new behavior to the article body instead of rewriting the
-whole page.
+This gives the article body one clear rendering boundary and keeps the route
+page from becoming a parser/styling mashup.
 
-### Step 3: Swap the article body section to use the new renderer
+### Step 3: Keep the route page focused on fetching and page structure
 
 Open:
 
@@ -71,34 +72,37 @@ Open:
 
 What to do:
 
-- leave fetch logic and `404` handling alone
-- leave related topic/action sections alone
-- change only the section that currently maps paragraph strings into `<p>`
+- leave the fetch logic and `404` handling in place
+- render article metadata in the header section
+- replace raw body text output with `<ArticleBody content={article.content} />`
+- leave related topics and actions below the article body
 
 Why third:
 
-This keeps the Markdown change tightly scoped to the body-rendering surface.
+The route page should still read as:
 
-### Step 4: Add one test case that proves Markdown is really rendering
+1. fetch
+2. format metadata
+3. render body
+4. render discovery links
+
+### Step 4: Add one focused test that proves real Markdown rendering
 
 Open:
 
-- `apps/web/src/lib/articles.test.ts`
+- `apps/web/src/components/article-body.test.tsx`
 
 What to do:
 
-- add a test input containing at least:
-  - one heading
-  - one list
-  - one inline link or emphasis example
-- assert against the transformed output shape your renderer produces
+- render Markdown with a heading, a list, and a link
+- assert that the output contains the corresponding HTML structure
 
 Why fourth:
 
-Without a focused test, it is easy to stop at "paragraphs still render" and
-mistake that for actual Markdown support.
+This catches the difference between true Markdown rendering and plain text
+display.
 
-### Step 5: Add only the CSS needed for readable body elements
+### Step 5: Add only baseline body styles
 
 Open:
 
@@ -106,37 +110,17 @@ Open:
 
 What to do:
 
-- add baseline spacing and typography for rendered headings, paragraphs, lists,
-  and links
-- stop before building a full article design system
+- add readable defaults for headings, lists, paragraphs, and links inside the
+  article-body container
+- stop before building a full article presentation system
 
 Why fifth:
 
-Markdown support needs readable defaults, but Phase 6 does not require Phase 9
-presentation work.
-
-### Step 6: Verify with content that actually exercises Markdown
-
-Check:
-
-- one seeded article or test fixture with headings or list syntax
-- the article detail route in the browser
-
-What to verify:
-
-- headings render as headings
-- lists render as lists
-- links or emphasis render correctly
-- related topics and actions still appear below the body
-
-Why sixth:
-
-True Markdown support is visible in the output structure, not just in passing
-tests.
+Phase 6 needs correctness and readability, not full polish.
 
 ## First Correct Structure
 
-The smallest durable shape in this repo will likely still look like:
+The smallest durable shape is:
 
 ```text
 apps/web/src/
@@ -144,33 +128,32 @@ apps/web/src/
     articles/
       [slug]/
         page.tsx
+  components/
+    article-body.tsx
+    article-body.test.tsx
   lib/
     articles.ts
 ```
 
-If the rendering logic becomes large or style-heavy, a good next extraction is:
+That keeps responsibilities clean:
 
-```text
-apps/web/src/
-  components/
-    article-body.tsx
-```
+- page: fetch and page structure
+- component: Markdown rendering
+- lib: metadata formatting
 
-Only make that move if the body-rendering code stops being small and readable.
-
-## What "Done Enough" Looks Like For Markdown Support
+## What "Done Enough" Looks Like
 
 You are in a good state when:
 
-- the article detail route still fetches from the same API contract
-- Markdown syntax renders as structured HTML output
-- basic body elements are readable
-- tests cover at least one real Markdown feature
-- no editor tooling, authoring UI, or rich-text admin work has been added
+- article Markdown renders as structured output
+- metadata is readable
+- related topics and actions still work as clickable discovery links
+- tests prove at least one real Markdown feature
+- no backend contract churn was needed
 
 ## Ask-When-Stuck Prompts
 
-- Is this change only affecting article-body rendering, or am I widening scope?
-- Am I proving real Markdown output, or just preserving plain-text paragraphs?
-- Should this stay a helper, or has it grown enough to become a component?
-- Am I styling readable defaults, or drifting into polish work too early?
+- Am I about to write parsing logic that `react-markdown` already handles?
+- Does this code belong in the route page, or in `ArticleBody`?
+- Am I proving real Markdown behavior with a test?
+- Is the remaining issue correctness, or only styling?
