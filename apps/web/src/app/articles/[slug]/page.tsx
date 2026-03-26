@@ -2,6 +2,7 @@ import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -24,7 +25,10 @@ export default async function ArticleDetailsPage({
   return (
     <div className="page-section">
       <section>
-        <h1>{article.title} Article</h1>
+        <h1>{article.title}</h1>
+        <p>{article.author}</p>
+        <p>{article.publishedAt}</p>
+        <p>{article.updatedAt}</p>
         <p>{article.summary}</p>
         <p>{article.content}</p>
       </section>
@@ -38,7 +42,7 @@ export default async function ArticleDetailsPage({
         ))}
       </section>
       <section>
-        <h2>Actions</h2>
+        <h2>Take Action</h2>
         {article.actions.map((action) => (
           <div key={action.id}>
             <Link href={`/actions/${action.slug}`}>{action.title}</Link>

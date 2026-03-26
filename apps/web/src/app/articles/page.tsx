@@ -1,5 +1,6 @@
 import { getArticlesList } from '@/lib/api/articles';
 import Link from 'next/link';
+export const dynamic = 'force-dynamic';
 
 function getNoResultsResponse() {
   return (
