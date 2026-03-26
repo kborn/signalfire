@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { ArticleDetailResponse, ArticleListResponse } from './article.types';
+import { ArticleDetailResponse, ArticleListResponse } from '@signal-fire/api-contracts';
 
 @Controller('articles')
 export class ArticleController {

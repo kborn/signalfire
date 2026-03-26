@@ -1,5 +1,5 @@
 import { ActionType, Article, EntityStatus } from '@prisma/client';
-import { ArticleListResponse, ArticleDetailResponse } from './article.types';
+import { ArticleListResponse, ArticleDetailResponse } from '@signal-fire/api-contracts';
 
 export const ARTICLE_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');

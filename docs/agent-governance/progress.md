@@ -650,10 +650,10 @@ using the existing Phase 5 public APIs.
 
 ###### Phase Tasks:
 
-- [ ] Render the article listing page from `GET /articles`
-- [ ] Render article detail pages from `GET /articles/:slug`
-- [ ] Display full article content plus related topics and related actions
-- [ ] Make related topics and actions clearly discoverable and clickable
+- [x] Render the article listing page from `GET /articles`
+- [x] Render article detail pages from `GET /articles/:slug`
+- [x] Display full article content plus related topics and related actions
+- [x] Make related topics and actions clearly discoverable and clickable
 
 ---
 

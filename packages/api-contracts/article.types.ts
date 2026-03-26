@@ -1,4 +1,4 @@
-import { ActionType } from '@prisma/client';
+import type { ActionType } from './common.types.js';
 
 export type ArticleListItem = {
   id: number;

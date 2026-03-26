@@ -67,25 +67,353 @@ const demoArticles = [
     slug: 'how-local-climate-policy-works',
     title: 'How Local Climate Policy Works',
     summary: 'A guide to city-level climate policy.',
-    content:
-      'Local climate policy shapes transit, zoning, building rules, and public investment. This article explains the main pressure points a resident can influence.',
+    content: `## Why local climate policy matters
+
+Local climate policy shapes transit, zoning, building rules, and public investment. Residents can influence these decisions much closer to home than they often assume.
+
+### Where pressure usually works
+
+- public comment before budget votes
+- neighborhood organizing around transit and housing
+- follow-up emails to council offices after hearings
+
+### What to do after reading
+
+Start with one concrete ask, bring it to a public meeting, and then join a recurring local coalition so the pressure continues after a single hearing.`,
     author: 'SignalFire Staff',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-10T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
-    actionSlugs: ['contact-city-council-about-transit', 'join-neighborhood-climate-coalition'],
+    actionSlugs: [
+      'contact-city-council-about-transit',
+      'join-neighborhood-climate-coalition',
+      'join-tenant-solidarity-network',
+    ],
   },
   {
     slug: 'protect-voting-access-in-your-county',
     title: 'Protect Voting Access In Your County',
     summary: 'What county-level election administration controls and how residents can intervene.',
-    content:
-      'Election administration is often decided close to home. This article outlines where county boards, clerks, and local advocates can protect access.',
+    content: `## County election rules shape real access
+
+Election administration is often decided close to home. County boards, clerks, and public hearings can affect polling sites, language access, and voter outreach.
+
+### Watch for these decision points
+
+- polling place changes
+- reduced early-voting access
+- confusing voter communication
+
+### Practical next steps
+
+Attend meetings, document procedural changes, and plug into election-protection volunteers who can turn observation into public pressure.`,
     author: 'SignalFire Staff',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-14T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
-    actionSlugs: ['attend-election-board-meeting'],
+    actionSlugs: ['attend-election-board-meeting', 'volunteer-as-election-protection-observer'],
+  },
+  {
+    slug: 'how-to-read-a-corporate-pressure-campaign',
+    title: 'How To Read A Corporate Pressure Campaign',
+    summary: 'How boycotts, worker demands, and public pressure campaigns fit together.',
+    content: `## Corporate pressure works best when it is specific
+
+Consumer pressure is strongest when it is tied to a public demand, a target decision-maker, and a timeline people can follow.
+
+### A stronger campaign usually has
+
+- one or two specific demands
+- a public explanation of why those demands matter
+- a way for supporters to take repeated action
+
+### What not to do
+
+Do not treat every bad company as the same target. Match the tactic to the leverage point: purchasing pressure, donor pressure, labor solidarity, or public contact.`,
+    author: 'SignalFire Staff',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-16T00:00:00.000Z'),
+    topicSlugs: ['consumer-activism', 'economic-justice'],
+    actionSlugs: ['boycott-megastore-private-label', 'donate-to-worker-solidarity-fund'],
+  },
+  {
+    slug: 'defend-library-access-in-your-school-district',
+    title: 'Defend Library Access In Your School District',
+    summary: 'How to organize around school-library access without waiting for a crisis vote.',
+    content: `## Library access fights are usually local and procedural
+
+Book removals, review committees, and curriculum debates often move through school-board processes long before most families hear about them.
+
+### Start by mapping the process
+
+1. identify the next public meeting
+2. learn who sets review policy
+3. coordinate families, educators, and local advocates
+
+### Then move from concern to action
+
+Build a small response team that can email decision-makers, show up in person, and keep library access visible as a civil-rights and education issue.`,
+    author: 'SignalFire Staff',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-18T00:00:00.000Z'),
+    topicSlugs: ['education', 'civil-rights', 'local-community'],
+    actionSlugs: [
+      'email-school-board-about-library-access',
+      'volunteer-with-friends-of-the-library',
+    ],
+  },
+  {
+    slug: 'what-public-comment-rules-can-tell-you',
+    title: 'What Public Comment Rules Can Tell You',
+    summary:
+      'Public-comment rules often reveal which communities local officials are trying to sideline.',
+    content: `## Public comment rules are political signals
+
+When local bodies shorten speaking time, move meetings without notice, or tighten sign-up rules, they are often trying to reduce visible opposition.
+
+### Watch for changes like
+
+- shorter speaking windows
+- earlier sign-up deadlines
+- limits on remote testimony
+
+### Why it matters
+
+These rules shape whose voices are heard in public. Tracking them helps communities respond before exclusion becomes normal.`,
+    author: 'SignalFire Staff',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-20T00:00:00.000Z'),
+    topicSlugs: ['democracy', 'civil-rights', 'local-community'],
+    actionSlugs: ['testify-at-city-council-hearing', 'volunteer-as-election-protection-observer'],
+  },
+  {
+    slug: 'organize-for-neighborhood-heat-safety',
+    title: 'Organize For Neighborhood Heat Safety',
+    summary:
+      'Extreme heat is a climate issue, a housing issue, and a neighborhood organizing issue.',
+    content: `## Heat safety is a local systems problem
+
+Extreme heat exposes weak transit, poor housing conditions, and underfunded neighborhood infrastructure all at once.
+
+### A local heat-safety plan can include
+
+- tenant outreach in high-risk buildings
+- pressure for cooling centers and transit access
+- mutual-aid check-in systems during heat emergencies
+
+### The political takeaway
+
+Treat heat response as both immediate care and long-term civic pressure. Neighborhood-level organizing can connect climate action to economic justice quickly.`,
+    author: 'SignalFire Staff',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-22T00:00:00.000Z'),
+    topicSlugs: ['climate', 'economic-justice', 'local-community'],
+    actionSlugs: ['join-neighborhood-climate-coalition', 'join-tenant-solidarity-network'],
+  },
+  {
+    slug: 'building-a-local-campaign-from-first-meeting-to-public-pressure',
+    title: 'Building A Local Campaign From First Meeting To Public Pressure',
+    summary:
+      'A long-form field guide to turning scattered concern into a durable local civic campaign.',
+    content: `# Building a local campaign from first meeting to public pressure
+
+Local campaigns rarely start with a polished strategy. They usually begin with a small number of people who can name a problem clearly, gather concrete examples, and commit to showing up more than once.
+
+The point of this guide is not to make local work feel grander than it is. The point is to show that durable public pressure usually grows out of repeated, ordinary work: research, outreach, meeting prep, follow-up, and visible public action.
+
+## Start by naming the problem in one sentence
+
+If your group cannot explain the problem in one sentence, it will struggle to recruit new people and struggle even more to make a public demand that others can repeat.
+
+A useful problem statement usually includes:
+
+- the institution or decision-maker involved
+- the harm people are experiencing
+- the concrete thing that needs to change
+
+Examples:
+
+- The city keeps delaying dedicated bus-lane funding in neighborhoods that already have poor transit service.
+- The school board is allowing opaque library-review rules that make removals easier and public accountability weaker.
+- County officials are changing election procedures without clear public communication or meaningful public input.
+
+That sentence is not your whole campaign. It is the anchor that helps everything else stay coherent.
+
+## Map the decision, not just the outrage
+
+A lot of new organizers spend too much time describing why something is bad and not enough time learning where the decision actually lives.
+
+Before you choose tactics, answer these questions:
+
+1. Who can actually change the policy, budget item, or procedure?
+2. When do they make that decision?
+3. What public process exists around it?
+4. What outside pressure matters to them?
+
+Sometimes the answer is a council committee. Sometimes it is a school-board vote. Sometimes it is a department head who can be influenced through public hearings, press attention, or sustained neighborhood turnout.
+
+Without this map, action becomes expressive rather than strategic.
+
+## Build a record before you build a crowd
+
+You do not need a huge following before you begin. You do need enough evidence that the issue is real, ongoing, and visible.
+
+Useful material includes:
+
+- meeting agendas and minutes
+- budget line items
+- testimony from directly affected people
+- local news coverage
+- screenshots of official statements or procedural changes
+
+This record does two things. First, it keeps the campaign grounded in reality. Second, it gives new supporters something to read so they can understand the issue quickly.
+
+## Choose one public demand before choosing many tactics
+
+People often jump into tactics because tactics feel active. But tactics without a shared demand usually scatter energy.
+
+A strong public demand is:
+
+- specific
+- public
+- understandable in one hearing
+- connected to the actual decision-maker
+
+Examples:
+
+- restore the transit funding line before the budget vote
+- publish the full library-review procedure and halt removals until public review occurs
+- maintain early-voting access and publish all polling-place changes at least thirty days in advance
+
+Once the demand is clear, tactics become easier to judge. If an action does not increase pressure around that demand, it may not be the right next move.
+
+## Use a ladder of engagement
+
+Not everyone can start by testifying at a hearing or leading a meeting. Build a path that lets people join at different levels.
+
+A simple ladder might include:
+
+- read the background explainer
+- sign up for updates
+- send one email
+- attend one meeting
+- bring one friend
+- join the planning group
+- take on one recurring responsibility
+
+This matters because durable campaigns are built by helping people move from low-risk participation into shared ownership.
+
+## Treat meetings as organizing tools, not rituals
+
+A meeting should clarify decisions, assign work, and prepare the next public step.
+
+Good meeting habits include:
+
+- send an agenda in advance
+- begin with the concrete campaign goal
+- leave with named owners and deadlines
+- write down what was decided
+
+Bad meetings create the illusion of momentum while leaving no one clear on what happens next.
+
+## Expect the campaign to need repetition
+
+Most institutions wait for public pressure to fade. If your group appears once and disappears, the institution learns patience.
+
+That is why follow-up matters:
+
+- send the email after the hearing
+- report back to everyone who showed up
+- publish what officials said
+- announce the next action before momentum drops
+
+Repetition is not a failure of creativity. It is how officials learn that the issue is not going away quietly.
+
+## Blend public action with relationship-building
+
+Public pressure works better when it is rooted in real relationships.
+
+That means:
+
+- checking in with directly affected neighbors
+- coordinating with aligned groups
+- sharing practical work, not just visible roles
+- creating small responsibilities that people can actually sustain
+
+Campaigns weaken when only the most visible people are carrying the work.
+
+## Use public comment and testimony carefully
+
+Testimony matters most when it is timely, specific, and connected to broader organizing.
+
+Helpful testimony usually:
+
+- names the decision at hand
+- repeats the campaign demand clearly
+- includes one concrete story or fact
+- points people toward the next public step
+
+Testimony is less effective when it is treated as a substitute for the organizing that must happen before and after the hearing.
+
+## Plan for fatigue before it arrives
+
+Groups do better when they assume people will get tired, miss meetings, and need simpler ways to stay involved.
+
+Some practical ways to reduce burnout:
+
+- rotate facilitation
+- share note-taking
+- keep asks specific and time-bounded
+- celebrate completed work, not only big wins
+
+The goal is not constant urgency. The goal is continuity.
+
+## Measure traction in more than one way
+
+A campaign can be gaining traction even before it wins. Useful signs include:
+
+- more people returning after a first action
+- clearer public language around the issue
+- officials beginning to respond defensively
+- stronger ties between groups that were previously disconnected
+
+Those signs do not replace the need for a concrete win. They do help you judge whether the campaign is deepening.
+
+## Know when to narrow the scope
+
+When a campaign is stalling, the answer is not always more activity. Sometimes the answer is a smaller, sharper target.
+
+Ask:
+
+- is the demand too broad?
+- are we targeting the wrong decision-maker?
+- do supporters understand the next step?
+- are we trying to solve three issues at once?
+
+Narrow scope often produces more momentum than adding another tactic.
+
+## Move from learning to action
+
+By the time someone finishes a long explainer like this, the next step should be obvious.
+
+The most useful next actions are usually:
+
+- join the local coalition already working on the issue
+- contact the decision-maker before the next meeting
+- show up at the next hearing with one specific demand
+
+Long-form content should reduce confusion, not end in abstraction.
+
+If the article clarifies the problem but leaves the reader with no next step, it has not yet completed the civic loop.`,
+    author: 'SignalFire Staff',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-24T00:00:00.000Z'),
+    topicSlugs: ['democracy', 'climate', 'education', 'local-community'],
+    actionSlugs: [
+      'join-neighborhood-climate-coalition',
+      'testify-at-city-council-hearing',
+      'email-school-board-about-library-access',
+    ],
   },
   {
     slug: 'draft-civic-content-playbook',
@@ -123,7 +451,11 @@ const demoActions = [
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-11T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
-    articleSlugs: ['how-local-climate-policy-works'],
+    articleSlugs: [
+      'how-local-climate-policy-works',
+      'organize-for-neighborhood-heat-safety',
+      'building-a-local-campaign-from-first-meeting-to-public-pressure',
+    ],
   },
   {
     slug: 'attend-election-board-meeting',
@@ -136,6 +468,99 @@ const demoActions = [
     publishedAt: new Date('2026-03-14T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
     articleSlugs: ['protect-voting-access-in-your-county'],
+  },
+  {
+    slug: 'boycott-megastore-private-label',
+    title: 'Join The Megastore Private-Label Boycott',
+    summary: 'Shift spending away from a retailer tied to anti-worker retaliation.',
+    description:
+      'Move purchases away from the companys private-label products, share the campaign demand publicly, and invite others to follow the same target list.',
+    actionType: ActionType.GUIDE,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-16T00:00:00.000Z'),
+    topicSlugs: ['consumer-activism', 'economic-justice'],
+    articleSlugs: ['how-to-read-a-corporate-pressure-campaign'],
+  },
+  {
+    slug: 'donate-to-worker-solidarity-fund',
+    title: 'Donate To A Worker Solidarity Fund',
+    summary: 'Support workers who need material backing during a pressure campaign.',
+    description:
+      'Contribute to a vetted worker solidarity fund so workers can sustain public pressure while facing retaliation, reduced hours, or strike-related costs.',
+    actionType: ActionType.DONATE,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-17T00:00:00.000Z'),
+    topicSlugs: ['consumer-activism', 'economic-justice'],
+    articleSlugs: ['how-to-read-a-corporate-pressure-campaign'],
+  },
+  {
+    slug: 'email-school-board-about-library-access',
+    title: 'Email The School Board About Library Access',
+    summary: 'Send a specific message defending access to books and librarians.',
+    description:
+      'Email board members before the next meeting with one concrete ask: preserve library access, oppose removals without due process, and keep review rules public.',
+    actionType: ActionType.CONTACT,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-18T00:00:00.000Z'),
+    topicSlugs: ['education', 'civil-rights', 'local-community'],
+    articleSlugs: [
+      'defend-library-access-in-your-school-district',
+      'building-a-local-campaign-from-first-meeting-to-public-pressure',
+    ],
+  },
+  {
+    slug: 'volunteer-with-friends-of-the-library',
+    title: 'Volunteer With A Friends Of The Library Group',
+    summary: 'Build durable local support around access, programming, and public visibility.',
+    description:
+      'Join a local library-support group to help with turnout, outreach, and public education around why free access to books and staff matters.',
+    actionType: ActionType.VOLUNTEER,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-19T00:00:00.000Z'),
+    topicSlugs: ['education', 'local-community'],
+    articleSlugs: ['defend-library-access-in-your-school-district'],
+  },
+  {
+    slug: 'testify-at-city-council-hearing',
+    title: 'Testify At A City Council Hearing',
+    summary: 'Use public comment to put a clear demand into the record.',
+    description:
+      'Prepare a short statement, sign up early, and connect your testimony to a specific vote, funding choice, or public rule change that officials cannot ignore.',
+    actionType: ActionType.CONTACT,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-20T00:00:00.000Z'),
+    topicSlugs: ['democracy', 'civil-rights', 'local-community'],
+    articleSlugs: [
+      'what-public-comment-rules-can-tell-you',
+      'building-a-local-campaign-from-first-meeting-to-public-pressure',
+    ],
+  },
+  {
+    slug: 'volunteer-as-election-protection-observer',
+    title: 'Volunteer As An Election Protection Observer',
+    summary: 'Document access problems and connect voters to rapid support.',
+    description:
+      'Join a local election-protection effort, learn the reporting process, and help track barriers such as long lines, polling-place confusion, or disability access failures.',
+    actionType: ActionType.VOLUNTEER,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-21T00:00:00.000Z'),
+    topicSlugs: ['democracy', 'local-community'],
+    articleSlugs: [
+      'protect-voting-access-in-your-county',
+      'what-public-comment-rules-can-tell-you',
+    ],
+  },
+  {
+    slug: 'join-tenant-solidarity-network',
+    title: 'Join A Tenant Solidarity Network',
+    summary: 'Coordinate building-level outreach around heat, housing, and emergency response.',
+    description:
+      'Plug into a tenant network that can check on vulnerable neighbors, document unsafe conditions, and push for neighborhood-level heat and housing protections.',
+    actionType: ActionType.VOLUNTEER,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-03-22T00:00:00.000Z'),
+    topicSlugs: ['climate', 'economic-justice', 'local-community'],
+    articleSlugs: ['how-local-climate-policy-works', 'organize-for-neighborhood-heat-safety'],
   },
   {
     slug: 'host-school-board-study-group',

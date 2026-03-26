@@ -49,6 +49,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [32-triple-equals-vs-double-equals.md](./32-triple-equals-vs-double-equals.md) - Why `===` is the normal equality operator and how it differs from `==`
 - [33-default-function-exports.md](./33-default-function-exports.md) - What `export default function` means and why Next route files use it
 - [34-next-special-route-files-and-nearest-wins.md](./34-next-special-route-files-and-nearest-wins.md) - Which App Router filenames are special and how route-local files override broader ones
+- [35-markdown-storage-vs-rendering-boundary.md](./35-markdown-storage-vs-rendering-boundary.md) - Keep Markdown as source text and render it at the article display boundary
+- [36-jsx-uppercase-means-component.md](./36-jsx-uppercase-means-component.md) - Why capitalized JSX tags call React components instead of rendering HTML elements
 
 Rule of thumb:
 
