@@ -561,3 +561,35 @@ metadata, and other externally visible product language.
 - Page metadata and browser-visible naming should use `CivicSignal`.
 - Internal documentation, repo paths, and implementation references may still
   use `SignalFire` where the repository/project identity is what matters.
+
+---
+
+---
+
+### ► Local app env files use `.env.local`
+
+###### 2026-03-26
+
+---
+
+###### Decision
+
+Local development environment files are app-owned and use `.env.local` naming
+for both the web and API apps.
+
+###### Rationale
+
+- The monorepo now has separate runtime responsibilities for `apps/web` and
+  `apps/api`.
+- App-owned local env files reduce ambiguity compared with relying on a single
+  root `.env`.
+- Using the same `.env.local` convention in both apps keeps local setup
+  consistent.
+
+###### Implications
+
+- Local web runtime configuration should live in `apps/web/.env.local`.
+- Local API runtime and Prisma configuration should live in
+  `apps/api/.env.local`.
+- Root `.env.example` acts as a pointer to app-owned env files rather than as
+  the primary local runtime contract.
