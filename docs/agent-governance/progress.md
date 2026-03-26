@@ -634,19 +634,19 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.2 - Topic Discovery Flow 🚧
+#### ▸ Phase 6.2 - Topic Discovery Flow ✅
 
 ###### Phase Tasks:
 
-- [ ] Establish shared API contract plumbing for Phase 6 topic UI consumption
-- [ ] Render the topic listing page from `GET /topics`
-- [ ] Render topic detail pages from `GET /topics/:slug`
-- [ ] Show topic name and description plus related article and action summaries
-- [ ] Link related article and action summaries to their detail pages
+- [x] Establish shared API contract plumbing for Phase 6 topic UI consumption
+- [x] Render the topic listing page from `GET /topics`
+- [x] Render topic detail pages from `GET /topics/:slug`
+- [x] Show topic name and description plus related article and action summaries
+- [x] Link related article and action summaries to their detail pages
 
 ---
 
-#### ▸ Phase 6.3 - Article Experience ⏳
+#### ▸ Phase 6.3 - Article Experience 🚧
 
 ###### Phase Tasks:
 
