@@ -43,6 +43,9 @@ importers:
       '@prisma/client':
         specifier: ^7.4.2
         version: 7.4.2(prisma@7.4.2(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3))(typescript@5.9.3)
+      '@signal-fire/api-contracts':
+        specifier: workspace:*
+        version: link:../../packages/api-contracts
       pg:
         specifier: ^8.20.0
         version: 8.20.0
@@ -155,6 +158,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@signal-fire/api-contracts':
+        specifier: workspace:*
+        version: link:../../packages/api-contracts
       next:
         specifier: 16.1.6
         version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -186,6 +192,8 @@ importers:
       vitest:
         specifier: ^4.0.18
         version: 4.0.18(@types/node@20.19.37)(jiti@2.6.1)(jsdom@26.1.0)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.2)
+
+  packages/api-contracts: {}
 
 packages:
   '@angular-devkit/core@19.2.17':

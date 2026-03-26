@@ -1,0 +1,13 @@
+{
+  "name": "@signal-fire/api-contracts",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "types": "./index.ts",
+  "exports": {
+    ".": {
+      "types": "./index.ts",
+      "default": "./index.ts"
+    }
+  }
+}

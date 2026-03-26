@@ -638,6 +638,7 @@ using the existing Phase 5 public APIs.
 
 ###### Phase Tasks:
 
+- [ ] Establish shared API contract plumbing for Phase 6 topic UI consumption
 - [ ] Render the topic listing page from `GET /topics`
 - [ ] Render topic detail pages from `GET /topics/:slug`
 - [ ] Show topic name and description plus related article and action summaries
