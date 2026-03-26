@@ -1,6 +1,6 @@
-import { ActionType } from '@prisma/client';
+import type { ActionType } from './common.types.js';
 
-export type TopicListItem = {
+type TopicListItem = {
   id: number;
   slug: string;
   name: string;
@@ -11,7 +11,7 @@ export type TopicListResponse = {
   items: TopicListItem[];
 };
 
-export type TopicDetailArticle = {
+type TopicDetailArticle = {
   id: number;
   slug: string;
   title: string;
@@ -19,7 +19,7 @@ export type TopicDetailArticle = {
   publishedAt: string;
 };
 
-export type TopicDetailAction = {
+type TopicDetailAction = {
   id: number;
   slug: string;
   title: string;
