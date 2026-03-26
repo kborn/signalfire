@@ -702,6 +702,17 @@ using the existing Phase 5 public APIs.
 
 ---
 
+#### ▸ Phase 6.8 - Discovery UI Test Coverage ⏳
+
+###### Phase Tasks:
+
+- [ ] Add focused frontend tests for topic, article, and action discovery routes
+- [ ] Add coverage for not-found and error-handling behavior on public detail pages
+- [ ] Add coverage for cross-link navigation surfaces between related topics, articles, and actions
+- [ ] Keep Phase 6 UI tests scoped to current public browsing behavior without expanding into Events, search, filtering, or pagination
+
+---
+
 ###### Notes:
 
 - Phase 6 should emphasize the Learn -> Decide -> Act discovery loop without turning the product into a generic blog UI.
