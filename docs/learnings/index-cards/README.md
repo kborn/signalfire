@@ -43,6 +43,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [26-summary-cards-vs-card-systems.md](./26-summary-cards-vs-card-systems.md) - When a simple repeated summary block is enough and when a real card system starts to exist
 - [27-await-looks-sequential-but-is-still-async.md](./27-await-looks-sequential-but-is-still-async.md) - Why `await` reads sequentially without turning I/O into blocking synchronous work
 - [28-react-list-keys.md](./28-react-list-keys.md) - Why React needs stable `key` values for items rendered from `.map(...)`
+- [29-jsx-inline-style-syntax.md](./29-jsx-inline-style-syntax.md) - How inline styles work in JSX and why raw CSS syntax does not belong in element attributes
+- [30-rem-vs-em-vs-px.md](./30-rem-vs-em-vs-px.md) - What `rem`, `em`, and `px` mean and when each unit is a better fit
 
 Rule of thumb:
 

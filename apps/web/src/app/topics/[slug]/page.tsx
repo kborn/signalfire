@@ -13,17 +13,19 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
       <section>
         <h2>Articles</h2>
         {topic.articles.map((article) => (
-          <Link key={article.id} href={`/articles/${article.slug}`}>
-            {article.title}
-          </Link>
+          <div key={article.id}>
+            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
+            <p className="summary"> {article.summary}</p>
+          </div>
         ))}
       </section>
       <section>
         <h2>Actions</h2>
         {topic.actions.map((action) => (
-          <Link key={action.id} href={`/actions/${action.slug}`}>
-            {action.title}
-          </Link>
+          <div key={action.id}>
+            <Link href={`/actions/${action.slug}`}>{action.title}</Link>
+            <p className="summary"> {action.summary}</p>
+          </div>
         ))}
       </section>
     </div>
