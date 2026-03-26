@@ -37,6 +37,12 @@ These cards may be created or updated alongside task-linked syllabi in
 - [20-layout-containers.md](./20-layout-containers.md) - What a shared layout container does
 - [21-spacing-and-vertical-rhythm.md](./21-spacing-and-vertical-rhythm.md) - Why consistent spacing matters before polish
 - [22-css-class-selectors.md](./22-css-class-selectors.md) - How CSS classes connect styles to JSX elements
+- [23-server-page-fetching-in-next-app-router.md](./23-server-page-fetching-in-next-app-router.md) - Why App Router pages can fetch data directly on the server
+- [24-collection-vs-detail-api-shapes.md](./24-collection-vs-detail-api-shapes.md) - Why collection and detail endpoints should not be treated as the same payload shape
+- [25-render-related-summaries-as-links.md](./25-render-related-summaries-as-links.md) - Why embedded related summaries should become clickable discovery links
+- [26-summary-cards-vs-card-systems.md](./26-summary-cards-vs-card-systems.md) - When a simple repeated summary block is enough and when a real card system starts to exist
+- [27-await-looks-sequential-but-is-still-async.md](./27-await-looks-sequential-but-is-still-async.md) - Why `await` reads sequentially without turning I/O into blocking synchronous work
+- [28-react-list-keys.md](./28-react-list-keys.md) - Why React needs stable `key` values for items rendered from `.map(...)`
 
 Rule of thumb:
 
