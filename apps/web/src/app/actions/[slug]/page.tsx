@@ -2,6 +2,7 @@ import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { ArticleBody } from '@/components/article-body';
 export const dynamic = 'force-dynamic';
 
 async function fetchActionDetails(params: Promise<{ slug: string }>) {
@@ -25,7 +26,10 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         <p>{action.summary}</p>
       </section>
       <section>
-        <h2>Topics</h2>
+        <ArticleBody content={action.description} />
+      </section>
+      <section>
+        <h2>Related Topics</h2>
         {action.topics.map((topic) => (
           <div key={topic.id}>
             <h2>

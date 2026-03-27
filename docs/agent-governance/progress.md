@@ -646,7 +646,7 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.3 - Article Experience 🚧
+#### ▸ Phase 6.3 - Article Experience ✅
 
 ###### Phase Tasks:
 
@@ -657,18 +657,18 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.4 - Action Discovery ⏳
+#### ▸ Phase 6.4 - Action Discovery ✅
 
 ###### Phase Tasks:
 
-- [ ] Render the action listing page from `GET /actions`
-- [ ] Render action detail pages from `GET /actions/:slug`
-- [ ] Display full action detail plus related topics and related articles
-- [ ] Make related topics and articles clearly discoverable and clickable
+- [x] Render the action listing page from `GET /actions`
+- [x] Render action detail pages from `GET /actions/:slug`
+- [x] Display full action detail plus related topics and related articles
+- [x] Make related topics and articles clearly discoverable and clickable
 
 ---
 
-#### ▸ Phase 6.5 - Cross-Link Navigation Model ⏳
+#### ▸ Phase 6.5 - Cross-Link Navigation Model 🚧
 
 ###### Phase Tasks:
 

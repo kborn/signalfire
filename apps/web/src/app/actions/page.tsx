@@ -23,7 +23,7 @@ export default async function ActionListPage() {
       {actions.items.map((action) => (
         <div key={action.id}>
           <h2>
-            <Link href={`actions/${action.slug}`}>{action.title}</Link>
+            <Link href={`/actions/${action.slug}`}>{action.title}</Link>
           </h2>
           <p>{action.summary}</p>
         </div>
