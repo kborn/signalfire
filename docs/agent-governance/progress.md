@@ -702,7 +702,7 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.8 - Discovery Summary Components 🚧
+#### ▸ Phase 6.8 - Discovery Summary Components ✅
 
 ###### Phase Tasks:
 
@@ -713,7 +713,7 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.9 - Discovery UI Test Coverage ⏳
+#### ▸ Phase 6.9 - Discovery UI Test Coverage 🚧
 
 ###### Phase Tasks:
 

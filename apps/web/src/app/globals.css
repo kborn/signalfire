@@ -96,6 +96,54 @@ a {
   line-height: 1.6;
 }
 
+.home-page {
+  display: grid;
+  gap: 56px;
+}
+
+.home-hero {
+  padding: 40px 0 20px;
+}
+
+.home-hero h1 {
+  max-width: 13ch;
+  font-size: 3rem;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+}
+
+.home-hero p {
+  max-width: 34rem;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.home-cta-group {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+
+.home-secondary-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.home-how-it-works {
+  padding: 48px 0 0;
+  border-top: 1px solid #c9c9c9;
+}
+
+.home-how-it-works h2 {
+  font-size: 1.5rem;
+}
+
+.home-how-it-works p {
+  max-width: 60ch;
+  line-height: 1.6;
+}
+
 .container {
   max-width: 960px;
   margin: 0 auto;
@@ -112,6 +160,83 @@ a {
   letter-spacing: 0.08em;
   color: #6b7280;
   text-transform: uppercase;
+}
+
+.primaryCTA {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 1rem 1.75rem;
+  border-radius: 999px;
+  background: #171717;
+  color: #ffffff;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.primaryCTA:hover {
+  background: #2b2b2b;
+}
+
+.primaryCTA:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.primaryCTA:active {
+  transform: translateY(1px);
+}
+
+.secondaryCTA {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.875rem 1.5rem;
+  border: 1px solid #171717;
+  border-radius: 999px;
+  background: transparent;
+  color: #171717;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.secondaryCTA:hover {
+  background: #171717;
+  color: #ffffff;
+}
+
+.secondaryCTA:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.secondaryCTA:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    padding-top: 20px;
+  }
+
+  .home-hero h1 {
+    max-width: none;
+    font-size: 2.25rem;
+    letter-spacing: -0.03em;
+  }
+
+  .home-secondary-ctas {
+    display: grid;
+  }
 }
 
 .primaryCTA {

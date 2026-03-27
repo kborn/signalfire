@@ -52,6 +52,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [35-markdown-storage-vs-rendering-boundary.md](./35-markdown-storage-vs-rendering-boundary.md) - Keep Markdown as source text and render it at the article display boundary
 - [36-jsx-uppercase-means-component.md](./36-jsx-uppercase-means-component.md) - Why capitalized JSX tags call React components instead of rendering HTML elements
 - [37-css-pseudo-classes.md](./37-css-pseudo-classes.md) - How selectors like `.primaryCTA:hover` attach state-specific styles to the same element
+- [38-ts-structural-typing-vs-java-nominal-typing.md](./38-ts-structural-typing-vs-java-nominal-typing.md) - Why TypeScript can reuse values across types when their field shapes match
 
 Rule of thumb:
 
