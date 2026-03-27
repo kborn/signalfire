@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="container">
       <section className="page-section">
         <h1>Learn what matters. Take meaningful action.</h1>
 
@@ -21,7 +21,7 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-      <section>
+      <section className="page-section">
         <h2>Learn → Act</h2>
 
         <p>Explore a topic → Understand the issue → Take meaningful action</p>
