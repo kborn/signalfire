@@ -1,19 +1,52 @@
-export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+import { getActionDetails } from '@/lib/api/actions';
+import { ApiError } from '@/lib/api/error';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { ArticleBody } from '@/components/article-body';
+export const dynamic = 'force-dynamic';
+
+async function fetchActionDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
-  const actionName = slug; // TODO pull me from the API
+  try {
+    return await getActionDetails(slug);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      notFound();
+    }
+    throw error;
+  }
+}
+
+export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const action = await fetchActionDetails(params);
   return (
     <div className="page-section">
       <section>
-        <h1>{actionName} Action</h1>
-        <p>Understand this action and how you can take part</p>
+        <h1>{action.title}</h1>
+        <p>{action.summary}</p>
       </section>
       <section>
-        <h2>Topics</h2>
-        <p>Explore topics relating to {actionName}</p>
+        <ArticleBody content={action.description} />
+      </section>
+      <section>
+        <h2>Related Topics</h2>
+        {action.topics.map((topic) => (
+          <div key={topic.id}>
+            <h2>
+              <Link href={`/topics/${topic.slug}`}>{topic.name}</Link>
+            </h2>
+            <p>{topic.description}</p>
+          </div>
+        ))}
       </section>
       <section>
         <h2>Articles</h2>
-        <p>Learn more about {actionName}</p>
+        {action.articles.map((article) => (
+          <div key={article.id}>
+            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
+            <p className="summary"> {article.summary}</p>
+          </div>
+        ))}
       </section>
     </div>
   );

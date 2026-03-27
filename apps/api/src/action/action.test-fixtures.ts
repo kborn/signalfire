@@ -1,5 +1,5 @@
 import { Action, ActionType, EntityStatus } from '@prisma/client';
-import { ActionDetailResponse, ActionListResponse } from './action.types';
+import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
 
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 
