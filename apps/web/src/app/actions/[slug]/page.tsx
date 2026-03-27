@@ -1,10 +1,10 @@
 import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
 import { ArticleBody } from '@/components/article-body';
 export const dynamic = 'force-dynamic';
 import { TopicSummary } from '@/components/topic-summary';
+import { ArticleSummary } from '@/components/article-summary';
 
 async function fetchActionDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -38,10 +38,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       <section>
         <h2>Articles</h2>
         {action.articles.map((article) => (
-          <div key={article.id}>
-            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-            <p className="summary"> {article.summary}</p>
-          </div>
+          <ArticleSummary key={article.id} article={article} />
         ))}
       </section>
     </div>

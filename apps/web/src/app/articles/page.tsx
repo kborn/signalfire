@@ -1,5 +1,5 @@
 import { getArticlesList } from '@/lib/api/articles';
-import Link from 'next/link';
+import { ArticleSummary } from '@/components/article-summary';
 export const dynamic = 'force-dynamic';
 
 function getNoResultsResponse() {
@@ -21,12 +21,7 @@ export default async function ArticleListPage() {
       <h1>Articles</h1>
       <p>Read and understand the issues that matter</p>
       {resp.items.map((article) => (
-        <div key={article.id}>
-          <h2>
-            <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-          </h2>
-          <p>{article.summary}</p>
-        </div>
+        <ArticleSummary key={article.id} article={article} />
       ))}
     </section>
   );
