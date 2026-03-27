@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ActionRepository } from './action.repository';
 import { Action } from '@prisma/client';
-import type { ActionDetailResponse, ActionListResponse } from './action.types';
+import type { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
 import { TopicRepository } from '../topic/topic.repository';
 import { ArticleRepository } from '../article/article.repository';
 

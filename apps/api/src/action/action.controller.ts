@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ActionService } from './action.service';
-import { ActionDetailResponse, ActionListResponse } from './action.types';
+import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
 
 @Controller('actions')
 export class ActionController {
