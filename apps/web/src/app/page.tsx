@@ -14,13 +14,12 @@ export default function HomePage() {
           </Link>
 
           <div className="home-secondary-ctas">
-            <Link href="/articles" className="secondaryCTA">
-              Browse Articles
-            </Link>
-            <Link href="/actions" className="secondaryCTA">
-              Browse Actions
-            </Link>
-          </div>
+          <Link href="/articles" className="secondaryCTA">
+            Browse Articles
+          </Link>
+          <Link href="/actions" className="secondaryCTA">
+            Browse Actions
+          </Link></div>
         </div>
       </section>
 
