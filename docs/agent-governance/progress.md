@@ -672,16 +672,16 @@ using the existing Phase 5 public APIs.
 
 ###### Phase Tasks:
 
-- [x] Support Topic -> Article navigation
-- [x] Support Topic -> Action navigation
-- [x] Support Article -> Topic navigation
-- [x] Support Article -> Action navigation
-- [x] Support Action -> Topic navigation
-- [x] Support Action -> Article navigation
+- [x] Support Topic → Article navigation
+- [x] Support Topic → Action navigation
+- [x] Support Article → Topic navigation
+- [x] Support Article → Action navigation
+- [x] Support Action → Topic navigation
+- [x] Support Action → Article navigation
 
 ---
 
-#### ▸ Phase 6.6 - UI Behavior Constraints 🚧
+#### ▸ Phase 6.6 - UI Behavior Constraints ✅
 
 ###### Phase Tasks:
 
@@ -693,7 +693,7 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.7 - Minimal Home Page ⏳
+#### ▸ Phase 6.7 - Minimal Home Page 🚧
 
 ###### Phase Tasks:
 
@@ -702,7 +702,18 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.8 - Discovery UI Test Coverage ⏳
+#### ▸ Phase 6.8 - Discovery Summary Components ⏳
+
+###### Phase Tasks:
+
+- [ ] Define shared UI components for Topic, Article, and Action summary previews
+- [ ] Reuse those components across collection pages and related-content sections where applicable
+- [ ] Keep component scope limited to current Phase 6 discovery routes and Phase 5 API contracts
+- [ ] Avoid introducing Phase 9 polish concerns such as advanced visual treatment, animation, or expanded landing-page content modules
+
+---
+
+#### ▸ Phase 6.9 - Discovery UI Test Coverage ⏳
 
 ###### Phase Tasks:
 
@@ -717,6 +728,7 @@ using the existing Phase 5 public APIs.
 
 - Phase 6 should emphasize the Learn -> Decide -> Act discovery loop without turning the product into a generic blog UI.
 - Keep implementation intentionally simple; avoid introducing a design system, component library, advanced animation work, or other scope-expanding UI infrastructure unless explicitly approved.
+- Shared summary components are allowed in Phase 6 when they reduce duplicate discovery UI work and establish reusable structure for later presentation refinement.
 - Keep Phase 6 focused on baseline public browsing structure and clear navigation; defer broader visual polish and presentation refinement to Phase 9 unless explicitly approved.
 
 ---
