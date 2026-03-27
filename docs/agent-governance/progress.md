@@ -693,16 +693,16 @@ using the existing Phase 5 public APIs.
 
 ---
 
-#### ▸ Phase 6.7 - Minimal Home Page 🚧
+#### ▸ Phase 6.7 - Minimal Home Page ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement a simple home page that explains the platform at a high level
-- [ ] Link prominently to Topics, Articles, and Actions from the home page
+- [x] Implement a simple home page that explains the platform at a high level
+- [x] Link prominently to Topics, Articles, and Actions from the home page
 
 ---
 
-#### ▸ Phase 6.8 - Discovery Summary Components ⏳
+#### ▸ Phase 6.8 - Discovery Summary Components 🚧
 
 ###### Phase Tasks:
 

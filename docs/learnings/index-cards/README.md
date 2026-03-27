@@ -51,6 +51,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [34-next-special-route-files-and-nearest-wins.md](./34-next-special-route-files-and-nearest-wins.md) - Which App Router filenames are special and how route-local files override broader ones
 - [35-markdown-storage-vs-rendering-boundary.md](./35-markdown-storage-vs-rendering-boundary.md) - Keep Markdown as source text and render it at the article display boundary
 - [36-jsx-uppercase-means-component.md](./36-jsx-uppercase-means-component.md) - Why capitalized JSX tags call React components instead of rendering HTML elements
+- [37-css-pseudo-classes.md](./37-css-pseudo-classes.md) - How selectors like `.primaryCTA:hover` attach state-specific styles to the same element
 
 Rule of thumb:
 
