@@ -19,7 +19,7 @@ export default function HomePage() {
             </Link>
             <Link href="/actions" className="secondaryCTA">
               Browse Actions
-          </Link></div>
+            </Link>
           </div>
         </div>
       </section>
