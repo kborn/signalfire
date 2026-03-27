@@ -685,11 +685,11 @@ using the existing Phase 5 public APIs.
 
 ###### Phase Tasks:
 
-- [ ] Rely on API-level published-only guarantees and do not add draft-state UI
-- [ ] Do not add pagination in Phase 6
-- [ ] Do not add search in Phase 6
-- [ ] Do not add filtering in Phase 6
-- [ ] Do not add Event UI in Phase 6
+- [x] Rely on API-level published-only guarantees and do not add draft-state UI
+- [x] Do not add pagination in Phase 6
+- [x] Do not add search in Phase 6
+- [x] Do not add filtering in Phase 6
+- [x] Do not add Event UI in Phase 6
 
 ---
 
