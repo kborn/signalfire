@@ -3,6 +3,7 @@ import { ApiError } from '@/lib/api/error';
 import { ArticleBody } from '@/components/article-body';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { TopicSummary } from '@/components/topic-summary';
 export const dynamic = 'force-dynamic';
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
@@ -38,11 +39,8 @@ export default async function ArticleDetailsPage({
       </section>
       <section>
         <h2>Topics</h2>
-        {article.topics.map((topics) => (
-          <div key={topics.id}>
-            <Link href={`/topics/${topics.slug}`}>{topics.name}</Link>
-            <p className="summary"> {topics.description}</p>
-          </div>
+        {article.topics.map((topic) => (
+          <TopicSummary key={topic.id} topic={topic} />
         ))}
       </section>
       <section>

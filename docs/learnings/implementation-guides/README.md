@@ -13,3 +13,11 @@ that, use `docs/learnings/walkthroughs/`.
 
 For the detailed rules, format, and when-to-use guidance, see
 `docs/learnings/syllabus-workflow.md`.
+
+Current Phase 6 guides:
+
+- `phase-6-1-next-routing-and-layout-guide.md`
+- `phase-6-1-html-page-structure-guide.md`
+- `phase-6-2-next-server-fetching-and-related-summary-links-guide.md`
+- `phase-6-3-article-markdown-rendering-guide.md`
+- `phase-6-8-discovery-summary-components-guide.md`
