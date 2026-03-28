@@ -13,8 +13,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
 | [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
 | [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
-| **[6](#-phase-6--content-discovery-ui-)**         | **Content Discovery UI**        | **🚧 ACTIVE** |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ⏳            |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
+| **[7](#-phase-7--event-domain--apis-)**           | **Event Domain & APIs**         | **🚧 ACTIVE** |
 | [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
 | [9](#-phase-9--ui-polish-)                        | UI Polish                       | ⏳            |
 | [10](#-phase-10--submission-system-)              | Submission System               | ⏳            |
@@ -615,12 +615,12 @@ using the existing Phase 5 public APIs.
 
 ###### Definition of Done
 
-- [ ] Users can browse topics and view topic detail pages
-- [ ] Users can browse articles and view article detail pages
-- [ ] Users can browse actions and view action detail pages
-- [ ] Users can navigate between related topics, articles, and actions
-- [ ] UI consumes the current Phase 5 public APIs without requiring backend scope expansion
-- [ ] No Phase 6 work depends on Events, search, filtering, pagination, or unpublished-content handling
+- [x] Users can browse topics and view topic detail pages
+- [x] Users can browse articles and view article detail pages
+- [x] Users can browse actions and view action detail pages
+- [x] Users can navigate between related topics, articles, and actions
+- [x] UI consumes the current Phase 5 public APIs without requiring backend scope expansion
+- [x] No Phase 6 work depends on Events, search, filtering, pagination, or unpublished-content handling
 
 ---
 
@@ -706,21 +706,21 @@ using the existing Phase 5 public APIs.
 
 ###### Phase Tasks:
 
-- [ ] Define shared UI components for Topic, Article, and Action summary previews
-- [ ] Reuse those components across collection pages and related-content sections where applicable
-- [ ] Keep component scope limited to current Phase 6 discovery routes and Phase 5 API contracts
-- [ ] Avoid introducing Phase 9 polish concerns such as advanced visual treatment, animation, or expanded landing-page content modules
+- [x] Define shared UI components for Topic, Article, and Action summary previews
+- [x] Reuse those components across collection pages and related-content sections where applicable
+- [x] Keep component scope limited to current Phase 6 discovery routes and Phase 5 API contracts
+- [x] Avoid introducing Phase 9 polish concerns such as advanced visual treatment, animation, or expanded landing-page content modules
 
 ---
 
-#### ▸ Phase 6.9 - Discovery UI Test Coverage 🚧
+#### ▸ Phase 6.9 - Discovery UI Test Coverage ✅
 
 ###### Phase Tasks:
 
-- [ ] Add focused frontend tests for topic, article, and action discovery routes
-- [ ] Add coverage for not-found and error-handling behavior on public detail pages
-- [ ] Add coverage for cross-link navigation surfaces between related topics, articles, and actions
-- [ ] Keep Phase 6 UI tests scoped to current public browsing behavior without expanding into Events, search, filtering, or pagination
+- [x] Add focused frontend tests for topic, article, and action discovery routes
+- [x] Add coverage for not-found and error-handling behavior on public detail pages
+- [x] Add coverage for cross-link navigation surfaces between related topics, articles, and actions
+- [x] Keep Phase 6 UI tests scoped to current public browsing behavior without expanding into Events, search, filtering, or pagination
 
 ---
 
