@@ -606,7 +606,7 @@ Create APIs for reading Topics, Articles, and Actions.
 
 ---
 
-### ► Phase 6 — Content Discovery UI 🚧
+### ► Phase 6 — Content Discovery UI ✅
 
 ###### Goal
 
@@ -735,17 +735,113 @@ using the existing Phase 5 public APIs.
 
 ---
 
-### ► Phase 7 — Event Domain & APIs ⏳
+### ► Phase 7 — Event Domain & APIs 🚧
 
 ###### Goal
 
-Implement Event persistence and APIs.
+Implement public Event domain read behavior and API contracts needed to support
+Release 1 event discovery.
 
-Capabilities:
+###### Definition of Done
 
-- event schema
-- event read APIs
-- filtering by topic/date/location
+- [ ] Event persistence model and validation rules align with the canonical
+      Event definition
+- [ ] Public event read endpoints exist for collection and detail use cases
+- [ ] Event filtering supports the scoped Release 1 dimensions: topic, date,
+      and location
+- [ ] Publication rules are applied consistently across direct and
+      relationship-driven Event reads
+- [ ] Event API contracts and deferrals are documented for Phase 8 UI work
+
+---
+
+#### ▸ Phase 7.1 - Event Schema & Domain Validation 🚧
+
+###### Phase Tasks:
+
+- [ ] Confirm the Prisma `Event` model matches the canonical minimum field set
+- [ ] Confirm Event publication state and timestamps are exposed consistently
+      with Release 1 rules
+- [ ] Validate required `Topic -> Event` relationships and existing Event
+      persistence constraints
+- [ ] Verify optional Event relationships remain scoped to already-supported
+      product behavior rather than expanding the domain graph
+
+---
+
+#### ▸ Phase 7.2 - Event Repository & Service Read Paths ⏳
+
+###### Phase Tasks:
+
+- [ ] Add or finalize repository methods for Event collection, detail, and
+      filter-oriented queries
+- [ ] Keep Event service boundaries aligned with the existing public read
+      patterns used by Topics, Articles, and Actions
+- [ ] Standardize published-only read behavior for direct and related Event
+      fetches
+
+---
+
+#### ▸ Phase 7.3 - Event API Contracts ⏳
+
+###### Phase Tasks:
+
+- [ ] Define and document Event summary and Event detail response shapes
+- [ ] Define default collection ordering for Event results and document the
+      rationale
+- [ ] Document which Event relationships are included in public payloads for
+      Release 1
+
+---
+
+#### ▸ Phase 7.4 - Event Collection API ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement the public Event collection endpoint
+- [ ] Support filtering by topic
+- [ ] Support filtering by date or date window
+- [ ] Support scoped location filtering using the stored Event location fields
+- [ ] Apply published-only filtering and stable ordering to collection results
+
+---
+
+#### ▸ Phase 7.5 - Event Detail & Topic Discovery Support ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement the public Event detail endpoint
+- [ ] Expose the Event data needed for topic-related discovery in Phase 8
+- [ ] Validate that topic-scoped Event browsing can be built without expanding
+      into Event UI work during this phase
+
+---
+
+#### ▸ Phase 7.6 - Validation, Testing & Phase Handoff ⏳
+
+###### Phase Tasks:
+
+- [ ] Add endpoint coverage for Event collection and detail success cases
+- [ ] Add coverage for publication filtering and relationship visibility rules
+- [ ] Add coverage for topic/date/location filter behavior, including empty
+      states and invalid inputs
+- [ ] Document final Event endpoint contracts, ordering, and known Phase 7
+      deferrals
+- [ ] Update phase status and notes when all Phase 7 tasks are complete
+
+---
+
+###### Notes:
+
+- Phase 7 is limited to public Event read APIs and the Event domain behavior
+  required to support them.
+- This phase adds temporal and location-aware discovery concerns that did not
+  exist in the Article and Action API phases, but it does not introduce maps,
+  radius search, automated ingestion, admin CRUD, or Event submission UI.
+- Search, pagination, advanced geospatial behavior, and moderation/editorial
+  write paths remain out of scope unless explicitly approved.
+- Phase 8 should consume the Event contracts defined here rather than reopening
+  backend scope.
 
 ---
 
