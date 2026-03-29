@@ -773,10 +773,10 @@ Release 1 event discovery.
 
 ###### Phase Tasks:
 
-- [ ] Define and document Event summary and Event detail response shapes
-- [ ] Define default collection ordering for Event results and document the
+- [x] Define and document Event summary and Event detail response shapes
+- [x] Define default collection ordering for Event results and document the
       rationale
-- [ ] Document which Event relationships are included in public payloads for
+- [x] Document which Event relationships are included in public payloads for
       Release 1
 
 ---
@@ -838,6 +838,9 @@ Release 1 event discovery.
 - This phase adds temporal and location-aware discovery concerns that did not
   exist in the Article and Action API phases, but it does not introduce maps,
   radius search, automated ingestion, admin CRUD, or Event submission UI.
+- Phase 7.2 contract shapes, ordering rules, and relationship inclusion
+  decisions are documented in
+  `docs/architecture/009-phase-7-event-api-contracts.md`.
 - Search, pagination, advanced geospatial behavior, and moderation/editorial
   write paths remain out of scope unless explicitly approved.
 - Phase 8 should consume the Event contracts defined here rather than reopening
