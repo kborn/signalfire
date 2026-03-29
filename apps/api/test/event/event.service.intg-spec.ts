@@ -8,9 +8,105 @@ import { linkActionEvent, linkArticleEvent, linkTopicEvent } from '../factories/
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Event Service Integration Test', () => {
   const harness = setupIntegrationTest([EventModule, TopicModule]);
+
+  it('returns published events filtered by region and date ordered by startTime then id', async () => {
+    const eventService = harness.module.get(EventService);
+    const topicService = harness.module.get(TopicService);
+
+    const topic = await topicService.getTopicDetail('democracy');
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+
+    const laterEvent = await createEvent({
+      region: 'PA',
+      startTime: new Date('2025-03-15T18:00:00.000Z'),
+    });
+    const earlierEvent = await createEvent({
+      region: 'PA',
+      startTime: new Date('2025-03-15T09:00:00.000Z'),
+    });
+    const draftEvent = await createEvent({
+      status: EntityStatus.DRAFT,
+      region: 'PA',
+      startTime: new Date('2025-03-15T10:00:00.000Z'),
+      publishedAt: null,
+    });
+    const wrongRegionEvent = await createEvent({
+      region: 'NY',
+      startTime: new Date('2025-03-15T11:00:00.000Z'),
+    });
+    const wrongDayEvent = await createEvent({
+      region: 'PA',
+      startTime: new Date('2025-03-16T09:00:00.000Z'),
+    });
+
+    await linkTopicEvent(topic.id, laterEvent.id);
+    await linkTopicEvent(topic.id, earlierEvent.id);
+    await linkTopicEvent(topic.id, draftEvent.id);
+    await linkTopicEvent(topic.id, wrongRegionEvent.id);
+    await linkTopicEvent(topic.id, wrongDayEvent.id);
+
+    const response = await eventService.getPublishedEventList({
+      date: new Date('2025-03-15T12:00:00.000Z'),
+      region: 'PA',
+    });
+
+    expect(response.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
+    expect(response.items).toEqual([
+      expect.objectContaining({
+        id: earlierEvent.id,
+        region: 'PA',
+        startTime: '2025-03-15T09:00:00.000Z',
+      }),
+      expect.objectContaining({
+        id: laterEvent.id,
+        region: 'PA',
+        startTime: '2025-03-15T18:00:00.000Z',
+      }),
+    ]);
+    expect(response.items.map((item) => item.id)).not.toContain(draftEvent.id);
+    expect(response.items.map((item) => item.id)).not.toContain(wrongRegionEvent.id);
+    expect(response.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
+  });
+
+  it('returns published events filtered by topic slug', async () => {
+    const eventService = harness.module.get(EventService);
+    const topicService = harness.module.get(TopicService);
+
+    const democracyTopic = await topicService.getTopicDetail('democracy');
+    const climateTopic = await topicService.getTopicDetail('climate');
+    expect(democracyTopic).not.toBeNull();
+    expect(climateTopic).not.toBeNull();
+    if (!democracyTopic || !climateTopic) {
+      throw new Error('Seeded topics unexpectedly null');
+    }
+
+    const matchingEvent = await createEvent({
+      region: 'PA',
+      startTime: new Date('2025-03-15T14:00:00.000Z'),
+    });
+    const otherTopicEvent = await createEvent({
+      region: 'PA',
+      startTime: new Date('2025-03-15T16:00:00.000Z'),
+    });
+
+    await linkTopicEvent(democracyTopic.id, matchingEvent.id);
+    await linkTopicEvent(climateTopic.id, otherTopicEvent.id);
+
+    const response = await eventService.getPublishedEventList({
+      date: new Date('2025-03-15T08:00:00.000Z'),
+      region: 'PA',
+      topicSlug: 'democracy',
+    });
+
+    expect(response.items.map((item) => item.id)).toEqual([matchingEvent.id]);
+  });
 
   it('returns draft event by id from unrestricted lookup', async () => {
     const eventService = harness.module.get(EventService);
@@ -46,8 +142,9 @@ describe('Event Service Integration Test', () => {
 
     // test that unpublished events are not returned
     const createdEvent = await createEvent({ status: EntityStatus.DRAFT });
-    const event = await eventService.getPublishedEventDetail(createdEvent.id);
-    expect(event).toBeNull();
+    await expect(eventService.getPublishedEventDetail(createdEvent.id)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published events by related article', async () => {

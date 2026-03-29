@@ -117,4 +117,29 @@ describe('ActionRepository', () => {
       },
     });
   });
+
+  it('findPublishedByEventId', async () => {
+    const action = buildActionEntity();
+    prismaMock.action.findMany.mockResolvedValue([action]);
+
+    const id = 1;
+    const ret = await repository.findPublishedByEventId(id);
+
+    expect(ret).toEqual([action]);
+    expect(prismaMock.action.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        actionEvents: {
+          some: {
+            event: {
+              id: id,
+            },
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  });
 });

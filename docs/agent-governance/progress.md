@@ -769,7 +769,7 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.2 - Event API Contracts 🚧
+#### ▸ Phase 7.2 - Event API Contracts ✅
 
 ###### Phase Tasks:
 
@@ -781,20 +781,20 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.3 - Event Repository & Service Read Paths ⏳
+#### ▸ Phase 7.3 - Event Repository & Service Read Paths ✅
 
 ###### Phase Tasks:
 
-- [ ] Add or finalize repository methods for Event collection, detail, and
+- [x] Add or finalize repository methods for Event collection, detail, and
       filter-oriented queries
-- [ ] Keep Event service boundaries aligned with the existing public read
+- [x] Keep Event service boundaries aligned with the existing public read
       patterns used by Topics, Articles, and Actions
-- [ ] Standardize published-only read behavior for direct and related Event
+- [x] Standardize published-only read behavior for direct and related Event
       fetches
 
 ---
 
-#### ▸ Phase 7.4 - Event Collection API ⏳
+#### ▸ Phase 7.4 - Event Collection API 🚧
 
 ###### Phase Tasks:
 

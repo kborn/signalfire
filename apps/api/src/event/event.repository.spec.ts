@@ -2,27 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventRepository } from './event.repository';
 import { PrismaService } from '../prisma/prisma.service';
 import { EntityStatus } from '@prisma/client';
+import { buildEventEntity } from './event.test-fixtures';
 
-const event = {
-  id: 1,
-  title: 'Town Hall Meeting',
-  summary: 'A short event summary.',
-  description: 'A longer event description.',
-  eventType: 'TOWN_HALL',
-  status: 'PUBLISHED',
-  startTime: new Date(),
-  endTime: new Date(),
-  locationName: 'City Hall',
-  addressRaw: '123 Main St',
-  city: 'Springfield',
-  region: 'IL',
-  postalCode: '62701',
-  country: 'USA',
-  latitude: null,
-  longitude: null,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+const event = buildEventEntity();
 
 describe('EventRepository', () => {
   let repository: EventRepository;
@@ -63,6 +45,39 @@ describe('EventRepository', () => {
     });
   });
 
+  it('findPublished', async () => {
+    prismaMock.event.findMany.mockResolvedValue([event]);
+
+    const region = 'IL';
+    const startOfDay = new Date('2025-12-17T00:00:00.000Z');
+    const startOfNextDay = new Date('2025-12-18T00:00:00.000Z');
+    const topicSlug = 'democracy';
+    const ret = await repository.findPublished(region, startOfDay, startOfNextDay, topicSlug);
+
+    expect(ret).toEqual([event]);
+    expect(prismaMock.event.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        region: {
+          equals: region,
+          mode: 'insensitive',
+        },
+        startTime: {
+          gte: startOfDay,
+          lt: startOfNextDay,
+        },
+        topicEvents: {
+          some: {
+            topic: {
+              slug: topicSlug,
+            },
+          },
+        },
+      },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+    });
+  });
+
   it('findByArticleId', async () => {
     prismaMock.event.findMany.mockResolvedValue([event]);
 
@@ -81,6 +96,7 @@ describe('EventRepository', () => {
           },
         },
       },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
   });
 
@@ -102,6 +118,7 @@ describe('EventRepository', () => {
           },
         },
       },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
   });
 });

@@ -23,6 +23,37 @@ export class EventRepository {
     });
   }
 
+  findPublished(
+    region: string,
+    startOfDay: Date,
+    startOfNextDay: Date,
+    topicSlug?: string,
+  ): Promise<Event[]> {
+    return this.prisma.event.findMany({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        region: {
+          equals: region,
+          mode: 'insensitive',
+        },
+        startTime: {
+          gte: startOfDay,
+          lt: startOfNextDay,
+        },
+        topicEvents: topicSlug
+          ? {
+              some: {
+                topic: {
+                  slug: topicSlug,
+                },
+              },
+            }
+          : undefined,
+      },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+    });
+  }
+
   findByArticleId(articleId: number): Promise<Event[]> {
     return this.prisma.event.findMany({
       where: {
@@ -35,6 +66,7 @@ export class EventRepository {
           },
         },
       },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
   }
 
@@ -50,6 +82,7 @@ export class EventRepository {
           },
         },
       },
+      orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
   }
 }
