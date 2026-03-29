@@ -755,21 +755,21 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.1 - Event Schema & Domain Validation 🚧
+#### ▸ Phase 7.1 - Event Schema & Domain Validation ✅
 
 ###### Phase Tasks:
 
-- [ ] Confirm the Prisma `Event` model matches the canonical minimum field set
-- [ ] Confirm Event publication state and timestamps are exposed consistently
+- [x] Confirm the Prisma `Event` model matches the canonical minimum field set
+- [x] Confirm Event publication state and timestamps are exposed consistently
       with Release 1 rules
-- [ ] Validate required `Topic -> Event` relationships and existing Event
+- [x] Validate required `Topic -> Event` relationships and existing Event
       persistence constraints
-- [ ] Verify optional Event relationships remain scoped to already-supported
+- [x] Verify optional Event relationships remain scoped to already-supported
       product behavior rather than expanding the domain graph
 
 ---
 
-#### ▸ Phase 7.2 - Event Repository & Service Read Paths ⏳
+#### ▸ Phase 7.2 - Event Repository & Service Read Paths 🚧
 
 ###### Phase Tasks:
 
