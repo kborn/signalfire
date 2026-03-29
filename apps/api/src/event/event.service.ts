@@ -4,7 +4,7 @@ import { Action, Article, Event, Topic } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
 import { ActionRepository } from '../action/action.repository';
 import { ArticleRepository } from '../article/article.repository';
-import { EventDetailResponse } from '@signal-fire/api-contracts';
+import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
 
 @Injectable()
 export class EventService {
@@ -21,6 +21,42 @@ export class EventService {
     }
 
     return publishedAt;
+  }
+
+  async getPublishedEventList(params: {
+    date: Date;
+    region: string;
+    topicSlug?: string;
+  }): Promise<EventListResponse> {
+    const { date } = params;
+    const { region } = params;
+    const { topicSlug } = params;
+    const startOfDay = new Date(date);
+    startOfDay.setUTCHours(0, 0, 0, 0);
+
+    const startOfNextDay = new Date(startOfDay);
+    startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
+
+    const events = await this.eventRepository.findPublished(
+      region,
+      startOfDay,
+      startOfNextDay,
+      topicSlug,
+    );
+    return {
+      items: events.map((event) => ({
+        id: event.id,
+        title: event.title,
+        summary: event.summary,
+        eventType: event.eventType,
+        startTime: event.startTime.toISOString(),
+        endTime: event.endTime ? event.endTime.toISOString() : null,
+        city: event.city,
+        region: event.region,
+        postalCode: event.postalCode,
+        country: event.country,
+      })),
+    };
   }
 
   getEventDetail(id: number): Promise<Event | null> {

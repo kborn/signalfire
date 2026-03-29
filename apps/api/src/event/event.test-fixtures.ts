@@ -30,7 +30,7 @@ export function buildEventEntity(overrides: Partial<Event> = {}) {
   } satisfies Event;
 }
 
-export function buildEvetListResponse(
+export function buildEventListResponse(
   overrides: Partial<EventListResponse> = {},
 ): EventListResponse {
   return {

@@ -7,13 +7,18 @@ import { TopicRepository } from '../topic/topic.repository';
 import { ARTICLE_TEST_DATE } from '../article/article.test-fixtures';
 import { ActionType, EntityStatus } from '@prisma/client';
 import { ACTION_TEST_DATE } from '../action/action.test-fixtures';
-import { buildEntityDetailResponse, buildEventEntity } from './event.test-fixtures';
+import {
+  buildEntityDetailResponse,
+  buildEventEntity,
+  buildEventListResponse,
+} from './event.test-fixtures';
 
 describe('EventService', () => {
   let service: EventService;
   const repoMock = {
     getById: jest.fn(),
     getPublishedById: jest.fn(),
+    findPublished: jest.fn(),
     findByArticleId: jest.fn(),
     findByActionId: jest.fn(),
   };
@@ -54,6 +59,29 @@ describe('EventService', () => {
 
     expect(ret).toEqual(event);
     expect(repoMock.getById).toHaveBeenCalledWith(id);
+  });
+
+  it('getPublishedEventList', async () => {
+    const event = buildEventEntity();
+    repoMock.findPublished.mockResolvedValue([event]);
+
+    const date = new Date('2025-12-17T15:42:11.000Z');
+    const originalDateIso = date.toISOString();
+
+    const ret = await service.getPublishedEventList({
+      date,
+      region: 'IL',
+      topicSlug: 'democracy',
+    });
+
+    expect(ret).toEqual(buildEventListResponse());
+    expect(repoMock.findPublished).toHaveBeenCalledWith(
+      'IL',
+      new Date('2025-12-17T00:00:00.000Z'),
+      new Date('2025-12-18T00:00:00.000Z'),
+      'democracy',
+    );
+    expect(date.toISOString()).toEqual(originalDateIso);
   });
 
   it('getPublishedEventDetail', async () => {
