@@ -1,31 +1,7 @@
-import type { ActionType } from './common.types.js';
-
-export type ArticleListItem = {
-  id: number;
-  slug: string;
-  title: string;
-  summary: string;
-  publishedAt: string;
-};
+import { ActionSummary, ArticleSummary, TopicSummary } from './common.types.js';
 
 export type ArticleListResponse = {
-  items: ArticleListItem[];
-};
-
-export type ArticleDetailTopic = {
-  id: number;
-  slug: string;
-  name: string;
-  description: string;
-};
-
-export type ArticleDetailAction = {
-  id: number;
-  slug: string;
-  title: string;
-  summary: string;
-  actionType: ActionType;
-  publishedAt: string;
+  items: ArticleSummary[];
 };
 
 export type ArticleDetailResponse = {
@@ -37,6 +13,6 @@ export type ArticleDetailResponse = {
   content: string;
   publishedAt: string;
   updatedAt: string;
-  topics: ArticleDetailTopic[];
-  actions: ArticleDetailAction[];
+  topics: TopicSummary[];
+  actions: ActionSummary[];
 };
