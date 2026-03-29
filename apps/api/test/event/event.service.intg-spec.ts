@@ -8,6 +8,7 @@ import { linkActionEvent, linkArticleEvent, linkTopicEvent } from '../factories/
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Event Service Integration Test', () => {
   const harness = setupIntegrationTest([EventModule, TopicModule]);
@@ -46,8 +47,9 @@ describe('Event Service Integration Test', () => {
 
     // test that unpublished events are not returned
     const createdEvent = await createEvent({ status: EntityStatus.DRAFT });
-    const event = await eventService.getPublishedEventDetail(createdEvent.id);
-    expect(event).toBeNull();
+    await expect(eventService.getPublishedEventDetail(createdEvent.id)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published events by related article', async () => {

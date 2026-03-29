@@ -1,27 +1,13 @@
 import { EventService } from './event.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventRepository } from './event.repository';
-
-const event = {
-  id: 1,
-  title: 'Town Hall Meeting',
-  summary: 'A short event summary.',
-  description: 'A longer event description.',
-  eventType: 'TOWN_HALL',
-  status: 'PUBLISHED',
-  startTime: new Date(),
-  endTime: new Date(),
-  locationName: 'City Hall',
-  addressRaw: '123 Main St',
-  city: 'Springfield',
-  region: 'IL',
-  postalCode: '62701',
-  country: 'USA',
-  latitude: null,
-  longitude: null,
-  createdAt: new Date(),
-  updatedAt: new Date(),
-};
+import { ArticleRepository } from '../article/article.repository';
+import { ActionRepository } from '../action/action.repository';
+import { TopicRepository } from '../topic/topic.repository';
+import { ARTICLE_TEST_DATE } from '../article/article.test-fixtures';
+import { ActionType, EntityStatus } from '@prisma/client';
+import { ACTION_TEST_DATE } from '../action/action.test-fixtures';
+import { buildEntityDetailResponse, buildEventEntity } from './event.test-fixtures';
 
 describe('EventService', () => {
   let service: EventService;
@@ -31,16 +17,36 @@ describe('EventService', () => {
     findByArticleId: jest.fn(),
     findByActionId: jest.fn(),
   };
+
+  const topicRepoMock = {
+    findByEventId: jest.fn(),
+  };
+
+  const articleRepoMock = {
+    findPublishedByEventId: jest.fn(),
+  };
+
+  const actionRepoMock = {
+    findPublishedByEventId: jest.fn(),
+  };
+
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EventService, { provide: EventRepository, useValue: repoMock }],
+      providers: [
+        EventService,
+        { provide: EventRepository, useValue: repoMock },
+        { provide: TopicRepository, useValue: topicRepoMock },
+        { provide: ArticleRepository, useValue: articleRepoMock },
+        { provide: ActionRepository, useValue: actionRepoMock },
+      ],
     }).compile();
     service = module.get(EventService);
   });
 
   it('getEventDetail', async () => {
+    const event = buildEventEntity();
     repoMock.getById.mockResolvedValue(event);
 
     const id = 1;
@@ -51,16 +57,57 @@ describe('EventService', () => {
   });
 
   it('getPublishedEventDetail', async () => {
+    const event = buildEventEntity();
     repoMock.getPublishedById.mockResolvedValue(event);
-
+    topicRepoMock.findByEventId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+    actionRepoMock.findPublishedByEventId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        description: 'A longer action description.',
+        actionType: ActionType.CONTACT,
+        status: 'PUBLISHED',
+        createdAt: ARTICLE_TEST_DATE,
+        publishedAt: ARTICLE_TEST_DATE,
+        updatedAt: ARTICLE_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByEventId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'SignalFire Staff',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
     const id = 1;
     const ret = await service.getPublishedEventDetail(id);
 
-    expect(ret).toEqual(event);
+    expect(ret).toEqual(buildEntityDetailResponse());
     expect(repoMock.getPublishedById).toHaveBeenCalledWith(id);
+    expect(topicRepoMock.findByEventId).toHaveBeenCalledWith(1);
+    expect(actionRepoMock.findPublishedByEventId).toHaveBeenCalledWith(1);
+    expect(articleRepoMock.findPublishedByEventId).toHaveBeenCalledWith(1);
   });
 
   it('getEventsByArticle', async () => {
+    const event = buildEventEntity();
     repoMock.findByArticleId.mockResolvedValue([event]);
 
     const id = 1;
@@ -71,6 +118,7 @@ describe('EventService', () => {
   });
 
   it('getEventsByAction', async () => {
+    const event = buildEventEntity();
     repoMock.findByActionId.mockResolvedValue([event]);
 
     const id = 1;
