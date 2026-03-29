@@ -67,4 +67,22 @@ export class ActionRepository {
       },
     });
   }
+
+  findPublishedByEventId(eventId: number): Promise<Action[]> {
+    return this.prisma.action.findMany({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        actionEvents: {
+          some: {
+            event: {
+              id: eventId,
+            },
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
 }

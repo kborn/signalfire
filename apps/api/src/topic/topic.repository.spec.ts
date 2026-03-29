@@ -90,4 +90,24 @@ describe('TopicRepository', () => {
       },
     });
   });
+
+  it('findByEventId', async () => {
+    prismaMock.topic.findMany.mockResolvedValue([topic]);
+
+    const ret = await repository.findByEventId(1);
+
+    expect(ret).toEqual([topic]);
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        topicEvents: {
+          some: {
+            eventId: 1,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  });
 });

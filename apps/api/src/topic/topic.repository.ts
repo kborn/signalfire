@@ -49,4 +49,19 @@ export class TopicRepository {
       },
     });
   }
+
+  findByEventId(eventId: number): Promise<Topic[]> {
+    return this.prisma.topic.findMany({
+      where: {
+        topicEvents: {
+          some: {
+            eventId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
 }
