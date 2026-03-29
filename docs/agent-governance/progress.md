@@ -769,7 +769,19 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.2 - Event Repository & Service Read Paths 🚧
+#### ▸ Phase 7.2 - Event API Contracts 🚧
+
+###### Phase Tasks:
+
+- [ ] Define and document Event summary and Event detail response shapes
+- [ ] Define default collection ordering for Event results and document the
+      rationale
+- [ ] Document which Event relationships are included in public payloads for
+      Release 1
+
+---
+
+#### ▸ Phase 7.3 - Event Repository & Service Read Paths ⏳
 
 ###### Phase Tasks:
 
@@ -779,18 +791,6 @@ Release 1 event discovery.
       patterns used by Topics, Articles, and Actions
 - [ ] Standardize published-only read behavior for direct and related Event
       fetches
-
----
-
-#### ▸ Phase 7.3 - Event API Contracts ⏳
-
-###### Phase Tasks:
-
-- [ ] Define and document Event summary and Event detail response shapes
-- [ ] Define default collection ordering for Event results and document the
-      rationale
-- [ ] Document which Event relationships are included in public payloads for
-      Release 1
 
 ---
 
