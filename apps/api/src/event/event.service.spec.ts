@@ -65,11 +65,12 @@ describe('EventService', () => {
     const event = buildEventEntity();
     repoMock.findPublished.mockResolvedValue([event]);
 
-    const date = new Date('2025-12-17T15:42:11.000Z');
-    const originalDateIso = date.toISOString();
+    const startDate = new Date('2025-12-17T00:00:00.000Z');
+    const endDate = new Date('2025-12-18T00:00:00.000Z');
 
     const ret = await service.getPublishedEventList({
-      date,
+      startDate,
+      endDate,
       region: 'IL',
       topicSlug: 'democracy',
     });
@@ -81,7 +82,6 @@ describe('EventService', () => {
       new Date('2025-12-18T00:00:00.000Z'),
       'democracy',
     );
-    expect(date.toISOString()).toEqual(originalDateIso);
   });
 
   it('getPublishedEventDetail', async () => {

@@ -25,8 +25,8 @@ export class EventRepository {
 
   findPublished(
     region: string,
-    startOfDay: Date,
-    startOfNextDay: Date,
+    startDate: Date,
+    endDate: Date,
     topicSlug?: string,
   ): Promise<Event[]> {
     return this.prisma.event.findMany({
@@ -37,8 +37,8 @@ export class EventRepository {
           mode: 'insensitive',
         },
         startTime: {
-          gte: startOfDay,
-          lt: startOfNextDay,
+          gte: startDate,
+          lt: endDate,
         },
         topicEvents: topicSlug
           ? {
