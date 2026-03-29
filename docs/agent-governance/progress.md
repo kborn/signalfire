@@ -785,11 +785,11 @@ Release 1 event discovery.
 
 ###### Phase Tasks:
 
-- [ ] Add or finalize repository methods for Event collection, detail, and
+- [x] Add or finalize repository methods for Event collection, detail, and
       filter-oriented queries
-- [ ] Keep Event service boundaries aligned with the existing public read
+- [x] Keep Event service boundaries aligned with the existing public read
       patterns used by Topics, Articles, and Actions
-- [ ] Standardize published-only read behavior for direct and related Event
+- [x] Standardize published-only read behavior for direct and related Event
       fetches
 
 ---
