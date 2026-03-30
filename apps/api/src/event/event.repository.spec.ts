@@ -48,20 +48,15 @@ describe('EventRepository', () => {
   it('findPublished', async () => {
     prismaMock.event.findMany.mockResolvedValue([event]);
 
-    const region = 'IL';
     const startOfDay = new Date('2025-12-17T00:00:00.000Z');
     const startOfNextDay = new Date('2025-12-18T00:00:00.000Z');
     const topicSlug = 'democracy';
-    const ret = await repository.findPublished(region, startOfDay, startOfNextDay, topicSlug);
+    const ret = await repository.findPublished(startOfDay, startOfNextDay, topicSlug);
 
     expect(ret).toEqual([event]);
     expect(prismaMock.event.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
-        region: {
-          equals: region,
-          mode: 'insensitive',
-        },
         startTime: {
           gte: startOfDay,
           lt: startOfNextDay,

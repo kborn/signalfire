@@ -55,6 +55,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [38-ts-structural-typing-vs-java-nominal-typing.md](./38-ts-structural-typing-vs-java-nominal-typing.md) - Why TypeScript can reuse values across types when their field shapes match
 - [39-nest-query-vs-param.md](./39-nest-query-vs-param.md) - When Nest route values should come from `@Param(...)` versus `@Query(...)`
 - [40-optional-parameter-vs-undefined-union.md](./40-optional-parameter-vs-undefined-union.md) - When `value?: T` means something different from `value: T | undefined`
+- [41-module-exports-vs-class-visibility.md](./41-module-exports-vs-class-visibility.md) - How `export` differs from `public` and `private` on classes
+- [42-arrow-functions-vs-function-expressions.md](./42-arrow-functions-vs-function-expressions.md) - When arrow functions and `function` expressions are interchangeable and when `this` changes the behavior
 
 Rule of thumb:
 

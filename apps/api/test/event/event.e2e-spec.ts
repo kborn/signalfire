@@ -7,124 +7,111 @@ import { createEvent } from '../factories/event.factory';
 import { createTopic } from '../factories/topic.factory';
 import { linkActionEvent, linkArticleEvent, linkTopicEvent } from '../factories/relation.factory';
 import { setupE2ETest } from '../harness/e2e.harness';
+import { withFrozenTime } from '../../common/test/time';
 
 describe('EventController (e2e)', () => {
   const harness = setupE2ETest();
 
-  it('/events (GET) returns published events filtered by region/date/topic with stable ordering', async () => {
-    const topic = await createTopic({
-      slug: 'event-topic',
-      name: 'Event Topic',
-      description: 'Topic used for event list assertions',
-    });
-    const earlierEvent = await createEvent({
-      title: 'Earlier Event',
-      summary: 'Earlier event summary',
-      region: 'PA',
-      city: 'Philadelphia',
-      postalCode: '19107',
-      country: 'USA',
-      startTime: new Date('2025-03-15T09:00:00.000Z'),
-    });
-    const laterEvent = await createEvent({
-      title: 'Later Event',
-      summary: 'Later event summary',
-      region: 'PA',
-      city: 'Philadelphia',
-      postalCode: '19107',
-      country: 'USA',
-      startTime: new Date('2025-03-15T18:00:00.000Z'),
-    });
-    const draftEvent = await createEvent({
-      title: 'Draft Event',
-      summary: 'Draft event summary',
-      status: EntityStatus.DRAFT,
-      region: 'PA',
-      city: 'Philadelphia',
-      postalCode: '19107',
-      country: 'USA',
-      startTime: new Date('2025-03-15T12:00:00.000Z'),
-      publishedAt: null,
-    });
-    const wrongRegionEvent = await createEvent({
-      title: 'Wrong Region Event',
-      summary: 'Wrong region event summary',
-      region: 'NY',
-      city: 'New York',
-      postalCode: '10001',
-      country: 'USA',
-      startTime: new Date('2025-03-15T11:00:00.000Z'),
-    });
-    const wrongDayEvent = await createEvent({
-      title: 'Wrong Day Event',
-      summary: 'Wrong day event summary',
-      region: 'PA',
-      city: 'Philadelphia',
-      postalCode: '19107',
-      country: 'USA',
-      startTime: new Date('2025-03-16T09:00:00.000Z'),
-    });
-    const otherTopicEvent = await createEvent({
-      title: 'Other Topic Event',
-      summary: 'Other topic event summary',
-      region: 'PA',
-      city: 'Philadelphia',
-      postalCode: '19107',
-      country: 'USA',
-      startTime: new Date('2025-03-15T14:00:00.000Z'),
-    });
-    const otherTopic = await createTopic({
-      slug: 'other-event-topic',
-      name: 'Other Event Topic',
-      description: 'Other topic used for event list assertions',
-    });
-
-    await linkTopicEvent(topic.id, earlierEvent.id);
-    await linkTopicEvent(topic.id, laterEvent.id);
-    await linkTopicEvent(topic.id, draftEvent.id);
-    await linkTopicEvent(topic.id, wrongRegionEvent.id);
-    await linkTopicEvent(topic.id, wrongDayEvent.id);
-    await linkTopicEvent(otherTopic.id, otherTopicEvent.id);
-
-    const response = await request(harness.httpServer)
-      .get('/events')
-      .query({
-        startDate: '2025-03-15T00:00:00.000Z',
+  it('/events (GET) returns published events filtered by topic with stable ordering', async () => {
+    await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
+      const topic = await createTopic({
+        slug: 'event-topic',
+        name: 'Event Topic',
+        description: 'Topic used for event list assertions',
+      });
+      const earlierEvent = await createEvent({
+        title: 'Earlier Event',
+        summary: 'Earlier event summary',
         region: 'PA',
-        topicSlug: topic.slug,
-      })
-      .expect(200);
-    const body = response.body as EventListResponse;
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-03-25T09:00:00.000Z'),
+      });
+      const laterEvent = await createEvent({
+        title: 'Later Event',
+        summary: 'Later event summary',
+        region: 'PA',
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-03-25T18:00:00.000Z'),
+      });
+      const draftEvent = await createEvent({
+        title: 'Draft Event',
+        summary: 'Draft event summary',
+        status: EntityStatus.DRAFT,
+        region: 'PA',
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-03-25T12:00:00.000Z'),
+        publishedAt: null,
+      });
+      const wrongDayEvent = await createEvent({
+        title: 'Wrong Day Event',
+        summary: 'Wrong day event summary',
+        region: 'PA',
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-04-16T09:00:00.000Z'),
+      });
+      const otherTopicEvent = await createEvent({
+        title: 'Other Topic Event',
+        summary: 'Other topic event summary',
+        region: 'PA',
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-03-25T14:00:00.000Z'),
+      });
+      const otherTopic = await createTopic({
+        slug: 'other-event-topic',
+        name: 'Other Event Topic',
+        description: 'Other topic used for event list assertions',
+      });
 
-    expect(body.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
-    expect(body.items).toEqual([
-      expect.objectContaining({
-        id: earlierEvent.id,
-        title: earlierEvent.title,
-        summary: earlierEvent.summary,
-        region: 'PA',
-        startTime: '2025-03-15T09:00:00.000Z',
-      }),
-      expect.objectContaining({
-        id: laterEvent.id,
-        title: laterEvent.title,
-        summary: laterEvent.summary,
-        region: 'PA',
-        startTime: '2025-03-15T18:00:00.000Z',
-      }),
-    ]);
-    expect(body.items.map((item) => item.id)).not.toContain(draftEvent.id);
-    expect(body.items.map((item) => item.id)).not.toContain(wrongRegionEvent.id);
-    expect(body.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
-    expect(body.items.map((item) => item.id)).not.toContain(otherTopicEvent.id);
+      await linkTopicEvent(topic.id, earlierEvent.id);
+      await linkTopicEvent(topic.id, laterEvent.id);
+      await linkTopicEvent(topic.id, draftEvent.id);
+      await linkTopicEvent(topic.id, wrongDayEvent.id);
+      await linkTopicEvent(otherTopic.id, otherTopicEvent.id);
+
+      const response = await request(harness.httpServer)
+        .get('/events')
+        .query({
+          topicSlug: topic.slug,
+        })
+        .expect(200);
+      const body = response.body as EventListResponse;
+      expect(body.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
+      expect(body.items).toEqual([
+        expect.objectContaining({
+          id: earlierEvent.id,
+          title: earlierEvent.title,
+          summary: earlierEvent.summary,
+          region: 'PA',
+          startTime: '2025-03-25T09:00:00.000Z',
+        }),
+        expect.objectContaining({
+          id: laterEvent.id,
+          title: laterEvent.title,
+          summary: laterEvent.summary,
+          region: 'PA',
+          startTime: '2025-03-25T18:00:00.000Z',
+        }),
+      ]);
+      expect(body.items.map((item) => item.id)).not.toContain(draftEvent.id);
+      expect(body.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
+      expect(body.items.map((item) => item.id)).not.toContain(otherTopicEvent.id);
+    });
   });
 
   it('/events (GET) returns an empty list when valid filters match no events', async () => {
     const response = await request(harness.httpServer)
       .get('/events')
       .query({
-        startDate: '2025-03-15T00:00:00.000Z',
-        region: 'PA',
         topicSlug: 'no-matching-topic',
       })
       .expect(200);

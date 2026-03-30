@@ -872,14 +872,14 @@ Allow users to browse and view events.
 
 ---
 
-#### ▸ Phase 8.1 - Event Collection API Simplification ⏳
+#### ▸ Phase 8.1 - Event Collection API Simplification ✅
 
 ###### Phase Tasks:
 
-- [ ] Simplify the public Event collection API so it returns upcoming Events by default without requiring region/date inputs
-- [ ] Support only optional `topicSlug` filtering in the public Event collection contract
-- [ ] Keep collection ordering aligned to `startTime` ascending and `id` ascending
-- [ ] Update contract documentation and validation coverage for the simplified public Event collection behavior
+- [x] Simplify the public Event collection API so it returns upcoming Events by default without requiring region/date inputs
+- [x] Support only optional `topicSlug` filtering in the public Event collection contract
+- [x] Keep collection ordering aligned to `startTime` ascending and `id` ascending
+- [x] Update contract documentation and validation coverage for the simplified public Event collection behavior
 
 ---
 
