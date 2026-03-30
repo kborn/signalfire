@@ -62,6 +62,17 @@ describe('EventController HTTP', () => {
       .expect(400);
   });
 
+  it('GET /events returns 400 when endDate is invalid', async () => {
+    await request(httpServer)
+      .get('/events')
+      .query({
+        startDate: '2025-03-15T00:00:00.000Z',
+        endDate: 'not-a-date',
+        region: 'PA',
+      })
+      .expect(400);
+  });
+
   it('GET /events returns 400 when region is missing', async () => {
     await request(httpServer)
       .get('/events')

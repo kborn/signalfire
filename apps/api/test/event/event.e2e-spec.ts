@@ -119,6 +119,20 @@ describe('EventController (e2e)', () => {
     expect(body.items.map((item) => item.id)).not.toContain(otherTopicEvent.id);
   });
 
+  it('/events (GET) returns an empty list when valid filters match no events', async () => {
+    const response = await request(harness.httpServer)
+      .get('/events')
+      .query({
+        startDate: '2025-03-15T00:00:00.000Z',
+        region: 'PA',
+        topicSlug: 'no-matching-topic',
+      })
+      .expect(200);
+    const body = response.body as EventListResponse;
+
+    expect(body).toEqual({ items: [] });
+  });
+
   it('/events/:id (GET) returns the published event detail payload', async () => {
     const firstTopic = await createTopic({
       slug: 'event-detail-topic-first',
