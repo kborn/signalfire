@@ -855,7 +855,7 @@ Release 1 event discovery.
 
 ---
 
-### ► Phase 8 — Event UI ⏳
+### ► Phase 8 — Event UI 🚧
 
 ###### Goal
 
@@ -883,7 +883,7 @@ Allow users to browse and view events.
 
 ---
 
-#### ▸ Phase 8.2 - Events Index Page ⏳
+#### ▸ Phase 8.2 - Events Index Page 🚧
 
 ###### Phase Tasks:
 

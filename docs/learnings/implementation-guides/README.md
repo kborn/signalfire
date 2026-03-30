@@ -21,3 +21,7 @@ Current Phase 6 guides:
 - `phase-6-2-next-server-fetching-and-related-summary-links-guide.md`
 - `phase-6-3-article-markdown-rendering-guide.md`
 - `phase-6-8-discovery-summary-components-guide.md`
+
+Current Phase 8 guides:
+
+- `phase-8-2-query-backed-event-collections-guide.md`
