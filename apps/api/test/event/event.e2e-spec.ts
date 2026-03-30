@@ -12,6 +12,7 @@ describe('EventController (e2e)', () => {
   const harness = setupE2ETest();
 
   it('/events (GET) returns published events filtered by region/date/topic with stable ordering', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-03-15T12:34:56.001Z'));
     const topic = await createTopic({
       slug: 'event-topic',
       name: 'Event Topic',
@@ -24,7 +25,7 @@ describe('EventController (e2e)', () => {
       city: 'Philadelphia',
       postalCode: '19107',
       country: 'USA',
-      startTime: new Date('2025-03-15T09:00:00.000Z'),
+      startTime: new Date('2025-03-25T09:00:00.000Z'),
     });
     const laterEvent = await createEvent({
       title: 'Later Event',
@@ -33,7 +34,7 @@ describe('EventController (e2e)', () => {
       city: 'Philadelphia',
       postalCode: '19107',
       country: 'USA',
-      startTime: new Date('2025-03-15T18:00:00.000Z'),
+      startTime: new Date('2025-03-25T18:00:00.000Z'),
     });
     const draftEvent = await createEvent({
       title: 'Draft Event',
@@ -43,7 +44,7 @@ describe('EventController (e2e)', () => {
       city: 'Philadelphia',
       postalCode: '19107',
       country: 'USA',
-      startTime: new Date('2025-03-15T12:00:00.000Z'),
+      startTime: new Date('2025-03-25T12:00:00.000Z'),
       publishedAt: null,
     });
     const wrongDayEvent = await createEvent({
@@ -53,7 +54,7 @@ describe('EventController (e2e)', () => {
       city: 'Philadelphia',
       postalCode: '19107',
       country: 'USA',
-      startTime: new Date('2025-03-16T09:00:00.000Z'),
+      startTime: new Date('2025-04-16T09:00:00.000Z'),
     });
     const otherTopicEvent = await createEvent({
       title: 'Other Topic Event',
@@ -62,7 +63,7 @@ describe('EventController (e2e)', () => {
       city: 'Philadelphia',
       postalCode: '19107',
       country: 'USA',
-      startTime: new Date('2025-03-15T14:00:00.000Z'),
+      startTime: new Date('2025-03-25T14:00:00.000Z'),
     });
     const otherTopic = await createTopic({
       slug: 'other-event-topic',
@@ -90,14 +91,14 @@ describe('EventController (e2e)', () => {
         title: earlierEvent.title,
         summary: earlierEvent.summary,
         region: 'PA',
-        startTime: '2025-03-15T09:00:00.000Z',
+        startTime: '2025-03-25T09:00:00.000Z',
       }),
       expect.objectContaining({
         id: laterEvent.id,
         title: laterEvent.title,
         summary: laterEvent.summary,
         region: 'PA',
-        startTime: '2025-03-15T18:00:00.000Z',
+        startTime: '2025-03-25T18:00:00.000Z',
       }),
     ]);
     expect(body.items.map((item) => item.id)).not.toContain(draftEvent.id);
@@ -109,7 +110,7 @@ describe('EventController (e2e)', () => {
     const response = await request(harness.httpServer)
       .get('/events')
       .query({
-        startDate: '2025-03-15T00:00:00.000Z',
+        startDate: '2025-03-25T00:00:00.000Z',
         region: 'PA',
         topicSlug: 'no-matching-topic',
       })
