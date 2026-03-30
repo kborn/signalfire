@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { EventService } from './event.service';
 import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
 
@@ -6,44 +6,51 @@ import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contrac
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  private getDateEnd(startDate: Date, endDateString?: string) {
-    let retDate: Date;
-    if (endDateString) {
-      retDate = new Date(endDateString);
-    } else {
-      retDate = startDate;
+  private parseDateParam(value: string, fieldName: string): Date {
+    if (!value) {
+      throw new BadRequestException(`${fieldName} is required`);
     }
-    retDate = new Date(retDate);
-    retDate.setUTCDate(retDate.getUTCDate() + 1);
-    retDate.setUTCHours(0, 0, 0, 0);
-    return retDate;
+
+    const parsedDate = new Date(value);
+    if (Number.isNaN(parsedDate.getTime())) {
+      throw new BadRequestException(`${fieldName} must be a valid ISO-8601 date`);
+    }
+
+    return parsedDate;
+  }
+
+  private getDateEnd(startDate: Date, endDateString: string | undefined): Date {
+    const endDateBase = endDateString ? this.parseDateParam(endDateString, 'endDate') : startDate;
+    const endDate = new Date(endDateBase);
+    endDate.setUTCDate(endDate.getUTCDate() + 1);
+    endDate.setUTCHours(0, 0, 0, 0);
+    return endDate;
   }
 
   @Get()
   async findEvents(
-    @Param('startDate') startDate: string,
-    @Param('endDate') endDate: string,
-    @Param('region') region: string,
-    @Param('topicSlug') topicSlug?: string,
+    @Query('startDate') startDate: string,
+    @Query('region') region: string,
+    @Query('topicSlug') topicSlug?: string,
+    @Query('endDate') endDate?: string,
   ): Promise<EventListResponse> {
-    let parsedStartDate: Date;
-    try {
-      parsedStartDate = new Date(startDate);
-    } catch {
-      throw new Error(`Can not parse date from ${startDate}`);
+    if (!region) {
+      throw new BadRequestException('region is required');
     }
+
+    const parsedStartDate = this.parseDateParam(startDate, 'startDate');
     const parsedEndDate = this.getDateEnd(parsedStartDate, endDate);
 
     return this.eventService.getPublishedEventList({
       startDate: parsedStartDate,
       endDate: parsedEndDate,
-      region: region,
-      topicSlug: topicSlug,
+      region,
+      topicSlug,
     });
   }
 
   @Get('/:id')
-  async findEvent(@Param('id') id: number): Promise<EventDetailResponse> {
+  async findEvent(@Param('id', ParseIntPipe) id: number): Promise<EventDetailResponse> {
     return this.eventService.getPublishedEventDetail(id);
   }
 }
