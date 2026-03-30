@@ -227,14 +227,6 @@ describe('EventController (e2e)', () => {
       ],
       actions: [
         {
-          id: firstPublishedAction.id,
-          slug: firstPublishedAction.slug,
-          title: firstPublishedAction.title,
-          summary: firstPublishedAction.summary,
-          actionType: firstPublishedAction.actionType,
-          publishedAt: firstPublishedAction.publishedAt?.toISOString(),
-        },
-        {
           id: secondPublishedAction.id,
           slug: secondPublishedAction.slug,
           title: secondPublishedAction.title,
@@ -242,21 +234,29 @@ describe('EventController (e2e)', () => {
           actionType: secondPublishedAction.actionType,
           publishedAt: secondPublishedAction.publishedAt?.toISOString(),
         },
+        {
+          id: firstPublishedAction.id,
+          slug: firstPublishedAction.slug,
+          title: firstPublishedAction.title,
+          summary: firstPublishedAction.summary,
+          actionType: firstPublishedAction.actionType,
+          publishedAt: firstPublishedAction.publishedAt?.toISOString(),
+        },
       ],
       articles: [
-        {
-          id: firstPublishedArticle.id,
-          slug: firstPublishedArticle.slug,
-          title: firstPublishedArticle.title,
-          summary: firstPublishedArticle.summary,
-          publishedAt: firstPublishedArticle.publishedAt?.toISOString(),
-        },
         {
           id: secondPublishedArticle.id,
           slug: secondPublishedArticle.slug,
           title: secondPublishedArticle.title,
           summary: secondPublishedArticle.summary,
           publishedAt: secondPublishedArticle.publishedAt?.toISOString(),
+        },
+        {
+          id: firstPublishedArticle.id,
+          slug: firstPublishedArticle.slug,
+          title: firstPublishedArticle.title,
+          summary: firstPublishedArticle.summary,
+          publishedAt: firstPublishedArticle.publishedAt?.toISOString(),
         },
       ],
     });
