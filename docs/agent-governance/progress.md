@@ -806,14 +806,14 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.5 - Event Detail Endpoint 🚧
+#### ▸ Phase 7.5 - Event Detail Endpoint ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement the public Event detail endpoint
-- [ ] Keep topic-related Event discovery on the filtered Events surface rather
+- [x] Implement the public Event detail endpoint
+- [x] Keep topic-related Event discovery on the filtered Events surface rather
       than embedding Event arrays into Topic detail payloads
-- [ ] Document the deferral of topic-page Event entry points to Phase 9 UI
+- [x] Document the deferral of topic-page Event entry points to Phase 9 UI
       polish work
 
 ---

@@ -80,9 +80,7 @@ export class ArticleRepository {
           },
         },
       },
-      orderBy: {
-        id: 'asc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   }
 }

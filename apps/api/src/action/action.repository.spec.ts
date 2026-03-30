@@ -137,9 +137,7 @@ describe('ActionRepository', () => {
           },
         },
       },
-      orderBy: {
-        id: 'asc',
-      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   });
 });
