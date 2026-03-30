@@ -34,50 +34,21 @@ describe('EventController HTTP', () => {
   });
 
   it('GET /events returns the event discovery list', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-03-15T12:34:56.001Z'));
     const eventListResponse = buildEventListResponse();
     eventServiceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
 
     await request(httpServer)
       .get('/events')
-      .query({ startDate: '2025-03-15T00:00:00.000Z', region: 'PA', topicSlug: 'democracy' })
+      .query({ topicSlug: 'democracy' })
       .expect(200)
       .expect(eventListResponse);
 
     expect(eventServiceMock.getPublishedEventList).toHaveBeenCalledWith({
       startDate: new Date('2025-03-15T00:00:00.000Z'),
-      endDate: new Date('2025-03-16T00:00:00.000Z'),
-      region: 'PA',
+      endDate: new Date('2025-04-14T00:00:00.000Z'),
       topicSlug: 'democracy',
     });
-  });
-
-  it('GET /events returns 400 when startDate is missing', async () => {
-    await request(httpServer).get('/events').query({ region: 'PA' }).expect(400);
-  });
-
-  it('GET /events returns 400 when startDate is invalid', async () => {
-    await request(httpServer)
-      .get('/events')
-      .query({ startDate: 'not-a-date', region: 'PA' })
-      .expect(400);
-  });
-
-  it('GET /events returns 400 when endDate is invalid', async () => {
-    await request(httpServer)
-      .get('/events')
-      .query({
-        startDate: '2025-03-15T00:00:00.000Z',
-        endDate: 'not-a-date',
-        region: 'PA',
-      })
-      .expect(400);
-  });
-
-  it('GET /events returns 400 when region is missing', async () => {
-    await request(httpServer)
-      .get('/events')
-      .query({ startDate: '2025-03-15T00:00:00.000Z' })
-      .expect(400);
   });
 
   it('GET /events/:id returns the event detail payload', async () => {

@@ -46,15 +46,6 @@ describe('EventController (e2e)', () => {
       startTime: new Date('2025-03-15T12:00:00.000Z'),
       publishedAt: null,
     });
-    const wrongRegionEvent = await createEvent({
-      title: 'Wrong Region Event',
-      summary: 'Wrong region event summary',
-      region: 'NY',
-      city: 'New York',
-      postalCode: '10001',
-      country: 'USA',
-      startTime: new Date('2025-03-15T11:00:00.000Z'),
-    });
     const wrongDayEvent = await createEvent({
       title: 'Wrong Day Event',
       summary: 'Wrong day event summary',
@@ -82,20 +73,16 @@ describe('EventController (e2e)', () => {
     await linkTopicEvent(topic.id, earlierEvent.id);
     await linkTopicEvent(topic.id, laterEvent.id);
     await linkTopicEvent(topic.id, draftEvent.id);
-    await linkTopicEvent(topic.id, wrongRegionEvent.id);
     await linkTopicEvent(topic.id, wrongDayEvent.id);
     await linkTopicEvent(otherTopic.id, otherTopicEvent.id);
 
     const response = await request(harness.httpServer)
       .get('/events')
       .query({
-        startDate: '2025-03-15T00:00:00.000Z',
-        region: 'PA',
         topicSlug: topic.slug,
       })
       .expect(200);
     const body = response.body as EventListResponse;
-
     expect(body.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
     expect(body.items).toEqual([
       expect.objectContaining({
@@ -114,7 +101,6 @@ describe('EventController (e2e)', () => {
       }),
     ]);
     expect(body.items.map((item) => item.id)).not.toContain(draftEvent.id);
-    expect(body.items.map((item) => item.id)).not.toContain(wrongRegionEvent.id);
     expect(body.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
     expect(body.items.map((item) => item.id)).not.toContain(otherTopicEvent.id);
   });

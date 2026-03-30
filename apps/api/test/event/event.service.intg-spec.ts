@@ -37,10 +37,6 @@ describe('Event Service Integration Test', () => {
       startTime: new Date('2025-03-15T10:00:00.000Z'),
       publishedAt: null,
     });
-    const wrongRegionEvent = await createEvent({
-      region: 'NY',
-      startTime: new Date('2025-03-15T11:00:00.000Z'),
-    });
     const wrongDayEvent = await createEvent({
       region: 'PA',
       startTime: new Date('2025-03-16T09:00:00.000Z'),
@@ -49,13 +45,11 @@ describe('Event Service Integration Test', () => {
     await linkTopicEvent(topic.id, laterEvent.id);
     await linkTopicEvent(topic.id, earlierEvent.id);
     await linkTopicEvent(topic.id, draftEvent.id);
-    await linkTopicEvent(topic.id, wrongRegionEvent.id);
     await linkTopicEvent(topic.id, wrongDayEvent.id);
 
     const response = await eventService.getPublishedEventList({
       startDate: new Date('2025-03-15T00:00:00.000Z'),
       endDate: new Date('2025-03-16T00:00:00.000Z'),
-      region: 'PA',
     });
 
     expect(response.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
@@ -72,7 +66,6 @@ describe('Event Service Integration Test', () => {
       }),
     ]);
     expect(response.items.map((item) => item.id)).not.toContain(draftEvent.id);
-    expect(response.items.map((item) => item.id)).not.toContain(wrongRegionEvent.id);
     expect(response.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
   });
 
@@ -103,7 +96,6 @@ describe('Event Service Integration Test', () => {
     const response = await eventService.getPublishedEventList({
       startDate: new Date('2025-03-15T00:00:00.000Z'),
       endDate: new Date('2025-03-16T00:00:00.000Z'),
-      region: 'PA',
       topicSlug: 'democracy',
     });
 

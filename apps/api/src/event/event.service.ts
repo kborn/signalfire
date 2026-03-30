@@ -26,15 +26,13 @@ export class EventService {
   async getPublishedEventList(params: {
     startDate: Date;
     endDate: Date;
-    region: string;
     topicSlug?: string;
   }): Promise<EventListResponse> {
     const { startDate } = params;
     const { endDate } = params;
-    const { region } = params;
     const { topicSlug } = params;
 
-    const events = await this.eventRepository.findPublished(region, startDate, endDate, topicSlug);
+    const events = await this.eventRepository.findPublished(startDate, endDate, topicSlug);
     return {
       items: events.map((event) => ({
         id: event.id,

@@ -23,19 +23,10 @@ export class EventRepository {
     });
   }
 
-  findPublished(
-    region: string,
-    startDate: Date,
-    endDate: Date,
-    topicSlug?: string,
-  ): Promise<Event[]> {
+  findPublished(startDate: Date, endDate: Date, topicSlug?: string): Promise<Event[]> {
     return this.prisma.event.findMany({
       where: {
         status: EntityStatus.PUBLISHED,
-        region: {
-          equals: region,
-          mode: 'insensitive',
-        },
         startTime: {
           gte: startDate,
           lt: endDate,
