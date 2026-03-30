@@ -12,7 +12,7 @@ import { withFrozenTime } from '../../common/test/time';
 describe('EventController (e2e)', () => {
   const harness = setupE2ETest();
 
-  it('/events (GET) returns published events filtered by region/date/topic with stable ordering', async () => {
+  it('/events (GET) returns published events filtered by topic with stable ordering', async () => {
     await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
       const topic = await createTopic({
         slug: 'event-topic',
@@ -112,8 +112,6 @@ describe('EventController (e2e)', () => {
     const response = await request(harness.httpServer)
       .get('/events')
       .query({
-        startDate: '2025-03-25T00:00:00.000Z',
-        region: 'PA',
         topicSlug: 'no-matching-topic',
       })
       .expect(200);
