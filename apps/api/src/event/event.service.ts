@@ -24,25 +24,17 @@ export class EventService {
   }
 
   async getPublishedEventList(params: {
-    date: Date;
+    startDate: Date;
+    endDate: Date;
     region: string;
     topicSlug?: string;
   }): Promise<EventListResponse> {
-    const { date } = params;
+    const { startDate } = params;
+    const { endDate } = params;
     const { region } = params;
     const { topicSlug } = params;
-    const startOfDay = new Date(date);
-    startOfDay.setUTCHours(0, 0, 0, 0);
 
-    const startOfNextDay = new Date(startOfDay);
-    startOfNextDay.setUTCDate(startOfNextDay.getUTCDate() + 1);
-
-    const events = await this.eventRepository.findPublished(
-      region,
-      startOfDay,
-      startOfNextDay,
-      topicSlug,
-    );
+    const events = await this.eventRepository.findPublished(region, startDate, endDate, topicSlug);
     return {
       items: events.map((event) => ({
         id: event.id,

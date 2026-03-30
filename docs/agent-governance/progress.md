@@ -794,19 +794,19 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.4 - Event Collection API 🚧
+#### ▸ Phase 7.4 - Event Collection API ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement the public Event collection endpoint
-- [ ] Support filtering by topic
-- [ ] Support filtering by date or date window
-- [ ] Support scoped location filtering using the stored Event location fields
-- [ ] Apply published-only filtering and stable ordering to collection results
+- [x] Implement the public Event collection endpoint
+- [x] Support filtering by topic
+- [x] Support filtering by date or date window
+- [x] Support scoped location filtering using the stored Event location fields
+- [x] Apply published-only filtering and stable ordering to collection results
 
 ---
 
-#### ▸ Phase 7.5 - Event Detail & Topic Discovery Support ⏳
+#### ▸ Phase 7.5 - Event Detail & Topic Discovery Support 🚧
 
 ###### Phase Tasks:
 

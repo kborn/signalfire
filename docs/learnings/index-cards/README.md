@@ -53,6 +53,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [36-jsx-uppercase-means-component.md](./36-jsx-uppercase-means-component.md) - Why capitalized JSX tags call React components instead of rendering HTML elements
 - [37-css-pseudo-classes.md](./37-css-pseudo-classes.md) - How selectors like `.primaryCTA:hover` attach state-specific styles to the same element
 - [38-ts-structural-typing-vs-java-nominal-typing.md](./38-ts-structural-typing-vs-java-nominal-typing.md) - Why TypeScript can reuse values across types when their field shapes match
+- [39-nest-query-vs-param.md](./39-nest-query-vs-param.md) - When Nest route values should come from `@Param(...)` versus `@Query(...)`
+- [40-optional-parameter-vs-undefined-union.md](./40-optional-parameter-vs-undefined-union.md) - When `value?: T` means something different from `value: T | undefined`
 
 Rule of thumb:
 

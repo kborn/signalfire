@@ -8,9 +8,11 @@ import { ActionModule } from '../action/action.module';
 import { ActionRepository } from '../action/action.repository';
 import { ArticleModule } from '../article/article.module';
 import { ArticleRepository } from '../article/article.repository';
+import { EventController } from './event.controller';
 @Module({
   imports: [PrismaModule, TopicModule, ActionModule, ArticleModule],
   providers: [EventService, EventRepository, TopicRepository, ArticleRepository, ActionRepository],
   exports: [EventService],
+  controllers: [EventController],
 })
 export class EventModule {}
