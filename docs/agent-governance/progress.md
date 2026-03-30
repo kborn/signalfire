@@ -806,14 +806,15 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.5 - Event Detail & Topic Discovery Support 🚧
+#### ▸ Phase 7.5 - Event Detail Endpoint 🚧
 
 ###### Phase Tasks:
 
 - [ ] Implement the public Event detail endpoint
-- [ ] Expose the Event data needed for topic-related discovery in Phase 8
-- [ ] Validate that topic-scoped Event browsing can be built without expanding
-      into Event UI work during this phase
+- [ ] Keep topic-related Event discovery on the filtered Events surface rather
+      than embedding Event arrays into Topic detail payloads
+- [ ] Document the deferral of topic-page Event entry points to Phase 9 UI
+      polish work
 
 ---
 
@@ -845,6 +846,8 @@ Release 1 event discovery.
   write paths remain out of scope unless explicitly approved.
 - Phase 8 should consume the Event contracts defined here rather than reopening
   backend scope.
+- Topic detail pages should not embed unfiltered Event arrays; topic-related
+  Event discovery should route through filtered Event collection views instead.
 
 ---
 
@@ -860,7 +863,7 @@ Capabilities:
 
 - event listing
 - event detail pages
-- topic-related events
+- topic-prefiltered Event browsing on the Events surface
 
 ---
 
@@ -878,10 +881,14 @@ Capabilities:
 - improved layout consistency and hierarchy
 - stronger calls to action and discovery affordances
 - responsive behavior refinement
+- topic-page links into filtered Event discovery where useful
 
 ###### Notes:
 
 - Phase 9 is where broader visual polish, stronger presentation treatment, and refinement beyond the Phase 6 baseline should occur.
+- Topic detail pages may add lightweight calls to action such as "Find Events"
+  that link into topic-prefiltered Event browsing rather than embedding Event
+  cards inline.
 
 ---
 

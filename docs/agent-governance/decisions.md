@@ -593,3 +593,41 @@ for both the web and API apps.
   `apps/api/.env.local`.
 - Root `.env.example` acts as a pointer to app-owned env files rather than as
   the primary local runtime contract.
+
+---
+
+---
+
+### ► Topic pages do not embed Event arrays
+
+###### 2026-03-29
+
+---
+
+###### Decision
+
+Topic detail pages should not embed unfiltered Event arrays. Topic-related
+Event discovery should be handled through the public Events surface using
+topic-prefiltered collection views instead.
+
+###### Rationale
+
+- Events are geographically and temporally constrained in a way Articles and
+  Actions are not.
+- Dumping Event cards inline on broad Topic pages is weak discovery for users
+  who may not be near the listed Events.
+- Keeping Event discovery on the filtered Events surface preserves a clearer
+  mental model for location- and time-aware browsing.
+- This avoids coupling Topic detail payloads to Event list presentation before
+  the UI has a strong reason to do so.
+
+###### Implications
+
+- Topic detail API payloads should not add embedded Event summary arrays for
+  Release 1.
+- Topic-related Event browsing should use the Events collection surface with
+  topic prefiltering.
+- Topic pages may later add lightweight calls to action such as `Find Events`
+  or `Browse events for this topic` that link into filtered Event discovery.
+- Those Topic-page Event entry points are deferred to Phase 9 UI polish rather
+  than Phase 7 backend API scope.

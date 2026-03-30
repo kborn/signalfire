@@ -3,7 +3,7 @@
 ## Purpose
 
 Capture the public Event API contract for Phase 7 so repository, service, API,
-and Phase 8 UI work all share the same payload, ordering, and relationship
+and downstream UI work all share the same payload, ordering, and relationship
 expectations.
 
 This document is the canonical Phase 7.2 contract artifact for:
@@ -29,7 +29,7 @@ This document does not define:
 
 - public Event list and detail response shapes
 - Release 1 public relationship depth for Events
-- deterministic ordering rules for Event collections and nested Event arrays
+- deterministic ordering rules for Event collections
 - publication-aligned payload expectations for direct and relationship-driven
   Event reads
 
@@ -51,8 +51,7 @@ as the runtime target for Phase 7 public responses.
 
 ### Event Summary
 
-Used for Event collection payloads and any nested Event arrays returned by other
-public endpoints.
+Used for Event collection payloads.
 
 ```json
 {
@@ -190,22 +189,6 @@ Rationale:
 - `id` ascending keeps responses stable when multiple Events share the same
   start time
 
-### Nested Relationship Ordering
-
-Nested Event relationship arrays on non-Event endpoints should also use stable
-ordering when Phase 7.5 exposes them for topic-related discovery support.
-
-Default nested Event ordering:
-
-1. `startTime` ascending
-2. `id` ascending as a tie-breaker
-
-Rationale:
-
-- topic-, article-, and action-scoped Event discovery should preserve the same
-  mental model as top-level Event browsing
-- stable ordering reduces UI ambiguity and avoids test fragility
-
 ### Detail Relationship Ordering
 
 Nested `topics`, `articles`, and `actions` arrays inside Event detail should use
@@ -233,8 +216,6 @@ Decisions:
 - public Event detail routes resolve unpublished or missing Events as `404`
 - nested `topics`, `articles`, and `actions` arrays on Event detail exclude
   unpublished related content
-- relationship-driven Event arrays returned from Topic, Article, or Action
-  endpoints must exclude unpublished Events
 
 Additional note:
 
@@ -256,6 +237,11 @@ For Phase 7 public Event reads:
 This keeps Event API implementation aligned with the repository/service pattern
 already used for Topic, Article, and Action public reads.
 
+Topic-related Event discovery should be handled through the filtered Event
+collection surface, for example by linking users from Topic pages into an
+`/events` view prefiltered by topic, rather than embedding unfiltered Event
+arrays inside Topic detail payloads.
+
 ---
 
 ## Deferrals
@@ -269,3 +255,5 @@ These concerns remain outside the approved Phase 7 contract scope:
 - recurring-event series support
 - slug-based Event public identifiers
 - derived status such as `isUpcoming` or `isPast`
+- embedding Event arrays into Topic detail payloads
+- Topic-page Event entry points or calls to action, which are deferred to Phase 9
