@@ -598,7 +598,7 @@ for both the web and API apps.
 
 ---
 
-### ► Topic pages do not embed Event arrays
+### ► Public Event discovery uses a simplified upcoming list contract
 
 ###### 2026-03-29
 
@@ -606,28 +606,48 @@ for both the web and API apps.
 
 ###### Decision
 
-Topic detail pages should not embed unfiltered Event arrays. Topic-related
-Event discovery should be handled through the public Events surface using
-topic-prefiltered collection views instead.
+Public Event discovery should use a simplified Events list contract. The public
+`/events` collection should return upcoming published Events by default,
+covering roughly now through the next three months, sorted by `startTime`
+ascending and then `id` ascending, and accept only an optional `topicSlug`
+filter. The public Event detail endpoint remains unchanged. Topic detail pages
+should not embed unfiltered Event arrays and may link users into the filtered
+Events surface using `topicSlug` passthrough navigation.
 
 ###### Rationale
 
 - Events are geographically and temporally constrained in a way Articles and
   Actions are not.
-- Dumping Event cards inline on broad Topic pages is weak discovery for users
-  who may not be near the listed Events.
+- For public browsing, requiring region/date inputs up front creates needless
+  friction for the initial Events surface.
+- A default upcoming window better matches the core user question of "what can
+  I do soon?" without requiring extra UI or query construction.
+- Topic filtering remains useful for intent-based discovery and can be passed
+  through cleanly from Topic pages.
+- Dumping Event cards inline on broad Topic pages is weak discovery and mixes
+  two separate browsing surfaces.
 - Keeping Event discovery on the filtered Events surface preserves a clearer
   mental model for location- and time-aware browsing.
-- This avoids coupling Topic detail payloads to Event list presentation before
-  the UI has a strong reason to do so.
+- Keeping Event detail unchanged avoids unnecessary churn where the existing
+  detail contract already meets current UI needs.
 
 ###### Implications
 
 - Topic detail API payloads should not add embedded Event summary arrays for
   Release 1.
-- Topic-related Event browsing should use the Events collection surface with
-  topic prefiltering.
-- Topic pages may later add lightweight calls to action such as `Find Events`
-  or `Browse events for this topic` that link into filtered Event discovery.
-- Those Topic-page Event entry points are deferred to Phase 9 UI polish rather
-  than Phase 7 backend API scope.
+- The public Events collection contract should not require `region`,
+  `startDate`, or `endDate` inputs.
+- The public Events collection should default to an upcoming time window of
+  roughly now through the next three months.
+- `topicSlug` is the only public collection filter required in Release 1.
+- Internal implementation may still use broader filtering concepts if needed,
+  but those inputs are not part of the public contract.
+- Topic pages may include lightweight passthrough links such as `Find Events`
+  or `Browse events for this topic` that route users to filtered Event
+  discovery views such as `/events?topicSlug=<slug>`.
+- Those passthrough links do not require Topic API payload changes or embedded
+  Event lists.
+- The public Event detail endpoint remains unchanged, including related Topic,
+  Article, and Action summaries.
+- Richer presentation treatment and stronger CTA polish for Topic-page Event
+  entry points remain Phase 9 work rather than baseline Phase 8 scope.

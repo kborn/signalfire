@@ -6,10 +6,11 @@ Capture the public Event API contract for Phase 7 so repository, service, API,
 and downstream UI work all share the same payload, ordering, and relationship
 expectations.
 
-This document is the canonical Phase 7.2 contract artifact for:
+This document is the canonical Event API contract artifact as last updated by
+the Phase 8 Event discovery direction for:
 
 - Event summary and detail response shapes
-- default Event collection ordering
+- default Event collection behavior and ordering
 - public Event relationship inclusion rules
 - known contract deferrals that remain outside Release 1 Phase 7 scope
 
@@ -175,16 +176,23 @@ Define deterministic ordering for public Event results.
 
 ### Collection Ordering
 
-Default Event collection ordering is:
+Default Event collection behavior is:
 
-1. `startTime` ascending
-2. `id` ascending as a deterministic tie-breaker
+1. return upcoming published Events by default, covering roughly now through
+   the next three months
+2. accept only an optional `topicSlug` public filter
+3. sort by `startTime` ascending
+4. sort by `id` ascending as a deterministic tie-breaker
 
 Rationale:
 
 - Event discovery is time-oriented in a way Article and Action discovery is not;
   upcoming events are more useful than older or later events for public browsing
-- `startTime` ascending aligns the API with likely Phase 8 list behavior without
+- a default upcoming window removes the need for users to supply region/date
+  inputs before they can browse Events at all
+- `topicSlug` remains useful for intent-based discovery without overloading the
+  public contract
+- `startTime` ascending aligns the API with the Events list mental model without
   introducing extra ranking logic
 - `id` ascending keeps responses stable when multiple Events share the same
   start time
@@ -237,10 +245,10 @@ For Phase 7 public Event reads:
 This keeps Event API implementation aligned with the repository/service pattern
 already used for Topic, Article, and Action public reads.
 
-Topic-related Event discovery should be handled through the filtered Event
-collection surface, for example by linking users from Topic pages into an
-`/events` view prefiltered by topic, rather than embedding unfiltered Event
-arrays inside Topic detail payloads.
+Topic-related Event discovery should be handled through the Event collection
+surface, for example by linking users from Topic pages into an `/events` view
+prefiltered by `topicSlug`, rather than embedding unfiltered Event arrays
+inside Topic detail payloads.
 
 ---
 
@@ -250,10 +258,10 @@ These concerns remain outside the approved Phase 7 contract scope:
 
 - pagination
 - free-text search
+- public region/date filter inputs on the collection route
 - radius or bounding-box filtering
 - map payloads
 - recurring-event series support
 - slug-based Event public identifiers
 - derived status such as `isUpcoming` or `isPast`
 - embedding Event arrays into Topic detail payloads
-- Topic-page Event entry points or calls to action, which are deferred to Phase 9

@@ -813,8 +813,8 @@ Release 1 event discovery.
 - [x] Implement the public Event detail endpoint
 - [x] Keep topic-related Event discovery on the filtered Events surface rather
       than embedding Event arrays into Topic detail payloads
-- [x] Document the deferral of topic-page Event entry points to Phase 9 UI
-      polish work
+- [x] Document that Topic pages may link into topic-prefiltered Event browsing
+      without embedding Event arrays or changing Topic API payloads
 
 ---
 
@@ -848,6 +848,8 @@ Release 1 event discovery.
   backend scope.
 - Topic detail pages should not embed unfiltered Event arrays; topic-related
   Event discovery should route through filtered Event collection views instead.
+- Topic pages may pass `topicSlug` through to the Events surface in Phase 8
+  without expanding backend scope or embedding Event lists inline.
 
 ---
 
@@ -859,11 +861,77 @@ Release 1 event discovery.
 
 Allow users to browse and view events.
 
+###### Definition of Done
+
+- [ ] Public Event list API exposes the simplified upcoming-event contract needed by the Phase 8 Events surface
+- [ ] Public Event index page exists and consumes the simplified public Event collection contract
+- [ ] Public Event detail page exists and consumes the unchanged Event detail contract
+- [ ] Event UI supports topic-prefiltered browsing through the Events surface without embedding Event arrays on Topic pages
+- [ ] Event UI handles empty states and not-found behavior cleanly
+- [ ] Phase 8 UI scope and deferrals are documented for Phase 9 polish work
+
+---
+
+#### ▸ Phase 8.1 - Event Collection API Simplification ⏳
+
+###### Phase Tasks:
+
+- [ ] Simplify the public Event collection API so it returns upcoming Events by default without requiring region/date inputs
+- [ ] Support only optional `topicSlug` filtering in the public Event collection contract
+- [ ] Keep collection ordering aligned to `startTime` ascending and `id` ascending
+- [ ] Update contract documentation and validation coverage for the simplified public Event collection behavior
+
+---
+
+#### ▸ Phase 8.2 - Events Index Page ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement the public `/events` page against the simplified collection API
+- [ ] Render Event summaries using the canonical collection fields and ordering
+- [ ] Support topic-prefiltered browsing through URL query state aligned with the simplified contract
+- [ ] Implement empty states for valid queries that return no Events
+- [ ] Ensure Topic-page passthrough navigation lands on the correct prefiltered Events state
+
+---
+
+#### ▸ Phase 8.3 - Event Detail Page ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement the public `/events/[id]` page using the unchanged Event detail API
+- [ ] Render Event title, summary, time, location, type, and full description clearly
+- [ ] Render related Topic, Article, and Action sections only when related content exists
+- [ ] Ensure related links navigate correctly into Topic, Article, and Action pages
+- [ ] Implement not-found behavior for missing or unpublished Events
+
+---
+
+#### ▸ Phase 8.4 - UI Validation & Handoff ⏳
+
+###### Phase Tasks:
+
+- [ ] Add coverage for the simplified Event collection contract and topic-prefiltered list behavior
+- [ ] Add page-level coverage for Event index and Event detail happy paths
+- [ ] Add coverage for empty states and not-found behavior
+- [ ] Document final Phase 8 UI scope, including deferred filter UI, maps, and location-intelligence work
+- [ ] Confirm Topic-page Event passthrough links stay lightweight and do not expand into embedded Event discovery UI
+
+---
+
 Capabilities:
 
 - event listing
 - event detail pages
 - topic-prefiltered Event browsing on the Events surface
+
+###### Notes:
+
+- Phase 8 includes a scoped simplification of the public Event collection contract to support the Events surface cleanly.
+- Topic detail pages do not embed Event arrays in Phase 8.
+- Topic pages may include lightweight passthrough links such as `Find Events`
+  that route to topic-prefiltered Event browsing on `/events`.
+- Richer CTA polish and presentation treatment for those links remain Phase 9 work.
 
 ---
 
