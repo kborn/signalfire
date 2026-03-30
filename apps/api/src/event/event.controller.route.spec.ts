@@ -4,6 +4,7 @@ import request from 'supertest';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
 import { buildEntityDetailResponse, buildEventListResponse } from './event.test-fixtures';
+import { withFrozenTime } from '../../common/test/time';
 
 describe('EventController HTTP', () => {
   let app: INestApplication;
@@ -34,20 +35,21 @@ describe('EventController HTTP', () => {
   });
 
   it('GET /events returns the event discovery list', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2025-03-15T12:34:56.001Z'));
-    const eventListResponse = buildEventListResponse();
-    eventServiceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
+    await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
+      const eventListResponse = buildEventListResponse();
+      eventServiceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
 
-    await request(httpServer)
-      .get('/events')
-      .query({ topicSlug: 'democracy' })
-      .expect(200)
-      .expect(eventListResponse);
+      await request(httpServer)
+        .get('/events')
+        .query({ topicSlug: 'democracy' })
+        .expect(200)
+        .expect(eventListResponse);
 
-    expect(eventServiceMock.getPublishedEventList).toHaveBeenCalledWith({
-      startDate: new Date('2025-03-15T00:00:00.000Z'),
-      endDate: new Date('2025-04-14T00:00:00.000Z'),
-      topicSlug: 'democracy',
+      expect(eventServiceMock.getPublishedEventList).toHaveBeenCalledWith({
+        startDate: new Date('2025-03-15T00:00:00.000Z'),
+        endDate: new Date('2025-04-14T00:00:00.000Z'),
+        topicSlug: 'democracy',
+      });
     });
   });
 

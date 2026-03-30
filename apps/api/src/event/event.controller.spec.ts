@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
 import { buildEntityDetailResponse, buildEventListResponse } from './event.test-fixtures';
+import { withFrozenTime } from '../../common/test/time';
 
 describe('EventController', () => {
   let eventController: EventController;
@@ -24,17 +25,18 @@ describe('EventController', () => {
   });
 
   it('findEvents', async () => {
-    jest.useFakeTimers().setSystemTime(new Date('2025-03-15T12:34:56.001Z'));
-    const eventListResponse = buildEventListResponse();
-    serviceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
+    await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
+      const eventListResponse = buildEventListResponse();
+      serviceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
 
-    const ret = await eventController.findEvents(undefined);
+      const ret = await eventController.findEvents(undefined);
 
-    expect(ret).toEqual(eventListResponse);
-    expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith({
-      startDate: new Date('2025-03-15T00:00:00.000Z'),
-      endDate: new Date('2025-04-14T00:00:00.000Z'),
-      topicSlug: undefined,
+      expect(ret).toEqual(eventListResponse);
+      expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith({
+        startDate: new Date('2025-03-15T00:00:00.000Z'),
+        endDate: new Date('2025-04-14T00:00:00.000Z'),
+        topicSlug: undefined,
+      });
     });
   });
 
