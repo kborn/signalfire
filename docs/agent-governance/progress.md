@@ -14,8 +14,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
 | [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
 | [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
-| **[7](#-phase-7--event-domain--apis-)**           | **Event Domain & APIs**         | **🚧 ACTIVE** |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ⏳            |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
+| **[8](#-phase-8--event-ui-)**                     | **Event UI**                    | **🚧 ACTIVE** |
 | [9](#-phase-9--ui-polish-)                        | UI Polish                       | ⏳            |
 | [10](#-phase-10--submission-system-)              | Submission System               | ⏳            |
 | [11](#-phase-11--moderation-workflow-)            | Moderation Workflow             | ⏳            |
@@ -735,7 +735,7 @@ using the existing Phase 5 public APIs.
 
 ---
 
-### ► Phase 7 — Event Domain & APIs 🚧
+### ► Phase 7 — Event Domain & APIs ✅
 
 ###### Goal
 
@@ -744,14 +744,14 @@ Release 1 event discovery.
 
 ###### Definition of Done
 
-- [ ] Event persistence model and validation rules align with the canonical
+- [x] Event persistence model and validation rules align with the canonical
       Event definition
-- [ ] Public event read endpoints exist for collection and detail use cases
-- [ ] Event filtering supports the scoped Release 1 dimensions: topic, date,
+- [x] Public event read endpoints exist for collection and detail use cases
+- [x] Event filtering supports the scoped Release 1 dimensions: topic, date,
       and location
-- [ ] Publication rules are applied consistently across direct and
+- [x] Publication rules are applied consistently across direct and
       relationship-driven Event reads
-- [ ] Event API contracts and deferrals are documented for Phase 8 UI work
+- [x] Event API contracts and deferrals are documented for Phase 8 UI work
 
 ---
 
@@ -818,17 +818,17 @@ Release 1 event discovery.
 
 ---
 
-#### ▸ Phase 7.6 - Validation, Testing & Phase Handoff ⏳
+#### ▸ Phase 7.6 - Validation, Testing & Phase Handoff ✅
 
 ###### Phase Tasks:
 
-- [ ] Add endpoint coverage for Event collection and detail success cases
-- [ ] Add coverage for publication filtering and relationship visibility rules
-- [ ] Add coverage for topic/date/location filter behavior, including empty
+- [x] Add endpoint coverage for Event collection and detail success cases
+- [x] Add coverage for publication filtering and relationship visibility rules
+- [x] Add coverage for topic/date/location filter behavior, including empty
       states and invalid inputs
-- [ ] Document final Event endpoint contracts, ordering, and known Phase 7
+- [x] Document final Event endpoint contracts, ordering, and known Phase 7
       deferrals
-- [ ] Update phase status and notes when all Phase 7 tasks are complete
+- [x] Update phase status and notes when all Phase 7 tasks are complete
 
 ---
 
