@@ -952,22 +952,102 @@ Capabilities:
 
 ###### Goal
 
-Refine the public product UI so the platform feels intentional, cohesive, and ready for broader user-facing evaluation.
+Refine the public UI so CivicSignal feels intentional, cohesive, and clearly structured across all current public routes without expanding product scope.
 
-Capabilities:
+###### Definition of Done
 
-- visual polish across public browsing pages
-- improved layout consistency and hierarchy
-- stronger calls to action and discovery affordances
-- responsive behavior refinement
-- topic-page links into filtered Event discovery where useful
+- [ ] Shared layout, spacing, typography, and nav behavior are consistent across all public routes
+- [ ] Collection pages use a consistent list-preview pattern with improved hierarchy and scanability
+- [ ] Detail pages use a consistent header, metadata, body-content, and related-content structure
+- [ ] Section labels are standardized across all detail pages
+- [ ] CTA patterns are visually consistent across Home, Topic, Article, Action, and Event pages
+- [ ] Responsive behavior is refined without introducing new UI systems or interaction patterns
+- [ ] Phase 9 specifications are implemented without expanding scope beyond polish
 
-###### Notes:
+---
 
-- Phase 9 is where broader visual polish, stronger presentation treatment, and refinement beyond the Phase 6 baseline should occur.
-- Topic detail pages may add lightweight calls to action such as "Find Events"
-  that link into topic-prefiltered Event browsing rather than embedding Event
-  cards inline.
+#### ▸ Phase 9.1 - Shared Layout, Typography & Navigation ⏳
+
+###### Scope
+
+Global UI shell only. Includes minimal shared layout/component updates required to support:
+
+- active nav state
+- canonical page structure classes
+- consistent spacing and typography
+
+###### Phase Tasks:
+
+- [ ] Standardize shared container width, vertical rhythm, and section spacing across all public pages
+- [ ] Tighten site header and nav spacing, hover/focus behavior, and implement active-link state
+- [ ] Apply canonical heading, body, and metadata typography across all routes
+- [ ] Remove duplicate Home/CTA/mobile CSS and establish a single baseline stylesheet
+- [ ] Introduce small, semantically named shared CSS classes where needed (no utility system)
+- [ ] Refine mobile spacing and typography so no current route feels cramped or oversized
+
+###### Completion Criteria
+
+- [ ] All public routes use the same container width and baseline spacing
+- [ ] Nav includes working active-route styling
+- [ ] Duplicate CSS rules are removed
+- [ ] Typography is visually consistent across routes
+- [ ] Mobile layout is readable and balanced at current breakpoint
+
+---
+
+#### ▸ Phase 9.2 - Collection Page Hierarchy & Preview Patterns ⏳
+
+###### Phase Tasks:
+
+- [ ] Standardize Topics, Articles, Actions, and Events index pages around a shared structure
+- [ ] Define and apply a canonical preview-item pattern (title, summary, metadata)
+- [ ] Improve spacing and scanability of collection lists
+- [ ] Align collection-page intro hierarchy (copy finalized in 9.4)
+- [ ] Keep lists text-first; do not introduce cards, filters, or pagination
+
+---
+
+#### ▸ Phase 9.3 - Detail Page Structure & Related Content Treatment ⏳
+
+###### Phase Tasks:
+
+- [ ] Standardize detail-page header structure across all entities
+- [ ] Improve metadata presentation (no raw or inline dumps)
+- [ ] Define consistent related-content section structure and spacing
+- [ ] Improve readability of long-form content (line length, spacing)
+- [ ] Keep related-content depth unchanged (presentation only)
+
+---
+
+#### ▸ Phase 9.4 - CTA Language & Static Copy ⏳
+
+###### Phase Tasks:
+
+- [ ] Finalize and apply intro copy across Home and collection pages
+- [ ] Standardize CTA language across all routes
+- [ ] Standardize section labels across detail pages (locked in this phase)
+- [ ] Improve Topic → Events CTA treatment and supporting copy
+- [ ] Align discovery language across Learn / Action / Events flows
+
+---
+
+#### ▸ Phase 9.5 - Responsive Refinement & Final Consistency Pass ⏳
+
+###### Phase Tasks:
+
+- [ ] Validate all routes across mobile, tablet, and desktop widths
+- [ ] Resolve spacing, wrapping, and alignment inconsistencies
+- [ ] Confirm nav and CTA usability at small widths
+- [ ] Perform final visual consistency pass across all routes
+
+---
+
+#### Notes:
+
+- Phase 9 is presentation refinement only; no backend, search, filters, maps, or new routes
+- Small shared CSS classes are allowed; full design systems are not
+- Events remain a first-class nav destination
+- Topic detail pages use a CTA to Events; do not embed event lists inline
 
 ---
 
