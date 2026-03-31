@@ -855,7 +855,7 @@ Release 1 event discovery.
 
 ---
 
-### ► Phase 8 — Event UI ⏳
+### ► Phase 8 — Event UI 🚧
 
 ###### Goal
 
@@ -883,19 +883,19 @@ Allow users to browse and view events.
 
 ---
 
-#### ▸ Phase 8.2 - Events Index Page ⏳
+#### ▸ Phase 8.2 - Events Index Page ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement the public `/events` page against the simplified collection API
-- [ ] Render Event summaries using the canonical collection fields and ordering
-- [ ] Support topic-prefiltered browsing through URL query state aligned with the simplified contract
-- [ ] Implement empty states for valid queries that return no Events
-- [ ] Ensure Topic-page passthrough navigation lands on the correct prefiltered Events state
+- [x] Implement the public `/events` page against the simplified collection API
+- [x] Render Event summaries using the canonical collection fields and ordering
+- [x] Support topic-prefiltered browsing through URL query state aligned with the simplified contract
+- [x] Implement empty states for valid queries that return no Events
+- [x] Ensure Topic-page passthrough navigation lands on the correct prefiltered Events state
 
 ---
 
-#### ▸ Phase 8.3 - Event Detail Page ⏳
+#### ▸ Phase 8.3 - Event Detail Page 🚧
 
 ###### Phase Tasks:
 

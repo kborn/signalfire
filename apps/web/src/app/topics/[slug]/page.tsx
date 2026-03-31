@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
+import Link from 'next/link';
 
 async function fetchTopicDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -37,6 +38,9 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <ActionSummary key={action.id} action={action} />
         ))}
       </section>
+      <Link href={`/events/?topicSlug=${topic.slug}`} className="secondaryCTA">
+        Browse Events
+      </Link>
     </div>
   );
 }
