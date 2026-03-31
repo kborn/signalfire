@@ -22,6 +22,7 @@ export default function RootLayout({
             <Link href="/topics">Topics</Link>
             <Link href="/articles">Articles</Link>
             <Link href="/actions">Actions</Link>
+            <Link href="/events">Events</Link>
           </nav>
         </header>
         <main>{children}</main>
