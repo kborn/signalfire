@@ -15,8 +15,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
 | [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
-| **[8](#-phase-8--event-ui-)**                     | **Event UI**                    | **🚧 ACTIVE** |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ⏳            |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
+| **[9](#-phase-9--ui-polish-)**                    | **UI Polish**                   | **🚧 ACTIVE** |
 | [10](#-phase-10--submission-system-)              | Submission System               | ⏳            |
 | [11](#-phase-11--moderation-workflow-)            | Moderation Workflow             | ⏳            |
 | [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳            |
@@ -855,7 +855,7 @@ Release 1 event discovery.
 
 ---
 
-### ► Phase 8 — Event UI 🚧
+### ► Phase 8 — Event UI ✅
 
 ###### Goal
 
@@ -863,12 +863,12 @@ Allow users to browse and view events.
 
 ###### Definition of Done
 
-- [ ] Public Event list API exposes the simplified upcoming-event contract needed by the Phase 8 Events surface
-- [ ] Public Event index page exists and consumes the simplified public Event collection contract
-- [ ] Public Event detail page exists and consumes the unchanged Event detail contract
-- [ ] Event UI supports topic-prefiltered browsing through the Events surface without embedding Event arrays on Topic pages
-- [ ] Event UI handles empty states and not-found behavior cleanly
-- [ ] Phase 8 UI scope and deferrals are documented for Phase 9 polish work
+- [x] Public Event list API exposes the simplified upcoming-event contract needed by the Phase 8 Events surface
+- [x] Public Event index page exists and consumes the simplified public Event collection contract
+- [x] Public Event detail page exists and consumes the unchanged Event detail contract
+- [x] Event UI supports topic-prefiltered browsing through the Events surface without embedding Event arrays on Topic pages
+- [x] Event UI handles empty states and not-found behavior cleanly
+- [x] Phase 8 UI scope and deferrals are documented for Phase 9 polish work
 
 ---
 
@@ -895,7 +895,7 @@ Allow users to browse and view events.
 
 ---
 
-#### ▸ Phase 8.3 - Event Detail Page 🚧
+#### ▸ Phase 8.3 - Event Detail Page ✅
 
 ###### Phase Tasks:
 
@@ -907,15 +907,15 @@ Allow users to browse and view events.
 
 ---
 
-#### ▸ Phase 8.4 - UI Validation & Handoff ⏳
+#### ▸ Phase 8.4 - UI Validation & Handoff ✅
 
 ###### Phase Tasks:
 
-- [ ] Add coverage for the simplified Event collection contract and topic-prefiltered list behavior
-- [ ] Add page-level coverage for Event index and Event detail happy paths
-- [ ] Add coverage for empty states and not-found behavior
-- [ ] Document final Phase 8 UI scope, including deferred filter UI, maps, and location-intelligence work
-- [ ] Confirm Topic-page Event passthrough links stay lightweight and do not expand into embedded Event discovery UI
+- [x] Add coverage for the simplified Event collection contract and topic-prefiltered list behavior
+- [x] Add page-level coverage for Event index and Event detail happy paths
+- [x] Add coverage for empty states and not-found behavior
+- [x] Document final Phase 8 UI scope, including deferred filter UI, maps, and location-intelligence work
+- [x] Confirm Topic-page Event passthrough links stay lightweight and do not expand into embedded Event discovery UI
 
 ---
 
@@ -932,12 +932,23 @@ Capabilities:
 - Topic pages may include lightweight passthrough links such as `Find Events`
   that route to topic-prefiltered Event browsing on `/events`.
 - Richer CTA polish and presentation treatment for those links remain Phase 9 work.
+- Validation coverage now exists across API and UI layers for:
+  - simplified Event list contract behavior and `topicSlug` filtering
+  - Event index and Event detail happy paths
+  - empty states and not-found behavior
+- Phase 8 intentionally defers:
+  - filter controls beyond `topicSlug`
+  - maps and geospatial discovery UI
+  - location-intelligence and richer CTA polish
+- Topic-page Event discovery remains a lightweight passthrough link into
+  `/events?topicSlug=<slug>` and does not expand Topic pages into embedded
+  Event discovery surfaces.
 
 ---
 
 ---
 
-### ► Phase 9 — UI Polish ⏳
+### ► Phase 9 — UI Polish 🚧
 
 ###### Goal
 
