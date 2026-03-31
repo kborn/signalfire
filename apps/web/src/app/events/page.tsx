@@ -22,13 +22,11 @@ function getNoTopicResultsResponse(topic: string) {
 }
 
 type EventListPageProps = {
-  searchParams?: {
-    topicSlug?: string;
-  };
+  searchParams?: Promise<{ topicSlug?: string }>;
 };
 
 export default async function EventListPage({ searchParams }: EventListPageProps) {
-  const topicSlug = searchParams?.topicSlug;
+  const topicSlug = (await searchParams)?.topicSlug;
   const topic = titleCase(topicSlug);
   const data = await getEventsList(topicSlug);
   if (data.items.length === 0) {

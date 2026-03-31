@@ -79,7 +79,7 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: { topicSlug: 'local-community' },
+        searchParams: Promise.resolve({ topicSlug: 'local-community' }),
       }),
     );
 
@@ -114,7 +114,7 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: { topicSlug: 'consumer-activism' },
+        searchParams: Promise.resolve({ topicSlug: 'consumer-activism' }),
       }),
     );
 
