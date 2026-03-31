@@ -92,6 +92,25 @@ A good shape is:
 The important idea is not abstraction. The important idea is that the page
 should pass only the query state the contract allows.
 
+### Use `URLSearchParams` when building query strings
+
+If an API helper needs optional query params, `URLSearchParams` is the cleanest
+way to build the URL.
+
+Why it helps:
+
+- you avoid hand-building strings like `events?topicSlug=${topicSlug}`
+- values are encoded safely
+- adding or skipping optional keys stays simple
+
+For Phase 8.2, the pattern is:
+
+1. create `URLSearchParams`
+2. add `topicSlug` only if it exists
+3. append the query string only if at least one param was added
+
+This keeps the helper small while avoiding fragile string concatenation.
+
 ### The page should trust the API ordering
 
 The canonical Event collection ordering is:
@@ -136,13 +155,22 @@ The route stays `/events`. The query string only changes the page state.
 
 ```ts
 export async function getEventsList(topicSlug?: string) {
-  const endpoint = topicSlug ? `events?topicSlug=${topicSlug}` : 'events';
+  const params = new URLSearchParams();
+
+  if (topicSlug) {
+    params.set('topicSlug', topicSlug);
+  }
+
+  const query = params.toString();
+  const endpoint = query ? `events?${query}` : 'events';
+
   return await makeRequest(endpoint);
 }
 ```
 
 Important idea:
-The helper stays small and only encodes the one filter the contract allows.
+The helper stays small, encodes values safely, and only includes the filter
+when it exists.
 
 ### Example 3: Empty state copy based on query context
 
