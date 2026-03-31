@@ -26,7 +26,7 @@ type EventListPageProps = {
 };
 
 export default async function EventListPage({ searchParams }: EventListPageProps) {
-  const topicSlug = (await searchParams)?.topicSlug;
+  const { topicSlug } = (await searchParams) ?? {};
   const topic = titleCase(topicSlug);
   const data = await getEventsList(topicSlug);
   if (data.items.length === 0) {
