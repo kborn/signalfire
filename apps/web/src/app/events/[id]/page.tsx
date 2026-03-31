@@ -54,24 +54,30 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       <section>
         <ArticleBody content={event.description} />
       </section>
-      <section>
-        <h2>Related Topics</h2>
-        {event.topics.map((topic) => (
-          <TopicSummary key={topic.id} topic={topic} />
-        ))}
-      </section>
-      <section>
-        <h2>Articles</h2>
-        {event.articles.map((article) => (
-          <ArticleSummary key={article.id} article={article} />
-        ))}
-      </section>
-      <section>
-        <h2>Actions</h2>
-        {event.actions.map((action) => (
-          <ActionSummary key={action.id} action={action} />
-        ))}
-      </section>
+      {event.topics.length > 0 && (
+        <section>
+          <h2>Related Topics</h2>
+          {event.topics.map((topic) => (
+            <TopicSummary key={topic.id} topic={topic} />
+          ))}
+        </section>
+      )}
+      {event.articles.length > 0 && (
+        <section>
+          <h2>Articles</h2>
+          {event.articles.map((article) => (
+            <ArticleSummary key={article.id} article={article} />
+          ))}
+        </section>
+      )}
+      {event.actions.length > 0 && (
+        <section>
+          <h2>Actions</h2>
+          {event.actions.map((action) => (
+            <ActionSummary key={action.id} action={action} />
+          ))}
+        </section>
+      )}
     </div>
   );
 }
