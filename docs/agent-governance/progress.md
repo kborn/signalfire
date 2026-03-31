@@ -899,11 +899,11 @@ Allow users to browse and view events.
 
 ###### Phase Tasks:
 
-- [ ] Implement the public `/events/[id]` page using the unchanged Event detail API
-- [ ] Render Event title, summary, time, location, type, and full description clearly
-- [ ] Render related Topic, Article, and Action sections only when related content exists
-- [ ] Ensure related links navigate correctly into Topic, Article, and Action pages
-- [ ] Implement not-found behavior for missing or unpublished Events
+- [x] Implement the public `/events/[id]` page using the unchanged Event detail API
+- [x] Render Event title, summary, time, location, type, and full description clearly
+- [x] Render related Topic, Article, and Action sections only when related content exists
+- [x] Ensure related links navigate correctly into Topic, Article, and Action pages
+- [x] Implement not-found behavior for missing or unpublished Events
 
 ---
 
