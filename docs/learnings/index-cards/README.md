@@ -59,6 +59,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [42-arrow-functions-vs-function-expressions.md](./42-arrow-functions-vs-function-expressions.md) - When arrow functions and `function` expressions are interchangeable and when `this` changes the behavior
 - [46-css-descendant-and-attribute-selectors.md](./46-css-descendant-and-attribute-selectors.md) - How selectors like `.site-nav a[aria-current='page']` combine nesting and attribute matching
 - [47-aria-current-and-active-nav.md](./47-aria-current-and-active-nav.md) - Why `aria-current="page"` marks the current nav link semantically and visually
+- [48-grouped-selectors-and-rule-overlap.md](./48-grouped-selectors-and-rule-overlap.md) - How `html, body { ... }` and `body { ... }` interact when both set styles
+- [49-html-vs-body.md](./49-html-vs-body.md) - What `html` and `body` each represent in the page structure
 
 Rule of thumb:
 

@@ -170,11 +170,45 @@ Required baseline:
 }
 ```
 
-Add a standard section rhythm:
+#### Section spacing rules (explicit)
 
-- large page sections: `margin-top: 48px`
-- related-content sections: `margin-top: 40px`
-- collection items: `padding-block: 0`
+Top-level page sections:
+
+```css
+.page-section + .page-section {
+  margin-top: 48px;
+}
+```
+
+Rules:
+
+- Applies only between sibling `.page-section` elements inside `.site-main`
+- Does not apply to the first `.page-section`
+- Do not apply margin directly to `.page-section`
+
+Related-content sections:
+
+```css
+.relatedSection {
+  margin-top: 40px;
+}
+```
+
+Collection items:
+
+```css
+.collectionItem {
+  padding-block: 0;
+  display: grid;
+  gap: 6px;
+}
+```
+
+Rules:
+
+- Vertical spacing between items is controlled ONLY by `.collectionList { gap: ... }`
+- Internal spacing is controlled ONLY by `gap` inside `.collectionItem`
+- Do not add margin-top or padding-top/bottom to `.collectionItem`
 
 Do not add section borders broadly across inner pages.
 
@@ -296,7 +330,13 @@ Keep outlined pill treatment.
 }
 
 .home-secondary-ctas {
+  display: flex;
   gap: 16px;
+}
+
+/* spacing ownership: parent controls spacing between CTAs */
+.home-cta-group > * {
+  margin: 0;
 }
 ```
 
@@ -779,6 +819,11 @@ Applies to article, action, and event detail pages.
 - section headings must be consistent across page types
 
 ### Related list styling
+
+Spacing ownership:
+
+- `.relatedList` controls vertical spacing between items via `gap`
+- `.relatedListItem` must not introduce margin-top or padding-block
 
 ```css
 .relatedList {
