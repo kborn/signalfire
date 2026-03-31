@@ -62,6 +62,8 @@ describe('TopicDetailsPage', () => {
     expect(markup).toContain('Actions');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
+    expect(markup).toContain('href="/events?topicSlug=climate"');
+    expect(markup).toContain('Browse Events');
   });
 
   it('translates a 404 topic API error into route not-found behavior', async () => {

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { formatDateYYYYMMDDHHMMSS } from '@/lib/common/time';
+import { formatEventTime } from '@/lib/common/time';
 
 type EventSummaryData = {
   id: number;
@@ -14,26 +14,11 @@ type EventSummaryData = {
   country: string | null;
 };
 
-function formatEventTime(startDateString: string, endDateString: string | null): string {
-  let range: string;
-  try {
-    range = formatDateYYYYMMDDHHMMSS(startDateString);
-  } catch {
-    return 'Unable to determine event time';
-  }
-
-  if (endDateString) {
-    try {
-      range += ' - ' + formatDateYYYYMMDDHHMMSS(endDateString);
-    } catch {
-      return 'Unable to determine event time';
-    }
-  }
-
-  return `${range}`;
-}
-
 export function EventSummary({ event }: { event: EventSummaryData }) {
+  const locationParts = [event.city, event.region, event.country].filter((value): value is string =>
+    Boolean(value),
+  );
+
   return (
     <article>
       <h3>
@@ -42,9 +27,7 @@ export function EventSummary({ event }: { event: EventSummaryData }) {
       <p className="summary">{event.eventType}</p>
       <p className="summary">{event.summary}</p>
       <p className="summary">{formatEventTime(event.startTime, event.endTime)}</p>
-      <p className="summary">
-        {event.city}, {event.region}
-      </p>
+      {locationParts.length > 0 && <p className="summary">{locationParts.join(', ')}</p>}
     </article>
   );
 }

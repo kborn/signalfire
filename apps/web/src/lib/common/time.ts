@@ -11,3 +11,21 @@ export function formatDateYYYYMMDDHHMMSS(date: string): string {
     .format(new Date(date))
     .replace(',', '');
 }
+export function formatEventTime(startDateString: string, endDateString: string | null): string {
+  let range: string;
+  try {
+    range = formatDateYYYYMMDDHHMMSS(startDateString);
+  } catch {
+    return 'Unable to determine event time';
+  }
+
+  if (endDateString) {
+    try {
+      range += ' - ' + formatDateYYYYMMDDHHMMSS(endDateString);
+    } catch {
+      return 'Unable to determine event time';
+    }
+  }
+
+  return `${range}`;
+}
