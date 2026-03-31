@@ -236,6 +236,28 @@ p {
 }
 
 @media (max-width: 640px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .site-header {
+    padding: 16px 0 10px;
+  }
+
+  .site-nav {
+    gap: 16px;
+    font-size: 0.98rem;
+  }
+
+  .site-main {
+    padding: 20px 0 64px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.035em;
+  }
+
   .home-hero {
     padding-top: 20px;
   }

@@ -8,11 +8,7 @@ export const metadata: Metadata = {
     'Explore civic issues, understand their impact, and find clear actions you can take to make a meaningful difference.',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="container">
       <body className="site-main">

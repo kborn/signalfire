@@ -19,7 +19,7 @@ export default async function TopicListPage() {
   return (
     <section className="page-section">
       <h1>Topics</h1>
-      <p>Browse civic issues and discover related articles and actions</p>
+      <p className="page-intro">Browse civic issues and discover related articles and actions</p>
       {data.items.map((topic) => (
         <TopicSummary key={topic.id} topic={topic} />
       ))}

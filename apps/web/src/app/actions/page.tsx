@@ -19,7 +19,7 @@ export default async function ActionListPage() {
   return (
     <section className="page-section">
       <h1>Actions</h1>
-      <p>Find ways to take meaningful action</p>
+      <p className="page-intro">Find ways to take meaningful action</p>
       {actions.items.map((action) => (
         <ActionSummary key={action.id} action={action} />
       ))}

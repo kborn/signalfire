@@ -6,7 +6,9 @@ export default function HomePage() {
       <section className="page-section home-hero">
         <h1>Learn what matters. Take meaningful action.</h1>
 
-        <p>Explore civic issues, understand their impact, and find clear actions you can take.</p>
+        <p className="page-intro">
+          Explore civic issues, understand their impact, and find clear actions you can take.
+        </p>
 
         <div className="home-cta-group">
           <Link href="/topics" className="primaryCTA">
