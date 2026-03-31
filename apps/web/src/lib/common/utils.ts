@@ -1,6 +1,6 @@
-export function titleCase(str?) {
+export function titleCase(str: string | undefined): string {
   if (!str) {
-    return str;
+    return '';
   }
   const lowercasedStr = str.toLowerCase();
   const wordsArray = lowercasedStr.split('-');

@@ -21,8 +21,14 @@ function getNoTopicResultsResponse(topic: string) {
   );
 }
 
-export default async function EventListPage({ searchParams }) {
-  const topicSlug = (await searchParams)?.topicSlug;
+type EventListPageProps = {
+  searchParams?: {
+    topicSlug?: string;
+  };
+};
+
+export default async function EventListPage({ searchParams }: EventListPageProps) {
+  const topicSlug = searchParams?.topicSlug;
   const topic = titleCase(topicSlug);
   const data = await getEventsList(topicSlug);
   if (data.items.length === 0) {

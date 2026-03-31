@@ -44,7 +44,7 @@ describe('EventListPage', () => {
       ],
     });
 
-    const markup = renderToStaticMarkup(await EventListPage({ searchParams: {} }));
+    const markup = renderToStaticMarkup(await EventListPage({}));
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith(undefined);
@@ -79,7 +79,7 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ topicSlug: 'local-community' }),
+        searchParams: { topicSlug: 'local-community' },
       }),
     );
 
@@ -97,7 +97,7 @@ describe('EventListPage', () => {
       items: [],
     });
 
-    const markup = renderToStaticMarkup(await EventListPage({ searchParams: {} }));
+    const markup = renderToStaticMarkup(await EventListPage({}));
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith(undefined);
@@ -114,7 +114,7 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ topicSlug: 'consumer-activism' }),
+        searchParams: { topicSlug: 'consumer-activism' },
       }),
     );
 

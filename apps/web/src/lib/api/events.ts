@@ -1,4 +1,5 @@
 import { makeRequest } from '@/lib/api/base';
+
 import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
 
 export async function getEventsList(topic?: string): Promise<EventListResponse> {
