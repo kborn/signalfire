@@ -62,6 +62,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [48-grouped-selectors-and-rule-overlap.md](./48-grouped-selectors-and-rule-overlap.md) - How `html, body { ... }` and `body { ... }` interact when both set styles
 - [49-html-vs-body.md](./49-html-vs-body.md) - What `html` and `body` each represent in the page structure
 - [50-direct-child-vs-descendant-selectors.md](./50-direct-child-vs-descendant-selectors.md) - How `.parent > *` differs from `.parent *`
+- [51-css-media-queries.md](./51-css-media-queries.md) - What `@media` does and why it is not the same thing as mobile by itself
 
 Rule of thumb:
 
