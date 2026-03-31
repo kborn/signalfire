@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import Link from 'next/link';
+import NavLink from '@/app/navbar';
 
 export const metadata: Metadata = {
   title: 'CivicSignal',
@@ -18,11 +18,11 @@ export default function RootLayout({
       <body className="site-main">
         <header className="site-header">
           <nav className="site-nav">
-            <Link href="/">Home</Link>
-            <Link href="/topics">Topics</Link>
-            <Link href="/articles">Articles</Link>
-            <Link href="/actions">Actions</Link>
-            <Link href="/events">Events</Link>
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/topics">Topics</NavLink>
+            <NavLink href="/articles">Articles</NavLink>
+            <NavLink href="/actions">Actions</NavLink>
+            <NavLink href="/events">Events</NavLink>
           </nav>
         </header>
         <main>{children}</main>
