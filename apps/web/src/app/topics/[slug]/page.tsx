@@ -38,7 +38,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <ActionSummary key={action.id} action={action} />
         ))}
       </section>
-      <Link href={`/events/?topicSlug=${topic.slug}`} className="secondaryCTA">
+      <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
         Browse Events
       </Link>
     </div>
