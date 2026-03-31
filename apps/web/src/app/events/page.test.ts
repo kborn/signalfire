@@ -14,7 +14,7 @@ describe('EventListPage', () => {
     vi.clearAllMocks();
   });
 
-  it('Events Page without topic slug. Renders the events list and event detail links', async () => {
+  it('renders the events list and detail links without a topic filter', async () => {
     vi.mocked(getEventsList).mockResolvedValue({
       items: [
         {
@@ -47,13 +47,81 @@ describe('EventListPage', () => {
     const markup = renderToStaticMarkup(await EventListPage({ searchParams: {} }));
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
+    expect(getEventsList).toHaveBeenCalledWith(undefined);
     expect(markup).toContain('Events');
     expect(markup).toContain('Find upcoming events to participate in');
+    expect(markup).not.toContain('Events related to');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
     expect(markup).toContain('href="/events/2"');
     expect(markup).toContain('East River Cleanup');
     expect(markup).toContain('Community river cleanup day');
+  });
+
+  it('renders the events list with a topic filter banner when events are found', async () => {
+    vi.mocked(getEventsList).mockResolvedValue({
+      items: [
+        {
+          id: 10,
+          title: 'Neighborhood Mutual Aid Fair',
+          summary: 'Meet local organizers and volunteer teams.',
+          eventType: 'VOLUNTEER',
+          startTime: '2026-02-12T15:00:00.000Z',
+          endTime: '2026-02-12T18:00:00.000Z',
+          city: 'Philadelphia',
+          region: 'PA',
+          postalCode: '19107',
+          country: 'USA',
+        },
+      ],
+    });
+
+    const markup = renderToStaticMarkup(
+      await EventListPage({
+        searchParams: Promise.resolve({ topicSlug: 'local-community' }),
+      }),
+    );
+
+    expect(getEventsList).toHaveBeenCalledTimes(1);
+    expect(getEventsList).toHaveBeenCalledWith('local-community');
+    expect(markup).toContain('Events');
+    expect(markup).toContain('Find upcoming events to participate in');
+    expect(markup).toContain('Events related to Local Community');
+    expect(markup).toContain('href="/events/10"');
+    expect(markup).toContain('Neighborhood Mutual Aid Fair');
+  });
+
+  it('renders the unfiltered empty state when there are no events', async () => {
+    vi.mocked(getEventsList).mockResolvedValue({
+      items: [],
+    });
+
+    const markup = renderToStaticMarkup(await EventListPage({ searchParams: {} }));
+
+    expect(getEventsList).toHaveBeenCalledTimes(1);
+    expect(getEventsList).toHaveBeenCalledWith(undefined);
+    expect(markup).toContain('Events');
+    expect(markup).toContain('No upcoming events found');
+    expect(markup).not.toContain('Find upcoming events to participate in');
+    expect(markup).not.toContain('Events related to');
+  });
+
+  it('renders the topic-specific empty state when a filtered query returns no events', async () => {
+    vi.mocked(getEventsList).mockResolvedValue({
+      items: [],
+    });
+
+    const markup = renderToStaticMarkup(
+      await EventListPage({
+        searchParams: Promise.resolve({ topicSlug: 'consumer-activism' }),
+      }),
+    );
+
+    expect(getEventsList).toHaveBeenCalledTimes(1);
+    expect(getEventsList).toHaveBeenCalledWith('consumer-activism');
+    expect(markup).toContain('Events');
+    expect(markup).toContain('No events found for Consumer Activism');
+    expect(markup).not.toContain('Find upcoming events to participate in');
   });
 });
