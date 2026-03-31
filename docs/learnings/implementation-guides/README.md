@@ -25,3 +25,8 @@ Current Phase 6 guides:
 Current Phase 8 guides:
 
 - `phase-8-2-query-backed-event-collections-guide.md`
+
+Current Phase 9 guides:
+
+- `phase-9-1-active-nav-and-aria-guide.md`
+- `phase-9-1-client-components-for-active-nav-guide.md`

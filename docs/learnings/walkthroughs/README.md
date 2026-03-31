@@ -13,3 +13,10 @@ framework primers and they are not MVP plans.
 
 For the detailed rules, format, and when-to-use guidance, see
 `docs/learnings/syllabus-workflow.md`.
+
+Current walkthroughs:
+
+- `phase-6-1-route-tree-walkthrough.md`
+- `phase-6-2-topic-discovery-flow-walkthrough.md`
+- `phase-6-3-article-markdown-support-walkthrough.md`
+- `phase-9-1-active-nav-client-component-walkthrough.md`
