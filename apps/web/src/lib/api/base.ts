@@ -8,19 +8,21 @@ function getApiBase() {
   return apiBase;
 }
 
-export async function makeRequest<T>(endpoint: string, queryParams?): Promise<T> {
-  let query: string | null = null;
+type QueryParams = Record<string, string | undefined>;
+
+export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
+  const params = new URLSearchParams();
+
   if (queryParams) {
-    const params = new URLSearchParams();
-    queryParams.map((param) => {
-      params.set(param, queryParams.param);
+    Object.entries(queryParams).forEach(([key, value]) => {
+      if (value !== undefined) {
+        params.set(key, value);
+      }
     });
-    query = params.toString();
   }
-  if (query) {
-    endpoint += '??' + query;
-  }
-  const url = `${getApiBase()}/${endpoint}`;
+
+  const query = params.toString();
+  const url = query ? `${getApiBase()}/${endpoint}?${query}` : `${getApiBase()}/${endpoint}`;
 
   const response = await fetch(url);
   if (!response.ok) {
