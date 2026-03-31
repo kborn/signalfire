@@ -966,7 +966,7 @@ Refine the public UI so CivicSignal feels intentional, cohesive, and clearly str
 
 ---
 
-#### ▸ Phase 9.1 - Shared Layout, Typography & Navigation ⏳
+#### ▸ Phase 9.1 - Shared Layout, Typography & Navigation ✅
 
 ###### Scope
 
@@ -978,24 +978,24 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ###### Phase Tasks:
 
-- [ ] Standardize shared container width, vertical rhythm, and section spacing across all public pages
-- [ ] Tighten site header and nav spacing, hover/focus behavior, and implement active-link state
-- [ ] Apply canonical heading, body, and metadata typography across all routes
-- [ ] Remove duplicate Home/CTA/mobile CSS and establish a single baseline stylesheet
-- [ ] Introduce small, semantically named shared CSS classes where needed (no utility system)
-- [ ] Refine mobile spacing and typography so no current route feels cramped or oversized
+- [x] Standardize shared container width, vertical rhythm, and section spacing across all public pages
+- [x] Tighten site header and nav spacing, hover/focus behavior, and implement active-link state
+- [x] Apply canonical heading, body, and metadata typography across all routes
+- [x] Remove duplicate Home/CTA/mobile CSS and establish a single baseline stylesheet
+- [x] Introduce small, semantically named shared CSS classes where needed (no utility system)
+- [x] Refine mobile spacing and typography so no current route feels cramped or oversized
 
 ###### Completion Criteria
 
-- [ ] All public routes use the same container width and baseline spacing
-- [ ] Nav includes working active-route styling
-- [ ] Duplicate CSS rules are removed
-- [ ] Typography is visually consistent across routes
-- [ ] Mobile layout is readable and balanced at current breakpoint
+- [x] All public routes use the same container width and baseline spacing
+- [x] Nav includes working active-route styling
+- [x] Duplicate CSS rules are removed
+- [x] Typography is visually consistent across routes
+- [x] Mobile layout is readable and balanced at current breakpoint
 
 ---
 
-#### ▸ Phase 9.2 - Collection Page Hierarchy & Preview Patterns ⏳
+#### ▸ Phase 9.2 - Collection Page Hierarchy & Preview Patterns 🚧
 
 ###### Phase Tasks:
 

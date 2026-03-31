@@ -57,6 +57,12 @@ These cards may be created or updated alongside task-linked syllabi in
 - [40-optional-parameter-vs-undefined-union.md](./40-optional-parameter-vs-undefined-union.md) - When `value?: T` means something different from `value: T | undefined`
 - [41-module-exports-vs-class-visibility.md](./41-module-exports-vs-class-visibility.md) - How `export` differs from `public` and `private` on classes
 - [42-arrow-functions-vs-function-expressions.md](./42-arrow-functions-vs-function-expressions.md) - When arrow functions and `function` expressions are interchangeable and when `this` changes the behavior
+- [46-css-descendant-and-attribute-selectors.md](./46-css-descendant-and-attribute-selectors.md) - How selectors like `.site-nav a[aria-current='page']` combine nesting and attribute matching
+- [47-aria-current-and-active-nav.md](./47-aria-current-and-active-nav.md) - Why `aria-current="page"` marks the current nav link semantically and visually
+- [48-grouped-selectors-and-rule-overlap.md](./48-grouped-selectors-and-rule-overlap.md) - How `html, body { ... }` and `body { ... }` interact when both set styles
+- [49-html-vs-body.md](./49-html-vs-body.md) - What `html` and `body` each represent in the page structure
+- [50-direct-child-vs-descendant-selectors.md](./50-direct-child-vs-descendant-selectors.md) - How `.parent > *` differs from `.parent *`
+- [51-css-media-queries.md](./51-css-media-queries.md) - What `@media` does and why it is not the same thing as mobile by itself
 
 Rule of thumb:
 
