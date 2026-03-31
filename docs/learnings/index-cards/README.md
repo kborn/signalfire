@@ -61,6 +61,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [47-aria-current-and-active-nav.md](./47-aria-current-and-active-nav.md) - Why `aria-current="page"` marks the current nav link semantically and visually
 - [48-grouped-selectors-and-rule-overlap.md](./48-grouped-selectors-and-rule-overlap.md) - How `html, body { ... }` and `body { ... }` interact when both set styles
 - [49-html-vs-body.md](./49-html-vs-body.md) - What `html` and `body` each represent in the page structure
+- [50-direct-child-vs-descendant-selectors.md](./50-direct-child-vs-descendant-selectors.md) - How `.parent > *` differs from `.parent *`
 
 Rule of thumb:
 
