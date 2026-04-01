@@ -331,3 +331,30 @@ h3 {
   line-height: 1.35;
   color: #444444;
 }
+
+.detailPage {
+  display: grid;
+  gap: 24px;
+}
+
+.detailHeader {
+  display: grid;
+  gap: 8px;
+}
+
+.relatedSection {
+  display: grid;
+  gap: 16px;
+  margin-top: 40px;
+}
+
+.topicDetailSections {
+  display: grid;
+  gap: 40px;
+}
+
+.topicEventCTA {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}

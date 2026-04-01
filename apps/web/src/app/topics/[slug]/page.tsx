@@ -21,26 +21,28 @@ async function fetchTopicDetails(params: Promise<{ slug: string }>) {
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const topic = await fetchTopicDetails(params);
   return (
-    <div className="page-section">
-      <section>
+    <div className="detailPage">
+      <section className="detailHeader">
         <h1>{topic.name}</h1>
+      </section>
+      <section className="topicDetailSections">
         <p>{topic.description}</p>
+        <section className="relatedSection">
+          <h3>Articles</h3>
+          {topic.articles.map((article) => (
+            <ArticleSummary key={article.id} article={article} />
+          ))}
+        </section>
+        <section className="relatedSection">
+          <h3>Actions</h3>
+          {topic.actions.map((action) => (
+            <ActionSummary key={action.id} action={action} />
+          ))}
+        </section>
       </section>
-      <section>
-        <h2>Articles</h2>
-        {topic.articles.map((article) => (
-          <ArticleSummary key={article.id} article={article} />
-        ))}
+      <section className="topicEventCTA">
+        <Link href={`/events?topicSlug=${topic.slug}`}>Browse Events</Link>
       </section>
-      <section>
-        <h2>Actions</h2>
-        {topic.actions.map((action) => (
-          <ActionSummary key={action.id} action={action} />
-        ))}
-      </section>
-      <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-        Browse Events
-      </Link>
     </div>
   );
 }
