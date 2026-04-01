@@ -4,6 +4,8 @@ import { ArticleBody } from '@/components/article-body';
 import { notFound } from 'next/navigation';
 import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
+import { formatContentDate } from '@/lib/common/time';
+
 export const dynamic = 'force-dynamic';
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
@@ -24,30 +26,58 @@ export default async function ArticleDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const article = await fetchArticleDetails(params);
+  const publishedAt = formatContentDate(article.publishedAt);
+  const updatedAt = formatContentDate(article.updatedAt);
 
   return (
-    <div className="page-section">
-      <section>
-        <h1>{article.title}</h1>
-        <p>{article.summary}</p>
-        <p>{article.author}</p>
-        <p>{article.publishedAt}</p>
-        <p>{article.updatedAt}</p>
+    <div className="detailPage">
+      <section className="detailHeader">
+        <h1 className="pageTitle">{article.title}</h1>
       </section>
-      <section>
-        <ArticleBody content={article.content} />
-      </section>
-      <section>
-        <h2>Topics</h2>
-        {article.topics.map((topic) => (
-          <TopicSummary key={topic.id} topic={topic} />
-        ))}
-      </section>
-      <section>
-        <h2>Take Action</h2>
-        {article.actions.map((action) => (
-          <ActionSummary key={action.id} action={action} />
-        ))}
+      <section className="detailContent">
+        <section className="detailMetaGroup">
+          <p>{article.summary}</p>
+          <div className="metaBlock">
+            <p className="metaLabel">Author</p>
+            <p className="metaValue">{article.author}</p>
+          </div>
+          {publishedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Published</p>
+              <p className="metaValue">{publishedAt}</p>
+            </div>
+          )}
+          {updatedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Updated</p>
+              <p className="metaValue">{updatedAt}</p>
+            </div>
+          )}
+        </section>
+
+        <section>
+          <ArticleBody content={article.content} />
+        </section>
+        {article.topics.length > 0 && (
+          <section className="relatedSection">
+            <h3>Topics</h3>
+            <div className="relatedList">
+              {article.topics.map((topic) => (
+                <TopicSummary key={topic.id} topic={topic} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {article.actions.length > 0 && (
+          <section className="relatedSection">
+            <h3>Take Action</h3>
+            <div className="relatedList">
+              {article.actions.map((action) => (
+                <ActionSummary key={action.id} action={action} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
       </section>
     </div>
   );

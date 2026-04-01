@@ -60,8 +60,11 @@ describe('ArticleDetailsPage', () => {
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
     expect(markup).toContain('CivicSignal Editorial');
-    expect(markup).toContain('2026-03-20T12:00:00.000Z');
-    expect(markup).toContain('2026-03-22T12:00:00.000Z');
+    expect(markup).toContain('Author');
+    expect(markup).toContain('Published');
+    expect(markup).toContain('March 20, 2026');
+    expect(markup).toContain('Updated');
+    expect(markup).toContain('March 22, 2026');
     expect(markup).toContain('Why it matters');
     expect(markup).toContain('Strong policy changes daily life.');
     expect(markup).toContain('Topics');
@@ -70,6 +73,8 @@ describe('ArticleDetailsPage', () => {
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
+    expect(markup).toContain('class="relatedList"');
+    expect(markup).toContain('class="relatedListItemTitle"');
   });
 
   it('translates a 404 article API error into route not-found behavior', async () => {

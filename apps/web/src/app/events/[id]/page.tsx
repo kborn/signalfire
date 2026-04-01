@@ -39,45 +39,74 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
   );
 
   return (
-    <div className="page-section">
-      <section>
-        <h1>{event.title}</h1>
+    <div className="detailPage">
+      <section className="detailHeader">
+        <h1 className="pageTitle">{event.title}</h1>
+      </section>
+      <section className="detailMetaGroup">
         <p>{event.summary}</p>
       </section>
-      <section>
-        <p>{formatEventType(event.eventType)}</p>
-        <p>{formatEventTime(event.startTime, event.endTime)}</p>
-        <p>{event.locationName}</p>
-        <p>{event.addressRaw}</p>
-        {locationParts.length > 0 && <p>{locationParts.join(', ')}</p>}
+      <section className="detailContent">
+        <section className="eventInfoBlock">
+          <div className="metaBlock">
+            <p className="metaLabel">Event Type</p>
+            <p className="metaValue eventType">{formatEventType(event.eventType)}</p>
+          </div>
+          <div className="metaBlock">
+            <p className="metaLabel">Date & Time</p>
+            <p className="metaValue eventDateTime">
+              {formatEventTime(event.startTime, event.endTime)}
+            </p>
+          </div>
+          <div className="metaBlock">
+            <p className="metaLabel">Location</p>
+            <p className="metaValue eventLocation">{event.locationName}</p>
+          </div>
+          <div className="metaBlock">
+            <p className="metaLabel">Address</p>
+            <p className="metaValue">{event.addressRaw}</p>
+          </div>
+          {locationParts.length > 0 && (
+            <div className="metaBlock">
+              <p className="metaLabel">Region</p>
+              <p className="metaValue">{locationParts.join(', ')}</p>
+            </div>
+          )}
+        </section>
+        <section>
+          <ArticleBody content={event.description} />
+        </section>
+        {event.topics.length > 0 && (
+          <section className="relatedSection">
+            <h3>Related Topics</h3>
+            <div className="relatedList">
+              {event.topics.map((topic) => (
+                <TopicSummary key={topic.id} topic={topic} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {event.articles.length > 0 && (
+          <section className="relatedSection">
+            <h3>Articles</h3>
+            <div className="relatedList">
+              {event.articles.map((article) => (
+                <ArticleSummary key={article.id} article={article} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {event.actions.length > 0 && (
+          <section className="relatedSection">
+            <h3>Actions</h3>
+            <div className="relatedList">
+              {event.actions.map((action) => (
+                <ActionSummary key={action.id} action={action} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
       </section>
-      <section>
-        <ArticleBody content={event.description} />
-      </section>
-      {event.topics.length > 0 && (
-        <section>
-          <h2>Related Topics</h2>
-          {event.topics.map((topic) => (
-            <TopicSummary key={topic.id} topic={topic} />
-          ))}
-        </section>
-      )}
-      {event.articles.length > 0 && (
-        <section>
-          <h2>Articles</h2>
-          {event.articles.map((article) => (
-            <ArticleSummary key={article.id} article={article} />
-          ))}
-        </section>
-      )}
-      {event.actions.length > 0 && (
-        <section>
-          <h2>Actions</h2>
-          {event.actions.map((action) => (
-            <ActionSummary key={action.id} action={action} />
-          ))}
-        </section>
-      )}
     </div>
   );
 }

@@ -21,26 +21,40 @@ async function fetchTopicDetails(params: Promise<{ slug: string }>) {
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const topic = await fetchTopicDetails(params);
   return (
-    <div className="page-section">
-      <section>
-        <h1>{topic.name}</h1>
+    <div className="detailPage">
+      <section className="detailHeader">
+        <h1 className="pageTitle">{topic.name}</h1>
+      </section>
+      <section className="detailContent">
         <p>{topic.description}</p>
+        {topic.articles.length > 0 && (
+          <section className="relatedSection">
+            <h3>Articles</h3>
+            <div className="relatedList">
+              {topic.articles.map((article) => (
+                <ArticleSummary key={article.id} article={article} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {topic.actions.length > 0 && (
+          <section className="relatedSection">
+            <h3>Actions</h3>
+            <div className="relatedList">
+              {topic.actions.map((action) => (
+                <ActionSummary key={action.id} action={action} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        <section className="ctaGroup topicEventCTA">
+          <h3>Events</h3>
+          <p className="metaText">Browse upcoming events related to this topic.</p>
+          <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
+            Browse Events
+          </Link>
+        </section>
       </section>
-      <section>
-        <h2>Articles</h2>
-        {topic.articles.map((article) => (
-          <ArticleSummary key={article.id} article={article} />
-        ))}
-      </section>
-      <section>
-        <h2>Actions</h2>
-        {topic.actions.map((action) => (
-          <ActionSummary key={action.id} action={action} />
-        ))}
-      </section>
-      <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-        Browse Events
-      </Link>
     </div>
   );
 }

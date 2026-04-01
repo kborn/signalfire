@@ -1,7 +1,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --space-0: 4px;
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 48px;
 }
+
+/* Base */
 
 html,
 body {
@@ -43,6 +51,8 @@ p {
   max-width: 70ch;
 }
 
+/* Shared layout */
+
 .site-header {
   padding: 20px 0 12px;
 }
@@ -70,16 +80,16 @@ p {
 }
 
 .site-main {
-  padding: 24px 0 80px;
+  padding: var(--space-3) 0 80px;
 }
 
 .page-section {
   display: grid;
-  gap: 20px;
+  gap: var(--space-3);
 }
 
 .page-section + .page-section {
-  margin-top: 48px;
+  margin-top: var(--space-5);
 }
 
 .page-intro {
@@ -88,29 +98,59 @@ p {
   max-width: 42rem;
 }
 
+.pageTitle {
+  max-width: 20ch;
+}
+
 .metaText {
   font-size: 1rem;
   line-height: 1.45;
   color: #444444;
 }
 
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.summary {
+  padding-left: 1rem;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+/* Home */
+
 .home-page {
   display: grid;
   gap: 56px;
 }
 
-.home-cta-group {
+.ctaGroup {
   display: grid;
-  gap: 18px;
+  gap: var(--space-3);
   justify-items: start;
 }
 
-.home-cta-group > * {
+.ctaGroup > * {
   margin: 0;
 }
 
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
 .home-how-it-works {
-  padding: 48px 0 0;
+  padding: var(--space-5) 0 0;
   border-top: 1px solid #c9c9c9;
 }
 
@@ -124,7 +164,7 @@ p {
 }
 
 .home-hero {
-  padding: 40px 0 20px;
+  padding: var(--space-4) 0 20px;
 }
 
 .home-hero h1 {
@@ -140,30 +180,7 @@ p {
   line-height: 1.6;
 }
 
-.home-secondary-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 24px;
-  padding-inline: 24px;
-}
-
-.summary {
-  padding-left: 1rem;
-}
-
-.section-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: #6b7280;
-  text-transform: uppercase;
-}
+/* CTA */
 
 .primaryCTA,
 .secondaryCTA {
@@ -235,6 +252,156 @@ p {
   transform: translateY(1px);
 }
 
+/* Typography */
+
+h1 {
+  font-size: clamp(2.75rem, 6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+}
+
+h2 {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+}
+
+h3 {
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* Collection pages */
+
+.collectionList {
+  display: grid;
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.collectionItem {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.collectionItemTitle {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.collectionItemSummary {
+  padding-left: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #2d2d2d;
+  max-width: 72ch;
+}
+
+.relatedList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.relatedListItem {
+  display: grid;
+  gap: var(--space-0);
+}
+
+.relatedListItemTitle {
+  font-size: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.relatedListItemSummary {
+  padding-left: 1rem;
+  color: #2d2d2d;
+  max-width: 68ch;
+}
+
+.eventMeta {
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: #444444;
+}
+
+/* Detail pages */
+
+.detailPage {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.detailHeader {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.relatedSection {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.detailContent {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.topicEventCTA {
+  margin-top: var(--space-1);
+}
+
+.detailMetaGroup {
+  display: grid;
+  gap: var(--space-1);
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.metaBlock {
+  display: grid;
+  gap: var(--space-0);
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.metaValue {
+  color: #2d2d2d;
+}
+
+.articleBody {
+  display: grid;
+  gap: 18px;
+  max-width: 72ch;
+}
+
+.articleBody h2,
+.articleBody h3 {
+  margin-top: var(--space-2);
+}
+
+.eventInfoBlock {
+  display: grid;
+  gap: var(--space-1);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.eventType {
+  font-weight: 600;
+}
+
+/* Responsive */
+
 @media (max-width: 640px) {
   .container {
     padding: 0 20px;
@@ -268,66 +435,7 @@ p {
     letter-spacing: -0.03em;
   }
 
-  .home-secondary-ctas {
+  .ctaRow {
     display: grid;
   }
-}
-
-.relatedContent {
-  margin-top: 40px;
-}
-
-.collectionItems {
-  padding-block: 0;
-  display: grid;
-  gap: 6px;
-}
-
-h1 {
-  font-size: clamp(2.75rem, 6vw, 4rem);
-  line-height: 1.02;
-  letter-spacing: -0.045em;
-}
-
-h2 {
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  line-height: 1.08;
-  letter-spacing: -0.035em;
-}
-
-h3 {
-  font-size: 1.5rem;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-}
-
-.collectionList {
-  display: grid;
-  gap: 28px;
-  margin-top: 28px;
-}
-
-.collectionItem {
-  display: grid;
-  gap: 6px;
-}
-
-.collectionItemTitle {
-  font-size: clamp(1.75rem, 3vw, 2.25rem);
-  line-height: 1.08;
-  letter-spacing: -0.03em;
-}
-
-.collectionItemSummary {
-  padding-left: 1.25rem;
-  font-size: 1rem;
-  line-height: 1.45;
-  color: #2d2d2d;
-  max-width: 72ch;
-}
-
-.eventMeta {
-  font-size: 0.95rem;
-  line-height: 1.35;
-  color: #444444;
 }
