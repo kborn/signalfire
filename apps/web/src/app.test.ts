@@ -14,7 +14,7 @@ describe('HomePage', () => {
 
     expect(markup).toContain('Learn what matters. Take meaningful action.');
     expect(markup).toContain(
-      'Explore civic issues, understand their impact, and find clear actions you can take.',
+      'Explore civic issues, understand how they affect real people, and find clear actions you can take',
     );
   });
 

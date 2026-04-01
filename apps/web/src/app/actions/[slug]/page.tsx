@@ -64,7 +64,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         )}
         {action.articles.length > 0 && (
           <section className="relatedSection">
-            <h3>Articles</h3>
+            <h3>Learn More</h3>
             <div className="relatedList">
               {action.articles.map((article) => (
                 <ArticleSummary key={article.id} article={article} variant="related" />

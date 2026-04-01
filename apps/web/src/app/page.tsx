@@ -7,7 +7,8 @@ export default function HomePage() {
         <h1 className="pageTitle">Learn what matters. Take meaningful action.</h1>
 
         <p className="page-intro">
-          Explore civic issues, understand their impact, and find clear actions you can take.
+          Explore civic issues, understand how they affect real people, and find clear actions you
+          can take
         </p>
 
         <div className="ctaGroup">

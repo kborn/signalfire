@@ -49,7 +49,7 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith(undefined);
     expect(markup).toContain('Events');
-    expect(markup).toContain('Find upcoming events to participate in');
+    expect(markup).toContain('Browse upcoming events and find ways to participate in person');
     expect(markup).not.toContain('Events related to');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
@@ -86,7 +86,7 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith('local-community');
     expect(markup).toContain('Events');
-    expect(markup).toContain('Find upcoming events to participate in');
+    expect(markup).toContain('Browse upcoming events and find ways to participate in person');
     expect(markup).toContain('Events related to Local Community');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');
@@ -103,7 +103,7 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledWith(undefined);
     expect(markup).toContain('Events');
     expect(markup).toContain('No upcoming events found');
-    expect(markup).not.toContain('Find upcoming events to participate in');
+    expect(markup).not.toContain('Browse upcoming events and find ways to participate in person');
     expect(markup).not.toContain('Events related to');
   });
 
@@ -121,7 +121,7 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith('consumer-activism');
     expect(markup).toContain('Events');
-    expect(markup).toContain('No events found for Consumer Activism');
-    expect(markup).not.toContain('Find upcoming events to participate in');
+    expect(markup).toContain('No upcoming events found related to Consumer Activism');
+    expect(markup).not.toContain('Browse upcoming events and find ways to participate in person');
   });
 });

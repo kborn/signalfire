@@ -40,7 +40,7 @@ describe('ActionListPage', () => {
 
     expect(getActionsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
-    expect(markup).toContain('Find ways to take meaningful action');
+    expect(markup).toContain('Find practical ways to take meaningful action');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
@@ -59,6 +59,6 @@ describe('ActionListPage', () => {
     expect(getActionsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('No actions available yet.');
-    expect(markup).not.toContain('Find ways to take meaningful action');
+    expect(markup).not.toContain('Find practical ways to take meaningful action');
   });
 });

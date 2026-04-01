@@ -1023,11 +1023,11 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ###### Phase Tasks:
 
-- [ ] Finalize and apply intro copy across Home and collection pages
-- [ ] Standardize CTA language across all routes
-- [ ] Standardize section labels across detail pages (locked in this phase)
-- [ ] Improve Topic → Events CTA treatment and supporting copy
-- [ ] Align discovery language across Learn / Action / Events flows
+- [x] Finalize and apply intro copy across Home and collection pages
+- [x] Standardize CTA language across all routes
+- [x] Standardize section labels across detail pages (locked in this phase)
+- [x] Improve Topic → Events CTA treatment and supporting copy
+- [x] Align discovery language across Learn / Action / Events flows
 
 ---
 

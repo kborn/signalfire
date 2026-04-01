@@ -38,7 +38,9 @@ describe('ArticleListPage', () => {
 
     expect(getArticlesList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Articles');
-    expect(markup).toContain('Read and understand the issues that matter');
+    expect(markup).toContain(
+      'Read reporting, explainers, and field guides about the issues that matter',
+    );
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
@@ -57,6 +59,8 @@ describe('ArticleListPage', () => {
     expect(getArticlesList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Articles');
     expect(markup).toContain('No articles available yet.');
-    expect(markup).not.toContain('Read and understand the issues that matter');
+    expect(markup).not.toContain(
+      'Read reporting, explainers, and field guides about the issues that matter',
+    );
   });
 });

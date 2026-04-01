@@ -85,9 +85,9 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('Bring signs and water.');
     expect(markup).toContain('Related Topics');
     expect(markup).toContain('href="/topics/local-community"');
-    expect(markup).toContain('Articles');
+    expect(markup).toContain('Learn More');
     expect(markup).toContain('href="/articles/housing-policy-basics"');
-    expect(markup).toContain('Actions');
+    expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/actions/contact-city-council"');
     expect(markup).toContain('class="metaValue eventType"');
     expect(markup).toContain('class="metaValue eventDateTime"');
@@ -127,8 +127,8 @@ describe('EventDetailsPage', () => {
 
     expect(getEventDetails).toHaveBeenCalledWith(8);
     expect(markup).not.toContain('Related Topics');
-    expect(markup).not.toContain('Articles');
-    expect(markup).not.toContain('Actions');
+    expect(markup).not.toContain('Learn More');
+    expect(markup).not.toContain('Take Action');
     expect(markup).toContain('Neighborhood Meeting');
     expect(markup).toContain('Community Center');
   });

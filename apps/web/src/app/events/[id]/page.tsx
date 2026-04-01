@@ -88,7 +88,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         )}
         {event.articles.length > 0 && (
           <section className="relatedSection">
-            <h3>Articles</h3>
+            <h3>Learn More</h3>
             <div className="relatedList">
               {event.articles.map((article) => (
                 <ArticleSummary key={article.id} article={article} variant="related" />
@@ -98,7 +98,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         )}
         {event.actions.length > 0 && (
           <section className="relatedSection">
-            <h3>Actions</h3>
+            <h3>Take Action</h3>
             <div className="relatedList">
               {event.actions.map((action) => (
                 <ActionSummary key={action.id} action={action} variant="related" />

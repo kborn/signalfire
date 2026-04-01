@@ -19,7 +19,9 @@ export default async function ArticleListPage() {
   return (
     <section className="page-section">
       <h1 className="pageTitle">Articles</h1>
-      <p className="page-intro">Read and understand the issues that matter</p>
+      <p className="page-intro">
+        Read reporting, explainers, and field guides about the issues that matter
+      </p>
       <section className="collectionList">
         {resp.items.map((article) => (
           <ArticleSummary key={article.id} article={article} />

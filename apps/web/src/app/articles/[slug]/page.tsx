@@ -60,7 +60,7 @@ export default async function ArticleDetailsPage({
         </section>
         {article.topics.length > 0 && (
           <section className="relatedSection">
-            <h3>Topics</h3>
+            <h3>Related Topics</h3>
             <div className="relatedList">
               {article.topics.map((topic) => (
                 <TopicSummary key={topic.id} topic={topic} variant="related" />

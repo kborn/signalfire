@@ -16,7 +16,7 @@ function getNoTopicResultsResponse(topic: string) {
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
-      <p>No events found for {topic}</p>
+      <p>No upcoming events found related to {topic}</p>
     </section>
   );
 }
@@ -38,7 +38,7 @@ export default async function EventListPage({ searchParams }: EventListPageProps
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
-      <p className="page-intro">Find upcoming events to participate in</p>
+      <p className="page-intro">Browse upcoming events and find ways to participate in person</p>
       {topicSlug && <p className="metaText">Events related to {topic}</p>}
       <section className="collectionList">
         {data.items.map((event) => (

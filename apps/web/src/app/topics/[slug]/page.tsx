@@ -49,7 +49,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
         )}
         <section className="ctaGroup topicEventCTA">
           <h3>Events</h3>
-          <p className="metaText">Browse upcoming events related to this topic.</p>
+          <p className="metaText">Looking for in-person ways to participate?</p>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
             Browse Events
           </Link>
