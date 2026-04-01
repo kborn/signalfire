@@ -36,7 +36,7 @@ These routes are presentation-only differences over a single submission model an
 ### Shared Fields
 
 - `id`
-- `submission_type` (`article` | `event`)
+- `submission_type` (`ARTICLE` | `EVENT`)
 - `status` (`pending` default)
 - `created_at`
 - `updated_at`
@@ -48,7 +48,7 @@ These routes are presentation-only differences over a single submission model an
 - `title` (required)
 - `summary` (required)
 - `content` (required)
-- `topics` (required, array)
+- `topicSlugs` (required, array)
 - `source_links` (optional, array)
 
 ### Event-Specific Fields
@@ -60,9 +60,13 @@ These routes are presentation-only differences over a single submission model an
 - `start_datetime` (required)
 - `end_datetime` (optional)
 - `location_name` (required)
-- `location_address_or_region` (required)
-- `topics` (required, array)
-- `source_link` (optional)
+- `location_address_street` (optional)
+- `location_address_city` (required)
+- `location_address_region` (required)
+- `location_address_state` (optional)
+- `location_address_zip` (optional)
+- `topicSlugs` (required, array)
+- `source_link` (required)
 
 ---
 
@@ -85,7 +89,11 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `content`: max 50,000 chars
 - `description`: max 50,000 chars
 - `location_name`: max 200 chars
-- `location_address_or_region`: max 300 chars
+- `location_address_street`: max 300 chars
+- `location_address_city`: max 120 chars
+- `location_address_region`: max 120 chars
+- `location_address_state`: max 120 chars
+- `location_address_zip`: max 32 chars
 - `submitter_name`: max 120 chars
 - `submitter_email`: max 320 chars
 - each source link: max 2,000 chars
@@ -98,8 +106,8 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ### Topics
 
-- at least one topic must be selected
-- topic values must match approved Release 1 topics
+- at least one topic slug must be selected
+- submitted topic slug values must match approved Release 1 topics
 
 ### Error Behavior
 
@@ -108,6 +116,30 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - submission-level failures may display a top-of-form error summary
 - no silent failures
 - no partial-success responses
+
+---
+
+## Optionality And Nullability
+
+- Required request fields must be present in the request payload and must validate after trimming
+- Optional request fields may be omitted entirely
+- Optional request fields may also be sent as `null` when the client has no value to provide
+- Empty strings are not a substitute for omission on optional fields; trim first, then either persist a value or normalize to `null`
+- `end_datetime` may be omitted or set to `null`
+- `source_links` may be omitted, set to `null`, or provided as a non-empty array
+- optional location fields may be omitted or set to `null`
+- `submitter_name` and `submitter_email` may be omitted or set to `null`
+
+---
+
+## Validation Error Field Naming
+
+- Validation errors should point to the public API contract, not internal DTO or database field names
+- Nested payload fields should be reported using dot paths rooted at `payload`
+- Use `payload.title`, `payload.summary`, and `payload.event_type` rather than flattened or database-derived names
+- Top-level fields should use their request names, for example `submission_type` and `submitter_email`
+- Array item errors should include the array index when relevant, for example `payload.source_links[0]`
+- Topic slug errors should point to `payload.topicSlugs`
 
 ---
 
@@ -121,12 +153,12 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ```json
 {
-  "submission_type": "article",
+  "submission_type": "ARTICLE",
   "payload": {
     "title": "How Local Organizing Works",
     "summary": "A practical explainer on local issue campaigns.",
     "content": "Full article text...",
-    "topics": ["local-community"],
+    "topicSlugs": ["local-community"],
     "source_links": ["https://example.org/source"]
   },
   "submitter_name": "Alex",
@@ -136,7 +168,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ```json
 {
-  "submission_type": "event",
+  "submission_type": "EVENT",
   "payload": {
     "title": "Tenant Rights Rally",
     "summary": "Public rally supporting stronger tenant protections.",
@@ -145,8 +177,12 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "start_datetime": "2026-05-14T17:00:00.000Z",
     "end_datetime": "2026-05-14T19:00:00.000Z",
     "location_name": "City Hall North Plaza",
-    "location_address_or_region": "1400 John F Kennedy Blvd, Philadelphia, PA 19107",
-    "topics": ["economic-justice"],
+    "location_address_street": "1400 John F Kennedy Blvd",
+    "location_address_city": "Philadelphia",
+    "location_address_region": "Philadelphia County",
+    "location_address_state": "PA",
+    "location_address_zip": "19107",
+    "topicSlugs": ["economic-justice"],
     "source_link": "https://example.org/event"
   },
   "submitter_name": "Alex",
@@ -158,8 +194,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ```json
 {
-  "id": "submission_123",
-  "status": "pending"
+  "id": 123
 }
 ```
 
@@ -167,10 +202,10 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ```json
 {
-  "errors": {
-    "title": "Title is required",
-    "submitter_email": "Email must be valid"
-  }
+  "errors": [
+    { "field": "title", "message": "Title is required" },
+    { "field": "submitter_email", "message": "Email must be valid" }
+  ]
 }
 ```
 
@@ -186,6 +221,56 @@ Scope: create-only in Phase 10.
 - submitter fields are moderation-only in Release 1
 - submitter fields must not be exposed in public read APIs
 - do not add slug generation, auto-tagging, content parsing, or other enrichment in Phase 10
+
+---
+
+## Persistence Mapping
+
+The public API contract is intentionally cleaner than the current Prisma `Submission` model.
+Phase 10 implementation should map request fields into the existing persistence model as follows:
+
+### Shared Mapping
+
+- `submission_type` -> `submissionType`
+- moderation status is always persisted as `PENDING`
+- `submitter_email` -> `submitterEmail`
+- `submitter_name` should map to a single public submitter-name concept
+  - if the current schema remains unchanged in Phase 10.2, persist the full submitted value in `submitterFirstName` and leave `submitterLastName` as `null`
+  - do not split the name heuristically
+
+### Article Mapping
+
+- `payload.title` -> `title`
+- `payload.summary` -> `summary`
+- `payload.content` -> `submittedContent`
+- `payload.source_links` should be retained for moderation review during Phase 10 implementation
+- `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
+
+### Event Mapping
+
+- `payload.title` -> `title`
+- `payload.summary` -> `summary`
+- `payload.description` -> `submittedContent`
+- `payload.event_type` -> `eventType`
+- `payload.start_datetime` -> `startTime`
+- `payload.end_datetime` -> `endTime`
+- `payload.location_name` -> `locationName`
+- `payload.location_address_street` should contribute to `addressRaw`
+- `payload.location_address_city` -> `city`
+- `payload.location_address_region` -> `region`
+- `payload.location_address_state` should be retained during Phase 10 implementation without expanding the public contract further
+- `payload.location_address_zip` -> `postalCode`
+- `payload.source_link` should be retained for moderation review during Phase 10 implementation
+- `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
+
+### Normalization Rules
+
+- The API contract remains the source of truth for public field names even when database field names differ
+- `submittedContent` stores the main moderator-review body:
+  - article submissions store article `content`
+  - event submissions store event `description`
+- missing optional request fields should persist as `null`
+- Phase 10 does not introduce enrichment, geocoding, slug generation, or publication-ready normalization
 
 ---
 
@@ -265,7 +350,7 @@ Field order:
 
 Field notes:
 
-- users must be able to select at least one topic
+- users must be able to select at least one topic slug
 - do not ask the user to create new topics
 - source links remain optional and should not block submission
 
@@ -336,27 +421,31 @@ Field notes:
 Field order:
 
 7. `Location name` — text input — required
-8. `Address or region` — text input / textarea depending on styling pattern — required
+8. `Street address` — text input — optional
+9. `City` — text input — required
+10. `Region` — text input — required
+11. `State` — text input — optional
+12. `ZIP code` — text input — optional
 
 Field notes:
 
-- this field is intentionally broad in Phase 10
-- do not require structured geocoding fields
+- require only the location structure needed for basic verification
+- do not require a perfect postal address
 - do not require latitude/longitude
 
 #### Section 4 — Topics and Source
 
 Field order:
 
-9. `Topics` — multi-select checkbox group or equivalent multi-select control — required
-10. `Source link` — text input — optional
+13. `Topics` — multi-select checkbox group or equivalent multi-select control — required
+14. `Source link` — text input — required
 
 #### Section 5 — Contact Information
 
 Field order:
 
-11. `Name` — text input — optional
-12. `Email` — email input — optional
+15. `Name` — text input — optional
+16. `Email` — email input — optional
 
 Helper text for email:
 
@@ -371,7 +460,11 @@ Helper text for email:
 - Start date and time
 - End date and time
 - Location name
-- Address or region
+- Street address
+- City
+- Region
+- State
+- ZIP code
 - Topics
 - Source link
 - Name
@@ -483,6 +576,7 @@ Phase 11 will handle:
 - do not create separate public APIs for article submissions and event submissions
 - do not add slug generation, auto-tagging, smart defaults, or content parsing
 - keep field layout order consistent with this document unless PM explicitly revises the spec
+- prefer precise external field names when they materially reduce ambiguity; `topicSlugs` is preferred over `topics` for this contract
 
 ### Critical Constraint
 

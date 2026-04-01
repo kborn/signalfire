@@ -1071,18 +1071,18 @@ Implement anonymous submission workflow for events and articles.
 
 ---
 
-#### ▸ Phase 10.1 - Submission Contract ⏳
+#### ▸ Phase 10.1 - Submission Contract ✅
 
 ###### Phase Tasks:
 
-- [ ] Confirm one shared Submission model with article and event payload differences inside it
-- [ ] Define create-submission API request and response contracts
-- [ ] Lock backend-owned validation rules, required fields, and structured error behavior for anonymous submissions
-- [ ] Define which fields are stored as normalized columns versus raw submitted content
+- [x] Confirm one shared Submission model with article and event payload differences inside it
+- [x] Define create-submission API request and response contracts
+- [x] Lock backend-owned validation rules, required fields, and structured error behavior for anonymous submissions
+- [x] Define which fields are stored as normalized columns versus raw submitted content
 
 ---
 
-#### ▸ Phase 10.2 - Backend Persistence ⏳
+#### ▸ Phase 10.2 - Backend Persistence 🚧
 
 ###### Phase Tasks:
 
