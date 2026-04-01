@@ -5,6 +5,7 @@ import { ArticleBody } from '@/components/article-body';
 export const dynamic = 'force-dynamic';
 import { TopicSummary } from '@/components/topic-summary';
 import { ArticleSummary } from '@/components/article-summary';
+import { formatContentDate } from '@/lib/common/time';
 
 async function fetchActionDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -20,6 +21,8 @@ async function fetchActionDetails(params: Promise<{ slug: string }>) {
 
 export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const action = await fetchActionDetails(params);
+  const publishedAt = formatContentDate(action.publishedAt);
+  const updatedAt = formatContentDate(action.updatedAt);
   return (
     <div className="detailPage">
       <section className="detailHeader">
@@ -29,8 +32,8 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         <section className="detailMetaGroup">
           <p>{action.summary}</p>
           <p>{action.actionType}</p>
-          <p>Published {action.publishedAt}</p>
-          <p>Updated {action.updatedAt}</p>
+          {publishedAt && <p>Published {publishedAt}</p>}
+          {updatedAt && <p>Updated {updatedAt}</p>}
         </section>
 
         <section>

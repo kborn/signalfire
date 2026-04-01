@@ -58,6 +58,8 @@ describe('ActionDetailsPage', () => {
     expect(getActionDetails).toHaveBeenCalledWith('call-your-state-representative');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
+    expect(markup).toContain('Published March 21, 2026');
+    expect(markup).toContain('Updated March 22, 2026');
     expect(markup).toContain('Steps');
     expect(markup).toContain('Call and ask for support on the bill.');
     expect(markup).toContain('Related Topics');
@@ -66,6 +68,8 @@ describe('ActionDetailsPage', () => {
     expect(markup).toContain('Articles');
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
+    expect(markup).toContain('class="relatedList"');
+    expect(markup).toContain('class="relatedListItemTitle"');
   });
 
   it('translates a 404 action API error into route not-found behavior', async () => {

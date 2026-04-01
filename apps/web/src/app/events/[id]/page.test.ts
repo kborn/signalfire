@@ -89,6 +89,10 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('href="/articles/housing-policy-basics"');
     expect(markup).toContain('Actions');
     expect(markup).toContain('href="/actions/contact-city-council"');
+    expect(markup).toContain('class="eventType"');
+    expect(markup).toContain('class="eventDateTime"');
+    expect(markup).toContain('class="eventLocation"');
+    expect(markup).toContain('class="relatedList"');
   });
 
   it('omits related sections when the event has no related topics, articles, or actions', async () => {

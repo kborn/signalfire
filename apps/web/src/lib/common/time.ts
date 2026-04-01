@@ -17,6 +17,15 @@ function formatUtcDate(date: Date): string {
   }).format(date);
 }
 
+function formatLongUtcDate(date: Date): string {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
+}
+
 function formatUtcTime(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
     hour: 'numeric',
@@ -32,6 +41,16 @@ function isSameUtcDay(left: Date, right: Date): boolean {
     left.getUTCMonth() === right.getUTCMonth() &&
     left.getUTCDate() === right.getUTCDate()
   );
+}
+
+export function formatContentDate(dateString: string): string | null {
+  const date = parseDate(dateString);
+
+  if (!date) {
+    return null;
+  }
+
+  return formatLongUtcDate(date);
 }
 
 export function formatEventTime(startDateString: string, endDateString: string | null): string {

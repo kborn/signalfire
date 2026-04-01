@@ -48,9 +48,9 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       </section>
       <section className="topicDetailSections">
         <section className="eventInfoBlock">
-          <p>{formatEventType(event.eventType)}</p>
-          <p>{formatEventTime(event.startTime, event.endTime)}</p>
-          <p>{event.locationName}</p>
+          <p className="eventType">{formatEventType(event.eventType)}</p>
+          <p className="eventDateTime">{formatEventTime(event.startTime, event.endTime)}</p>
+          <p className="eventLocation">{event.locationName}</p>
           <p>{event.addressRaw}</p>
           {locationParts.length > 0 && <p>{locationParts.join(', ')}</p>}
         </section>

@@ -3,6 +3,8 @@
   --foreground: #171717;
 }
 
+/* Base */
+
 html,
 body {
   max-width: 100vw;
@@ -42,6 +44,8 @@ a:focus-visible {
 p {
   max-width: 70ch;
 }
+
+/* Shared layout */
 
 .site-header {
   padding: 20px 0 12px;
@@ -93,6 +97,26 @@ p {
   line-height: 1.45;
   color: #444444;
 }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.summary {
+  padding-left: 1rem;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+/* Home */
 
 .home-page {
   display: grid;
@@ -146,24 +170,7 @@ p {
   gap: 16px;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 24px;
-  padding-inline: 24px;
-}
-
-.summary {
-  padding-left: 1rem;
-}
-
-.section-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: #6b7280;
-  text-transform: uppercase;
-}
+/* CTA */
 
 .primaryCTA,
 .secondaryCTA {
@@ -235,53 +242,7 @@ p {
   transform: translateY(1px);
 }
 
-@media (max-width: 640px) {
-  .container {
-    padding: 0 20px;
-  }
-
-  .site-header {
-    padding: 16px 0 10px;
-  }
-
-  .site-nav {
-    gap: 16px;
-    font-size: 0.98rem;
-  }
-
-  .site-main {
-    padding: 20px 0 64px;
-  }
-
-  h1 {
-    font-size: 2.5rem;
-    letter-spacing: -0.035em;
-  }
-
-  .home-hero {
-    padding-top: 20px;
-  }
-
-  .home-hero h1 {
-    max-width: none;
-    font-size: 2.25rem;
-    letter-spacing: -0.03em;
-  }
-
-  .home-secondary-ctas {
-    display: grid;
-  }
-}
-
-.relatedContent {
-  margin-top: 40px;
-}
-
-.collectionItems {
-  padding-block: 0;
-  display: grid;
-  gap: 6px;
-}
+/* Typography */
 
 h1 {
   font-size: clamp(2.75rem, 6vw, 4rem);
@@ -300,6 +261,8 @@ h3 {
   line-height: 1.15;
   letter-spacing: -0.02em;
 }
+
+/* Collection pages */
 
 .collectionList {
   display: grid;
@@ -354,6 +317,8 @@ h3 {
   color: #444444;
 }
 
+/* Detail pages */
+
 .detailPage {
   display: grid;
   gap: 24px;
@@ -399,10 +364,6 @@ h3 {
   margin-top: 16px;
 }
 
-.actionBody {
-  max-width: 72ch;
-}
-
 .eventInfoBlock {
   display: grid;
   gap: 2px;
@@ -411,10 +372,50 @@ h3 {
 }
 
 .eventInfoBlock .eventType {
-  font-weight: 6900;
+  font-weight: 600;
 }
 
 .eventInfoBlock .eventDateTime,
 .eventInfoBlock .eventLocation {
   color: #2d2d2d;
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .site-header {
+    padding: 16px 0 10px;
+  }
+
+  .site-nav {
+    gap: 16px;
+    font-size: 0.98rem;
+  }
+
+  .site-main {
+    padding: 20px 0 64px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.035em;
+  }
+
+  .home-hero {
+    padding-top: 20px;
+  }
+
+  .home-hero h1 {
+    max-width: none;
+    font-size: 2.25rem;
+    letter-spacing: -0.03em;
+  }
+
+  .home-secondary-ctas {
+    display: grid;
+  }
 }

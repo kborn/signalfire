@@ -4,6 +4,7 @@ import { ArticleBody } from '@/components/article-body';
 import { notFound } from 'next/navigation';
 import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
+import { formatContentDate } from '@/lib/common/time';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +26,8 @@ export default async function ArticleDetailsPage({
   params: Promise<{ slug: string }>;
 }) {
   const article = await fetchArticleDetails(params);
-  const publishedAt = article.publishedAt;
+  const publishedAt = formatContentDate(article.publishedAt);
+  const updatedAt = formatContentDate(article.updatedAt);
 
   return (
     <div className="detailPage">
@@ -36,9 +38,8 @@ export default async function ArticleDetailsPage({
         <section className="detailMetaGroup">
           <p>{article.summary}</p>
           <p>{article.author}</p>
-          {publishedAt && <p>{publishedAt.toString()}</p>}
-
-          <p>Updated {article.updatedAt}</p>
+          {publishedAt && <p>Published {publishedAt}</p>}
+          {updatedAt && <p>Updated {updatedAt}</p>}
         </section>
 
         <section>
