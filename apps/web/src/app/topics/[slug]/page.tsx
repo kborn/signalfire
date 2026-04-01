@@ -23,7 +23,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
   return (
     <div className="detailPage">
       <section className="detailHeader">
-        <h1>{topic.name}</h1>
+        <h1 className="pageTitle">{topic.name}</h1>
       </section>
       <section className="topicDetailSections">
         <p>{topic.description}</p>
@@ -47,7 +47,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
             </div>
           </section>
         )}
-        <section className="topicEventCTA">
+        <section className="ctaGroup topicEventCTA">
           <h3>Events</h3>
           <p className="metaText">Browse upcoming events related to this topic.</p>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">

@@ -92,6 +92,10 @@ p {
   max-width: 42rem;
 }
 
+.pageTitle {
+  max-width: 20ch;
+}
+
 .metaText {
   font-size: 1rem;
   line-height: 1.45;
@@ -123,14 +127,20 @@ p {
   gap: 56px;
 }
 
-.home-cta-group {
+.ctaGroup {
   display: grid;
   gap: 18px;
   justify-items: start;
 }
 
-.home-cta-group > * {
+.ctaGroup > * {
   margin: 0;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
 }
 
 .home-how-it-works {
@@ -162,12 +172,6 @@ p {
   max-width: 34rem;
   font-size: 1.125rem;
   line-height: 1.6;
-}
-
-.home-secondary-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
 }
 
 /* CTA */
@@ -340,8 +344,6 @@ h3 {
 }
 
 .topicEventCTA {
-  display: grid;
-  gap: 12px;
   margin-top: 8px;
 }
 

@@ -41,7 +41,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
   return (
     <div className="detailPage">
       <section className="detailHeader">
-        <h1>{event.title}</h1>
+        <h1 className="pageTitle">{event.title}</h1>
       </section>
       <section className="detailMetaGroup">
         <p>{event.summary}</p>

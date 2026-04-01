@@ -26,7 +26,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
   return (
     <div className="detailPage">
       <section className="detailHeader">
-        <h1>{action.title}</h1>
+        <h1 className="pageTitle">{action.title}</h1>
       </section>
       <section className="topicDetailSections">
         <section className="detailMetaGroup">

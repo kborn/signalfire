@@ -32,7 +32,7 @@ export default async function ArticleDetailsPage({
   return (
     <div className="detailPage">
       <section className="detailHeader">
-        <h1>{article.title}</h1>
+        <h1 className="pageTitle">{article.title}</h1>
       </section>
       <section className="topicDetailSections">
         <section className="detailMetaGroup">
