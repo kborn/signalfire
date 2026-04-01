@@ -40,10 +40,11 @@ export default async function EventListPage({ searchParams }: EventListPageProps
       <h1>Events</h1>
       <p className="page-intro">Find upcoming events to participate in</p>
       {topicSlug && <p className="metaText">Events related to {topic}</p>}
-
-      {data.items.map((event) => (
-        <EventSummary key={event.id} event={event} />
-      ))}
+      <section className="collectionList">
+        {data.items.map((event) => (
+          <EventSummary key={event.id} event={event} />
+        ))}
+      </section>
     </section>
   );
 }

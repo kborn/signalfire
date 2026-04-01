@@ -8,11 +8,11 @@ type TopicSummaryData = {
 
 export function TopicSummary({ topic }: { topic: TopicSummaryData }) {
   return (
-    <article>
-      <h3>
+    <article className="collectionItem">
+      <h2 className="collectionItemTitle">
         <Link href={`/topics/${topic.slug}`}>{topic.name}</Link>
-      </h3>
-      <p className="summary">{topic.description}</p>
+      </h2>
+      <p className="collectionItemSummary">{topic.description}</p>
     </article>
   );
 }

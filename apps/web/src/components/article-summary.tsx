@@ -8,11 +8,11 @@ type ArticleSummaryData = {
 
 export function ArticleSummary({ article }: { article: ArticleSummaryData }) {
   return (
-    <article>
-      <h3>
+    <article className="collectionItem">
+      <h2 className="collectionItemTitle">
         <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-      </h3>
-      <p className="summary">{article.summary}</p>
+      </h2>
+      <p className="collectionItemSummary">{article.summary}</p>
     </article>
   );
 }

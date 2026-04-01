@@ -8,11 +8,11 @@ type ActionSummaryData = {
 
 export function ActionSummary({ action }: { action: ActionSummaryData }) {
   return (
-    <article>
-      <h3>
+    <article className="collectionItem">
+      <h2 className="collectionItemTitle">
         <Link href={`/actions/${action.slug}`}>{action.title}</Link>
-      </h3>
-      <p className="summary">{action.summary}</p>
+      </h2>
+      <p className="collectionItemSummary">{action.summary}</p>
     </article>
   );
 }

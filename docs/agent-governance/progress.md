@@ -995,19 +995,19 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ---
 
-#### ▸ Phase 9.2 - Collection Page Hierarchy & Preview Patterns 🚧
+#### ▸ Phase 9.2 - Collection Page Hierarchy & Preview Patterns ✅
 
 ###### Phase Tasks:
 
-- [ ] Standardize Topics, Articles, Actions, and Events index pages around a shared structure
-- [ ] Define and apply a canonical preview-item pattern (title, summary, metadata)
-- [ ] Improve spacing and scanability of collection lists
-- [ ] Align collection-page intro hierarchy (copy finalized in 9.4)
-- [ ] Keep lists text-first; do not introduce cards, filters, or pagination
+- [x] Standardize Topics, Articles, Actions, and Events index pages around a shared structure
+- [x] Define and apply a canonical preview-item pattern (title, summary, metadata)
+- [x] Improve spacing and scanability of collection lists
+- [x] Align collection-page intro hierarchy (copy finalized in 9.4)
+- [x] Keep lists text-first; do not introduce cards, filters, or pagination
 
 ---
 
-#### ▸ Phase 9.3 - Detail Page Structure & Related Content Treatment ⏳
+#### ▸ Phase 9.3 - Detail Page Structure & Related Content Treatment 🚧
 
 ###### Phase Tasks:
 

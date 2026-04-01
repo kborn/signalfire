@@ -300,3 +300,34 @@ h3 {
   line-height: 1.15;
   letter-spacing: -0.02em;
 }
+
+.collectionList {
+  display: grid;
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.collectionItem {
+  display: grid;
+  gap: 6px;
+}
+
+.collectionItemTitle {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.collectionItemSummary {
+  padding-left: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #2d2d2d;
+  max-width: 72ch;
+}
+
+.eventMeta {
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: #444444;
+}
