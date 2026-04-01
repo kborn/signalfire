@@ -326,6 +326,28 @@ h3 {
   max-width: 72ch;
 }
 
+.relatedList {
+  display: grid;
+  gap: 18px;
+}
+
+.relatedListItem {
+  display: grid;
+  gap: 4px;
+}
+
+.relatedListItemTitle {
+  font-size: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.relatedListItemSummary {
+  padding-left: 1rem;
+  color: #2d2d2d;
+  max-width: 68ch;
+}
+
 .eventMeta {
   font-size: 0.95rem;
   line-height: 1.35;
@@ -345,7 +367,6 @@ h3 {
 .relatedSection {
   display: grid;
   gap: 16px;
-  margin-top: 40px;
 }
 
 .topicDetailSections {

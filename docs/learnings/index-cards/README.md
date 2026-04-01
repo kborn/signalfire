@@ -63,6 +63,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [49-html-vs-body.md](./49-html-vs-body.md) - What `html` and `body` each represent in the page structure
 - [50-direct-child-vs-descendant-selectors.md](./50-direct-child-vs-descendant-selectors.md) - How `.parent > *` differs from `.parent *`
 - [51-css-media-queries.md](./51-css-media-queries.md) - What `@media` does and why it is not the same thing as mobile by itself
+- [52-shared-component-variants-by-layout-context.md](./52-shared-component-variants-by-layout-context.md) - When one summary component should expose `collection` vs `related` presentation explicitly
 
 Rule of thumb:
 

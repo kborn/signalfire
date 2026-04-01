@@ -6,13 +6,26 @@ type ArticleSummaryData = {
   summary: string;
 };
 
-export function ArticleSummary({ article }: { article: ArticleSummaryData }) {
+type ArticleSummaryVariant = 'collection' | 'related';
+
+type ArticleSummaryProps = {
+  article: ArticleSummaryData;
+  variant?: ArticleSummaryVariant;
+};
+
+export function ArticleSummary({ article, variant = 'collection' }: ArticleSummaryProps) {
+  const itemClassName = variant === 'related' ? 'relatedListItem' : 'collectionItem';
+  const titleClassName = variant === 'related' ? 'relatedListItemTitle' : 'collectionItemTitle';
+  const summaryClassName =
+    variant === 'related' ? 'relatedListItemSummary' : 'collectionItemSummary';
+  const TitleTag = variant === 'related' ? 'h4' : 'h2';
+
   return (
-    <article className="collectionItem">
-      <h2 className="collectionItemTitle">
+    <article className={itemClassName}>
+      <TitleTag className={titleClassName}>
         <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-      </h2>
-      <p className="collectionItemSummary">{article.summary}</p>
+      </TitleTag>
+      <p className={summaryClassName}>{article.summary}</p>
     </article>
   );
 }
