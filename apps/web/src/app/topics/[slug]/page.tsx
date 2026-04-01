@@ -27,22 +27,26 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
       </section>
       <section className="topicDetailSections">
         <p>{topic.description}</p>
-        <section className="relatedSection">
-          <h3>Articles</h3>
-          <div className="relatedList">
-            {topic.articles.map((article) => (
-              <ArticleSummary key={article.id} article={article} variant="related" />
-            ))}
-          </div>
-        </section>
-        <section className="relatedSection">
-          <h3>Actions</h3>
-          <div className="relatedList">
-            {topic.actions.map((action) => (
-              <ActionSummary key={action.id} action={action} variant="related" />
-            ))}
-          </div>
-        </section>
+        {topic.articles.length > 0 && (
+          <section className="relatedSection">
+            <h3>Articles</h3>
+            <div className="relatedList">
+              {topic.articles.map((article) => (
+                <ArticleSummary key={article.id} article={article} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {topic.actions.length > 0 && (
+          <section className="relatedSection">
+            <h3>Actions</h3>
+            <div className="relatedList">
+              {topic.actions.map((action) => (
+                <ActionSummary key={action.id} action={action} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
         <section className="topicEventCTA">
           <h3>Events</h3>
           <p className="metaText">Browse upcoming events related to this topic.</p>

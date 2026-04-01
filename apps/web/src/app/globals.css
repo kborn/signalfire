@@ -379,3 +379,42 @@ h3 {
   gap: 12px;
   margin-top: 8px;
 }
+
+.detailMetaGroup {
+  display: grid;
+  gap: 4px;
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.articleBody {
+  display: grid;
+  gap: 18px;
+  max-width: 72ch;
+}
+
+.articleBody h2,
+.articleBody h3 {
+  margin-top: 16px;
+}
+
+.actionBody {
+  max-width: 72ch;
+}
+
+.eventInfoBlock {
+  display: grid;
+  gap: 2px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.eventInfoBlock .eventType {
+  font-weight: 6900;
+}
+
+.eventInfoBlock .eventDateTime,
+.eventInfoBlock .eventLocation {
+  color: #2d2d2d;
+}

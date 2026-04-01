@@ -21,25 +21,41 @@ async function fetchActionDetails(params: Promise<{ slug: string }>) {
 export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const action = await fetchActionDetails(params);
   return (
-    <div className="page-section">
-      <section>
+    <div className="detailPage">
+      <section className="detailHeader">
         <h1>{action.title}</h1>
-        <p>{action.summary}</p>
       </section>
-      <section>
-        <ArticleBody content={action.description} />
-      </section>
-      <section>
-        <h2>Related Topics</h2>
-        {action.topics.map((topic) => (
-          <TopicSummary key={topic.id} topic={topic} />
-        ))}
-      </section>
-      <section>
-        <h2>Articles</h2>
-        {action.articles.map((article) => (
-          <ArticleSummary key={article.id} article={article} />
-        ))}
+      <section className="topicDetailSections">
+        <section className="detailMetaGroup">
+          <p>{action.summary}</p>
+          <p>{action.actionType}</p>
+          <p>Published {action.publishedAt}</p>
+          <p>Updated {action.updatedAt}</p>
+        </section>
+
+        <section>
+          <ArticleBody content={action.description} />
+        </section>
+        {action.topics.length > 0 && (
+          <section className="relatedSection">
+            <h3>Related Topics</h3>
+            <div className="relatedList">
+              {action.topics.map((topic) => (
+                <TopicSummary key={topic.id} topic={topic} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
+        {action.articles.length > 0 && (
+          <section className="relatedSection">
+            <h3>Articles</h3>
+            <div className="relatedList">
+              {action.articles.map((article) => (
+                <ArticleSummary key={article.id} article={article} variant="related" />
+              ))}
+            </div>
+          </section>
+        )}
       </section>
     </div>
   );

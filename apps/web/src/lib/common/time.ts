@@ -1,4 +1,4 @@
-function parseDate(dateString: string): Date | null {
+export function parseDate(dateString: string): Date | null {
   const date = new Date(dateString);
 
   if (Number.isNaN(date.getTime())) {
