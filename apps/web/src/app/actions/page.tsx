@@ -20,9 +20,11 @@ export default async function ActionListPage() {
     <section className="page-section">
       <h1>Actions</h1>
       <p className="page-intro">Find ways to take meaningful action</p>
-      {actions.items.map((action) => (
-        <ActionSummary key={action.id} action={action} />
-      ))}
+      <section className="collectionList">
+        {actions.items.map((action) => (
+          <ActionSummary key={action.id} action={action} />
+        ))}
+      </section>
     </section>
   );
 }

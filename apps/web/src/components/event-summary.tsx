@@ -20,14 +20,16 @@ export function EventSummary({ event }: { event: EventSummaryData }) {
   );
 
   return (
-    <article>
-      <h3>
+    <article className="collectionItem">
+      <h2 className="collectionItemTitle">
         <Link href={`/events/${event.id}`}>{event.title}</Link>
-      </h3>
-      <p className="summary">{event.eventType}</p>
-      <p className="summary">{event.summary}</p>
-      <p className="summary">{formatEventTime(event.startTime, event.endTime)}</p>
-      {locationParts.length > 0 && <p className="summary">{locationParts.join(', ')}</p>}
+      </h2>
+      <section className="eventMeta">
+        <p className="summary">{event.eventType}</p>
+        <p className="summary">{event.summary}</p>
+        <p className="summary">{formatEventTime(event.startTime, event.endTime)}</p>
+        {locationParts.length > 0 && <p className="summary">{locationParts.join(', ')}</p>}
+      </section>
     </article>
   );
 }
