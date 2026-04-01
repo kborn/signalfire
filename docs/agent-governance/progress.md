@@ -1007,19 +1007,19 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ---
 
-#### ▸ Phase 9.3 - Detail Page Structure & Related Content Treatment 🚧
+#### ▸ Phase 9.3 - Detail Page Structure & Related Content Treatment ✅
 
 ###### Phase Tasks:
 
-- [ ] Standardize detail-page header structure across all entities
-- [ ] Improve metadata presentation (no raw or inline dumps)
-- [ ] Define consistent related-content section structure and spacing
-- [ ] Improve readability of long-form content (line length, spacing)
-- [ ] Keep related-content depth unchanged (presentation only)
+- [x] Standardize detail-page header structure across all entities
+- [x] Improve metadata presentation (no raw or inline dumps)
+- [x] Define consistent related-content section structure and spacing
+- [x] Improve readability of long-form content (line length, spacing)
+- [x] Keep related-content depth unchanged (presentation only)
 
 ---
 
-#### ▸ Phase 9.4 - CTA Language & Static Copy ⏳
+#### ▸ Phase 9.4 - CTA Language & Static Copy 🚧
 
 ###### Phase Tasks:
 
