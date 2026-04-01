@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 function getNoResultsResponse() {
   return (
     <section className="page-section">
-      <h1>Events</h1>
+      <h1 className="pageTitle">Events</h1>
       <p>No upcoming events found</p>
     </section>
   );
@@ -15,7 +15,7 @@ function getNoResultsResponse() {
 function getNoTopicResultsResponse(topic: string) {
   return (
     <section className="page-section">
-      <h1>Events</h1>
+      <h1 className="pageTitle">Events</h1>
       <p>No events found for {topic}</p>
     </section>
   );
@@ -37,7 +37,7 @@ export default async function EventListPage({ searchParams }: EventListPageProps
   }
   return (
     <section className="page-section">
-      <h1>Events</h1>
+      <h1 className="pageTitle">Events</h1>
       <p className="page-intro">Find upcoming events to participate in</p>
       {topicSlug && <p className="metaText">Events related to {topic}</p>}
       <section className="collectionList">

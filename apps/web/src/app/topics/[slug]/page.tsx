@@ -25,7 +25,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
       <section className="detailHeader">
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
-      <section className="topicDetailSections">
+      <section className="detailContent">
         <p>{topic.description}</p>
         {topic.articles.length > 0 && (
           <section className="relatedSection">

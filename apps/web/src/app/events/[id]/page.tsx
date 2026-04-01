@@ -46,7 +46,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       <section className="detailMetaGroup">
         <p>{event.summary}</p>
       </section>
-      <section className="topicDetailSections">
+      <section className="detailContent">
         <section className="eventInfoBlock">
           <p className="eventType">{formatEventType(event.eventType)}</p>
           <p className="eventDateTime">{formatEventTime(event.startTime, event.endTime)}</p>

@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 function getNoResultsResponse() {
   return (
     <section className="page-section">
-      <h1>Actions</h1>
+      <h1 className="pageTitle">Actions</h1>
       <p>No actions available yet.</p>
     </section>
   );
@@ -18,7 +18,7 @@ export default async function ActionListPage() {
   }
   return (
     <section className="page-section">
-      <h1>Actions</h1>
+      <h1 className="pageTitle">Actions</h1>
       <p className="page-intro">Find ways to take meaningful action</p>
       <section className="collectionList">
         {actions.items.map((action) => (

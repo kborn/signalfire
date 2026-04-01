@@ -34,7 +34,7 @@ export default async function ArticleDetailsPage({
       <section className="detailHeader">
         <h1 className="pageTitle">{article.title}</h1>
       </section>
-      <section className="topicDetailSections">
+      <section className="detailContent">
         <section className="detailMetaGroup">
           <p>{article.summary}</p>
           <p>{article.author}</p>

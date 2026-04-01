@@ -28,7 +28,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       <section className="detailHeader">
         <h1 className="pageTitle">{action.title}</h1>
       </section>
-      <section className="topicDetailSections">
+      <section className="detailContent">
         <section className="detailMetaGroup">
           <p>{action.summary}</p>
           <p>{action.actionType}</p>
