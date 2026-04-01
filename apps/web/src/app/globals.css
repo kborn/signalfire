@@ -425,6 +425,20 @@ h3 {
     letter-spacing: -0.035em;
   }
 
+  .collectionList {
+    gap: 24px;
+  }
+
+  .collectionItemTitle {
+    font-size: 1.9rem;
+  }
+
+  .collectionItemSummary,
+  .relatedListItemSummary,
+  .summary {
+    padding-left: 0.85rem;
+  }
+
   .home-hero {
     padding-top: 20px;
   }
@@ -437,5 +451,6 @@ h3 {
 
   .ctaRow {
     display: grid;
+    justify-items: start;
   }
 }

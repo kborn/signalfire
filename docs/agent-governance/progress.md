@@ -16,8 +16,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
 | [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
 | [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
-| **[9](#-phase-9--ui-polish-)**                    | **UI Polish**                   | **🚧 ACTIVE** |
-| [10](#-phase-10--submission-system-)              | Submission System               | ⏳            |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅            |
+| **[10](#-phase-10--submission-system-)**          | **Submission System**           | **🚧 ACTIVE** |
 | [11](#-phase-11--moderation-workflow-)            | Moderation Workflow             | ⏳            |
 | [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳            |
 | [13](#-phase-13--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
@@ -948,7 +948,7 @@ Capabilities:
 
 ---
 
-### ► Phase 9 — UI Polish 🚧
+### ► Phase 9 — UI Polish ✅
 
 ###### Goal
 
@@ -956,13 +956,13 @@ Refine the public UI so CivicSignal feels intentional, cohesive, and clearly str
 
 ###### Definition of Done
 
-- [ ] Shared layout, spacing, typography, and nav behavior are consistent across all public routes
-- [ ] Collection pages use a consistent list-preview pattern with improved hierarchy and scanability
-- [ ] Detail pages use a consistent header, metadata, body-content, and related-content structure
-- [ ] Section labels are standardized across all detail pages
-- [ ] CTA patterns are visually consistent across Home, Topic, Article, Action, and Event pages
-- [ ] Responsive behavior is refined without introducing new UI systems or interaction patterns
-- [ ] Phase 9 specifications are implemented without expanding scope beyond polish
+- [x] Shared layout, spacing, typography, and nav behavior are consistent across all public routes
+- [x] Collection pages use a consistent list-preview pattern with improved hierarchy and scanability
+- [x] Detail pages use a consistent header, metadata, body-content, and related-content structure
+- [x] Section labels are standardized across all detail pages
+- [x] CTA patterns are visually consistent across Home, Topic, Article, Action, and Event pages
+- [x] Responsive behavior is refined without introducing new UI systems or interaction patterns
+- [x] Phase 9 specifications are implemented without expanding scope beyond polish
 
 ---
 
@@ -1019,7 +1019,7 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ---
 
-#### ▸ Phase 9.4 - CTA Language & Static Copy 🚧
+#### ▸ Phase 9.4 - CTA Language & Static Copy ✅
 
 ###### Phase Tasks:
 
@@ -1031,14 +1031,14 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 ---
 
-#### ▸ Phase 9.5 - Responsive Refinement & Final Consistency Pass ⏳
+#### ▸ Phase 9.5 - Responsive Refinement & Final Consistency Pass ✅
 
 ###### Phase Tasks:
 
-- [ ] Validate all routes across mobile, tablet, and desktop widths
-- [ ] Resolve spacing, wrapping, and alignment inconsistencies
-- [ ] Confirm nav and CTA usability at small widths
-- [ ] Perform final visual consistency pass across all routes
+- [x] Validate all routes across mobile, tablet, and desktop widths
+- [x] Resolve spacing, wrapping, and alignment inconsistencies
+- [x] Confirm nav and CTA usability at small widths
+- [x] Perform final visual consistency pass across all routes
 
 ---
 
