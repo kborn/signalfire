@@ -1059,11 +1059,71 @@ Global UI shell only. Includes minimal shared layout/component updates required 
 
 Implement anonymous submission workflow for events and articles.
 
-Capabilities:
+###### Definition of Done
 
-- public submission forms
-- submission persistence
-- moderation states
+- [ ] Public article and event submission flows are implemented
+- [ ] Submission persistence is implemented through one unified submission model and one creation path
+- [ ] Submission created via UI appears in the database with the correct shape and `pending` status
+- [ ] Invalid payloads are rejected with structured field errors
+- [ ] UI surfaces validation errors clearly without ambiguity
+- [ ] Backend validation is the source of truth and UI validation mirrors it for UX only
+- [ ] Phase 11 moderation handoff is documented
+
+---
+
+#### ▸ Phase 10.1 - Submission Contract ⏳
+
+###### Phase Tasks:
+
+- [ ] Confirm one shared Submission model with article and event payload differences inside it
+- [ ] Define create-submission API request and response contracts
+- [ ] Lock backend-owned validation rules, required fields, and structured error behavior for anonymous submissions
+- [ ] Define which fields are stored as normalized columns versus raw submitted content
+
+---
+
+#### ▸ Phase 10.2 - Backend Persistence ⏳
+
+###### Phase Tasks:
+
+- [ ] Add or verify backend persistence support for Submission records
+- [ ] Implement submission creation repository and service paths
+- [ ] Persist new submissions with default `pending` moderation state
+- [ ] Add backend tests covering submission persistence and status defaults
+
+---
+
+#### ▸ Phase 10.3 - Public Submission APIs ⏳
+
+###### Phase Tasks:
+
+- [ ] Expose one anonymous submission creation endpoint for article and event submissions
+- [ ] Implement request validation and API error handling
+- [ ] Keep public submission scope create-only for Release 1
+- [ ] Add API tests covering valid and invalid submission payloads
+
+---
+
+#### ▸ Phase 10.4 - Submission UX ⏳
+
+###### Phase Tasks:
+
+- [ ] Build public article submission form flow
+- [ ] Build public event submission form flow
+- [ ] Implement client-side validation that mirrors backend rules, plus success state and failure handling
+- [ ] Keep UX limited to submission capture and confirmation with no business logic or field interpretation in the UI
+
+---
+
+#### ▸ Phase 10.5 - Integration Hardening ⏳
+
+###### Phase Tasks:
+
+- [ ] Verify end-to-end submission flow from UI through persistence
+- [ ] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
+- [ ] Guard against divergence between article and event handling inside the unified submission flow
+- [ ] Document assumptions and handoff boundaries to Phase 11 moderation workflow
+- [ ] Add missing smoke or integration coverage needed for release readiness
 
 ---
 
