@@ -60,8 +60,11 @@ describe('ArticleDetailsPage', () => {
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
     expect(markup).toContain('CivicSignal Editorial');
-    expect(markup).toContain('Published March 20, 2026');
-    expect(markup).toContain('Updated March 22, 2026');
+    expect(markup).toContain('Author');
+    expect(markup).toContain('Published');
+    expect(markup).toContain('March 20, 2026');
+    expect(markup).toContain('Updated');
+    expect(markup).toContain('March 22, 2026');
     expect(markup).toContain('Why it matters');
     expect(markup).toContain('Strong policy changes daily life.');
     expect(markup).toContain('Topics');

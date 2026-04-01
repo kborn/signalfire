@@ -37,9 +37,22 @@ export default async function ArticleDetailsPage({
       <section className="detailContent">
         <section className="detailMetaGroup">
           <p>{article.summary}</p>
-          <p>{article.author}</p>
-          {publishedAt && <p>Published {publishedAt}</p>}
-          {updatedAt && <p>Updated {updatedAt}</p>}
+          <div className="metaBlock">
+            <p className="metaLabel">Author</p>
+            <p className="metaValue">{article.author}</p>
+          </div>
+          {publishedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Published</p>
+              <p className="metaValue">{publishedAt}</p>
+            </div>
+          )}
+          {updatedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Updated</p>
+              <p className="metaValue">{updatedAt}</p>
+            </div>
+          )}
         </section>
 
         <section>

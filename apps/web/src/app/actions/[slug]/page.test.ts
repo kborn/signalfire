@@ -58,8 +58,12 @@ describe('ActionDetailsPage', () => {
     expect(getActionDetails).toHaveBeenCalledWith('call-your-state-representative');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
-    expect(markup).toContain('Published March 21, 2026');
-    expect(markup).toContain('Updated March 22, 2026');
+    expect(markup).toContain('Action Type');
+    expect(markup).toContain('CONTACT');
+    expect(markup).toContain('Published');
+    expect(markup).toContain('March 21, 2026');
+    expect(markup).toContain('Updated');
+    expect(markup).toContain('March 22, 2026');
     expect(markup).toContain('Steps');
     expect(markup).toContain('Call and ask for support on the bill.');
     expect(markup).toContain('Related Topics');

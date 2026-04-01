@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --space-0: 4px;
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
@@ -84,7 +85,7 @@ p {
 
 .page-section {
   display: grid;
-  gap: 20px;
+  gap: var(--space-3);
 }
 
 .page-section + .page-section {
@@ -281,7 +282,7 @@ h3 {
 
 .collectionItem {
   display: grid;
-  gap: 6px;
+  gap: var(--space-1);
 }
 
 .collectionItemTitle {
@@ -305,7 +306,7 @@ h3 {
 
 .relatedListItem {
   display: grid;
-  gap: 4px;
+  gap: var(--space-0);
 }
 
 .relatedListItemTitle {
@@ -354,10 +355,27 @@ h3 {
 
 .detailMetaGroup {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   color: #555555;
   font-size: 1rem;
   line-height: 1.4;
+}
+
+.metaBlock {
+  display: grid;
+  gap: var(--space-0);
+}
+
+.metaLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.metaValue {
+  color: #2d2d2d;
 }
 
 .articleBody {
@@ -373,18 +391,13 @@ h3 {
 
 .eventInfoBlock {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   font-size: 1.05rem;
   line-height: 1.35;
 }
 
-.eventInfoBlock .eventType {
+.eventType {
   font-weight: 600;
-}
-
-.eventInfoBlock .eventDateTime,
-.eventInfoBlock .eventLocation {
-  color: #2d2d2d;
 }
 
 /* Responsive */
@@ -422,7 +435,7 @@ h3 {
     letter-spacing: -0.03em;
   }
 
-  .home-secondary-ctas {
+  .ctaRow {
     display: grid;
   }
 }

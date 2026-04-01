@@ -31,9 +31,22 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       <section className="detailContent">
         <section className="detailMetaGroup">
           <p>{action.summary}</p>
-          <p>{action.actionType}</p>
-          {publishedAt && <p>Published {publishedAt}</p>}
-          {updatedAt && <p>Updated {updatedAt}</p>}
+          <div className="metaBlock">
+            <p className="metaLabel">Action Type</p>
+            <p className="metaValue">{action.actionType}</p>
+          </div>
+          {publishedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Published</p>
+              <p className="metaValue">{publishedAt}</p>
+            </div>
+          )}
+          {updatedAt && (
+            <div className="metaBlock">
+              <p className="metaLabel">Updated</p>
+              <p className="metaValue">{updatedAt}</p>
+            </div>
+          )}
         </section>
 
         <section>

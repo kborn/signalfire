@@ -10,12 +10,12 @@ export default function HomePage() {
           Explore civic issues, understand their impact, and find clear actions you can take.
         </p>
 
-        <div className="ctaGroup home-cta-group">
+        <div className="ctaGroup">
           <Link href="/topics" className="primaryCTA">
             Explore Topics
           </Link>
 
-          <div className="ctaRow home-secondary-ctas">
+          <div className="ctaRow">
             <Link href="/articles" className="secondaryCTA">
               Browse Articles
             </Link>
