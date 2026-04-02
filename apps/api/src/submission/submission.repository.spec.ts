@@ -9,7 +9,8 @@ const submissionInputData: CreateSubmissionInput = {
   title: 'Community Submission',
   summary: 'A short submission summary.',
   submittedContent: 'Submitted content body.',
-  submitterFirstName: 'Jane',
+  submitterName: 'Jane Doe',
+  topicIds: [1, 2],
 };
 
 const submission = {

@@ -6,12 +6,14 @@ export type CreateSubmissionInput = {
   title: string;
   summary: string;
   submittedContent: string;
-  submitterFirstName: string;
-  submitterLastName?: string;
+  topicIds: number[];
+  author?: string | null;
+  submitterName?: string;
   submitterEmail?: string;
+  resourceLinks?: string[] | null;
   eventType?: EventType | null;
-  startTime?: Date | string | null;
-  endTime?: Date | string | null;
+  startTime?: Date | null;
+  endTime?: Date | null;
   locationName?: string | null;
   addressRaw?: string | null;
   city?: string | null;
