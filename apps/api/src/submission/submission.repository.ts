@@ -34,8 +34,7 @@ export class SubmissionRepository {
         country: submission.country,
         website: submission.website,
         contactEmail: submission.contactEmail,
-        submitterFirstName: submission.submitterFirstName,
-        submitterLastName: submission.submitterLastName,
+        submitterName: submission.submitterFirstName,
         submitterEmail: submission.submitterEmail,
       },
     });

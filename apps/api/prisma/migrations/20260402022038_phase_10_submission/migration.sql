@@ -1,0 +1,54 @@
+/*
+  Warnings:
+
+  - You are about to drop the column `submitterFirstName` on the `_submission` table. All the data in the column will be lost.
+  - You are about to drop the column `submitterLastName` on the `_submission` table. All the data in the column will be lost.
+
+*/
+-- AlterTable
+ALTER TABLE "_submission" DROP COLUMN "submitterFirstName",
+DROP COLUMN "submitterLastName",
+ADD COLUMN     "author" TEXT,
+ADD COLUMN     "submitterName" TEXT;
+
+-- CreateTable
+CREATE TABLE "_resource_link" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT NOT NULL,
+    "created" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "_resource_link_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "_submission_topic" (
+    "submissionId" INTEGER NOT NULL,
+    "topicId" INTEGER NOT NULL,
+    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "_submission_topic_pkey" PRIMARY KEY ("submissionId","topicId")
+);
+
+-- CreateTable
+CREATE TABLE "_submission_resource_link" (
+    "submissionId" INTEGER NOT NULL,
+    "resourceLinkId" INTEGER NOT NULL,
+    "assignedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "_submission_resource_link_pkey" PRIMARY KEY ("submissionId","resourceLinkId")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_resource_link_url_key" ON "_resource_link"("url");
+
+-- AddForeignKey
+ALTER TABLE "_submission_topic" ADD CONSTRAINT "_submission_topic_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "_submission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_submission_topic" ADD CONSTRAINT "_submission_topic_topicId_fkey" FOREIGN KEY ("topicId") REFERENCES "_topic"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_submission_resource_link" ADD CONSTRAINT "_submission_resource_link_submissionId_fkey" FOREIGN KEY ("submissionId") REFERENCES "_submission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_submission_resource_link" ADD CONSTRAINT "_submission_resource_link_resourceLinkId_fkey" FOREIGN KEY ("resourceLinkId") REFERENCES "_resource_link"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

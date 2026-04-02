@@ -4,6 +4,7 @@ export type SubmissionType = 'ARTICLE' | 'EVENT';
 
 type SubmissionRequestCommon = {
   submission_type: SubmissionType;
+  author: string | null;
   submitter_name: string | null;
   submitter_email: string | null;
 };

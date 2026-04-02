@@ -40,6 +40,7 @@ These routes are presentation-only differences over a single submission model an
 - `status` (`pending` default)
 - `created_at`
 - `updated_at`
+- `author` (nullable)
 - `submitter_name` (nullable)
 - `submitter_email` (nullable)
 
@@ -94,6 +95,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `location_address_region`: max 120 chars
 - `location_address_state`: max 120 chars
 - `location_address_zip`: max 32 chars
+- `author`: max 120 chars
 - `submitter_name`: max 120 chars
 - `submitter_email`: max 320 chars
 - each source link: max 2,000 chars
@@ -128,7 +130,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `end_datetime` may be omitted or set to `null`
 - `source_links` may be omitted, set to `null`, or provided as a non-empty array
 - optional location fields may be omitted or set to `null`
-- `submitter_name` and `submitter_email` may be omitted or set to `null`
+- `author`, `submitter_name`, and `submitter_email` may be omitted or set to `null`
 
 ---
 
@@ -154,6 +156,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 ```json
 {
   "submission_type": "ARTICLE",
+  "author": "Alex",
   "payload": {
     "title": "How Local Organizing Works",
     "summary": "A practical explainer on local issue campaigns.",
@@ -169,6 +172,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 ```json
 {
   "submission_type": "EVENT",
+  "author": "Alex",
   "payload": {
     "title": "Tenant Rights Rally",
     "summary": "Public rally supporting stronger tenant protections.",
@@ -218,8 +222,9 @@ Scope: create-only in Phase 10.
 - all submissions are saved as `pending`
 - raw submitted content must be preserved
 - normalization is allowed only if raw submitted content remains accessible
-- submitter fields are moderation-only in Release 1
-- submitter fields must not be exposed in public read APIs
+- `submitter_name` and `submitter_email` are moderation-only in Release 1
+- `submitter_name` and `submitter_email` must not be exposed in public read APIs
+- `author` may be retained for future attribution but is not displayed publicly in Phase 10
 - do not add slug generation, auto-tagging, content parsing, or other enrichment in Phase 10
 
 ---
@@ -233,10 +238,9 @@ Phase 10 implementation should map request fields into the existing persistence 
 
 - `submission_type` -> `submissionType`
 - moderation status is always persisted as `PENDING`
+- `author` -> `author`
 - `submitter_email` -> `submitterEmail`
-- `submitter_name` should map to a single public submitter-name concept
-  - if the current schema remains unchanged in Phase 10.2, persist the full submitted value in `submitterFirstName` and leave `submitterLastName` as `null`
-  - do not split the name heuristically
+- `submitter_name` -> `submitterName`
 
 ### Article Mapping
 
@@ -482,11 +486,11 @@ Do not invent submission-only event types.
 
 ## Submitter Fields Behavior
 
-- `Name` and `Email` are optional
-- both are used for moderation follow-up only
-- neither is displayed publicly in Phase 10
-- neither implies public author attribution
-- public attribution remains an editorial decision for a later phase
+- `Author`, `Name`, and `Email` are optional
+- `submitter_name` and `submitter_email` are used for moderation follow-up only
+- `submitter_name` and `submitter_email` are not displayed publicly in Phase 10
+- `author` captures credited authorship intent for the submitted content
+- `author` is not displayed publicly in Phase 10
 
 ---
 
