@@ -110,4 +110,40 @@ describe('TopicRepository', () => {
       },
     });
   });
+
+  it('findIdsBySlugs', async () => {
+    const topic2 = {
+      id: 2,
+      slug: 'climate',
+      name: 'Climate',
+      description: 'desc',
+      createdAt: new Date(),
+    };
+
+    prismaMock.topic.findMany.mockResolvedValue([
+      { id: 1, slug: 'democracy' },
+      { id: 2, slug: 'climate' },
+    ]);
+
+    const ret: { id: number; slug: string }[] = await repository.findIdsBySlugs([
+      topic.slug,
+      topic2.slug,
+    ]);
+
+    expect(ret).toEqual([
+      { id: 1, slug: 'democracy' },
+      { id: 2, slug: 'climate' },
+    ]);
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        slug: {
+          in: [topic.slug, topic2.slug],
+        },
+      },
+      select: {
+        id: true,
+        slug: true,
+      },
+    });
+  });
 });
