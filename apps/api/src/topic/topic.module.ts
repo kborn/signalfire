@@ -8,7 +8,7 @@ import { ActionModule } from '../action/action.module';
 @Module({
   imports: [PrismaModule, ArticleModule, ActionModule],
   providers: [TopicService, TopicRepository],
-  exports: [TopicService],
+  exports: [TopicService, TopicRepository],
   controllers: [TopicController],
 })
 export class TopicModule {}

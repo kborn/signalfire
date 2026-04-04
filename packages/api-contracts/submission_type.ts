@@ -50,11 +50,11 @@ type ValidationError = {
   field: string;
   message: string;
 };
-type SubmissionResponseSuccess = {
+export type SubmissionResponseSuccess = {
   id: number;
 };
 
-type SubmissionResponseError = {
+export type SubmissionResponseError = {
   errors: ValidationError[];
 };
 

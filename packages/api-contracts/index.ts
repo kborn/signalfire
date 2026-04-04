@@ -8,4 +8,6 @@ export type {
   ArticleSubmissionRequest,
   SubmissionRequest,
   SubmissionResponse,
+  SubmissionResponseError,
+  SubmissionResponseSuccess,
 } from './submission_type.js';

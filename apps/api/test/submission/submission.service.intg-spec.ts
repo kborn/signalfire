@@ -1,13 +1,15 @@
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { SubmissionModule } from '../../src/submission/submission.module';
 import { SubmissionStatus } from '@prisma/client';
+import { TopicModule } from '../../src/topic/topic.module';
 import { createSubmission } from '../factories/submission.factory';
 import { createEvent } from '../factories/event.factory';
 import { createArticle } from '../factories/article.factory';
 import { linkArticleToSubmission, linkEventToSubmission } from '../factories/relation.factory';
+import { SubmissionService } from '../../src/submission/submission.service';
 
 describe('', () => {
-  setupIntegrationTest([SubmissionModule]);
+  const harness = setupIntegrationTest([SubmissionModule, TopicModule]);
 
   it('asserts ability to link an article to a submission', async () => {
     const submission = await createSubmission();
@@ -92,5 +94,63 @@ describe('', () => {
         },
       }),
     ).toThrowUniqueViolation();
+  });
+
+  it('create article submission', async () => {
+    const submissionService = harness.module.get(SubmissionService);
+    const result = await submissionService.create({
+      submission_type: 'ARTICLE',
+      author: 'John Doe',
+      submitter_email: 'fake@mail.com',
+      submitter_name: 'Jane Doe',
+      payload: {
+        title: 'Community Submission',
+        summary: 'A short submission summary.',
+        content: 'Submitted content body.',
+        topicSlugs: ['democracy', 'consumer-activism'],
+        source_links: ['fake.com', 'fake.org'],
+      },
+    });
+    expect('errors' in result).toBe(false);
+    if ('errors' in result) {
+      throw new Error(`Submission creation failed: ${JSON.stringify(result.errors)}`);
+    }
+
+    const persistedSubmission = await jestPrisma.client.submission.findUnique({
+      where: { id: result.id },
+      include: {
+        submissionTopics: {
+          include: {
+            topic: true,
+          },
+        },
+        submissionResourceLinks: {
+          include: {
+            resourceLink: true,
+          },
+        },
+      },
+    });
+
+    expect(persistedSubmission).toEqual(
+      expect.objectContaining({
+        id: result.id,
+        submissionType: 'ARTICLE',
+        status: 'PENDING',
+        title: 'Community Submission',
+        summary: 'A short submission summary.',
+        submittedContent: 'Submitted content body.',
+        author: 'John Doe',
+        submitterName: 'Jane Doe',
+        submitterEmail: 'fake@mail.com',
+      }),
+    );
+    const topicSlugs =
+      persistedSubmission?.submissionTopics.map((record) => record.topic.slug) ?? [];
+    const resourceUrls =
+      persistedSubmission?.submissionResourceLinks.map((record) => record.resourceLink.url) ?? [];
+
+    expect(topicSlugs).toEqual(expect.arrayContaining(['democracy', 'consumer-activism']));
+    expect(resourceUrls).toEqual(expect.arrayContaining(['fake.com', 'fake.org']));
   });
 });
