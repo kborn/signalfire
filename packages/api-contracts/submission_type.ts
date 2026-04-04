@@ -34,12 +34,12 @@ type SubmissionRequestEventPayload = {
   source_link: string;
 };
 
-type ArticleSubmissionRequest = SubmissionRequestCommon & {
+export type ArticleSubmissionRequest = SubmissionRequestCommon & {
   submission_type: 'ARTICLE';
   payload: SubmissionRequestArticlePayload;
 };
 
-type EventSubmissionRequest = SubmissionRequestCommon & {
+export type EventSubmissionRequest = SubmissionRequestCommon & {
   submission_type: 'EVENT';
   payload: SubmissionRequestEventPayload;
 };
