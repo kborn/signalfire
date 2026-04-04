@@ -1086,10 +1086,10 @@ Implement anonymous submission workflow for events and articles.
 
 ###### Phase Tasks:
 
-- [ ] Add or verify backend persistence support for Submission records
-- [ ] Implement submission creation repository and service paths
-- [ ] Persist new submissions with default `pending` moderation state
-- [ ] Add backend tests covering submission persistence and status defaults
+- [x] Add or verify backend persistence support for Submission records
+- [x] Implement submission creation repository and service paths
+- [x] Persist new submissions with default `pending` moderation state
+- [x] Add backend tests covering submission persistence and status defaults
 
 ---
 
