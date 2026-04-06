@@ -259,10 +259,15 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `payload.start_datetime` -> `startTime`
 - `payload.end_datetime` -> `endTime`
 - `payload.location_name` -> `locationName`
-- `payload.location_address_street` should contribute to `addressRaw`
+- `addressRaw` should be assembled from available location components for human-readable display compatibility
+  - include `payload.location_address_street` when present
+  - include `payload.location_address_city`
+  - include `payload.location_address_region`
+  - include `payload.location_address_state` when present
+  - include `payload.location_address_zip` when present
 - `payload.location_address_city` -> `city`
 - `payload.location_address_region` -> `region`
-- `payload.location_address_state` should be retained during Phase 10 implementation without expanding the public contract further
+- `payload.location_address_state` should contribute to `addressRaw`; Phase 10 does not add a dedicated persistence column for it
 - `payload.location_address_zip` -> `postalCode`
 - `payload.source_link` should be retained for moderation review during Phase 10 implementation
 - `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
@@ -273,6 +278,7 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `submittedContent` stores the main moderator-review body:
   - article submissions store article `content`
   - event submissions store event `description`
+- `addressRaw` is a derived persistence/display field, not a primary public input
 - missing optional request fields should persist as `null`
 - Phase 10 does not introduce enrichment, geocoding, slug generation, or publication-ready normalization
 
