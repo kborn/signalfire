@@ -50,8 +50,7 @@ const eventSubmissionInputData: EventSubmissionRequest = {
     location_name: 'City Hall North Plaza',
     location_address_street: '1400 John F Kennedy Blvd',
     location_address_city: 'Philadelphia',
-    location_address_region: 'Philadelphia County',
-    location_address_state: 'PA',
+    location_address_region: 'PA',
     location_address_zip: '19107',
     topicSlugs: ['economic-justice'],
     source_link: 'https://example.org/event',
@@ -123,9 +122,9 @@ describe('SubmissionService', () => {
       startTime: new Date('2026-05-14T17:00:00.000Z'),
       endTime: new Date('2026-05-14T19:00:00.000Z'),
       locationName: 'City Hall North Plaza',
-      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, Philadelphia County, PA 19107',
+      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107',
       city: 'Philadelphia',
-      region: 'Philadelphia County',
+      region: 'PA',
       postalCode: '19107',
     });
   });

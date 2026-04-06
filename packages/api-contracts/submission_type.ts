@@ -28,7 +28,6 @@ type SubmissionRequestEventPayload = {
   location_address_street?: string | null;
   location_address_city: string;
   location_address_region: string;
-  location_address_state?: string | null;
   location_address_zip?: string | null;
   topicSlugs: string[];
   source_link: string;

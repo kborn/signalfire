@@ -52,10 +52,9 @@ export class SubmissionService {
     const street = req.payload.location_address_street?.trim() ?? '';
     const city = req.payload.location_address_city.trim();
     const region = req.payload.location_address_region.trim();
-    const state = req.payload.location_address_state?.trim() ?? '';
     const postalCode = req.payload.location_address_zip?.trim() ?? '';
 
-    const localityParts = [city, region, state].filter((part) => part.length > 0);
+    const localityParts = [city, region].filter((part) => part.length > 0);
     const locality = localityParts.join(', ');
     const localityWithPostalCode =
       postalCode.length > 0
