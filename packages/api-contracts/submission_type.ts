@@ -4,9 +4,9 @@ export type SubmissionType = 'ARTICLE' | 'EVENT';
 
 type SubmissionRequestCommon = {
   submission_type: SubmissionType;
-  author: string | null;
-  submitter_name: string | null;
-  submitter_email: string | null;
+  author?: string | null;
+  submitter_name?: string | null;
+  submitter_email?: string | null;
 };
 
 type SubmissionRequestArticlePayload = {
@@ -23,7 +23,7 @@ type SubmissionRequestEventPayload = {
   description: string;
   event_type: EventType;
   start_datetime: string;
-  end_datetime: string | null;
+  end_datetime?: string | null;
   location_name: string;
   location_address_street?: string | null;
   location_address_city: string;
