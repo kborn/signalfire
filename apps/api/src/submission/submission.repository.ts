@@ -23,6 +23,9 @@ export class SubmissionRepository {
         title: submission.title,
         summary: submission.summary,
         submittedContent: submission.submittedContent,
+        author: submission.author,
+        submitterName: submission.submitterName,
+        submitterEmail: submission.submitterEmail,
         eventType: submission.eventType,
         startTime: submission.startTime,
         endTime: submission.endTime,
@@ -34,9 +37,27 @@ export class SubmissionRepository {
         country: submission.country,
         website: submission.website,
         contactEmail: submission.contactEmail,
-        submitterFirstName: submission.submitterFirstName,
-        submitterLastName: submission.submitterLastName,
-        submitterEmail: submission.submitterEmail,
+        submissionTopics: submission.topicIds.length
+          ? {
+              create: submission.topicIds.map((topicId) => ({
+                topic: {
+                  connect: { id: topicId },
+                },
+              })),
+            }
+          : undefined,
+        submissionResourceLinks: submission.resourceLinks?.length
+          ? {
+              create: submission.resourceLinks.map((url) => ({
+                resourceLink: {
+                  connectOrCreate: {
+                    where: { url },
+                    create: { url },
+                  },
+                },
+              })),
+            }
+          : undefined,
       },
     });
   }

@@ -20,6 +20,20 @@ export class TopicRepository {
     });
   }
 
+  async findIdsBySlugs(slugs: string[]): Promise<{ id: number; slug: string }[]> {
+    return this.prisma.topic.findMany({
+      where: {
+        slug: {
+          in: slugs,
+        },
+      },
+      select: {
+        id: true,
+        slug: true,
+      },
+    });
+  }
+
   findByArticleId(articleId: number): Promise<Topic[]> {
     return this.prisma.topic.findMany({
       where: {

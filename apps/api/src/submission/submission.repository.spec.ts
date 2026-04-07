@@ -9,7 +9,8 @@ const submissionInputData: CreateSubmissionInput = {
   title: 'Community Submission',
   summary: 'A short submission summary.',
   submittedContent: 'Submitted content body.',
-  submitterFirstName: 'Jane',
+  submitterName: 'Jane Doe',
+  topicIds: [1, 2],
 };
 
 const submission = {
@@ -55,9 +56,13 @@ describe('SubmissionRepository', () => {
     expect(ret).toEqual(submission);
     expect(prismaMock.submission.create).toHaveBeenCalledWith({
       data: {
-        ...submissionInputData,
+        submissionType: 'ARTICLE',
+        title: 'Community Submission',
+        summary: 'A short submission summary.',
+        submittedContent: 'Submitted content body.',
+        submitterName: 'Jane Doe',
         status: SubmissionStatus.PENDING,
-        submitterLastName: undefined,
+        author: undefined,
         submitterEmail: undefined,
         eventType: undefined,
         startTime: undefined,
@@ -70,6 +75,25 @@ describe('SubmissionRepository', () => {
         country: undefined,
         website: undefined,
         contactEmail: undefined,
+        submissionResourceLinks: undefined,
+        submissionTopics: {
+          create: [
+            {
+              topic: {
+                connect: {
+                  id: 1,
+                },
+              },
+            },
+            {
+              topic: {
+                connect: {
+                  id: 2,
+                },
+              },
+            },
+          ],
+        },
       },
     });
   });

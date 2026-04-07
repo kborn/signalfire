@@ -4,15 +4,16 @@ export type SubmissionType = 'ARTICLE' | 'EVENT';
 
 type SubmissionRequestCommon = {
   submission_type: SubmissionType;
-  submitter_name: string | null;
-  submitter_email: string | null;
+  author?: string | null;
+  submitter_name?: string | null;
+  submitter_email?: string | null;
 };
 
 type SubmissionRequestArticlePayload = {
   title: string;
   summary: string;
   content: string;
-  topicSlugs: string[];
+  topic_slugs: string[];
   source_links?: string[] | null;
 };
 
@@ -22,23 +23,24 @@ type SubmissionRequestEventPayload = {
   description: string;
   event_type: EventType;
   start_datetime: string;
-  end_datetime: string | null;
+  end_datetime?: string | null;
   location_name: string;
   location_address_street?: string | null;
   location_address_city: string;
   location_address_region: string;
-  location_address_state?: string | null;
+  location_address_country: string;
   location_address_zip?: string | null;
-  topicSlugs: string[];
-  source_link: string;
+  contact_email?: string | null;
+  topic_slugs: string[];
+  source_links: string;
 };
 
-type ArticleSubmissionRequest = SubmissionRequestCommon & {
+export type ArticleSubmissionRequest = SubmissionRequestCommon & {
   submission_type: 'ARTICLE';
   payload: SubmissionRequestArticlePayload;
 };
 
-type EventSubmissionRequest = SubmissionRequestCommon & {
+export type EventSubmissionRequest = SubmissionRequestCommon & {
   submission_type: 'EVENT';
   payload: SubmissionRequestEventPayload;
 };
@@ -49,11 +51,11 @@ type ValidationError = {
   field: string;
   message: string;
 };
-type SubmissionResponseSuccess = {
+export type SubmissionResponseSuccess = {
   id: number;
 };
 
-type SubmissionResponseError = {
+export type SubmissionResponseError = {
   errors: ValidationError[];
 };
 
