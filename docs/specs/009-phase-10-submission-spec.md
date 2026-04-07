@@ -36,13 +36,13 @@ These routes are presentation-only differences over a single submission model an
 ### Shared Fields
 
 - `id`
-- `submission_type` (`ARTICLE` | `EVENT`)
+- `submissionType` (`ARTICLE` | `EVENT`)
 - `status` (`pending` default)
 - `created_at`
 - `updated_at`
 - `author` (nullable)
-- `submitter_name` (nullable)
-- `submitter_email` (nullable)
+- `submitterName` (nullable)
+- `submitterEmail` (nullable)
 
 ### Article-Specific Fields
 
@@ -57,15 +57,16 @@ These routes are presentation-only differences over a single submission model an
 - `title` (required)
 - `summary` (required)
 - `description` (required)
-- `event_type` (required)
-- `start_datetime` (required)
-- `end_datetime` (optional)
-- `location_name` (required)
-- `location_address_street` (optional)
-- `location_address_city` (required)
-- `location_address_region` (required)
-- `location_address_country` (required; public form may default to `US` for now)
-- `location_address_zip` (optional)
+- `eventType` (required)
+- `startDatetime` (required)
+- `endDatetime` (optional)
+- `locationName` (required)
+- `locationAddressStreet` (optional)
+- `locationAddressCity` (required)
+- `locationAddressRegion` (required)
+- `locationAddressCountry` (required; public form may default to `US` for now)
+- `locationAddressZip` (optional)
+- `contactEmail` (optional)
 - `topicSlugs` (required, array)
 - `resourceLinks` (optional, array)
 
@@ -81,7 +82,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Required fields must be non-empty after trimming
 - Strings must be trimmed before validation and persistence
 - Reject clearly invalid email formats if email is provided
-- Reject payloads with unknown required structure for the declared `submission_type`
+- Reject payloads with unknown required structure for the declared `submissionType`
 
 ### Length Limits
 
@@ -89,22 +90,23 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `summary`: max 300 chars
 - `content`: max 50,000 chars
 - `description`: max 50,000 chars
-- `location_name`: max 200 chars
-- `location_address_street`: max 300 chars
-- `location_address_city`: max 120 chars
-- `location_address_region`: max 120 chars
-- `location_address_country`: max 120 chars
-- `location_address_zip`: max 32 chars
+- `locationName`: max 200 chars
+- `locationAddressStreet`: max 300 chars
+- `locationAddressCity`: max 120 chars
+- `locationAddressRegion`: max 120 chars
+- `locationAddressCountry`: max 120 chars
+- `locationAddressZip`: max 32 chars
+- `contactEmail`: max 320 chars
 - `author`: max 120 chars
-- `submitter_name`: max 120 chars
-- `submitter_email`: max 320 chars
+- `submitterName`: max 120 chars
+- `submitterEmail`: max 320 chars
 - each resource link: max 2,000 chars
 
 ### Event-Specific
 
-- `start_datetime` must be a valid datetime
-- `end_datetime`, if present, must be a valid datetime
-- `end_datetime`, if present, must be greater than or equal to `start_datetime`
+- `startDatetime` must be a valid datetime
+- `endDatetime`, if present, must be a valid datetime
+- `endDatetime`, if present, must be greater than or equal to `startDatetime`
 
 ### Topics
 
@@ -127,10 +129,10 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Optional request fields may be omitted entirely
 - Optional request fields may also be sent as `null` when the client has no value to provide
 - Empty strings are not a substitute for omission on optional fields; trim first, then either persist a value or normalize to `null`
-- `end_datetime` may be omitted or set to `null`
+- `endDatetime` may be omitted or set to `null`
 - `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
 - optional location fields may be omitted or set to `null`
-- `author`, `submitter_name`, and `submitter_email` may be omitted or set to `null`
+- `author`, `submitterName`, and `submitterEmail` may be omitted or set to `null`
 
 ---
 
@@ -138,8 +140,8 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 - Validation errors should point to the public API contract, not internal DTO or database field names
 - Nested payload fields should be reported using dot paths rooted at `payload`
-- Use `payload.title`, `payload.summary`, and `payload.event_type` rather than flattened or database-derived names
-- Top-level fields should use their request names, for example `submission_type` and `submitter_email`
+- Use `payload.title`, `payload.summary`, and `payload.eventType` rather than flattened or database-derived names
+- Top-level fields should use their request names, for example `submissionType` and `submitterEmail`
 - Array item errors should include the array index when relevant, for example `payload.resourceLinks[0]`
 - Topic slug errors should point to `payload.topicSlugs`
 
@@ -155,7 +157,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ```json
 {
-  "submission_type": "ARTICLE",
+  "submissionType": "ARTICLE",
   "author": "Alex",
   "payload": {
     "title": "How Local Organizing Works",
@@ -164,33 +166,34 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "topicSlugs": ["local-community"],
     "resourceLinks": ["https://example.org/source"]
   },
-  "submitter_name": "Alex",
-  "submitter_email": "alex@example.org"
+  "submitterName": "Alex",
+  "submitterEmail": "alex@example.org"
 }
 ```
 
 ```json
 {
-  "submission_type": "EVENT",
+  "submissionType": "EVENT",
   "author": "Alex",
   "payload": {
     "title": "Tenant Rights Rally",
     "summary": "Public rally supporting stronger tenant protections.",
     "description": "Join local organizers for a rally and speaker program.",
-    "event_type": "RALLY",
-    "start_datetime": "2026-05-14T17:00:00.000Z",
-    "end_datetime": "2026-05-14T19:00:00.000Z",
-    "location_name": "City Hall North Plaza",
-    "location_address_street": "1400 John F Kennedy Blvd",
-    "location_address_city": "Philadelphia",
-    "location_address_region": "Philadelphia County",
-    "location_address_country": "US",
-    "location_address_zip": "19107",
+    "eventType": "RALLY",
+    "startDatetime": "2026-05-14T17:00:00.000Z",
+    "endDatetime": "2026-05-14T19:00:00.000Z",
+    "locationName": "City Hall North Plaza",
+    "locationAddressStreet": "1400 John F Kennedy Blvd",
+    "locationAddressCity": "Philadelphia",
+    "locationAddressRegion": "Philadelphia County",
+    "locationAddressCountry": "US",
+    "locationAddressZip": "19107",
+    "contactEmail": "organizer@example.org",
     "topicSlugs": ["economic-justice"],
     "resourceLinks": ["https://example.org/event"]
   },
-  "submitter_name": "Alex",
-  "submitter_email": "alex@example.org"
+  "submitterName": "Alex",
+  "submitterEmail": "alex@example.org"
 }
 ```
 
@@ -208,7 +211,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 {
   "errors": [
     { "field": "title", "message": "Title is required" },
-    { "field": "submitter_email", "message": "Email must be valid" }
+    { "field": "submitterEmail", "message": "Email must be valid" }
   ]
 }
 ```
@@ -222,8 +225,8 @@ Scope: create-only in Phase 10.
 - all submissions are saved as `pending`
 - raw submitted content must be preserved
 - normalization is allowed only if raw submitted content remains accessible
-- `submitter_name` and `submitter_email` are moderation-only in Release 1
-- `submitter_name` and `submitter_email` must not be exposed in public read APIs
+- `submitterName` and `submitterEmail` are moderation-only in Release 1
+- `submitterName` and `submitterEmail` must not be exposed in public read APIs
 - `author` may be retained for future attribution but is not displayed publicly in Phase 10
 - do not add slug generation, auto-tagging, content parsing, or other enrichment in Phase 10
 
@@ -236,11 +239,11 @@ Phase 10 implementation should map request fields into the existing persistence 
 
 ### Shared Mapping
 
-- `submission_type` -> `submissionType`
+- `submissionType` -> `submissionType`
 - moderation status is always persisted as `PENDING`
 - `author` -> `author`
-- `submitter_email` -> `submitterEmail`
-- `submitter_name` -> `submitterName`
+- `submitterEmail` -> `submitterEmail`
+- `submitterName` -> `submitterName`
 
 ### Article Mapping
 
@@ -255,20 +258,21 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `payload.title` -> `title`
 - `payload.summary` -> `summary`
 - `payload.description` -> `submittedContent`
-- `payload.event_type` -> `eventType`
-- `payload.start_datetime` -> `startTime`
-- `payload.end_datetime` -> `endTime`
-- `payload.location_name` -> `locationName`
+- `payload.eventType` -> `eventType`
+- `payload.startDatetime` -> `startTime`
+- `payload.endDatetime` -> `endTime`
+- `payload.locationName` -> `locationName`
 - `addressRaw` should be assembled from available location components for human-readable display compatibility
-  - include `payload.location_address_street` when present
-  - include `payload.location_address_city`
-  - include `payload.location_address_region`
-  - include `payload.location_address_country`
-  - include `payload.location_address_zip` when present
-- `payload.location_address_city` -> `city`
-- `payload.location_address_region` -> `region`
-- `payload.location_address_country` -> `country`
-- `payload.location_address_zip` -> `postalCode`
+  - include `payload.locationAddressStreet` when present
+  - include `payload.locationAddressCity`
+  - include `payload.locationAddressRegion`
+  - include `payload.locationAddressCountry`
+  - include `payload.locationAddressZip` when present
+- `payload.locationAddressCity` -> `city`
+- `payload.locationAddressRegion` -> `region`
+- `payload.locationAddressCountry` -> `country`
+- `payload.locationAddressZip` -> `postalCode`
+- `payload.contactEmail` -> `contactEmail`
 - `payload.resourceLinks` should be retained for moderation review during Phase 10 implementation
 - `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
 
@@ -504,8 +508,8 @@ Do not invent submission-only event types.
 ## Submitter Fields Behavior
 
 - `Author`, `Name`, and `Email` are optional
-- `submitter_name` and `submitter_email` are used for moderation follow-up only
-- `submitter_name` and `submitter_email` are not displayed publicly in Phase 10
+- `submitterName` and `submitterEmail` are used for moderation follow-up only
+- `submitterName` and `submitterEmail` are not displayed publicly in Phase 10
 - `author` captures credited authorship intent for the submitted content
 - `author` is not displayed publicly in Phase 10
 

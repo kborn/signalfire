@@ -58,9 +58,9 @@ export async function linkTopicAction(topicId: number, actionId: number) {
   });
 }
 
-export async function linkEventToSubmission(submission_id: number, eventId: number) {
+export async function linkEventToSubmission(submissionId: number, eventId: number) {
   return jestPrisma.client.submission.update({
-    where: { id: submission_id },
+    where: { id: submissionId },
     data: {
       event: {
         connect: { id: eventId },
@@ -69,9 +69,9 @@ export async function linkEventToSubmission(submission_id: number, eventId: numb
   });
 }
 
-export async function linkArticleToSubmission(submission_id: number, articleId: number) {
+export async function linkArticleToSubmission(submissionId: number, articleId: number) {
   return jestPrisma.client.submission.update({
-    where: { id: submission_id },
+    where: { id: submissionId },
     data: {
       article: {
         connect: { id: articleId },

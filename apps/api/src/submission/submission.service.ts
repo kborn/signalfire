@@ -41,19 +41,19 @@ export class SubmissionService {
     return {
       title: req.payload.title,
       summary: req.payload.summary,
-      topicIds: await this.getTopicIds(req.payload.topic_slugs),
+      topicIds: await this.getTopicIds(req.payload.topicSlugs),
       author: req.author,
-      submitterName: req.submitter_name,
-      submitterEmail: req.submitter_email,
+      submitterName: req.submitterName,
+      submitterEmail: req.submitterEmail,
     };
   }
 
   private buildAddressRaw(req: EventSubmissionRequest): string {
-    const street = req.payload.location_address_street?.trim() ?? '';
-    const city = req.payload.location_address_city.trim();
-    const region = req.payload.location_address_region.trim();
-    const postalCode = req.payload.location_address_zip?.trim() ?? '';
-    const country = req.payload.location_address_country.trim();
+    const street = req.payload.locationAddressStreet?.trim() ?? '';
+    const city = req.payload.locationAddressCity.trim();
+    const region = req.payload.locationAddressRegion.trim();
+    const postalCode = req.payload.locationAddressZip?.trim() ?? '';
+    const country = req.payload.locationAddressCountry.trim();
 
     const localityParts = [city, region].filter((part) => part.length > 0);
     const locality = localityParts.join(', ');
@@ -70,18 +70,18 @@ export class SubmissionService {
   mapEventSubmissionRequest(req: EventSubmissionRequest): CreateSubmissionInputEntityFields {
     return {
       submissionType: SubmissionType.EVENT,
-      resourceLinks: [req.payload.source_links],
+      resourceLinks: req.payload.resourceLinks,
       submittedContent: req.payload.description,
-      eventType: req.payload.event_type,
-      startTime: new Date(req.payload.start_datetime),
-      endTime: req.payload.end_datetime ? new Date(req.payload.end_datetime) : null,
-      locationName: req.payload.location_name,
+      eventType: req.payload.eventType,
+      startTime: new Date(req.payload.startDatetime),
+      endTime: req.payload.endDatetime ? new Date(req.payload.endDatetime) : null,
+      locationName: req.payload.locationName,
       addressRaw: this.buildAddressRaw(req),
-      city: req.payload.location_address_city,
-      region: req.payload.location_address_region,
-      postalCode: req.payload.location_address_zip ?? null,
-      country: req.payload.location_address_country,
-      contactEmail: req.payload.contact_email,
+      city: req.payload.locationAddressCity,
+      region: req.payload.locationAddressRegion,
+      postalCode: req.payload.locationAddressZip ?? null,
+      country: req.payload.locationAddressCountry,
+      contactEmail: req.payload.contactEmail,
     };
   }
 
@@ -89,14 +89,14 @@ export class SubmissionService {
     return {
       submissionType: SubmissionType.ARTICLE,
       submittedContent: req.payload.content,
-      resourceLinks: req.payload.source_links,
+      resourceLinks: req.payload.resourceLinks,
     };
   }
 
   async create(submission: SubmissionRequest): Promise<SubmissionResponseSuccess> {
     const commonFields = await this.mapCommonRequestFields(submission);
     let fields: CreateSubmissionInputEntityFields;
-    if (submission.submission_type === 'EVENT') {
+    if (submission.submissionType === 'EVENT') {
       fields = this.mapEventSubmissionRequest(submission);
     } else {
       fields = this.mapArticleSubmissionRequest(submission);
