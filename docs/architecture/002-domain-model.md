@@ -66,10 +66,10 @@ Attributes may include:
 - id
 - title
 - description
-- event_type
+- eventType
 - location
-- start_time
-- end_time
+- startTime
+- endTime
 
 ---
 
@@ -80,7 +80,7 @@ Represents a user-submitted article or event awaiting moderation.
 Possible attributes:
 
 - id
-- submission_type
-- submitted_content
+- submissionType
+- submittedContent
 - status
-- submitted_at
+- submittedAt

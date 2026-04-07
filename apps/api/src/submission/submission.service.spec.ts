@@ -10,15 +10,15 @@ import { TopicRepository } from '../topic/topic.repository';
 import { UnknownSubmissionTopicsError } from './submission.error';
 
 const submissionInputData: ArticleSubmissionRequest = {
-  submission_type: 'ARTICLE',
+  submissionType: 'ARTICLE',
   author: 'John Doe',
-  submitter_email: 'fake@mail.com',
-  submitter_name: 'Jane Doe',
+  submitterEmail: 'fake@mail.com',
+  submitterName: 'Jane Doe',
   payload: {
     title: 'Community Submission',
     summary: 'A short submission summary.',
     content: 'Submitted content body.',
-    topic_slugs: ['democracy', 'consumer-activism'],
+    topicSlugs: ['democracy', 'consumer-activism'],
   },
 };
 
@@ -26,10 +26,10 @@ const submission = {
   id: 1,
   status: 'PENDING',
   submittedAt: new Date(),
-  submission_type: 'ARTICLE',
+  submissionType: 'ARTICLE',
   author: 'John Doe',
-  submitter_email: 'fake@mail.com',
-  submitter_name: 'Jane Doe',
+  submitterEmail: 'fake@mail.com',
+  submitterName: 'Jane Doe',
   title: 'Community Submission',
   summary: 'A short submission summary.',
   content: 'Submitted content body.',
@@ -37,24 +37,24 @@ const submission = {
 };
 
 const eventSubmissionInputData: EventSubmissionRequest = {
-  submission_type: 'EVENT',
-  submitter_email: 'organizer@example.org',
-  submitter_name: 'Alex Rivera',
+  submissionType: 'EVENT',
+  submitterEmail: 'organizer@example.org',
+  submitterName: 'Alex Rivera',
   payload: {
     title: 'Tenant Rights Rally',
     summary: 'Public rally supporting stronger tenant protections.',
     description: 'Join local organizers for a rally and speaker program.',
-    event_type: 'RALLY',
-    start_datetime: '2026-05-14T17:00:00.000Z',
-    end_datetime: '2026-05-14T19:00:00.000Z',
-    location_name: 'City Hall North Plaza',
-    location_address_street: '1400 John F Kennedy Blvd',
-    location_address_city: 'Philadelphia',
-    location_address_region: 'PA',
-    location_address_country: 'US',
-    location_address_zip: '19107',
-    topic_slugs: ['economic-justice'],
-    source_links: 'https://example.org/event',
+    eventType: 'RALLY',
+    startDatetime: '2026-05-14T17:00:00.000Z',
+    endDatetime: '2026-05-14T19:00:00.000Z',
+    locationName: 'City Hall North Plaza',
+    locationAddressStreet: '1400 John F Kennedy Blvd',
+    locationAddressCity: 'Philadelphia',
+    locationAddressRegion: 'PA',
+    locationAddressCountry: 'US',
+    locationAddressZip: '19107',
+    topicSlugs: ['economic-justice'],
+    resourceLinks: ['https://example.org/event'],
   },
 };
 

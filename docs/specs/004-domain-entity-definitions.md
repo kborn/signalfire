@@ -137,11 +137,11 @@ Events may originate from:
 - title
 - summary
 - description
-- event_type
+- eventType
 - status
-- start_time
-- end_time
-- location_name
+- startTime
+- endTime
+- locationName
 - address_raw
 - city
 - region
@@ -177,30 +177,30 @@ moderation and conversion
 Common fields
 
 - id
-- submission_type
+- submissionType
 - status
 - title
 - summary
-- submitted_content
-- submitter_name
-- submitter_email
-- review_notes
-- submitted_at
-- reviewed_at
+- submittedContent
+- submitterName
+- submitterEmail
+- reviewNotes
+- submittedAt
+- reviewedAt
 
 Event-specific optional fields
 
-- event_type
-- start_time
-- end_time
-- location_name
-- address_raw
+- eventType
+- startTime
+- endTime
+- locationName
+- addressRaw
 - city
 - region
-- postal_code
+- postalCode
 - country
 - website
-- contact_email
+- contactEmail
 
 ### Notes
 
