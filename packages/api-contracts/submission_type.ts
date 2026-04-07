@@ -13,7 +13,7 @@ type SubmissionRequestArticlePayload = {
   title: string;
   summary: string;
   content: string;
-  topicSlugs: string[];
+  topic_slugs: string[];
   source_links?: string[] | null;
 };
 
@@ -28,9 +28,11 @@ type SubmissionRequestEventPayload = {
   location_address_street?: string | null;
   location_address_city: string;
   location_address_region: string;
+  location_address_country: string;
   location_address_zip?: string | null;
-  topicSlugs: string[];
-  source_link: string;
+  contact_email?: string | null;
+  topic_slugs: string[];
+  source_links: string;
 };
 
 export type ArticleSubmissionRequest = SubmissionRequestCommon & {

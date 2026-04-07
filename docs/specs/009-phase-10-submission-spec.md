@@ -50,7 +50,7 @@ These routes are presentation-only differences over a single submission model an
 - `summary` (required)
 - `content` (required)
 - `topicSlugs` (required, array)
-- `source_links` (optional, array)
+- `resourceLinks` (optional, array)
 
 ### Event-Specific Fields
 
@@ -64,10 +64,10 @@ These routes are presentation-only differences over a single submission model an
 - `location_address_street` (optional)
 - `location_address_city` (required)
 - `location_address_region` (required)
-- `location_address_state` (optional)
+- `location_address_country` (required; public form may default to `US` for now)
 - `location_address_zip` (optional)
 - `topicSlugs` (required, array)
-- `source_link` (required)
+- `resourceLinks` (optional, array)
 
 ---
 
@@ -93,12 +93,12 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `location_address_street`: max 300 chars
 - `location_address_city`: max 120 chars
 - `location_address_region`: max 120 chars
-- `location_address_state`: max 120 chars
+- `location_address_country`: max 120 chars
 - `location_address_zip`: max 32 chars
 - `author`: max 120 chars
 - `submitter_name`: max 120 chars
 - `submitter_email`: max 320 chars
-- each source link: max 2,000 chars
+- each resource link: max 2,000 chars
 
 ### Event-Specific
 
@@ -128,7 +128,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Optional request fields may also be sent as `null` when the client has no value to provide
 - Empty strings are not a substitute for omission on optional fields; trim first, then either persist a value or normalize to `null`
 - `end_datetime` may be omitted or set to `null`
-- `source_links` may be omitted, set to `null`, or provided as a non-empty array
+- `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
 - optional location fields may be omitted or set to `null`
 - `author`, `submitter_name`, and `submitter_email` may be omitted or set to `null`
 
@@ -140,7 +140,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Nested payload fields should be reported using dot paths rooted at `payload`
 - Use `payload.title`, `payload.summary`, and `payload.event_type` rather than flattened or database-derived names
 - Top-level fields should use their request names, for example `submission_type` and `submitter_email`
-- Array item errors should include the array index when relevant, for example `payload.source_links[0]`
+- Array item errors should include the array index when relevant, for example `payload.resourceLinks[0]`
 - Topic slug errors should point to `payload.topicSlugs`
 
 ---
@@ -162,7 +162,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "summary": "A practical explainer on local issue campaigns.",
     "content": "Full article text...",
     "topicSlugs": ["local-community"],
-    "source_links": ["https://example.org/source"]
+    "resourceLinks": ["https://example.org/source"]
   },
   "submitter_name": "Alex",
   "submitter_email": "alex@example.org"
@@ -184,10 +184,10 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "location_address_street": "1400 John F Kennedy Blvd",
     "location_address_city": "Philadelphia",
     "location_address_region": "Philadelphia County",
-    "location_address_state": "PA",
+    "location_address_country": "US",
     "location_address_zip": "19107",
     "topicSlugs": ["economic-justice"],
-    "source_link": "https://example.org/event"
+    "resourceLinks": ["https://example.org/event"]
   },
   "submitter_name": "Alex",
   "submitter_email": "alex@example.org"
@@ -247,7 +247,7 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `payload.title` -> `title`
 - `payload.summary` -> `summary`
 - `payload.content` -> `submittedContent`
-- `payload.source_links` should be retained for moderation review during Phase 10 implementation
+- `payload.resourceLinks` should be retained for moderation review during Phase 10 implementation
 - `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
 
 ### Event Mapping
@@ -263,13 +263,13 @@ Phase 10 implementation should map request fields into the existing persistence 
   - include `payload.location_address_street` when present
   - include `payload.location_address_city`
   - include `payload.location_address_region`
-  - include `payload.location_address_state` when present
+  - include `payload.location_address_country`
   - include `payload.location_address_zip` when present
 - `payload.location_address_city` -> `city`
 - `payload.location_address_region` -> `region`
-- `payload.location_address_state` should contribute to `addressRaw`; Phase 10 does not add a dedicated persistence column for it
+- `payload.location_address_country` -> `country`
 - `payload.location_address_zip` -> `postalCode`
-- `payload.source_link` should be retained for moderation review during Phase 10 implementation
+- `payload.resourceLinks` should be retained for moderation review during Phase 10 implementation
 - `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
 
 ### Normalization Rules
@@ -281,6 +281,17 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `addressRaw` is a derived persistence/display field, not a primary public input
 - missing optional request fields should persist as `null`
 - Phase 10 does not introduce enrichment, geocoding, slug generation, or publication-ready normalization
+
+### Link Model
+
+- `resourceLinks` is the only URL/link concept in the submission model
+- `resourceLinks` represents supporting links for moderation and validation, not a canonical public URL
+- `resourceLinks` is moderation-only in Phase 10 and is not surfaced in the public UI
+- `resourceLinks` may be used to validate article claims or event legitimacy
+- the public API keeps one shared link concept even if article and event forms use different UI affordances
+- the event form may restrict entry to a single link for now, but it still maps to `resourceLinks`
+- Phase 10 does not introduce `website`, `eventUrl`, `primaryLink`, or automatic propagation of links to published models
+- later moderation/editorial workflows may choose to ignore links or promote one into a future public-facing field if explicitly defined in a later phase
 
 ---
 

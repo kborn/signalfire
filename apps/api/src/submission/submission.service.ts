@@ -41,7 +41,7 @@ export class SubmissionService {
     return {
       title: req.payload.title,
       summary: req.payload.summary,
-      topicIds: await this.getTopicIds(req.payload.topicSlugs),
+      topicIds: await this.getTopicIds(req.payload.topic_slugs),
       author: req.author,
       submitterName: req.submitter_name,
       submitterEmail: req.submitter_email,
@@ -53,6 +53,7 @@ export class SubmissionService {
     const city = req.payload.location_address_city.trim();
     const region = req.payload.location_address_region.trim();
     const postalCode = req.payload.location_address_zip?.trim() ?? '';
+    const country = req.payload.location_address_country.trim();
 
     const localityParts = [city, region].filter((part) => part.length > 0);
     const locality = localityParts.join(', ');
@@ -63,13 +64,13 @@ export class SubmissionService {
           : postalCode
         : locality;
 
-    return [street, localityWithPostalCode].filter((part) => part.length > 0).join(', ');
+    return [street, localityWithPostalCode, country].filter((part) => part.length > 0).join(', ');
   }
 
   mapEventSubmissionRequest(req: EventSubmissionRequest): CreateSubmissionInputEntityFields {
     return {
       submissionType: SubmissionType.EVENT,
-      resourceLinks: [req.payload.source_link],
+      resourceLinks: [req.payload.source_links],
       submittedContent: req.payload.description,
       eventType: req.payload.event_type,
       startTime: new Date(req.payload.start_datetime),
@@ -79,9 +80,8 @@ export class SubmissionService {
       city: req.payload.location_address_city,
       region: req.payload.location_address_region,
       postalCode: req.payload.location_address_zip ?? null,
-      // country: req.payload.lo, TODO why dont we have this?
-      // website: req.payload.website, TODO this should be removed
-      // contactEmail: req.payload.event_type, TODO why dont we have this?
+      country: req.payload.location_address_country,
+      contactEmail: req.payload.contact_email,
     };
   }
 

@@ -18,7 +18,7 @@ const submissionInputData: ArticleSubmissionRequest = {
     title: 'Community Submission',
     summary: 'A short submission summary.',
     content: 'Submitted content body.',
-    topicSlugs: ['democracy', 'consumer-activism'],
+    topic_slugs: ['democracy', 'consumer-activism'],
   },
 };
 
@@ -51,9 +51,10 @@ const eventSubmissionInputData: EventSubmissionRequest = {
     location_address_street: '1400 John F Kennedy Blvd',
     location_address_city: 'Philadelphia',
     location_address_region: 'PA',
+    location_address_country: 'US',
     location_address_zip: '19107',
-    topicSlugs: ['economic-justice'],
-    source_link: 'https://example.org/event',
+    topic_slugs: ['economic-justice'],
+    source_links: 'https://example.org/event',
   },
 };
 
@@ -122,10 +123,11 @@ describe('SubmissionService', () => {
       startTime: new Date('2026-05-14T17:00:00.000Z'),
       endTime: new Date('2026-05-14T19:00:00.000Z'),
       locationName: 'City Hall North Plaza',
-      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107',
+      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19107',
+      country: 'US',
     });
   });
 });
