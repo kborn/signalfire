@@ -3,45 +3,45 @@ import { EventType } from './common.types.js';
 export type SubmissionType = 'ARTICLE' | 'EVENT';
 
 type SubmissionRequestCommon = {
-  submission_type: SubmissionType;
+  submissionType: SubmissionType;
   author?: string | null;
-  submitter_name?: string | null;
-  submitter_email?: string | null;
+  submitterName?: string | null;
+  submitterEmail?: string | null;
 };
 
 type SubmissionRequestArticlePayload = {
   title: string;
   summary: string;
   content: string;
-  topic_slugs: string[];
-  source_links?: string[] | null;
+  topicSlugs: string[];
+  resourceLinks?: string[] | null;
 };
 
 type SubmissionRequestEventPayload = {
   title: string;
   summary: string;
   description: string;
-  event_type: EventType;
-  start_datetime: string;
-  end_datetime?: string | null;
-  location_name: string;
-  location_address_street?: string | null;
-  location_address_city: string;
-  location_address_region: string;
-  location_address_country: string;
-  location_address_zip?: string | null;
-  contact_email?: string | null;
-  topic_slugs: string[];
-  source_links: string;
+  eventType: EventType;
+  startDatetime: string;
+  endDatetime?: string | null;
+  locationName: string;
+  locationAddressStreet?: string | null;
+  locationAddressCity: string;
+  locationAddressRegion: string;
+  locationAddressCountry: string;
+  locationAddressZip?: string | null;
+  contactEmail?: string | null;
+  topicSlugs: string[];
+  resourceLinks?: string[] | null;
 };
 
 export type ArticleSubmissionRequest = SubmissionRequestCommon & {
-  submission_type: 'ARTICLE';
+  submissionType: 'ARTICLE';
   payload: SubmissionRequestArticlePayload;
 };
 
 export type EventSubmissionRequest = SubmissionRequestCommon & {
-  submission_type: 'EVENT';
+  submissionType: 'EVENT';
   payload: SubmissionRequestEventPayload;
 };
 
