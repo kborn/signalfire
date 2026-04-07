@@ -64,6 +64,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [50-direct-child-vs-descendant-selectors.md](./50-direct-child-vs-descendant-selectors.md) - How `.parent > *` differs from `.parent *`
 - [51-css-media-queries.md](./51-css-media-queries.md) - What `@media` does and why it is not the same thing as mobile by itself
 - [52-shared-component-variants-by-layout-context.md](./52-shared-component-variants-by-layout-context.md) - When one summary component should expose `collection` vs `related` presentation explicitly
+- [53-prisma-nested-writes-for-join-tables.md](./53-prisma-nested-writes-for-join-tables.md) - How to create owned join rows for submissions with `connect` and `connectOrCreate`
 
 Rule of thumb:
 

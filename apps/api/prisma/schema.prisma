@@ -54,7 +54,8 @@ model Topic {
   createdAt     DateTime       @default(now())
   topicArticles TopicArticle[]
   topicActions  TopicAction[]
-  topicEvents   TopicEvent[]
+  topicEvents        TopicEvent[]
+  submissionTopics   SubmissionTopic[]
 
   @@map("_topic")
 }
@@ -131,6 +132,9 @@ model Submission {
   title              String
   summary            String
   submittedContent   String
+  author             String?
+  submitterName      String?
+  submitterEmail     String?
   eventType          EventType?
   startTime          DateTime?
   endTime            DateTime?
@@ -142,19 +146,28 @@ model Submission {
   country            String?
   website            String?
   contactEmail       String?
-  submitterFirstName String
-  submitterLastName  String?
-  submitterEmail     String?
   reviewNotes        String?
   article            Article?         @relation(fields: [articleId], references: [id])
   articleId          Int?             @unique
   event              Event?           @relation(fields: [eventId], references: [id])
   eventId            Int?             @unique
+  submissionResourceLinks      SubmissionResourceLink[]
+  submissionTopics   SubmissionTopic[]
   submittedAt        DateTime         @default(now())
   reviewedAt         DateTime?
 
   @@map("_submission")
 }
+
+model ResourceLink {
+  id      Int       @id @default(autoincrement())
+  url     String    @unique
+  submissionResourceLinks      SubmissionResourceLink[]
+  created DateTime  @default(now())
+
+  @@map("_resource_link")
+}
+
 
 model TopicArticle {
   topic      Topic    @relation(fields: [topicId], references: [id])
@@ -227,3 +240,27 @@ model ActionEvent {
   @@id([actionId, eventId])
   @@map("_action_event")
 }
+
+
+model SubmissionTopic {
+  submission     Submission   @relation(fields: [submissionId], references: [id])
+  submissionId   Int
+  topic   Topic    @relation(fields: [topicId], references: [id])
+  topicId    Int
+  assignedAt DateTime @default(now())
+
+  @@id([submissionId, topicId])
+  @@map("_submission_topic")
+}
+
+model SubmissionResourceLink {
+  submission     Submission   @relation(fields: [submissionId], references: [id])
+  submissionId   Int
+  resourceLink   ResourceLink    @relation(fields: [resourceLinkId], references: [id])
+  resourceLinkId    Int
+  assignedAt DateTime @default(now())
+
+  @@id([submissionId, resourceLinkId])
+  @@map("_submission_resource_link")
+}
+

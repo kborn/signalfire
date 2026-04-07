@@ -651,3 +651,43 @@ Events surface using `topicSlug` passthrough navigation.
   Article, and Action summaries.
 - Richer presentation treatment and stronger CTA polish for Topic-page Event
   entry points remain Phase 9 work rather than baseline Phase 8 scope.
+
+---
+
+---
+
+### ► Submission URL model uses moderation-only resource links
+
+###### 2026-04-06
+
+---
+
+###### Decision
+
+Submission persistence uses exactly one link concept: `resourceLinks`. These
+links are supporting moderation and validation links, not canonical public URLs.
+The `website` concept is not part of the submission model for Release 1.
+
+###### Rationale
+
+- Article submissions may include supporting sources or references that help
+  moderators validate claims without extracting URLs from prose.
+- Event submissions may include supporting links such as an event page,
+  organizer page, or RSVP page, but those links still serve moderation review
+  rather than a distinct canonical URL concept.
+- Introducing separate concepts such as `website`, `eventUrl`, or `primaryLink`
+  would add premature product assumptions before moderation and publishing
+  workflows define how public-facing URLs should behave.
+- Keeping one shared link concept preserves the unified submission model and
+  avoids article/event drift.
+
+###### Implications
+
+- Submission contracts and persistence should model one moderation-only URL
+  collection: `resourceLinks`.
+- `resourceLinks` is optional for both article and event submissions.
+- UI flows may impose different affordances, such as allowing one event link
+  and multiple article links, but both map to the same field.
+- `resourceLinks` is not automatically public and is not a canonical URL field.
+- Release 1 should not introduce `website`, `eventUrl`, or `primaryLink` on the
+  submission model unless a later phase explicitly defines them.
