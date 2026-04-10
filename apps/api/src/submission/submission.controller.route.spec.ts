@@ -7,6 +7,7 @@ import {
   buildSubmissionErrorResponse,
   buildEventSubmissionRequest,
   buildSubmissionSuccessResponse,
+  buildArticleSubmissionRequest,
 } from './submission.test-fixtures';
 import { UnknownSubmissionTopicsError } from './submission.error';
 
@@ -35,11 +36,25 @@ describe('SubmissionController HTTP', () => {
     await app.close();
   });
 
-  it('POST /submissions returns the submission success response', async () => {
+  it('POST /submissions for event request returns submission success response', async () => {
     const submissionSuccessResponse = buildSubmissionSuccessResponse();
     submissionServiceMock.create.mockResolvedValue(submissionSuccessResponse);
 
     const req = buildEventSubmissionRequest();
+    await request(httpServer)
+      .post('/submissions')
+      .send(req)
+      .expect(201)
+      .expect(submissionSuccessResponse);
+
+    expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
+  });
+
+  it('POST /submissions for article request returns submission success response', async () => {
+    const submissionSuccessResponse = buildSubmissionSuccessResponse();
+    submissionServiceMock.create.mockResolvedValue(submissionSuccessResponse);
+
+    const req = buildArticleSubmissionRequest();
     await request(httpServer)
       .post('/submissions')
       .send(req)
@@ -60,6 +75,7 @@ describe('SubmissionController HTTP', () => {
       .send(req)
       .expect(400)
       .expect(buildSubmissionErrorResponse());
+    expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
   });
 
   it('POST /submissions returns 500 when the service raises non HTTP exception', async () => {
@@ -67,5 +83,6 @@ describe('SubmissionController HTTP', () => {
     const req = buildEventSubmissionRequest();
 
     await request(httpServer).post('/submissions/').send(req).expect(500);
+    expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
   });
 });

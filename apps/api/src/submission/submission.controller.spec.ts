@@ -33,25 +33,29 @@ describe('SubmissionController', () => {
     const submissionListResponse = buildSubmissionErrorResponse();
     serviceMock.create.mockRejectedValue(new UnknownSubmissionTopicsError(['unknown-topic']));
 
+    const req = buildArticleSubmissionRequest();
     try {
-      await submissionController.makeSubmission(buildArticleSubmissionRequest());
+      await submissionController.makeSubmission(req);
       fail('Expected makeSubmission to throw');
     } catch (error) {
       expect(error).toBeInstanceOf(BadRequestException);
       expect((error as BadRequestException).getResponse()).toEqual(submissionListResponse);
     }
+    expect(serviceMock.create).toHaveBeenCalledWith(req);
   });
 
   it('submission fails with unknown error', async () => {
     const originalError = new Error('database offline');
     serviceMock.create.mockRejectedValue(originalError);
 
+    const req = buildArticleSubmissionRequest();
     try {
-      await submissionController.makeSubmission(buildArticleSubmissionRequest());
+      await submissionController.makeSubmission(req);
       fail('Expected makeSubmission to throw');
     } catch (error) {
       expect(error).toBe(originalError);
     }
+    expect(serviceMock.create).toHaveBeenCalledWith(req);
   });
 
   it('event submission', async () => {
