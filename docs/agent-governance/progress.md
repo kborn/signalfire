@@ -1102,6 +1102,12 @@ Implement anonymous submission workflow for events and articles.
 - [ ] Keep public submission scope create-only for Release 1
 - [ ] Add API tests covering valid and invalid submission payloads
 
+###### Notes:
+
+- Runtime request validation for `POST /submissions` will use Zod in narrow
+  scope for Phase 10.3 only; this does not establish a repo-wide validation
+  strategy.
+
 ---
 
 #### ▸ Phase 10.4 - Submission UX ⏳
