@@ -691,3 +691,42 @@ The `website` concept is not part of the submission model for Release 1.
 - `resourceLinks` is not automatically public and is not a canonical URL field.
 - Release 1 should not introduce `website`, `eventUrl`, or `primaryLink` on the
   submission model unless a later phase explicitly defines them.
+
+---
+
+---
+
+### ► Phase 10.3 submission request validation uses Zod in narrow scope
+
+###### 2026-04-09
+
+---
+
+###### Decision
+
+Phase 10.3 request validation for `POST /submissions` will use Zod at the API
+boundary. This adoption is intentionally narrow: Zod is introduced only for the
+submission creation endpoint and does not establish a repo-wide validation
+strategy.
+
+###### Rationale
+
+- The submission API request is a discriminated union over `submissionType`
+  with different article and event payload requirements.
+- Runtime validation is required at the public API boundary because TypeScript
+  request types alone do not validate incoming JSON.
+- Zod expresses discriminated unions more directly than decorator-heavy DTO
+  patterns for this specific endpoint.
+- The narrower adoption path provides learning value without expanding Phase
+  10.3 into a broad framework migration.
+
+###### Implications
+
+- Phase 10.3 should validate `POST /submissions` request shape at runtime
+  before service logic executes.
+- Validation errors returned from the submission endpoint must still match the
+  Phase 10 submission API error contract.
+- Domain checks that require repository access, such as approved topic slug
+  validation, remain service-layer concerns.
+- This decision does not require refactoring existing controllers or defining a
+  general Zod standard for all API endpoints.

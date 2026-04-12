@@ -65,6 +65,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [51-css-media-queries.md](./51-css-media-queries.md) - What `@media` does and why it is not the same thing as mobile by itself
 - [52-shared-component-variants-by-layout-context.md](./52-shared-component-variants-by-layout-context.md) - When one summary component should expose `collection` vs `related` presentation explicitly
 - [53-prisma-nested-writes-for-join-tables.md](./53-prisma-nested-writes-for-join-tables.md) - How to create owned join rows for submissions with `connect` and `connectOrCreate`
+- [54-nest-pipes.md](./54-nest-pipes.md) - What a Nest pipe does and why it runs before a controller method
+- [55-zod-runtime-vs-ts-compile-time.md](./55-zod-runtime-vs-ts-compile-time.md) - Why TypeScript types do not replace runtime request validation
+- [56-zod-discriminated-unions.md](./56-zod-discriminated-unions.md) - When one field such as `submissionType` determines the rest of the schema
 
 Rule of thumb:
 

@@ -7,9 +7,9 @@ import {
   SubmissionResponseSuccess,
 } from '@signal-fire/api-contracts';
 import {
-  CreateSubmissionInputCommonFields,
-  CreateSubmissionInputEntityFields,
-} from './submission.type';
+  CreateSubmissionRepositoryInputCommonFields,
+  CreateSubmissionRepositoryInputEntityFields,
+} from './submission.repository.types';
 import { Submission, SubmissionType } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
 import { UnknownSubmissionTopicsError } from './submission.error';
@@ -37,7 +37,9 @@ export class SubmissionService {
     return recs.map((rec) => rec.id);
   }
 
-  async mapCommonRequestFields(req: SubmissionRequest): Promise<CreateSubmissionInputCommonFields> {
+  async mapCommonRequestFields(
+    req: SubmissionRequest,
+  ): Promise<CreateSubmissionRepositoryInputCommonFields> {
     return {
       title: req.payload.title,
       summary: req.payload.summary,
@@ -67,7 +69,9 @@ export class SubmissionService {
     return [street, localityWithPostalCode, country].filter((part) => part.length > 0).join(', ');
   }
 
-  mapEventSubmissionRequest(req: EventSubmissionRequest): CreateSubmissionInputEntityFields {
+  mapEventSubmissionRequest(
+    req: EventSubmissionRequest,
+  ): CreateSubmissionRepositoryInputEntityFields {
     return {
       submissionType: SubmissionType.EVENT,
       resourceLinks: req.payload.resourceLinks,
@@ -85,7 +89,9 @@ export class SubmissionService {
     };
   }
 
-  mapArticleSubmissionRequest(req: ArticleSubmissionRequest): CreateSubmissionInputEntityFields {
+  mapArticleSubmissionRequest(
+    req: ArticleSubmissionRequest,
+  ): CreateSubmissionRepositoryInputEntityFields {
     return {
       submissionType: SubmissionType.ARTICLE,
       submittedContent: req.payload.content,
@@ -95,7 +101,7 @@ export class SubmissionService {
 
   async create(submission: SubmissionRequest): Promise<SubmissionResponseSuccess> {
     const commonFields = await this.mapCommonRequestFields(submission);
-    let fields: CreateSubmissionInputEntityFields;
+    let fields: CreateSubmissionRepositoryInputEntityFields;
     if (submission.submissionType === 'EVENT') {
       fields = this.mapEventSubmissionRequest(submission);
     } else {

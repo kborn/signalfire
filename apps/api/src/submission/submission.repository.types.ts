@@ -1,7 +1,7 @@
-import { SubmissionType } from '@prisma/client';
 import { EventType } from '@prisma/client';
+import { SubmissionType } from '@prisma/client';
 
-export type CreateSubmissionInputCommonFields = {
+export type CreateSubmissionRepositoryInputCommonFields = {
   title: string;
   summary: string;
   topicIds: number[];
@@ -10,7 +10,7 @@ export type CreateSubmissionInputCommonFields = {
   submitterEmail?: string | null;
 };
 
-export type CreateSubmissionInputEntityFields = {
+export type CreateSubmissionRepositoryInputEntityFields = {
   resourceLinks?: string[] | null;
   submissionType: SubmissionType;
   submittedContent: string;
@@ -27,5 +27,5 @@ export type CreateSubmissionInputEntityFields = {
   contactEmail?: string | null;
 };
 
-export type CreateSubmissionInput = CreateSubmissionInputCommonFields &
-  CreateSubmissionInputEntityFields;
+export type CreateSubmissionRepositoryInput = CreateSubmissionRepositoryInputCommonFields &
+  CreateSubmissionRepositoryInputEntityFields;
