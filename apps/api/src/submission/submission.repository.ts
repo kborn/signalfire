@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Submission, SubmissionStatus } from '@prisma/client';
-import { CreateSubmissionInput } from './submission.type';
+import { CreateSubmissionRepositoryInput } from './submission.repository.types';
 
 @Injectable()
 export class SubmissionRepository {
@@ -15,7 +15,7 @@ export class SubmissionRepository {
     });
   }
 
-  create(submission: CreateSubmissionInput): Promise<Submission> {
+  create(submission: CreateSubmissionRepositoryInput): Promise<Submission> {
     return this.prisma.submission.create({
       data: {
         submissionType: submission.submissionType,

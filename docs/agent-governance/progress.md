@@ -1097,10 +1097,10 @@ Implement anonymous submission workflow for events and articles.
 
 ###### Phase Tasks:
 
-- [ ] Expose one anonymous submission creation endpoint for article and event submissions
-- [ ] Implement request validation and API error handling
-- [ ] Keep public submission scope create-only for Release 1
-- [ ] Add API tests covering valid and invalid submission payloads
+- [x] Expose one anonymous submission creation endpoint for article and event submissions
+- [x] Implement request validation and API error handling
+- [x] Keep public submission scope create-only for Release 1
+- [x] Add API tests covering valid and invalid submission payloads
 
 ###### Notes:
 

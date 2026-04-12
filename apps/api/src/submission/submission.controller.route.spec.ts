@@ -78,6 +78,73 @@ describe('SubmissionController HTTP', () => {
     expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
   });
 
+  it('POST /submissions returns 400 for invalid article payloads before calling the service', async () => {
+    const req = buildArticleSubmissionRequest({
+      payload: {
+        title: '   ',
+      },
+    });
+
+    await request(httpServer)
+      .post('/submissions')
+      .send(req)
+      .expect(400)
+      .expect({
+        errors: [
+          {
+            field: 'payload.title',
+            message: 'Title is required',
+          },
+        ],
+      });
+
+    expect(submissionServiceMock.create).not.toHaveBeenCalled();
+  });
+
+  it('POST /submissions returns 400 for invalid top-level email before calling the service', async () => {
+    const req = buildEventSubmissionRequest({
+      submitterEmail: 'not-an-email',
+    });
+
+    await request(httpServer)
+      .post('/submissions')
+      .send(req)
+      .expect(400)
+      .expect({
+        errors: [
+          {
+            field: 'submitterEmail',
+            message: 'Email must be valid',
+          },
+        ],
+      });
+
+    expect(submissionServiceMock.create).not.toHaveBeenCalled();
+  });
+
+  it('POST /submissions returns 400 for invalid event datetime ordering before calling the service', async () => {
+    const req = buildEventSubmissionRequest({
+      payload: {
+        endDatetime: '2026-05-14T16:00:00.000Z',
+      },
+    });
+
+    await request(httpServer)
+      .post('/submissions')
+      .send(req)
+      .expect(400)
+      .expect({
+        errors: [
+          {
+            field: 'payload.endDatetime',
+            message: 'End datetime must be greater than or equal to start datetime',
+          },
+        ],
+      });
+
+    expect(submissionServiceMock.create).not.toHaveBeenCalled();
+  });
+
   it('POST /submissions returns 500 when the service raises non HTTP exception', async () => {
     submissionServiceMock.create.mockRejectedValue(new Error('some error'));
     const req = buildEventSubmissionRequest();

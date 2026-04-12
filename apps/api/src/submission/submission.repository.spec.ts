@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubmissionRepository } from './submission.repository';
-import { CreateSubmissionInput } from './submission.type';
+import { CreateSubmissionRepositoryInput } from './submission.repository.types';
 import { SubmissionStatus } from '@prisma/client';
 
-const submissionInputData: CreateSubmissionInput = {
+const submissionInputData: CreateSubmissionRepositoryInput = {
   submissionType: 'ARTICLE',
   title: 'Community Submission',
   summary: 'A short submission summary.',
