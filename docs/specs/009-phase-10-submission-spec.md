@@ -29,6 +29,22 @@ Two public form entry points:
 
 These routes are presentation-only differences over a single submission model and single submission creation API.
 
+An optional chooser route may also exist:
+
+- `/submit`
+
+`/submit` is a frontend navigation entry point within Phase 10 scope. It links users to the two canonical form routes above and does not introduce a separate submission flow or API behavior.
+
+---
+
+## Discoverability
+
+- `Submit` is a primary public navigation item in Phase 10
+- it links to `/submit`
+- it appears after `Events` in the primary public nav
+- the visual treatment may be slightly de-emphasized relative to the main browse destinations, but it remains part of primary navigation
+- do not hide submission discoverability behind footer-only placement or deep contextual links
+
 ---
 
 ## Data Model (Submission)
@@ -107,6 +123,13 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `startDatetime` must be a valid datetime
 - `endDatetime`, if present, must be a valid datetime
 - `endDatetime`, if present, must be greater than or equal to `startDatetime`
+- `eventType` must be one of the Release 1 event enum values:
+  - `PROTEST`
+  - `RALLY`
+  - `VOLUNTEER`
+  - `TOWN_HALL`
+  - `WORKSHOP`
+  - `MEETING`
 
 ### Topics
 
@@ -335,6 +358,29 @@ Each form uses this section order:
 
 ---
 
+## Optional Chooser Page
+
+### Route
+
+`/submit`
+
+### Page Copy
+
+#### Title
+
+`Submit Content`
+
+#### Support Copy
+
+`Share an article or event to help others learn and take action.`
+
+### Actions
+
+- `Submit an Article` -> `/submit/article`
+- `Submit an Event` -> `/submit/event`
+
+---
+
 ## Article Submission Page
 
 ### Route
@@ -446,10 +492,10 @@ Field notes:
 Field order:
 
 7. `Location name` — text input — required
-8. `Street address` — text input — optional
-9. `City` — text input — required
-10. `Region` — text input — required
-11. `State` — text input — optional
+8. `City` — text input — required
+9. `Region` — text input — required
+10. `Country` — text input — required
+11. `Street address` — text input — optional
 12. `ZIP code` — text input — optional
 
 Field notes:
@@ -457,13 +503,20 @@ Field notes:
 - require only the location structure needed for basic verification
 - do not require a perfect postal address
 - do not require latitude/longitude
+- the UI may prefill `Country` with `US`, but users must still be able to submit another country when needed
 
-#### Section 4 — Topics and Source
+#### Section 4 — Topics and Sources
 
 Field order:
 
 13. `Topics` — multi-select checkbox group or equivalent multi-select control — required
-14. `Source link` — text input — required
+14. `Supporting links` — repeatable text input list or single textarea with one URL per line — optional
+
+Field notes:
+
+- supporting links map to `resourceLinks`
+- supporting links remain optional and must not block submission
+- the UI may use a repeatable field list or a one-link-per-line textarea
 
 #### Section 5 — Contact Information
 
@@ -485,13 +538,13 @@ Helper text for email:
 - Start date and time
 - End date and time
 - Location name
-- Street address
 - City
 - Region
-- State
+- Country
+- Street address
 - ZIP code
 - Topics
-- Source link
+- Supporting links
 - Name
 - Email
 
@@ -499,7 +552,16 @@ Helper text for email:
 
 ## Event Type Values
 
-Use the existing Release 1 event type vocabulary.
+Use the Release 1 event type vocabulary:
+
+- `PROTEST`
+- `RALLY`
+- `VOLUNTEER`
+- `TOWN_HALL`
+- `WORKSHOP`
+- `MEETING`
+
+Phase 10.4 should use the shared static enum defined in `packages/api-contracts` rather than introducing a runtime metadata endpoint.
 
 Do not invent submission-only event types.
 
@@ -507,7 +569,9 @@ Do not invent submission-only event types.
 
 ## Submitter Fields Behavior
 
-- `Author`, `Name`, and `Email` are optional
+- public Phase 10 forms collect `Name` and `Email` only
+- `author` is supported by the Phase 10 API contract and remains optional, not required
+- the public Phase 10 UI does not expose a separate author field
 - `submitterName` and `submitterEmail` are used for moderation follow-up only
 - `submitterName` and `submitterEmail` are not displayed publicly in Phase 10
 - `author` captures credited authorship intent for the submitted content
