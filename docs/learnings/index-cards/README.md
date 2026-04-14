@@ -68,6 +68,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [54-nest-pipes.md](./54-nest-pipes.md) - What a Nest pipe does and why it runs before a controller method
 - [55-zod-runtime-vs-ts-compile-time.md](./55-zod-runtime-vs-ts-compile-time.md) - Why TypeScript types do not replace runtime request validation
 - [56-zod-discriminated-unions.md](./56-zod-discriminated-unions.md) - When one field such as `submissionType` determines the rest of the schema
+- [57-server-page-plus-client-form-boundary.md](./57-server-page-plus-client-form-boundary.md) - Keep initial page data on the server and move only the interactive form to the client
 
 Rule of thumb:
 

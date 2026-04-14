@@ -20,3 +20,4 @@ Current walkthroughs:
 - `phase-6-2-topic-discovery-flow-walkthrough.md`
 - `phase-6-3-article-markdown-support-walkthrough.md`
 - `phase-9-1-active-nav-client-component-walkthrough.md`
+- `phase-10-4-public-submission-form-walkthrough.md`
