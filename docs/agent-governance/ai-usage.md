@@ -64,6 +64,7 @@ Used for:
 - Deciding when and how to add new features
 - Phase expansion decisions
 - Writing documentation
+- Producing implementation-ready UI/product specs when a feature needs concrete page, flow, or wireframe guidance
 
 Not used for:
 
@@ -71,6 +72,11 @@ Not used for:
 - Stack or tooling decisions
 - Implementation decisions
 - Project scope decisions
+
+Project Manager documentation standard:
+
+- For UI-bearing or workflow-bearing features, PM-authored specs should be explicit enough that engineering does not need to infer layout hierarchy, sectioning, field order, copy, states, or interaction behavior.
+- High-level intent alone is insufficient when a wireframe-level specification is needed to prevent implementation churn.
 
 ### Builder
 
