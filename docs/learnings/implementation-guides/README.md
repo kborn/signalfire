@@ -36,3 +36,4 @@ Current Phase 10 guides:
 - `phase-10-3-runtime-request-validation-in-nest-guide.md`
 - `phase-10-3-zod-request-validation-guide.md`
 - `phase-10-4-client-form-state-and-server-boundary-guide.md`
+- `phase-10-4-plain-react-forms-and-validation-guide.md`

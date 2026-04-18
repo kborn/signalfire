@@ -69,6 +69,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [55-zod-runtime-vs-ts-compile-time.md](./55-zod-runtime-vs-ts-compile-time.md) - Why TypeScript types do not replace runtime request validation
 - [56-zod-discriminated-unions.md](./56-zod-discriminated-unions.md) - When one field such as `submissionType` determines the rest of the schema
 - [57-server-page-plus-client-form-boundary.md](./57-server-page-plus-client-form-boundary.md) - Keep initial page data on the server and move only the interactive form to the client
+- [58-controlled-inputs-in-react.md](./58-controlled-inputs-in-react.md) - Let React state own the current value when form UX depends on validation and submit state
+- [59-plain-react-form-vs-form-library.md](./59-plain-react-form-vs-form-library.md) - Learn the plain form mechanics before adding library abstraction
+- [60-react-component-props-object.md](./60-react-component-props-object.md) - JSX attributes become one props object, not separate function arguments
 
 Rule of thumb:
 

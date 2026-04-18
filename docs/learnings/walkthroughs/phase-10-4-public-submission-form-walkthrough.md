@@ -2,20 +2,25 @@
 
 ## What You Are Building
 
-You are building the public submission entry flow for Phase 10.4:
+You are building the public submission flow for Phase 10.4 in this order:
 
-- `/submit`
-- `/submit/article`
-- `/submit/event`
+- `/submit` chooser page
+- `/submit/article` article submission route
+- `/submit/event` event submission route
 
-The intended implementation shape is:
+The important implementation shape is:
 
-- server-render the route pages
-- fetch approved topics before rendering
-- pass topics into interactive client form components
-- submit both forms through the single `POST /api/submissions` API contract
+- server route page fetches required initial data
+- client form component owns browser interaction
+- both forms submit to the same `POST /api/submissions` API contract
 
-This walkthrough is about repo edit order, not final styling polish.
+For now, the best learning path is:
+
+1. finish the article form first
+2. prove the submit flow end to end
+3. reuse the same structure for the event form
+
+Do not try to solve article and event at the same time.
 
 ## Files And Folders Involved
 
@@ -24,190 +29,252 @@ Read before editing:
 - `docs/specs/009-phase-10-submission-spec.md`
 - `docs/specs/010-phase-10-4-submission-ui.md`
 - `docs/learnings/implementation-guides/phase-10-4-client-form-state-and-server-boundary-guide.md`
-- `docs/learnings/implementation-guides/phase-10-3-zod-request-validation-guide.md`
+- `docs/learnings/implementation-guides/phase-10-4-plain-react-forms-and-validation-guide.md`
 
-Existing frontend files likely involved:
-
-- `apps/web/src/app/globals.css`
-- `apps/web/src/lib/api/base.ts`
-- `apps/web/src/lib/api/topics.ts`
-
-Files you will likely create:
+Frontend files already involved:
 
 - `apps/web/src/app/submit/page.tsx`
 - `apps/web/src/app/submit/article/page.tsx`
 - `apps/web/src/app/submit/event/page.tsx`
-- one or more submission form components under a shared component location
-- one frontend API helper for submission creation under `apps/web/src/lib/api/`
+- `apps/web/src/components/article-submission.tsx`
+- `apps/web/src/app/globals.css`
+- `apps/web/src/lib/api/topics.ts`
 
-Files you will likely add tests for:
+Frontend files you will likely add next:
 
-- `apps/web/src/app/submit/page.test.tsx`
-- tests for the article and event route pages
-- tests for the interactive form component(s)
+- `apps/web/src/lib/api/submissions.ts`
+- tests for the article form component
+- tests for article submit success and failure behavior
+
+Files likely involved soon after:
+
+- `apps/web/src/components/event-submission.tsx`
+- tests for the event form component
 
 ## Edit Order
 
-### 1. Confirm the boundary before writing code
+### 1. Freeze the article route boundary first
 
-Restate the split in concrete terms:
+Before adding real fields, confirm the split:
 
-- route pages fetch approved topics on the server
-- form components own browser interaction
-- the backend remains the source of truth for validation
-
-If your first plan fetches topics in `useEffect`, pause and ask whether that is
-actually required by the spec. For this phase, it is not.
-
-### 2. Add the route pages first
-
-Create:
-
-- `apps/web/src/app/submit/page.tsx`
-- `apps/web/src/app/submit/article/page.tsx`
-- `apps/web/src/app/submit/event/page.tsx`
-
-What to do first:
-
-- render headings and support copy from the Phase 10.4 UI spec
-- keep the pages server-rendered
-- make the chooser page link to the two form routes
+- `apps/web/src/app/submit/article/page.tsx` fetches approved topics
+- `apps/web/src/components/article-submission.tsx` is the client form
 
 Why first:
 
-This gives the feature a visible route skeleton before form complexity starts.
+If this boundary is wrong, every later form decision gets messier.
 
-### 3. Add the server-side topic fetch path
+### 2. Build the article form as static sections before adding state
 
-Use the existing API helper pattern as the model.
+In `apps/web/src/components/article-submission.tsx`, render the Phase 10.4
+article form sections in the exact spec order:
 
-What to do:
+1. Basic Information
+2. Article Content
+3. Supporting Links
+4. Contact Information
 
-- fetch approved topics in the article and event route pages
-- pass the resulting topic list into the form component as props
-- decide the page-level response for empty topics or fetch failure
+Start by rendering:
+
+- labels
+- text inputs
+- textareas
+- topic checkbox list
+- submit button
+
+Do not add validation logic yet. Just get the correct visible structure on the
+screen first.
+
+Why second:
+
+It is easier to reason about form state after the visible shape is correct.
+
+### 3. Add one explicit state object for current field values
+
+Once the static fields exist, add React state for the values the user types.
+
+For the article form, that likely means fields for:
+
+- `title`
+- `summary`
+- `content`
+- `topicSlugs`
+- `resourceLinks`
+- `submitterName`
+- `submitterEmail`
+
+Start simple:
+
+- strings for text fields
+- string array for selected topic slugs
+- string array or one textarea string for supporting links
 
 Why third:
 
-The form contract depends on topics. That dependency should be solved at the
-route boundary before browser state is introduced.
+This is the point where the form becomes interactive, but still without network
+or validation complexity.
 
-### 4. Create the interactive form component boundary
+### 4. Make each field a controlled input
 
-Add the smallest client-side form component(s) needed.
+After state exists, connect each input to that state:
 
-What they should own:
+- each input shows the current React value
+- each input updates React state on change
 
-- current field values
-- inline validation display
-- submit-pending state
-- success state replacement
-- request failure messaging
+Do not move on until you can answer:
 
-What they should not own:
+- where does the current title live?
+- where does the selected topic list live?
+- what code changes those values?
 
-- topic fetching
-- route-level page structure
-- authoritative validation rules that contradict the API
+Why fourth:
 
-### 5. Add the submission request helper
+If you do not understand controlled inputs first, validation and submit logic
+will feel random later.
 
-Create a frontend API helper that sends the submission request using the shared
-contract shape.
+### 5. Add a separate error state object
+
+Once values are controlled, add an `errors` object.
+
+This object should hold UI-facing validation errors such as:
+
+- missing title
+- missing summary
+- missing content
+- no selected topics
+- invalid email format when email is present
+
+Do not try to mirror every backend rule immediately. Start with the obvious UI
+checks from the spec.
+
+Why fifth:
+
+The form now has enough structure for inline validation to make sense.
+
+### 6. Add submit-time validation only
+
+When the user clicks submit:
+
+1. prevent the default browser submit
+2. validate the current values
+3. if invalid, set inline errors and stop
+4. if valid, build the request payload
+
+Do not add validation on every keystroke yet unless you find a specific reason
+to do so.
+
+Why sixth:
+
+Submit-time validation is simpler to learn and matches the Phase 10.4 spec.
+
+### 7. Add the frontend submission helper
+
+Once the form can produce valid local data, create
+`apps/web/src/lib/api/submissions.ts`.
+
+That helper should:
+
+- accept the public submission request shape
+- send the request to the backend
+- return the result in a predictable shape
 
 Why now:
 
-The form should submit through one clear boundary instead of building ad hoc
-`fetch` calls inline in JSX event handlers.
+The form should not hide network logic inside a large JSX file.
 
-Keep the public contract shape aligned with:
+### 8. Wire real submit behavior into the article form
 
-- `packages/api-contracts/submission_type.ts`
-- `docs/specs/009-phase-10-submission-spec.md`
+Add:
 
-### 6. Implement article submission first
+- pending state
+- global submit failure state
+- success state replacement
 
-Build the article flow before the event flow.
+The article form should now:
 
-Why:
+- block invalid submit
+- preserve entered values after failure
+- replace the form on success
 
-- fewer fields
-- simpler payload shape
-- easier place to prove the form-state and success/error model
+Why eighth:
 
-What to verify:
+This is the first fully useful version of the Phase 10.4 article flow.
 
-- required fields block submit
-- optional contact fields work
-- success replaces the form
-- failed submit preserves values
+### 9. Add article-form tests before cloning the pattern to event
 
-### 7. Implement event submission second
+Test the article form for:
 
-Once the article flow works, add the event-specific fields and payload mapping.
+- rendering required fields
+- topic list rendering from props
+- inline errors on missing required fields
+- success state after valid submit
+- preserved values after failed submit
 
-Be strict about:
+Why ninth:
 
-- static event enum usage from shared contracts
+You want the article pattern stable before you copy it into the more complex
+event form.
+
+### 10. Reuse the article pattern for event
+
+Only after the article flow is stable, implement the event form with the same
+shape:
+
+- server page fetches topics
+- client form owns interaction
+- controlled inputs
+- error object
+- submit helper
+- success replacement
+
+Be stricter for event-specific details:
+
+- event type enum from shared contract
 - exact location field mapping
-- optional supporting links
+- `US` default for country
 - optional `endDatetime`
-
-This is where most drift risk lives, so follow the spec field order carefully.
-
-### 8. Do a final UX and contract pass
-
-Check:
-
-- headings and copy match the UI spec
-- `Topics` are required in both forms
-- email helper text is present
-- no extra required fields were invented
-- `author` is not required or exposed in the public UI
-- both forms still submit to one API path
 
 ## First Correct Structure
 
-The first correct repo shape should look roughly like this:
+The first correct structure for the article flow should look roughly like this:
 
 ```text
-apps/web/src/app/
-  submit/
-    page.tsx
-    article/
-      page.tsx
-    event/
-      page.tsx
+apps/web/src/app/submit/article/
+  page.tsx
 
 apps/web/src/components/
-  submission/
-    ...
+  article-submission.tsx
 
 apps/web/src/lib/api/
   submissions.ts
 ```
 
-The exact component filenames can vary, but the responsibility split should not:
+Responsibility split:
 
-- route pages for server data loading and page structure
-- client form components for interaction
-- API helper for submission requests
+- `page.tsx`:
+  server fetch for topics and route-level render
+- `article-submission.tsx`:
+  controlled inputs, errors, submit handler, success state
+- `submissions.ts`:
+  frontend API boundary for the submission request
 
-## What "Done Enough" Looks Like For Phase 10.4
+## What "Done Enough" Looks Like For The Article Form
 
 You are in a good state when:
 
-- all three public submission routes render
-- article and event forms receive approved topics from the server
-- the interactive form behavior lives in a narrow client component boundary
-- both forms submit through the shared API contract
-- success and failure behavior matches the spec
-- no client-side topic fetch was added without a real need
+- the page still fetches topics on the server
+- the client form renders the correct fields in spec order
+- topic checkboxes come from the `topics` prop
+- the form uses controlled inputs
+- submit-time validation shows inline errors
+- a valid submit calls one frontend API helper
+- success replaces the form
+- failed submit keeps user-entered values
 
 ## Ask-When-Stuck Prompts
 
-- Should this logic live in the server route page or inside the client form component?
-- Am I preserving the one-submission-API model, or am I drifting into separate frontend systems?
-- Did I prove the article flow first before taking on the more complex event flow?
-- Is this validation helping UX only, or am I accidentally redefining the backend contract in the browser?
-- Would this abstraction still make sense if I had to explain it clearly in a portfolio walkthrough?
+- Am I trying to build event complexity before proving the simpler article flow?
+- Did I finish the visible form structure before adding state and validation?
+- Can I point to the exact state that owns each input's current value?
+- Is this validation helping the user, or am I trying to recreate the backend in the browser?
+- Does this logic belong in the client form, or should it live in the route page or API helper instead?
