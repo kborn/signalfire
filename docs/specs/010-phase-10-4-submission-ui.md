@@ -154,6 +154,15 @@ Each form uses this structure:
 4. single submit CTA row
 5. conditional success or error state
 
+### Form element recommendation
+
+- implement the interactive submission UI with a semantic HTML `<form>` element
+- use form submit behavior as the primary submit path rather than a loose button click
+- the submit CTA should be the form's submit button
+
+This is the recommended implementation pattern for Phase 10.4 unless a specific
+constraint requires otherwise.
+
 ### Moderation expectation note
 
 Place directly below the dek and above the form:

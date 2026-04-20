@@ -72,6 +72,11 @@ These cards may be created or updated alongside task-linked syllabi in
 - [58-controlled-inputs-in-react.md](./58-controlled-inputs-in-react.md) - Let React state own the current value when form UX depends on validation and submit state
 - [59-plain-react-form-vs-form-library.md](./59-plain-react-form-vs-form-library.md) - Learn the plain form mechanics before adding library abstraction
 - [60-react-component-props-object.md](./60-react-component-props-object.md) - JSX attributes become one props object, not separate function arguments
+- [61-dom-vs-react-state.md](./61-dom-vs-react-state.md) - The browser remembers the current page in the DOM, but React state should own values that drive form logic
+- [62-cors-preflight-vs-real-request.md](./62-cors-preflight-vs-real-request.md) - `OPTIONS` preflight failures and real `POST` failures point at different layers
+- [63-next-public-env-vs-server-env.md](./63-next-public-env-vs-server-env.md) - Browser code only gets `NEXT_PUBLIC_*` env vars
+- [64-localhost-port-changes-origin.md](./64-localhost-port-changes-origin.md) - Different localhost ports still count as different origins
+- [65-form-element-vs-loose-submit-button.md](./65-form-element-vs-loose-submit-button.md) - Real form UIs should usually use a semantic `<form>` and a submit button
 
 Rule of thumb:
 

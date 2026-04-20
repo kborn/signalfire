@@ -42,6 +42,30 @@ It does not mean:
 - learn a field-registration API first
 - hand control of the form to a library before you understand the basics
 
+### Why a real `<form>` element is still the right structure
+
+Even in React, this UI is still a real form.
+
+So the normal structure should be:
+
+- a `<form>`
+- inputs and textareas inside it
+- a submit button with `type="submit"`
+- one submit handler on the form
+
+That is better than:
+
+- a loose group of inputs in a `<section>`
+- a random button with `onClick` doing the submission
+
+Why it matters here:
+
+- it matches the semantic meaning of the UI
+- it gives one obvious place for submit handling
+- it keeps the markup easier to style and validate consistently
+- it matches what the Phase 10.4 spec is trying to describe, even when the spec
+  talks about fields and CTA behavior rather than naming the `<form>` tag directly
+
 ### What the browser would do by default
 
 Without React state, a browser form still works as HTML:
@@ -204,6 +228,21 @@ Meaning:
 - validate the current values
 - show errors if invalid
 - only submit if validation passes
+
+And the markup around that handler should usually be:
+
+```tsx
+<form onSubmit={handleSubmit}>
+  {/* fields */}
+  <button type="submit">Submit Article</button>
+</form>
+```
+
+Meaning:
+
+- the form owns submission
+- the button triggers form submit behavior
+- the handler is attached to the form, not scattered across individual buttons
 
 ### Example 4: Inline error display
 

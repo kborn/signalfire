@@ -76,6 +76,7 @@ article form sections in the exact spec order:
 
 Start by rendering:
 
+- one semantic `<form>` element for the interactive article form
 - labels
 - text inputs
 - textareas
@@ -88,6 +89,8 @@ screen first.
 Why second:
 
 It is easier to reason about form state after the visible shape is correct.
+Using the real `<form>` element now also gives you the correct place to attach
+submit handling later.
 
 ### 3. Add one explicit state object for current field values
 
