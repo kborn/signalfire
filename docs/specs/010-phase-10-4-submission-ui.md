@@ -362,13 +362,19 @@ Supporting links rules:
 
 ### Section 4 — Contact Information
 
-#### Field 6 — Name (optional)
+#### Field 6 — Author (optional)
+
+- Label: `Author (optional)`
+- Type: single-line text input
+- Width: full
+
+#### Field 7 — Name (optional)
 
 - Label: `Name (optional)`
 - Type: single-line text input
 - Width: full
 
-#### Field 7 — Email (optional)
+#### Field 8 — Email (optional)
 
 - Label: `Email (optional)`
 - Type: email input

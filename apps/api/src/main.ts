@@ -7,6 +7,11 @@ dotenv.config({ path: '.env.local' });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: ['http://localhost:3000'],
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
+  });
   const prisma = app.get(PrismaService);
   prisma.enableShutdownHooks(app);
   await app.listen(process.env.PORT ?? 3000);
