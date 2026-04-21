@@ -77,6 +77,7 @@ article form sections in the exact spec order:
 Start by rendering:
 
 - one semantic `<form>` element for the interactive article form
+- the shared submission primitive classes from `docs/specs/010-phase-10-4-submission-ui.md`
 - labels
 - text inputs
 - textareas

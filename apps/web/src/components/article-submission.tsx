@@ -156,108 +156,179 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   }
 
   if (isSuccess) {
-    return <div>Thank you for submitting</div>;
+    return <div className={'submissionSuccess'}>Thank you for submitting</div>;
   } else {
     return (
-      <form onSubmit={submit}>
+      <form className={'submissionForm'} onSubmit={submit}>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Article</h1>
           <p className="page-intro">
             Share an article that helps others understand an issue or take action
           </p>
 
-          <div> Title </div>
-          <input
-            value={title}
-            placeholder="Title"
-            onChange={(event) => setTitle(event.target.value)}
-          />
-          {errors.title ? <p className="submissionError">{errors.title}</p> : null}
-
-          <div> Summary </div>
-          <textarea
-            value={summary}
-            placeholder="Briefly describe what this article is about"
-            rows={4}
-            onChange={(event) => setSummary(event.target.value)}
-          />
-          {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
-
-          <div>Select at least one topic</div>
-          <div>
-            {topics.map((topic) => (
-              <label key={topic.name}>
+          <section className="submissionSection">
+            <h2>Basic Information</h2>
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Title</span>
                 <input
-                  type="checkbox"
-                  checked={topicSlugs.includes(topic.slug)}
-                  onChange={() => handleToggle(topic.slug)}
+                  className={'submissionControl'}
+                  value={title}
+                  placeholder="Title"
+                  onChange={(event) => setTitle(event.target.value)}
                 />
-                {topic.name}
               </label>
-            ))}
-          </div>
-          {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+              {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+            </section>
 
-          <div> Content </div>
-          <textarea
-            value={content}
-            placeholder="Briefly describe what this article is about"
-            rows={12}
-            onChange={(event) => setContent(event.target.value)}
-          />
-          {errors.content ? <p className="submissionError">{errors.content}</p> : null}
-
-          <div> Resource Links </div>
-          <div>
-            {resourceLinks.map((link, index) => (
-              <div key={index}>
-                <input
-                  type="url"
-                  value={link}
-                  onChange={(event) => handleResourceLinkChange(index, event.target.value)}
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Summary</span>
+                <textarea
+                  className="submissionTextarea"
+                  value={summary}
+                  placeholder="Briefly describe what this article is about"
+                  rows={4}
+                  onChange={(event) => setSummary(event.target.value)}
                 />
-                <button type="button" onClick={() => removeResourceLink(index)}>
-                  Remove
-                </button>
-                <button type="button" onClick={() => addResourceLink()}>
-                  Add Another Resource
-                </button>
-              </div>
-            ))}
-          </div>
-          {errors.resourceLinks ? <p className="submissionError">{errors.resourceLinks}</p> : null}
+              </label>
 
-          <div> Author </div>
-          <input
-            value={author}
-            placeholder="Author"
-            onChange={(event) => setAuthor(event.target.value)}
-          />
-          {errors.author ? <p className="submissionError">{errors.author}</p> : null}
+              {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+            </section>
 
-          <div> Submitter Name </div>
-          <input
-            value={submitterName}
-            placeholder="Name"
-            onChange={(event) => setSubmitterName(event.target.value)}
-          />
-          {errors.submitterName ? <p className="submissionError">{errors.submitterName}</p> : null}
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Select at least one topic</span>
+                <div className="submissionCheckboxGroup">
+                  {topics.map((topic) => (
+                    <label className="submissionCheckboxOption" key={topic.name}>
+                      <input
+                        type="checkbox"
+                        checked={topicSlugs.includes(topic.slug)}
+                        onChange={() => handleToggle(topic.slug)}
+                      />
+                      {topic.name}
+                    </label>
+                  ))}
+                </div>
+              </label>
 
-          <div> Submitter Email </div>
-          <input
-            value={submitterEmail}
-            placeholder="Email"
-            onChange={(event) => setSubmitterEmail(event.target.value)}
-          />
-          {errors.submitterEmail ? (
-            <p className="submissionError">{errors.submitterEmail}</p>
-          ) : null}
+              {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+            </section>
+          </section>
+
+          <section className="submissionSection">
+            <h2>Article Content</h2>
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Content</span>
+                <textarea
+                  className="submissionTextarea"
+                  value={content}
+                  placeholder="Enter your article content here"
+                  rows={12}
+                  onChange={(event) => setContent(event.target.value)}
+                />
+              </label>
+
+              {errors.content ? <p className="submissionError">{errors.content}</p> : null}
+            </section>
+          </section>
+
+          <section className="submissionSection">
+            <h2>Supporting Links</h2>
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Resource Links</span>
+                <div className="submissionRepeatableList">
+                  {resourceLinks.map((link, index) => (
+                    <div className="submissionRepeatableRow" key={index}>
+                      <input
+                        className="submissionControl"
+                        type="url"
+                        value={link}
+                        onChange={(event) => handleResourceLinkChange(index, event.target.value)}
+                      />
+                      <button
+                        className="submissionSecondaryAction"
+                        type="button"
+                        onClick={() => removeResourceLink(index)}
+                      >
+                        Remove
+                      </button>
+                      <button
+                        className="submissionSecondaryAction"
+                        type="button"
+                        onClick={() => addResourceLink()}
+                      >
+                        Add Another Resource
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </label>
+
+              {errors.resourceLinks ? (
+                <p className="submissionError">{errors.resourceLinks}</p>
+              ) : null}
+            </section>
+          </section>
+
+          <section className="submissionSection">
+            <h2>Contact Information</h2>
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Author</span>
+                <input
+                  className={'submissionControl'}
+                  value={author}
+                  placeholder="Author"
+                  onChange={(event) => setAuthor(event.target.value)}
+                />
+              </label>
+              {errors.author ? <p className="submissionError">{errors.author}</p> : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Submitter Name</span>
+                <input
+                  className={'submissionControl'}
+                  value={submitterName}
+                  placeholder="Name"
+                  onChange={(event) => setSubmitterName(event.target.value)}
+                />
+              </label>
+
+              {errors.submitterName ? (
+                <p className="submissionError">{errors.submitterName}</p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Submitter Email</span>
+                <input
+                  className={'submissionControl'}
+                  value={submitterEmail}
+                  placeholder="Email"
+                  onChange={(event) => setSubmitterEmail(event.target.value)}
+                />
+              </label>
+
+              {errors.submitterEmail ? (
+                <p className="submissionError">{errors.submitterEmail}</p>
+              ) : null}
+            </section>
+          </section>
         </section>
 
         {submitError ? <p className="submissionError">{submitError}</p> : null}
-        <button type="submit" disabled={isSubmitting}>
-          Submit Article
-        </button>
+        <div className="submissionActions">
+          <button type="submit" disabled={isSubmitting}>
+            Submit Article
+          </button>
+        </div>
       </form>
     );
   }

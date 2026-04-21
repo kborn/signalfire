@@ -237,9 +237,17 @@ Recommended shared classes:
 - `.submissionSection`
 - `.submissionField`
 - `.submissionFieldRow`
+- `.submissionLabel`
+- `.submissionControl`
+- `.submissionTextarea`
+- `.submissionCheckboxGroup`
+- `.submissionCheckboxOption`
+- `.submissionRepeatableList`
+- `.submissionRepeatableRow`
 - `.submissionHelper`
 - `.submissionError`
 - `.submissionActions`
+- `.submissionSecondaryAction`
 - `.submissionSuccess`
 - `.submissionGlobalError`
 
@@ -250,34 +258,119 @@ Recommended shared classes:
 - display: grid
 - gap: `40px`
 - max-width: `720px`
+- left-aligned within the page container
 
 #### `.submissionSection`
 
 - display: grid
 - gap: `20px`
+- owns one titled form section and the fields inside it
+
+Section heading:
+
+- use an `h2` or equivalent section title inside each `.submissionSection`
+- do not rely on visual spacing alone to imply sections
 
 #### `.submissionField`
 
 - display: grid
 - gap: `8px`
+- owns exactly one label/control/helper/error stack
+- use for text inputs, textareas, contact fields, and grouped controls such as topics
 
 #### `.submissionFieldRow`
 
 - used only where this spec explicitly permits row grouping
 - owns horizontal gap between grouped fields
 - child fields inside the row must still use `.submissionField`
+- stacks vertically on small screens
+
+#### `.submissionLabel`
+
+- applied to the visible label text for a field
+- labels appear above controls
+- required/optional status appears in the label text
+- do not use placeholder text as the only label
+
+#### `.submissionControl`
+
+- applied to standard single-line inputs and selects
+- width: `100%`
+- belongs inside `.submissionField`
+- should support normal, focus, and disabled states
+
+#### `.submissionTextarea`
+
+- applied to textarea controls
+- width: `100%`
+- belongs inside `.submissionField`
+- summary textareas use medium height
+- content/description textareas use visibly larger height
+
+#### `.submissionCheckboxGroup`
+
+- applied to the wrapper around checkbox options
+- display options as a vertical list
+- belongs inside the `Topics` `.submissionField`
+
+#### `.submissionCheckboxOption`
+
+- applied to each checkbox label row
+- contains the checkbox input and visible topic name
+- keep the label clickable by wrapping the checkbox and text in the same label
+
+#### `.submissionRepeatableList`
+
+- applied to the wrapper around repeatable supporting-link rows
+- display rows as a vertical list
+- belongs inside the `Supporting links (optional)` `.submissionField`
+
+#### `.submissionRepeatableRow`
+
+- applied to each repeated URL row
+- contains one URL input and the row-level remove action
+- rows may use horizontal input/action layout on desktop
+- rows should stack naturally on small screens
+
+#### `.submissionHelper`
+
+- applied to helper text below a control or grouped control
+- muted visual treatment
+- appears before field error text when both are present
+
+#### `.submissionError`
+
+- applied to field-level validation errors
+- appears directly below helper text when helper text exists
+- appears directly below the control when no helper text exists
+- should be visually distinct from helper text
 
 #### `.submissionActions`
 
 - margin-top: `32px`
 - display: flex
 - justify-content: flex-start
+- owns the primary submit CTA placement
+- submit button disabled state must be visually apparent
+
+#### `.submissionSecondaryAction`
+
+- applied to non-submit actions inside the form, such as `Add another link` or `Remove`
+- must not visually compete with the primary submit CTA
+
+#### `.submissionGlobalError`
+
+- applied to non-field submission errors
+- appears above `.submissionActions`
+- uses the global error copy defined in this spec
+- distinct from field-level `.submissionError`
 
 #### `.submissionSuccess`
 
 - display: grid
 - gap: `24px`
 - max-width: `720px`
+- replaces the form after successful submission
 
 ---
 

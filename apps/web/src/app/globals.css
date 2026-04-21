@@ -401,6 +401,188 @@ h3 {
   font-weight: 600;
 }
 
+/* Submission forms */
+
+.submissionForm {
+  display: grid;
+  gap: 40px;
+  max-width: 720px;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.submissionSection {
+  display: grid;
+  gap: 20px;
+}
+
+.submissionSection h2 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.submissionField {
+  display: grid;
+  gap: 8px;
+}
+
+.submissionFieldRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: start;
+}
+
+.submissionFieldRow > .submissionField {
+  flex: 1 1 0;
+}
+
+.submissionLabel {
+  display: block;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #171717;
+}
+
+.submissionControl,
+.submissionTextarea {
+  width: 100%;
+  border: 1px solid #9ca3af;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #171717;
+  font: inherit;
+  line-height: 1.4;
+}
+
+.submissionControl {
+  min-height: 48px;
+  padding: 0.75rem 0.9rem;
+}
+
+.submissionTextarea {
+  min-height: 120px;
+  padding: 0.85rem 0.9rem;
+  resize: vertical;
+}
+
+.submissionControl:focus,
+.submissionTextarea:focus {
+  border-color: #171717;
+  outline: 2px solid #171717;
+  outline-offset: 2px;
+}
+
+.submissionControl:disabled,
+.submissionTextarea:disabled {
+  background: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.submissionCheckboxGroup {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.submissionCheckboxOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  width: fit-content;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.submissionCheckboxOption input {
+  margin-top: 0.2em;
+}
+
+.submissionRepeatableList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.submissionRepeatableRow {
+  display: flex;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.submissionRepeatableRow .submissionControl {
+  flex: 1 1 auto;
+}
+
+.submissionHelper {
+  max-width: 60ch;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+.submissionError {
+  max-width: 60ch;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #b42318;
+}
+
+.submissionActions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 32px;
+}
+
+.submissionActions button:disabled,
+.primaryCTA:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submissionSecondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 40px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid #9ca3af;
+  border-radius: 999px;
+  background: transparent;
+  color: #171717;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.submissionSecondaryAction:hover {
+  border-color: #171717;
+  background: #f3f4f6;
+}
+
+.submissionSecondaryAction:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.submissionGlobalError {
+  max-width: 60ch;
+  padding: var(--space-2);
+  border: 1px solid #f3b4ad;
+  border-radius: 12px;
+  background: #fff5f3;
+  color: #b42318;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.submissionSuccess {
+  display: grid;
+  gap: 24px;
+  max-width: 720px;
+}
+
 /* Responsive */
 
 @media (max-width: 640px) {
@@ -453,5 +635,14 @@ h3 {
   .ctaRow {
     display: grid;
     justify-items: start;
+  }
+
+  .submissionFieldRow {
+    display: grid;
+  }
+
+  .submissionRepeatableRow {
+    display: grid;
+    align-items: stretch;
   }
 }
