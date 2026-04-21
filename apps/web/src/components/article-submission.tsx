@@ -1,5 +1,5 @@
 'use client';
-import { SubmissionResponse, TopicSummary } from '@signal-fire/api-contracts';
+import { TopicSummary } from '@signal-fire/api-contracts';
 import { useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';

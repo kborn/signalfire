@@ -64,7 +64,7 @@ export async function post<T>(req: SubmissionRequest): Promise<T> {
     body: JSON.stringify(req),
   });
 
-  let body: unknown = null;
+  let body: unknown;
 
   try {
     body = await response.json();
