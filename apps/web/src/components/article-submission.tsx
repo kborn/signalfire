@@ -84,9 +84,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     setSubmitError(null);
     setErrors({});
 
+    // required strings can not be null due to the type in the contract
     const normalizedTitle = title.trim();
     const normalizedSummary = summary.trim();
     const normalizedContent = content.trim();
+    // optional fields nulled so as not to send empty strings in payload
     const normalizedAuthor = author.trim() || null;
     const normalizedSubmitterName = submitterName.trim() || null;
     const normalizedSubmitterEmail = submitterEmail.trim() || null;
