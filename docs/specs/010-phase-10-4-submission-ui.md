@@ -187,8 +187,8 @@ Do not use one long unsectioned form.
 Each field uses this internal order:
 
 1. label
-2. input control
-3. helper text, if present
+2. helper text, if present
+3. input control
 4. field error, if present
 
 ### Field styling rules
@@ -196,8 +196,11 @@ Each field uses this internal order:
 - labels appear above inputs
 - required fields are identified in label text, not by a detached legend
 - optional fields are marked `(optional)` in the label text
-- helper text is muted and directly below the input
-- error text is directly below helper text
+- helper text is muted and directly below the label when extra explanation is needed
+- placeholder text may be used for examples or lightweight prompts inside text controls
+- placeholder text must not be the only label or the only source of important instructions
+- avoid duplicating the same wording in both placeholder text and helper text
+- error text is directly below the input or grouped control
 - errors must not appear in a separate floating region away from the field
 
 ### Input rules
@@ -334,15 +337,15 @@ Section heading:
 
 #### `.submissionHelper`
 
-- applied to helper text below a control or grouped control
+- applied to helper text below a label and above a control or grouped control
 - muted visual treatment
-- appears before field error text when both are present
+- used for guidance that should remain visible while the field is being filled out
+- not required when placeholder text is sufficient
 
 #### `.submissionError`
 
 - applied to field-level validation errors
-- appears directly below helper text when helper text exists
-- appears directly below the control when no helper text exists
+- appears directly below the control or grouped control
 - should be visually distinct from helper text
 
 #### `.submissionActions`

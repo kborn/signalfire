@@ -52,6 +52,10 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     setResourceLinks((prev) => [...prev, '']);
   }
 
+  function hasResourceLink() {
+    return resourceLinks.length > 1 || resourceLinks[0].trim() != '';
+  }
+
   function removeResourceLink(index: number) {
     setResourceLinks((prev) => prev.filter((_, currentIndex) => currentIndex !== index));
   }
@@ -145,7 +149,8 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             setErrors((prev) => ({ ...prev, ...newEntries }));
           }
         } else if (error instanceof Error) {
-          setSubmitError(error.message);
+          console.log(error.message);
+          setSubmitError('Something went wrong while sending your submission. Please try again.');
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');
         }
@@ -156,7 +161,18 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   }
 
   if (isSuccess) {
-    return <div className={'submissionSuccess'}>Thank you for submitting</div>;
+    return (
+      <div className={'submissionSuccess'}>
+        <p className="section-label">Submission received</p>
+        <h1 className="pageTitle">Thanks for submitting</h1>
+        <p className="page-intro">
+          Thanks — your submission has been received and is now pending review.
+        </p>
+        <p className="metaText">
+          If you included an email address, we may contact you if we need clarification.
+        </p>
+      </div>
+    );
   } else {
     return (
       <form className={'submissionForm'} onSubmit={submit}>
@@ -165,12 +181,13 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           <p className="page-intro">
             Share an article that helps others understand an issue or take action
           </p>
-
+          <p className="metaText">Submissions are reviewed before publication.</p>
+          <p className="metaText">Fields marked with * are required.</p>
           <section className="submissionSection">
             <h2>Basic Information</h2>
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Title</span>
+                <span>* Title</span>
                 <input
                   className={'submissionControl'}
                   value={title}
@@ -183,21 +200,21 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Summary</span>
+                <span>* Summary</span>
                 <textarea
                   className="submissionTextarea"
                   value={summary}
-                  placeholder="Briefly describe what this article is about"
+                  placeholder="A brief overview of the article"
                   rows={4}
                   onChange={(event) => setSummary(event.target.value)}
                 />
               </label>
-
               {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
             </section>
 
             <section className="submissionField">
-              <div className="submissionLabel">Topics</div>
+              <div className="submissionLabel">* Topics</div>
+              <p className="submissionHelper">Select at least one topic</p>
               <div className="submissionCheckboxGroup" aria-label="Topics">
                 {topics.map((topic) => (
                   <label className="submissionCheckboxOption" key={topic.name}>
@@ -218,23 +235,26 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             <h2>Article Content</h2>
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Content</span>
+                <span>* Content</span>
                 <textarea
                   className="submissionTextarea"
                   value={content}
-                  placeholder="Enter your article content here"
+                  placeholder="Paste or write the full article content"
                   rows={12}
                   onChange={(event) => setContent(event.target.value)}
                 />
               </label>
-
               {errors.content ? <p className="submissionError">{errors.content}</p> : null}
             </section>
           </section>
 
           <section className="submissionSection">
-            <h2>Supporting Links</h2>
+            <h2>Supporting Links (optional)</h2>
             <section className="submissionField">
+              <div className="submissionLabel">Supporting links (optional)</div>
+              <p className="submissionHelper">
+                Add links that help verify claims or provide context
+              </p>
               <div className="submissionRepeatableList">
                 {resourceLinks.map((link, index) => (
                   <div className="submissionRepeatableRow" key={index}>
@@ -245,25 +265,28 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                       id={`article-resource-link-${index}`}
                       className="submissionControl"
                       type="url"
+                      placeholder="https://example.org/source"
                       value={link}
                       onChange={(event) => handleResourceLinkChange(index, event.target.value)}
                     />
-                    <button
-                      className="submissionSecondaryAction"
-                      type="button"
-                      onClick={() => removeResourceLink(index)}
-                    >
-                      Remove
-                    </button>
-                    <button
-                      className="submissionSecondaryAction"
-                      type="button"
-                      onClick={() => addResourceLink()}
-                    >
-                      Add Another Resource
-                    </button>
+                    {hasResourceLink() ? (
+                      <button
+                        className="submissionSecondaryAction"
+                        type="button"
+                        onClick={() => removeResourceLink(index)}
+                      >
+                        Remove
+                      </button>
+                    ) : null}
                   </div>
                 ))}
+                <button
+                  className="submissionSecondaryAction"
+                  type="button"
+                  onClick={() => addResourceLink()}
+                >
+                  Add Another Resource
+                </button>
               </div>
               {errors.resourceLinks ? (
                 <p className="submissionError">{errors.resourceLinks}</p>
@@ -275,7 +298,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             <h2>Contact Information</h2>
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Author</span>
+                <span>Author (optional)</span>
                 <input
                   className={'submissionControl'}
                   value={author}
@@ -288,7 +311,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Submitter Name</span>
+                <span>Submitter Name (optional)</span>
                 <input
                   className={'submissionControl'}
                   value={submitterName}
@@ -304,15 +327,18 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Submitter Email</span>
+                <span>Submitter Email (optional)</span>
+                <span className="submissionHelper">
+                  Used only if we need to follow up about your submission
+                </span>
                 <input
                   className={'submissionControl'}
                   value={submitterEmail}
                   placeholder="Email"
+                  type={'email'}
                   onChange={(event) => setSubmitterEmail(event.target.value)}
                 />
               </label>
-
               {errors.submitterEmail ? (
                 <p className="submissionError">{errors.submitterEmail}</p>
               ) : null}
@@ -320,9 +346,9 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           </section>
         </section>
 
-        {submitError ? <p className="submissionError">{submitError}</p> : null}
+        {submitError ? <p className="submissionGlobalError">{submitError}</p> : null}
         <div className="submissionActions">
-          <button type="submit" disabled={isSubmitting}>
+          <button className="primaryCTA" type="submit" disabled={isSubmitting}>
             Submit Article
           </button>
         </div>

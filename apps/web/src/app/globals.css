@@ -436,7 +436,8 @@ h3 {
 }
 
 .submissionLabel {
-  display: block;
+  display: grid;
+  gap: 8px;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.25;
@@ -513,8 +514,10 @@ h3 {
 }
 
 .submissionHelper {
+  display: block;
   max-width: 60ch;
   font-size: 0.95rem;
+  font-weight: 400;
   line-height: 1.4;
   color: #6b7280;
 }
@@ -579,8 +582,12 @@ h3 {
 
 .submissionSuccess {
   display: grid;
-  gap: 24px;
+  gap: 16px;
   max-width: 720px;
+  padding: var(--space-4);
+  border: 1px solid #c9c9c9;
+  border-radius: 20px;
+  background: #f7f5ef;
 }
 
 /* Responsive */
