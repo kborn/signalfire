@@ -197,22 +197,19 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
-                <span>Select at least one topic</span>
-                <div className="submissionCheckboxGroup">
-                  {topics.map((topic) => (
-                    <label className="submissionCheckboxOption" key={topic.name}>
-                      <input
-                        type="checkbox"
-                        checked={topicSlugs.includes(topic.slug)}
-                        onChange={() => handleToggle(topic.slug)}
-                      />
-                      {topic.name}
-                    </label>
-                  ))}
-                </div>
-              </label>
-
+              <div className="submissionLabel">Topics</div>
+              <div className="submissionCheckboxGroup" aria-label="Topics">
+                {topics.map((topic) => (
+                  <label className="submissionCheckboxOption" key={topic.name}>
+                    <input
+                      type="checkbox"
+                      checked={topicSlugs.includes(topic.slug)}
+                      onChange={() => handleToggle(topic.slug)}
+                    />
+                    {topic.name}
+                  </label>
+                ))}
+              </div>
               {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
             </section>
           </section>
@@ -238,36 +235,36 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           <section className="submissionSection">
             <h2>Supporting Links</h2>
             <section className="submissionField">
-              <label className="submissionLabel">
-                <span>Resource Links</span>
-                <div className="submissionRepeatableList">
-                  {resourceLinks.map((link, index) => (
-                    <div className="submissionRepeatableRow" key={index}>
-                      <input
-                        className="submissionControl"
-                        type="url"
-                        value={link}
-                        onChange={(event) => handleResourceLinkChange(index, event.target.value)}
-                      />
-                      <button
-                        className="submissionSecondaryAction"
-                        type="button"
-                        onClick={() => removeResourceLink(index)}
-                      >
-                        Remove
-                      </button>
-                      <button
-                        className="submissionSecondaryAction"
-                        type="button"
-                        onClick={() => addResourceLink()}
-                      >
-                        Add Another Resource
-                      </button>
-                    </div>
-                  ))}
-                </div>
-              </label>
-
+              <div className="submissionRepeatableList">
+                {resourceLinks.map((link, index) => (
+                  <div className="submissionRepeatableRow" key={index}>
+                    <label className="submissionLabel" htmlFor={`article-resource-link-${index}`}>
+                      Resource link {index + 1}
+                    </label>
+                    <input
+                      id={`article-resource-link-${index}`}
+                      className="submissionControl"
+                      type="url"
+                      value={link}
+                      onChange={(event) => handleResourceLinkChange(index, event.target.value)}
+                    />
+                    <button
+                      className="submissionSecondaryAction"
+                      type="button"
+                      onClick={() => removeResourceLink(index)}
+                    >
+                      Remove
+                    </button>
+                    <button
+                      className="submissionSecondaryAction"
+                      type="button"
+                      onClick={() => addResourceLink()}
+                    >
+                      Add Another Resource
+                    </button>
+                  </div>
+                ))}
+              </div>
               {errors.resourceLinks ? (
                 <p className="submissionError">{errors.resourceLinks}</p>
               ) : null}
