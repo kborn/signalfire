@@ -77,6 +77,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [63-next-public-env-vs-server-env.md](./63-next-public-env-vs-server-env.md) - Browser code only gets `NEXT_PUBLIC_*` env vars
 - [64-localhost-port-changes-origin.md](./64-localhost-port-changes-origin.md) - Different localhost ports still count as different origins
 - [65-form-element-vs-loose-submit-button.md](./65-form-element-vs-loose-submit-button.md) - Real form UIs should usually use a semantic `<form>` and a submit button
+- [66-practical-debugging-with-console-dir-and-json.md](./66-practical-debugging-with-console-dir-and-json.md) - Use plain console tools first and log the smallest useful thing
 
 Rule of thumb:
 
