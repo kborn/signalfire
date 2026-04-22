@@ -464,15 +464,15 @@ Supporting links rules:
 - Type: single-line text input
 - Width: full
 
-#### Field 7 — Name (optional)
+#### Field 7 — Submitter Name (optional)
 
-- Label: `Name (optional)`
+- Label: `Submitter Name (optional)`
 - Type: single-line text input
 - Width: full
 
-#### Field 8 — Email (optional)
+#### Field 8 — Submitter Email (optional)
 
-- Label: `Email (optional)`
+- Label: `Submitter Email (optional)`
 - Type: email input
 - Width: full
 - Helper text: `Used only if we need to follow up about your submission`
