@@ -1,5 +1,6 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
@@ -7,6 +8,8 @@ import { SubmissionError } from '@/lib/api/error';
 type ArticleSubmissionFormProps = {
   topics: TopicSummary[];
 };
+
+type FormSubmitHandler = NonNullable<ComponentProps<'form'>['onSubmit']>;
 
 type ArticleSubmissionFormErrors = {
   title?: string;
@@ -83,7 +86,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     }
   }
 
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
+  const submit: FormSubmitHandler = async (event) => {
     event.preventDefault();
     setSubmitError(null);
     setErrors({});
@@ -163,7 +166,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
         setIsSubmitting(false);
       }
     }
-  }
+  };
 
   if (isSuccess) {
     return (

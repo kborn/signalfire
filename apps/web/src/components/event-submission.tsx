@@ -1,10 +1,13 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
 };
+
+type FormSubmitHandler = NonNullable<ComponentProps<'form'>['onSubmit']>;
 
 type ArticleSubmissionFormErrors = {
   title?: string;
@@ -72,9 +75,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     setResourceLinks((prev) => prev.filter((_, currentIndex) => currentIndex !== index));
   }
 
-  async function submit(event: React.FormEvent<HTMLFormElement>) {
+  const submit: FormSubmitHandler = async (event) => {
     event.preventDefault();
-  }
+  };
 
   return (
     <form className={'submissionForm'} onSubmit={submit}>
