@@ -297,6 +297,10 @@ Release 1 will use fixed Prisma enums for `ActionType` and `EventType` rather th
 - `WORKSHOP` — educational or training-oriented event
 - `MEETING` — organizing meeting or general civic gathering
 
+###### Deferred follow-up
+
+- TODO: evaluate adding `VOTE` to `EventType` in a later phase when expanding the Release 1 event taxonomy warrants the schema, API-contract, seed-data, and UI-label updates that enum change would require.
+
 ###### Clarification
 
 `ActionType.GUIDE` includes instructional content such as:
@@ -691,6 +695,40 @@ The `website` concept is not part of the submission model for Release 1.
 - `resourceLinks` is not automatically public and is not a canonical URL field.
 - Release 1 should not introduce `website`, `eventUrl`, or `primaryLink` on the
   submission model unless a later phase explicitly defines them.
+
+---
+
+---
+
+### ► Article submission UI exposes Author separately from submitter contact
+
+###### 2026-04-23
+
+---
+
+###### Decision
+
+Phase 10 article submission UI may expose an optional `Author` field separately
+from `Submitter Name` and `Submitter Email`. This is a UI labeling decision for
+clarity during public submission and does not introduce an author-management
+system.
+
+###### Rationale
+
+- Article submissions can reasonably be sent by someone other than the credited
+  author.
+- Distinct submitter labeling makes the moderation-follow-up purpose more
+  obvious than a generic `Name` field.
+- Keeping this distinction in article UI does not require broader authorship or
+  identity workflows in Release 1.
+
+###### Implications
+
+- Phase 10 article submission docs and UI should use `Author`, `Submitter
+Name`, and `Submitter Email` when this distinction is shown.
+- `submitterName` and `submitterEmail` remain moderation-only fields.
+- This does not require the same labeling for event submissions unless a later
+  decision extends it.
 
 ---
 

@@ -32,6 +32,7 @@ Define the minimum backend foundation boundaries for Phase 2 so Phase 3 can star
 - Domain-specific repositories/services/controllers.
 - Release 1 feature endpoints beyond backend foundation operations.
 - Any persistence design that locks in final domain relationships.
+- Future enum taxonomy expansion, including a possible `EventType.VOTE`, is deferred until a later phase updates the canonical enum decision and downstream schema/API/UI surfaces together.
 
 ## Config, Prisma, and Health Interaction
 

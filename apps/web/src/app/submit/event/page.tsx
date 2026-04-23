@@ -1,9 +1,8 @@
-export default function SubmitEventPage() {
-  return (
-    <section className="page-section">
-      <h1 className="pageTitle">Submit an Event</h1>
-      <p className="page-intro">Share an event others can attend and participate in</p>
-      <p className="metaText">Event submission is coming later in Phase 10.4.</p>
-    </section>
-  );
+import { getTopicsList } from '@/lib/api/topics';
+import { TopicListResponse } from '@signal-fire/api-contracts';
+import { EventSubmissionForm } from '@/components/event-submission';
+
+export default async function SubmitEventPage() {
+  const topics: TopicListResponse = await getTopicsList();
+  return <EventSubmissionForm topics={topics.items} />;
 }

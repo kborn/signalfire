@@ -320,7 +320,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 <input
                   className={'submissionControl'}
                   value={submitterName}
-                  placeholder="Name"
+                  placeholder="Your name"
                   onChange={(event) => setSubmitterName(event.target.value)}
                 />
               </label>
@@ -341,7 +341,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 id="article-submitter-email"
                 className={'submissionControl'}
                 value={submitterEmail}
-                placeholder="Email"
+                placeholder="name@example.com"
                 type={'email'}
                 onChange={(event) => setSubmitterEmail(event.target.value)}
               />

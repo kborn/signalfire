@@ -16,7 +16,7 @@ Goal: enable low-friction public submissions with clear moderation handoff and z
 - Unified model: exactly one `Submission` model and one creation path
 - Clear ownership: backend owns validation + persistence; UI mirrors but does not redefine rules
 - Capture-only scope: collect submission data for later review, do not normalize or enrich beyond what the spec requires
-- No premature complexity: no author systems, no tracking dashboards, no advanced workflows
+- No premature complexity: no author management system, no tracking dashboards, no advanced workflows
 
 ---
 
@@ -429,10 +429,11 @@ Field notes:
 
 Field order:
 
-6. `Name` — text input — optional
-7. `Email` — email input — optional
+6. `Author` — text input — optional
+7. `Submitter Name` — text input — optional
+8. `Submitter Email` — email input — optional
 
-Helper text for email:
+Helper text for submitter email:
 
 `Used only if we need to follow up about your submission`
 
@@ -443,8 +444,9 @@ Helper text for email:
 - Article content
 - Topics
 - Source links
-- Name
-- Email
+- Author
+- Submitter Name
+- Submitter Email
 
 ---
 
@@ -569,9 +571,10 @@ Do not invent submission-only event types.
 
 ## Submitter Fields Behavior
 
-- public Phase 10 forms collect `Name` and `Email` only
+- public Phase 10 article forms may collect `Author`, `Submitter Name`, and `Submitter Email`
+- public Phase 10 event forms collect `Name` and `Email` only
 - `author` is supported by the Phase 10 API contract and remains optional, not required
-- the public Phase 10 UI does not expose a separate author field
+- the public Phase 10 article UI may expose a separate author field
 - `submitterName` and `submitterEmail` are used for moderation follow-up only
 - `submitterName` and `submitterEmail` are not displayed publicly in Phase 10
 - `author` captures credited authorship intent for the submitted content
