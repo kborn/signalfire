@@ -148,9 +148,6 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
             setErrors((prev) => ({ ...prev, ...newEntries }));
           }
-        } else if (error instanceof Error) {
-          console.log(error.message);
-          setSubmitError('Something went wrong while sending your submission. Please try again.');
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');
         }
@@ -326,19 +323,20 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
-                <span>Submitter Email (optional)</span>
-                <span className="submissionHelper">
-                  Used only if we need to follow up about your submission
-                </span>
-                <input
-                  className={'submissionControl'}
-                  value={submitterEmail}
-                  placeholder="Email"
-                  type={'email'}
-                  onChange={(event) => setSubmitterEmail(event.target.value)}
-                />
+              <label className="submissionLabel" htmlFor="article-submitter-email">
+                Submitter Email (optional)
               </label>
+              <span className="submissionHelper">
+                Used only if we need to follow up about your submission
+              </span>
+              <input
+                id="article-submitter-email"
+                className={'submissionControl'}
+                value={submitterEmail}
+                placeholder="Email"
+                type={'email'}
+                onChange={(event) => setSubmitterEmail(event.target.value)}
+              />
               {errors.submitterEmail ? (
                 <p className="submissionError">{errors.submitterEmail}</p>
               ) : null}
