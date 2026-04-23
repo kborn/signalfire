@@ -146,7 +146,15 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
               };
             }, {});
 
-            setErrors((prev) => ({ ...prev, ...newEntries }));
+            if (Object.keys(newEntries).length > 0) {
+              setErrors((prev) => ({ ...prev, ...newEntries }));
+            } else {
+              setSubmitError(
+                'Something went wrong while sending your submission. Please try again.',
+              );
+            }
+          } else {
+            setSubmitError('Something went wrong while sending your submission. Please try again.');
           }
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');

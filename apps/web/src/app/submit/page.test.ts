@@ -14,11 +14,12 @@ describe('ChooseSubmitTypePage', () => {
     expect(markup).toContain(
       'Share educational or explanatory content that helps others understand an issue',
     );
-    expect(markup).toContain('href="/submit/event"');
     expect(markup).toContain('Submit an Event');
     expect(markup).toContain(
       'Share an upcoming event, rally, meeting, workshop, or volunteer opportunity',
     );
+    expect(markup).not.toContain('href="/submit/event"');
+    expect(markup).toContain('Event submission is coming later in Phase 10.4.');
     expect(markup).toContain('All submissions are reviewed before publication.');
   });
 });

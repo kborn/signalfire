@@ -5,10 +5,17 @@ import { PrismaService } from './prisma/prisma.service';
 
 dotenv.config({ path: '.env.local' });
 
+function getWebOrigins() {
+  return (process.env.WEB_ORIGINS ?? 'http://localhost:3000')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter((origin) => origin.length > 0);
+}
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: getWebOrigins(),
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
   });

@@ -15,9 +15,7 @@ export default function ChooseSubmitTypePage() {
       <section>
         <h2>Submit an Event</h2>
         <p>Share an upcoming event, rally, meeting, workshop, or volunteer opportunity</p>
-        <Link href="/submit/event" className="secondaryCTA">
-          Submit an Event
-        </Link>
+        <p className="metaText">Event submission is coming later in Phase 10.4.</p>
       </section>
       <p>All submissions are reviewed before publication.</p>
     </section>

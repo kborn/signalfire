@@ -55,7 +55,7 @@ function hasValidationErrors(
   );
 }
 
-export async function post<T>(req: SubmissionRequest): Promise<T> {
+export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
   const url = `${getApiBase()}/submissions`;
 
   const response = await fetch(url, {
