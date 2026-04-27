@@ -22,9 +22,11 @@ type ArticleSubmissionFormErrors = {
   city?: string;
   region?: string;
   country?: string;
+  postalCode?: string;
   topicSlugs?: string;
   endAt?: string;
   streetAddress?: string;
+  contactEmail?: string;
   resourceLinks?: string;
   submitterName?: string;
   submitterEmail?: string;
@@ -47,6 +49,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   // optional
   const [endAt, setEndAt] = useState('');
   const [streetAddress, setStreetAddress] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
   const [resourceLinks, setResourceLinks] = useState(['']);
   const [submitterName, setSubmitterName] = useState('');
   const [submitterEmail, setSubmitterEmail] = useState('');
@@ -99,6 +103,47 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     return date;
   }
 
+  function mapApiFieldToUiField(field: string): string | null {
+    switch (field) {
+      case 'payload.title':
+        return 'title';
+      case 'payload.summary':
+        return 'summary';
+      case 'payload.description':
+        return 'description';
+      case 'payload.eventType':
+        return 'eventType';
+      case 'payload.startDatetime':
+        return 'startAt';
+      case 'payload.endDatetime':
+        return 'endAt';
+      case 'payload.locationName':
+        return 'locationName';
+      case 'payload.locationAddressStreet':
+        return 'streetAddress';
+      case 'payload.locationAddressCity':
+        return 'city';
+      case 'payload.locationAddressRegion':
+        return 'region';
+      case 'payload.locationAddressCountry':
+        return 'country';
+      case 'payload.locationAddressZip':
+        return 'postalCode';
+      case 'payload.contactEmail':
+        return 'contactEmail';
+      case 'payload.topicSlugs':
+        return 'topicSlugs';
+      case 'payload.resourceLinks':
+        return 'resourceLinks';
+      case 'submitterName':
+        return 'submitterName';
+      case 'submitterEmail':
+        return 'submitterEmail';
+      default:
+        return null;
+    }
+  }
+
   const submit: FormSubmitHandler = async (event) => {
     event.preventDefault();
     setSubmitError(null);
@@ -118,6 +163,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     // optional fields nulled so as not to send empty strings in payload
     const normalizedEndAt = endAt.trim() || null;
     const normalizedStreetAddress = streetAddress.trim() || null;
+    const normalizedPostalCode = postalCode.trim() || null;
+    const normalizedContactEmail = contactEmail.trim() || null;
     const normalizedResourceLinks = resourceLinks
       .map((link) => link.trim())
       .filter((link) => link.length > 0);
@@ -189,7 +236,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             locationAddressCity: normalizedCity,
             locationAddressRegion: normalizedRegion,
             locationAddressCountry: normalizedCountry,
-            contactEmail: normalizedSubmitterEmail,
+            locationAddressZip: normalizedPostalCode,
+            contactEmail: normalizedContactEmail,
             topicSlugs: topicSlugs,
             resourceLinks: normalizedResourceLinks.length == 0 ? null : normalizedResourceLinks,
           },
@@ -199,7 +247,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         if (error instanceof SubmissionError) {
           if (error.errors) {
             const newEntries = error.errors.reduce((acc, e) => {
-              const uiField = ''; //mapApiFieldToUiField(e.field);
+              const uiField = mapApiFieldToUiField(e.field);
               if (!uiField) {
                 return acc;
               }
@@ -414,6 +462,19 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 <p className="submissionError">{errors.streetAddress}</p>
               ) : null}
             </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>ZIP Code (optional)</span>
+                <input
+                  className={'submissionControl'}
+                  value={postalCode}
+                  placeholder="19107"
+                  onChange={(event) => setPostalCode(event.target.value)}
+                />
+              </label>
+              {errors.postalCode ? <p className="submissionError">{errors.postalCode}</p> : null}
+            </section>
           </section>
 
           <section className="submissionSection">
@@ -485,6 +546,26 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
           <section className="submissionSection">
             <h2>Contact Information</h2>
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-contact-email">
+                Contact Email (optional)
+              </label>
+              <span className="submissionHelper">
+                Used publicly only if the event needs a contact address
+              </span>
+              <input
+                id="event-contact-email"
+                className={'submissionControl'}
+                value={contactEmail}
+                placeholder="organizer@example.com"
+                type={'email'}
+                onChange={(event) => setContactEmail(event.target.value)}
+              />
+              {errors.contactEmail ? (
+                <p className="submissionError">{errors.contactEmail}</p>
+              ) : null}
+            </section>
+
             <section className="submissionField">
               <label className="submissionLabel">
                 <span>Name (optional)</span>

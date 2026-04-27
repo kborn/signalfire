@@ -524,8 +524,13 @@ Field notes:
 
 Field order:
 
-15. `Name` — text input — optional
-16. `Email` — email input — optional
+15. `Contact Email` — email input — optional
+16. `Name` — text input — optional
+17. `Email` — email input — optional
+
+Helper text for contact email:
+
+`Used publicly only if the event needs a contact address`
 
 Helper text for email:
 
@@ -547,6 +552,7 @@ Helper text for email:
 - ZIP code
 - Topics
 - Supporting links
+- Contact Email
 - Name
 - Email
 
@@ -572,9 +578,10 @@ Do not invent submission-only event types.
 ## Submitter Fields Behavior
 
 - public Phase 10 article forms may collect `Author`, `Submitter Name`, and `Submitter Email`
-- public Phase 10 event forms collect `Name` and `Email` only
+- public Phase 10 event forms may collect `Contact Email`, `Name`, and `Email`
 - `author` is supported by the Phase 10 API contract and remains optional, not required
 - the public Phase 10 article UI may expose a separate author field
+- `contactEmail` is an optional event-level public contact address and is distinct from moderation follow-up fields
 - `submitterName` and `submitterEmail` are used for moderation follow-up only
 - `submitterName` and `submitterEmail` are not displayed publicly in Phase 10
 - `author` captures credited authorship intent for the submitted content
