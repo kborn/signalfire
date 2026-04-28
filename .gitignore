@@ -22,3 +22,6 @@ apps/web/.turbo
 
 # Personal working notes
 .ai/phase-notes/
+
+
+packages/api-contracts/.turbo
