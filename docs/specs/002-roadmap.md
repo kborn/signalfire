@@ -2,6 +2,9 @@
 
 ## V2
 
+- Content intelligence review assist
+- Tags as a secondary classification layer
+- Expanded content relationships
 - User accounts
 - Moderation notification emails
 - Submission history for users
