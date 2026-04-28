@@ -5,6 +5,7 @@
   "scripts": {
     "predev": "pnpm --filter @signal-fire/api-contracts build",
     "dev": "next dev",
+    "prelint": "pnpm --filter @signal-fire/api-contracts build",
     "prebuild": "pnpm --filter @signal-fire/api-contracts build",
     "build": "next build",
     "prestart": "pnpm --filter @signal-fire/api-contracts build",

@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prelint": "pnpm --filter @signal-fire/api-contracts build",
     "prebuild": "pnpm --filter @signal-fire/api-contracts build",
     "build": "nest build",
     "dev": "nest start --watch",
