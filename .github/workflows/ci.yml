@@ -82,5 +82,8 @@ jobs:
       - name: Setup monorepo
         uses: ./.github/actions/setup-monorepo
 
+      - name: Install Playwright Chromium
+        run: pnpm --filter api exec playwright install --with-deps chromium
+
       - name: E2E test
         run: pnpm --filter api test:e2e
