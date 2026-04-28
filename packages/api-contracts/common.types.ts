@@ -1,6 +1,8 @@
+import { EVENT_TYPES } from './event-type.constants.js';
+
 export type ActionType = 'GUIDE' | 'LINK' | 'CONTACT' | 'DONATE' | 'VOLUNTEER';
 
-export type EventType = 'PROTEST' | 'RALLY' | 'VOLUNTEER' | 'TOWN_HALL' | 'WORKSHOP' | 'MEETING';
+export type EventType = (typeof EVENT_TYPES)[number];
 
 export type ActionSummary = {
   id: number;

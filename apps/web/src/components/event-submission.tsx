@@ -4,7 +4,7 @@ import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
-import { EventType } from '@signal-fire/api-contracts';
+import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
 import {
   mapSubmissionApiFieldToUiField,
   SUBMISSION_FIELD_LIMITS,
@@ -72,6 +72,14 @@ const US_STATE_OPTIONS = [
   ['WI', 'Wisconsin'],
   ['WY', 'Wyoming'],
 ] as const;
+
+function formatEventTypeLabel(value: string): string {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
@@ -506,12 +514,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setEventType(event.target.value)}
                 >
                   <option value="">Select an event type</option>
-                  <option value="TOWN_HALL">Town Hall</option>
-                  <option value="PROTEST">Protest</option>
-                  <option value="RALLY">Rally</option>
-                  <option value="VOLUNTEER">Volunteer</option>
-                  <option value="WORKSHOP">Workshop</option>
-                  <option value="MEETING">Meeting</option>
+                  {EVENT_TYPES.map((eventType) => (
+                    <option value={eventType} key={eventType}>
+                      {formatEventTypeLabel(eventType)}
+                    </option>
+                  ))}
                 </select>
               </label>
               {errors.eventType ? <p className="submissionError">{errors.eventType}</p> : null}

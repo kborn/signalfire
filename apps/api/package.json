@@ -6,6 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prebuild": "pnpm --filter @signal-fire/api-contracts build",
     "build": "nest build",
     "dev": "nest start --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,10 +23,12 @@
     "test": "pnpm test:unit",
     "test:unit": "jest --config ./jest.unit.config.json",
     "test:integration": "jest --config ./jest.integration.config.json --runInBand",
+    "pretest:e2e": "pnpm --filter @signal-fire/api-contracts build",
     "test:unit:watch": "pnpm test:unit --watch",
     "test:unit:cov": "pnpm test:unit --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config ./jest.unit.config.json --runInBand",
     "test:e2e": "jest --config ./jest.e2e.config.json",
+    "pretypecheck": "pnpm --filter @signal-fire/api-contracts build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

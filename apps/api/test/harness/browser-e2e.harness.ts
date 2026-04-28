@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { App } from 'supertest/types';
 import { AppModule } from '../../src/app.module';
 import { PrismaService } from '../../src/prisma/prisma.service';
-import { spawn, type ChildProcess } from 'child_process';
+import { execSync, spawn, type ChildProcess } from 'child_process';
 import path from 'path';
 import net from 'net';
 import { once } from 'events';
@@ -101,10 +101,19 @@ export async function startWebServer(apiOrigin: string): Promise<RunningWebServe
   const origin = `http://127.0.0.1:${port}`;
   const repoRoot = path.resolve(__dirname, '../../../../..');
 
+  execSync('pnpm --filter web build', {
+    cwd: repoRoot,
+    env: {
+      ...globalThis.process.env,
+      NEXT_PUBLIC_API_BASE_URL: apiOrigin,
+    },
+    stdio: 'pipe',
+  });
+
   let output = '';
   const child = spawn(
     'pnpm',
-    ['--filter', 'web', 'exec', 'next', 'dev', '--hostname', '127.0.0.1', '--port', String(port)],
+    ['--filter', 'web', 'exec', 'next', 'start', '--hostname', '127.0.0.1', '--port', String(port)],
     {
       cwd: repoRoot,
       env: {
