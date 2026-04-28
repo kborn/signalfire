@@ -49,6 +49,7 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/terminus": "^11.1.1",
     "@nestjs/testing": "^11.0.1",
+    "@playwright/test": "^1.59.1",
     "@quramy/jest-prisma": "^1.8.2",
     "@quramy/jest-prisma-core": "^1.8.2",
     "@testcontainers/postgresql": "^11.12.0",
