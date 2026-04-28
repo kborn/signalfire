@@ -660,7 +660,7 @@ Events surface using `topicSlug` passthrough navigation.
 
 ---
 
-### ► Submission URL model uses moderation-only resource links
+### ► Event submissions use a canonical website URL; article submissions retain moderation links
 
 ###### 2026-04-06
 
@@ -668,33 +668,34 @@ Events surface using `topicSlug` passthrough navigation.
 
 ###### Decision
 
-Submission persistence uses exactly one link concept: `resourceLinks`. These
-links are supporting moderation and validation links, not canonical public URLs.
-The `website` concept is not part of the submission model for Release 1.
+Submission persistence distinguishes between article support links and event
+public URLs. Article submissions may include optional `resourceLinks` for
+moderation context. Event submissions may include one optional `websiteUrl`
+representing the public event, organizer, or RSVP URL and that field should map
+to the published Event model on approval.
 
 ###### Rationale
 
-- Article submissions may include supporting sources or references that help
-  moderators validate claims without extracting URLs from prose.
-- Event submissions may include supporting links such as an event page,
-  organizer page, or RSVP page, but those links still serve moderation review
-  rather than a distinct canonical URL concept.
-- Introducing separate concepts such as `website`, `eventUrl`, or `primaryLink`
-  would add premature product assumptions before moderation and publishing
-  workflows define how public-facing URLs should behave.
-- Keeping one shared link concept preserves the unified submission model and
-  avoids article/event drift.
+- Article submissions still benefit from optional supporting sources or
+  references that help moderators validate claims without extracting URLs from
+  prose.
+- Event submissions are materially different: a single public-facing event or
+  organizer URL is a stable part of the published event record, not just
+  moderation context.
+- Using one canonical event URL avoids ambiguous multi-link event submissions
+  and gives moderation a direct mapping target for approved Event records.
+- Article and event submissions may diverge where the public publishing model
+  genuinely differs.
 
 ###### Implications
 
-- Submission contracts and persistence should model one moderation-only URL
-  collection: `resourceLinks`.
-- `resourceLinks` is optional for both article and event submissions.
-- UI flows may impose different affordances, such as allowing one event link
-  and multiple article links, but both map to the same field.
-- `resourceLinks` is not automatically public and is not a canonical URL field.
-- Release 1 should not introduce `website`, `eventUrl`, or `primaryLink` on the
-  submission model unless a later phase explicitly defines them.
+- Article submission contracts and persistence should continue to support the
+  moderation-only URL collection `resourceLinks`.
+- Event submission contracts should use one optional scalar field:
+  `websiteUrl`.
+- Event submissions should not use `resourceLinks`.
+- Approved event submissions should map `websiteUrl` to the published Event
+  model's website field.
 
 ---
 

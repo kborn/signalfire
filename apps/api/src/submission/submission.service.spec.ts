@@ -54,7 +54,7 @@ const eventSubmissionInputData: EventSubmissionRequest = {
     locationAddressCountry: 'US',
     locationAddressZip: '19107',
     topicSlugs: ['economic-justice'],
-    resourceLinks: ['https://example.org/event'],
+    websiteUrl: 'https://example.org/event',
   },
 };
 
@@ -117,7 +117,6 @@ describe('SubmissionService', () => {
       submitterName: 'Alex Rivera',
       submitterEmail: 'organizer@example.org',
       submissionType: 'EVENT',
-      resourceLinks: ['https://example.org/event'],
       submittedContent: 'Join local organizers for a rally and speaker program.',
       eventType: 'RALLY',
       startTime: new Date('2026-05-14T17:00:00.000Z'),
@@ -128,6 +127,7 @@ describe('SubmissionService', () => {
       region: 'PA',
       postalCode: '19107',
       country: 'US',
+      website: 'https://example.org/event',
     });
   });
 });

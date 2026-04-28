@@ -175,7 +175,7 @@ describe('', () => {
         locationAddressZip: '19107',
         contactEmail: 'press@example.org',
         topicSlugs: ['economic-justice'],
-        resourceLinks: ['https://example.org/event'],
+        websiteUrl: 'https://example.org/event',
       },
     });
     expect('errors' in result).toBe(false);
@@ -218,15 +218,13 @@ describe('', () => {
         region: 'PA',
         postalCode: '19107',
         country: 'US',
+        website: 'https://example.org/event',
         contactEmail: 'press@example.org',
       }),
     );
     const topicSlugs =
       persistedSubmission?.submissionTopics.map((record) => record.topic.slug) ?? [];
-    const resourceUrls =
-      persistedSubmission?.submissionResourceLinks.map((record) => record.resourceLink.url) ?? [];
-
     expect(topicSlugs).toEqual(expect.arrayContaining(['economic-justice']));
-    expect(resourceUrls).toEqual(expect.arrayContaining(['https://example.org/event']));
+    expect(persistedSubmission?.submissionResourceLinks).toEqual([]);
   });
 });

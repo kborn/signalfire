@@ -74,7 +74,6 @@ export class SubmissionService {
   ): CreateSubmissionRepositoryInputEntityFields {
     return {
       submissionType: SubmissionType.EVENT,
-      resourceLinks: req.payload.resourceLinks,
       submittedContent: req.payload.description,
       eventType: req.payload.eventType,
       startTime: new Date(req.payload.startDatetime),
@@ -85,6 +84,7 @@ export class SubmissionService {
       region: req.payload.locationAddressRegion,
       postalCode: req.payload.locationAddressZip ?? null,
       country: req.payload.locationAddressCountry,
+      website: req.payload.websiteUrl ?? null,
       contactEmail: req.payload.contactEmail,
     };
   }

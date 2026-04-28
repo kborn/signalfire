@@ -15,6 +15,7 @@ export type EventDetailResponse = {
   title: string;
   summary: string;
   description: string;
+  website: string | null;
   eventType: EventType;
   startTime: string;
   endTime: string | null;

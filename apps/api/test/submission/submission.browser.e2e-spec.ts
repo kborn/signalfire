@@ -113,7 +113,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Contact Email (optional)').fill('press@example.org');
     await page!.getByLabel('Name (optional)').fill('Alex Rivera');
     await page!.locator('#event-submitter-email').fill('organizer@example.org');
-    await page!.getByLabel('Resource link 1').fill('example.org/event');
+    await page!.getByLabel('Website URL (optional)').fill('example.org/event');
     await page!.getByRole('button', { name: 'Submit Event' }).click();
 
     await pwExpect(page!.getByText('Thanks for submitting')).toBeVisible();
@@ -150,6 +150,7 @@ describe('Submission flows (browser e2e)', () => {
         region: 'PA',
         postalCode: '19107',
         country: 'US',
+        website: 'example.org/event',
         contactEmail: 'press@example.org',
       }),
     );
@@ -165,8 +166,6 @@ describe('Submission flows (browser e2e)', () => {
     expect(persistedSubmission.submissionTopics.map((record) => record.topic.slug)).toEqual([
       'economic-justice',
     ]);
-    expect(
-      persistedSubmission.submissionResourceLinks.map((record) => record.resourceLink.url),
-    ).toEqual(['example.org/event']);
+    expect(persistedSubmission.submissionResourceLinks).toEqual([]);
   });
 });

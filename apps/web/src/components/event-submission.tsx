@@ -11,7 +11,6 @@ import {
   validateOptionalEmail,
   validateOptionalStringMax,
   validateRequiredString,
-  validateResourceLinks,
 } from '@/lib/submission-form-validation';
 
 const US_STATE_OPTIONS = [
@@ -102,7 +101,7 @@ type ArticleSubmissionFormErrors = {
   endAt?: string;
   streetAddress?: string;
   contactEmail?: string;
-  resourceLinks?: string;
+  websiteUrl?: string;
   submitterName?: string;
   submitterEmail?: string;
 };
@@ -126,7 +125,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [streetAddress, setStreetAddress] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [resourceLinks, setResourceLinks] = useState(['']);
+  const [websiteUrl, setWebsiteUrl] = useState('');
   const [submitterName, setSubmitterName] = useState('');
   const [submitterEmail, setSubmitterEmail] = useState('');
   // ------------------------
@@ -146,24 +145,6 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           : [...prev, topic], // Add if not checked
     );
   };
-
-  const handleResourceLinkChange = (index: number, value: string) => {
-    setResourceLinks((prev) =>
-      prev.map((link, currentIndex) => (currentIndex === index ? value : link)),
-    );
-  };
-
-  function addResourceLink() {
-    setResourceLinks((prev) => [...prev, '']);
-  }
-
-  function hasResourceLink() {
-    return resourceLinks.length > 1 || resourceLinks[0].trim() != '';
-  }
-
-  function removeResourceLink(index: number) {
-    setResourceLinks((prev) => prev.filter((_, currentIndex) => currentIndex !== index));
-  }
 
   function parseLocalDateTime(value: string): Date | null {
     if (!value) {
@@ -213,8 +194,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         return 'contactEmail';
       case 'payload.topicSlugs':
         return 'topicSlugs';
-      case 'payload.resourceLinks':
-        return 'resourceLinks';
+      case 'payload.websiteUrl':
+        return 'websiteUrl';
       case 'submitterName':
         return 'submitterName';
       case 'submitterEmail':
@@ -245,9 +226,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const normalizedStreetAddress = streetAddress.trim() || null;
     const normalizedPostalCode = postalCode.trim() || null;
     const normalizedContactEmail = contactEmail.trim() || null;
-    const normalizedResourceLinks = resourceLinks
-      .map((link) => link.trim())
-      .filter((link) => link.length > 0);
+    const normalizedWebsiteUrl = websiteUrl.trim() || null;
     const normalizedSubmitterName = submitterName.trim() || null;
     const normalizedSubmitterEmail = submitterEmail.trim() || null;
 
@@ -361,9 +340,12 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
       errors.contactEmail = contactEmailError;
     }
 
-    const resourceLinksError = validateResourceLinks(normalizedResourceLinks);
-    if (resourceLinksError) {
-      errors.resourceLinks = resourceLinksError;
+    const websiteUrlError = validateOptionalStringMax(
+      normalizedWebsiteUrl,
+      SUBMISSION_FIELD_LIMITS.websiteUrl,
+    );
+    if (websiteUrlError) {
+      errors.websiteUrl = websiteUrlError;
     }
 
     const submitterNameError = validateOptionalStringMax(
@@ -405,7 +387,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             locationAddressZip: normalizedPostalCode,
             contactEmail: normalizedContactEmail,
             topicSlugs: topicSlugs,
-            resourceLinks: normalizedResourceLinks.length == 0 ? null : normalizedResourceLinks,
+            websiteUrl: normalizedWebsiteUrl,
           },
         });
         setIsSuccess(true);
@@ -665,48 +647,21 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
-            <h2>Supporting Links</h2>
+            <h2>Website</h2>
             <section className="submissionField">
-              <div className="submissionLabel">Supporting links (optional)</div>
-              <p className="submissionHelper">
-                Add links that help verify claims or provide context
-              </p>
-              <div className="submissionRepeatableList">
-                {resourceLinks.map((link, index) => (
-                  <div className="submissionRepeatableRow" key={index}>
-                    <label className="submissionLabel" htmlFor={`article-resource-link-${index}`}>
-                      Resource link {index + 1}
-                    </label>
-                    <input
-                      id={`article-resource-link-${index}`}
-                      className="submissionControl"
-                      type="text"
-                      placeholder="https://example.org/source"
-                      value={link}
-                      onChange={(event) => handleResourceLinkChange(index, event.target.value)}
-                    />
-                    {hasResourceLink() ? (
-                      <button
-                        className="submissionSecondaryAction"
-                        type="button"
-                        onClick={() => removeResourceLink(index)}
-                      >
-                        Remove
-                      </button>
-                    ) : null}
-                  </div>
-                ))}
-                <button
-                  className="submissionSecondaryAction"
-                  type="button"
-                  onClick={() => addResourceLink()}
-                >
-                  Add Another Resource
-                </button>
-              </div>
-              {errors.resourceLinks ? (
-                <p className="submissionError">{errors.resourceLinks}</p>
-              ) : null}
+              <label className="submissionLabel" htmlFor="event-website-url">
+                Website URL (optional)
+              </label>
+              <p className="submissionHelper">Public event, organizer, or RSVP URL</p>
+              <input
+                id="event-website-url"
+                className="submissionControl"
+                type="text"
+                placeholder="https://example.org/event"
+                value={websiteUrl}
+                onChange={(event) => setWebsiteUrl(event.target.value)}
+              />
+              {errors.websiteUrl ? <p className="submissionError">{errors.websiteUrl}</p> : null}
             </section>
           </section>
 

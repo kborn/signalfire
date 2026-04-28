@@ -92,7 +92,10 @@ describe('EventSubmissionForm', () => {
     await user.type(screen.getByLabelText('Contact Email (optional)'), '  organizer@example.org  ');
     await user.type(screen.getByLabelText('Name (optional)'), '  Sam Submitter  ');
     await user.type(screen.getByLabelText('Email (optional)'), '  sam@example.org  ');
-    await user.type(screen.getByLabelText('Resource link 1'), '  https://example.org/event  ');
+    await user.type(
+      screen.getByLabelText('Website URL (optional)'),
+      '  https://example.org/event  ',
+    );
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
@@ -115,7 +118,7 @@ describe('EventSubmissionForm', () => {
         locationAddressZip: '19107',
         contactEmail: 'organizer@example.org',
         topicSlugs: ['climate'],
-        resourceLinks: ['https://example.org/event'],
+        websiteUrl: 'https://example.org/event',
       },
     });
     expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();

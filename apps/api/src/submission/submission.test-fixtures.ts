@@ -115,7 +115,7 @@ export function buildEventSubmissionRequest(
       locationAddressZip: '19107',
       contactEmail: 'press@example.org',
       topicSlugs: ['economic-justice'],
-      resourceLinks: ['https://example.org/event'],
+      websiteUrl: 'https://example.org/event',
       ...(payloadOverrides ?? {}),
     },
     ...requestOverrides,

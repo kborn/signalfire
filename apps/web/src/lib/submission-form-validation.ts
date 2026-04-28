@@ -16,6 +16,7 @@ export const SUBMISSION_FIELD_LIMITS = {
   submitterEmail: 320,
   contactEmail: 320,
   resourceLink: 2000,
+  websiteUrl: 2000,
 } as const;
 
 export function validateRequiredString(

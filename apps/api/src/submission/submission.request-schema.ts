@@ -57,6 +57,8 @@ const resourceLinksSchema = z.preprocess(
     .nullable(),
 );
 
+const websiteUrlSchema = optionalNullableTrimmedString(2000);
+
 const submissionCommonSchema = z.object({
   author: optionalNullableTrimmedString(120),
   submitterName: optionalNullableTrimmedString(120),
@@ -113,7 +115,7 @@ const eventSubmissionSchema = submissionCommonSchema
       locationAddressZip: optionalNullableTrimmedString(32),
       contactEmail: optionalNullableEmail(),
       topicSlugs: topicSlugsSchema,
-      resourceLinks: resourceLinksSchema.optional(),
+      websiteUrl: websiteUrlSchema.optional(),
     }),
   })
   .superRefine((value, ctx) => {
