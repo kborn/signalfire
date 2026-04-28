@@ -199,6 +199,7 @@ describe('EventController (e2e)', () => {
       title: event.title,
       summary: event.summary,
       description: event.description,
+      website: null,
       eventType: event.eventType,
       startTime: event.startTime.toISOString(),
       endTime: event.endTime?.toISOString() ?? null,
