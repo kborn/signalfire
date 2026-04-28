@@ -181,7 +181,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     if (!normalizedSummary) {
       errors.summary = 'Summary can not be null';
     }
-    if (!description) {
+    if (!normalizedDescription) {
       errors.description = 'Description can not be null';
     }
     if (!eventType) {
@@ -190,16 +190,16 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     if (!startAt) {
       errors.startAt = 'Start date and time can not be null';
     }
-    if (!locationName) {
+    if (!normalizedLocationName) {
       errors.locationName = 'Location can not be null';
     }
-    if (!city) {
+    if (!normalizedCity) {
       errors.city = 'City can not be null';
     }
-    if (!region) {
+    if (!normalizedRegion) {
       errors.region = 'Region can not be null';
     }
-    if (!country) {
+    if (!normalizedCountry) {
       errors.country = 'Country can not be null';
     }
     if (topicSlugs.length === 0) {
