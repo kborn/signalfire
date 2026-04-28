@@ -5,26 +5,26 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status        |
-| ------------------------------------------------- | ------------------------------- | ------------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
-| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅            |
-| **[10](#-phase-10--submission-system-)**          | **Submission System**           | **🚧 ACTIVE** |
-| [11](#-phase-11--moderation-workflow-)            | Moderation Workflow             | ⏳            |
-| [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳            |
-| [13](#-phase-13--search--discovery-improvements-) | Search & Discovery Improvements | ⏳            |
-| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
-| [15](#-phase-15--analytics-)                      | Analytics                       | ⏳            |
-| [16](#-phase-16--release-stabilization-)          | Release Stabilization           | ⏳            |
-| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳            |
+| Phase                                             | Name                            | Status          |
+| ------------------------------------------------- | ------------------------------- | --------------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅              |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅              |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅              |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅              |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅              |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅              |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅              |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅              |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅              |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅              |
+| [10](#-phase-10--submission-system-)              | Submission System               | ✅              |
+| **[11](#-phase-11--moderation-workflow-)**        | **Moderation Workflow**         | \*🚧 ACTIVE\*\* |
+| [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳              |
+| [13](#-phase-13--search--discovery-improvements-) | Search & Discovery Improvements | ⏳              |
+| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳              |
+| [15](#-phase-15--analytics-)                      | Analytics                       | ⏳              |
+| [16](#-phase-16--release-stabilization-)          | Release Stabilization           | ⏳              |
+| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳              |
 
 ---
 
@@ -1121,7 +1121,7 @@ Implement anonymous submission workflow for events and articles.
 
 ---
 
-#### ▸ Phase 10.5 - Integration Hardening 🚧
+#### ▸ Phase 10.5 - Integration Hardening ✅
 
 ###### Phase Tasks:
 
