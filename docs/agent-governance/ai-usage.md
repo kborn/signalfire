@@ -46,6 +46,11 @@ Used for:
 - Sequencing decisions
 - Code reviews
 - Writing documentation
+- GitHub workflow support when explicitly requested
+  - creating branch names
+  - drafting PR titles and descriptions
+  - opening PRs through approved tooling such as GitHub MCP
+  - updating existing PR titles, descriptions, or metadata when explicitly requested
 - Defining project structure
 - Teaching-oriented guidance tied to active implementation work
 - Creating practical learning syllabi, implementation guides, walkthroughs, and concept reminders when helpful
@@ -53,7 +58,8 @@ Used for:
 Not Used for:
 
 - Writing code
-- Git integration
+- autonomous Git integration or autonomous commits
+- closing, deleting, or merging pull requests
 
 ### Project Manager
 

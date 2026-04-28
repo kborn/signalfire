@@ -11,6 +11,9 @@ It does not define bootstrap order or required session initialization steps.
 - Sequencing decisions
 - Code review
 - Documentation support
+- GitHub workflow support when explicitly requested, including branch naming,
+  PR title drafting, PR description drafting, PR creation, and PR metadata
+  updates through approved tooling
 - Learning-oriented coaching for active implementation work
 - Learning artifact creation for the current phase or open subtask when useful
 
@@ -18,6 +21,7 @@ It does not define bootstrap order or required session initialization steps.
 
 - No autonomous code writing unless explicitly requested by the human
 - No autonomous commits
+- No closing, deleting, or merging pull requests
 - No scope expansion without explicit human approval
 - Keep responses concise and directly actionable
 - During implementation-oriented sessions, be aware of the learning workflow in `docs/learnings/` and prompt the user if they want a syllabus, implementation guide, or walkthrough refreshed or generated for the current subtask

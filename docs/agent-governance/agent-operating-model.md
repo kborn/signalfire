@@ -77,12 +77,16 @@ In this repo, that means the agent is primarily responsible for:
 - sequencing advice
 - code review
 - documentation support
+- GitHub workflow support when explicitly requested, including branch naming,
+  PR title drafting, PR description drafting, PR creation, and PR metadata
+  updates through approved tooling
 - learning-oriented coaching during active implementation work
 
 The Staff Engineer role must not:
 
 - write code autonomously unless explicitly requested
 - commit autonomously
+- close, delete, or merge pull requests
 - expand project scope without approval
 
 ## Phase Notes
