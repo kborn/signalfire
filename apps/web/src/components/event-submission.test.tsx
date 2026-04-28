@@ -61,15 +61,15 @@ describe('EventSubmissionForm', () => {
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
     expect(postEventSubmission).not.toHaveBeenCalled();
-    expect(screen.getByText('Title can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Summary can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Description can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Event type can not be null')).toBeInTheDocument();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Summary is required')).toBeInTheDocument();
+    expect(screen.getByText('Description is required')).toBeInTheDocument();
+    expect(screen.getByText('Event type is required')).toBeInTheDocument();
     expect(screen.getByText('Start date and time is required')).toBeInTheDocument();
-    expect(screen.getByText('Location can not be null')).toBeInTheDocument();
-    expect(screen.getByText('City can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Region can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Country can not be null')).toBeInTheDocument();
+    expect(screen.getByText('Location name is required')).toBeInTheDocument();
+    expect(screen.getByText('Location address city is required')).toBeInTheDocument();
+    expect(screen.getByText('Location address region is required')).toBeInTheDocument();
+    expect(screen.getByText('Location address country is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
   });
 
@@ -164,5 +164,17 @@ describe('EventSubmissionForm', () => {
       screen.getByText('Something went wrong while sending your submission. Please try again.'),
     ).toHaveClass('submissionGlobalError');
     expect(screen.getByLabelText('* Title')).toHaveValue('  Transit Rally  ');
+  });
+
+  it('validates optional event email fields on the client before submit', async () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredEventFields();
+    await user.type(screen.getByLabelText('Contact Email (optional)'), 'not-an-email');
+
+    await user.click(screen.getByRole('button', { name: 'Submit Event' }));
+
+    expect(postEventSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Email must be valid')).toBeInTheDocument();
   });
 });

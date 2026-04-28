@@ -5,6 +5,14 @@ import { useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
 import { EventType } from '@signal-fire/api-contracts';
+import {
+  mapSubmissionApiFieldToUiField,
+  SUBMISSION_FIELD_LIMITS,
+  validateOptionalEmail,
+  validateOptionalStringMax,
+  validateRequiredString,
+  validateResourceLinks,
+} from '@/lib/submission-form-validation';
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
@@ -104,6 +112,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   }
 
   function mapApiFieldToUiField(field: string): string | null {
+    const sharedField = mapSubmissionApiFieldToUiField(field);
+    if (sharedField) {
+      return sharedField;
+    }
+
     switch (field) {
       case 'payload.title':
         return 'title';
@@ -175,33 +188,73 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const endDate = normalizedEndAt ? parseLocalDateTime(normalizedEndAt) : null;
 
     const errors: ArticleSubmissionFormErrors = {};
-    if (!normalizedTitle) {
-      errors.title = 'Title can not be null';
+    const titleError = validateRequiredString(
+      normalizedTitle,
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    if (titleError) {
+      errors.title = titleError;
     }
-    if (!normalizedSummary) {
-      errors.summary = 'Summary can not be null';
+
+    const summaryError = validateRequiredString(
+      normalizedSummary,
+      'Summary',
+      SUBMISSION_FIELD_LIMITS.summary,
+    );
+    if (summaryError) {
+      errors.summary = summaryError;
     }
-    if (!normalizedDescription) {
-      errors.description = 'Description can not be null';
+
+    const descriptionError = validateRequiredString(
+      normalizedDescription,
+      'Description',
+      SUBMISSION_FIELD_LIMITS.description,
+    );
+    if (descriptionError) {
+      errors.description = descriptionError;
     }
+
     if (!eventType) {
-      errors.eventType = 'Event type can not be null';
+      errors.eventType = 'Event type is required';
     }
-    if (!startAt) {
-      errors.startAt = 'Start date and time can not be null';
+
+    const locationNameError = validateRequiredString(
+      normalizedLocationName,
+      'Location name',
+      SUBMISSION_FIELD_LIMITS.locationName,
+    );
+    if (locationNameError) {
+      errors.locationName = locationNameError;
     }
-    if (!normalizedLocationName) {
-      errors.locationName = 'Location can not be null';
+
+    const cityError = validateRequiredString(
+      normalizedCity,
+      'Location address city',
+      SUBMISSION_FIELD_LIMITS.locationAddressCity,
+    );
+    if (cityError) {
+      errors.city = cityError;
     }
-    if (!normalizedCity) {
-      errors.city = 'City can not be null';
+
+    const regionError = validateRequiredString(
+      normalizedRegion,
+      'Location address region',
+      SUBMISSION_FIELD_LIMITS.locationAddressRegion,
+    );
+    if (regionError) {
+      errors.region = regionError;
     }
-    if (!normalizedRegion) {
-      errors.region = 'Region can not be null';
+
+    const countryError = validateRequiredString(
+      normalizedCountry,
+      'Location address country',
+      SUBMISSION_FIELD_LIMITS.locationAddressCountry,
+    );
+    if (countryError) {
+      errors.country = countryError;
     }
-    if (!normalizedCountry) {
-      errors.country = 'Country can not be null';
-    }
+
     if (topicSlugs.length === 0) {
       errors.topicSlugs = 'Select at least one related topic';
     }
@@ -216,6 +269,52 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     if (startDate && endDate && endDate < startDate) {
       errors.endAt = 'End date and time must be after the start date and time';
     }
+
+    const streetAddressError = validateOptionalStringMax(
+      normalizedStreetAddress,
+      SUBMISSION_FIELD_LIMITS.locationAddressStreet,
+    );
+    if (streetAddressError) {
+      errors.streetAddress = streetAddressError;
+    }
+
+    const postalCodeError = validateOptionalStringMax(
+      normalizedPostalCode,
+      SUBMISSION_FIELD_LIMITS.locationAddressZip,
+    );
+    if (postalCodeError) {
+      errors.postalCode = postalCodeError;
+    }
+
+    const contactEmailError = validateOptionalEmail(
+      normalizedContactEmail,
+      SUBMISSION_FIELD_LIMITS.contactEmail,
+    );
+    if (contactEmailError) {
+      errors.contactEmail = contactEmailError;
+    }
+
+    const resourceLinksError = validateResourceLinks(normalizedResourceLinks);
+    if (resourceLinksError) {
+      errors.resourceLinks = resourceLinksError;
+    }
+
+    const submitterNameError = validateOptionalStringMax(
+      normalizedSubmitterName,
+      SUBMISSION_FIELD_LIMITS.submitterName,
+    );
+    if (submitterNameError) {
+      errors.submitterName = submitterNameError;
+    }
+
+    const submitterEmailError = validateOptionalEmail(
+      normalizedSubmitterEmail,
+      SUBMISSION_FIELD_LIMITS.submitterEmail,
+    );
+    if (submitterEmailError) {
+      errors.submitterEmail = submitterEmailError;
+    }
+
     setErrors(errors);
     if (Object.keys(errors).length == 0) {
       setIsSubmitting(true);
@@ -290,7 +389,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     );
   } else {
     return (
-      <form className={'submissionForm'} onSubmit={submit}>
+      <form className={'submissionForm'} onSubmit={submit} noValidate>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Event</h1>
           <p className="page-intro">Share an event others can attend and participate in</p>
@@ -514,7 +613,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                     <input
                       id={`article-resource-link-${index}`}
                       className="submissionControl"
-                      type="url"
+                      type="text"
                       placeholder="https://example.org/source"
                       value={link}
                       onChange={(event) => handleResourceLinkChange(index, event.target.value)}
