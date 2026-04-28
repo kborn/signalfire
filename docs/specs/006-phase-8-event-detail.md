@@ -153,7 +153,7 @@ Do not render empty placeholders for:
 - The page should prioritize clarity of time and place over visual polish
 - Phase 8 should remain text-first and structurally simple
 - UI polish belongs to Phase 9
-- Location search/discovery improvements belong to Phase 13
+- Location search/discovery improvements belong to Phase 12
 - Missing or unpublished Events should follow the existing backend contract and resolve as not found
 - Phase 8 Event API changes are limited to the Events list contract, not Event detail
 

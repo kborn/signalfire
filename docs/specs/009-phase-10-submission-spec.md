@@ -642,7 +642,7 @@ This phase should add low-friction protection only.
 
 ---
 
-## Moderation Handoff (Phase 11 Boundary)
+## Moderation/Admin Handoff (Phase 11 Boundary)
 
 Phase 10 guarantees:
 
@@ -658,6 +658,8 @@ Phase 11 will handle:
 - approval and rejection workflows
 - editorial editing / normalization for publication
 - any notification or follow-up workflows beyond basic stored contact fields
+- essential admin editing for curated content
+- route protection and authentication hardening required before deployment, even if local development initially leaves the interface open
 
 ---
 
@@ -714,4 +716,4 @@ Phase 10 is complete when:
 - validation behavior is consistent between UI and API
 - UI surfaces validation errors clearly without ambiguity
 - success and failure states are clear and non-ambiguous
-- Phase 11 can begin moderation work without reopening Phase 10 product decisions
+- Phase 11 can begin moderation/admin work without reopening Phase 10 product decisions

@@ -205,7 +205,7 @@ Release 1 backend persistence will use Prisma ORM with PostgreSQL.
 
 ###### Decision
 
-Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 12 unless a low-complexity path is available earlier.
+Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 13 unless a low-complexity path is available earlier.
 
 ###### Rationale
 
@@ -216,9 +216,36 @@ Phase 2 requires local end-to-end Prisma migration validation, but CI migration 
 ###### Implications
 
 - Phase 2 completion does not require CI database migration execution.
-- Phase 12 must define deployment-time and CI migration strategy as part of infrastructure hardening.
+- Phase 13 must define deployment-time and CI migration strategy as part of infrastructure hardening.
 - Teams may still add CI migration smoke checks earlier if implementation complexity remains low.
 - Phase 2 should avoid implicit Prisma execution hooks in generic workflows (for example `prebuild`/`predev`) and use explicit Prisma commands instead.
+
+---
+
+---
+
+### ► Moderation and admin tooling are one Release 1 phase
+
+###### 2026-04-28
+
+---
+
+###### Decision
+
+Release 1 combines moderation workflow implementation and essential admin editing into a single phase and a single internal interface surface. During local-only and non-deployed development, that interface may be left openly reachable. Before deployment to any environment intended for real users, the interface must be protected by authentication/authorization.
+
+###### Rationale
+
+- The previous split between "Moderation Workflow" and "Admin Interface" created an artificial sequencing conflict because moderation is itself an admin function.
+- The project is not currently deployed, so requiring auth before moderation implementation would add drag without improving current safety.
+- A single phase better matches the actual dependency graph: moderation queue, review actions, and basic editorial/admin tools will be built together on one surface.
+
+###### Implications
+
+- Phase 11 is now `Moderation & Admin Interface`.
+- Search/discovery and later phases shift down by one phase number.
+- Canonical docs should treat access hardening for this interface as a deployment-readiness concern, not as a prerequisite for building the interface locally.
+- Any deployed environment for real users must place the moderation/admin interface behind authentication/authorization before launch.
 
 ---
 

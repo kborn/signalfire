@@ -37,14 +37,14 @@ The system consists of:
 - Public web client
 - Backend API service
 - PostgreSQL database
-- Administrative moderation interface
+- Internal moderation/admin interface
 
 ---
 
 ## High-Level System Diagram
 
 - Frontend serves the public site.
-- Admin interface uses the same backend.
+- Internal moderation/admin interface uses the same backend.
 - Backend owns domain logic and persistence.
 - PostgreSQL stores events, content, and moderation data.
 - Future ingestion sources plug into domain services rather than directly into the database.
@@ -55,7 +55,7 @@ flowchart LR
     B[Backend API<br/>NestJS / TypeScript]
     C[Domain Services<br/>Topics / Actions / Events / Content / Moderation]
     D[(PostgreSQL)]
-    E[Admin Interface]
+    E[Moderation/Admin Interface]
     F[Public Submission Form]
     G[Future Ingestion Sources<br/>Crawler / APIs / Imports]
 

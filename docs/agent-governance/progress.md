@@ -5,26 +5,25 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status          |
-| ------------------------------------------------- | ------------------------------- | --------------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅              |
-| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅              |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅              |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅              |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅              |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅              |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅              |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅              |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅              |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅              |
-| [10](#-phase-10--submission-system-)              | Submission System               | ✅              |
-| **[11](#-phase-11--moderation-workflow-)**        | **Moderation Workflow**         | \*🚧 ACTIVE\*\* |
-| [12](#-phase-12--admin-interface-)                | Admin Interface                 | ⏳              |
-| [13](#-phase-13--search--discovery-improvements-) | Search & Discovery Improvements | ⏳              |
-| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳              |
-| [15](#-phase-15--analytics-)                      | Analytics                       | ⏳              |
-| [16](#-phase-16--release-stabilization-)          | Release Stabilization           | ⏳              |
-| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳              |
+| Phase                                              | Name                             | Status          |
+| -------------------------------------------------- | -------------------------------- | --------------- |
+| [0](#-phase-0--repo-bootstrap-)                    | Repo Bootstrap                   | ✅              |
+| [1](#-phase-1--platform-skeleton-)                 | Repository & Platform Skeleton   | ✅              |
+| [2](#-phase-2--backend-foundations-)               | Backend Foundations              | ✅              |
+| [3](#-phase-3--core-domain-model-)                 | Core Domain Model                | ✅              |
+| [4](#-phase-4--test-infrastructure-)               | Test Infrastructure              | ✅              |
+| [5](#-phase-5--topic--content-apis-)               | Topic & Content APIs             | ✅              |
+| [6](#-phase-6--content-discovery-ui-)              | Content Discovery UI             | ✅              |
+| [7](#-phase-7--event-domain--apis-)                | Event Domain & APIs              | ✅              |
+| [8](#-phase-8--event-ui-)                          | Event UI                         | ✅              |
+| [9](#-phase-9--ui-polish-)                         | UI Polish                        | ✅              |
+| [10](#-phase-10--submission-system-)               | Submission System                | ✅              |
+| **[11](#-phase-11--moderation--admin-interface-)** | **Moderation & Admin Interface** | \*🚧 ACTIVE\*\* |
+| [12](#-phase-12--search--discovery-improvements-)  | Search & Discovery Improvements  | ⏳              |
+| [13](#-phase-13--deployment-infrastructure-)       | Deployment Infrastructure        | ⏳              |
+| [14](#-phase-14--analytics-)                       | Analytics                        | ⏳              |
+| [15](#-phase-15--release-stabilization-)           | Release Stabilization            | ⏳              |
+| [16](#-phase-16--public-launch-)                   | Public Launch                    | ⏳              |
 
 ---
 
@@ -1067,7 +1066,7 @@ Implement anonymous submission workflow for events and articles.
 - [ ] Invalid payloads are rejected with structured field errors
 - [ ] UI surfaces validation errors clearly without ambiguity
 - [ ] Backend validation is the source of truth and UI validation mirrors it for UX only
-- [ ] Phase 11 moderation handoff is documented
+- [ ] Phase 11 moderation/admin handoff is documented
 
 ---
 
@@ -1128,51 +1127,113 @@ Implement anonymous submission workflow for events and articles.
 - [ ] Verify end-to-end submission flow from UI through persistence
 - [ ] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
 - [ ] Guard against divergence between article and event handling inside the unified submission flow
-- [ ] Document assumptions and handoff boundaries to Phase 11 moderation workflow
+- [ ] Document assumptions and handoff boundaries to Phase 11 moderation/admin workflow
 - [ ] Add missing smoke or integration coverage needed for release readiness
 
 ---
 
 ---
 
-### ► Phase 11 — Moderation Workflow ⏳
+### ► Phase 11 — Moderation & Admin Interface ⏳
 
 ###### Goal
 
-Provide moderation queue and approval tools.
+Provide the first internal content operations surface for Release 1, covering moderation and essential admin editing.
+
+###### Definition of Done
+
+- [ ] Internal moderation/admin interface exists and is usable in local development
+- [ ] Moderators can view pending submissions, inspect submission details, and record review notes
+- [ ] Moderators can approve or reject submissions with valid state transitions
+- [ ] Approved submissions can be normalized and converted into published Article/Event records through the admin workflow
+- [ ] Administrators can create and edit Actions, Articles, and Events through the same interface surface
+- [ ] Key moderation and admin flows have targeted backend and UI/integration coverage
+- [ ] Deployment-time auth hardening requirements for this interface are documented for Phase 13
 
 Capabilities:
 
 - review submissions
 - approve or reject content
 - moderation state transitions
-
----
-
----
-
-### ► Phase 12 — Admin Interface ⏳
-
-###### Goal
-
-Administrative tools for managing content.
-
-Capabilities:
-
 - create/edit actions
 - publish articles
 - manage events
-- moderate submissions
+- leave review notes
 
 ###### Notes:
 
+- During local development and pre-deployment work, this interface may be exposed without authentication if that reduces implementation drag.
+- Before any deployed environment intended for real users, this interface must be placed behind authentication/authorization.
+- Release 1 should treat auth hardening for this interface as part of deployment readiness, not as a separate earlier product phase.
 - Topic data management is deferred to a post-Release-1 phase; Release 1 topics remain seed-defined and non-editable.
 
 ---
 
 ---
 
-### ► Phase 13 — Search & Discovery Improvements ⏳
+#### ▸ Phase 11.1 - Moderation Queue Foundation ⏳
+
+###### Phase Tasks:
+
+- [ ] Define the internal interface entry routes and page structure for moderation/admin workflows
+- [ ] Add backend read paths for moderation queue listing and submission detail retrieval
+- [ ] Support basic queue segmentation for `pending`, `approved`, and `rejected` submissions
+- [ ] Expose enough submitted metadata for review decisions without requiring database inspection
+- [ ] Add focused tests for moderation queue retrieval and submission detail contracts
+
+---
+
+#### ▸ Phase 11.2 - Review Actions & State Transitions ⏳
+
+###### Phase Tasks:
+
+- [ ] Implement approve and reject actions for submissions
+- [ ] Persist moderator review notes with approval/rejection decisions
+- [ ] Enforce valid moderation state transitions and prevent duplicate conversion/publish actions
+- [ ] Define and surface failure behavior for invalid transitions or missing submissions
+- [ ] Add backend tests covering moderation action behavior and state-transition rules
+
+---
+
+#### ▸ Phase 11.3 - Editorial Normalization & Publication Mapping ⏳
+
+###### Phase Tasks:
+
+- [ ] Define the moderation-side editing/normalization fields required before publication
+- [ ] Implement approval flow that converts article submissions into published Article records
+- [ ] Implement approval flow that converts event submissions into published Event records
+- [ ] Preserve the distinction between moderation-only fields and public published fields during conversion
+- [ ] Add integration coverage proving approved submissions become publicly visible through existing public read surfaces
+
+---
+
+#### ▸ Phase 11.4 - Essential Admin Content Management ⏳
+
+###### Phase Tasks:
+
+- [ ] Build admin create/edit flow for curated Actions
+- [ ] Build admin create/edit/publish flow for Articles
+- [ ] Build admin create/edit/publish flow for Events
+- [ ] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
+- [ ] Keep Topic assignment limited to the seeded Release 1 topic set with no topic-management expansion
+
+---
+
+#### ▸ Phase 11.5 - Interface Hardening Handoff ⏳
+
+###### Phase Tasks:
+
+- [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows
+- [ ] Document the temporary local-access assumption for the interface
+- [ ] Define the minimum authentication/authorization requirements that Phase 13 must satisfy before deployment
+- [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
+- [ ] Confirm Phase 11 leaves Search/Discovery and Deployment phases unblocked
+
+---
+
+---
+
+### ► Phase 12 — Search & Discovery Improvements ⏳
 
 ###### Goal
 
@@ -1182,7 +1243,7 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-### ► Phase 14 — Deployment Infrastructure ⏳
+### ► Phase 13 — Deployment Infrastructure ⏳
 
 ###### Goal
 
@@ -1192,7 +1253,7 @@ Configure hosting, environment management, and CI/CD.
 
 ---
 
-### ► Phase 15 — Analytics ⏳
+### ► Phase 14 — Analytics ⏳
 
 ###### Goal
 
@@ -1209,7 +1270,7 @@ Capabilities:
 
 ---
 
-### ► Phase 16 — Release Stabilization ⏳
+### ► Phase 15 — Release Stabilization ⏳
 
 ###### Goal
 
@@ -1219,7 +1280,7 @@ Bug fixes, polish, and observability improvements.
 
 ---
 
-### ► Phase 17 — Public Launch ⏳
+### ► Phase 16 — Public Launch ⏳
 
 ###### Goal
 

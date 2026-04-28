@@ -86,6 +86,10 @@ Administrators can:
 - reject submissions
 - edit curated content
 
+Moderation and essential admin editing may share one internal interface in Release 1.
+That interface does not need production-grade access control during local-only development,
+but it must be protected before deployment to a real user environment.
+
 ---
 
 # Explicitly Excluded From Release 1

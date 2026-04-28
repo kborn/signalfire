@@ -129,7 +129,7 @@ Routes to:
 ## Notes
 
 - This is a read-only discovery surface
-- Location intelligence deferred to Phase 13
+- Location intelligence deferred to Phase 12
 - UI intentionally minimal
 - Topic-related Event discovery in Phase 8 belongs on `/events`, not on Topic detail pages
 - Topic pages may link into `/events?topicSlug=<slug>` as passthrough navigation without changing Topic API payloads
