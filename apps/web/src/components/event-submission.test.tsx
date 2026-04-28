@@ -40,8 +40,7 @@ async function fillRequiredEventFields() {
   await user.type(screen.getByLabelText('* Start date and time'), '2026-05-14T17:00');
   await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
   await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
-  await user.type(screen.getByLabelText('* Region'), '  PA  ');
-  await user.type(screen.getByLabelText('* Country'), '  US  ');
+  await user.selectOptions(screen.getByLabelText('* Region'), 'PA');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -61,16 +60,24 @@ describe('EventSubmissionForm', () => {
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
     expect(postEventSubmission).not.toHaveBeenCalled();
-    expect(screen.getByText('Title can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Summary can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Description can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Event type can not be null')).toBeInTheDocument();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Summary is required')).toBeInTheDocument();
+    expect(screen.getByText('Description is required')).toBeInTheDocument();
+    expect(screen.getByText('Event type is required')).toBeInTheDocument();
     expect(screen.getByText('Start date and time is required')).toBeInTheDocument();
-    expect(screen.getByText('Location can not be null')).toBeInTheDocument();
-    expect(screen.getByText('City can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Region can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Country can not be null')).toBeInTheDocument();
+    expect(screen.getByText('Location name is required')).toBeInTheDocument();
+    expect(screen.getByText('Location address city is required')).toBeInTheDocument();
+    expect(screen.getByText('Location address region is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+  });
+
+  it('defaults country to US and keeps it disabled', () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const countryInput = screen.getByLabelText('* Country');
+
+    expect(countryInput).toHaveValue('US');
+    expect(countryInput).toBeDisabled();
   });
 
   it('submits a normalized event payload and shows the success state', async () => {
@@ -85,7 +92,10 @@ describe('EventSubmissionForm', () => {
     await user.type(screen.getByLabelText('Contact Email (optional)'), '  organizer@example.org  ');
     await user.type(screen.getByLabelText('Name (optional)'), '  Sam Submitter  ');
     await user.type(screen.getByLabelText('Email (optional)'), '  sam@example.org  ');
-    await user.type(screen.getByLabelText('Resource link 1'), '  https://example.org/event  ');
+    await user.type(
+      screen.getByLabelText('Website URL (optional)'),
+      '  https://example.org/event  ',
+    );
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
@@ -108,7 +118,7 @@ describe('EventSubmissionForm', () => {
         locationAddressZip: '19107',
         contactEmail: 'organizer@example.org',
         topicSlugs: ['climate'],
-        resourceLinks: ['https://example.org/event'],
+        websiteUrl: 'https://example.org/event',
       },
     });
     expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();
@@ -164,5 +174,17 @@ describe('EventSubmissionForm', () => {
       screen.getByText('Something went wrong while sending your submission. Please try again.'),
     ).toHaveClass('submissionGlobalError');
     expect(screen.getByLabelText('* Title')).toHaveValue('  Transit Rally  ');
+  });
+
+  it('validates optional event email fields on the client before submit', async () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredEventFields();
+    await user.type(screen.getByLabelText('Contact Email (optional)'), 'not-an-email');
+
+    await user.click(screen.getByRole('button', { name: 'Submit Event' }));
+
+    expect(postEventSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Email must be valid')).toBeInTheDocument();
   });
 });

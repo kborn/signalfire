@@ -3,12 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "pnpm --filter @signal-fire/api-contracts build",
     "dev": "next dev",
+    "prelint": "pnpm --filter @signal-fire/api-contracts build",
+    "prebuild": "pnpm --filter @signal-fire/api-contracts build",
     "build": "next build",
+    "prestart": "pnpm --filter @signal-fire/api-contracts build",
     "start": "next start",
     "lint": "eslint",
+    "pretest": "pnpm --filter @signal-fire/api-contracts build",
     "test": "vitest run",
+    "pretest:watch": "pnpm --filter @signal-fire/api-contracts build",
     "test:watch": "vitest",
+    "pretypecheck": "pnpm --filter @signal-fire/api-contracts build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

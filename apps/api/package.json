@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "prelint": "pnpm --filter @signal-fire/api-contracts build",
+    "prebuild": "pnpm --filter @signal-fire/api-contracts build",
     "build": "nest build",
     "dev": "nest start --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -22,10 +24,12 @@
     "test": "pnpm test:unit",
     "test:unit": "jest --config ./jest.unit.config.json",
     "test:integration": "jest --config ./jest.integration.config.json --runInBand",
+    "pretest:e2e": "pnpm --filter @signal-fire/api-contracts build",
     "test:unit:watch": "pnpm test:unit --watch",
     "test:unit:cov": "pnpm test:unit --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config ./jest.unit.config.json --runInBand",
     "test:e2e": "jest --config ./jest.e2e.config.json",
+    "pretypecheck": "pnpm --filter @signal-fire/api-contracts build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -49,6 +53,7 @@
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/terminus": "^11.1.1",
     "@nestjs/testing": "^11.0.1",
+    "@playwright/test": "^1.59.1",
     "@quramy/jest-prisma": "^1.8.2",
     "@quramy/jest-prisma-core": "^1.8.2",
     "@testcontainers/postgresql": "^11.12.0",

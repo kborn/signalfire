@@ -61,6 +61,7 @@ CREATE TABLE "_event" (
     "title" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "website" TEXT,
     "eventType" "EventType" NOT NULL,
     "status" "EntityStatus" NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL,

@@ -499,7 +499,7 @@ Single CTA only:
 2. Schedule
 3. Location
 4. Topics
-5. Supporting Links
+5. Website
 6. Contact Information
 
 ### Section 1 — Basic Information
@@ -582,9 +582,15 @@ This section must map 1:1 to the API payload.
 #### Field 9 — Region
 
 - Label: `Region`
-- Type: single-line text input
+- Type: select
 - Required: yes
 - maps to `locationAddressRegion`
+
+Region rules:
+
+- use a static US states + DC + territories option list in the client
+- submit the selected two-letter postal abbreviation as `locationAddressRegion`
+- do not fetch region metadata at runtime in Phase 10.4
 
 #### Field 10 — Country
 
@@ -597,7 +603,8 @@ Country rules:
 
 - field must exist in payload
 - prefill `US` by default
-- keep the field editable
+- render as disabled in the event submission form
+- always submit `US` as `locationAddressCountry` in Phase 10.4
 
 #### Field 11 — Street Address (optional)
 
@@ -625,21 +632,22 @@ Topics UX:
 
 - use the same checkbox-list pattern as the article form
 
-### Section 5 — Supporting Links
+### Section 5 — Website
 
-#### Field 13 — Supporting links (optional)
+#### Field 13 — Website URL (optional)
 
-- Label: `Supporting links (optional)`
-- Type: repeatable URL inputs OR one textarea with one URL per line
+- Label: `Website URL (optional)`
+- Type: single-line text input
 - Required: no
 - Width: full
-- Helper text: `Add links to the event page, organizer page, or other supporting information`
+- Helper text: `Public event, organizer, or RSVP URL`
+- maps to `websiteUrl`
 
-Supporting links rules:
+Website rules:
 
-- preferred implementation: repeatable URL inputs
-- fallback allowed: one textarea with one URL per line
-- not allowed: comma-separated parsing
+- event submissions use one optional canonical website field
+- do not render repeatable supporting-link inputs for events
+- article submissions may continue to use repeatable supporting links
 
 ### Section 6 — Contact Information
 

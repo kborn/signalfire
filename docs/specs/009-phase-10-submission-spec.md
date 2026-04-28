@@ -84,7 +84,7 @@ An optional chooser route may also exist:
 - `locationAddressZip` (optional)
 - `contactEmail` (optional)
 - `topicSlugs` (required, array)
-- `resourceLinks` (optional, array)
+- `websiteUrl` (optional, string)
 
 ---
 
@@ -153,7 +153,8 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Optional request fields may also be sent as `null` when the client has no value to provide
 - Empty strings are not a substitute for omission on optional fields; trim first, then either persist a value or normalize to `null`
 - `endDatetime` may be omitted or set to `null`
-- `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
+- article `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
+- event `websiteUrl` may be omitted or set to `null`
 - optional location fields may be omitted or set to `null`
 - `author`, `submitterName`, and `submitterEmail` may be omitted or set to `null`
 
@@ -213,7 +214,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "locationAddressZip": "19107",
     "contactEmail": "organizer@example.org",
     "topicSlugs": ["economic-justice"],
-    "resourceLinks": ["https://example.org/event"]
+    "websiteUrl": "https://example.org/event"
   },
   "submitterName": "Alex",
   "submitterEmail": "alex@example.org"
@@ -296,7 +297,7 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `payload.locationAddressCountry` -> `country`
 - `payload.locationAddressZip` -> `postalCode`
 - `payload.contactEmail` -> `contactEmail`
-- `payload.resourceLinks` should be retained for moderation review during Phase 10 implementation
+- `payload.websiteUrl` -> `website`
 - `payload.topicSlugs` should be validated against seeded topics and retained for later conversion workflow
 
 ### Normalization Rules
@@ -311,14 +312,12 @@ Phase 10 implementation should map request fields into the existing persistence 
 
 ### Link Model
 
-- `resourceLinks` is the only URL/link concept in the submission model
-- `resourceLinks` represents supporting links for moderation and validation, not a canonical public URL
-- `resourceLinks` is moderation-only in Phase 10 and is not surfaced in the public UI
-- `resourceLinks` may be used to validate article claims or event legitimacy
-- the public API keeps one shared link concept even if article and event forms use different UI affordances
-- the event form may restrict entry to a single link for now, but it still maps to `resourceLinks`
-- Phase 10 does not introduce `website`, `eventUrl`, `primaryLink`, or automatic propagation of links to published models
-- later moderation/editorial workflows may choose to ignore links or promote one into a future public-facing field if explicitly defined in a later phase
+- article submissions may include optional `resourceLinks`
+- article `resourceLinks` are supporting links for moderation and validation, not canonical public URLs
+- event submissions do not use `resourceLinks`
+- event submissions may include one optional `websiteUrl`
+- `websiteUrl` represents the public event, organizer, or RSVP URL
+- approved event submissions should map `websiteUrl` to the published Event model website field
 
 ---
 
@@ -516,7 +515,8 @@ Field order:
 
 Field notes:
 
-- supporting links map to `resourceLinks`
+- article supporting links map to `resourceLinks`
+- event website input maps to `websiteUrl`
 - supporting links remain optional and must not block submission
 - the UI may use a repeatable field list or a one-link-per-line textarea
 

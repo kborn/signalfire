@@ -17,6 +17,17 @@ const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
+function relativeDate(params: { daysFromNow?: number; hours?: number; minutes?: number }): Date {
+  const { daysFromNow = 0, hours = 0, minutes = 0 } = params;
+  const date = new Date();
+
+  date.setSeconds(0, 0);
+  date.setDate(date.getDate() + daysFromNow);
+  date.setHours(hours, minutes, 0, 0);
+
+  return date;
+}
+
 const topics = [
   {
     slug: 'democracy',
@@ -581,11 +592,12 @@ const demoEvents = [
     summary: 'Residents gather before the transportation budget vote.',
     description:
       'A public rally focused on transit expansion, clean mobility, and equitable budget priorities before the city council vote.',
+    website: 'https://example.org/transit-rally',
     eventType: EventType.RALLY,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-04-01T12:00:00.000Z'),
-    startTime: new Date('2026-04-18T17:30:00.000Z'),
-    endTime: new Date('2026-04-18T19:00:00.000Z'),
+    publishedAt: relativeDate({ daysFromNow: -2, hours: 12 }),
+    startTime: relativeDate({ daysFromNow: 7, hours: 17, minutes: 30 }),
+    endTime: relativeDate({ daysFromNow: 7, hours: 19 }),
     locationName: 'City Hall Plaza',
     addressRaw: '123 Main St',
     city: 'Philadelphia',
@@ -603,20 +615,19 @@ const demoEvents = [
       submittedContent:
         'Community-organized rally urging city officials to prioritize transit funding and equitable mobility.',
       eventType: EventType.RALLY,
-      startTime: new Date('2026-04-18T17:30:00.000Z'),
-      endTime: new Date('2026-04-18T19:00:00.000Z'),
+      startTime: relativeDate({ daysFromNow: 7, hours: 17, minutes: 30 }),
+      endTime: relativeDate({ daysFromNow: 7, hours: 19 }),
       locationName: 'City Hall Plaza',
       addressRaw: '123 Main St',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19107',
       country: 'USA',
-      website: 'https://example.org/transit-rally',
       contactEmail: 'events@example.org',
       submitterName: 'Jordan Lee',
       submitterEmail: 'jordan.lee@example.org',
       reviewNotes: 'Approved for demo data.',
-      reviewedAt: new Date('2026-04-01T12:00:00.000Z'),
+      reviewedAt: relativeDate({ daysFromNow: -2, hours: 12 }),
     },
   },
   {
@@ -624,11 +635,12 @@ const demoEvents = [
     summary: 'A practical workshop on monitoring county election policy.',
     description:
       'Residents learn how to follow board agendas, submit public comments, and track local election policy changes.',
+    website: 'https://example.org/voting-workshop',
     eventType: EventType.WORKSHOP,
     status: EntityStatus.DRAFT,
     publishedAt: null,
-    startTime: new Date('2026-05-02T18:00:00.000Z'),
-    endTime: new Date('2026-05-02T20:00:00.000Z'),
+    startTime: relativeDate({ daysFromNow: 14, hours: 18 }),
+    endTime: relativeDate({ daysFromNow: 14, hours: 20 }),
     locationName: 'North Branch Library',
     addressRaw: '450 Walnut Ave',
     city: 'Philadelphia',
@@ -646,20 +658,19 @@ const demoEvents = [
       submittedContent:
         'An approved but not yet published workshop for local moderation and event linking checks.',
       eventType: EventType.WORKSHOP,
-      startTime: new Date('2026-05-02T18:00:00.000Z'),
-      endTime: new Date('2026-05-02T20:00:00.000Z'),
+      startTime: relativeDate({ daysFromNow: 14, hours: 18 }),
+      endTime: relativeDate({ daysFromNow: 14, hours: 20 }),
       locationName: 'North Branch Library',
       addressRaw: '450 Walnut Ave',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19123',
       country: 'USA',
-      website: 'https://example.org/voting-workshop',
       contactEmail: 'democracy@example.org',
       submitterName: 'Casey Morgan',
       submitterEmail: 'casey.morgan@example.org',
       reviewNotes: 'Approved for demo data but left unpublished.',
-      reviewedAt: new Date('2026-04-03T09:00:00.000Z'),
+      reviewedAt: relativeDate({ daysFromNow: -1, hours: 9 }),
     },
   },
 ] as const;
@@ -749,6 +760,7 @@ async function seedDemoEvents() {
           summary: event.summary,
           description: event.description,
           eventType: event.eventType,
+          website: event.website,
           status: event.status,
           publishedAt: event.publishedAt,
           endTime: event.endTime,
@@ -778,7 +790,6 @@ async function seedDemoEvents() {
           region: event.submission.region,
           postalCode: event.submission.postalCode,
           country: event.submission.country,
-          website: event.submission.website,
           contactEmail: event.submission.contactEmail,
           submitterName: event.submission.submitterName,
           submitterEmail: event.submission.submitterEmail,
@@ -801,6 +812,7 @@ async function seedDemoEvents() {
         description: event.description,
         eventType: event.eventType,
         status: event.status,
+        website: event.website,
         publishedAt: event.publishedAt,
         startTime: event.startTime,
         endTime: event.endTime,

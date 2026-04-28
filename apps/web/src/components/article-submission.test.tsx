@@ -55,9 +55,9 @@ describe('ArticleSubmissionForm', () => {
     await user.click(screen.getByRole('button', { name: 'Submit Article' }));
 
     expect(postArticleSubmission).not.toHaveBeenCalled();
-    expect(screen.getByText('Title can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Summary can not be null')).toBeInTheDocument();
-    expect(screen.getByText('Content can not be null')).toBeInTheDocument();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Summary is required')).toBeInTheDocument();
+    expect(screen.getByText('Content is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
   });
 
@@ -145,6 +145,18 @@ describe('ArticleSubmissionForm', () => {
         }),
       }),
     );
+  });
+
+  it('validates optional article fields on the client before submit', async () => {
+    render(<ArticleSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredArticleFields();
+    await user.type(screen.getByLabelText('Submitter Email (optional)'), 'not-an-email');
+
+    await user.click(screen.getByRole('button', { name: 'Submit Article' }));
+
+    expect(postArticleSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Email must be valid')).toBeInTheDocument();
   });
 
   it('removes resource link rows before submit', async () => {

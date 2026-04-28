@@ -4,7 +4,81 @@ import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
-import { EventType } from '@signal-fire/api-contracts';
+import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
+import {
+  mapSubmissionApiFieldToUiField,
+  SUBMISSION_FIELD_LIMITS,
+  validateOptionalEmail,
+  validateOptionalStringMax,
+  validateRequiredString,
+} from '@/lib/submission-form-validation';
+
+const US_STATE_OPTIONS = [
+  ['AL', 'Alabama'],
+  ['AK', 'Alaska'],
+  ['AZ', 'Arizona'],
+  ['AR', 'Arkansas'],
+  ['CA', 'California'],
+  ['CO', 'Colorado'],
+  ['CT', 'Connecticut'],
+  ['DE', 'Delaware'],
+  ['DC', 'District of Columbia'],
+  ['FL', 'Florida'],
+  ['GA', 'Georgia'],
+  ['HI', 'Hawaii'],
+  ['ID', 'Idaho'],
+  ['IL', 'Illinois'],
+  ['IN', 'Indiana'],
+  ['IA', 'Iowa'],
+  ['KS', 'Kansas'],
+  ['KY', 'Kentucky'],
+  ['LA', 'Louisiana'],
+  ['ME', 'Maine'],
+  ['MD', 'Maryland'],
+  ['MA', 'Massachusetts'],
+  ['MI', 'Michigan'],
+  ['MN', 'Minnesota'],
+  ['MS', 'Mississippi'],
+  ['MO', 'Missouri'],
+  ['MT', 'Montana'],
+  ['NE', 'Nebraska'],
+  ['NV', 'Nevada'],
+  ['NH', 'New Hampshire'],
+  ['NJ', 'New Jersey'],
+  ['NM', 'New Mexico'],
+  ['NY', 'New York'],
+  ['NC', 'North Carolina'],
+  ['ND', 'North Dakota'],
+  ['OH', 'Ohio'],
+  ['OK', 'Oklahoma'],
+  ['OR', 'Oregon'],
+  ['PA', 'Pennsylvania'],
+  ['RI', 'Rhode Island'],
+  ['SC', 'South Carolina'],
+  ['SD', 'South Dakota'],
+  ['TN', 'Tennessee'],
+  ['TX', 'Texas'],
+  ['UT', 'Utah'],
+  ['VT', 'Vermont'],
+  ['VA', 'Virginia'],
+  ['AS', 'American Samoa'],
+  ['GU', 'Guam'],
+  ['MP', 'Northern Mariana Islands'],
+  ['PR', 'Puerto Rico'],
+  ['VI', 'U.S. Virgin Islands'],
+  ['WA', 'Washington'],
+  ['WV', 'West Virginia'],
+  ['WI', 'Wisconsin'],
+  ['WY', 'Wyoming'],
+] as const;
+
+function formatEventTypeLabel(value: string): string {
+  return value
+    .toLowerCase()
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
@@ -27,7 +101,7 @@ type ArticleSubmissionFormErrors = {
   endAt?: string;
   streetAddress?: string;
   contactEmail?: string;
-  resourceLinks?: string;
+  websiteUrl?: string;
   submitterName?: string;
   submitterEmail?: string;
 };
@@ -43,7 +117,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [locationName, setLocationName] = useState('');
   const [city, setCity] = useState('');
   const [region, setRegion] = useState('');
-  const [country, setCountry] = useState('');
+  const country = 'US';
   const [topicSlugs, setTopicSlugs] = useState<string[]>([]);
 
   // optional
@@ -51,7 +125,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [streetAddress, setStreetAddress] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [resourceLinks, setResourceLinks] = useState(['']);
+  const [websiteUrl, setWebsiteUrl] = useState('');
   const [submitterName, setSubmitterName] = useState('');
   const [submitterEmail, setSubmitterEmail] = useState('');
   // ------------------------
@@ -72,24 +146,6 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     );
   };
 
-  const handleResourceLinkChange = (index: number, value: string) => {
-    setResourceLinks((prev) =>
-      prev.map((link, currentIndex) => (currentIndex === index ? value : link)),
-    );
-  };
-
-  function addResourceLink() {
-    setResourceLinks((prev) => [...prev, '']);
-  }
-
-  function hasResourceLink() {
-    return resourceLinks.length > 1 || resourceLinks[0].trim() != '';
-  }
-
-  function removeResourceLink(index: number) {
-    setResourceLinks((prev) => prev.filter((_, currentIndex) => currentIndex !== index));
-  }
-
   function parseLocalDateTime(value: string): Date | null {
     if (!value) {
       return null;
@@ -104,6 +160,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   }
 
   function mapApiFieldToUiField(field: string): string | null {
+    const sharedField = mapSubmissionApiFieldToUiField(field);
+    if (sharedField) {
+      return sharedField;
+    }
+
     switch (field) {
       case 'payload.title':
         return 'title';
@@ -133,8 +194,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         return 'contactEmail';
       case 'payload.topicSlugs':
         return 'topicSlugs';
-      case 'payload.resourceLinks':
-        return 'resourceLinks';
+      case 'payload.websiteUrl':
+        return 'websiteUrl';
       case 'submitterName':
         return 'submitterName';
       case 'submitterEmail':
@@ -165,9 +226,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const normalizedStreetAddress = streetAddress.trim() || null;
     const normalizedPostalCode = postalCode.trim() || null;
     const normalizedContactEmail = contactEmail.trim() || null;
-    const normalizedResourceLinks = resourceLinks
-      .map((link) => link.trim())
-      .filter((link) => link.length > 0);
+    const normalizedWebsiteUrl = websiteUrl.trim() || null;
     const normalizedSubmitterName = submitterName.trim() || null;
     const normalizedSubmitterEmail = submitterEmail.trim() || null;
 
@@ -175,33 +234,73 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const endDate = normalizedEndAt ? parseLocalDateTime(normalizedEndAt) : null;
 
     const errors: ArticleSubmissionFormErrors = {};
-    if (!normalizedTitle) {
-      errors.title = 'Title can not be null';
+    const titleError = validateRequiredString(
+      normalizedTitle,
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    if (titleError) {
+      errors.title = titleError;
     }
-    if (!normalizedSummary) {
-      errors.summary = 'Summary can not be null';
+
+    const summaryError = validateRequiredString(
+      normalizedSummary,
+      'Summary',
+      SUBMISSION_FIELD_LIMITS.summary,
+    );
+    if (summaryError) {
+      errors.summary = summaryError;
     }
-    if (!normalizedDescription) {
-      errors.description = 'Description can not be null';
+
+    const descriptionError = validateRequiredString(
+      normalizedDescription,
+      'Description',
+      SUBMISSION_FIELD_LIMITS.description,
+    );
+    if (descriptionError) {
+      errors.description = descriptionError;
     }
+
     if (!eventType) {
-      errors.eventType = 'Event type can not be null';
+      errors.eventType = 'Event type is required';
     }
-    if (!startAt) {
-      errors.startAt = 'Start date and time can not be null';
+
+    const locationNameError = validateRequiredString(
+      normalizedLocationName,
+      'Location name',
+      SUBMISSION_FIELD_LIMITS.locationName,
+    );
+    if (locationNameError) {
+      errors.locationName = locationNameError;
     }
-    if (!normalizedLocationName) {
-      errors.locationName = 'Location can not be null';
+
+    const cityError = validateRequiredString(
+      normalizedCity,
+      'Location address city',
+      SUBMISSION_FIELD_LIMITS.locationAddressCity,
+    );
+    if (cityError) {
+      errors.city = cityError;
     }
-    if (!normalizedCity) {
-      errors.city = 'City can not be null';
+
+    const regionError = validateRequiredString(
+      normalizedRegion,
+      'Location address region',
+      SUBMISSION_FIELD_LIMITS.locationAddressRegion,
+    );
+    if (regionError) {
+      errors.region = regionError;
     }
-    if (!normalizedRegion) {
-      errors.region = 'Region can not be null';
+
+    const countryError = validateRequiredString(
+      normalizedCountry,
+      'Location address country',
+      SUBMISSION_FIELD_LIMITS.locationAddressCountry,
+    );
+    if (countryError) {
+      errors.country = countryError;
     }
-    if (!normalizedCountry) {
-      errors.country = 'Country can not be null';
-    }
+
     if (topicSlugs.length === 0) {
       errors.topicSlugs = 'Select at least one related topic';
     }
@@ -216,6 +315,55 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     if (startDate && endDate && endDate < startDate) {
       errors.endAt = 'End date and time must be after the start date and time';
     }
+
+    const streetAddressError = validateOptionalStringMax(
+      normalizedStreetAddress,
+      SUBMISSION_FIELD_LIMITS.locationAddressStreet,
+    );
+    if (streetAddressError) {
+      errors.streetAddress = streetAddressError;
+    }
+
+    const postalCodeError = validateOptionalStringMax(
+      normalizedPostalCode,
+      SUBMISSION_FIELD_LIMITS.locationAddressZip,
+    );
+    if (postalCodeError) {
+      errors.postalCode = postalCodeError;
+    }
+
+    const contactEmailError = validateOptionalEmail(
+      normalizedContactEmail,
+      SUBMISSION_FIELD_LIMITS.contactEmail,
+    );
+    if (contactEmailError) {
+      errors.contactEmail = contactEmailError;
+    }
+
+    const websiteUrlError = validateOptionalStringMax(
+      normalizedWebsiteUrl,
+      SUBMISSION_FIELD_LIMITS.websiteUrl,
+    );
+    if (websiteUrlError) {
+      errors.websiteUrl = websiteUrlError;
+    }
+
+    const submitterNameError = validateOptionalStringMax(
+      normalizedSubmitterName,
+      SUBMISSION_FIELD_LIMITS.submitterName,
+    );
+    if (submitterNameError) {
+      errors.submitterName = submitterNameError;
+    }
+
+    const submitterEmailError = validateOptionalEmail(
+      normalizedSubmitterEmail,
+      SUBMISSION_FIELD_LIMITS.submitterEmail,
+    );
+    if (submitterEmailError) {
+      errors.submitterEmail = submitterEmailError;
+    }
+
     setErrors(errors);
     if (Object.keys(errors).length == 0) {
       setIsSubmitting(true);
@@ -239,7 +387,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             locationAddressZip: normalizedPostalCode,
             contactEmail: normalizedContactEmail,
             topicSlugs: topicSlugs,
-            resourceLinks: normalizedResourceLinks.length == 0 ? null : normalizedResourceLinks,
+            websiteUrl: normalizedWebsiteUrl,
           },
         });
         setIsSuccess(true);
@@ -290,7 +438,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     );
   } else {
     return (
-      <form className={'submissionForm'} onSubmit={submit}>
+      <form className={'submissionForm'} onSubmit={submit} noValidate>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Event</h1>
           <p className="page-intro">Share an event others can attend and participate in</p>
@@ -348,12 +496,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setEventType(event.target.value)}
                 >
                   <option value="">Select an event type</option>
-                  <option value="TOWN_HALL">Town Hall</option>
-                  <option value="PROTEST">Protest</option>
-                  <option value="RALLY">Rally</option>
-                  <option value="VOLUNTEER">Volunteer</option>
-                  <option value="WORKSHOP">Workshop</option>
-                  <option value="MEETING">Meeting</option>
+                  {EVENT_TYPES.map((eventType) => (
+                    <option value={eventType} key={eventType}>
+                      {formatEventTypeLabel(eventType)}
+                    </option>
+                  ))}
                 </select>
               </label>
               {errors.eventType ? <p className="submissionError">{errors.eventType}</p> : null}
@@ -425,12 +572,18 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             <section className="submissionField">
               <label className="submissionLabel">
                 <span>* Region</span>
-                <input
-                  className={'submissionControl'}
+                <select
+                  className="submissionControl"
                   value={region}
-                  placeholder="PA"
                   onChange={(event) => setRegion(event.target.value)}
-                />
+                >
+                  <option value="">Select a state</option>
+                  {US_STATE_OPTIONS.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
               </label>
               {errors.region ? <p className="submissionError">{errors.region}</p> : null}
             </section>
@@ -438,12 +591,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             <section className="submissionField">
               <label className="submissionLabel">
                 <span>* Country</span>
-                <input
-                  className={'submissionControl'}
-                  value={country}
-                  placeholder="US"
-                  onChange={(event) => setCountry(event.target.value)}
-                />
+                <input className={'submissionControl'} value={country} disabled readOnly />
               </label>
               {errors.country ? <p className="submissionError">{errors.country}</p> : null}
             </section>
@@ -499,48 +647,21 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
-            <h2>Supporting Links</h2>
+            <h2>Website</h2>
             <section className="submissionField">
-              <div className="submissionLabel">Supporting links (optional)</div>
-              <p className="submissionHelper">
-                Add links that help verify claims or provide context
-              </p>
-              <div className="submissionRepeatableList">
-                {resourceLinks.map((link, index) => (
-                  <div className="submissionRepeatableRow" key={index}>
-                    <label className="submissionLabel" htmlFor={`article-resource-link-${index}`}>
-                      Resource link {index + 1}
-                    </label>
-                    <input
-                      id={`article-resource-link-${index}`}
-                      className="submissionControl"
-                      type="url"
-                      placeholder="https://example.org/source"
-                      value={link}
-                      onChange={(event) => handleResourceLinkChange(index, event.target.value)}
-                    />
-                    {hasResourceLink() ? (
-                      <button
-                        className="submissionSecondaryAction"
-                        type="button"
-                        onClick={() => removeResourceLink(index)}
-                      >
-                        Remove
-                      </button>
-                    ) : null}
-                  </div>
-                ))}
-                <button
-                  className="submissionSecondaryAction"
-                  type="button"
-                  onClick={() => addResourceLink()}
-                >
-                  Add Another Resource
-                </button>
-              </div>
-              {errors.resourceLinks ? (
-                <p className="submissionError">{errors.resourceLinks}</p>
-              ) : null}
+              <label className="submissionLabel" htmlFor="event-website-url">
+                Website URL (optional)
+              </label>
+              <p className="submissionHelper">Public event, organizer, or RSVP URL</p>
+              <input
+                id="event-website-url"
+                className="submissionControl"
+                type="text"
+                placeholder="https://example.org/event"
+                value={websiteUrl}
+                onChange={(event) => setWebsiteUrl(event.target.value)}
+              />
+              {errors.websiteUrl ? <p className="submissionError">{errors.websiteUrl}</p> : null}
             </section>
           </section>
 

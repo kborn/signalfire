@@ -102,6 +102,7 @@ model Event {
   title         String
   summary       String
   description   String
+  website       String?
   eventType     EventType
   status        EntityStatus
   startTime     DateTime
@@ -263,4 +264,3 @@ model SubmissionResourceLink {
   @@id([submissionId, resourceLinkId])
   @@map("_submission_resource_link")
 }
-

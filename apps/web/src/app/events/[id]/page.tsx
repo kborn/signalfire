@@ -72,6 +72,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
               <p className="metaValue">{locationParts.join(', ')}</p>
             </div>
           )}
+          {event.website && (
+            <div className="metaBlock">
+              <p className="metaLabel">Website</p>
+              <p className="metaValue">
+                <a href={event.website} target="_blank" rel="noreferrer">
+                  {event.website}
+                </a>
+              </p>
+            </div>
+          )}
         </section>
         <section>
           <ArticleBody content={event.description} />

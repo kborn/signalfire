@@ -30,9 +30,9 @@ type SubmissionRequestEventPayload = {
   locationAddressRegion: string;
   locationAddressCountry: string;
   locationAddressZip?: string | null;
-  contactEmail?: string | null; //  add me?
+  contactEmail?: string | null;
   topicSlugs: string[];
-  resourceLinks?: string[] | null;
+  websiteUrl?: string | null;
 };
 
 export type ArticleSubmissionRequest = SubmissionRequestCommon & {

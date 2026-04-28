@@ -4,6 +4,14 @@ import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
+import {
+  mapSubmissionApiFieldToUiField,
+  SUBMISSION_FIELD_LIMITS,
+  validateOptionalEmail,
+  validateOptionalStringMax,
+  validateRequiredString,
+  validateResourceLinks,
+} from '@/lib/submission-form-validation';
 
 type ArticleSubmissionFormProps = {
   topics: TopicSummary[];
@@ -64,6 +72,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   }
 
   function mapApiFieldToUiField(field: string): string | null {
+    const sharedField = mapSubmissionApiFieldToUiField(field);
+    if (sharedField) {
+      return sharedField;
+    }
+
     switch (field) {
       case 'payload.title':
         return 'title';
@@ -104,18 +117,63 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
       .filter((link) => link.length > 0);
 
     const errors: ArticleSubmissionFormErrors = {};
-    if (!normalizedTitle) {
-      errors.title = 'Title can not be null';
+    const titleError = validateRequiredString(
+      normalizedTitle,
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    if (titleError) {
+      errors.title = titleError;
     }
-    if (!normalizedSummary) {
-      errors.summary = 'Summary can not be null';
+
+    const summaryError = validateRequiredString(
+      normalizedSummary,
+      'Summary',
+      SUBMISSION_FIELD_LIMITS.summary,
+    );
+    if (summaryError) {
+      errors.summary = summaryError;
     }
-    if (!normalizedContent) {
-      errors.content = 'Content can not be null';
+
+    const contentError = validateRequiredString(
+      normalizedContent,
+      'Content',
+      SUBMISSION_FIELD_LIMITS.content,
+    );
+    if (contentError) {
+      errors.content = contentError;
     }
+
     if (topicSlugs.length === 0) {
       errors.topicSlugs = 'Select at least one related topic';
     }
+
+    const resourceLinksError = validateResourceLinks(normalizedResourceLinks);
+    if (resourceLinksError) {
+      errors.resourceLinks = resourceLinksError;
+    }
+
+    const authorError = validateOptionalStringMax(normalizedAuthor, SUBMISSION_FIELD_LIMITS.author);
+    if (authorError) {
+      errors.author = authorError;
+    }
+
+    const submitterNameError = validateOptionalStringMax(
+      normalizedSubmitterName,
+      SUBMISSION_FIELD_LIMITS.submitterName,
+    );
+    if (submitterNameError) {
+      errors.submitterName = submitterNameError;
+    }
+
+    const submitterEmailError = validateOptionalEmail(
+      normalizedSubmitterEmail,
+      SUBMISSION_FIELD_LIMITS.submitterEmail,
+    );
+    if (submitterEmailError) {
+      errors.submitterEmail = submitterEmailError;
+    }
+
     setErrors(errors);
 
     if (Object.keys(errors).length == 0) {
@@ -183,7 +241,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     );
   } else {
     return (
-      <form className={'submissionForm'} onSubmit={submit}>
+      <form className={'submissionForm'} onSubmit={submit} noValidate>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Article</h1>
           <p className="page-intro">
@@ -272,7 +330,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                     <input
                       id={`article-resource-link-${index}`}
                       className="submissionControl"
-                      type="url"
+                      type="text"
                       placeholder="https://example.org/source"
                       value={link}
                       onChange={(event) => handleResourceLinkChange(index, event.target.value)}
