@@ -582,9 +582,15 @@ This section must map 1:1 to the API payload.
 #### Field 9 — Region
 
 - Label: `Region`
-- Type: single-line text input
+- Type: select
 - Required: yes
 - maps to `locationAddressRegion`
+
+Region rules:
+
+- use a static US states + DC + territories option list in the client
+- submit the selected two-letter postal abbreviation as `locationAddressRegion`
+- do not fetch region metadata at runtime in Phase 10.4
 
 #### Field 10 — Country
 
@@ -597,7 +603,8 @@ Country rules:
 
 - field must exist in payload
 - prefill `US` by default
-- keep the field editable
+- render as disabled in the event submission form
+- always submit `US` as `locationAddressCountry` in Phase 10.4
 
 #### Field 11 — Street Address (optional)
 

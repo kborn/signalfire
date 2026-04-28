@@ -40,8 +40,7 @@ async function fillRequiredEventFields() {
   await user.type(screen.getByLabelText('* Start date and time'), '2026-05-14T17:00');
   await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
   await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
-  await user.type(screen.getByLabelText('* Region'), '  PA  ');
-  await user.type(screen.getByLabelText('* Country'), '  US  ');
+  await user.selectOptions(screen.getByLabelText('* Region'), 'PA');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -69,8 +68,16 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Location name is required')).toBeInTheDocument();
     expect(screen.getByText('Location address city is required')).toBeInTheDocument();
     expect(screen.getByText('Location address region is required')).toBeInTheDocument();
-    expect(screen.getByText('Location address country is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+  });
+
+  it('defaults country to US and keeps it disabled', () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const countryInput = screen.getByLabelText('* Country');
+
+    expect(countryInput).toHaveValue('US');
+    expect(countryInput).toBeDisabled();
   });
 
   it('submits a normalized event payload and shows the success state', async () => {
