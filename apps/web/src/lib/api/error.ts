@@ -7,3 +7,14 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+export class SubmissionError extends ApiError {
+  constructor(
+    message: string,
+    public status: number,
+    public endpoint: string,
+    public errors: { field: string; message: string }[] | null,
+  ) {
+    super(message, status, endpoint);
+  }
+}

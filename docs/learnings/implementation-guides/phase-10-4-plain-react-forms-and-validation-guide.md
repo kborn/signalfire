@@ -259,6 +259,9 @@ Meaning:
 - if there is a title error, render it under the title field
 - if not, render nothing
 
+In the Phase 10.4 form, this error should live inside the relevant
+`.submissionField` and use the shared `.submissionError` class from the UI spec.
+
 ## How This Appears In The Repo Today
 
 Current repo shape already supports the right foundation:
@@ -275,6 +278,10 @@ Your next job is to:
 2. make them controlled
 3. add an error object
 4. add submit behavior
+
+When rendering the real fields, use the shared form primitive classes defined in
+`docs/specs/010-phase-10-4-submission-ui.md` so labels, controls, helper text,
+errors, checkbox groups, and repeatable URL rows have consistent CSS targets.
 
 ## Recommended First State Shape
 

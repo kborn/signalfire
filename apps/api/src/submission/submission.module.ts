@@ -4,10 +4,12 @@ import { SubmissionService } from './submission.service';
 import { SubmissionRepository } from './submission.repository';
 import { TopicModule } from '../topic/topic.module';
 import { SubmissionValidationPipe } from './submission-validation.pipe';
+import { SubmissionController } from './submission.controller';
 
 @Module({
   imports: [PrismaModule, TopicModule],
   providers: [SubmissionService, SubmissionRepository, SubmissionValidationPipe],
   exports: [SubmissionService],
+  controllers: [SubmissionController],
 })
 export class SubmissionModule {}

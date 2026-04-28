@@ -1110,18 +1110,18 @@ Implement anonymous submission workflow for events and articles.
 
 ---
 
-#### ▸ Phase 10.4 - Submission UX 🚧
+#### ▸ Phase 10.4 - Submission UX ✅
 
 ###### Phase Tasks:
 
-- [ ] Build public article submission form flow
-- [ ] Build public event submission form flow
-- [ ] Implement client-side validation that mirrors backend rules, plus success state and failure handling
-- [ ] Keep UX limited to submission capture and confirmation with no business logic or field interpretation in the UI
+- [x] Build public article submission form flow
+- [x] Build public event submission form flow
+- [x] Implement client-side validation that mirrors backend rules, plus success state and failure handling
+- [x] Keep UX limited to submission capture and confirmation with no business logic or field interpretation in the UI
 
 ---
 
-#### ▸ Phase 10.5 - Integration Hardening ⏳
+#### ▸ Phase 10.5 - Integration Hardening 🚧
 
 ###### Phase Tasks:
 

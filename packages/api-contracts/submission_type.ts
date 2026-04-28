@@ -30,7 +30,7 @@ type SubmissionRequestEventPayload = {
   locationAddressRegion: string;
   locationAddressCountry: string;
   locationAddressZip?: string | null;
-  contactEmail?: string | null;
+  contactEmail?: string | null; //  add me?
   topicSlugs: string[];
   resourceLinks?: string[] | null;
 };

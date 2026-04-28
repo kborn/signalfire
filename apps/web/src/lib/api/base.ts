@@ -1,7 +1,8 @@
-import { ApiError } from '@/lib/api/error';
+import { ApiError, SubmissionError } from '@/lib/api/error';
+import { SubmissionRequest } from '@signal-fire/api-contracts';
 
 function getApiBase() {
-  const apiBase = process.env.API_BASE_URL;
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
   if (!apiBase) {
     throw new Error('No API base URL configured!');
   }
@@ -29,4 +30,59 @@ export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
   return response.json() as Promise<T>;
+}
+
+function hasValidationErrors(
+  body: unknown,
+): body is { errors: { field: string; message: string }[] } {
+  if (!body || typeof body !== 'object' || !('errors' in body)) {
+    return false;
+  }
+
+  const errors = (body as { errors: unknown }).errors;
+
+  return (
+    Array.isArray(errors) &&
+    errors.every(
+      (item) =>
+        item &&
+        typeof item === 'object' &&
+        'field' in item &&
+        'message' in item &&
+        typeof item.field === 'string' &&
+        typeof item.message === 'string',
+    )
+  );
+}
+
+export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
+  const url = `${getApiBase()}/submissions`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
+  });
+
+  let body: unknown;
+
+  try {
+    body = await response.json();
+  } catch {
+    body = null;
+  }
+
+  if (!response.ok) {
+    if (hasValidationErrors(body)) {
+      throw new SubmissionError(
+        `Request failed for submissions`,
+        response.status,
+        'submissions',
+        (body as { errors: { field: string; message: string }[] }).errors,
+      );
+    } else {
+      throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
+    }
+  }
+  return body as T;
 }

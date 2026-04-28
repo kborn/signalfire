@@ -187,8 +187,8 @@ Do not use one long unsectioned form.
 Each field uses this internal order:
 
 1. label
-2. input control
-3. helper text, if present
+2. helper text, if present
+3. input control
 4. field error, if present
 
 ### Field styling rules
@@ -196,8 +196,11 @@ Each field uses this internal order:
 - labels appear above inputs
 - required fields are identified in label text, not by a detached legend
 - optional fields are marked `(optional)` in the label text
-- helper text is muted and directly below the input
-- error text is directly below helper text
+- helper text is muted and directly below the label when extra explanation is needed
+- placeholder text may be used for examples or lightweight prompts inside text controls
+- placeholder text must not be the only label or the only source of important instructions
+- avoid duplicating the same wording in both placeholder text and helper text
+- error text is directly below the input or grouped control
 - errors must not appear in a separate floating region away from the field
 
 ### Input rules
@@ -237,9 +240,17 @@ Recommended shared classes:
 - `.submissionSection`
 - `.submissionField`
 - `.submissionFieldRow`
+- `.submissionLabel`
+- `.submissionControl`
+- `.submissionTextarea`
+- `.submissionCheckboxGroup`
+- `.submissionCheckboxOption`
+- `.submissionRepeatableList`
+- `.submissionRepeatableRow`
 - `.submissionHelper`
 - `.submissionError`
 - `.submissionActions`
+- `.submissionSecondaryAction`
 - `.submissionSuccess`
 - `.submissionGlobalError`
 
@@ -250,34 +261,119 @@ Recommended shared classes:
 - display: grid
 - gap: `40px`
 - max-width: `720px`
+- left-aligned within the page container
 
 #### `.submissionSection`
 
 - display: grid
 - gap: `20px`
+- owns one titled form section and the fields inside it
+
+Section heading:
+
+- use an `h2` or equivalent section title inside each `.submissionSection`
+- do not rely on visual spacing alone to imply sections
 
 #### `.submissionField`
 
 - display: grid
 - gap: `8px`
+- owns exactly one label/control/helper/error stack
+- use for text inputs, textareas, contact fields, and grouped controls such as topics
 
 #### `.submissionFieldRow`
 
 - used only where this spec explicitly permits row grouping
 - owns horizontal gap between grouped fields
 - child fields inside the row must still use `.submissionField`
+- stacks vertically on small screens
+
+#### `.submissionLabel`
+
+- applied to the visible label text for a field
+- labels appear above controls
+- required/optional status appears in the label text
+- do not use placeholder text as the only label
+
+#### `.submissionControl`
+
+- applied to standard single-line inputs and selects
+- width: `100%`
+- belongs inside `.submissionField`
+- should support normal, focus, and disabled states
+
+#### `.submissionTextarea`
+
+- applied to textarea controls
+- width: `100%`
+- belongs inside `.submissionField`
+- summary textareas use medium height
+- content/description textareas use visibly larger height
+
+#### `.submissionCheckboxGroup`
+
+- applied to the wrapper around checkbox options
+- display options as a vertical list
+- belongs inside the `Topics` `.submissionField`
+
+#### `.submissionCheckboxOption`
+
+- applied to each checkbox label row
+- contains the checkbox input and visible topic name
+- keep the label clickable by wrapping the checkbox and text in the same label
+
+#### `.submissionRepeatableList`
+
+- applied to the wrapper around repeatable supporting-link rows
+- display rows as a vertical list
+- belongs inside the `Supporting links (optional)` `.submissionField`
+
+#### `.submissionRepeatableRow`
+
+- applied to each repeated URL row
+- contains one URL input and the row-level remove action
+- rows may use horizontal input/action layout on desktop
+- rows should stack naturally on small screens
+
+#### `.submissionHelper`
+
+- applied to helper text below a label and above a control or grouped control
+- muted visual treatment
+- used for guidance that should remain visible while the field is being filled out
+- not required when placeholder text is sufficient
+
+#### `.submissionError`
+
+- applied to field-level validation errors
+- appears directly below the control or grouped control
+- should be visually distinct from helper text
 
 #### `.submissionActions`
 
 - margin-top: `32px`
 - display: flex
 - justify-content: flex-start
+- owns the primary submit CTA placement
+- submit button disabled state must be visually apparent
+
+#### `.submissionSecondaryAction`
+
+- applied to non-submit actions inside the form, such as `Add another link` or `Remove`
+- must not visually compete with the primary submit CTA
+
+#### `.submissionGlobalError`
+
+- applied to non-field submission errors
+- appears above `.submissionActions`
+- uses the global error copy defined in this spec
+- distinct from field-level `.submissionError`
 
 #### `.submissionSuccess`
 
 - display: grid
 - gap: `24px`
 - max-width: `720px`
+- replaces the form after successful submission
 
 ---
 
@@ -362,15 +458,21 @@ Supporting links rules:
 
 ### Section 4 — Contact Information
 
-#### Field 6 — Name (optional)
+#### Field 6 — Author (optional)
 
-- Label: `Name (optional)`
+- Label: `Author (optional)`
 - Type: single-line text input
 - Width: full
 
-#### Field 7 — Email (optional)
+#### Field 7 — Submitter Name (optional)
 
-- Label: `Email (optional)`
+- Label: `Submitter Name (optional)`
+- Type: single-line text input
+- Width: full
+
+#### Field 8 — Submitter Email (optional)
+
+- Label: `Submitter Email (optional)`
 - Type: email input
 - Width: full
 - Helper text: `Used only if we need to follow up about your submission`
