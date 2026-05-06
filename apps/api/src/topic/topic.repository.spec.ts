@@ -146,4 +146,24 @@ describe('TopicRepository', () => {
       },
     });
   });
+
+  it('findBySubmissionId', async () => {
+    prismaMock.topic.findMany.mockResolvedValue([topic]);
+
+    const ret = await repository.findBySubmissionId(1);
+
+    expect(ret).toEqual([topic]);
+    expect(prismaMock.topic.findMany).toHaveBeenCalledWith({
+      where: {
+        submissionTopics: {
+          some: {
+            submissionId: 1,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  });
 });

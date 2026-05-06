@@ -38,3 +38,8 @@ Current Phase 10 guides:
 - `phase-10-4-client-form-state-and-server-boundary-guide.md`
 - `phase-10-4-plain-react-forms-and-validation-guide.md`
 - `phase-10-4-cors-and-browser-api-calls-guide.md`
+
+Current Phase 11 guides:
+
+- `phase-11-1-admin-shell-guide.md`
+- `phase-11-moderation-state-and-admin-form-guide.md`

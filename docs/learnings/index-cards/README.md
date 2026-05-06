@@ -78,6 +78,11 @@ These cards may be created or updated alongside task-linked syllabi in
 - [64-localhost-port-changes-origin.md](./64-localhost-port-changes-origin.md) - Different localhost ports still count as different origins
 - [65-form-element-vs-loose-submit-button.md](./65-form-element-vs-loose-submit-button.md) - Real form UIs should usually use a semantic `<form>` and a submit button
 - [66-practical-debugging-with-console-dir-and-json.md](./66-practical-debugging-with-console-dir-and-json.md) - Use plain console tools first and log the smallest useful thing
+- [67-object-property-shorthand.md](./67-object-property-shorthand.md) - When `{ submissionId }` means `{ submissionId: submissionId }`
+- [68-css-grid-direct-children.md](./68-css-grid-direct-children.md) - Why grid lays out direct children and wrappers matter
+- [69-html-table-structure.md](./69-html-table-structure.md) - What `table`, `thead`, `tbody`, `tr`, `th`, and `td` do
+- [70-url-state-vs-local-filter-state.md](./70-url-state-vs-local-filter-state.md) - Why record filters often belong in query params
+- [71-html-description-lists.md](./71-html-description-lists.md) - Why `dl`, `dt`, and `dd` fit labeled fields for one record
 
 Rule of thumb:
 

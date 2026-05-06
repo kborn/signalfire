@@ -11,4 +11,9 @@ export type {
   SubmissionResponse,
   SubmissionResponseError,
   SubmissionResponseSuccess,
+  ModerationSubmissionList,
+  ModerationSubmissionListFilters,
+  ModerationSubmissionDetail,
+  SubmissionStatus,
+  SubmissionType,
 } from './submission_type.js';

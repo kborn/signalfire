@@ -160,8 +160,6 @@ or `needs_revision` in Phase 11.
 - topics are not editable or creatable in admin
 - topic selection uses multi-select checkbox lists in Phase 11
 
----
-
 ## 4. `/admin` - Entry Page
 
 ### Purpose
@@ -176,32 +174,37 @@ management.
 - H1: `Admin`
 - dek: `Review submissions and manage published content`
 
-#### Section 2 - Primary destinations
+#### Section 2 - Moderation overview
 
-Show four destination blocks or rows:
+Show simple moderation counts with pending submissions as the primary work
+queue and approved/rejected submissions as secondary history views:
 
-1. `Submissions`
-2. `Actions`
-3. `Articles`
-4. `Events`
+- pending submissions count, visually emphasized
+- approved submissions count, visually secondary
+- rejected submissions count, visually secondary
 
-Each destination should include:
+Pending should link to the matching filtered submissions view. Approved and
+rejected may also link to matching filtered submissions views, but they should
+not be presented as equally urgent work queues.
+
+Do not add charts or analytics.
+
+#### Section 3 - Content management overview
+
+Show compact rows or panels for the admin-managed content areas:
+
+1. `Actions`
+2. `Articles`
+3. `Events`
+
+Each row or panel should include:
 
 - label
 - one-sentence explanation
 - link or CTA into that section
 
-#### Section 3 - Queue summary
-
-Show simple moderation counts:
-
-- pending submissions count
-- approved submissions count
-- rejected submissions count
-
-Each count should link to the matching filtered submissions view.
-
-Do not add charts or analytics.
+The content management overview should make the broader admin surface visible
+without making Actions, Articles, or Events feel like moderation work queues.
 
 ---
 
@@ -274,12 +277,8 @@ Provide the canonical moderation review surface for a single submission.
 
 ### Top-level layout
 
-Use a two-region layout:
-
-1. main review column
-2. secondary metadata panel
-
-On narrow widths, stack the metadata panel below the main column.
+Use a single review workflow column with operational submission metadata near
+the top of the page.
 
 ### Header requirements
 
@@ -290,6 +289,10 @@ Show:
 - submission type
 - moderation status
 - submitted timestamp
+- submitter name when present, otherwise `Anonymous`
+- submitter email when present
+- submission id
+- reviewed timestamp when present
 
 ### Main column section order
 
@@ -299,15 +302,6 @@ Render sections in this order:
 2. editorial normalization
 3. review notes
 4. decision actions
-
-### Secondary metadata panel
-
-Show:
-
-- submitter name
-- submitter email
-- submission id
-- reviewed timestamp when present
 
 ### Section 1 - Submitted content
 

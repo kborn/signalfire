@@ -1,16 +1,46 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Submission, SubmissionStatus } from '@prisma/client';
-import { CreateSubmissionRepositoryInput } from './submission.repository.types';
+import { ResourceLink, Submission, SubmissionStatus } from '@prisma/client';
+import {
+  CreateSubmissionRepositoryInput,
+  FindModerationSubmissionsInput,
+} from './submission.repository.types';
 
 @Injectable()
 export class SubmissionRepository {
   constructor(private prisma: PrismaService) {}
 
-  findPending(): Promise<Submission[]> {
+  findModerationSubmissions(filters: FindModerationSubmissionsInput = {}): Promise<Submission[]> {
     return this.prisma.submission.findMany({
       where: {
-        status: SubmissionStatus.PENDING,
+        status: filters.status,
+        submissionType: filters.submissionType,
+      },
+      orderBy: {
+        submittedAt: 'desc',
+      },
+    });
+  }
+
+  findById(id: number): Promise<Submission | null> {
+    return this.prisma.submission.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+
+  findResourceLinksBySubmissionId(submissionId: number): Promise<ResourceLink[]> {
+    return this.prisma.resourceLink.findMany({
+      where: {
+        submissionResourceLinks: {
+          some: {
+            submissionId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
       },
     });
   }
