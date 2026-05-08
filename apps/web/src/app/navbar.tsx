@@ -7,6 +7,9 @@ function isActivePath(href: string, pathname: string): boolean {
   if (href === '/') {
     return pathname === href;
   }
+  if (href === '/admin') {
+    return pathname === href;
+  }
   return pathname === href || pathname.startsWith(href + '/');
 }
 

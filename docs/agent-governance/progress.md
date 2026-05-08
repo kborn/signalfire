@@ -1171,15 +1171,15 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.1 - Moderation Queue Foundation ⏳
+#### ▸ Phase 11.1 - Moderation Queue Foundation ✅
 
 ###### Phase Tasks:
 
-- [ ] Define the internal interface entry routes and page structure for moderation/admin workflows
-- [ ] Add backend read paths for moderation queue listing and submission detail retrieval
-- [ ] Support basic queue segmentation for `pending`, `approved`, and `rejected` submissions
-- [ ] Expose enough submitted metadata for review decisions without requiring database inspection
-- [ ] Add focused tests for moderation queue retrieval and submission detail contracts
+- [x] Define the internal interface entry routes and page structure for moderation/admin workflows
+- [x] Add backend read paths for moderation queue listing and submission detail retrieval
+- [x] Support basic queue segmentation for `pending`, `approved`, and `rejected` submissions
+- [x] Expose enough submitted metadata for review decisions without requiring database inspection
+- [x] Add focused tests for moderation queue retrieval and submission detail contracts
 
 ---
 
@@ -1275,6 +1275,18 @@ Capabilities:
 ###### Goal
 
 Bug fixes, polish, and observability improvements.
+
+---
+
+#### ▸ Phase 15.1 - Public Brand Refresh ⏳
+
+###### Phase Tasks:
+
+- [ ] Re-evaluate the public site name before launch, including whether to keep `CivicSignal` or move the public brand to `Signal Fire`
+- [ ] Decide whether `Find your fight` becomes the primary public tagline
+- [ ] Refresh homepage hero copy so the product name and tagline are visible on the page, not only in metadata
+- [ ] Add more visual energy to the public site while preserving readability, accessibility, and the existing civic-action product scope
+- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and docs after the brand decision is made
 
 ---
 

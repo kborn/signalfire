@@ -78,4 +78,19 @@ export class TopicRepository {
       },
     });
   }
+
+  findBySubmissionId(submissionId: number): Promise<Topic[]> {
+    return this.prisma.topic.findMany({
+      where: {
+        submissionTopics: {
+          some: {
+            submissionId,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
+    });
+  }
 }

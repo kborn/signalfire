@@ -1,5 +1,4 @@
-import { EventType } from '@prisma/client';
-import { SubmissionType } from '@prisma/client';
+import { EventType, SubmissionStatus, SubmissionType } from '@prisma/client';
 
 export type CreateSubmissionRepositoryInputCommonFields = {
   title: string;
@@ -29,3 +28,8 @@ export type CreateSubmissionRepositoryInputEntityFields = {
 
 export type CreateSubmissionRepositoryInput = CreateSubmissionRepositoryInputCommonFields &
   CreateSubmissionRepositoryInputEntityFields;
+
+export type FindModerationSubmissionsInput = {
+  status?: SubmissionStatus;
+  submissionType?: SubmissionType;
+};

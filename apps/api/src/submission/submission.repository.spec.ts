@@ -25,7 +25,11 @@ describe('SubmissionRepository', () => {
   const prismaMock = {
     submission: {
       findMany: jest.fn(),
+      findUnique: jest.fn(),
       create: jest.fn(),
+    },
+    resourceLink: {
+      findMany: jest.fn(),
     },
   };
 
@@ -38,14 +42,90 @@ describe('SubmissionRepository', () => {
     repository = module.get(SubmissionRepository);
   });
 
-  it('findPending', async () => {
+  it('findModerationSubmissions without filter', async () => {
     prismaMock.submission.findMany.mockResolvedValue([submission]);
 
-    const ret = await repository.findPending();
+    const ret = await repository.findModerationSubmissions({});
 
     expect(ret).toEqual([submission]);
     expect(prismaMock.submission.findMany).toHaveBeenCalledWith({
-      where: { status: SubmissionStatus.PENDING },
+      where: { status: undefined, submissionType: undefined },
+      orderBy: { submittedAt: 'desc' },
+    });
+  });
+
+  it('findModerationSubmissions filters by status only', async () => {
+    prismaMock.submission.findMany.mockResolvedValue([submission]);
+
+    const ret = await repository.findModerationSubmissions({ status: SubmissionStatus.PENDING });
+
+    expect(ret).toEqual([submission]);
+    expect(prismaMock.submission.findMany).toHaveBeenCalledWith({
+      where: { status: SubmissionStatus.PENDING, submissionType: undefined },
+      orderBy: { submittedAt: 'desc' },
+    });
+  });
+
+  it('findModerationSubmissions filters by submissionType only', async () => {
+    prismaMock.submission.findMany.mockResolvedValue([submission]);
+
+    const ret = await repository.findModerationSubmissions({ submissionType: 'ARTICLE' });
+
+    expect(ret).toEqual([submission]);
+    expect(prismaMock.submission.findMany).toHaveBeenCalledWith({
+      where: { status: undefined, submissionType: 'ARTICLE' },
+      orderBy: { submittedAt: 'desc' },
+    });
+  });
+
+  it('findModerationSubmissions filters by status and submission type', async () => {
+    prismaMock.submission.findMany.mockResolvedValue([submission]);
+
+    const ret = await repository.findModerationSubmissions({
+      status: SubmissionStatus.PENDING,
+      submissionType: 'ARTICLE',
+    });
+
+    expect(ret).toEqual([submission]);
+    expect(prismaMock.submission.findMany).toHaveBeenCalledWith({
+      where: { status: SubmissionStatus.PENDING, submissionType: 'ARTICLE' },
+      orderBy: { submittedAt: 'desc' },
+    });
+  });
+
+  it('findById retrieves a submission without status filtering', async () => {
+    prismaMock.submission.findUnique.mockResolvedValue(submission);
+
+    const ret = await repository.findById(1);
+
+    expect(ret).toEqual(submission);
+    expect(prismaMock.submission.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 },
+    });
+  });
+
+  it('findResourceLinksBySubmissionId retrieves resourceLinks by submissionId', async () => {
+    const now = new Date();
+    const retLinks = [
+      { id: 1, created: now, url: 'www.testsite.com' },
+      { id: 2, created: now, url: 'www.othertestsite.com' },
+    ];
+    prismaMock.resourceLink.findMany.mockResolvedValue(retLinks);
+
+    const ret = await repository.findResourceLinksBySubmissionId(1);
+
+    expect(ret).toEqual(retLinks);
+    expect(prismaMock.resourceLink.findMany).toHaveBeenCalledWith({
+      where: {
+        submissionResourceLinks: {
+          some: {
+            submissionId: 1,
+          },
+        },
+      },
+      orderBy: {
+        id: 'asc',
+      },
     });
   });
 
