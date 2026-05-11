@@ -10,6 +10,7 @@ import {
   ModerationReviewSuccess,
   ModerationReviewApproveArticleRequest,
   ModerationReviewApproveEventRequest,
+  ModerationReviewRejectRequest,
 } from '@signal-fire/api-contracts';
 import {
   ArticleSubmissionApprovedRepositoryInput,
@@ -191,15 +192,16 @@ export class ModerationSubmissionService {
     return recs.map((rec) => rec.id);
   }
 
-  titleToSlug(title: string): string {
+  private titleToSlug(title: string): string {
     return title
       .toLowerCase()
       .replace(/[^a-z0-9-]+/g, '-')
       .replace(/^-+|-+$/g, '');
   }
+
   async rejectSubmission(
     submissionId: number,
-    result: ModerationReviewRequest,
+    result: ModerationReviewRejectRequest,
     reviewedAt: Date,
   ): Promise<ModerationReviewSuccess> {
     const submission = await this.repository.markSubmissionRejected({
@@ -217,7 +219,7 @@ export class ModerationSubmissionService {
     };
   }
 
-  async approveArticleSubmission(
+  private async approveArticleSubmission(
     submissionId: number,
     result: ModerationReviewApproveArticleRequest,
     reviewedAt: Date,
