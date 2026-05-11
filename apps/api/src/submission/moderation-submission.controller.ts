@@ -66,11 +66,11 @@ export class ModerationSubmissionController {
     throw new BadRequestException('Invalid submission type');
   }
 
-  @Post('/:id')
+  @Post('/:id/review')
   async reviewSubmission(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) submissionId: number,
     @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,
   ): Promise<ModerationReviewResponse> {
-    return this.submissionService.reviewSubmission(id, reqBody);
+    return this.submissionService.reviewSubmission(submissionId, reqBody);
   }
 }

@@ -5,8 +5,10 @@ import type {
   SubmissionResponseError,
 } from '@signal-fire/api-contracts';
 import { ZodError, type ZodIssue } from 'zod';
-import { submissionRequestSchema } from './submission.request-schema';
-import { moderationSubmissionRequestSchema } from './moderation-submission.request-schema';
+import {
+  moderationSubmissionRequestSchema,
+  submissionRequestSchema,
+} from './submission.request-schema';
 
 function formatIssuePath(path: PropertyKey[]): string {
   if (path.length === 0) {

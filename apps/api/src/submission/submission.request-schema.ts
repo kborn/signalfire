@@ -1,4 +1,4 @@
-import { EventType } from '@prisma/client';
+import { EntityStatus, EventType } from '@prisma/client';
 import { z } from 'zod';
 
 const trimmedString = () => z.string().trim();
@@ -59,6 +59,44 @@ const resourceLinksSchema = z.preprocess(
 
 const websiteUrlSchema = optionalNullableTrimmedString(2000);
 
+const optionalNullableDatetime = (fieldLabel: string) =>
+  z.preprocess(
+    (value) => {
+      if (value == null) return null;
+
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        return trimmed.length === 0 ? null : trimmed;
+      }
+
+      return value;
+    },
+    z
+      .string()
+      .trim()
+      .datetime({ offset: true, message: `${fieldLabel} must be valid` })
+      .nullable(),
+  );
+
+function addEndDatetimeAfterStartIssue(
+  ctx: z.RefinementCtx,
+  startDatetime: string,
+  endDatetime: string | null | undefined,
+  path: (string | number)[],
+) {
+  if (endDatetime == null) {
+    return;
+  }
+
+  if (new Date(endDatetime) < new Date(startDatetime)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path,
+      message: 'End datetime must be greater than or equal to start datetime',
+    });
+  }
+}
+
 const submissionCommonSchema = z.object({
   author: optionalNullableTrimmedString(120),
   submitterName: optionalNullableTrimmedString(120),
@@ -88,25 +126,7 @@ const eventSubmissionSchema = submissionCommonSchema
         .string()
         .trim()
         .datetime({ offset: true, message: 'Start datetime must be valid' }),
-      endDatetime: z.preprocess(
-        (value) => {
-          if (value === undefined || value === null) {
-            return null;
-          }
-
-          if (typeof value === 'string') {
-            const trimmed = value.trim();
-            return trimmed.length === 0 ? null : trimmed;
-          }
-
-          return value;
-        },
-        z
-          .string()
-          .trim()
-          .datetime({ offset: true, message: 'End datetime must be valid' })
-          .nullable(),
-      ),
+      endDatetime: optionalNullableDatetime('End datetime'),
       locationName: requiredTrimmedString('Location name', 200),
       locationAddressStreet: optionalNullableTrimmedString(300),
       locationAddressCity: requiredTrimmedString('Location address city', 120),
@@ -119,19 +139,10 @@ const eventSubmissionSchema = submissionCommonSchema
     }),
   })
   .superRefine((value, ctx) => {
-    const { startDatetime, endDatetime } = value.payload;
-
-    if (endDatetime === null || endDatetime === undefined) {
-      return;
-    }
-
-    if (new Date(endDatetime) < new Date(startDatetime)) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ['payload', 'endDatetime'],
-        message: 'End datetime must be greater than or equal to start datetime',
-      });
-    }
+    addEndDatetimeAfterStartIssue(ctx, value.payload.startDatetime, value.payload.endDatetime, [
+      'payload',
+      'endDatetime',
+    ]);
   });
 
 export const submissionRequestSchema = z.discriminatedUnion('submissionType', [
@@ -139,4 +150,62 @@ export const submissionRequestSchema = z.discriminatedUnion('submissionType', [
   eventSubmissionSchema,
 ]);
 
-export type ParsedSubmissionRequest = z.infer<typeof submissionRequestSchema>;
+const reviewNotesSchema = optionalNullableTrimmedString(2000);
+
+const moderationReviewRejectedSchema = z.object({
+  decision: z.literal('REJECT'),
+  reviewNotes: reviewNotesSchema,
+});
+
+const moderationReviewApproveArticleSchema = z.object({
+  decision: z.literal('APPROVE_ARTICLE'),
+  reviewNotes: reviewNotesSchema,
+  publishStatus: z.nativeEnum(EntityStatus),
+  normalized: z.object({
+    title: requiredTrimmedString('Title', 200),
+    summary: requiredTrimmedString('Summary', 300),
+    content: requiredTrimmedString('Content', 50000),
+    topicSlugs: topicSlugsSchema,
+    author: requiredTrimmedString('Summary', 120),
+  }),
+});
+
+const moderationReviewApproveEventSchema = z
+  .object({
+    decision: z.literal('APPROVE_EVENT'),
+    reviewNotes: reviewNotesSchema,
+    publishStatus: z.nativeEnum(EntityStatus),
+    normalized: z.object({
+      title: requiredTrimmedString('Title', 200),
+      summary: requiredTrimmedString('Summary', 300),
+      description: requiredTrimmedString('Description', 50000),
+      eventType: z.nativeEnum(EventType),
+      startDatetime: z
+        .string()
+        .trim()
+        .datetime({ offset: true, message: 'Start datetime must be valid' }),
+      endDatetime: optionalNullableDatetime('End datetime'),
+      locationName: requiredTrimmedString('Location name', 200),
+      addressRaw: optionalNullableTrimmedString(2000),
+      city: optionalNullableTrimmedString(120),
+      region: optionalNullableTrimmedString(120),
+      country: optionalNullableTrimmedString(120),
+      postalCode: optionalNullableTrimmedString(32),
+      website: websiteUrlSchema.optional(),
+      topicSlugs: topicSlugsSchema,
+    }),
+  })
+  .superRefine((value, ctx) => {
+    addEndDatetimeAfterStartIssue(
+      ctx,
+      value.normalized.startDatetime,
+      value.normalized.endDatetime,
+      ['normalized', 'endDatetime'],
+    );
+  });
+
+export const moderationSubmissionRequestSchema = z.discriminatedUnion('decision', [
+  moderationReviewRejectedSchema,
+  moderationReviewApproveArticleSchema,
+  moderationReviewApproveEventSchema,
+]);
