@@ -272,7 +272,7 @@ export class ModerationSubmissionService {
     result: ModerationReviewApproveEventRequest,
     reviewedAt: Date,
   ): Promise<ModerationReviewSuccess> {
-    await this.requireSubmissionType(submissionId, SubmissionType.ARTICLE);
+    await this.requireSubmissionType(submissionId, SubmissionType.EVENT);
     const repoInput: EventSubmissionApprovedRepositoryInput = {
       reviewNotes: result.reviewNotes,
       reviewedAt: reviewedAt,
