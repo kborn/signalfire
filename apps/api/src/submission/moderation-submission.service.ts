@@ -7,6 +7,9 @@ import {
   ModerationReviewResponse,
   ModerationSubmissionDetail,
   TopicSummary,
+  ModerationReviewSuccess,
+  ModerationReviewApproveArticleRequest,
+  ModerationReviewApproveEventRequest,
 } from '@signal-fire/api-contracts';
 import {
   ArticleSubmissionApprovedRepositoryInput,
@@ -50,6 +53,24 @@ export class ModerationSubmissionService {
     private repository: SubmissionRepository,
     private topicRepository: TopicRepository,
   ) {}
+
+  private async requireSubmissionType(submissionId: number, expectedType: SubmissionType) {
+    const submission = await this.repository.findById(submissionId);
+
+    if (!submission) {
+      throw new NotFoundException(`No submission found with id ${submissionId}`);
+    }
+
+    if (submission.submissionType !== expectedType) {
+      throw new ReviewSubmissionTypeError(expectedType, submission.submissionType);
+    }
+
+    return submission;
+  }
+
+  private parseOptionalDate(dateString?: string | null): Date | null {
+    return dateString == null ? null : new Date(dateString);
+  }
 
   async mapCommonSubmissionParts(submission: Submission): Promise<ModerationSubmissionCommonParts> {
     const topics: Topic[] = await this.topicRepository.findBySubmissionId(submission.id);
@@ -176,112 +197,138 @@ export class ModerationSubmissionService {
       .replace(/[^a-z0-9-]+/g, '-')
       .replace(/^-+|-+$/g, '');
   }
+  async rejectSubmission(
+    submissionId: number,
+    result: ModerationReviewRequest,
+    reviewedAt: Date,
+  ): Promise<ModerationReviewSuccess> {
+    const submission = await this.repository.markSubmissionRejected({
+      ...result,
+      reviewedAt: reviewedAt,
+      submissionId: submissionId,
+    });
+    if (!submission) {
+      throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+    }
+    return {
+      submissionId: submissionId,
+      status: 'REJECTED',
+      reviewedAt: reviewedAt.toISOString(),
+    };
+  }
+
+  async approveArticleSubmission(
+    submissionId: number,
+    result: ModerationReviewApproveArticleRequest,
+    reviewedAt: Date,
+  ): Promise<ModerationReviewSuccess> {
+    await this.requireSubmissionType(submissionId, SubmissionType.ARTICLE);
+    const repoInput: ArticleSubmissionApprovedRepositoryInput = {
+      reviewNotes: result.reviewNotes,
+      reviewedAt: reviewedAt,
+      submissionId: submissionId,
+      articleData: await this.buildArticleApprovalInput(result, reviewedAt),
+    };
+
+    const reviewResponse = await this.repository.approveArticleSubmission(repoInput);
+    if (!reviewResponse) {
+      throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+    }
+
+    const article = reviewResponse.article;
+    return {
+      submissionId: submissionId,
+      status: 'APPROVED',
+      reviewedAt: reviewedAt.toISOString(),
+      createdRecord: {
+        recordType: 'ARTICLE',
+        id: article.id,
+        slug: article.slug,
+        publishStatus: article.status,
+      },
+    };
+  }
+
+  private async buildArticleApprovalInput(
+    result: ModerationReviewApproveArticleRequest,
+    reviewedAt: Date,
+  ) {
+    return {
+      title: result.normalized.title,
+      slug: this.titleToSlug(result.normalized.title),
+      summary: result.normalized.summary,
+      content: result.normalized.content,
+      status: result.publishStatus,
+      author: result.normalized.author,
+      publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
+      topicIds: await this.getTopicIds(result.normalized.topicSlugs),
+    };
+  }
+
+  private async approveEventSubmission(
+    submissionId: number,
+    result: ModerationReviewApproveEventRequest,
+    reviewedAt: Date,
+  ): Promise<ModerationReviewSuccess> {
+    await this.requireSubmissionType(submissionId, SubmissionType.ARTICLE);
+    const repoInput: EventSubmissionApprovedRepositoryInput = {
+      reviewNotes: result.reviewNotes,
+      reviewedAt: reviewedAt,
+      submissionId: submissionId,
+      eventData: await this.buildEventApprovalInput(result, reviewedAt),
+    };
+    const reviewResponse = await this.repository.approveEventSubmission(repoInput);
+    if (!reviewResponse) {
+      throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+    }
+    const event = reviewResponse.event;
+    return {
+      submissionId: submissionId,
+      status: 'APPROVED',
+      reviewedAt: reviewedAt.toISOString(),
+      createdRecord: {
+        recordType: 'EVENT',
+        id: event.id,
+        publishStatus: event.status,
+      },
+    };
+  }
+
+  private async buildEventApprovalInput(
+    result: ModerationReviewApproveEventRequest,
+    reviewedAt: Date,
+  ) {
+    return {
+      title: result.normalized.title,
+      summary: result.normalized.summary,
+      description: result.normalized.description,
+      eventType: result.normalized.eventType,
+      startTime: new Date(result.normalized.startTime),
+      endTime: this.parseOptionalDate(result.normalized.endTime),
+      locationName: result.normalized.locationName,
+      addressRaw: result.normalized.addressRaw,
+      city: result.normalized.city ?? null,
+      region: result.normalized.region ?? null,
+      country: result.normalized.country ?? null,
+      postalCode: result.normalized.postalCode ?? null,
+      website: result.normalized.website ?? null,
+      status: result.publishStatus,
+      publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
+      topicIds: await this.getTopicIds(result.normalized.topicSlugs),
+    };
+  }
+
   async reviewSubmission(
     submissionId: number,
     result: ModerationReviewRequest,
   ): Promise<ModerationReviewResponse> {
     const reviewedAt = new Date();
     if (result.decision === 'REJECT') {
-      const submission = await this.repository.markSubmissionRejected({
-        ...result,
-        reviewedAt: reviewedAt,
-        submissionId: submissionId,
-      });
-      if (!submission) {
-        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
-      }
-      return {
-        submissionId: submissionId,
-        status: 'REJECTED',
-        reviewedAt: reviewedAt.toISOString(),
-      };
+      return this.rejectSubmission(submissionId, result, reviewedAt);
     } else if (result.decision === 'APPROVE_ARTICLE') {
-      const submission = await this.repository.findById(submissionId);
-      if (!submission) {
-        throw new NotFoundException(`No submission found with id ${submissionId}`);
-      }
-      if (submission.submissionType !== SubmissionType.ARTICLE) {
-        throw new ReviewSubmissionTypeError(SubmissionType.ARTICLE, submission.submissionType);
-      }
-      const repoInput: ArticleSubmissionApprovedRepositoryInput = {
-        reviewNotes: result.reviewNotes,
-        reviewedAt: reviewedAt,
-        submissionId: submissionId,
-        articleData: {
-          title: result.normalized.title,
-          slug: this.titleToSlug(result.normalized.title),
-          summary: result.normalized.summary,
-          content: result.normalized.content,
-          status: result.publishStatus,
-          author: result.normalized.author,
-          publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
-          topicIds: await this.getTopicIds(result.normalized.topicSlugs),
-        },
-      };
-
-      const reviewResponse = await this.repository.approveArticleSubmission(repoInput);
-      if (!reviewResponse) {
-        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
-      }
-
-      const article = reviewResponse.article;
-      return {
-        submissionId: submissionId,
-        status: 'APPROVED',
-        reviewedAt: reviewedAt.toISOString(),
-        createdRecord: {
-          recordType: 'ARTICLE',
-          id: article.id,
-          slug: article.slug,
-          publishStatus: article.status,
-        },
-      };
+      return this.approveArticleSubmission(submissionId, result, reviewedAt);
     } else if (result.decision === 'APPROVE_EVENT') {
-      const submission = await this.repository.findById(submissionId);
-      if (!submission) {
-        throw new NotFoundException(`No submission found with id ${submissionId}`);
-      }
-      if (submission.submissionType !== SubmissionType.EVENT) {
-        throw new ReviewSubmissionTypeError(SubmissionType.EVENT, submission.submissionType);
-      }
-      const repoInput: EventSubmissionApprovedRepositoryInput = {
-        reviewNotes: result.reviewNotes,
-        reviewedAt: reviewedAt,
-        submissionId: submissionId,
-        eventData: {
-          title: result.normalized.title,
-          summary: result.normalized.summary,
-          description: result.normalized.description,
-          eventType: result.normalized.eventType,
-          startTime: new Date(result.normalized.startTime),
-          endTime: result.normalized.endTime == null ? null : new Date(result.normalized.endTime),
-          locationName: result.normalized.locationName,
-          addressRaw: result.normalized.addressRaw,
-          city: result.normalized.city ?? null,
-          region: result.normalized.region ?? null,
-          country: result.normalized.country ?? null,
-          postalCode: result.normalized.postalCode ?? null,
-          website: result.normalized.website ?? null,
-          status: result.publishStatus,
-          publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
-          topicIds: await this.getTopicIds(result.normalized.topicSlugs),
-        },
-      };
-      const reviewResponse = await this.repository.approveEventSubmission(repoInput);
-      if (!reviewResponse) {
-        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
-      }
-      const event = reviewResponse.event;
-      return {
-        submissionId: submissionId,
-        status: 'APPROVED',
-        reviewedAt: reviewedAt.toISOString(),
-        createdRecord: {
-          recordType: 'EVENT',
-          id: event.id,
-          publishStatus: event.status,
-        },
-      };
+      return this.approveEventSubmission(submissionId, result, reviewedAt);
     }
     throw new Error('Unexpected moderation review decision');
   }
