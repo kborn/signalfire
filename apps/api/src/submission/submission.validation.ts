@@ -1,7 +1,12 @@
 import { BadRequestException } from '@nestjs/common';
-import type { SubmissionRequest, SubmissionResponseError } from '@signal-fire/api-contracts';
+import type {
+  ModerationReviewRequest,
+  SubmissionRequest,
+  SubmissionResponseError,
+} from '@signal-fire/api-contracts';
 import { ZodError, type ZodIssue } from 'zod';
 import { submissionRequestSchema } from './submission.request-schema';
+import { moderationSubmissionRequestSchema } from './moderation-submission.request-schema';
 
 function formatIssuePath(path: PropertyKey[]): string {
   if (path.length === 0) {
@@ -35,4 +40,14 @@ export function validateSubmissionRequest(value: unknown): SubmissionRequest {
   }
 
   return parsed.data as SubmissionRequest;
+}
+
+export function validateSubmissionModerationRequest(value: unknown): ModerationReviewRequest {
+  const parsed = moderationSubmissionRequestSchema.safeParse(value);
+
+  if (!parsed.success) {
+    throw new BadRequestException(buildSubmissionValidationError(parsed.error));
+  }
+
+  return parsed.data as ModerationReviewRequest;
 }

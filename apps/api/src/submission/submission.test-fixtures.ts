@@ -7,6 +7,7 @@ import {
 import type {
   ArticleSubmissionRequest,
   EventSubmissionRequest,
+  ModerationReviewRejectRequest,
   SubmissionResponseError,
   SubmissionResponseSuccess,
 } from '@signal-fire/api-contracts';
@@ -141,6 +142,16 @@ export function buildSubmissionErrorResponse(
         message: 'Unknown topic slugs: unknown-topic',
       },
     ],
+    ...overrides,
+  };
+}
+
+export function buildReviewSubmissionErrorResponse(
+  overrides: Partial<ModerationReviewRejectRequest> = {},
+): ModerationReviewRejectRequest {
+  return {
+    decision: 'REJECT',
+    reviewNotes: 'Poorly written',
     ...overrides,
   };
 }

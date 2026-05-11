@@ -1,11 +1,23 @@
-import { BadRequestException, Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { SubmissionService } from './submission.service';
 import {
+  type ModerationReviewRequest,
+  ModerationReviewResponse,
   ModerationSubmissionDetail,
   ModerationSubmissionList,
   ModerationSubmissionListFilters,
 } from '@signal-fire/api-contracts';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
+import { SubmissionModerationValidationPipe } from './submission-validation.pipe';
 
 @Controller('admin/submissions')
 export class ModerationSubmissionController {
@@ -52,5 +64,13 @@ export class ModerationSubmissionController {
     }
 
     throw new BadRequestException('Invalid submission type');
+  }
+
+  @Post('/:id')
+  async reviewSubmission(
+    @Param('id') id: number,
+    @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,
+  ): Promise<ModerationReviewResponse> {
+    return this.submissionService.reviewSubmission(id, reqBody);
   }
 }

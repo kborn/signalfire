@@ -3,6 +3,7 @@ import { TopicSummary } from './common.types.js';
 
 export type SubmissionType = 'ARTICLE' | 'EVENT';
 export type SubmissionStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
+export type EntityStatus = 'DRAFT' | 'PUBLISHED';
 
 type SubmissionRequestCommon = {
   submissionType: SubmissionType;
@@ -50,7 +51,7 @@ export type EventSubmissionRequest = SubmissionRequestCommon & {
 export type SubmissionRequest = ArticleSubmissionRequest | EventSubmissionRequest;
 
 type ValidationError = {
-  field: string;
+  field?: string;
   message: string;
 };
 export type SubmissionResponseSuccess = {
@@ -126,3 +127,72 @@ export type ModerationSubmissionDetail =
         topics: TopicSummary[];
       };
     };
+
+export type ModerationReviewDecision = 'REJECT' | 'APPROVE_ARTICLE' | 'APPROVE_EVENT';
+
+export type ArticleApprovalPayload = {
+  title: string;
+  summary: string;
+  content: string;
+  topicSlugs: string[];
+  author: string;
+};
+
+export type EventApprovalPayload = {
+  title: string;
+  summary: string;
+  description: string;
+  eventType: EventType;
+  startTime: string;
+  endTime?: string | null;
+  locationName: string;
+  addressRaw: string;
+  city?: string | null;
+  region?: string | null;
+  country?: string | null;
+  postalCode?: string | null;
+  website?: string | null;
+  topicSlugs: string[];
+};
+
+export type ModerationReviewRejectRequest = {
+  decision: 'REJECT';
+  reviewNotes?: string | null;
+};
+
+export type ModerationReviewApproveArticleRequest = {
+  decision: 'APPROVE_ARTICLE';
+  reviewNotes?: string | null;
+  publishStatus: EntityStatus;
+  normalized: ArticleApprovalPayload;
+};
+
+export type ModerationReviewApproveEventRequest = {
+  decision: 'APPROVE_EVENT';
+  reviewNotes?: string | null;
+  publishStatus: EntityStatus;
+  normalized: EventApprovalPayload;
+};
+
+export type ModerationReviewRequest =
+  | ModerationReviewRejectRequest
+  | ModerationReviewApproveArticleRequest
+  | ModerationReviewApproveEventRequest;
+
+export type ModerationReviewResponse = ModerationReviewSuccess | ModerationReviewError;
+
+export type ModerationReviewSuccess = {
+  submissionId: number;
+  status: 'APPROVED' | 'REJECTED';
+  reviewedAt: string;
+  createdRecord?: {
+    recordType: 'ARTICLE' | 'EVENT';
+    id: number;
+    slug?: string;
+    publishStatus: EntityStatus;
+  };
+};
+
+export type ModerationReviewError = {
+  errors: ValidationError[];
+};

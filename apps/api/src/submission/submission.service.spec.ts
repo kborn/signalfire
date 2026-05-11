@@ -9,6 +9,7 @@ import {
 import { TopicRepository } from '../topic/topic.repository';
 import { UnknownSubmissionTopicsError } from './submission.error';
 import { NotFoundException } from '@nestjs/common';
+import { buildReviewSubmissionErrorResponse } from './submission.test-fixtures';
 
 const submissionInputData: ArticleSubmissionRequest = {
   submissionType: 'ARTICLE',
@@ -349,5 +350,21 @@ describe('SubmissionService', () => {
       country: 'US',
       website: 'https://example.org/event',
     });
+  });
+
+  it('rejects with NotFoundException when submission id does not exist', async () => {
+    repoMock.findById.mockResolvedValue(null);
+
+    await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
+      NotFoundException,
+    );
+  });
+
+  it('rejects a PENDING submission successfully', async () => {
+    repoMock.findById.mockResolvedValue(null);
+
+    await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

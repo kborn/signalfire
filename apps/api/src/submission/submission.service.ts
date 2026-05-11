@@ -9,14 +9,18 @@ import {
   ModerationSubmissionDetail,
   ModerationSubmissionListFilters,
   TopicSummary,
+  ModerationReviewRequest,
+  ModerationReviewResponse,
 } from '@signal-fire/api-contracts';
 import {
+  ArticleSubmissionApprovedRepositoryInput,
   CreateSubmissionRepositoryInputCommonFields,
   CreateSubmissionRepositoryInputEntityFields,
+  EventSubmissionApprovedRepositoryInput,
 } from './submission.repository.types';
 import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
-import { UnknownSubmissionTopicsError } from './submission.error';
+import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
 
 type ModerationSubmissionCommonParts = {
   id: number;
@@ -245,5 +249,121 @@ export class SubmissionService {
 
     const created_submission = await this.repository.create({ ...commonFields, ...fields });
     return { id: created_submission.id };
+  }
+
+  titleToSlug(title: string): string {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+  async reviewSubmission(
+    submissionId: number,
+    result: ModerationReviewRequest,
+  ): Promise<ModerationReviewResponse> {
+    const reviewedAt = new Date();
+    if (result.decision === 'REJECT') {
+      const submission = await this.repository.markSubmissionRejected({
+        ...result,
+        reviewedAt: reviewedAt,
+        submissionId: submissionId,
+      });
+      if (!submission) {
+        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+      }
+      return {
+        submissionId: submissionId,
+        status: 'REJECTED',
+        reviewedAt: reviewedAt.toISOString(),
+      };
+    } else if (result.decision === 'APPROVE_ARTICLE') {
+      const submission = await this.repository.findById(submissionId);
+      if (!submission) {
+        throw new NotFoundException(`No submission found with id ${submissionId}`);
+      }
+      if (submission.submissionType !== SubmissionType.ARTICLE) {
+        throw new ReviewSubmissionTypeError(SubmissionType.ARTICLE, submission.submissionType);
+      }
+      const repoInput: ArticleSubmissionApprovedRepositoryInput = {
+        reviewNotes: result.reviewNotes,
+        reviewedAt: reviewedAt,
+        submissionId: submissionId,
+        articleData: {
+          title: result.normalized.title,
+          slug: this.titleToSlug(result.normalized.title),
+          summary: result.normalized.summary,
+          content: result.normalized.content,
+          status: result.publishStatus,
+          author: result.normalized.author,
+          publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
+          topicIds: await this.getTopicIds(result.normalized.topicSlugs),
+        },
+      };
+
+      const reviewResponse = await this.repository.approveArticleSubmission(repoInput);
+      if (!reviewResponse) {
+        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+      }
+
+      const article = reviewResponse.article;
+      return {
+        submissionId: submissionId,
+        status: 'APPROVED',
+        reviewedAt: reviewedAt.toISOString(),
+        createdRecord: {
+          recordType: 'ARTICLE',
+          id: article.id,
+          slug: article.slug,
+          publishStatus: article.status,
+        },
+      };
+    } else if (result.decision === 'APPROVE_EVENT') {
+      const submission = await this.repository.findById(submissionId);
+      if (!submission) {
+        throw new NotFoundException(`No submission found with id ${submissionId}`);
+      }
+      if (submission.submissionType !== SubmissionType.EVENT) {
+        throw new ReviewSubmissionTypeError(SubmissionType.EVENT, submission.submissionType);
+      }
+      const repoInput: EventSubmissionApprovedRepositoryInput = {
+        reviewNotes: result.reviewNotes,
+        reviewedAt: reviewedAt,
+        submissionId: submissionId,
+        eventData: {
+          title: result.normalized.title,
+          summary: result.normalized.summary,
+          description: result.normalized.description,
+          eventType: result.normalized.eventType,
+          startTime: new Date(result.normalized.startTime),
+          endTime: result.normalized.endTime == null ? null : new Date(result.normalized.endTime),
+          locationName: result.normalized.locationName,
+          addressRaw: result.normalized.addressRaw,
+          city: result.normalized.city ?? null,
+          region: result.normalized.region ?? null,
+          country: result.normalized.country ?? null,
+          postalCode: result.normalized.postalCode ?? null,
+          website: result.normalized.website ?? null,
+          status: result.publishStatus,
+          publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
+          topicIds: await this.getTopicIds(result.normalized.topicSlugs),
+        },
+      };
+      const reviewResponse = await this.repository.approveEventSubmission(repoInput);
+      if (!reviewResponse) {
+        throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+      }
+      const event = reviewResponse.event;
+      return {
+        submissionId: submissionId,
+        status: 'APPROVED',
+        reviewedAt: reviewedAt.toISOString(),
+        createdRecord: {
+          recordType: 'EVENT',
+          id: event.id,
+          publishStatus: event.status,
+        },
+      };
+    }
+    throw new Error('Unexpected moderation review decision');
   }
 }

@@ -16,4 +16,13 @@ export type {
   ModerationSubmissionDetail,
   SubmissionStatus,
   SubmissionType,
+  ModerationReviewDecision,
+  ModerationReviewRequest,
+  ModerationReviewResponse,
+  ModerationReviewSuccess,
+  ModerationReviewError,
+  ModerationReviewRejectRequest,
+  ModerationReviewApproveArticleRequest,
+  ModerationReviewApproveEventRequest,
+  EntityStatus,
 } from './submission_type.js';
