@@ -27,9 +27,7 @@ describe('SubmissionService', () => {
     markSubmissionRejected: jest.fn(),
   };
   const topicRepoMock = {
-    findIdsBySlugs: jest.fn(),
     findBySubmissionId: jest.fn(),
-    create: jest.fn(),
   };
   beforeEach(async () => {
     jest.clearAllMocks();

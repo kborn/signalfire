@@ -61,14 +61,10 @@ const eventSubmissionInputData: EventSubmissionRequest = {
 describe('SubmissionService', () => {
   let service: SubmissionService;
   const repoMock = {
-    findModerationSubmissions: jest.fn(),
-    findById: jest.fn(),
-    findResourceLinksBySubmissionId: jest.fn(),
     create: jest.fn(),
   };
   const topicRepoMock = {
     findIdsBySlugs: jest.fn(),
-    findBySubmissionId: jest.fn(),
     create: jest.fn(),
   };
   beforeEach(async () => {
