@@ -7,10 +7,16 @@ import { ArticleModule } from '../article/article.module';
 import { SubmissionValidationPipe } from './submission-validation.pipe';
 import { SubmissionController } from './submission.controller';
 import { ModerationSubmissionController } from './moderation-submission.controller';
+import { ModerationSubmissionService } from './moderation-submission.service';
 
 @Module({
   imports: [PrismaModule, TopicModule, ArticleModule],
-  providers: [SubmissionService, SubmissionRepository, SubmissionValidationPipe],
+  providers: [
+    ModerationSubmissionService,
+    SubmissionService,
+    SubmissionRepository,
+    SubmissionValidationPipe,
+  ],
   exports: [SubmissionService],
   controllers: [SubmissionController, ModerationSubmissionController],
 })

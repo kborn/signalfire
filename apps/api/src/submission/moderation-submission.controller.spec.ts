@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModerationSubmissionController } from './moderation-submission.controller';
-import { SubmissionService } from './submission.service';
+import { ModerationSubmissionService } from './moderation-submission.service';
 import type {
   ModerationSubmissionDetail,
   ModerationSubmissionList,
@@ -20,7 +20,7 @@ describe('ModerationSubmissionController', () => {
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ModerationSubmissionController],
-      providers: [{ provide: SubmissionService, useValue: serviceMock }],
+      providers: [{ provide: ModerationSubmissionService, useValue: serviceMock }],
     }).compile();
 
     controller = app.get<ModerationSubmissionController>(ModerationSubmissionController);

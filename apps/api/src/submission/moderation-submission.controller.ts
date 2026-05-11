@@ -8,7 +8,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { SubmissionService } from './submission.service';
+import { ModerationSubmissionService } from './moderation-submission.service';
 import {
   type ModerationReviewRequest,
   ModerationReviewResponse,
@@ -21,7 +21,7 @@ import { SubmissionModerationValidationPipe } from './submission-validation.pipe
 
 @Controller('admin/submissions')
 export class ModerationSubmissionController {
-  constructor(private readonly submissionService: SubmissionService) {}
+  constructor(private readonly moderationSubmissionService: ModerationSubmissionService) {}
 
   @Get()
   async findQueuedSubmissions(
@@ -32,14 +32,14 @@ export class ModerationSubmissionController {
       status: this.parseSubmissionStatus(submissionStatus),
       submissionType: this.parseSubmissionType(submissionType),
     };
-    return this.submissionService.getModerationSubmissionList(filters);
+    return this.moderationSubmissionService.getModerationSubmissionList(filters);
   }
 
   @Get('/:id')
   async findSubmission(
     @Param('id', ParseIntPipe) submissionId: number,
   ): Promise<ModerationSubmissionDetail> {
-    return this.submissionService.getModerationSubmissionDetails(submissionId);
+    return this.moderationSubmissionService.getModerationSubmissionDetails(submissionId);
   }
 
   parseSubmissionStatus(value: string | undefined): SubmissionStatus {
@@ -71,6 +71,6 @@ export class ModerationSubmissionController {
     @Param('id', ParseIntPipe) submissionId: number,
     @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,
   ): Promise<ModerationReviewResponse> {
-    return this.submissionService.reviewSubmission(submissionId, reqBody);
+    return this.moderationSubmissionService.reviewSubmission(submissionId, reqBody);
   }
 }
