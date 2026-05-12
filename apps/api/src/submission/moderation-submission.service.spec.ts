@@ -3,6 +3,14 @@ import { SubmissionRepository } from './submission.repository';
 import { TopicRepository } from '../topic/topic.repository';
 import { NotFoundException } from '@nestjs/common';
 import { ModerationSubmissionService } from './moderation-submission.service';
+import { buildReviewSubmissionErrorResponse } from './submission.test-fixtures';
+import { withFrozenTime } from '../../common/test/time';
+import { EntityStatus, SubmissionType } from '@prisma/client';
+import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import {
+  ModerationReviewApproveArticleRequest,
+  ModerationReviewApproveEventRequest,
+} from '@signal-fire/api-contracts';
 
 const submission = {
   id: 1,
@@ -18,6 +26,41 @@ const submission = {
   topicSlugs: [1, 2],
 };
 
+function buildMinimalApproveArticleReviewRequest(
+  published?: EntityStatus,
+): ModerationReviewApproveArticleRequest {
+  return {
+    decision: 'APPROVE_ARTICLE',
+    publishStatus: published ?? EntityStatus.PUBLISHED,
+    normalized: {
+      title: 'Article title',
+      summary: 'Article summary',
+      content: 'Article content',
+      topicSlugs: ['democracy'],
+      author: 'Article author',
+    },
+  };
+}
+
+function buildMinimalApproveEventReviewRequest(
+  published?: EntityStatus,
+): ModerationReviewApproveEventRequest {
+  return {
+    decision: 'APPROVE_EVENT',
+    publishStatus: published ?? EntityStatus.PUBLISHED,
+    normalized: {
+      title: 'Event title',
+      summary: 'Event summary',
+      description: 'Event description',
+      eventType: 'RALLY',
+      startTime: '2026-05-14T17:00:00.000Z',
+      locationName: 'City Hall',
+      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+      topicSlugs: ['democracy'],
+    },
+  };
+}
+
 describe('SubmissionService', () => {
   let service: ModerationSubmissionService;
   const repoMock = {
@@ -25,9 +68,12 @@ describe('SubmissionService', () => {
     findById: jest.fn(),
     findResourceLinksBySubmissionId: jest.fn(),
     markSubmissionRejected: jest.fn(),
+    approveArticleSubmission: jest.fn(),
+    approveEventSubmission: jest.fn(),
   };
   const topicRepoMock = {
     findBySubmissionId: jest.fn(),
+    findIdsBySlugs: jest.fn(),
   };
   beforeEach(async () => {
     jest.clearAllMocks();
@@ -260,19 +306,256 @@ describe('SubmissionService', () => {
     expect(repoMock.findResourceLinksBySubmissionId).not.toHaveBeenCalled();
   });
 
-  // it('rejects with NotFoundException when submission id does not exist', async () => {
-  //   repoMock.findById.mockResolvedValue(null);
-  //
-  //   await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
-  //     NotFoundException,
-  //   );
-  // });
-  //
-  // it('rejects a PENDING submission successfully', async () => {
-  //   repoMock.findById.mockResolvedValue(null);
-  //
-  //   await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
-  //     NotFoundException,
-  //   );
-  // });
+  it('fails with NotFoundException when submission id does not exist', async () => {
+    repoMock.findById.mockResolvedValue(null);
+
+    await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
+      NotFoundException,
+    );
+  });
+
+  it('rejects a PENDING submission successfully', async () => {
+    await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
+      repoMock.markSubmissionRejected.mockResolvedValue({ submissionId: 1 });
+      const ret = await service.reviewSubmission(1, {
+        decision: 'REJECT',
+        reviewNotes: 'Poorly Written',
+      });
+      expect(repoMock.markSubmissionRejected).toHaveBeenCalledWith({
+        submissionId: 1,
+        decision: 'REJECT',
+        reviewNotes: 'Poorly Written',
+        reviewedAt: new Date('2025-03-15T12:34:56.001Z'),
+      });
+      expect(ret).toEqual({
+        submissionId: 1,
+        status: 'REJECTED',
+        reviewedAt: '2025-03-15T12:34:56.001Z',
+      });
+    });
+  });
+
+  it('fails with ReviewSubmissionTypeError when APPROVE_ARTICLE decision is applied to an EVENT submission', async () => {
+    repoMock.findById.mockResolvedValue({ submissionType: SubmissionType.EVENT });
+
+    await expect(
+      service.reviewSubmission(1, buildMinimalApproveArticleReviewRequest()),
+    ).rejects.toThrow(ReviewSubmissionTypeError);
+  });
+
+  it('fails with ReviewSubmissionTypeError when APPROVE_EVENT decision is applied to an ARTICLE submission', async () => {
+    repoMock.findById.mockResolvedValue({ submissionType: SubmissionType.ARTICLE });
+
+    await expect(
+      service.reviewSubmission(1, buildMinimalApproveEventReviewRequest()),
+    ).rejects.toThrow(ReviewSubmissionTypeError);
+  });
+
+  it('approves pending article submission and returns created Article metadata ', async () => {
+    const reviewedTime = '2025-03-15T12:34:56.001Z';
+    await withFrozenTime(reviewedTime, async () => {
+      const slug = 'normalized-article-slug';
+
+      repoMock.findById.mockResolvedValue({
+        submissionId: 1,
+        submissionType: SubmissionType.ARTICLE,
+      });
+
+      repoMock.approveArticleSubmission.mockResolvedValue({
+        article: { id: 1, status: EntityStatus.PUBLISHED, slug: slug },
+      });
+
+      topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+      const ret = await service.reviewSubmission(1, buildMinimalApproveArticleReviewRequest());
+
+      expect(ret).toEqual({
+        submissionId: 1,
+        status: 'APPROVED',
+        reviewedAt: reviewedTime,
+        createdRecord: {
+          recordType: 'ARTICLE',
+          id: 1,
+          slug: slug,
+          publishStatus: EntityStatus.PUBLISHED,
+        },
+      });
+
+      expect(repoMock.approveArticleSubmission).toHaveBeenCalledWith({
+        submissionId: 1,
+        reviewedAt: new Date(reviewedTime),
+        articleData: {
+          title: 'Article title',
+          slug: 'article-title',
+          summary: 'Article summary',
+          content: 'Article content',
+          status: EntityStatus.PUBLISHED,
+          author: 'Article author',
+          publishedAt: new Date(reviewedTime),
+          topicIds: [1],
+        },
+      });
+    });
+  });
+
+  it('approves pending event submission and returns created Event metadata ', async () => {
+    const reviewedTime = '2025-03-15T12:34:56.001Z';
+    await withFrozenTime(reviewedTime, async () => {
+      repoMock.findById.mockResolvedValue({
+        submissionId: 1,
+        submissionType: SubmissionType.EVENT,
+      });
+
+      repoMock.approveEventSubmission.mockResolvedValue({
+        event: { id: 1, status: EntityStatus.PUBLISHED },
+      });
+
+      topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+      const ret = await service.reviewSubmission(1, buildMinimalApproveEventReviewRequest());
+
+      expect(ret).toEqual({
+        submissionId: 1,
+        status: 'APPROVED',
+        reviewedAt: reviewedTime,
+        createdRecord: {
+          recordType: 'EVENT',
+          id: 1,
+          publishStatus: EntityStatus.PUBLISHED,
+        },
+      });
+
+      expect(repoMock.approveEventSubmission).toHaveBeenCalledWith({
+        submissionId: 1,
+        reviewedAt: new Date(reviewedTime),
+        eventData: {
+          title: 'Event title',
+          summary: 'Event summary',
+          description: 'Event description',
+          eventType: 'RALLY',
+          startTime: new Date('2026-05-14T17:00:00.000Z'),
+          endTime: null,
+          locationName: 'City Hall',
+          postalCode: null,
+          city: null,
+          country: null,
+          region: null,
+          addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+          status: EntityStatus.PUBLISHED,
+          website: null,
+          publishedAt: new Date(reviewedTime),
+          topicIds: [1],
+        },
+      });
+    });
+  });
+
+  it('leaves publishedAt null when article submission publishStatus is DRAFT', async () => {
+    const reviewedTime = '2025-03-15T12:34:56.001Z';
+    await withFrozenTime(reviewedTime, async () => {
+      const slug = 'normalized-article-slug';
+
+      repoMock.findById.mockResolvedValue({
+        submissionId: 1,
+        submissionType: SubmissionType.ARTICLE,
+      });
+
+      repoMock.approveArticleSubmission.mockResolvedValue({
+        article: { id: 1, status: EntityStatus.DRAFT, slug: slug },
+      });
+
+      topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+      const ret = await service.reviewSubmission(
+        1,
+        buildMinimalApproveArticleReviewRequest(EntityStatus.DRAFT),
+      );
+
+      expect(ret).toEqual({
+        submissionId: 1,
+        status: 'APPROVED',
+        reviewedAt: reviewedTime,
+        createdRecord: {
+          recordType: 'ARTICLE',
+          id: 1,
+          slug: slug,
+          publishStatus: EntityStatus.DRAFT,
+        },
+      });
+
+      expect(repoMock.approveArticleSubmission).toHaveBeenCalledWith({
+        submissionId: 1,
+        reviewNotes: undefined,
+        reviewedAt: new Date(reviewedTime),
+        articleData: {
+          title: 'Article title',
+          slug: 'article-title',
+          summary: 'Article summary',
+          content: 'Article content',
+          publishedAt: null,
+          status: EntityStatus.DRAFT,
+          author: 'Article author',
+          topicIds: [1],
+        },
+      });
+    });
+  });
+
+  it('leaves publishedAt null when event submission publishStatus is DRAFT', async () => {
+    const reviewedTime = '2025-03-15T12:34:56.001Z';
+    await withFrozenTime(reviewedTime, async () => {
+      repoMock.findById.mockResolvedValue({
+        submissionId: 1,
+        submissionType: SubmissionType.EVENT,
+      });
+
+      repoMock.approveEventSubmission.mockResolvedValue({
+        event: { id: 1, status: EntityStatus.DRAFT },
+      });
+
+      topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+      const ret = await service.reviewSubmission(
+        1,
+        buildMinimalApproveEventReviewRequest(EntityStatus.DRAFT),
+      );
+
+      expect(ret).toEqual({
+        submissionId: 1,
+        status: 'APPROVED',
+        reviewedAt: reviewedTime,
+        createdRecord: {
+          recordType: 'EVENT',
+          id: 1,
+          publishStatus: EntityStatus.DRAFT,
+        },
+      });
+
+      expect(repoMock.approveEventSubmission).toHaveBeenCalledWith({
+        submissionId: 1,
+        reviewedAt: new Date(reviewedTime),
+        eventData: {
+          title: 'Event title',
+          summary: 'Event summary',
+          description: 'Event description',
+          eventType: 'RALLY',
+          startTime: new Date('2026-05-14T17:00:00.000Z'),
+          endTime: null,
+          locationName: 'City Hall',
+          postalCode: null,
+          city: null,
+          country: null,
+          region: null,
+          addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+          status: EntityStatus.DRAFT,
+          website: null,
+          publishedAt: null,
+          topicIds: [1],
+        },
+      });
+    });
+  });
+
+  it('rejects with UnknownSubmissionTopicsError when topic slugs can not be resolved', async () => {
+    topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+    await expect(service.getTopicIds(['democracy', 'climate'])).rejects.toThrow(
+      UnknownSubmissionTopicsError,
+    );
+  });
 });
