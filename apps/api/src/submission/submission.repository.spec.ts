@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaService } from '../prisma/prisma.service';
 import { SubmissionRepository } from './submission.repository';
-import { CreateSubmissionRepositoryInput } from './submission.repository.types';
-import { SubmissionStatus } from '@prisma/client';
+import {
+  ArticleSubmissionApprovedRepositoryInput,
+  CreateSubmissionRepositoryInput,
+  EventSubmissionApprovedRepositoryInput,
+} from './submission.repository.types';
+import { EntityStatus, EventType, SubmissionStatus } from '@prisma/client';
 
 const submissionInputData: CreateSubmissionRepositoryInput = {
   submissionType: 'ARTICLE',
@@ -27,19 +31,38 @@ describe('SubmissionRepository', () => {
       findMany: jest.fn(),
       findUnique: jest.fn(),
       create: jest.fn(),
+      updateMany: jest.fn(),
+      update: jest.fn(),
     },
     resourceLink: {
       findMany: jest.fn(),
     },
+    article: {
+      create: jest.fn(),
+    },
+    event: {
+      create: jest.fn(),
+    },
+  };
+
+  const prismaServiceMock = {
+    ...prismaMock,
+    $transaction: jest.fn(<T>(callback: (tx: typeof prismaMock) => Promise<T>) =>
+      callback(prismaMock),
+    ),
   };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SubmissionRepository, { provide: PrismaService, useValue: prismaMock }],
+      providers: [SubmissionRepository, { provide: PrismaService, useValue: prismaServiceMock }],
     }).compile();
     repository = module.get(SubmissionRepository);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('findModerationSubmissions without filter', async () => {
@@ -176,5 +199,310 @@ describe('SubmissionRepository', () => {
         },
       },
     });
+  });
+
+  it('returns null when no valid submissions are found to reject', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
+
+    const ret = await repository.markSubmissionRejected({
+      submissionId: 1,
+      reviewNotes: 'Not a fit',
+      reviewedAt,
+    });
+    expect(ret).toBeNull();
+    expect(prismaMock.submission.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+        status: SubmissionStatus.PENDING,
+        articleId: null,
+        eventId: null,
+      },
+      data: {
+        status: SubmissionStatus.REJECTED,
+        reviewNotes: 'Not a fit',
+        reviewedAt,
+      },
+    });
+  });
+
+  it('returns submission after updating as rejected', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
+    prismaMock.submission.findUnique.mockResolvedValue(submission);
+
+    const ret = await repository.markSubmissionRejected({
+      submissionId: 1,
+      reviewNotes: 'Not a fit',
+      reviewedAt,
+    });
+    expect(ret).toEqual(submission);
+  });
+
+  it('approve article submission', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+    const assignedAt = new Date('2026-01-01T00:00:01.000Z');
+    const article = {
+      id: 10,
+      slug: 'community-submission',
+      title: 'Community Submission',
+      summary: 'A short article summary.',
+      content: 'Published article content.',
+      status: EntityStatus.PUBLISHED,
+      author: 'Jane Doe',
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      publishedAt: reviewedAt,
+      updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    };
+    const reviewedSubmission = { ...submission, status: SubmissionStatus.APPROVED, articleId: 10 };
+    const input: ArticleSubmissionApprovedRepositoryInput = {
+      submissionId: 1,
+      reviewNotes: 'Looks good',
+      reviewedAt,
+      articleData: {
+        title: article.title,
+        slug: article.slug,
+        summary: article.summary,
+        content: article.content,
+        status: article.status,
+        author: article.author,
+        publishedAt: article.publishedAt,
+        topicIds: [1, 2],
+      },
+    };
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
+    prismaMock.article.create.mockResolvedValue(article);
+    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    jest.useFakeTimers().setSystemTime(assignedAt);
+
+    const ret = await repository.approveArticleSubmission(input);
+
+    expect(prismaServiceMock.$transaction).toHaveBeenCalled();
+    expect(prismaMock.submission.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+        status: 'PENDING',
+        articleId: null,
+        eventId: null,
+      },
+      data: {
+        status: 'APPROVED',
+        reviewNotes: 'Looks good',
+        reviewedAt,
+      },
+    });
+    expect(prismaMock.article.create).toHaveBeenCalledWith({
+      data: {
+        title: 'Community Submission',
+        slug: 'community-submission',
+        summary: 'A short article summary.',
+        content: 'Published article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Jane Doe',
+        publishedAt: reviewedAt,
+        topicArticles: {
+          create: [
+            {
+              topic: { connect: { id: 1 } },
+              assignedAt,
+              assignedBy: 'moderation',
+            },
+            {
+              topic: { connect: { id: 2 } },
+              assignedAt,
+              assignedBy: 'moderation',
+            },
+          ],
+        },
+      },
+    });
+    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: {
+        articleId: 10,
+      },
+    });
+    expect(ret).toEqual({ submission: reviewedSubmission, article });
+  });
+
+  it('approve event submission', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+    const assignedAt = new Date('2026-01-01T00:00:01.000Z');
+    const startTime = new Date('2026-02-01T15:00:00.000Z');
+    const endTime = new Date('2026-02-01T17:00:00.000Z');
+    const event = {
+      id: 20,
+      title: 'Community Event',
+      summary: 'A short event summary.',
+      description: 'Published event description.',
+      website: 'https://example.com/event',
+      eventType: EventType.RALLY,
+      status: EntityStatus.PUBLISHED,
+      startTime,
+      endTime,
+      locationName: 'City Hall',
+      addressRaw: '1 Main St',
+      city: 'Springfield',
+      region: 'IL',
+      postalCode: '62701',
+      country: 'US',
+      latitude: null,
+      longitude: null,
+      createdAt: new Date('2026-01-01T00:00:00.000Z'),
+      publishedAt: reviewedAt,
+      updatedAt: new Date('2026-01-01T00:00:00.000Z'),
+    };
+    const reviewedSubmission = { ...submission, status: SubmissionStatus.APPROVED, eventId: 20 };
+    const input: EventSubmissionApprovedRepositoryInput = {
+      submissionId: 1,
+      reviewNotes: 'Looks good',
+      reviewedAt,
+      eventData: {
+        title: event.title,
+        summary: event.summary,
+        description: event.description,
+        eventType: event.eventType,
+        startTime: event.startTime,
+        endTime: event.endTime,
+        locationName: event.locationName,
+        addressRaw: event.addressRaw,
+        city: event.city,
+        region: event.region,
+        country: event.country,
+        postalCode: event.postalCode,
+        website: event.website,
+        status: event.status,
+        publishedAt: event.publishedAt,
+        topicIds: [1, 2],
+      },
+    };
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
+    prismaMock.event.create.mockResolvedValue(event);
+    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    jest.useFakeTimers().setSystemTime(assignedAt);
+
+    const ret = await repository.approveEventSubmission(input);
+
+    expect(prismaServiceMock.$transaction).toHaveBeenCalled();
+    expect(prismaMock.submission.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: 1,
+        status: 'PENDING',
+        articleId: null,
+        eventId: null,
+      },
+      data: {
+        status: 'APPROVED',
+        reviewNotes: 'Looks good',
+        reviewedAt,
+      },
+    });
+    expect(prismaMock.event.create).toHaveBeenCalledWith({
+      data: {
+        title: 'Community Event',
+        summary: 'A short event summary.',
+        description: 'Published event description.',
+        eventType: EventType.RALLY,
+        startTime,
+        endTime,
+        locationName: 'City Hall',
+        addressRaw: '1 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        country: 'US',
+        postalCode: '62701',
+        website: 'https://example.com/event',
+        status: EntityStatus.PUBLISHED,
+        publishedAt: reviewedAt,
+        topicEvents: {
+          create: [
+            {
+              topic: { connect: { id: 1 } },
+              assignedAt,
+              assignedBy: 'moderation',
+            },
+            {
+              topic: { connect: { id: 2 } },
+              assignedAt,
+              assignedBy: 'moderation',
+            },
+          ],
+        },
+      },
+    });
+    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+      where: { id: 1 },
+      data: {
+        eventId: 20,
+      },
+    });
+    expect(ret).toEqual({ submission: reviewedSubmission, event });
+  });
+
+  it('returns null when no valid article submissions are found to approve', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+    const input: ArticleSubmissionApprovedRepositoryInput = {
+      submissionId: 1,
+      reviewNotes: 'Looks good',
+      reviewedAt,
+      articleData: {
+        title: 'Community Submission',
+        slug: 'community-submission',
+        summary: 'A short article summary.',
+        content: 'Published article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Jane Doe',
+        publishedAt: reviewedAt,
+        topicIds: [1, 2],
+      },
+    };
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
+
+    const ret = await repository.approveArticleSubmission(input);
+    expect(ret).toBeNull();
+    expect(prismaMock.article.create).not.toHaveBeenCalled();
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
+  });
+
+  it('returns null when no valid event submissions are found to approve', async () => {
+    const reviewedAt = new Date('2026-01-01T00:00:00.000Z');
+    const startTime = new Date('2026-02-01T15:00:00.000Z');
+    const endTime = new Date('2026-02-01T17:00:00.000Z');
+
+    const input: EventSubmissionApprovedRepositoryInput = {
+      submissionId: 1,
+      reviewNotes: 'Looks good',
+      reviewedAt,
+      eventData: {
+        title: 'Community Event',
+        summary: 'A short event summary.',
+        description: 'Published event description.',
+        eventType: EventType.RALLY,
+        startTime,
+        endTime,
+        locationName: 'City Hall',
+        addressRaw: '1 Main St',
+        city: 'Springfield',
+        region: 'IL',
+        country: 'US',
+        postalCode: '62701',
+        website: 'https://example.com/event',
+        status: EntityStatus.PUBLISHED,
+        publishedAt: reviewedAt,
+        topicIds: [1, 2],
+      },
+    };
+
+    prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
+
+    const ret = await repository.approveEventSubmission(input);
+    expect(ret).toBeNull();
+    expect(prismaMock.event.create).not.toHaveBeenCalled();
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
   });
 });
