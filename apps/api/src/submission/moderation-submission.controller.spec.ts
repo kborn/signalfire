@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
 import type {
+  ModerationReviewApproveArticleRequest,
+  ModerationReviewSuccess,
   ModerationSubmissionDetail,
   ModerationSubmissionList,
 } from '@signal-fire/api-contracts';
@@ -13,6 +15,7 @@ describe('ModerationSubmissionController', () => {
   const serviceMock = {
     getModerationSubmissionList: jest.fn(),
     getModerationSubmissionDetails: jest.fn(),
+    reviewSubmission: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -90,5 +93,37 @@ describe('ModerationSubmissionController', () => {
 
     expect(ret).toEqual(response);
     expect(serviceMock.getModerationSubmissionDetails).toHaveBeenCalledWith(1);
+  });
+
+  it('reviewSubmission delegates approval request to the moderation service', async () => {
+    const req: ModerationReviewApproveArticleRequest = {
+      decision: 'APPROVE_ARTICLE',
+      reviewNotes: 'Looks good',
+      publishStatus: 'PUBLISHED',
+      normalized: {
+        title: 'Community Submission',
+        summary: 'A short submission summary.',
+        content: 'Published article content.',
+        topicSlugs: ['democracy'],
+        author: 'Jane Doe',
+      },
+    };
+
+    const resp: ModerationReviewSuccess = {
+      submissionId: 1,
+      status: 'APPROVED',
+      reviewedAt: '2026-05-01T10:00:00.000Z',
+      createdRecord: {
+        recordType: 'ARTICLE',
+        id: 10,
+        slug: 'community-submission',
+        publishStatus: 'PUBLISHED',
+      },
+    };
+    serviceMock.reviewSubmission.mockResolvedValue(resp);
+
+    const ret = await controller.reviewSubmission(1, req);
+    expect(ret).toEqual(resp);
+    expect(serviceMock.reviewSubmission).toHaveBeenCalledWith(1, req);
   });
 });

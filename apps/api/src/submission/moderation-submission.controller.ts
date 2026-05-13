@@ -42,7 +42,7 @@ export class ModerationSubmissionController {
     return this.moderationSubmissionService.getModerationSubmissionDetails(submissionId);
   }
 
-  parseSubmissionStatus(value: string | undefined): SubmissionStatus {
+  private parseSubmissionStatus(value: string | undefined): SubmissionStatus {
     if (value == null) {
       return 'PENDING';
     }
@@ -54,7 +54,7 @@ export class ModerationSubmissionController {
     throw new BadRequestException('Invalid submission status');
   }
 
-  parseSubmissionType(value: string | undefined): SubmissionType | undefined {
+  private parseSubmissionType(value: string | undefined): SubmissionType | undefined {
     if (value == null) {
       return undefined;
     }
