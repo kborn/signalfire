@@ -357,6 +357,7 @@ describe('SubmissionService', () => {
       repoMock.findById.mockResolvedValue({
         submissionId: 1,
         submissionType: SubmissionType.ARTICLE,
+        author: 'Article author',
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({
@@ -392,6 +393,7 @@ describe('SubmissionService', () => {
 
       expect(repoMock.approveArticleSubmission).toHaveBeenCalledWith({
         submissionId: 1,
+        reviewNotes: undefined,
         reviewedAt: new Date(reviewedTime),
         articleData: {
           title: 'Article title',
@@ -487,6 +489,7 @@ describe('SubmissionService', () => {
       repoMock.findById.mockResolvedValue({
         submissionId: 1,
         submissionType: SubmissionType.ARTICLE,
+        author: 'Article author',
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({

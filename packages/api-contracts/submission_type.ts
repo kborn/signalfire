@@ -78,6 +78,7 @@ export type ModerationSubmissionSummary = {
   submissionType: SubmissionType;
   status: SubmissionStatus;
   title: string;
+  summary: string;
   submittedAt: string;
   submitterName: string | null;
   submitterEmail: string | null;

@@ -24,7 +24,7 @@ export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams
 
   const query = params.toString();
   const url = query ? `${getApiBase()}/${endpoint}?${query}` : `${getApiBase()}/${endpoint}`;
-
+  console.log(url);
   const response = await fetch(url);
   if (!response.ok) {
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);

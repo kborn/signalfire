@@ -24,5 +24,6 @@ export type {
   ModerationReviewRejectRequest,
   ModerationReviewApproveArticleRequest,
   ModerationReviewApproveEventRequest,
+  ModerationSubmissionSummary,
   EntityStatus,
 } from './submission_type.js';

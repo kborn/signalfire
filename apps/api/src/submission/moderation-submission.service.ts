@@ -110,6 +110,7 @@ export class ModerationSubmissionService {
         submissionType: submission.submissionType,
         status: submission.status,
         title: submission.title,
+        summary: submission.summary,
         submittedAt: submission.submittedAt.toISOString(),
         submitterName: submission.submitterName,
         submitterEmail: submission.submitterEmail,

@@ -30,6 +30,7 @@ describe('SubmissionRepository', () => {
     submission: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
       create: jest.fn(),
       updateMany: jest.fn(),
       update: jest.fn(),
@@ -275,7 +276,7 @@ describe('SubmissionRepository', () => {
 
     prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
     prismaMock.article.create.mockResolvedValue(article);
-    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    prismaMock.submission.findUniqueOrThrow.mockResolvedValue(reviewedSubmission);
     jest.useFakeTimers().setSystemTime(assignedAt);
 
     const ret = await repository.approveArticleSubmission(input);
@@ -292,6 +293,7 @@ describe('SubmissionRepository', () => {
         status: 'APPROVED',
         reviewNotes: 'Looks good',
         reviewedAt,
+        articleId: 10,
       },
     });
     expect(prismaMock.article.create).toHaveBeenCalledWith({
@@ -319,12 +321,10 @@ describe('SubmissionRepository', () => {
         },
       },
     });
-    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+    expect(prismaMock.submission.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: {
-        articleId: 10,
-      },
     });
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
     expect(ret).toEqual({ submission: reviewedSubmission, article });
   });
 
@@ -382,7 +382,7 @@ describe('SubmissionRepository', () => {
 
     prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
     prismaMock.event.create.mockResolvedValue(event);
-    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    prismaMock.submission.findUniqueOrThrow.mockResolvedValue(reviewedSubmission);
     jest.useFakeTimers().setSystemTime(assignedAt);
 
     const ret = await repository.approveEventSubmission(input);
@@ -399,6 +399,7 @@ describe('SubmissionRepository', () => {
         status: 'APPROVED',
         reviewNotes: 'Looks good',
         reviewedAt,
+        eventId: 20,
       },
     });
     expect(prismaMock.event.create).toHaveBeenCalledWith({
@@ -434,12 +435,10 @@ describe('SubmissionRepository', () => {
         },
       },
     });
-    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+    expect(prismaMock.submission.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: {
-        eventId: 20,
-      },
     });
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
     expect(ret).toEqual({ submission: reviewedSubmission, event });
   });
 
@@ -461,12 +460,14 @@ describe('SubmissionRepository', () => {
       },
     };
 
+    prismaMock.article.create.mockResolvedValue({ id: 10 });
     prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
 
     const ret = await repository.approveArticleSubmission(input);
     expect(ret).toBeNull();
-    expect(prismaMock.article.create).not.toHaveBeenCalled();
+    expect(prismaMock.article.create).toHaveBeenCalled();
     expect(prismaMock.submission.update).not.toHaveBeenCalled();
+    expect(prismaMock.submission.findUniqueOrThrow).not.toHaveBeenCalled();
   });
 
   it('returns null when no valid event submissions are found to approve', async () => {
@@ -498,11 +499,13 @@ describe('SubmissionRepository', () => {
       },
     };
 
+    prismaMock.event.create.mockResolvedValue({ id: 20 });
     prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
 
     const ret = await repository.approveEventSubmission(input);
     expect(ret).toBeNull();
-    expect(prismaMock.event.create).not.toHaveBeenCalled();
+    expect(prismaMock.event.create).toHaveBeenCalled();
     expect(prismaMock.submission.update).not.toHaveBeenCalled();
+    expect(prismaMock.submission.findUniqueOrThrow).not.toHaveBeenCalled();
   });
 });

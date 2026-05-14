@@ -366,6 +366,8 @@ Rules:
 - topic selection uses a multi-select checkbox list
 - status defaults to `published` on approval flow
 - only `draft` and `published` are valid values
+- article author is derived from submitted credited author when present
+- article author defaults to `anonymous` when submitted credited author is missing
 - slugs are system-generated on create
 - slugs are immutable after creation in Phase 11
 - no manual slug field is required by this spec

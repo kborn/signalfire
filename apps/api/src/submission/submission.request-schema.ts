@@ -166,7 +166,7 @@ const moderationReviewApproveArticleSchema = z.object({
     summary: requiredTrimmedString('Summary', 300),
     content: requiredTrimmedString('Content', 50000),
     topicSlugs: topicSlugsSchema,
-    author: requiredTrimmedString('Summary', 120),
+    author: requiredTrimmedString('Author', 120),
   }),
 });
 
