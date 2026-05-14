@@ -236,7 +236,7 @@ Be stricter for event-specific details:
 - event type enum from shared contract
 - exact location field mapping
 - `US` default for country
-- optional `endDatetime`
+- optional `endTime`
 
 ## First Correct Structure
 

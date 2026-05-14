@@ -125,7 +125,7 @@ describe('SubmissionController HTTP', () => {
   it('POST /submissions returns 400 for invalid event datetime ordering before calling the service', async () => {
     const req = buildEventSubmissionRequest({
       payload: {
-        endDatetime: '2026-05-14T16:00:00.000Z',
+        endTime: '2026-05-14T16:00:00.000Z',
       },
     });
 
@@ -136,7 +136,7 @@ describe('SubmissionController HTTP', () => {
       .expect({
         errors: [
           {
-            field: 'payload.endDatetime',
+            field: 'payload.endTime',
             message: 'End datetime must be greater than or equal to start datetime',
           },
         ],

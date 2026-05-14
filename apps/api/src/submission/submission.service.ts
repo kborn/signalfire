@@ -1,50 +1,18 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { SubmissionRepository } from './submission.repository';
 import {
   SubmissionRequest,
   EventSubmissionRequest,
   ArticleSubmissionRequest,
   SubmissionResponseSuccess,
-  ModerationSubmissionList,
-  ModerationSubmissionDetail,
-  ModerationSubmissionListFilters,
-  TopicSummary,
 } from '@signal-fire/api-contracts';
 import {
   CreateSubmissionRepositoryInputCommonFields,
   CreateSubmissionRepositoryInputEntityFields,
 } from './submission.repository.types';
-import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
+import { SubmissionType } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
 import { UnknownSubmissionTopicsError } from './submission.error';
-
-type ModerationSubmissionCommonParts = {
-  id: number;
-  status: SubmissionStatus;
-  submittedAt: string;
-  submitterName: string | null;
-  submitterEmail: string | null;
-  reviewedAt: string | null;
-  submittedContentCommon: {
-    title: string;
-    summary: string;
-    topics: TopicSummary[];
-  };
-};
-
-function requireSubmissionField<T>(
-  value: T | null | undefined,
-  fieldName: string,
-  submissionId: number,
-): T {
-  if (value == null) {
-    throw new InternalServerErrorException(
-      `Submission ${submissionId} is missing required field ${fieldName}`,
-    );
-  }
-
-  return value;
-}
 
 @Injectable()
 export class SubmissionService {
@@ -52,113 +20,6 @@ export class SubmissionService {
     private repository: SubmissionRepository,
     private topicRepository: TopicRepository,
   ) {}
-
-  async getModerationSubmissionList(
-    filters: ModerationSubmissionListFilters = {},
-  ): Promise<ModerationSubmissionList> {
-    const submissions = await this.repository.findModerationSubmissions(filters);
-    return {
-      items: submissions.map((submission) => ({
-        id: submission.id,
-        submissionType: submission.submissionType,
-        status: submission.status,
-        title: submission.title,
-        submittedAt: submission.submittedAt.toISOString(),
-        submitterName: submission.submitterName,
-        submitterEmail: submission.submitterEmail,
-      })),
-    };
-  }
-
-  async mapCommonSubmissionParts(submission: Submission): Promise<ModerationSubmissionCommonParts> {
-    const topics: Topic[] = await this.topicRepository.findBySubmissionId(submission.id);
-    return {
-      id: submission.id,
-      status: submission.status,
-      submittedAt: submission.submittedAt.toISOString(),
-      submitterName: submission.submitterName,
-      submitterEmail: submission.submitterEmail,
-      reviewedAt: submission.reviewedAt ? submission.reviewedAt.toISOString() : null,
-      submittedContentCommon: {
-        title: submission.title,
-        summary: submission.summary,
-        topics: topics.map((topic) => ({
-          id: topic.id,
-          slug: topic.slug,
-          name: topic.name,
-          description: topic.description,
-        })),
-      },
-    };
-  }
-
-  async mapEventSubmissionResponse(submission: Submission): Promise<ModerationSubmissionDetail> {
-    const common = await this.mapCommonSubmissionParts(submission);
-    return {
-      id: common.id,
-      submissionType: 'EVENT',
-      status: common.status,
-      submittedAt: common.submittedAt,
-      submitterName: common.submitterName,
-      submitterEmail: common.submitterEmail,
-      reviewedAt: common.reviewedAt,
-      submittedContent: {
-        ...common.submittedContentCommon,
-        description: submission.submittedContent,
-        eventType: requireSubmissionField(submission.eventType, 'eventType', submission.id),
-        startTime: requireSubmissionField(
-          submission.startTime,
-          'startTime',
-          submission.id,
-        ).toISOString(),
-        endTime: submission.endTime ? submission.endTime.toISOString() : null,
-        locationName: requireSubmissionField(
-          submission.locationName,
-          'locationName',
-          submission.id,
-        ),
-        addressRaw: submission.addressRaw,
-        city: requireSubmissionField(submission.city, 'city', submission.id),
-        region: requireSubmissionField(submission.region, 'region', submission.id),
-        country: requireSubmissionField(submission.country, 'country', submission.id),
-        postalCode: submission.postalCode,
-        website: submission.website,
-        contactEmail: submission.contactEmail,
-      },
-    };
-  }
-
-  async mapArticleSubmissionResponse(submission: Submission): Promise<ModerationSubmissionDetail> {
-    const common = await this.mapCommonSubmissionParts(submission);
-    const resourceLinks = await this.repository.findResourceLinksBySubmissionId(submission.id);
-    return {
-      id: common.id,
-      submissionType: 'ARTICLE',
-      status: common.status,
-      submittedAt: common.submittedAt,
-      submitterName: common.submitterName,
-      submitterEmail: common.submitterEmail,
-      reviewedAt: common.reviewedAt,
-      submittedContent: {
-        ...common.submittedContentCommon,
-        content: submission.submittedContent,
-        resourceLinks: resourceLinks.map((resourceLink) => resourceLink.url),
-        author: submission.author,
-      },
-    };
-  }
-
-  async getModerationSubmissionDetails(id: number): Promise<ModerationSubmissionDetail> {
-    const submission = await this.repository.findById(id);
-    if (!submission) {
-      throw new NotFoundException(`No submission found with id ${id}`);
-    }
-    if (submission.submissionType === 'EVENT') {
-      return this.mapEventSubmissionResponse(submission);
-    } else {
-      return this.mapArticleSubmissionResponse(submission);
-    }
-  }
 
   async getTopicIds(slugs: string[]): Promise<number[]> {
     const recs: { id: number; slug: string }[] = await this.topicRepository.findIdsBySlugs(slugs);
@@ -211,8 +72,8 @@ export class SubmissionService {
       submissionType: SubmissionType.EVENT,
       submittedContent: req.payload.description,
       eventType: req.payload.eventType,
-      startTime: new Date(req.payload.startDatetime),
-      endTime: req.payload.endDatetime ? new Date(req.payload.endDatetime) : null,
+      startTime: new Date(req.payload.startTime),
+      endTime: req.payload.endTime ? new Date(req.payload.endTime) : null,
       locationName: req.payload.locationName,
       addressRaw: this.buildAddressRaw(req),
       city: req.payload.locationAddressCity,

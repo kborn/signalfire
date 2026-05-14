@@ -1,4 +1,4 @@
-import { EventType, SubmissionStatus, SubmissionType } from '@prisma/client';
+import { EntityStatus, EventType, SubmissionStatus, SubmissionType } from '@prisma/client';
 
 export type CreateSubmissionRepositoryInputCommonFields = {
   title: string;
@@ -33,3 +33,51 @@ export type FindModerationSubmissionsInput = {
   status?: SubmissionStatus;
   submissionType?: SubmissionType;
 };
+
+export type CommonSubmissionRepositoryInput = {
+  submissionId: number;
+  reviewNotes?: string | null;
+  reviewedAt: Date;
+};
+
+export type RejectSubmissionRepositoryInput = CommonSubmissionRepositoryInput;
+
+export type ApproveArticleSubmissionRepositoryInput = {
+  articleData: {
+    title: string;
+    slug: string;
+    summary: string;
+    content: string;
+    status: EntityStatus;
+    author: string;
+    publishedAt: Date | null;
+    topicIds: number[];
+  };
+};
+
+export type ArticleSubmissionApprovedRepositoryInput = CommonSubmissionRepositoryInput &
+  ApproveArticleSubmissionRepositoryInput;
+
+export type ApproveEventSubmissionRepositoryInput = {
+  eventData: {
+    title: string;
+    summary: string;
+    description: string;
+    eventType: EventType;
+    startTime: Date;
+    endTime: Date | null;
+    locationName: string;
+    addressRaw: string;
+    city: string | null;
+    region: string | null;
+    country: string | null;
+    postalCode: string | null;
+    website: string | null;
+    status: EntityStatus;
+    publishedAt: Date | null;
+    topicIds: number[];
+  };
+};
+
+export type EventSubmissionApprovedRepositoryInput = CommonSubmissionRepositoryInput &
+  ApproveEventSubmissionRepositoryInput;

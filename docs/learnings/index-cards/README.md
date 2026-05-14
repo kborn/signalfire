@@ -83,6 +83,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [69-html-table-structure.md](./69-html-table-structure.md) - What `table`, `thead`, `tbody`, `tr`, `th`, and `td` do
 - [70-url-state-vs-local-filter-state.md](./70-url-state-vs-local-filter-state.md) - Why record filters often belong in query params
 - [71-html-description-lists.md](./71-html-description-lists.md) - Why `dl`, `dt`, and `dd` fit labeled fields for one record
+- [72-object-rest-destructuring.md](./72-object-rest-destructuring.md) - How to pull helper fields out before spreading entity data
+- [73-nullish-checks-vs-truthy-checks.md](./73-nullish-checks-vs-truthy-checks.md) - When to use `== null`, `??`, `?.`, and truthy checks
 
 Rule of thumb:
 

@@ -1,12 +1,10 @@
-import {
-  EventType,
-  Submission,
-  SubmissionStatus,
-  SubmissionType as PrismaSubmissionType,
-} from '@prisma/client';
 import type {
   ArticleSubmissionRequest,
   EventSubmissionRequest,
+  ModerationReviewApproveArticleRequest,
+  ModerationReviewApproveEventRequest,
+  ModerationReviewRejectRequest,
+  ModerationReviewSuccess,
   SubmissionResponseError,
   SubmissionResponseSuccess,
 } from '@signal-fire/api-contracts';
@@ -36,37 +34,16 @@ type ArticleSubmissionRequestOverrides = ArticleSubmissionRequestTopLevelOverrid
 type EventSubmissionRequestOverrides = Partial<Omit<EventSubmissionRequest, 'payload'>> & {
   payload?: Partial<EventSubmissionRequest['payload']>;
 };
-
-export function buildSubmissionEntity(overrides: Partial<Submission> = {}): Submission {
-  return {
-    id: 1,
-    submissionType: PrismaSubmissionType.EVENT,
-    status: SubmissionStatus.PENDING,
-    title: 'Tenant Rights Rally',
-    summary: 'Public rally supporting stronger tenant protections.',
-    submittedContent: 'Join local organizers for a rally and speaker program.',
-    author: 'Alex Rivera',
-    submitterName: 'Alex Rivera',
-    submitterEmail: 'alex@example.org',
-    eventType: EventType.RALLY,
-    startTime: SUBMISSION_EVENT_START_DATE,
-    endTime: SUBMISSION_EVENT_END_DATE,
-    locationName: 'City Hall North Plaza',
-    addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
-    city: 'Philadelphia',
-    region: 'PA',
-    postalCode: '19107',
-    country: 'US',
-    website: null,
-    contactEmail: 'press@example.org',
-    reviewNotes: null,
-    articleId: null,
-    eventId: null,
-    submittedAt: SUBMISSION_TEST_DATE,
-    reviewedAt: null,
-    ...overrides,
-  };
-}
+type ModerationReviewApproveArticleRequestOverrides = Partial<
+  Omit<ModerationReviewApproveArticleRequest, 'normalized'>
+> & {
+  normalized?: Partial<ModerationReviewApproveArticleRequest['normalized']>;
+};
+type ModerationReviewApproveEventRequestOverrides = Partial<
+  Omit<ModerationReviewApproveEventRequest, 'normalized'>
+> & {
+  normalized?: Partial<ModerationReviewApproveEventRequest['normalized']>;
+};
 
 export function buildArticleSubmissionRequest(
   overrides: ArticleSubmissionRequestOverrides = {},
@@ -105,8 +82,8 @@ export function buildEventSubmissionRequest(
       summary: 'Public rally supporting stronger tenant protections.',
       description: 'Join local organizers for a rally and speaker program.',
       eventType: 'RALLY',
-      startDatetime: SUBMISSION_EVENT_START_DATE.toISOString(),
-      endDatetime: SUBMISSION_EVENT_END_DATE.toISOString(),
+      startTime: SUBMISSION_EVENT_START_DATE.toISOString(),
+      endTime: SUBMISSION_EVENT_END_DATE.toISOString(),
       locationName: 'City Hall North Plaza',
       locationAddressStreet: '1400 John F Kennedy Blvd',
       locationAddressCity: 'Philadelphia',
@@ -141,6 +118,111 @@ export function buildSubmissionErrorResponse(
         message: 'Unknown topic slugs: unknown-topic',
       },
     ],
+    ...overrides,
+  };
+}
+
+export function buildModerationReviewRejectRequest(
+  overrides: Partial<ModerationReviewRejectRequest> = {},
+): ModerationReviewRejectRequest {
+  return {
+    decision: 'REJECT',
+    reviewNotes: 'Not a fit',
+    ...overrides,
+  };
+}
+
+export function buildModerationReviewApproveArticleRequest(
+  overrides: ModerationReviewApproveArticleRequestOverrides = {},
+): ModerationReviewApproveArticleRequest {
+  const { normalized: normalizedOverrides, ...requestOverrides } = overrides;
+
+  return {
+    decision: 'APPROVE_ARTICLE',
+    reviewNotes: 'Looks good',
+    publishStatus: 'PUBLISHED',
+    normalized: {
+      title: 'How Local Organizing Works',
+      summary: 'A practical explainer on local issue campaigns.',
+      content: 'Published article content.',
+      topicSlugs: ['local-community'],
+      author: 'John Doe',
+      ...(normalizedOverrides ?? {}),
+    },
+    ...requestOverrides,
+  };
+}
+
+export function buildModerationReviewApproveEventRequest(
+  overrides: ModerationReviewApproveEventRequestOverrides = {},
+): ModerationReviewApproveEventRequest {
+  const { normalized: normalizedOverrides, ...requestOverrides } = overrides;
+
+  return {
+    decision: 'APPROVE_EVENT',
+    reviewNotes: 'Looks good',
+    publishStatus: 'PUBLISHED',
+    normalized: {
+      title: 'Tenant Rights Rally',
+      summary: 'Public rally supporting stronger tenant protections.',
+      description: 'Join local organizers for a rally and speaker program.',
+      eventType: 'RALLY',
+      startTime: SUBMISSION_EVENT_START_DATE.toISOString(),
+      endTime: SUBMISSION_EVENT_END_DATE.toISOString(),
+      locationName: 'City Hall North Plaza',
+      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+      city: 'Philadelphia',
+      region: 'PA',
+      country: 'US',
+      postalCode: '19107',
+      website: 'https://example.org/event',
+      topicSlugs: ['economic-justice'],
+      ...(normalizedOverrides ?? {}),
+    },
+    ...requestOverrides,
+  };
+}
+
+export function buildModerationReviewRejectSuccessResponse(
+  overrides: Partial<ModerationReviewSuccess> = {},
+): ModerationReviewSuccess {
+  return {
+    submissionId: 1,
+    status: 'REJECTED',
+    reviewedAt: SUBMISSION_TEST_DATE.toISOString(),
+    ...overrides,
+  };
+}
+
+export function buildModerationReviewApproveArticleSuccessResponse(
+  overrides: Partial<ModerationReviewSuccess> = {},
+): ModerationReviewSuccess {
+  return {
+    submissionId: 1,
+    status: 'APPROVED',
+    reviewedAt: SUBMISSION_TEST_DATE.toISOString(),
+    createdRecord: {
+      recordType: 'ARTICLE',
+      id: 10,
+      slug: 'how-local-organizing-works',
+      publishStatus: 'PUBLISHED',
+    },
+    ...overrides,
+  };
+}
+
+export function buildModerationReviewApproveEventSuccessResponse(
+  overrides: Partial<ModerationReviewSuccess> = {},
+): ModerationReviewSuccess {
+  return {
+    submissionId: 1,
+    status: 'APPROVED',
+    reviewedAt: SUBMISSION_TEST_DATE.toISOString(),
+    createdRecord: {
+      recordType: 'EVENT',
+      id: 20,
+      publishStatus: 'PUBLISHED',
+    },
     ...overrides,
   };
 }
