@@ -3,14 +3,14 @@ import { SubmissionRepository } from './submission.repository';
 import { TopicRepository } from '../topic/topic.repository';
 import { NotFoundException } from '@nestjs/common';
 import { ModerationSubmissionService } from './moderation-submission.service';
-import { buildReviewSubmissionErrorResponse } from './submission.test-fixtures';
+import {
+  buildModerationReviewApproveArticleRequest,
+  buildModerationReviewApproveEventRequest,
+  buildModerationReviewRejectRequest,
+} from './submission.test-fixtures';
 import { withFrozenTime } from '../../common/test/time';
 import { EntityStatus, SubmissionType } from '@prisma/client';
 import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
-import {
-  ModerationReviewApproveArticleRequest,
-  ModerationReviewApproveEventRequest,
-} from '@signal-fire/api-contracts';
 
 const submission = {
   id: 1,
@@ -25,41 +25,6 @@ const submission = {
   content: 'Submitted content body.',
   topicSlugs: [1, 2],
 };
-
-function buildMinimalApproveArticleReviewRequest(
-  published?: EntityStatus,
-): ModerationReviewApproveArticleRequest {
-  return {
-    decision: 'APPROVE_ARTICLE',
-    publishStatus: published ?? EntityStatus.PUBLISHED,
-    normalized: {
-      title: 'Article title',
-      summary: 'Article summary',
-      content: 'Article content',
-      topicSlugs: ['democracy'],
-      author: 'Article author',
-    },
-  };
-}
-
-function buildMinimalApproveEventReviewRequest(
-  published?: EntityStatus,
-): ModerationReviewApproveEventRequest {
-  return {
-    decision: 'APPROVE_EVENT',
-    publishStatus: published ?? EntityStatus.PUBLISHED,
-    normalized: {
-      title: 'Event title',
-      summary: 'Event summary',
-      description: 'Event description',
-      eventType: 'RALLY',
-      startTime: '2026-05-14T17:00:00.000Z',
-      locationName: 'City Hall',
-      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
-      topicSlugs: ['democracy'],
-    },
-  };
-}
 
 describe('SubmissionService', () => {
   let service: ModerationSubmissionService;
@@ -309,7 +274,7 @@ describe('SubmissionService', () => {
   it('fails with NotFoundException when submission id does not exist', async () => {
     repoMock.findById.mockResolvedValue(null);
 
-    await expect(service.reviewSubmission(1, buildReviewSubmissionErrorResponse())).rejects.toThrow(
+    await expect(service.reviewSubmission(1, buildModerationReviewRejectRequest())).rejects.toThrow(
       NotFoundException,
     );
   });
@@ -339,7 +304,19 @@ describe('SubmissionService', () => {
     repoMock.findById.mockResolvedValue({ submissionType: SubmissionType.EVENT });
 
     await expect(
-      service.reviewSubmission(1, buildMinimalApproveArticleReviewRequest()),
+      service.reviewSubmission(
+        1,
+        buildModerationReviewApproveArticleRequest({
+          reviewNotes: undefined,
+          normalized: {
+            title: 'Article title',
+            summary: 'Article summary',
+            content: 'Article content',
+            topicSlugs: ['democracy'],
+            author: 'Article author',
+          },
+        }),
+      ),
     ).rejects.toThrow(ReviewSubmissionTypeError);
   });
 
@@ -347,7 +324,28 @@ describe('SubmissionService', () => {
     repoMock.findById.mockResolvedValue({ submissionType: SubmissionType.ARTICLE });
 
     await expect(
-      service.reviewSubmission(1, buildMinimalApproveEventReviewRequest()),
+      service.reviewSubmission(
+        1,
+        buildModerationReviewApproveEventRequest({
+          reviewNotes: undefined,
+          normalized: {
+            title: 'Event title',
+            summary: 'Event summary',
+            description: 'Event description',
+            eventType: 'RALLY',
+            startTime: '2026-05-14T17:00:00.000Z',
+            endTime: undefined,
+            locationName: 'City Hall',
+            addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+            city: undefined,
+            region: undefined,
+            country: undefined,
+            postalCode: undefined,
+            website: undefined,
+            topicSlugs: ['democracy'],
+          },
+        }),
+      ),
     ).rejects.toThrow(ReviewSubmissionTypeError);
   });
 
@@ -366,7 +364,19 @@ describe('SubmissionService', () => {
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
-      const ret = await service.reviewSubmission(1, buildMinimalApproveArticleReviewRequest());
+      const ret = await service.reviewSubmission(
+        1,
+        buildModerationReviewApproveArticleRequest({
+          reviewNotes: undefined,
+          normalized: {
+            title: 'Article title',
+            summary: 'Article summary',
+            content: 'Article content',
+            topicSlugs: ['democracy'],
+            author: 'Article author',
+          },
+        }),
+      );
 
       expect(ret).toEqual({
         submissionId: 1,
@@ -410,7 +420,28 @@ describe('SubmissionService', () => {
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
-      const ret = await service.reviewSubmission(1, buildMinimalApproveEventReviewRequest());
+      const ret = await service.reviewSubmission(
+        1,
+        buildModerationReviewApproveEventRequest({
+          reviewNotes: undefined,
+          normalized: {
+            title: 'Event title',
+            summary: 'Event summary',
+            description: 'Event description',
+            eventType: 'RALLY',
+            startTime: '2026-05-14T17:00:00.000Z',
+            endTime: undefined,
+            locationName: 'City Hall',
+            addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+            city: undefined,
+            region: undefined,
+            country: undefined,
+            postalCode: undefined,
+            website: undefined,
+            topicSlugs: ['democracy'],
+          },
+        }),
+      );
 
       expect(ret).toEqual({
         submissionId: 1,
@@ -465,7 +496,17 @@ describe('SubmissionService', () => {
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
       const ret = await service.reviewSubmission(
         1,
-        buildMinimalApproveArticleReviewRequest(EntityStatus.DRAFT),
+        buildModerationReviewApproveArticleRequest({
+          reviewNotes: undefined,
+          publishStatus: EntityStatus.DRAFT,
+          normalized: {
+            title: 'Article title',
+            summary: 'Article summary',
+            content: 'Article content',
+            topicSlugs: ['democracy'],
+            author: 'Article author',
+          },
+        }),
       );
 
       expect(ret).toEqual({
@@ -513,7 +554,26 @@ describe('SubmissionService', () => {
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
       const ret = await service.reviewSubmission(
         1,
-        buildMinimalApproveEventReviewRequest(EntityStatus.DRAFT),
+        buildModerationReviewApproveEventRequest({
+          reviewNotes: undefined,
+          publishStatus: EntityStatus.DRAFT,
+          normalized: {
+            title: 'Event title',
+            summary: 'Event summary',
+            description: 'Event description',
+            eventType: 'RALLY',
+            startTime: '2026-05-14T17:00:00.000Z',
+            endTime: undefined,
+            locationName: 'City Hall',
+            addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+            city: undefined,
+            region: undefined,
+            country: undefined,
+            postalCode: undefined,
+            website: undefined,
+            topicSlugs: ['democracy'],
+          },
+        }),
       );
 
       expect(ret).toEqual({

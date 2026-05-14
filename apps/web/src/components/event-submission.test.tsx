@@ -108,8 +108,8 @@ describe('EventSubmissionForm', () => {
         summary: 'Short event summary',
         description: 'Full event description',
         eventType: 'RALLY',
-        startDatetime: new Date('2026-05-14T17:00').toISOString(),
-        endDatetime: new Date('2026-05-14T19:00').toISOString(),
+        startTime: new Date('2026-05-14T17:00').toISOString(),
+        endTime: new Date('2026-05-14T19:00').toISOString(),
         locationName: 'City Hall Plaza',
         locationAddressStreet: '123 Main St',
         locationAddressCity: 'Philadelphia',
@@ -127,7 +127,7 @@ describe('EventSubmissionForm', () => {
   it('maps API validation errors to inline event field errors', async () => {
     mockPostEventSubmission().mockRejectedValue(
       new SubmissionError('Request failed for submissions', 400, 'submissions', [
-        { field: 'payload.endDatetime', message: 'End datetime must be valid' },
+        { field: 'payload.endTime', message: 'End datetime must be valid' },
         { field: 'payload.locationAddressZip', message: 'Must be 32 characters or fewer' },
         { field: 'payload.contactEmail', message: 'Email must be valid' },
       ]),

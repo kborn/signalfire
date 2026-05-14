@@ -25,8 +25,8 @@ type SubmissionRequestEventPayload = {
   summary: string;
   description: string;
   eventType: EventType;
-  startDatetime: string;
-  endDatetime?: string | null;
+  startTime: string;
+  endTime?: string | null;
   locationName: string;
   locationAddressStreet?: string | null;
   locationAddressCity: string;

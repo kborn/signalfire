@@ -174,9 +174,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         return 'description';
       case 'payload.eventType':
         return 'eventType';
-      case 'payload.startDatetime':
+      case 'payload.startTime':
         return 'startAt';
-      case 'payload.endDatetime':
+      case 'payload.endTime':
         return 'endAt';
       case 'payload.locationName':
         return 'locationName';
@@ -377,8 +377,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             summary: normalizedSummary,
             description: normalizedDescription,
             eventType: normalizedEventType,
-            startDatetime: startDate!.toISOString(),
-            endDatetime: endDate ? endDate.toISOString() : null,
+            startTime: startDate!.toISOString(),
+            endTime: endDate ? endDate.toISOString() : null,
             locationName: normalizedLocationName,
             locationAddressStreet: normalizedStreetAddress,
             locationAddressCity: normalizedCity,

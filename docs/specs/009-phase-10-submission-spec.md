@@ -74,8 +74,8 @@ An optional chooser route may also exist:
 - `summary` (required)
 - `description` (required)
 - `eventType` (required)
-- `startDatetime` (required)
-- `endDatetime` (optional)
+- `startTime` (required)
+- `endTime` (optional)
 - `locationName` (required)
 - `locationAddressStreet` (optional)
 - `locationAddressCity` (required)
@@ -120,9 +120,9 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 
 ### Event-Specific
 
-- `startDatetime` must be a valid datetime
-- `endDatetime`, if present, must be a valid datetime
-- `endDatetime`, if present, must be greater than or equal to `startDatetime`
+- `startTime` must be a valid datetime
+- `endTime`, if present, must be a valid datetime
+- `endTime`, if present, must be greater than or equal to `startTime`
 - `eventType` must be one of the Release 1 event enum values:
   - `PROTEST`
   - `RALLY`
@@ -152,7 +152,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - Optional request fields may be omitted entirely
 - Optional request fields may also be sent as `null` when the client has no value to provide
 - Empty strings are not a substitute for omission on optional fields; trim first, then either persist a value or normalize to `null`
-- `endDatetime` may be omitted or set to `null`
+- `endTime` may be omitted or set to `null`
 - article `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
 - event `websiteUrl` may be omitted or set to `null`
 - optional location fields may be omitted or set to `null`
@@ -204,8 +204,8 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
     "summary": "Public rally supporting stronger tenant protections.",
     "description": "Join local organizers for a rally and speaker program.",
     "eventType": "RALLY",
-    "startDatetime": "2026-05-14T17:00:00.000Z",
-    "endDatetime": "2026-05-14T19:00:00.000Z",
+    "startTime": "2026-05-14T17:00:00.000Z",
+    "endTime": "2026-05-14T19:00:00.000Z",
     "locationName": "City Hall North Plaza",
     "locationAddressStreet": "1400 John F Kennedy Blvd",
     "locationAddressCity": "Philadelphia",
@@ -283,8 +283,8 @@ Phase 10 implementation should map request fields into the existing persistence 
 - `payload.summary` -> `summary`
 - `payload.description` -> `submittedContent`
 - `payload.eventType` -> `eventType`
-- `payload.startDatetime` -> `startTime`
-- `payload.endDatetime` -> `endTime`
+- `payload.startTime` -> `startTime`
+- `payload.endTime` -> `endTime`
 - `payload.locationName` -> `locationName`
 - `addressRaw` should be assembled from available location components for human-readable display compatibility
   - include `payload.locationAddressStreet` when present

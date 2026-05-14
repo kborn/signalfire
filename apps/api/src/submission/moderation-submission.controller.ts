@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
   Param,
   ParseIntPipe,
   Post,
@@ -67,6 +68,7 @@ export class ModerationSubmissionController {
   }
 
   @Post('/:id/review')
+  @HttpCode(200)
   async reviewSubmission(
     @Param('id', ParseIntPipe) submissionId: number,
     @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,

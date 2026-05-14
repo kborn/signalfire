@@ -78,17 +78,17 @@ const optionalNullableDatetime = (fieldLabel: string) =>
       .nullable(),
   );
 
-function addEndDatetimeAfterStartIssue(
+function addEndTimeAfterStartIssue(
   ctx: z.RefinementCtx,
-  startDatetime: string,
-  endDatetime: string | null | undefined,
+  startTime: string,
+  endTime: string | null | undefined,
   path: (string | number)[],
 ) {
-  if (endDatetime == null) {
+  if (endTime == null) {
     return;
   }
 
-  if (new Date(endDatetime) < new Date(startDatetime)) {
+  if (new Date(endTime) < new Date(startTime)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path,
@@ -122,11 +122,11 @@ const eventSubmissionSchema = submissionCommonSchema
       summary: requiredTrimmedString('Summary', 300),
       description: requiredTrimmedString('Description', 50000),
       eventType: z.nativeEnum(EventType),
-      startDatetime: z
+      startTime: z
         .string()
         .trim()
         .datetime({ offset: true, message: 'Start datetime must be valid' }),
-      endDatetime: optionalNullableDatetime('End datetime'),
+      endTime: optionalNullableDatetime('End datetime'),
       locationName: requiredTrimmedString('Location name', 200),
       locationAddressStreet: optionalNullableTrimmedString(300),
       locationAddressCity: requiredTrimmedString('Location address city', 120),
@@ -139,9 +139,9 @@ const eventSubmissionSchema = submissionCommonSchema
     }),
   })
   .superRefine((value, ctx) => {
-    addEndDatetimeAfterStartIssue(ctx, value.payload.startDatetime, value.payload.endDatetime, [
+    addEndTimeAfterStartIssue(ctx, value.payload.startTime, value.payload.endTime, [
       'payload',
-      'endDatetime',
+      'endTime',
     ]);
   });
 
@@ -180,11 +180,11 @@ const moderationReviewApproveEventSchema = z
       summary: requiredTrimmedString('Summary', 300),
       description: requiredTrimmedString('Description', 50000),
       eventType: z.nativeEnum(EventType),
-      startDatetime: z
+      startTime: z
         .string()
         .trim()
         .datetime({ offset: true, message: 'Start datetime must be valid' }),
-      endDatetime: optionalNullableDatetime('End datetime'),
+      endTime: optionalNullableDatetime('End datetime'),
       locationName: requiredTrimmedString('Location name', 200),
       addressRaw: optionalNullableTrimmedString(2000),
       city: optionalNullableTrimmedString(120),
@@ -196,12 +196,10 @@ const moderationReviewApproveEventSchema = z
     }),
   })
   .superRefine((value, ctx) => {
-    addEndDatetimeAfterStartIssue(
-      ctx,
-      value.normalized.startDatetime,
-      value.normalized.endDatetime,
-      ['normalized', 'endDatetime'],
-    );
+    addEndTimeAfterStartIssue(ctx, value.normalized.startTime, value.normalized.endTime, [
+      'normalized',
+      'endTime',
+    ]);
   });
 
 export const moderationSubmissionRequestSchema = z.discriminatedUnion('decision', [

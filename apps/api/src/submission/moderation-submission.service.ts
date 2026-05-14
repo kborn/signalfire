@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { SubmissionRepository } from './submission.repository';
 import {
   ModerationSubmissionList,
@@ -234,7 +239,9 @@ export class ModerationSubmissionService {
 
     const reviewResponse = await this.repository.approveArticleSubmission(repoInput);
     if (!reviewResponse) {
-      throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+      throw new ConflictException(
+        `Submission ${submissionId} has already been reviewed or converted`,
+      );
     }
 
     const article = reviewResponse.article;
