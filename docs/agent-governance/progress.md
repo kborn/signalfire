@@ -1187,11 +1187,11 @@ Capabilities:
 
 ###### Phase Tasks:
 
-- [ ] Implement approve and reject actions for submissions
-- [ ] Persist moderator review notes with approval/rejection decisions
-- [ ] Enforce valid moderation state transitions and prevent duplicate conversion/publish actions
-- [ ] Define and surface failure behavior for invalid transitions or missing submissions
-- [ ] Add backend tests covering moderation action behavior and state-transition rules
+- [x] Implement approve and reject actions for submissions
+- [x] Persist moderator review notes with approval/rejection decisions
+- [x] Enforce valid moderation state transitions and prevent duplicate conversion/publish actions
+- [x] Define and surface failure behavior for invalid transitions or missing submissions
+- [x] Add backend tests covering moderation action behavior and state-transition rules
 
 ---
 
