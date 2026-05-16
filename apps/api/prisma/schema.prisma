@@ -103,6 +103,7 @@ model Event {
   summary       String
   description   String
   website       String?
+  contactEmail  String?
   eventType     EventType
   status        EntityStatus
   startTime     DateTime

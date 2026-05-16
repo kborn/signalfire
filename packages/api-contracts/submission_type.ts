@@ -153,6 +153,7 @@ export type EventApprovalPayload = {
   country?: string | null;
   postalCode?: string | null;
   website?: string | null;
+  contactEmail?: string | null;
   topicSlugs: string[];
 };
 

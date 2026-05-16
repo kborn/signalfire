@@ -891,6 +891,14 @@ h3 {
   line-height: 1.35;
 }
 
+.adminInlineList {
+  display: grid;
+  gap: var(--space-0);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 /* Responsive */
 
 @media (max-width: 640px) {

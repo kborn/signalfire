@@ -110,6 +110,7 @@ export class EventService {
       summary: event.summary,
       description: event.description,
       website: event.website,
+      contactEmail: event.contactEmail,
       eventType: event.eventType,
       startTime: event.startTime.toISOString(),
       endTime: event.endTime ? event.endTime?.toISOString() : null,

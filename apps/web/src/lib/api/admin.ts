@@ -2,6 +2,7 @@ import { makeRequest } from '@/lib/api/base';
 import {
   ModerationSubmissionListFilters,
   ModerationSubmissionList,
+  ModerationSubmissionDetail,
 } from '@signal-fire/api-contracts';
 
 export async function getSubmissionsList(
@@ -10,6 +11,6 @@ export async function getSubmissionsList(
   return await makeRequest<ModerationSubmissionList>('admin/submissions', filters);
 }
 
-// export async function getActionDetails(slug: string): Promise<ActionDetailResponse> {
-//   return await makeRequest<ActionDetailResponse>(`actions/${slug}`);
-// }
+export async function getSubmissionsDetails(id: number): Promise<ModerationSubmissionDetail> {
+  return await makeRequest<ModerationSubmissionDetail>(`admin/submissions/${id}`);
+}

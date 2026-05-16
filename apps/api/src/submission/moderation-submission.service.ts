@@ -322,6 +322,7 @@ export class ModerationSubmissionService {
       country: result.normalized.country ?? null,
       postalCode: result.normalized.postalCode ?? null,
       website: result.normalized.website ?? null,
+      contactEmail: result.normalized.contactEmail ?? null,
       status: result.publishStatus,
       publishedAt: result.publishStatus === 'PUBLISHED' ? reviewedAt : null,
       topicIds: await this.getTopicIds(result.normalized.topicSlugs),
