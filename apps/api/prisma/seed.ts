@@ -935,7 +935,7 @@ async function seedDemoPendingSubmissions(topicIds: Map<string, number>) {
       resourceLinks: 'resourceLinks' in submission ? submission.resourceLinks : undefined,
     };
     const submissionTopics = {
-      create: topicSlugs.map((topicSlug) => ({
+      create: topicSlugs.map((topicSlug: string) => ({
         topicId: requireId(topicIds, topicSlug, 'topic'),
       })),
     };
