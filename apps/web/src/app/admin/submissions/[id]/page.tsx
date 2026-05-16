@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { getSubmissionsDetails } from '@/lib/api/admin';
 import { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
+import ArticleNormalizationForm from './ArticleNormalizedForm';
+import EventNormalizationForm from './EventNormalizedForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,7 +37,11 @@ function ArticleSubmittedContent({ submission }: { submission: ArticleModeration
       <dt>Summary</dt>
       <dd>{submission.submittedContent.summary}</dd>
       <dt>Content</dt>
-      <dd>{submission.submittedContent.content}</dd>
+      <dd>
+        <div className="adminLongTextPreview">{submission.submittedContent.content}</div>
+      </dd>
+      <dt>Author</dt>
+      <dd>{submission.submittedContent.author ?? '--'}</dd>
       <dt>Topics</dt>
       <dd>
         <ul className="adminInlineList">
@@ -54,8 +60,6 @@ function ArticleSubmittedContent({ submission }: { submission: ArticleModeration
           ))}
         </ul>
       </dd>
-      <dt>Author</dt>
-      <dd>{submission.submittedContent.author ?? '--'}</dd>
     </dl>
   );
 }
@@ -99,76 +103,6 @@ function EventSubmittedContent({ submission }: { submission: EventModerationSubm
           ))}
         </ul>
       </dd>
-    </dl>
-  );
-}
-
-function ArticleNormalizationForm({ submission }: { submission: ArticleModerationSubmission }) {
-  return (
-    <dl className="adminDefinitionList">
-      <dt>Title</dt>
-      <dd>{submission.submittedContent.title}</dd>
-      <dt>Summary</dt>
-      <dd>{submission.submittedContent.summary}</dd>
-      <dt>Content</dt>
-      <dd>{submission.submittedContent.content}</dd>
-      <dt>Author</dt>
-      <dd>{submission.submittedContent.author ?? '--'}</dd>
-      <dt>Topics</dt>
-      <dd>
-        <ul className="adminInlineList">
-          {submission.submittedContent.topics.map((topic) => (
-            <li key={topic.id}>{topic.name}</li>
-          ))}
-        </ul>
-      </dd>
-      <dt>Publish Status</dt>
-      <dd>Check boxes or a button or something here</dd>
-    </dl>
-  );
-}
-
-function EventNormalizationForm({ submission }: { submission: EventModerationSubmission }) {
-  return (
-    <dl className="adminDefinitionList">
-      <dt>Title</dt>
-      <dd>{submission.submittedContent.title}</dd>
-      <dt>Summary</dt>
-      <dd>{submission.submittedContent.summary}</dd>
-      <dt>Description</dt>
-      <dd>{submission.submittedContent.description}</dd>
-      <dt>Event Type</dt>
-      <dd>{submission.submittedContent.eventType}</dd>
-      <dt>Event Start</dt>
-      <dd>{submission.submittedContent.startTime}</dd>
-      <dt>Event End</dt>
-      <dd>{submission.submittedContent.endTime ?? '--'}</dd>
-      <dt>Location Name</dt>
-      <dd>{submission.submittedContent.locationName}</dd>
-      <dt>Address</dt>
-      <dd>{submission.submittedContent.addressRaw ?? '--'}</dd>
-      <dt>City</dt>
-      <dd>{submission.submittedContent.city}</dd>
-      <dt>State</dt>
-      <dd>{submission.submittedContent.region}</dd>
-      <dt>Country</dt>
-      <dd>{submission.submittedContent.country}</dd>
-      <dt>Zip</dt>
-      <dd>{submission.submittedContent.postalCode ?? '--'}</dd>
-      <dt>Event Website</dt>
-      <dd>{submission.submittedContent.website ?? '--'}</dd>
-      <dt>Event Contact</dt>
-      <dd>{submission.submittedContent.contactEmail ?? '--'}</dd>
-      <dt>Topics</dt>
-      <dd>
-        <ul className="adminInlineList">
-          {submission.submittedContent.topics.map((topic) => (
-            <li key={topic.id}>{topic.name}</li>
-          ))}
-        </ul>
-      </dd>
-      <dt>Publish Status</dt>
-      <dd>Check boxes or a button or something here</dd>
     </dl>
   );
 }
