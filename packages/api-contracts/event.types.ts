@@ -21,7 +21,9 @@ export type EventDetailResponse = {
   startTime: string;
   endTime: string | null;
   locationName: string;
-  addressRaw: string;
+  publicLocationDescription: string | null;
+  addressLine1: string | null;
+  addressLine2: string | null;
   city: string | null;
   region: string | null;
   postalCode: string | null;

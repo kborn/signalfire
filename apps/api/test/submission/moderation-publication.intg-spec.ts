@@ -123,7 +123,9 @@ describe('Moderation publication integration', () => {
       startTime: new Date('2026-07-04T14:00:00.000Z'),
       endTime: new Date('2026-07-04T16:00:00.000Z'),
       locationName: 'Raw Plaza',
-      addressRaw: '1 Raw Plaza',
+      publicLocationDescription: 'Liberty Plaza',
+      addressLine1: '1 Main St',
+      addressLine2: 'Ste 1A',
       city: 'Raw City',
       region: 'PA',
       country: 'US',
@@ -146,7 +148,9 @@ describe('Moderation publication integration', () => {
         startTime: '2026-07-04T15:00:00.000Z',
         endTime: '2026-07-04T17:00:00.000Z',
         locationName: 'Normalized Plaza',
-        addressRaw: '100 Normalized Plaza',
+        publicLocationDescription: 'Liberty Plaza',
+        addressLine1: '1 Main St',
+        addressLine2: 'Ste 1A',
         city: 'Philadelphia',
         region: 'PA',
         country: 'US',
@@ -177,7 +181,6 @@ describe('Moderation publication integration', () => {
     expect(event.topics.map((topic) => topic.slug)).toEqual(['democracy']);
     expect(event).not.toHaveProperty('submitterName');
     expect(event).not.toHaveProperty('submitterEmail');
-    expect(event).not.toHaveProperty('contactEmail');
     expect(event).not.toHaveProperty('reviewNotes');
 
     const events = await eventService.getPublishedEventList({
@@ -202,7 +205,9 @@ describe('Moderation publication integration', () => {
       eventType: EventType.RALLY,
       startTime: new Date('2026-08-04T14:00:00.000Z'),
       locationName: 'Draft Plaza',
-      addressRaw: '1 Draft Plaza',
+      publicLocationDescription: 'Liberty Plaza',
+      addressLine1: '1 Main St',
+      addressLine2: 'Ste 1A',
     });
 
     const review = await moderationService.reviewSubmission(submission.id, {
@@ -217,7 +222,9 @@ describe('Moderation publication integration', () => {
         startTime: '2026-08-04T14:00:00.000Z',
         endTime: null,
         locationName: 'Draft Plaza',
-        addressRaw: '1 Draft Plaza',
+        publicLocationDescription: 'Liberty Plaza',
+        addressLine1: '1 Main St',
+        addressLine2: 'Ste 1A',
         city: null,
         region: null,
         country: null,

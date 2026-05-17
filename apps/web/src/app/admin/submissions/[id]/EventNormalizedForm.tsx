@@ -149,7 +149,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>Address</dt>
-      <dd>{submission.submittedContent.addressRaw ?? '--'}</dd>
+      <dd>{submission.submittedContent.addressLine1 ?? '--'}</dd>
       <dt>City</dt>
       <dd>{submission.submittedContent.city}</dd>
       <dt>State</dt>

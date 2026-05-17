@@ -99,7 +99,9 @@ type ArticleSubmissionFormErrors = {
   postalCode?: string;
   topicSlugs?: string;
   endAt?: string;
-  streetAddress?: string;
+  publicLocationDescription?: string;
+  addressLine1?: string;
+  addressLine2?: string;
   contactEmail?: string;
   websiteUrl?: string;
   submitterName?: string;
@@ -122,7 +124,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
   // optional
   const [endAt, setEndAt] = useState('');
-  const [streetAddress, setStreetAddress] = useState('');
+  const [publicLocationDescription, setPublicLocationDescription] = useState('');
+  const [addressLine1, setAddressLine1] = useState('');
+  const [addressLine2, setAddressLine2] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [websiteUrl, setWebsiteUrl] = useState('');
@@ -180,8 +184,12 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         return 'endAt';
       case 'payload.locationName':
         return 'locationName';
-      case 'payload.locationAddressStreet':
-        return 'streetAddress';
+      case 'payload.publicLocationDescription':
+        return 'publicLocationDescription';
+      case 'payload.addressLine1':
+        return 'addressLine1';
+      case 'payload.addressLine2':
+        return 'addressLine2';
       case 'payload.locationAddressCity':
         return 'city';
       case 'payload.locationAddressRegion':
@@ -223,7 +231,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
     // optional fields nulled so as not to send empty strings in payload
     const normalizedEndAt = endAt.trim() || null;
-    const normalizedStreetAddress = streetAddress.trim() || null;
+    const normalizedPublicLocationDescription = publicLocationDescription.trim() || null;
+    const normalizedAddressLine1 = addressLine1.trim() || null;
+    const normalizedAddressLine2 = addressLine2.trim() || null;
     const normalizedPostalCode = postalCode.trim() || null;
     const normalizedContactEmail = contactEmail.trim() || null;
     const normalizedWebsiteUrl = websiteUrl.trim() || null;
@@ -316,12 +326,28 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
       errors.endAt = 'End date and time must be after the start date and time';
     }
 
-    const streetAddressError = validateOptionalStringMax(
-      normalizedStreetAddress,
-      SUBMISSION_FIELD_LIMITS.locationAddressStreet,
+    const publicLocationDescriptionError = validateOptionalStringMax(
+      normalizedPublicLocationDescription,
+      SUBMISSION_FIELD_LIMITS.publicLocationDescription,
     );
-    if (streetAddressError) {
-      errors.streetAddress = streetAddressError;
+    if (publicLocationDescriptionError) {
+      errors.publicLocationDescription = publicLocationDescriptionError;
+    }
+
+    const addressLine1Error = validateOptionalStringMax(
+      normalizedAddressLine1,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+    );
+    if (addressLine1Error) {
+      errors.addressLine1 = addressLine1Error;
+    }
+
+    const addressLine2Error = validateOptionalStringMax(
+      normalizedAddressLine2,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+    );
+    if (addressLine2Error) {
+      errors.addressLine2 = addressLine2Error;
     }
 
     const postalCodeError = validateOptionalStringMax(
@@ -380,7 +406,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             startTime: startDate!.toISOString(),
             endTime: endDate ? endDate.toISOString() : null,
             locationName: normalizedLocationName,
-            locationAddressStreet: normalizedStreetAddress,
+            publicLocationDescription: normalizedPublicLocationDescription,
+            locationAddressLine1: normalizedAddressLine1,
+            locationAddressLine2: normalizedAddressLine2,
             locationAddressCity: normalizedCity,
             locationAddressRegion: normalizedRegion,
             locationAddressCountry: normalizedCountry,
@@ -598,16 +626,46 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>Street Address (optional)</span>
+                <span>Location Description (optional)</span>
                 <input
                   className={'submissionControl'}
-                  value={streetAddress}
-                  placeholder="123 Main St"
-                  onChange={(event) => setStreetAddress(event.target.value)}
+                  value={publicLocationDescription}
+                  placeholder="Meet organizers near the fountain"
+                  onChange={(event) => setPublicLocationDescription(event.target.value)}
                 />
               </label>
-              {errors.streetAddress ? (
-                <p className="submissionError">{errors.streetAddress}</p>
+              {errors.publicLocationDescription ? (
+                <p className="submissionError">{errors.publicLocationDescription}</p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Address Line 1 (optional)</span>
+                <input
+                  className={'submissionControl'}
+                  value={addressLine1}
+                  placeholder="123 Main St"
+                  onChange={(event) => setAddressLine1(event.target.value)}
+                />
+              </label>
+              {errors.addressLine1 ? (
+                <p className="submissionError">{errors.addressLine1}</p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel">
+                <span>Address Line 2 (optional)</span>
+                <input
+                  className={'submissionControl'}
+                  value={addressLine2}
+                  placeholder="Suite A"
+                  onChange={(event) => setAddressLine2(event.target.value)}
+                />
+              </label>
+              {errors.addressLine2 ? (
+                <p className="submissionError">{errors.addressLine2}</p>
               ) : null}
             </section>
 

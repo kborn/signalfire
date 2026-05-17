@@ -63,8 +63,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
             <p className="metaValue eventLocation">{event.locationName}</p>
           </div>
           <div className="metaBlock">
-            <p className="metaLabel">Address</p>
-            <p className="metaValue">{event.addressRaw}</p>
+            <p className="metaLabel">Location Description</p>
+            <p className="metaValue">{event.publicLocationDescription}</p>
+          </div>
+          <div className="metaBlock">
+            <p className="metaLabel">Address Line 1</p>
+            <p className="metaValue">{event.addressLine1}</p>
+          </div>
+          <div className="metaBlock">
+            <p className="metaLabel">Address Line 2</p>
+            <p className="metaValue">{event.addressLine2}</p>
           </div>
           {locationParts.length > 0 && (
             <div className="metaBlock">
@@ -80,6 +88,12 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
                   {event.website}
                 </a>
               </p>
+            </div>
+          )}
+          {event.contactEmail && (
+            <div className="metaBlock">
+              <p className="metaLabel">Contact</p>
+              <p className="metaValue">{event.contactEmail}</p>
             </div>
           )}
         </section>

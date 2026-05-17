@@ -1200,6 +1200,7 @@ Capabilities:
 ###### Phase Tasks:
 
 - [ ] Define the moderation-side editing/normalization fields required before publication
+- [ ] Replace Event `addressRaw` with `addressLine1`, `addressLine2`, and `publicLocationDescription` across canonical persistence, contracts, and publication mapping
 - [ ] Wire the admin submission detail page to real submission detail data for submitted content and normalization prefill
 - [ ] Implement approval flow that converts article submissions into published Article records
 - [ ] Implement approval flow that converts event submissions into published Event records

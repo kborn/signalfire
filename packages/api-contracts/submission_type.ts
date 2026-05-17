@@ -28,7 +28,9 @@ type SubmissionRequestEventPayload = {
   startTime: string;
   endTime?: string | null;
   locationName: string;
-  locationAddressStreet?: string | null;
+  publicLocationDescription?: string | null;
+  locationAddressLine1?: string | null;
+  locationAddressLine2?: string | null;
   locationAddressCity: string;
   locationAddressRegion: string;
   locationAddressCountry: string;
@@ -118,7 +120,9 @@ export type ModerationSubmissionDetail =
         startTime: string;
         endTime: string | null;
         locationName: string;
-        addressRaw: string | null;
+        publicLocationDescription: string | null;
+        addressLine1: string | null;
+        addressLine2: string | null;
         city: string;
         region: string;
         country: string;
@@ -147,7 +151,9 @@ export type EventApprovalPayload = {
   startTime: string;
   endTime?: string | null;
   locationName: string;
-  addressRaw: string;
+  publicLocationDescription?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
   city?: string | null;
   region?: string | null;
   country?: string | null;

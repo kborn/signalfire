@@ -107,7 +107,9 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('* Location Name').fill('City Hall North Plaza');
     await page!.getByLabel('* City').fill('Philadelphia');
     await page!.getByLabel('* Region').selectOption('PA');
-    await page!.getByLabel('Street Address (optional)').fill('1400 John F Kennedy Blvd');
+    await page!.getByLabel('Location Description (optional)').fill('Liberty Square');
+    await page!.getByLabel('Address Line 1 (optional)').fill('1400 John F Kennedy Blvd');
+    await page!.getByLabel('Address Line 2 (optional)').fill('Ste 1A');
     await page!.getByLabel('ZIP Code (optional)').fill('19107');
     await page!.getByLabel('Economic Justice').check();
     await page!.getByLabel('Contact Email (optional)').fill('press@example.org');
@@ -146,6 +148,9 @@ describe('Submission flows (browser e2e)', () => {
         submitterEmail: 'organizer@example.org',
         eventType: 'RALLY',
         locationName: 'City Hall North Plaza',
+        publicLocationDescription: 'Liberty Square',
+        addressLine1: '1400 John F Kennedy Blvd',
+        addressLine2: 'Ste 1A',
         city: 'Philadelphia',
         region: 'PA',
         postalCode: '19107',
@@ -153,9 +158,6 @@ describe('Submission flows (browser e2e)', () => {
         website: 'example.org/event',
         contactEmail: 'press@example.org',
       }),
-    );
-    expect(persistedSubmission.addressRaw).toBe(
-      '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
     );
     expect(persistedSubmission.startTime?.toISOString()).toBe(
       new Date('2026-05-14T17:00').toISOString(),

@@ -81,8 +81,12 @@ function EventSubmittedContent({ submission }: { submission: EventModerationSubm
       <dd>{submission.submittedContent.endTime ?? '--'}</dd>
       <dt>Location Name</dt>
       <dd>{submission.submittedContent.locationName}</dd>
-      <dt>Address</dt>
-      <dd>{submission.submittedContent.addressRaw ?? '--'}</dd>
+      <dt>Location Description</dt>
+      <dd>{submission.submittedContent.publicLocationDescription ?? '--'}</dd>
+      <dt>Address Line 1</dt>
+      <dd>{submission.submittedContent.addressLine1 ?? '--'}</dd>
+      <dt>Address Line 2</dt>
+      <dd>{submission.submittedContent.addressLine2 ?? '--'}</dd>
       <dt>City</dt>
       <dd>{submission.submittedContent.city}</dd>
       <dt>State</dt>
