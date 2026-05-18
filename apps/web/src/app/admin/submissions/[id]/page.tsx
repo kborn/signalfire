@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { getSubmissionsDetails } from '@/lib/api/admin';
-import { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
+import { ModerationSubmissionDetail, TopicListResponse } from '@signal-fire/api-contracts';
 import ArticleNormalizationForm from './ArticleNormalizedForm';
 import EventNormalizationForm from './EventNormalizedForm';
+import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,11 +22,16 @@ function SubmittedContentPanel({ submission }: { submission: ModerationSubmissio
   );
 }
 
-function EditorialNormalizationPanel({ submission }: { submission: ModerationSubmissionDetail }) {
+async function EditorialNormalizationPanel({
+  submission,
+}: {
+  submission: ModerationSubmissionDetail;
+}) {
+  const topics: TopicListResponse = await getTopicsList();
   return submission.submissionType === 'ARTICLE' ? (
-    <ArticleNormalizationForm submission={submission} />
+    <ArticleNormalizationForm submission={submission} topics={topics.items} />
   ) : (
-    <EventNormalizationForm submission={submission} />
+    <EventNormalizationForm submission={submission} topics={topics.items} />
   );
 }
 

@@ -208,6 +208,10 @@ describe('Moderation publication integration', () => {
       publicLocationDescription: 'Liberty Plaza',
       addressLine1: '1 Main St',
       addressLine2: 'Ste 1A',
+      city: 'Philadelphia',
+      region: 'PA',
+      country: 'USA',
+      postalCode: '45641',
     });
 
     const review = await moderationService.reviewSubmission(submission.id, {
@@ -225,10 +229,10 @@ describe('Moderation publication integration', () => {
         publicLocationDescription: 'Liberty Plaza',
         addressLine1: '1 Main St',
         addressLine2: 'Ste 1A',
-        city: null,
-        region: null,
-        country: null,
-        postalCode: null,
+        city: 'Philadelphia',
+        region: 'PA',
+        country: 'USA',
+        postalCode: '45641',
         website: null,
         topicSlugs: ['democracy'],
       },

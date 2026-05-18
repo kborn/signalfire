@@ -154,10 +154,10 @@ export type EventApprovalPayload = {
   publicLocationDescription?: string | null;
   addressLine1?: string | null;
   addressLine2?: string | null;
-  city?: string | null;
-  region?: string | null;
-  country?: string | null;
-  postalCode?: string | null;
+  city: string;
+  region: string;
+  country: string;
+  postalCode: string;
   website?: string | null;
   contactEmail?: string | null;
   topicSlugs: string[];

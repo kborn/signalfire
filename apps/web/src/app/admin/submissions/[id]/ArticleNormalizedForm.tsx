@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import type { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
+import { ModerationSubmissionDetail, TopicSummary } from '@signal-fire/api-contracts';
 
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
@@ -11,13 +11,24 @@ type ArticleModerationSubmission = Extract<
 
 export default function ArticleNormalizationForm({
   submission,
+  topics,
 }: {
   submission: ArticleModerationSubmission;
+  topics: TopicSummary[];
 }) {
   const [content, setContent] = useState(submission.submittedContent.content);
   const [summary, setSummary] = useState(submission.submittedContent.summary);
   const [title, setTitle] = useState(submission.submittedContent.title);
   const [author, setAuthor] = useState(submission.submittedContent.author ?? '');
+  const [topicSlugs, setTopicSlugs] = useState<string[]>(
+    submission.submittedContent.topics.map((topic) => topic.slug),
+  );
+
+  const handleToggle = (topic: string) => {
+    setTopicSlugs((prev) =>
+      prev.includes(topic) ? prev.filter((t) => t !== topic) : [...prev, topic],
+    );
+  };
 
   return (
     <dl className="adminDefinitionList">
@@ -69,11 +80,16 @@ export default function ArticleNormalizationForm({
       </dd>
       <dt>Topics</dt>
       <dd>
-        <ul className="adminInlineList">
-          {submission.submittedContent.topics.map((topic) => (
-            <li key={topic.id}>{topic.name}</li>
-          ))}
-        </ul>
+        {topics.map((topic) => (
+          <label className="submissionCheckboxOption" key={topic.slug}>
+            <input
+              type="checkbox"
+              checked={topicSlugs.includes(topic.slug)}
+              onChange={() => handleToggle(topic.slug)}
+            />
+            {topic.name}
+          </label>
+        ))}
       </dd>
     </dl>
   );
