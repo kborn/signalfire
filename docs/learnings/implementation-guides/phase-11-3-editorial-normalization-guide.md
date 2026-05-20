@@ -129,6 +129,71 @@ Approval should work like this:
 Steps 7 through 10 should be transactional. If conversion fails, the submission
 should not be left approved without a created Article or Event.
 
+## Client State Ownership For Approval Payloads
+
+The admin submission detail route should keep initial data fetching in the
+server page. The interactive approval workflow should live in a client wrapper.
+
+The server page should fetch:
+
+- moderation submission detail
+- available topic list
+
+Then it should pass both into a client component such as
+`SubmissionReviewClient`.
+
+The client wrapper should own:
+
+- review notes
+- loading/submitting state
+- API error state
+- the latest normalized approval payload emitted by the active form
+- approve/reject actions
+
+The Article and Event normalization forms can still own their individual field
+state. They should notify the wrapper with one complete normalized value when
+their state changes, instead of forcing the page to know about every input.
+
+For Article, the emitted value should match `ArticleApprovalPayload`:
+
+```tsx
+onChange({
+  title,
+  summary,
+  content,
+  author: author.trim() || 'anonymous',
+  topicSlugs,
+});
+```
+
+For Event, the emitted value should match `EventApprovalPayload`:
+
+```tsx
+onChange({
+  title,
+  summary,
+  description,
+  eventType,
+  startTime: fromDateTimeLocalValue(startTime),
+  endTime: fromDateTimeLocalValue(endTime),
+  locationName,
+  publicLocationDescription: emptyToNull(publicLocationDescription),
+  addressLine1: emptyToNull(addressLine1),
+  addressLine2: emptyToNull(addressLine2),
+  city,
+  region,
+  country,
+  postalCode,
+  website: emptyToNull(website),
+  contactEmail: emptyToNull(contactEmail),
+  topicSlugs,
+});
+```
+
+The approval button should submit the latest normalized value held by the client
+wrapper. Do not rebuild the approval payload from the original submitted content
+after the moderator edits fields.
+
 ## What Should Not Transfer
 
 Do not copy these fields into public Article or Event records:

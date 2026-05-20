@@ -1,5 +1,9 @@
 import { ApiError, SubmissionError } from '@/lib/api/error';
-import { SubmissionRequest } from '@signal-fire/api-contracts';
+import {
+  ModerationReviewRequest,
+  ModerationReviewResponse,
+  SubmissionRequest,
+} from '@signal-fire/api-contracts';
 
 function getApiBase() {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -84,4 +88,43 @@ export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
     }
   }
   return body as T;
+}
+
+export async function postSubmissionReview<ModerationReviewResponse>(
+  req: ModerationReviewRequest,
+  id,
+): Promise<ModerationReviewResponse> {
+  const url = `${getApiBase()}/admin/submissions/${id}/review`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(req),
+  });
+
+  let body: unknown;
+
+  try {
+    body = await response.json();
+    console.log(body);
+  } catch {
+    console.log('failed');
+    body = null;
+  }
+
+  console.log(response.status);
+
+  if (!response.ok) {
+    if (hasValidationErrors(body)) {
+      throw new SubmissionError(
+        `Request failed for submissions`,
+        response.status,
+        'submissions',
+        (body as { errors: { field: string; message: string }[] }).errors,
+      );
+    } else {
+      throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
+    }
+  }
+  return body as ModerationReviewResponse;
 }

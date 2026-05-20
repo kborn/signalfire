@@ -1,8 +1,10 @@
-'use client';
-
-import { useState } from 'react';
-
-import { ModerationSubmissionDetail, TopicSummary } from '@signal-fire/api-contracts';
+import { useEffect, useState } from 'react';
+import {
+  type ArticleApprovalPayload,
+  ModerationReviewApproveArticleRequest,
+  ModerationSubmissionDetail,
+  TopicSummary,
+} from '@signal-fire/api-contracts';
 
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
@@ -12,9 +14,11 @@ type ArticleModerationSubmission = Extract<
 export default function ArticleNormalizationForm({
   submission,
   topics,
+  onChange,
 }: {
   submission: ArticleModerationSubmission;
   topics: TopicSummary[];
+  onChange: (value: ArticleApprovalPayload) => void;
 }) {
   const [content, setContent] = useState(submission.submittedContent.content);
   const [summary, setSummary] = useState(submission.submittedContent.summary);
@@ -23,6 +27,10 @@ export default function ArticleNormalizationForm({
   const [topicSlugs, setTopicSlugs] = useState<string[]>(
     submission.submittedContent.topics.map((topic) => topic.slug),
   );
+
+  useEffect(() => {
+    onChange({ title, summary, topicSlugs, author, content });
+  }, [title, summary, topicSlugs, author, content, onChange]);
 
   const handleToggle = (topic: string) => {
     setTopicSlugs((prev) =>

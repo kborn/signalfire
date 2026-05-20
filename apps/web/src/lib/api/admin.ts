@@ -1,8 +1,10 @@
-import { makeRequest } from '@/lib/api/base';
+import { makeRequest, postSubmissionReview } from '@/lib/api/base';
 import {
   ModerationSubmissionListFilters,
   ModerationSubmissionList,
   ModerationSubmissionDetail,
+  ModerationReviewRequest,
+  ModerationReviewResponse,
 } from '@signal-fire/api-contracts';
 
 export async function getSubmissionsList(
@@ -13,4 +15,11 @@ export async function getSubmissionsList(
 
 export async function getSubmissionsDetails(id: number): Promise<ModerationSubmissionDetail> {
   return await makeRequest<ModerationSubmissionDetail>(`admin/submissions/${id}`);
+}
+
+export async function postSubmissionReviewReq(
+  req: ModerationReviewRequest,
+  id,
+): Promise<ModerationReviewResponse> {
+  return await postSubmissionReview<ModerationReviewResponse>(req, id);
 }

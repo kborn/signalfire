@@ -1,10 +1,10 @@
-'use client';
-
 import { useState } from 'react';
 
 import {
   EVENT_TYPES,
+  type EventApprovalPayload,
   EventType,
+  ModerationReviewApproveEventRequest,
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';
@@ -50,9 +50,11 @@ function parseEventType(value: string): EventType {
 export default function EventNormalizationForm({
   submission,
   topics,
+  onChange,
 }: {
   submission: EventModerationSubmission;
   topics: TopicSummary[];
+  onChange: (value: EventApprovalPayload) => void;
 }) {
   const [title, setTitle] = useState(submission.submittedContent.title);
   const [summary, setSummary] = useState(submission.submittedContent.summary);

@@ -7,6 +7,8 @@ export type { EventDetailResponse, EventListResponse } from './event.types.js';
 export type {
   EventSubmissionRequest,
   ArticleSubmissionRequest,
+  ArticleApprovalPayload,
+  EventApprovalPayload,
   SubmissionRequest,
   SubmissionResponse,
   SubmissionResponseError,

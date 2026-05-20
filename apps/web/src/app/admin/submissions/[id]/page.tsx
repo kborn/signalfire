@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { getSubmissionsDetails } from '@/lib/api/admin';
 import { ModerationSubmissionDetail, TopicListResponse } from '@signal-fire/api-contracts';
-import ArticleNormalizationForm from './ArticleNormalizedForm';
-import EventNormalizationForm from './EventNormalizedForm';
+import SubmissionReviewClient from './SubmissionReviewClient';
 import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';
@@ -19,19 +18,6 @@ function SubmittedContentPanel({ submission }: { submission: ModerationSubmissio
     <ArticleSubmittedContent submission={submission} />
   ) : (
     <EventSubmittedContent submission={submission} />
-  );
-}
-
-async function EditorialNormalizationPanel({
-  submission,
-}: {
-  submission: ModerationSubmissionDetail;
-}) {
-  const topics: TopicListResponse = await getTopicsList();
-  return submission.submissionType === 'ARTICLE' ? (
-    <ArticleNormalizationForm submission={submission} topics={topics.items} />
-  ) : (
-    <EventNormalizationForm submission={submission} topics={topics.items} />
   );
 }
 
@@ -124,6 +110,7 @@ export default async function SubmissionDetailsPage({
 }) {
   const { id } = await params;
   const submission = await getSubmissionsDetails(Number(id));
+  const topics: TopicListResponse = await getTopicsList();
 
   return (
     <section className="page-section">
@@ -173,46 +160,7 @@ export default async function SubmissionDetailsPage({
           </div>
           <SubmittedContentPanel submission={submission} />
         </section>
-        <section className="adminPanel" aria-labelledby="editorial-normalization-heading">
-          <div className="adminPanelHeader">
-            <h2 id="editorial-normalization-heading">Editorial normalization</h2>
-          </div>
-          <EditorialNormalizationPanel submission={submission} />
-        </section>
-        <section className="adminPanel" aria-labelledby="review-notes-heading">
-          <div className="adminPanelHeader">
-            <h2 id="review-notes-heading">Review notes</h2>
-          </div>
-          <label htmlFor="review-notes">Internal notes</label>
-          <textarea
-            id="review-notes"
-            className="submissionTextarea"
-            disabled
-            rows={5}
-            aria-describedby="review-notes-helper"
-          />
-          <p id="review-notes-helper">
-            Review notes are internal and will be saved with a moderation decision in a later Phase
-            11 task.
-          </p>
-        </section>
-        <section className="adminPanel" aria-labelledby="decision-actions-heading">
-          <div className="adminPanelHeader">
-            <h2 id="decision-actions-heading">Decision actions</h2>
-          </div>
-          <div className="adminFilterGroup" aria-label="Moderation actions">
-            <button type="button" disabled>
-              Approve and Publish
-            </button>
-            <button type="button" disabled>
-              Approve as Draft
-            </button>
-            <button type="button" disabled>
-              Reject
-            </button>
-          </div>
-          <p>Moderation actions are not wired in Phase 11.1.</p>
-        </section>
+        <SubmissionReviewClient submission={submission} topics={topics.items} />;
       </div>
     </section>
   );

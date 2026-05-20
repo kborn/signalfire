@@ -85,6 +85,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [71-html-description-lists.md](./71-html-description-lists.md) - Why `dl`, `dt`, and `dd` fit labeled fields for one record
 - [72-object-rest-destructuring.md](./72-object-rest-destructuring.md) - How to pull helper fields out before spreading entity data
 - [73-nullish-checks-vs-truthy-checks.md](./73-nullish-checks-vs-truthy-checks.md) - When to use `== null`, `??`, `?.`, and truthy checks
+- [74-client-wrapper-owns-decision-state.md](./74-client-wrapper-owns-decision-state.md) - Use a client wrapper and callbacks to collect child form state for moderation decisions
+- [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
 
 Rule of thumb:
 

@@ -30,6 +30,7 @@ Backend:
 Frontend:
 
 - `apps/web/src/app/admin/submissions/[id]/page.tsx`
+- `apps/web/src/app/admin/submissions/[id]/SubmissionReviewClient.tsx`
 - `apps/web/src/lib/api`
 - admin submission detail components if the page has been split up
 
@@ -173,6 +174,23 @@ Do not persist normalization edits independently. They should only be sent with
 the successful approval action.
 
 ### 6. Wire approval buttons to publish status
+
+Before wiring the request, introduce a client wrapper for the interactive
+review workflow. Keep `page.tsx` server-side so it can fetch the moderation
+submission detail and topic list, then pass both into the client wrapper.
+
+The client wrapper should own:
+
+- review notes
+- loading state
+- API errors
+- the latest normalized approval payload
+- approve/reject button handlers
+
+The Article and Event normalization forms should keep their local field state
+and emit one complete approval payload through an `onChange` callback. For
+example, the Article form emits `ArticleApprovalPayload`; the Event form emits
+`EventApprovalPayload`. The decision buttons submit that emitted value.
 
 Use the same normalized form state for both approval buttons:
 
