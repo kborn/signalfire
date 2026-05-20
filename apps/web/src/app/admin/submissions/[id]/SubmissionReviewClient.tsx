@@ -40,9 +40,6 @@ export default function SubmissionReviewClient({
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
 
   function approve(entityStatus: EntityStatus) {
-    console.log('Calling approve');
-    console.log(articleNormalized);
-    console.log(eventNormalized);
     if (submission.submissionType === 'ARTICLE') {
       if (!articleNormalized) return;
       const req: ModerationReviewApproveArticleRequest = {
@@ -72,7 +69,7 @@ export default function SubmissionReviewClient({
   }
 
   function reject() {
-    console.log('Calling reject');
+    postSubmissionReviewReq({ decision: 'REJECT', reviewNotes: reviewNotes }, submission.id);
   }
   return (
     <div>
