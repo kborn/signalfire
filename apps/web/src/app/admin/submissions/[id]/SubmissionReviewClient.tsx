@@ -9,6 +9,7 @@ import type {
   TopicSummary,
   EntityStatus,
   ModerationReviewApproveArticleRequest,
+  ModerationReviewApproveEventRequest,
 } from '@signal-fire/api-contracts';
 
 import EventNormalizationForm from '@/app/admin/submissions/[id]/EventNormalizedForm';
@@ -20,6 +21,19 @@ type ArticleModerationSubmission = Extract<
 >;
 
 type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
+
+function parseLocalDateTime(value: string): Date | null {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date;
+}
 
 export default function SubmissionReviewClient({
   submission,
@@ -46,7 +60,21 @@ export default function SubmissionReviewClient({
       };
       postSubmissionReviewReq(req, submission.id);
     } else {
-      console.log('not yet');
+      if (!eventNormalized) return;
+      const fixed = {
+        ...eventNormalized,
+        startTime: parseLocalDateTime(eventNormalized.startTime)!.toISOString(),
+        endTime: eventNormalized.endTime
+          ? parseLocalDateTime(eventNormalized.endTime)!.toISOString()
+          : null,
+      };
+      const req: ModerationReviewApproveEventRequest = {
+        decision: 'APPROVE_EVENT',
+        reviewNotes: reviewNotes,
+        publishStatus: entityStatus,
+        normalized: fixed,
+      };
+      postSubmissionReviewReq(req, submission.id);
     }
   }
 

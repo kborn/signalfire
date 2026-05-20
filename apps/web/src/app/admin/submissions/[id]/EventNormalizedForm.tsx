@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   EVENT_TYPES,
@@ -79,6 +79,47 @@ export default function EventNormalizationForm({
   const [topicSlugs, setTopicSlugs] = useState<string[]>(
     submission.submittedContent.topics.map((topic) => topic.slug),
   );
+
+  useEffect(() => {
+    onChange({
+      title,
+      summary,
+      description,
+      eventType,
+      startTime,
+      endTime,
+      publicLocationDescription,
+      locationName,
+      addressLine1,
+      addressLine2,
+      city,
+      region,
+      country,
+      postalCode,
+      website,
+      contactEmail,
+      topicSlugs,
+    });
+  }, [
+    title,
+    summary,
+    description,
+    eventType,
+    startTime,
+    endTime,
+    publicLocationDescription,
+    locationName,
+    addressLine1,
+    addressLine2,
+    city,
+    region,
+    country,
+    postalCode,
+    website,
+    contactEmail,
+    topicSlugs,
+    onChange,
+  ]);
 
   const handleToggle = (topic: string) => {
     setTopicSlugs((prev) =>
@@ -193,7 +234,7 @@ export default function EventNormalizationForm({
       <dt>Address</dt>
       <dd>
         <ul className="adminInlineList">
-          <li key={submission.submittedContent.addressLine1}>
+          <li key="addressLine1">
             <input
               id="normalized-addressLine1"
               className="adminTextEditor"
@@ -201,7 +242,7 @@ export default function EventNormalizationForm({
               onChange={(event) => setAddressLine1(event.target.value)}
             />
           </li>
-          <li key={submission.submittedContent.addressLine2}>
+          <li key="addressLine2">
             <input
               id="normalized-addressLine2"
               className="adminTextEditor"
