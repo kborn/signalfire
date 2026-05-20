@@ -4,7 +4,6 @@ import {
   EVENT_TYPES,
   type EventApprovalPayload,
   EventType,
-  ModerationReviewApproveEventRequest,
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';

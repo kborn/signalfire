@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
   type ArticleApprovalPayload,
-  ModerationReviewApproveArticleRequest,
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';

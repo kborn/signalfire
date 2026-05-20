@@ -1,9 +1,5 @@
 import { ApiError, SubmissionError } from '@/lib/api/error';
-import {
-  ModerationReviewRequest,
-  ModerationReviewResponse,
-  SubmissionRequest,
-} from '@signal-fire/api-contracts';
+import { ModerationReviewRequest, SubmissionRequest } from '@signal-fire/api-contracts';
 
 function getApiBase() {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;

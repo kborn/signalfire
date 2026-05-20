@@ -15,13 +15,6 @@ import type {
 import EventNormalizationForm from '@/app/admin/submissions/[id]/EventNormalizedForm';
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 
-type ArticleModerationSubmission = Extract<
-  ModerationSubmissionDetail,
-  { submissionType: 'ARTICLE' }
->;
-
-type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
-
 function parseLocalDateTime(value: string): Date | null {
   if (!value) {
     return null;
