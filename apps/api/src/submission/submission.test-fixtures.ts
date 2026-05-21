@@ -179,6 +179,7 @@ export function buildModerationReviewApproveEventRequest(
       region: 'PA',
       country: 'US',
       postalCode: '19107',
+      contactEmail: 'me@event.com',
       website: 'https://example.org/event',
       topicSlugs: ['economic-justice'],
       ...(normalizedOverrides ?? {}),
