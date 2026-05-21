@@ -27,7 +27,7 @@ export class ModerationSubmissionController {
   @Get()
   async findQueuedSubmissions(
     @Query('status') submissionStatus?: string,
-    @Query('type') submissionType?: string,
+    @Query('submissionType') submissionType?: string,
   ): Promise<ModerationSubmissionList> {
     const filters: ModerationSubmissionListFilters = {
       status: this.parseSubmissionStatus(submissionStatus),

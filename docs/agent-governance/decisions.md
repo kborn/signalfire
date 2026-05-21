@@ -796,3 +796,63 @@ strategy.
   validation, remain service-layer concerns.
 - This decision does not require refactoring existing controllers or defining a
   general Zod standard for all API endpoints.
+
+---
+
+---
+
+### ► Event location publication uses structured address lines plus supplemental guidance
+
+###### 2026-05-16
+
+---
+
+###### Decision
+
+Release 1 Event publication separates structured geographic fields from
+optional public-facing location guidance. The canonical Event location model
+uses `locationName`, `addressLine1`, `addressLine2`, `city`, `region`,
+`country`, `postalCode`, and `publicLocationDescription`. The previous
+`addressRaw` field is removed from the Release 1 canonical Event and event
+submission contracts before launch.
+
+This supersedes the earlier Phase 10 event submission mapping where
+`locationAddressStreet` contributed to a derived `addressRaw` display field.
+Going forward, street-level input maps to `addressLine1`; `addressLine2` is
+available for additional address detail; and supplemental public guidance maps
+to `publicLocationDescription`.
+
+###### Rationale
+
+- Events may be venue-based, route-based, approximate-location, or
+  privacy-preserving civic gatherings.
+- A single `addressRaw` field conflates street addresses, broad location text,
+  display formatting, and moderator-entered guidance.
+- Structured geography is still needed for Release 1 discoverability and future
+  location-aware browsing.
+- Optional public guidance is useful for protests, marches, RSVP/private
+  locations, and organizer instructions without replacing structured geography.
+- Online-only Events remain out of Release 1 scope and should be handled in a
+  future product decision.
+
+###### Implications
+
+- `city`, `region`, `country`, and `postalCode` remain required for Release 1
+  Event publication and moderation normalization.
+- Event geographic fields may remain nullable in Prisma to preserve a clean
+  future path for online or geography-free events, but Release 1 API contracts,
+  moderation approval validation, and admin publication flows enforce them as
+  required.
+- `addressLine1`, `addressLine2`, and `publicLocationDescription` are optional.
+- `publicLocationDescription` is supplemental public guidance; it is not an
+  address override and does not replace structured location fields.
+- Public Event detail pages should render location information in this order:
+  `locationName`, `publicLocationDescription` when present, `addressLine1` and
+  `addressLine2` when present, then city/region/postal/country.
+- Existing Phase 10 names should be migrated as follows:
+  `locationAddressStreet` -> `addressLine1`; no canonical
+  `locationAddressRaw` field exists; previous `addressRaw` usage is removed
+  rather than renamed.
+- Phase 11.3 must update Event persistence, submission persistence, API
+  contracts, moderation normalization forms, approval mapping, seed data, and
+  public Event rendering to remove `addressRaw` as a canonical field.

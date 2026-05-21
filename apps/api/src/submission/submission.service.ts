@@ -46,25 +46,6 @@ export class SubmissionService {
     };
   }
 
-  private buildAddressRaw(req: EventSubmissionRequest): string {
-    const street = req.payload.locationAddressStreet?.trim() ?? '';
-    const city = req.payload.locationAddressCity.trim();
-    const region = req.payload.locationAddressRegion.trim();
-    const postalCode = req.payload.locationAddressZip?.trim() ?? '';
-    const country = req.payload.locationAddressCountry.trim();
-
-    const localityParts = [city, region].filter((part) => part.length > 0);
-    const locality = localityParts.join(', ');
-    const localityWithPostalCode =
-      postalCode.length > 0
-        ? locality.length > 0
-          ? `${locality} ${postalCode}`
-          : postalCode
-        : locality;
-
-    return [street, localityWithPostalCode, country].filter((part) => part.length > 0).join(', ');
-  }
-
   mapEventSubmissionRequest(
     req: EventSubmissionRequest,
   ): CreateSubmissionRepositoryInputEntityFields {
@@ -75,7 +56,9 @@ export class SubmissionService {
       startTime: new Date(req.payload.startTime),
       endTime: req.payload.endTime ? new Date(req.payload.endTime) : null,
       locationName: req.payload.locationName,
-      addressRaw: this.buildAddressRaw(req),
+      publicLocationDescription: req.payload.publicLocationDescription,
+      addressLine1: req.payload.locationAddressLine1,
+      addressLine2: req.payload.locationAddressLine2,
       city: req.payload.locationAddressCity,
       region: req.payload.locationAddressRegion,
       postalCode: req.payload.locationAddressZip ?? null,

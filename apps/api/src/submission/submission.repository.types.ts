@@ -17,7 +17,9 @@ export type CreateSubmissionRepositoryInputEntityFields = {
   startTime?: Date | null;
   endTime?: Date | null;
   locationName?: string | null;
-  addressRaw?: string | null;
+  publicLocationDescription?: string | null;
+  addressLine1?: string | null;
+  addressLine2?: string | null;
   city?: string | null;
   region?: string | null;
   postalCode?: string | null;
@@ -67,7 +69,9 @@ export type ApproveEventSubmissionRepositoryInput = {
     startTime: Date;
     endTime: Date | null;
     locationName: string;
-    addressRaw: string;
+    publicLocationDescription: string | null;
+    addressLine1: string | null;
+    addressLine2: string | null;
     city: string | null;
     region: string | null;
     country: string | null;

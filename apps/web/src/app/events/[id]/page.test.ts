@@ -27,11 +27,14 @@ describe('EventDetailsPage', () => {
       summary: 'Join local organizers calling for housing reform.',
       description: '## What to expect\n\nBring signs and water.',
       website: 'https://example.org/housing-rally',
+      contactEmail: 'contact@my-event.com',
       eventType: 'RALLY',
       startTime: '2026-04-20T22:30:00.000Z',
       endTime: '2026-04-20T23:30:00.000Z',
       locationName: 'City Hall Plaza',
-      addressRaw: '1 Civic Center Plaza',
+      publicLocationDescription: 'Liberty Plaza',
+      addressLine1: '1 Civic Center Plaza',
+      addressLine2: 'Ste 1A',
       city: 'Boston',
       region: 'MA',
       postalCode: '02108',
@@ -83,6 +86,7 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('1 Civic Center Plaza');
     expect(markup).toContain('Boston, MA, 02108, USA');
     expect(markup).toContain('https://example.org/housing-rally');
+    expect(markup).toContain('contact@my-event.com');
     expect(markup).toContain('What to expect');
     expect(markup).toContain('Bring signs and water.');
     expect(markup).toContain('Related Topics');
@@ -104,11 +108,14 @@ describe('EventDetailsPage', () => {
       summary: 'Residents discuss local budget priorities.',
       description: 'Meeting agenda and facilitation details.',
       website: null,
+      contactEmail: null,
       eventType: 'MEETING',
       startTime: '2026-05-01T16:00:00.000Z',
       endTime: null,
       locationName: 'Community Center',
-      addressRaw: '10 Main Street',
+      publicLocationDescription: 'Liberty Plaza',
+      addressLine1: '10 Main Street',
+      addressLine2: 'Ste 1A',
       city: 'Providence',
       region: 'RI',
       postalCode: null,

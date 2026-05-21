@@ -103,12 +103,15 @@ model Event {
   summary       String
   description   String
   website       String?
+  contactEmail  String?
   eventType     EventType
   status        EntityStatus
   startTime     DateTime
   endTime       DateTime?
   locationName  String
-  addressRaw    String
+  publicLocationDescription String?
+  addressLine1       String?
+  addressLine2       String?
   city          String?
   region        String?
   postalCode    String?
@@ -140,7 +143,9 @@ model Submission {
   startTime          DateTime?
   endTime            DateTime?
   locationName       String?
-  addressRaw         String?
+  publicLocationDescription String?
+  addressLine1       String?
+  addressLine2       String?
   city               String?
   region             String?
   postalCode         String?

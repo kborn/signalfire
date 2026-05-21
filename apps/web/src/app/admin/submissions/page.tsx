@@ -1,5 +1,6 @@
 import Link from 'next/link';
-
+import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
+import { getSubmissionsList } from '@/lib/api/admin';
 export const dynamic = 'force-dynamic';
 
 type SubmissionListPageProps = {
@@ -22,11 +23,54 @@ function buildSubmissionsHref({ status, type }: { status: string; type?: string 
   return query ? `/admin/submissions?${query}` : '/admin/submissions';
 }
 
+function parseStatus(value?: string): SubmissionStatus {
+  if (value === 'APPROVED' || value === 'REJECTED' || value === 'PENDING') {
+    return value;
+  }
+  return 'PENDING';
+}
+
+function parseType(value?: string): SubmissionType | undefined {
+  if (value === 'ARTICLE' || value === 'EVENT') {
+    return value;
+  }
+  return undefined;
+}
+
 export default async function SubmissionListPage({ searchParams }: SubmissionListPageProps) {
   const { status, type } = await searchParams;
-  const currentStatus = status ?? 'PENDING';
-  const currentType = type;
-
+  const currentStatus = parseStatus(status);
+  const currentType = parseType(type);
+  const submissionList = await getSubmissionsList({
+    status: currentStatus,
+    submissionType: currentType,
+  });
+  const submissions = submissionList.items;
+  const tableHeaders = ['Title', 'Type', 'Status', 'Submitted', 'Submitter', 'Email'];
+  const tableBody =
+    submissions.length > 0 ? (
+      submissions.map((submission) => (
+        <tr key={submission.id}>
+          <td>
+            <Link href={`/admin/submissions/${submission.id}`} className="adminTableLink">
+              {submission.title} <span aria-hidden="true">→</span>
+            </Link>
+            <p className="adminTableCellMeta">{submission.summary}</p>
+          </td>
+          <td>{submission.submissionType}</td>
+          <td>{submission.status}</td>
+          <td>{new Date(submission.submittedAt).toLocaleString()}</td>
+          <td>{submission.submitterName ?? 'Anonymous'}</td>
+          <td>{submission.submitterEmail ?? 'Not provided'}</td>
+        </tr>
+      ))
+    ) : (
+      <tr>
+        <td colSpan={tableHeaders.length} style={{ textAlign: 'center' }}>
+          No data available.
+        </td>
+      </tr>
+    );
   return (
     <section className="page-section">
       <h1 className="pageTitle">Submissions</h1>
@@ -81,31 +125,12 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
         <table className="adminTable">
           <thead>
             <tr>
-              <th>Title</th>
-              <th>Type</th>
-              <th>Status</th>
-              <th>Submitted</th>
-              <th>Submitter</th>
-              <th>Email</th>
+              {tableHeaders.map((header) => (
+                <th key={header}>{header}</th>
+              ))}
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>
-                <Link href="/admin/submissions/1" className="adminTableLink">
-                  Sample submission <span aria-hidden="true">→</span>
-                </Link>
-                <p className="adminTableCellMeta">
-                  A short summary of the submitted content will appear here.
-                </p>
-              </td>
-              <td>Article</td>
-              <td>Pending</td>
-              <td>Not connected</td>
-              <td>Anonymous</td>
-              <td>Not provided</td>
-            </tr>
-          </tbody>
+          <tbody>{tableBody}</tbody>
         </table>
       </section>
     </section>

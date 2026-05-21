@@ -14,6 +14,8 @@ function isUniqueConstraintError(error: unknown): error is Prisma.PrismaClientKn
   return error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
 }
 
+class SubmissionApprovalClaimError extends Error {}
+
 @Injectable()
 export class SubmissionRepository {
   constructor(private prisma: PrismaService) {}
@@ -77,7 +79,9 @@ export class SubmissionRepository {
         startTime: submission.startTime,
         endTime: submission.endTime,
         locationName: submission.locationName,
-        addressRaw: submission.addressRaw,
+        addressLine1: submission.addressLine1,
+        addressLine2: submission.addressLine2,
+        publicLocationDescription: submission.publicLocationDescription,
         city: submission.city,
         region: submission.region,
         postalCode: submission.postalCode,
@@ -134,103 +138,113 @@ export class SubmissionRepository {
   async approveArticleSubmission(
     input: ArticleSubmissionApprovedRepositoryInput,
   ): Promise<{ submission: Submission; article: Article } | null> {
-    return this.prisma.$transaction(async (tx) => {
-      const claim = await tx.submission.updateMany({
-        where: {
-          id: input.submissionId,
-          status: 'PENDING',
-          articleId: null,
-          eventId: null,
-        },
-        data: {
-          status: 'APPROVED',
-          reviewNotes: input.reviewNotes ?? null,
-          reviewedAt: input.reviewedAt,
-        },
-      });
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        const { topicIds, ...articleData } = input.articleData;
+        let article: Article;
+        try {
+          article = await tx.article.create({
+            data: {
+              ...articleData,
+              topicArticles: {
+                create: this.buildTopicCreates(topicIds),
+              },
+            },
+          });
+        } catch (error) {
+          if (!isUniqueConstraintError(error)) {
+            throw error;
+          }
+          article = await tx.article.create({
+            data: {
+              ...articleData,
+              slug: `${input.articleData.slug}-${input.submissionId}`,
+              topicArticles: {
+                create: this.buildTopicCreates(topicIds),
+              },
+            },
+          });
+        }
 
-      if (claim.count === 0) {
+        const claim = await tx.submission.updateMany({
+          where: {
+            id: input.submissionId,
+            status: 'PENDING',
+            articleId: null,
+            eventId: null,
+          },
+          data: {
+            status: 'APPROVED',
+            reviewNotes: input.reviewNotes ?? null,
+            reviewedAt: input.reviewedAt,
+            articleId: article.id,
+          },
+        });
+
+        if (claim.count === 0) {
+          throw new SubmissionApprovalClaimError();
+        }
+
+        const submission = await tx.submission.findUniqueOrThrow({
+          where: { id: input.submissionId },
+        });
+
+        return { submission, article };
+      });
+    } catch (error) {
+      if (error instanceof SubmissionApprovalClaimError) {
         return null;
       }
-
-      const { topicIds, ...articleData } = input.articleData;
-      let article: Article;
-      try {
-        article = await tx.article.create({
-          data: {
-            ...articleData,
-            topicArticles: {
-              create: this.buildTopicCreates(topicIds),
-            },
-          },
-        });
-      } catch (error) {
-        if (!isUniqueConstraintError(error)) {
-          throw error;
-        }
-        article = await tx.article.create({
-          data: {
-            ...articleData,
-            slug: `${input.articleData.slug}-${input.submissionId}`,
-            topicArticles: {
-              create: this.buildTopicCreates(topicIds),
-            },
-          },
-        });
-      }
-
-      const submission = await tx.submission.update({
-        where: { id: input.submissionId },
-        data: {
-          articleId: article.id,
-        },
-      });
-
-      return { submission, article };
-    });
+      throw error;
+    }
   }
 
   async approveEventSubmission(
     input: EventSubmissionApprovedRepositoryInput,
   ): Promise<{ submission: Submission; event: Event } | null> {
-    return this.prisma.$transaction(async (tx) => {
-      const claim = await tx.submission.updateMany({
-        where: {
-          id: input.submissionId,
-          status: 'PENDING',
-          articleId: null,
-          eventId: null,
-        },
-        data: {
-          status: 'APPROVED',
-          reviewNotes: input.reviewNotes ?? null,
-          reviewedAt: input.reviewedAt,
-        },
-      });
+    try {
+      return await this.prisma.$transaction(async (tx) => {
+        const { topicIds, ...eventData } = input.eventData;
 
-      if (claim.count === 0) {
+        const event = await tx.event.create({
+          data: {
+            ...eventData,
+            topicEvents: {
+              create: this.buildTopicCreates(topicIds),
+            },
+          },
+        });
+
+        const claim = await tx.submission.updateMany({
+          where: {
+            id: input.submissionId,
+            status: 'PENDING',
+            articleId: null,
+            eventId: null,
+          },
+          data: {
+            status: 'APPROVED',
+            reviewNotes: input.reviewNotes ?? null,
+            reviewedAt: input.reviewedAt,
+            eventId: event.id,
+          },
+        });
+
+        if (claim.count === 0) {
+          throw new SubmissionApprovalClaimError();
+        }
+
+        const submission = await tx.submission.findUniqueOrThrow({
+          where: { id: input.submissionId },
+        });
+
+        return { submission, event };
+      });
+    } catch (error) {
+      if (error instanceof SubmissionApprovalClaimError) {
         return null;
       }
-
-      const { topicIds, ...eventData } = input.eventData;
-
-      const event = await tx.event.create({
-        data: {
-          ...eventData,
-          topicEvents: {
-            create: this.buildTopicCreates(topicIds),
-          },
-        },
-      });
-
-      const submission = await tx.submission.update({
-        where: { id: input.submissionId },
-        data: {
-          eventId: event.id,
-        },
-      });
-
-      return { submission, event };
-    });
+      throw error;
+    }
   }
 }

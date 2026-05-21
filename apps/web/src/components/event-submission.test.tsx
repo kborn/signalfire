@@ -87,7 +87,9 @@ describe('EventSubmissionForm', () => {
 
     const user = await fillRequiredEventFields();
     await user.type(screen.getByLabelText('End date and time (optional)'), '2026-05-14T19:00');
-    await user.type(screen.getByLabelText('Street Address (optional)'), '  123 Main St  ');
+    await user.type(screen.getByLabelText('Location Description (optional)'), '  Liberty Plaza  ');
+    await user.type(screen.getByLabelText('Address Line 1 (optional)'), '  1 Main St  ');
+    await user.type(screen.getByLabelText('Address Line 2 (optional)'), '  Ste 1A  ');
     await user.type(screen.getByLabelText('ZIP Code (optional)'), '  19107  ');
     await user.type(screen.getByLabelText('Contact Email (optional)'), '  organizer@example.org  ');
     await user.type(screen.getByLabelText('Name (optional)'), '  Sam Submitter  ');
@@ -111,7 +113,9 @@ describe('EventSubmissionForm', () => {
         startTime: new Date('2026-05-14T17:00').toISOString(),
         endTime: new Date('2026-05-14T19:00').toISOString(),
         locationName: 'City Hall Plaza',
-        locationAddressStreet: '123 Main St',
+        publicLocationDescription: 'Liberty Plaza',
+        locationAddressLine1: '1 Main St',
+        locationAddressLine2: 'Ste 1A',
         locationAddressCity: 'Philadelphia',
         locationAddressRegion: 'PA',
         locationAddressCountry: 'US',

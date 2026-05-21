@@ -333,7 +333,7 @@ Render in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. contact email when present
 15. topics
@@ -366,6 +366,8 @@ Rules:
 - topic selection uses a multi-select checkbox list
 - status defaults to `published` on approval flow
 - only `draft` and `published` are valid values
+- article author is derived from submitted credited author when present
+- article author defaults to `anonymous` when submitted credited author is missing
 - slugs are system-generated on create
 - slugs are immutable after creation in Phase 11
 - no manual slug field is required by this spec
@@ -385,7 +387,7 @@ Render in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. topics
 15. status
@@ -402,6 +404,10 @@ Required Event normalization fields:
 - event type
 - start time
 - location name
+- city
+- region
+- country
+- postal code
 - topics
 
 Optional Event normalization fields:
@@ -410,10 +416,6 @@ Optional Event normalization fields:
 - description
 - end time
 - street address
-- city
-- region
-- country
-- postal code
 - website
 - status
 
@@ -691,7 +693,7 @@ Render fields in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. topics
 15. status
@@ -707,6 +709,10 @@ Render fields in this order:
 - event type
 - start time
 - location name
+- city
+- region
+- country
+- postal code
 - topics
 
 ### Optional Event fields
@@ -715,10 +721,6 @@ Render fields in this order:
 - description
 - end time
 - street address
-- city
-- region
-- country
-- postal code
 - website
 - status
 

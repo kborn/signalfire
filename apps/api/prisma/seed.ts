@@ -599,7 +599,9 @@ const demoEvents = [
     startTime: relativeDate({ daysFromNow: 7, hours: 17, minutes: 30 }),
     endTime: relativeDate({ daysFromNow: 7, hours: 19 }),
     locationName: 'City Hall Plaza',
-    addressRaw: '123 Main St',
+    publicLocationDescription: 'Meeting room 2',
+    addressLine1: '123 Main St',
+    addressLine2: 'Suite 1A',
     city: 'Philadelphia',
     region: 'PA',
     postalCode: '19107',
@@ -618,7 +620,9 @@ const demoEvents = [
       startTime: relativeDate({ daysFromNow: 7, hours: 17, minutes: 30 }),
       endTime: relativeDate({ daysFromNow: 7, hours: 19 }),
       locationName: 'City Hall Plaza',
-      addressRaw: '123 Main St',
+      publicLocationDescription: 'Meeting room 2',
+      addressLine1: '123 Main St',
+      addressLine2: 'Suite 1A',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19107',
@@ -642,7 +646,9 @@ const demoEvents = [
     startTime: relativeDate({ daysFromNow: 14, hours: 18 }),
     endTime: relativeDate({ daysFromNow: 14, hours: 20 }),
     locationName: 'North Branch Library',
-    addressRaw: '450 Walnut Ave',
+    addressLine1: '450 Walnut Ave',
+    addressLine2: 'Suite 1B',
+    publicLocationDescription: 'Meeting Room C',
     city: 'Philadelphia',
     region: 'PA',
     postalCode: '19123',
@@ -661,7 +667,9 @@ const demoEvents = [
       startTime: relativeDate({ daysFromNow: 14, hours: 18 }),
       endTime: relativeDate({ daysFromNow: 14, hours: 20 }),
       locationName: 'North Branch Library',
-      addressRaw: '450 Walnut Ave',
+      addressLine1: '450 Walnut Ave',
+      addressLine2: 'Suite 1B',
+      publicLocationDescription: 'Meeting Room C',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19123',
@@ -672,6 +680,49 @@ const demoEvents = [
       reviewNotes: 'Approved for demo data but left unpublished.',
       reviewedAt: relativeDate({ daysFromNow: -1, hours: 9 }),
     },
+  },
+] as const;
+
+const demoPendingSubmissions = [
+  {
+    submissionType: SubmissionType.ARTICLE,
+    status: SubmissionStatus.PENDING,
+    title: 'Community Guide To Ballot Access Deadlines',
+    summary:
+      'A submitted explainer on helping neighbors understand registration and ballot access dates.',
+    submittedContent: `Community volunteers are building a plain-language guide to county ballot access deadlines, registration windows, and where residents can confirm polling details.
+
+The submission recommends linking official county pages, adding calendar reminders, and translating key dates into locally used languages.`,
+    author: 'Maya Patel',
+    submitterName: 'Maya Patel',
+    submitterEmail: 'maya.patel@example.org',
+    topicSlugs: ['democracy', 'local-community'],
+    resourceLinks: [
+      'https://example.org/county-election-calendar',
+      'https://example.org/voter-registration-deadlines',
+    ],
+  },
+  {
+    submissionType: SubmissionType.EVENT,
+    status: SubmissionStatus.PENDING,
+    title: 'Neighborhood Heat Safety Canvass',
+    summary: 'Volunteers plan a door-to-door canvass focused on summer heat safety resources.',
+    submittedContent:
+      'A volunteer-led canvass to share cooling center locations, check on vulnerable neighbors, and collect building-level heat safety concerns.',
+    eventType: EventType.VOLUNTEER,
+    startTime: relativeDate({ daysFromNow: 21, hours: 10 }),
+    endTime: relativeDate({ daysFromNow: 21, hours: 13 }),
+    locationName: 'Southside Community Center',
+    publicLocationDescription: 'Back parking log',
+    city: 'Philadelphia',
+    region: 'PA',
+    postalCode: '19146',
+    country: 'USA',
+    website: 'https://example.org/heat-canvass',
+    contactEmail: 'heat-safety@example.org',
+    submitterName: 'Andre Williams',
+    submitterEmail: 'andre.williams@example.org',
+    topicSlugs: ['climate', 'economic-justice', 'local-community'],
   },
 ] as const;
 
@@ -764,7 +815,9 @@ async function seedDemoEvents() {
           status: event.status,
           publishedAt: event.publishedAt,
           endTime: event.endTime,
-          addressRaw: event.addressRaw,
+          addressLine1: event.addressLine1,
+          addressLine2: event.addressLine2,
+          publicLocationDescription: event.publicLocationDescription,
           city: event.city,
           region: event.region,
           postalCode: event.postalCode,
@@ -785,7 +838,9 @@ async function seedDemoEvents() {
           startTime: event.submission.startTime,
           endTime: event.submission.endTime,
           locationName: event.submission.locationName,
-          addressRaw: event.submission.addressRaw,
+          addressLine1: event.submission.addressLine1,
+          addressLine2: event.submission.addressLine2,
+          publicLocationDescription: event.submission.publicLocationDescription,
           city: event.submission.city,
           region: event.submission.region,
           postalCode: event.submission.postalCode,
@@ -817,7 +872,9 @@ async function seedDemoEvents() {
         startTime: event.startTime,
         endTime: event.endTime,
         locationName: event.locationName,
-        addressRaw: event.addressRaw,
+        addressLine1: event.addressLine1,
+        addressLine2: event.addressLine2,
+        publicLocationDescription: event.publicLocationDescription,
         city: event.city,
         region: event.region,
         postalCode: event.postalCode,
@@ -874,6 +931,73 @@ function requireId<T>(map: Map<string, T>, key: string, label: string): T {
   }
 
   return id;
+}
+
+async function seedDemoPendingSubmissions(topicIds: Map<string, number>) {
+  for (const submission of demoPendingSubmissions) {
+    const existingSubmission = await prisma.submission.findFirst({
+      where: {
+        submissionType: submission.submissionType,
+        status: SubmissionStatus.PENDING,
+        title: submission.title,
+      },
+      select: { id: true },
+    });
+
+    const { topicSlugs, resourceLinks, ...submissionData } = {
+      ...submission,
+      resourceLinks: 'resourceLinks' in submission ? submission.resourceLinks : undefined,
+    };
+    const submissionTopics = {
+      create: topicSlugs.map((topicSlug: string) => ({
+        topicId: requireId(topicIds, topicSlug, 'topic'),
+      })),
+    };
+    const submissionResourceLinks =
+      resourceLinks != null
+        ? {
+            create: resourceLinks.map((url) => ({
+              resourceLink: {
+                connectOrCreate: {
+                  where: { url },
+                  create: { url },
+                },
+              },
+            })),
+          }
+        : undefined;
+
+    if (existingSubmission) {
+      await prisma.submission.update({
+        where: { id: existingSubmission.id },
+        data: {
+          ...submissionData,
+          reviewNotes: null,
+          reviewedAt: null,
+          articleId: null,
+          eventId: null,
+          submissionTopics: {
+            deleteMany: {},
+            ...submissionTopics,
+          },
+          submissionResourceLinks: {
+            deleteMany: {},
+            ...(submissionResourceLinks ?? {}),
+          },
+        },
+      });
+
+      continue;
+    }
+
+    await prisma.submission.create({
+      data: {
+        ...submissionData,
+        submissionTopics,
+        submissionResourceLinks,
+      },
+    });
+  }
 }
 
 async function connectArticleTopics(
@@ -1059,6 +1183,7 @@ async function seedDemoRelationships() {
   await connectTopicEvents(topicIds, eventIds);
   await connectArticleEvents(articleIds, eventIds);
   await connectActionEvents(actionIds, eventIds);
+  await seedDemoPendingSubmissions(topicIds);
 }
 
 async function seedDemo() {

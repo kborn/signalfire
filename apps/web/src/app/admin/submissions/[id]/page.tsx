@@ -1,6 +1,107 @@
 import Link from 'next/link';
+import { getSubmissionsDetails } from '@/lib/api/admin';
+import { ModerationSubmissionDetail, TopicListResponse } from '@signal-fire/api-contracts';
+import SubmissionReviewClient from './SubmissionReviewClient';
+import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';
+
+type ArticleModerationSubmission = Extract<
+  ModerationSubmissionDetail,
+  { submissionType: 'ARTICLE' }
+>;
+
+type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
+
+function SubmittedContentPanel({ submission }: { submission: ModerationSubmissionDetail }) {
+  return submission.submissionType === 'ARTICLE' ? (
+    <ArticleSubmittedContent submission={submission} />
+  ) : (
+    <EventSubmittedContent submission={submission} />
+  );
+}
+
+function ArticleSubmittedContent({ submission }: { submission: ArticleModerationSubmission }) {
+  return (
+    <dl className="adminDefinitionList">
+      <dt>Title</dt>
+      <dd>{submission.submittedContent.title}</dd>
+      <dt>Summary</dt>
+      <dd>{submission.submittedContent.summary}</dd>
+      <dt>Content</dt>
+      <dd>
+        <div className="adminLongTextPreview">{submission.submittedContent.content}</div>
+      </dd>
+      <dt>Author</dt>
+      <dd>{submission.submittedContent.author ?? '--'}</dd>
+      <dt>Topics</dt>
+      <dd>
+        <ul className="adminInlineList">
+          {submission.submittedContent.topics.map((topic) => (
+            <li key={topic.id}>{topic.name}</li>
+          ))}
+        </ul>
+      </dd>
+      <dt>Resource Links</dt>
+      <dd>
+        <ul className="adminInlineList">
+          {submission.submittedContent.resourceLinks.map((link) => (
+            <li key={link}>
+              <a href={link}>{link}</a>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </dl>
+  );
+}
+
+function EventSubmittedContent({ submission }: { submission: EventModerationSubmission }) {
+  return (
+    <dl className="adminDefinitionList">
+      <dt>Title</dt>
+      <dd>{submission.submittedContent.title}</dd>
+      <dt>Summary</dt>
+      <dd>{submission.submittedContent.summary}</dd>
+      <dt>Description</dt>
+      <dd>{submission.submittedContent.description}</dd>
+      <dt>Event Type</dt>
+      <dd>{submission.submittedContent.eventType}</dd>
+      <dt>Event Start</dt>
+      <dd>{submission.submittedContent.startTime}</dd>
+      <dt>Event End</dt>
+      <dd>{submission.submittedContent.endTime ?? '--'}</dd>
+      <dt>Location Name</dt>
+      <dd>{submission.submittedContent.locationName}</dd>
+      <dt>Location Description</dt>
+      <dd>{submission.submittedContent.publicLocationDescription ?? '--'}</dd>
+      <dt>Address Line 1</dt>
+      <dd>{submission.submittedContent.addressLine1 ?? '--'}</dd>
+      <dt>Address Line 2</dt>
+      <dd>{submission.submittedContent.addressLine2 ?? '--'}</dd>
+      <dt>City</dt>
+      <dd>{submission.submittedContent.city}</dd>
+      <dt>State</dt>
+      <dd>{submission.submittedContent.region}</dd>
+      <dt>Country</dt>
+      <dd>{submission.submittedContent.country}</dd>
+      <dt>Zip</dt>
+      <dd>{submission.submittedContent.postalCode ?? '--'}</dd>
+      <dt>Event Website</dt>
+      <dd>{submission.submittedContent.website ?? '--'}</dd>
+      <dt>Event Contact</dt>
+      <dd>{submission.submittedContent.contactEmail ?? '--'}</dd>
+      <dt>Topics</dt>
+      <dd>
+        <ul className="adminInlineList">
+          {submission.submittedContent.topics.map((topic) => (
+            <li key={topic.id}>{topic.name}</li>
+          ))}
+        </ul>
+      </dd>
+    </dl>
+  );
+}
 
 export default async function SubmissionDetailsPage({
   params,
@@ -8,6 +109,9 @@ export default async function SubmissionDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const submission = await getSubmissionsDetails(Number(id));
+  const topics: TopicListResponse = await getTopicsList();
+
   return (
     <section className="page-section">
       <Link href="/admin/submissions" className="adminTableLink">
@@ -22,9 +126,11 @@ export default async function SubmissionDetailsPage({
         </div>
 
         <div className="adminToolbar" aria-label="Submission status summary">
-          <span className="adminBadge">Type: Article</span>
-          <span className="adminBadge">Status: Pending</span>
-          <span className="adminBadge">Submitted: Not connected</span>
+          <span className="adminBadge">Type: {submission.submissionType}</span>
+          <span className="adminBadge">Status: {submission.status}</span>
+          <span className="adminBadge">
+            Submitted: {new Date(submission.submittedAt).toLocaleDateString()}
+          </span>
         </div>
       </header>
 
@@ -37,10 +143,10 @@ export default async function SubmissionDetailsPage({
           <dd>{id || 'Not loaded'}</dd>
 
           <dt>Submitter</dt>
-          <dd>Anonymous</dd>
+          <dd>{submission.submitterName}</dd>
 
           <dt>Email</dt>
-          <dd>Not provided</dd>
+          <dd>{submission.submitterEmail}</dd>
 
           <dt>Reviewed</dt>
           <dd>Not reviewed</dd>
@@ -52,66 +158,9 @@ export default async function SubmissionDetailsPage({
           <div className="adminPanelHeader">
             <h2 id="submitted-content-heading">Submitted content</h2>
           </div>
-          <dl className="adminDefinitionList">
-            <dt>Title</dt>
-            <dd>Dummy Title</dd>
-
-            <dt>Summary</dt>
-            <dd>Dummy Summary</dd>
-
-            <dt>Topics</dt>
-            <dd>Democracy, Climate</dd>
-          </dl>
+          <SubmittedContentPanel submission={submission} />
         </section>
-        <section className="adminPanel" aria-labelledby="editorial-normalization-heading">
-          <div className="adminPanelHeader">
-            <h2 id="editorial-normalization-heading">Editorial normalization</h2>
-          </div>
-          <dl className="adminDefinitionList">
-            <dt>Title</dt>
-            <dd>Dummy Title</dd>
-
-            <dt>Summary</dt>
-            <dd>Dummy Summary</dd>
-
-            <dt>Topics</dt>
-            <dd>Democracy, Climate</dd>
-          </dl>
-        </section>
-        <section className="adminPanel" aria-labelledby="review-notes-heading">
-          <div className="adminPanelHeader">
-            <h2 id="review-notes-heading">Review notes</h2>
-          </div>
-          <label htmlFor="review-notes">Internal notes</label>
-          <textarea
-            id="review-notes"
-            className="submissionTextarea"
-            disabled
-            rows={5}
-            aria-describedby="review-notes-helper"
-          />
-          <p id="review-notes-helper">
-            Review notes are internal and will be saved with a moderation decision in a later Phase
-            11 task.
-          </p>
-        </section>
-        <section className="adminPanel" aria-labelledby="decision-actions-heading">
-          <div className="adminPanelHeader">
-            <h2 id="decision-actions-heading">Decision actions</h2>
-          </div>
-          <div className="adminFilterGroup" aria-label="Moderation actions">
-            <button type="button" disabled>
-              Approve and Publish
-            </button>
-            <button type="button" disabled>
-              Approve as Draft
-            </button>
-            <button type="button" disabled>
-              Reject
-            </button>
-          </div>
-          <p>Moderation actions are not wired in Phase 11.1.</p>
-        </section>
+        <SubmissionReviewClient submission={submission} topics={topics.items} />
       </div>
     </section>
   );

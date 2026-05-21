@@ -48,7 +48,9 @@ const eventSubmissionInputData: EventSubmissionRequest = {
     startTime: '2026-05-14T17:00:00.000Z',
     endTime: '2026-05-14T19:00:00.000Z',
     locationName: 'City Hall North Plaza',
-    locationAddressStreet: '1400 John F Kennedy Blvd',
+    publicLocationDescription: 'Liberty Plaza',
+    locationAddressLine1: '1400 John F Kennedy Blvd',
+    locationAddressLine2: 'Ste 1A',
     locationAddressCity: 'Philadelphia',
     locationAddressRegion: 'PA',
     locationAddressCountry: 'US',
@@ -100,7 +102,7 @@ describe('SubmissionService', () => {
     expect(repoMock.create).not.toHaveBeenCalled();
   });
 
-  it('creates event submissions with a derived addressRaw value', async () => {
+  it('creates event submission', async () => {
     repoMock.create.mockResolvedValue({ id: 2 });
     topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 3, slug: 'economic-justice' }]);
 
@@ -120,7 +122,9 @@ describe('SubmissionService', () => {
       startTime: new Date('2026-05-14T17:00:00.000Z'),
       endTime: new Date('2026-05-14T19:00:00.000Z'),
       locationName: 'City Hall North Plaza',
-      addressRaw: '1400 John F Kennedy Blvd, Philadelphia, PA 19107, US',
+      publicLocationDescription: 'Liberty Plaza',
+      addressLine1: '1400 John F Kennedy Blvd',
+      addressLine2: 'Ste 1A',
       city: 'Philadelphia',
       region: 'PA',
       postalCode: '19107',

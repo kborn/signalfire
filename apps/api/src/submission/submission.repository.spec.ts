@@ -30,6 +30,7 @@ describe('SubmissionRepository', () => {
     submission: {
       findMany: jest.fn(),
       findUnique: jest.fn(),
+      findUniqueOrThrow: jest.fn(),
       create: jest.fn(),
       updateMany: jest.fn(),
       update: jest.fn(),
@@ -171,7 +172,9 @@ describe('SubmissionRepository', () => {
         startTime: undefined,
         endTime: undefined,
         locationName: undefined,
-        addressRaw: undefined,
+        publicLocationDescription: undefined,
+        addressLine1: undefined,
+        addressLine2: undefined,
         city: undefined,
         region: undefined,
         postalCode: undefined,
@@ -275,7 +278,7 @@ describe('SubmissionRepository', () => {
 
     prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
     prismaMock.article.create.mockResolvedValue(article);
-    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    prismaMock.submission.findUniqueOrThrow.mockResolvedValue(reviewedSubmission);
     jest.useFakeTimers().setSystemTime(assignedAt);
 
     const ret = await repository.approveArticleSubmission(input);
@@ -292,6 +295,7 @@ describe('SubmissionRepository', () => {
         status: 'APPROVED',
         reviewNotes: 'Looks good',
         reviewedAt,
+        articleId: 10,
       },
     });
     expect(prismaMock.article.create).toHaveBeenCalledWith({
@@ -319,12 +323,10 @@ describe('SubmissionRepository', () => {
         },
       },
     });
-    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+    expect(prismaMock.submission.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: {
-        articleId: 10,
-      },
     });
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
     expect(ret).toEqual({ submission: reviewedSubmission, article });
   });
 
@@ -344,7 +346,9 @@ describe('SubmissionRepository', () => {
       startTime,
       endTime,
       locationName: 'City Hall',
-      addressRaw: '1 Main St',
+      publicLocationDescription: null,
+      addressLine1: null,
+      addressLine2: null,
       city: 'Springfield',
       region: 'IL',
       postalCode: '62701',
@@ -368,7 +372,9 @@ describe('SubmissionRepository', () => {
         startTime: event.startTime,
         endTime: event.endTime,
         locationName: event.locationName,
-        addressRaw: event.addressRaw,
+        publicLocationDescription: event.publicLocationDescription,
+        addressLine1: event.addressLine1,
+        addressLine2: event.addressLine2,
         city: event.city,
         region: event.region,
         country: event.country,
@@ -382,7 +388,7 @@ describe('SubmissionRepository', () => {
 
     prismaMock.submission.updateMany.mockResolvedValue({ count: 1 });
     prismaMock.event.create.mockResolvedValue(event);
-    prismaMock.submission.update.mockResolvedValue(reviewedSubmission);
+    prismaMock.submission.findUniqueOrThrow.mockResolvedValue(reviewedSubmission);
     jest.useFakeTimers().setSystemTime(assignedAt);
 
     const ret = await repository.approveEventSubmission(input);
@@ -399,6 +405,7 @@ describe('SubmissionRepository', () => {
         status: 'APPROVED',
         reviewNotes: 'Looks good',
         reviewedAt,
+        eventId: 20,
       },
     });
     expect(prismaMock.event.create).toHaveBeenCalledWith({
@@ -410,7 +417,9 @@ describe('SubmissionRepository', () => {
         startTime,
         endTime,
         locationName: 'City Hall',
-        addressRaw: '1 Main St',
+        publicLocationDescription: null,
+        addressLine1: null,
+        addressLine2: null,
         city: 'Springfield',
         region: 'IL',
         country: 'US',
@@ -434,12 +443,10 @@ describe('SubmissionRepository', () => {
         },
       },
     });
-    expect(prismaMock.submission.update).toHaveBeenCalledWith({
+    expect(prismaMock.submission.findUniqueOrThrow).toHaveBeenCalledWith({
       where: { id: 1 },
-      data: {
-        eventId: 20,
-      },
     });
+    expect(prismaMock.submission.update).not.toHaveBeenCalled();
     expect(ret).toEqual({ submission: reviewedSubmission, event });
   });
 
@@ -461,12 +468,14 @@ describe('SubmissionRepository', () => {
       },
     };
 
+    prismaMock.article.create.mockResolvedValue({ id: 10 });
     prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
 
     const ret = await repository.approveArticleSubmission(input);
     expect(ret).toBeNull();
-    expect(prismaMock.article.create).not.toHaveBeenCalled();
+    expect(prismaMock.article.create).toHaveBeenCalled();
     expect(prismaMock.submission.update).not.toHaveBeenCalled();
+    expect(prismaMock.submission.findUniqueOrThrow).not.toHaveBeenCalled();
   });
 
   it('returns null when no valid event submissions are found to approve', async () => {
@@ -486,7 +495,9 @@ describe('SubmissionRepository', () => {
         startTime,
         endTime,
         locationName: 'City Hall',
-        addressRaw: '1 Main St',
+        publicLocationDescription: 'Liberty Plaza',
+        addressLine1: '1 Main St',
+        addressLine2: 'Ste 1A',
         city: 'Springfield',
         region: 'IL',
         country: 'US',
@@ -498,11 +509,13 @@ describe('SubmissionRepository', () => {
       },
     };
 
+    prismaMock.event.create.mockResolvedValue({ id: 20 });
     prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
 
     const ret = await repository.approveEventSubmission(input);
     expect(ret).toBeNull();
-    expect(prismaMock.event.create).not.toHaveBeenCalled();
+    expect(prismaMock.event.create).toHaveBeenCalled();
     expect(prismaMock.submission.update).not.toHaveBeenCalled();
+    expect(prismaMock.submission.findUniqueOrThrow).not.toHaveBeenCalled();
   });
 });
