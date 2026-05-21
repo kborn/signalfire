@@ -837,10 +837,13 @@ to `publicLocationDescription`.
 
 ###### Implications
 
-- `city`, `region`, and `country` remain required for Release 1 Event
-  publication and moderation normalization.
-- `addressLine1`, `addressLine2`, `postalCode`, and
-  `publicLocationDescription` are optional.
+- `city`, `region`, `country`, and `postalCode` remain required for Release 1
+  Event publication and moderation normalization.
+- Event geographic fields may remain nullable in Prisma to preserve a clean
+  future path for online or geography-free events, but Release 1 API contracts,
+  moderation approval validation, and admin publication flows enforce them as
+  required.
+- `addressLine1`, `addressLine2`, and `publicLocationDescription` are optional.
 - `publicLocationDescription` is supplemental public guidance; it is not an
   address override and does not replace structured location fields.
 - Public Event detail pages should render location information in this order:

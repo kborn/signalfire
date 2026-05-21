@@ -333,7 +333,7 @@ Render in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. contact email when present
 15. topics
@@ -387,7 +387,7 @@ Render in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. topics
 15. status
@@ -404,6 +404,10 @@ Required Event normalization fields:
 - event type
 - start time
 - location name
+- city
+- region
+- country
+- postal code
 - topics
 
 Optional Event normalization fields:
@@ -412,10 +416,6 @@ Optional Event normalization fields:
 - description
 - end time
 - street address
-- city
-- region
-- country
-- postal code
 - website
 - status
 
@@ -693,7 +693,7 @@ Render fields in this order:
 9. city
 10. region
 11. country
-12. postal code when present
+12. postal code
 13. website when present
 14. topics
 15. status
@@ -709,6 +709,10 @@ Render fields in this order:
 - event type
 - start time
 - location name
+- city
+- region
+- country
+- postal code
 - topics
 
 ### Optional Event fields
@@ -717,10 +721,6 @@ Render fields in this order:
 - description
 - end time
 - street address
-- city
-- region
-- country
-- postal code
 - website
 - status
 

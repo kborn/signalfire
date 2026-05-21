@@ -196,6 +196,7 @@ const moderationReviewApproveEventSchema = z
       country: requiredTrimmedString('Country', 120),
       postalCode: requiredTrimmedString('Postal Code', 32),
       website: websiteUrlSchema.optional(),
+      contactEmail: optionalNullableEmail(),
       topicSlugs: topicSlugsSchema,
     }),
   })

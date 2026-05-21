@@ -1195,21 +1195,37 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.3 - Editorial Normalization & Publication Mapping ⏳
+#### ▸ Phase 11.3 - Editorial Normalization & Publication Mapping ✅
 
 ###### Phase Tasks:
 
-- [ ] Define the moderation-side editing/normalization fields required before publication
-- [ ] Replace Event `addressRaw` with `addressLine1`, `addressLine2`, and `publicLocationDescription` across canonical persistence, contracts, and publication mapping
-- [ ] Wire the admin submission detail page to real submission detail data for submitted content and normalization prefill
-- [ ] Implement approval flow that converts article submissions into published Article records
-- [ ] Implement approval flow that converts event submissions into published Event records
-- [ ] Preserve the distinction between moderation-only fields and public published fields during conversion
-- [ ] Add integration coverage proving approved submissions become publicly visible through existing public read surfaces
+- [x] Define the moderation-side editing/normalization fields required before publication
+- [x] Replace Event `addressRaw` with `addressLine1`, `addressLine2`, and `publicLocationDescription` across canonical persistence, contracts, and publication mapping
+- [x] Wire the admin submission detail page to real submission detail data for submitted content and normalization prefill
+- [x] Implement approval flow that converts article submissions into Article records
+- [x] Implement approval flow that converts event submissions into Event records
+- [x] Preserve the distinction between moderation-only fields and public published fields during conversion
+- [x] Add integration coverage proving approved published submissions become publicly visible through existing public read surfaces
+- [x] Keep Release 1 Event geography and postal code required at API/moderation approval boundaries while leaving Prisma fields nullable for future online/geography-free events
 
 ---
 
-#### ▸ Phase 11.4 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.4 - Admin Editorial Review UI Completion ⏳
+
+###### Phase Tasks:
+
+- [ ] Complete client-side approval/rejection request handling from the admin submission detail page
+- [ ] Add response processing for successful approval/rejection, including reviewed state and created-record metadata
+- [ ] Add API error handling and validation-error display for moderation approval and rejection requests
+- [ ] Make review notes fully editable and included in approval/rejection requests
+- [ ] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
+- [ ] Disable or hide review actions once a submission is no longer pending
+- [ ] Add focused frontend coverage or documented manual verification for article approval, event approval, draft approval, and rejection paths
+- [ ] Refactor common article/event normalization controls only after request handling and validation behavior are stable
+
+---
+
+#### ▸ Phase 11.5 - Essential Admin Content Management ⏳
 
 ###### Phase Tasks:
 
@@ -1221,7 +1237,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.5 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.6 - Interface Hardening Handoff ⏳
 
 ###### Phase Tasks:
 

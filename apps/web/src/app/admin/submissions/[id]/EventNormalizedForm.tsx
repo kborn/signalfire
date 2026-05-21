@@ -195,7 +195,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-event-end">End Start</label>
+        <label htmlFor="normalized-event-end">Event End</label>
       </dt>
       <dd>
         <input
@@ -219,11 +219,11 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-locattion-description">Location Description</label>
+        <label htmlFor="normalized-locatton-description">Location Description</label>
       </dt>
       <dd>
         <input
-          id="normalized-locattion-description"
+          id="normalized-location-description"
           className="adminTextEditor"
           value={publicLocationDescription}
           onChange={(event) => setPublicLocationDescription(event.target.value)}
@@ -289,7 +289,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-zip">Zip</label>
+        <label htmlFor="normalized-postalCode">Zip</label>
       </dt>
       <dd>
         <input

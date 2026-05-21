@@ -160,7 +160,7 @@ export default async function SubmissionDetailsPage({
           </div>
           <SubmittedContentPanel submission={submission} />
         </section>
-        <SubmissionReviewClient submission={submission} topics={topics.items} />;
+        <SubmissionReviewClient submission={submission} topics={topics.items} />
       </div>
     </section>
   );
