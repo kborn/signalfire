@@ -4,7 +4,6 @@ import {
   ModerationSubmissionList,
   ModerationSubmissionDetail,
   ModerationReviewRequest,
-  ModerationReviewResponse,
   type ModerationReviewSuccess,
 } from '@signal-fire/api-contracts';
 
