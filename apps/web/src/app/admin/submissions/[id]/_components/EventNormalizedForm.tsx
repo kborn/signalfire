@@ -49,10 +49,12 @@ function parseEventType(value: string): EventType {
 export default function EventNormalizationForm({
   submission,
   topics,
+  success,
   onChange,
 }: {
   submission: EventModerationSubmission;
   topics: TopicSummary[];
+  success: boolean;
   onChange: (value: EventApprovalPayload) => void;
 }) {
   const [title, setTitle] = useState(submission.submittedContent.title);
@@ -137,6 +139,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -149,6 +152,7 @@ export default function EventNormalizationForm({
           className="adminTextareaEditor"
           value={summary}
           onChange={(event) => setSummary(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -161,6 +165,7 @@ export default function EventNormalizationForm({
           className="adminTextareaEditor"
           value={description}
           onChange={(event) => setDescription(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -172,6 +177,7 @@ export default function EventNormalizationForm({
           className="submissionControl"
           value={eventType}
           onChange={(event) => setEventType(parseEventType(event.target.value))}
+          disabled={success}
         >
           <option value="">Select an event type</option>
           {EVENT_TYPES.map((eventType) => (
@@ -191,6 +197,7 @@ export default function EventNormalizationForm({
           className="submissionControl"
           value={startTime}
           onChange={(event) => setStartTime(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -203,6 +210,7 @@ export default function EventNormalizationForm({
           className="submissionControl"
           value={endTime}
           onChange={(event) => setEndTime(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -215,6 +223,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={locationName}
           onChange={(event) => setLocationName(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -227,6 +236,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={publicLocationDescription}
           onChange={(event) => setPublicLocationDescription(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -239,6 +249,7 @@ export default function EventNormalizationForm({
               className="adminTextEditor"
               value={addressLine1}
               onChange={(event) => setAddressLine1(event.target.value)}
+              disabled={success}
             />
           </li>
           <li key="addressLine2">
@@ -247,6 +258,7 @@ export default function EventNormalizationForm({
               className="adminTextEditor"
               value={addressLine2}
               onChange={(event) => setAddressLine2(event.target.value)}
+              disabled={success}
             />
           </li>
         </ul>
@@ -261,6 +273,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={city}
           onChange={(event) => setCity(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -273,6 +286,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={region}
           onChange={(event) => setRegion(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -285,6 +299,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={country}
           onChange={(event) => setCountry(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -297,6 +312,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={postalCode}
           onChange={(event) => setPostalCode(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -309,6 +325,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={website}
           onChange={(event) => setWebsite(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -321,6 +338,7 @@ export default function EventNormalizationForm({
           className="adminTextEditor"
           value={contactEmail}
           onChange={(event) => setContactEmail(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -332,6 +350,7 @@ export default function EventNormalizationForm({
               type="checkbox"
               checked={topicSlugs.includes(topic.slug)}
               onChange={() => handleToggle(topic.slug)}
+              disabled={success}
             />
             {topic.name}
           </label>

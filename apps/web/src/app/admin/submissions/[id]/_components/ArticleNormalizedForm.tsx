@@ -13,10 +13,12 @@ type ArticleModerationSubmission = Extract<
 export default function ArticleNormalizationForm({
   submission,
   topics,
+  success,
   onChange,
 }: {
   submission: ArticleModerationSubmission;
   topics: TopicSummary[];
+  success: boolean;
   onChange: (value: ArticleApprovalPayload) => void;
 }) {
   const [content, setContent] = useState(submission.submittedContent.content);
@@ -48,6 +50,7 @@ export default function ArticleNormalizationForm({
           className="adminTextEditor"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -60,6 +63,7 @@ export default function ArticleNormalizationForm({
           className="adminTextareaEditor"
           value={summary}
           onChange={(event) => setSummary(event.target.value)}
+          disabled={success}
         />
       </dd>
 
@@ -72,6 +76,7 @@ export default function ArticleNormalizationForm({
           className="submissionTextarea adminLongTextEditor"
           value={content}
           onChange={(event) => setContent(event.target.value)}
+          disabled={success}
         />
       </dd>
       <dt>
@@ -83,6 +88,7 @@ export default function ArticleNormalizationForm({
           className="adminTextEditor"
           value={author}
           onChange={(event) => setAuthor(event.target.value)}
+          disabled={success}
         />
       </dd>
       <dt>Topics</dt>
@@ -93,6 +99,7 @@ export default function ArticleNormalizationForm({
               type="checkbox"
               checked={topicSlugs.includes(topic.slug)}
               onChange={() => handleToggle(topic.slug)}
+              disabled={success}
             />
             {topic.name}
           </label>

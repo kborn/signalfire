@@ -72,6 +72,7 @@ describe('ModerationSubmissionController', () => {
   it('findSubmission retrieves submission details', async () => {
     const response: ModerationSubmissionDetail = {
       id: 1,
+      reviewNotes: null,
       submissionType: 'ARTICLE',
       status: 'PENDING',
       submittedAt: '2026-05-01T10:00:00.000Z',

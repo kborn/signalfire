@@ -95,6 +95,7 @@ export type ModerationSubmissionDetail =
       submitterName: string | null;
       submitterEmail: string | null;
       reviewedAt: string | null;
+      reviewNotes: string | null;
       submittedContent: {
         title: string;
         summary: string;
@@ -111,6 +112,7 @@ export type ModerationSubmissionDetail =
       submittedAt: string;
       submitterName: string | null;
       submitterEmail: string | null;
+      reviewNotes: string | null;
       reviewedAt: string | null;
       submittedContent: {
         title: string;

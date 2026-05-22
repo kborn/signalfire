@@ -1,5 +1,9 @@
 import { ApiError, SubmissionError } from '@/lib/api/error';
-import { ModerationReviewRequest, SubmissionRequest } from '@signal-fire/api-contracts';
+import {
+  ModerationReviewRequest,
+  type ModerationReviewSuccess,
+  SubmissionRequest,
+} from '@signal-fire/api-contracts';
 
 function getApiBase() {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -86,10 +90,10 @@ export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
   return body as T;
 }
 
-export async function postSubmissionReview<ModerationReviewResponse>(
+export async function postSubmissionReview<ModerationReviewSuccess>(
   req: ModerationReviewRequest,
   id,
-): Promise<ModerationReviewResponse> {
+): Promise<ModerationReviewSuccess> {
   const url = `${getApiBase()}/admin/submissions/${id}/review`;
 
   const response = await fetch(url, {
@@ -122,5 +126,5 @@ export async function postSubmissionReview<ModerationReviewResponse>(
       throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
     }
   }
-  return body as ModerationReviewResponse;
+  return body as ModerationReviewSuccess;
 }

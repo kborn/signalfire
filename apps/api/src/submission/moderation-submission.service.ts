@@ -46,6 +46,7 @@ type ModerationSubmissionCommonParts = {
   submitterName: string | null;
   submitterEmail: string | null;
   reviewedAt: string | null;
+  reviewNotes: string | null;
   submittedContentCommon: {
     title: string;
     summary: string;
@@ -87,6 +88,7 @@ export class ModerationSubmissionService {
       submitterName: submission.submitterName,
       submitterEmail: submission.submitterEmail,
       reviewedAt: submission.reviewedAt ? submission.reviewedAt.toISOString() : null,
+      reviewNotes: submission.reviewNotes ? submission.reviewNotes : null,
       submittedContentCommon: {
         title: submission.title,
         summary: submission.summary,
@@ -128,6 +130,7 @@ export class ModerationSubmissionService {
       submitterName: common.submitterName,
       submitterEmail: common.submitterEmail,
       reviewedAt: common.reviewedAt,
+      reviewNotes: common.reviewNotes,
       submittedContent: {
         ...common.submittedContentCommon,
         description: submission.submittedContent,
@@ -167,6 +170,7 @@ export class ModerationSubmissionService {
       submitterName: common.submitterName,
       submitterEmail: common.submitterEmail,
       reviewedAt: common.reviewedAt,
+      reviewNotes: common.reviewNotes,
       submittedContent: {
         ...common.submittedContentCommon,
         content: submission.submittedContent,

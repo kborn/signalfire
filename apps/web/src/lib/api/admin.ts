@@ -5,6 +5,7 @@ import {
   ModerationSubmissionDetail,
   ModerationReviewRequest,
   ModerationReviewResponse,
+  type ModerationReviewSuccess,
 } from '@signal-fire/api-contracts';
 
 export async function getSubmissionsList(
@@ -20,6 +21,6 @@ export async function getSubmissionsDetails(id: number): Promise<ModerationSubmi
 export async function postSubmissionReviewReq(
   req: ModerationReviewRequest,
   id,
-): Promise<ModerationReviewResponse> {
-  return await postSubmissionReview<ModerationReviewResponse>(req, id);
+): Promise<ModerationReviewSuccess> {
+  return await postSubmissionReview<ModerationReviewSuccess>(req, id);
 }

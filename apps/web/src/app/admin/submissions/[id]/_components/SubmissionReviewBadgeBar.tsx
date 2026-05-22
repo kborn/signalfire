@@ -1,19 +1,17 @@
-import { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
+import { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
 
 export default function SubmissionReviewBadgeBar({
-  submissionType,
-  status,
-  submittedAt,
+  submission,
 }: {
-  submissionType: SubmissionType;
-  status: SubmissionStatus;
-  submittedAt: string;
+  submission: ModerationSubmissionDetail;
 }) {
   return (
     <section className="adminToolbar" aria-label="Submission status summary">
-      <span className="adminBadge">Type: {submissionType}</span>
-      <span className="adminBadge">Status: {status}</span>
-      <span className="adminBadge">Submitted: {new Date(submittedAt).toLocaleDateString()}</span>
+      <span className="adminBadge">Type: {submission.submissionType}</span>
+      <span className="adminBadge">Status: {submission.status}</span>
+      <span className="adminBadge">
+        Submitted: {new Date(submission.submittedAt).toLocaleDateString()}
+      </span>
     </section>
   );
 }

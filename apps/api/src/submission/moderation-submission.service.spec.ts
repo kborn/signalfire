@@ -156,6 +156,7 @@ describe('SubmissionService', () => {
 
     expect(ret).toEqual({
       id: 3,
+      reviewNotes: 'Looks good.',
       submissionType: 'ARTICLE',
       status: 'APPROVED',
       submittedAt: submittedAt.toISOString(),
@@ -240,6 +241,7 @@ describe('SubmissionService', () => {
 
     expect(ret).toEqual({
       id: 4,
+      reviewNotes: null,
       submissionType: 'EVENT',
       status: 'PENDING',
       submittedAt: submittedAt.toISOString(),
