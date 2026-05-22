@@ -1225,7 +1225,7 @@ Capabilities:
 
 ###### Known issues:
 
-- [ ] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
+- [x] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
 
 ---
 
