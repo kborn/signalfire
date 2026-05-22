@@ -145,7 +145,7 @@ The server page should fetch:
 - available topic list
 
 Then it should pass both into a client component such as
-`SubmissionReviewClient`.
+`ReviewDecisionPanel`.
 
 The client wrapper should own:
 

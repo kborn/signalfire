@@ -30,7 +30,7 @@ Backend:
 Frontend:
 
 - `apps/web/src/app/admin/submissions/[id]/page.tsx`
-- `apps/web/src/app/admin/submissions/[id]/SubmissionReviewClient.tsx`
+- `apps/web/src/app/admin/submissions/[id]/ReviewDecisionPanel.tsx`
 - `apps/web/src/lib/api`
 - admin submission detail components if the page has been split up
 

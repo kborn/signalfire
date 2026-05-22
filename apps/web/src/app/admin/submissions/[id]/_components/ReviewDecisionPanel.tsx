@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-import ArticleNormalizationForm from '@/app/admin/submissions/[id]/ArticleNormalizedForm';
+import ArticleNormalizationForm from './ArticleNormalizedForm';
 import type {
   ArticleApprovalPayload,
   EventApprovalPayload,
@@ -12,7 +12,7 @@ import type {
   ModerationReviewApproveEventRequest,
 } from '@signal-fire/api-contracts';
 
-import EventNormalizationForm from '@/app/admin/submissions/[id]/EventNormalizedForm';
+import EventNormalizationForm from './EventNormalizedForm';
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 
 function parseLocalDateTime(value: string): Date | null {
@@ -28,7 +28,7 @@ function parseLocalDateTime(value: string): Date | null {
   return date;
 }
 
-export default function SubmissionReviewClient({
+export default function ReviewDecisionPanel({
   submission,
   topics,
 }: {
