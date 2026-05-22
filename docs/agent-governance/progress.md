@@ -1251,6 +1251,10 @@ Capabilities:
 - [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
 - [ ] Confirm Phase 11 leaves Search/Discovery and Deployment phases unblocked
 
+###### Notes:
+
+- Admin and moderation routes may remain openly reachable during local-only development, but must be protected by authentication/authorization before deployment to any environment intended for real users.
+
 ---
 
 ---
