@@ -1223,6 +1223,10 @@ Capabilities:
 - [ ] Add focused frontend coverage or documented manual verification for article approval, event approval, draft approval, and rejection paths
 - [ ] Refactor common article/event normalization controls only after request handling and validation behavior are stable
 
+###### Known issues:
+
+- [ ] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
+
 ---
 
 #### ▸ Phase 11.5 - Essential Admin Content Management ⏳

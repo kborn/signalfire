@@ -24,7 +24,7 @@ export default function ArticleNormalizationForm({
   const [content, setContent] = useState(submission.submittedContent.content);
   const [summary, setSummary] = useState(submission.submittedContent.summary);
   const [title, setTitle] = useState(submission.submittedContent.title);
-  const [author, setAuthor] = useState(submission.submittedContent.author ?? '');
+  const [author, setAuthor] = useState(submission.submittedContent.author ?? 'Anonymous');
   const [topicSlugs, setTopicSlugs] = useState<string[]>(
     submission.submittedContent.topics.map((topic) => topic.slug),
   );

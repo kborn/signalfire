@@ -44,7 +44,10 @@ export default function SubmissionReviewPageContent({
     setIsSubmitting(true);
     try {
       if (submission.submissionType === 'ARTICLE') {
-        if (!articleNormalized) return;
+        if (!articleNormalized) {
+          // TODO set error
+          return;
+        }
         const req: ModerationReviewApproveArticleRequest = {
           decision: 'APPROVE_ARTICLE',
           reviewNotes: reviewNotes,
@@ -54,9 +57,13 @@ export default function SubmissionReviewPageContent({
         const rep = await postSubmissionReviewReq(req, submission.id);
         setReviewResult(rep);
       } else {
-        if (!eventNormalized) return;
+        if (!eventNormalized) {
+          // TODO set error
+          return;
+        }
         const fixed = {
           ...eventNormalized,
+          // TODO validate this
           startTime: parseLocalDateTime(eventNormalized.startTime)!.toISOString(),
           endTime: eventNormalized.endTime
             ? parseLocalDateTime(eventNormalized.endTime)!.toISOString()
@@ -72,6 +79,11 @@ export default function SubmissionReviewPageContent({
         setReviewResult(rep);
       }
       setIsSuccess(true);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
     } catch (error) {
       console.log('error');
     } finally {
@@ -88,6 +100,11 @@ export default function SubmissionReviewPageContent({
       );
       setIsSuccess(true);
       setReviewResult(rep);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
     } catch (error) {
       console.log('error');
     } finally {
@@ -107,12 +124,16 @@ export default function SubmissionReviewPageContent({
     status: reviewResult?.status ?? submission.status,
     reviewedAt: reviewResult?.reviewedAt ?? submission.reviewedAt,
   };
-
   return (
     <section className="page-section">
       <SubmissionReviewHeader />
       <SubmissionReviewBadgeBar submission={visibleSubmission} />
-      {isSuccess && <div>Successful review!</div>}
+      {isSuccess && (
+        <div className="adminReviewBanner" role="status">
+          <p className="adminReviewBannerTitle">Review recorded</p>
+          <p className="adminReviewBannerText">This moderation decision was saved successfully.</p>
+        </div>
+      )}
       <SubmissionMetadataPanel submission={visibleSubmission} />
       <div className="adminReviewMain">
         <SubmittedContentPanel submission={visibleSubmission} />
@@ -153,10 +174,9 @@ export default function SubmissionReviewPageContent({
           aria-describedby="review-notes-helper"
           value={reviewNotes}
           onChange={(event) => setReviewNotes(event.target.value)}
-          disabled={isSuccess ?? false}
+          disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}
         />
       </section>
-      {isSuccess && <div className="adminSuccessBanner">Review recorded.</div>}
       {submission.status === 'PENDING' && (
         <div className="adminReviewMain">
           <section className="adminPanel" aria-labelledby="decision-actions-heading">

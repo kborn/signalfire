@@ -944,6 +944,35 @@ h3 {
   line-height: 1.45;
 }
 
+.adminReviewBanner {
+  border: 1px solid #9cc9a7;
+  border-radius: 8px;
+  background: #edf8f0;
+  color: #173b22;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+
+.adminReviewBannerTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.adminReviewBannerText {
+  margin: 0.35rem 0 0;
+  color: #275235;
+}
+
+.adminReviewBannerError {
+  border-color: #e2a2a2;
+  background: #fff0f0;
+  color: #5c1d1d;
+}
+
+.adminReviewBannerError .adminReviewBannerText {
+  color: #7a2b2b;
+}
+
 /* Responsive */
 
 @media (max-width: 640px) {
