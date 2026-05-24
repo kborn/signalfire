@@ -7,20 +7,25 @@ import SubmissionReviewBadgeBar from './_components/SubmissionReviewBadgeBar';
 import ArticleNormalizationForm from './_components/ArticleNormalizedForm';
 import EventNormalizationForm from './_components/EventNormalizedForm';
 
-import type {
+import {
   ArticleApprovalPayload,
   EventApprovalPayload,
   ModerationSubmissionDetail,
   TopicListResponse,
   EntityStatus,
-  ModerationReviewApproveArticleRequest,
-  ModerationReviewApproveEventRequest,
   ModerationReviewSuccess,
+  ModerationReviewRequest,
+  EventType,
 } from '@signal-fire/api-contracts';
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { SubmissionError } from '@/lib/api/error';
-import { SUBMISSION_FIELD_LIMITS, validateRequiredString } from '@/lib/submission-form-validation';
+import {
+  SUBMISSION_FIELD_LIMITS,
+  validateOptionalEmail,
+  validateOptionalStringMax,
+  validateRequiredString,
+} from '@/lib/submission-form-validation';
 
 function parseLocalDateTime(value: string): Date | null {
   if (!value) {
@@ -127,16 +132,54 @@ export default function SubmissionReviewPageContent({
     | { ok: true; payload: TPayload }
     | { ok: false; errors: ReviewFormErrors };
 
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  }
+
+  function buildArticleApprovalRequest(
+    entityStatus: EntityStatus,
+    payload: ArticleApprovalPayload,
+  ): ModerationReviewRequest {
+    return {
+      decision: 'APPROVE_ARTICLE',
+      reviewNotes: reviewNotes,
+      publishStatus: entityStatus,
+      normalized: payload,
+    };
+  }
+
+  function buildEventApprovalRequest(
+    entityStatus: EntityStatus,
+    payload: EventApprovalPayload,
+  ): ModerationReviewRequest {
+    return {
+      decision: 'APPROVE_EVENT',
+      reviewNotes: reviewNotes,
+      publishStatus: entityStatus,
+      normalized: payload,
+    };
+  }
+
   function validateArticleApproval(
     payload: ArticleApprovalPayload | null,
-    entityStatus: EntityStatus,
-  ): ValidationResult<ModerationReviewApproveArticleRequest> {
+  ): ValidationResult<ArticleApprovalPayload> {
     const errors: ReviewFormErrors = {};
     if (!payload) {
       return { ok: false, errors: { form: 'Article approval fields are not ready yet.' } };
     }
+
+    const normalizedTitle = payload.title.trim();
+    const normalizedSummary = payload.summary.trim();
+    const normalizedContent = payload.content.trim();
+    // optional fields nulled so as not to send empty strings in payload
+    const normalizedAuthor = payload.author.trim() || 'anonymous';
+
     const titleError = validateRequiredString(
-      payload ? payload.title : '',
+      normalizedTitle,
       'Title',
       SUBMISSION_FIELD_LIMITS.title,
     );
@@ -144,44 +187,233 @@ export default function SubmissionReviewPageContent({
       errors.title = titleError;
     }
 
+    const summaryError = validateRequiredString(
+      normalizedSummary,
+      'Summary',
+      SUBMISSION_FIELD_LIMITS.summary,
+    );
+    if (summaryError) {
+      errors.summary = summaryError;
+    }
+
+    const contentError = validateRequiredString(
+      normalizedContent,
+      'Content',
+      SUBMISSION_FIELD_LIMITS.content,
+    );
+    if (contentError) {
+      errors.content = contentError;
+    }
+
+    if (!payload.topicSlugs || payload.topicSlugs.length === 0) {
+      errors.topicSlugs = 'Select at least one related topic';
+    }
+
+    const authorError = validateOptionalStringMax(normalizedAuthor, SUBMISSION_FIELD_LIMITS.author);
+    if (authorError) {
+      errors.author = authorError;
+    }
     if (Object.keys(errors).length > 0) {
       return { ok: false, errors: errors };
     }
-    const req: ModerationReviewApproveArticleRequest = {
-      decision: 'APPROVE_ARTICLE',
-      reviewNotes: reviewNotes,
-      publishStatus: entityStatus,
-      normalized: payload,
+    return {
+      ok: true,
+      payload: {
+        ...payload,
+        title: normalizedTitle,
+        summary: normalizedSummary,
+        content: normalizedContent,
+        author: normalizedAuthor,
+      },
     };
-    return { ok: true, payload: req };
   }
 
   function validateEventApproval(
     payload: EventApprovalPayload | null,
-    entityStatus: EntityStatus,
-  ): ValidationResult<ModerationReviewApproveEventRequest> {
+  ): ValidationResult<EventApprovalPayload> {
     const errors: ReviewFormErrors = {};
     if (!payload) {
       return { ok: false, errors: { form: 'Event approval fields are not ready yet.' } };
     }
 
-    const fixed = {
-      ...payload,
-      // TODO validate this
-      startTime: parseLocalDateTime(payload.startTime)!.toISOString(),
-      endTime: payload.endTime ? parseLocalDateTime(payload.endTime)!.toISOString() : null,
-    };
+    const normalizedTitle = payload.title.trim();
+    const normalizedSummary = payload.summary.trim();
+    const normalizedDescription = payload.description.trim();
+    const normalizedEventType = payload.eventType.trim() as EventType;
+    const normalizedStartAt = payload.startTime.trim();
+    const normalizedLocationName = payload.locationName.trim();
+    const normalizedCity = payload.city.trim();
+    const normalizedRegion = payload.region.trim();
+    const normalizedCountry = payload.country.trim();
+    const normalizedPostalCode = payload.postalCode.trim();
+
+    // optional fields nulled so as not to send empty strings in payload
+    const normalizedEndAt = payload.endTime?.trim() || null;
+    const normalizedPublicLocationDescription = payload.publicLocationDescription?.trim() || null;
+    const normalizedAddressLine1 = payload.addressLine1?.trim() || null;
+    const normalizedAddressLine2 = payload.addressLine2?.trim() || null;
+    const normalizedContactEmail = payload.contactEmail?.trim() || null;
+    const normalizedWebsiteUrl = payload.website?.trim() || null;
+
+    const startDate = parseLocalDateTime(normalizedStartAt);
+    const endDate = normalizedEndAt ? parseLocalDateTime(normalizedEndAt) : null;
+
+    const titleError = validateRequiredString(
+      normalizedTitle,
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    if (titleError) {
+      errors.title = titleError;
+    }
+
+    const summaryError = validateRequiredString(
+      normalizedSummary,
+      'Summary',
+      SUBMISSION_FIELD_LIMITS.summary,
+    );
+    if (summaryError) {
+      errors.summary = summaryError;
+    }
+
+    const descriptionError = validateRequiredString(
+      normalizedDescription,
+      'Description',
+      SUBMISSION_FIELD_LIMITS.description,
+    );
+    if (descriptionError) {
+      errors.description = descriptionError;
+    }
+
+    if (!normalizedEventType) {
+      errors.eventType = 'Event type is required';
+    }
+
+    const locationNameError = validateRequiredString(
+      normalizedLocationName,
+      'Location name',
+      SUBMISSION_FIELD_LIMITS.locationName,
+    );
+    if (locationNameError) {
+      errors.locationName = locationNameError;
+    }
+
+    const cityError = validateRequiredString(
+      normalizedCity,
+      'Location address city',
+      SUBMISSION_FIELD_LIMITS.locationAddressCity,
+    );
+    if (cityError) {
+      errors.city = cityError;
+    }
+
+    const regionError = validateRequiredString(
+      normalizedRegion,
+      'Location address region',
+      SUBMISSION_FIELD_LIMITS.locationAddressRegion,
+    );
+    if (regionError) {
+      errors.region = regionError;
+    }
+
+    const countryError = validateRequiredString(
+      normalizedCountry,
+      'Location address country',
+      SUBMISSION_FIELD_LIMITS.locationAddressCountry,
+    );
+    if (countryError) {
+      errors.country = countryError;
+    }
+
+    if (payload.topicSlugs.length === 0) {
+      errors.topicSlugs = 'Select at least one related topic';
+    }
+    if (!normalizedStartAt) {
+      errors.startTime = 'Start date and time is required';
+    } else if (!startDate) {
+      errors.startTime = 'Enter a valid start date and time';
+    }
+    if (normalizedEndAt && !endDate) {
+      errors.endTime = 'Enter a valid end date and time';
+    }
+    if (startDate && endDate && endDate < startDate) {
+      errors.endTime = 'End date and time must be after the start date and time';
+    }
+
+    const publicLocationDescriptionError = validateOptionalStringMax(
+      normalizedPublicLocationDescription,
+      SUBMISSION_FIELD_LIMITS.publicLocationDescription,
+    );
+    if (publicLocationDescriptionError) {
+      errors.publicLocationDescription = publicLocationDescriptionError;
+    }
+
+    const addressLine1Error = validateOptionalStringMax(
+      normalizedAddressLine1,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+    );
+    if (addressLine1Error) {
+      errors.addressLine1 = addressLine1Error;
+    }
+
+    const addressLine2Error = validateOptionalStringMax(
+      normalizedAddressLine2,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+    );
+    if (addressLine2Error) {
+      errors.addressLine2 = addressLine2Error;
+    }
+
+    const postalCodeError = validateRequiredString(
+      normalizedPostalCode,
+      'Postal Code',
+      SUBMISSION_FIELD_LIMITS.locationAddressZip,
+    );
+    if (postalCodeError) {
+      errors.postalCode = postalCodeError;
+    }
+
+    const contactEmailError = validateOptionalEmail(
+      normalizedContactEmail,
+      SUBMISSION_FIELD_LIMITS.contactEmail,
+    );
+    if (contactEmailError) {
+      errors.contactEmail = contactEmailError;
+    }
+
+    const websiteUrlError = validateOptionalStringMax(
+      normalizedWebsiteUrl,
+      SUBMISSION_FIELD_LIMITS.websiteUrl,
+    );
+    if (websiteUrlError) {
+      errors.website = websiteUrlError;
+    }
 
     if (Object.keys(errors).length > 0) {
       return { ok: false, errors: errors };
     }
-    const req: ModerationReviewApproveEventRequest = {
-      decision: 'APPROVE_EVENT',
-      reviewNotes: reviewNotes,
-      publishStatus: entityStatus,
-      normalized: fixed,
+    return {
+      ok: true,
+      payload: {
+        ...payload,
+        title: normalizedTitle,
+        summary: normalizedSummary,
+        description: normalizedDescription,
+        eventType: normalizedEventType,
+        startTime: startDate!.toISOString(),
+        endTime: endDate ? endDate.toISOString() : null,
+        locationName: normalizedLocationName,
+        publicLocationDescription: normalizedPublicLocationDescription,
+        addressLine1: normalizedAddressLine1,
+        addressLine2: normalizedAddressLine2,
+        city: normalizedCity,
+        region: normalizedRegion,
+        country: normalizedCountry,
+        postalCode: normalizedPostalCode,
+        contactEmail: normalizedContactEmail,
+        website: normalizedWebsiteUrl,
+      },
     };
-    return { ok: true, payload: req };
   }
 
   async function approve(entityStatus: EntityStatus) {
@@ -191,8 +423,8 @@ export default function SubmissionReviewPageContent({
 
     const validation =
       submission.submissionType === 'ARTICLE'
-        ? validateArticleApproval(articleNormalized, entityStatus)
-        : validateEventApproval(eventNormalized, entityStatus);
+        ? validateArticleApproval(articleNormalized)
+        : validateEventApproval(eventNormalized);
 
     console.log(validation);
     if (!validation.ok) {
@@ -202,14 +434,15 @@ export default function SubmissionReviewPageContent({
     }
 
     try {
-      const rep = await postSubmissionReviewReq(validation.payload, submission.id);
-      setReviewResult(rep);
+      const req =
+        submission.submissionType === 'ARTICLE'
+          ? buildArticleApprovalRequest(entityStatus, validation.payload as ArticleApprovalPayload)
+          : buildEventApprovalRequest(entityStatus, validation.payload as EventApprovalPayload);
+
+      const result = await postSubmissionReviewReq(req, submission.id);
+      setReviewResult(result);
       setIsSuccess(true);
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
+      scrollToTop();
     } catch (error) {
       if (error instanceof SubmissionError) {
         if (error.errors) {
@@ -253,11 +486,7 @@ export default function SubmissionReviewPageContent({
       );
       setIsSuccess(true);
       setReviewResult(rep);
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
+      scrollToTop();
     } catch (error) {
       if (error instanceof SubmissionError) {
         if (error.errors) {
