@@ -54,7 +54,11 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-title">Title</label>
       </dt>
       <dd>
-        {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+        {errors.title ? (
+          <p id="normalized-title-error" className="submissionError">
+            {errors.title}
+          </p>
+        ) : null}
         <input
           id="normalized-title"
           className="adminTextEditor"
@@ -67,7 +71,11 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-summary">Summary</label>
       </dt>
       <dd>
-        {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+        {errors.summary ? (
+          <p id="normalized-summary-error" className="submissionError">
+            {errors.summary}
+          </p>
+        ) : null}
         <textarea
           id="normalized-summary"
           className="adminTextareaEditor"
@@ -81,7 +89,11 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-content">Content</label>
       </dt>
       <dd>
-        {errors.content ? <p className="submissionError">{errors.content}</p> : null}
+        {errors.content ? (
+          <p id="normalized-content-error" className="submissionError">
+            {errors.content}
+          </p>
+        ) : null}
         <textarea
           id="normalized-content"
           className="submissionTextarea adminLongTextEditor"
@@ -94,7 +106,11 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-author">Author</label>
       </dt>
       <dd>
-        {errors.author ? <p className="submissionError">{errors.author}</p> : null}
+        {errors.author ? (
+          <p id="normalized-author-error" className="submissionError">
+            {errors.author}
+          </p>
+        ) : null}
         <input
           id="normalized-author"
           className="adminTextEditor"
@@ -105,7 +121,11 @@ export default function ArticleNormalizationForm({
       </dd>
       <dt>Topics</dt>
       <dd>
-        {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+        {errors.topicSlugs ? (
+          <p id="normalized-topics-error" className="submissionError">
+            {errors.topicSlugs}
+          </p>
+        ) : null}
         {topics.map((topic) => (
           <label className="submissionCheckboxOption" key={topic.slug}>
             <input

@@ -140,6 +140,55 @@ export default function SubmissionReviewPageContent({
     });
   }
 
+  function getErrorElementId(field: keyof ReviewFormErrors): string {
+    const specialErrorIds: Partial<Record<keyof ReviewFormErrors, string>> = {
+      eventType: 'normalized-eventType-error',
+      startTime: 'normalized-event-start-error',
+      endTime: 'normalized-event-end-error',
+      topicSlugs: 'normalized-topics-error',
+      reviewNotes: 'review-notes-error',
+    };
+
+    return specialErrorIds[field] ?? `normalized-${field}-error`;
+  }
+
+  function scrollToFirstError(errors: ReviewFormErrors) {
+    const fieldOrder: (keyof ReviewFormErrors)[] = [
+      'title',
+      'summary',
+      'content',
+      'author',
+      'description',
+      'eventType',
+      'startTime',
+      'endTime',
+      'locationName',
+      'publicLocationDescription',
+      'addressLine1',
+      'addressLine2',
+      'city',
+      'region',
+      'country',
+      'postalCode',
+      'website',
+      'contactEmail',
+      'topicSlugs',
+      'reviewNotes',
+    ];
+
+    const firstField = fieldOrder.find((field) => errors[field]);
+    if (!firstField) {
+      scrollToTop();
+      return;
+    }
+
+    const id = getErrorElementId(firstField);
+    document.getElementById(id)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    });
+  }
+
   function buildArticleApprovalRequest(
     entityStatus: EntityStatus,
     payload: ArticleApprovalPayload,
@@ -430,6 +479,7 @@ export default function SubmissionReviewPageContent({
     if (!validation.ok) {
       setErrors(validation.errors);
       setIsSubmitting(false);
+      setTimeout(() => scrollToFirstError(validation.errors), 0);
       return;
     }
 
@@ -460,14 +510,18 @@ export default function SubmissionReviewPageContent({
 
           if (Object.keys(newEntries).length > 0) {
             setErrors((prev) => ({ ...prev, ...newEntries }));
+            setTimeout(() => scrollToFirstError(newEntries), 0);
           } else {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
+            scrollToTop();
           }
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');
+          scrollToTop();
         }
       } else {
         setSubmitError('Something went wrong while sending your submission. Please try again.');
+        scrollToTop();
       }
     } finally {
       setIsSubmitting(false);
@@ -503,14 +557,18 @@ export default function SubmissionReviewPageContent({
 
           if (Object.keys(newEntries).length > 0) {
             setErrors((prev) => ({ ...prev, ...newEntries }));
+            setTimeout(() => scrollToFirstError(newEntries), 0);
           } else {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
+            scrollToTop();
           }
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');
+          scrollToTop();
         }
       } else {
         setSubmitError('Something went wrong while sending your submission. Please try again.');
+        scrollToTop();
       }
     } finally {
       setIsSubmitting(false);
@@ -588,11 +646,16 @@ export default function SubmissionReviewPageContent({
           <h2 id="review-notes-heading">Review notes</h2>
         </div>
         <label htmlFor="review-notes">Internal notes</label>
+        {errors.reviewNotes ? (
+          <p id="review-notes-error" className="submissionError">
+            {errors.reviewNotes}
+          </p>
+        ) : null}
         <textarea
           id="review-notes"
           className="submissionTextarea"
           rows={5}
-          aria-describedby="review-notes-helper"
+          aria-describedby={errors.reviewNotes ? 'review-notes-error' : undefined}
           value={reviewNotes}
           onChange={(event) => setReviewNotes(event.target.value)}
           disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}

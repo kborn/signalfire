@@ -88,6 +88,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [74-client-wrapper-owns-decision-state.md](./74-client-wrapper-owns-decision-state.md) - Use a client wrapper and callbacks to collect child form state for moderation decisions
 - [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
+- [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - Delay work until after current JavaScript work finishes and new DOM can render
 
 Rule of thumb:
 

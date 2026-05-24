@@ -137,7 +137,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-title">Title</label>
       </dt>
       <dd>
-        {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+        {errors.title ? (
+          <p id="normalized-title-error" className="submissionError">
+            {errors.title}
+          </p>
+        ) : null}
         <input
           id="normalized-title"
           className="adminTextEditor"
@@ -151,7 +155,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-summary">Summary</label>
       </dt>
       <dd>
-        {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+        {errors.summary ? (
+          <p id="normalized-summary-error" className="submissionError">
+            {errors.summary}
+          </p>
+        ) : null}
         <textarea
           id="normalized-summary"
           className="adminTextareaEditor"
@@ -165,7 +173,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-description">Description</label>
       </dt>
       <dd>
-        {errors.description ? <p className="submissionError">{errors.description}</p> : null}
+        {errors.description ? (
+          <p id="normalized-description-error" className="submissionError">
+            {errors.description}
+          </p>
+        ) : null}
         <textarea
           id="normalized-description"
           className="adminTextareaEditor"
@@ -179,7 +191,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-eventType">Event Type</label>
       </dt>
       <dd>
-        {errors.eventType ? <p className="submissionError">{errors.eventType}</p> : null}
+        {errors.eventType ? (
+          <p id="normalized-eventType-error" className="submissionError">
+            {errors.eventType}
+          </p>
+        ) : null}
         <select
           className="submissionControl"
           value={eventType}
@@ -199,7 +215,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-event-start">Event Start</label>
       </dt>
       <dd>
-        {errors.startTime ? <p className="submissionError">{errors.startTime}</p> : null}
+        {errors.startTime ? (
+          <p id="normalized-event-start-error" className="submissionError">
+            {errors.startTime}
+          </p>
+        ) : null}
         <input
           type="datetime-local"
           className="submissionControl"
@@ -213,7 +233,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-event-end">Event End</label>
       </dt>
       <dd>
-        {errors.endTime ? <p className="submissionError">{errors.endTime}</p> : null}
+        {errors.endTime ? (
+          <p id="normalized-event-end-error" className="submissionError">
+            {errors.endTime}
+          </p>
+        ) : null}
         <input
           type="datetime-local"
           className="submissionControl"
@@ -227,7 +251,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-location-name">Location Name</label>
       </dt>
       <dd>
-        {errors.locationName ? <p className="submissionError">{errors.locationName}</p> : null}
+        {errors.locationName ? (
+          <p id="normalized-location-name-error" className="submissionError">
+            {errors.locationName}
+          </p>
+        ) : null}
         <input
           id="normalized-location-name"
           className="adminTextEditor"
@@ -242,7 +270,9 @@ export default function EventNormalizationForm({
       </dt>
       <dd>
         {errors.publicLocationDescription ? (
-          <p className="submissionError">{errors.publicLocationDescription}</p>
+          <p id="normalized-location-description-error" className="submissionError">
+            {errors.publicLocationDescription}
+          </p>
         ) : null}
         <input
           id="normalized-location-description"
@@ -257,7 +287,11 @@ export default function EventNormalizationForm({
       <dd>
         <ul className="adminInlineList">
           <li key="addressLine1">
-            {errors.addressLine1 ? <p className="submissionError">{errors.addressLine1}</p> : null}
+            {errors.addressLine1 ? (
+              <p id="normalized-addressLine1-error" className="submissionError">
+                {errors.addressLine1}
+              </p>
+            ) : null}
             <input
               id="normalized-addressLine1"
               className="adminTextEditor"
@@ -267,7 +301,11 @@ export default function EventNormalizationForm({
             />
           </li>
           <li key="addressLine2">
-            {errors.addressLine2 ? <p className="submissionError">{errors.addressLine2}</p> : null}
+            {errors.addressLine2 ? (
+              <p id="normalized-addressLine2-error" className="submissionError">
+                {errors.addressLine2}
+              </p>
+            ) : null}
             <input
               id="normalized-addressLine2"
               className="adminTextEditor"
@@ -283,7 +321,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-city">City</label>
       </dt>
       <dd>
-        {errors.city ? <p className="submissionError">{errors.city}</p> : null}
+        {errors.city ? (
+          <p id="normalized-city-error" className="submissionError">
+            {errors.city}
+          </p>
+        ) : null}
         <input
           id="normalized-city"
           className="adminTextEditor"
@@ -297,7 +339,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-region">State</label>
       </dt>
       <dd>
-        {errors.region ? <p className="submissionError">{errors.region}</p> : null}
+        {errors.region ? (
+          <p id="normalized-region-error" className="submissionError">
+            {errors.region}
+          </p>
+        ) : null}
         <input
           id="normalized-region"
           className="adminTextEditor"
@@ -311,7 +357,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-country">Country</label>
       </dt>
       <dd>
-        {errors.country ? <p className="submissionError">{errors.country}</p> : null}
+        {errors.country ? (
+          <p id="normalized-country-error" className="submissionError">
+            {errors.country}
+          </p>
+        ) : null}
         <input
           id="normalized-country"
           className="adminTextEditor"
@@ -325,7 +375,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-postalCode">Zip</label>
       </dt>
       <dd>
-        {errors.postalCode ? <p className="submissionError">{errors.postalCode}</p> : null}
+        {errors.postalCode ? (
+          <p id="normalized-postalCode-error" className="submissionError">
+            {errors.postalCode}
+          </p>
+        ) : null}
         <input
           id="normalized-postalCode"
           className="adminTextEditor"
@@ -339,7 +393,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-website">Event Website</label>
       </dt>
       <dd>
-        {errors.website ? <p className="submissionError">{errors.website}</p> : null}
+        {errors.website ? (
+          <p id="normalized-website-error" className="submissionError">
+            {errors.website}
+          </p>
+        ) : null}
         <input
           id="normalized-website"
           className="adminTextEditor"
@@ -353,7 +411,11 @@ export default function EventNormalizationForm({
         <label htmlFor="normalized-contact-email">Event Contact</label>
       </dt>
       <dd>
-        {errors.contactEmail ? <p className="submissionError">{errors.contactEmail}</p> : null}
+        {errors.contactEmail ? (
+          <p id="normalized-contact-email-error" className="submissionError">
+            {errors.contactEmail}
+          </p>
+        ) : null}
         <input
           id="normalized-contact-email"
           className="adminTextEditor"
@@ -365,7 +427,11 @@ export default function EventNormalizationForm({
 
       <dt>Topics</dt>
       <dd>
-        {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+        {errors.topicSlugs ? (
+          <p id="normalized-topics-error" className="submissionError">
+            {errors.topicSlugs}
+          </p>
+        ) : null}
         {topics.map((topic) => (
           <label className="submissionCheckboxOption" key={topic.slug}>
             <input
