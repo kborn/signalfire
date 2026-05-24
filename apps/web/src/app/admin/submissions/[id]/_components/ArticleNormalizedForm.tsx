@@ -5,6 +5,7 @@ import {
   TopicSummary,
 } from '@signal-fire/api-contracts';
 
+import { ArticleSubmissionFormErrors } from '../SubmissionReviewPageContent';
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
   { submissionType: 'ARTICLE' }
@@ -14,11 +15,13 @@ export default function ArticleNormalizationForm({
   submission,
   topics,
   success,
+  errors,
   onChange,
 }: {
   submission: ArticleModerationSubmission;
   topics: TopicSummary[];
   success: boolean;
+  errors: ArticleSubmissionFormErrors;
   onChange: (value: ArticleApprovalPayload) => void;
 }) {
   const [content, setContent] = useState(submission.submittedContent.content);
@@ -30,7 +33,13 @@ export default function ArticleNormalizationForm({
   );
 
   useEffect(() => {
-    onChange({ title, summary, topicSlugs, author, content });
+    onChange({
+      title: title.trim(),
+      summary: summary.trim(),
+      topicSlugs,
+      author: author.trim() || 'anonymous',
+      content: content.trim(),
+    });
   }, [title, summary, topicSlugs, author, content, onChange]);
 
   const handleToggle = (topic: string) => {
@@ -45,6 +54,7 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-title">Title</label>
       </dt>
       <dd>
+        {errors.title ? <p className="submissionError">{errors.title}</p> : null}
         <input
           id="normalized-title"
           className="adminTextEditor"
@@ -53,11 +63,11 @@ export default function ArticleNormalizationForm({
           disabled={success}
         />
       </dd>
-
       <dt>
         <label htmlFor="normalized-summary">Summary</label>
       </dt>
       <dd>
+        {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
         <textarea
           id="normalized-summary"
           className="adminTextareaEditor"
@@ -71,6 +81,7 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-content">Content</label>
       </dt>
       <dd>
+        {errors.content ? <p className="submissionError">{errors.content}</p> : null}
         <textarea
           id="normalized-content"
           className="submissionTextarea adminLongTextEditor"
@@ -83,6 +94,7 @@ export default function ArticleNormalizationForm({
         <label htmlFor="normalized-author">Author</label>
       </dt>
       <dd>
+        {errors.author ? <p className="submissionError">{errors.author}</p> : null}
         <input
           id="normalized-author"
           className="adminTextEditor"
@@ -93,6 +105,7 @@ export default function ArticleNormalizationForm({
       </dd>
       <dt>Topics</dt>
       <dd>
+        {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
         {topics.map((topic) => (
           <label className="submissionCheckboxOption" key={topic.slug}>
             <input

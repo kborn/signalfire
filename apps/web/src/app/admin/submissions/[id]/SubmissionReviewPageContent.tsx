@@ -19,6 +19,12 @@ import type {
 } from '@signal-fire/api-contracts';
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
+import { SubmissionError } from '@/lib/api/error';
+import {
+  mapSubmissionApiFieldToUiField,
+  SUBMISSION_FIELD_LIMITS,
+  validateRequiredString,
+} from '@/lib/submission-form-validation';
 
 function parseLocalDateTime(value: string): Date | null {
   if (!value) {
@@ -33,6 +39,45 @@ function parseLocalDateTime(value: string): Date | null {
   return date;
 }
 
+export type ArticleSubmissionFormErrors = {
+  title?: string;
+  summary?: string;
+  content?: string;
+  topicSlugs?: string;
+  resourceLinks?: string;
+  author?: string;
+  submitterName?: string;
+  submitterEmail?: string;
+};
+
+function mapApiFieldToUiField(field: string): string | null {
+  const sharedField = mapSubmissionApiFieldToUiField(field);
+  if (sharedField) {
+    return sharedField;
+  }
+
+  switch (field) {
+    case 'normalized.title':
+      return 'title';
+    case 'normalized.summary':
+      return 'summary';
+    case 'normalized.content':
+      return 'content';
+    case 'normalized.topicSlugs':
+      return 'topicSlugs';
+    case 'normalized.resourceLinks':
+      return 'resourceLinks';
+    case 'submitterName':
+      return 'submitterName';
+    case 'submitterEmail':
+      return 'submitterEmail';
+    case 'author':
+      return 'author';
+    default:
+      return null;
+  }
+}
+
 export default function SubmissionReviewPageContent({
   submission,
   topics,
@@ -42,57 +87,103 @@ export default function SubmissionReviewPageContent({
 }) {
   async function approve(entityStatus: EntityStatus) {
     setIsSubmitting(true);
-    try {
-      if (submission.submissionType === 'ARTICLE') {
-        if (!articleNormalized) {
-          // TODO set error
-          return;
+    setSubmitError(null);
+    setErrors({});
+
+    const errors: ArticleSubmissionFormErrors = {};
+    const titleError = validateRequiredString(
+      articleNormalized ? articleNormalized.title : '',
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    console.log(`title error ${titleError}`);
+    if (titleError) {
+      errors.title = titleError;
+    }
+
+    setErrors(errors);
+
+    if (Object.keys(errors).length == 0) {
+      try {
+        if (submission.submissionType === 'ARTICLE') {
+          if (!articleNormalized) {
+            // TODO set error
+            return;
+          }
+          const req: ModerationReviewApproveArticleRequest = {
+            decision: 'APPROVE_ARTICLE',
+            reviewNotes: reviewNotes,
+            publishStatus: entityStatus,
+            normalized: articleNormalized,
+          };
+          const rep = await postSubmissionReviewReq(req, submission.id);
+          setReviewResult(rep);
+        } else {
+          if (!eventNormalized) {
+            // TODO set error
+            return;
+          }
+          const fixed = {
+            ...eventNormalized,
+            // TODO validate this
+            startTime: parseLocalDateTime(eventNormalized.startTime)!.toISOString(),
+            endTime: eventNormalized.endTime
+              ? parseLocalDateTime(eventNormalized.endTime)!.toISOString()
+              : null,
+          };
+          const req: ModerationReviewApproveEventRequest = {
+            decision: 'APPROVE_EVENT',
+            reviewNotes: reviewNotes,
+            publishStatus: entityStatus,
+            normalized: fixed,
+          };
+          const rep: ModerationReviewSuccess = await postSubmissionReviewReq(req, submission.id);
+          setReviewResult(rep);
         }
-        const req: ModerationReviewApproveArticleRequest = {
-          decision: 'APPROVE_ARTICLE',
-          reviewNotes: reviewNotes,
-          publishStatus: entityStatus,
-          normalized: articleNormalized,
-        };
-        const rep = await postSubmissionReviewReq(req, submission.id);
-        setReviewResult(rep);
-      } else {
-        if (!eventNormalized) {
-          // TODO set error
-          return;
+        setIsSuccess(true);
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      } catch (error) {
+        if (error instanceof SubmissionError) {
+          if (error.errors) {
+            const newEntries = error.errors.reduce((acc, e) => {
+              const uiField = mapApiFieldToUiField(e.field);
+              if (!uiField) {
+                return acc;
+              }
+              return {
+                ...acc,
+                [uiField]: e.message,
+              };
+            }, {});
+
+            if (Object.keys(newEntries).length > 0) {
+              setErrors((prev) => ({ ...prev, ...newEntries }));
+            } else {
+              setSubmitError(
+                'Something went wrong while sending your submission. Please try again.',
+              );
+            }
+          } else {
+            setSubmitError('Something went wrong while sending your submission. Please try again.');
+          }
+        } else {
+          setSubmitError('Something went wrong while sending your submission. Please try again.');
         }
-        const fixed = {
-          ...eventNormalized,
-          // TODO validate this
-          startTime: parseLocalDateTime(eventNormalized.startTime)!.toISOString(),
-          endTime: eventNormalized.endTime
-            ? parseLocalDateTime(eventNormalized.endTime)!.toISOString()
-            : null,
-        };
-        const req: ModerationReviewApproveEventRequest = {
-          decision: 'APPROVE_EVENT',
-          reviewNotes: reviewNotes,
-          publishStatus: entityStatus,
-          normalized: fixed,
-        };
-        const rep: ModerationReviewSuccess = await postSubmissionReviewReq(req, submission.id);
-        setReviewResult(rep);
+      } finally {
+        setIsSubmitting(false);
       }
-      setIsSuccess(true);
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: 'smooth',
-      });
-    } catch (error) {
-      console.log('error');
-    } finally {
-      setIsSubmitting(false);
     }
   }
 
   async function reject() {
     setIsSubmitting(true);
+    setSubmitError(null);
+    setErrors({});
+
     try {
       const rep = await postSubmissionReviewReq(
         { decision: 'REJECT', reviewNotes: reviewNotes },
@@ -106,7 +197,30 @@ export default function SubmissionReviewPageContent({
         behavior: 'smooth',
       });
     } catch (error) {
-      console.log('error');
+      if (error instanceof SubmissionError) {
+        if (error.errors) {
+          const newEntries = error.errors.reduce((acc, e) => {
+            const uiField = mapApiFieldToUiField(e.field);
+            if (!uiField) {
+              return acc;
+            }
+            return {
+              ...acc,
+              [uiField]: e.message,
+            };
+          }, {});
+
+          if (Object.keys(newEntries).length > 0) {
+            setErrors((prev) => ({ ...prev, ...newEntries }));
+          } else {
+            setSubmitError('Something went wrong while sending your submission. Please try again.');
+          }
+        } else {
+          setSubmitError('Something went wrong while sending your submission. Please try again.');
+        }
+      } else {
+        setSubmitError('Something went wrong while sending your submission. Please try again.');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -119,11 +233,13 @@ export default function SubmissionReviewPageContent({
   const [articleNormalized, setArticleNormalized] = useState<ArticleApprovalPayload | null>(null);
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
   const [reviewResult, setReviewResult] = useState<ModerationReviewSuccess | null>(null);
+  const [errors, setErrors] = useState<ArticleSubmissionFormErrors>({});
   const visibleSubmission: ModerationSubmissionDetail = {
     ...submission,
     status: reviewResult?.status ?? submission.status,
     reviewedAt: reviewResult?.reviewedAt ?? submission.reviewedAt,
   };
+
   return (
     <section className="page-section">
       <SubmissionReviewHeader />
@@ -132,6 +248,18 @@ export default function SubmissionReviewPageContent({
         <div className="adminReviewBanner" role="status">
           <p className="adminReviewBannerTitle">Review recorded</p>
           <p className="adminReviewBannerText">This moderation decision was saved successfully.</p>
+        </div>
+      )}
+      {submitError && (
+        <div className="adminReviewBannerError" role="status">
+          <p className="adminReviewBannerTitle">Unexpected review failure</p>
+          <p className="adminReviewBannerText">{submitError}.</p>
+        </div>
+      )}
+      {Object.keys(errors).length > 0 && (
+        <div className="adminReviewBannerError" role="status">
+          <p className="adminReviewBannerTitle">Review could not be recorded</p>
+          <p className="adminReviewBannerText">Fix the highlighted fields and try again.</p>
         </div>
       )}
       <SubmissionMetadataPanel submission={visibleSubmission} />
@@ -149,6 +277,7 @@ export default function SubmissionReviewPageContent({
                 submission={submission}
                 topics={topics.items}
                 success={isSuccess ?? false}
+                errors={errors}
                 onChange={setArticleNormalized}
               />
             ) : (
