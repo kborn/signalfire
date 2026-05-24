@@ -5,7 +5,7 @@ import {
   TopicSummary,
 } from '@signal-fire/api-contracts';
 
-import { ArticleSubmissionFormErrors } from '../SubmissionReviewPageContent';
+import { ReviewFormErrors } from '../SubmissionReviewPageContent';
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
   { submissionType: 'ARTICLE' }
@@ -21,7 +21,7 @@ export default function ArticleNormalizationForm({
   submission: ArticleModerationSubmission;
   topics: TopicSummary[];
   success: boolean;
-  errors: ArticleSubmissionFormErrors;
+  errors: ReviewFormErrors;
   onChange: (value: ArticleApprovalPayload) => void;
 }) {
   const [content, setContent] = useState(submission.submittedContent.content);

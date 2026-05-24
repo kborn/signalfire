@@ -87,6 +87,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [73-nullish-checks-vs-truthy-checks.md](./73-nullish-checks-vs-truthy-checks.md) - When to use `== null`, `??`, `?.`, and truthy checks
 - [74-client-wrapper-owns-decision-state.md](./74-client-wrapper-owns-decision-state.md) - Use a client wrapper and callbacks to collect child form state for moderation decisions
 - [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
+- [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 
 Rule of thumb:
 

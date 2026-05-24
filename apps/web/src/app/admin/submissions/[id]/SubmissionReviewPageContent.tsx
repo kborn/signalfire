@@ -20,11 +20,7 @@ import type {
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { SubmissionError } from '@/lib/api/error';
-import {
-  mapSubmissionApiFieldToUiField,
-  SUBMISSION_FIELD_LIMITS,
-  validateRequiredString,
-} from '@/lib/submission-form-validation';
+import { SUBMISSION_FIELD_LIMITS, validateRequiredString } from '@/lib/submission-form-validation';
 
 function parseLocalDateTime(value: string): Date | null {
   if (!value) {
@@ -39,23 +35,37 @@ function parseLocalDateTime(value: string): Date | null {
   return date;
 }
 
-export type ArticleSubmissionFormErrors = {
+export type ReviewFormErrors = {
+  form?: string;
+
+  // Article + shared fields
   title?: string;
   summary?: string;
   content?: string;
-  topicSlugs?: string;
-  resourceLinks?: string;
   author?: string;
-  submitterName?: string;
-  submitterEmail?: string;
+  topicSlugs?: string;
+
+  // Event fields
+  description?: string;
+  eventType?: string;
+  startTime?: string;
+  endTime?: string;
+  locationName?: string;
+  publicLocationDescription?: string;
+  addressLine1?: string;
+  addressLine2?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+  postalCode?: string;
+  website?: string;
+  contactEmail?: string;
+
+  // Review metadata
+  reviewNotes?: string;
 };
 
-function mapApiFieldToUiField(field: string): string | null {
-  const sharedField = mapSubmissionApiFieldToUiField(field);
-  if (sharedField) {
-    return sharedField;
-  }
-
+function mapApiFieldToUiField(field: string | undefined): keyof ReviewFormErrors {
   switch (field) {
     case 'normalized.title':
       return 'title';
@@ -63,18 +73,46 @@ function mapApiFieldToUiField(field: string): string | null {
       return 'summary';
     case 'normalized.content':
       return 'content';
-    case 'normalized.topicSlugs':
-      return 'topicSlugs';
-    case 'normalized.resourceLinks':
-      return 'resourceLinks';
-    case 'submitterName':
-      return 'submitterName';
-    case 'submitterEmail':
-      return 'submitterEmail';
-    case 'author':
+    case 'normalized.author':
       return 'author';
+    case 'normalized.topicSlugs':
+    case 'normalized.topicSlugs[0]':
+      return 'topicSlugs';
+
+    case 'normalized.description':
+      return 'description';
+    case 'normalized.eventType':
+      return 'eventType';
+    case 'normalized.startTime':
+      return 'startTime';
+    case 'normalized.endTime':
+      return 'endTime';
+    case 'normalized.locationName':
+      return 'locationName';
+    case 'normalized.publicLocationDescription':
+      return 'publicLocationDescription';
+    case 'normalized.addressLine1':
+      return 'addressLine1';
+    case 'normalized.addressLine2':
+      return 'addressLine2';
+    case 'normalized.city':
+      return 'city';
+    case 'normalized.region':
+      return 'region';
+    case 'normalized.country':
+      return 'country';
+    case 'normalized.postalCode':
+      return 'postalCode';
+    case 'normalized.website':
+      return 'website';
+    case 'normalized.contactEmail':
+      return 'contactEmail';
+
+    case 'reviewNotes':
+      return 'reviewNotes';
+
     default:
-      return null;
+      return 'form';
   }
 }
 
@@ -85,97 +123,121 @@ export default function SubmissionReviewPageContent({
   submission: ModerationSubmissionDetail;
   topics: TopicListResponse;
 }) {
+  type ValidationResult<TPayload> =
+    | { ok: true; payload: TPayload }
+    | { ok: false; errors: ReviewFormErrors };
+
+  function validateArticleApproval(
+    payload: ArticleApprovalPayload | null,
+    entityStatus: EntityStatus,
+  ): ValidationResult<ModerationReviewApproveArticleRequest> {
+    const errors: ReviewFormErrors = {};
+    if (!payload) {
+      return { ok: false, errors: { form: 'Article approval fields are not ready yet.' } };
+    }
+    const titleError = validateRequiredString(
+      payload ? payload.title : '',
+      'Title',
+      SUBMISSION_FIELD_LIMITS.title,
+    );
+    if (titleError) {
+      errors.title = titleError;
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return { ok: false, errors: errors };
+    }
+    const req: ModerationReviewApproveArticleRequest = {
+      decision: 'APPROVE_ARTICLE',
+      reviewNotes: reviewNotes,
+      publishStatus: entityStatus,
+      normalized: payload,
+    };
+    return { ok: true, payload: req };
+  }
+
+  function validateEventApproval(
+    payload: EventApprovalPayload | null,
+    entityStatus: EntityStatus,
+  ): ValidationResult<ModerationReviewApproveEventRequest> {
+    const errors: ReviewFormErrors = {};
+    if (!payload) {
+      return { ok: false, errors: { form: 'Event approval fields are not ready yet.' } };
+    }
+
+    const fixed = {
+      ...payload,
+      // TODO validate this
+      startTime: parseLocalDateTime(payload.startTime)!.toISOString(),
+      endTime: payload.endTime ? parseLocalDateTime(payload.endTime)!.toISOString() : null,
+    };
+
+    if (Object.keys(errors).length > 0) {
+      return { ok: false, errors: errors };
+    }
+    const req: ModerationReviewApproveEventRequest = {
+      decision: 'APPROVE_EVENT',
+      reviewNotes: reviewNotes,
+      publishStatus: entityStatus,
+      normalized: fixed,
+    };
+    return { ok: true, payload: req };
+  }
+
   async function approve(entityStatus: EntityStatus) {
     setIsSubmitting(true);
     setSubmitError(null);
     setErrors({});
 
-    const errors: ArticleSubmissionFormErrors = {};
-    const titleError = validateRequiredString(
-      articleNormalized ? articleNormalized.title : '',
-      'Title',
-      SUBMISSION_FIELD_LIMITS.title,
-    );
-    console.log(`title error ${titleError}`);
-    if (titleError) {
-      errors.title = titleError;
+    const validation =
+      submission.submissionType === 'ARTICLE'
+        ? validateArticleApproval(articleNormalized, entityStatus)
+        : validateEventApproval(eventNormalized, entityStatus);
+
+    console.log(validation);
+    if (!validation.ok) {
+      setErrors(validation.errors);
+      setIsSubmitting(false);
+      return;
     }
 
-    setErrors(errors);
-
-    if (Object.keys(errors).length == 0) {
-      try {
-        if (submission.submissionType === 'ARTICLE') {
-          if (!articleNormalized) {
-            // TODO set error
-            return;
-          }
-          const req: ModerationReviewApproveArticleRequest = {
-            decision: 'APPROVE_ARTICLE',
-            reviewNotes: reviewNotes,
-            publishStatus: entityStatus,
-            normalized: articleNormalized,
-          };
-          const rep = await postSubmissionReviewReq(req, submission.id);
-          setReviewResult(rep);
-        } else {
-          if (!eventNormalized) {
-            // TODO set error
-            return;
-          }
-          const fixed = {
-            ...eventNormalized,
-            // TODO validate this
-            startTime: parseLocalDateTime(eventNormalized.startTime)!.toISOString(),
-            endTime: eventNormalized.endTime
-              ? parseLocalDateTime(eventNormalized.endTime)!.toISOString()
-              : null,
-          };
-          const req: ModerationReviewApproveEventRequest = {
-            decision: 'APPROVE_EVENT',
-            reviewNotes: reviewNotes,
-            publishStatus: entityStatus,
-            normalized: fixed,
-          };
-          const rep: ModerationReviewSuccess = await postSubmissionReviewReq(req, submission.id);
-          setReviewResult(rep);
-        }
-        setIsSuccess(true);
-        window.scrollTo({
-          top: 0,
-          left: 0,
-          behavior: 'smooth',
-        });
-      } catch (error) {
-        if (error instanceof SubmissionError) {
-          if (error.errors) {
-            const newEntries = error.errors.reduce((acc, e) => {
-              const uiField = mapApiFieldToUiField(e.field);
-              if (!uiField) {
-                return acc;
-              }
-              return {
-                ...acc,
-                [uiField]: e.message,
-              };
-            }, {});
-
-            if (Object.keys(newEntries).length > 0) {
-              setErrors((prev) => ({ ...prev, ...newEntries }));
-            } else {
-              setSubmitError(
-                'Something went wrong while sending your submission. Please try again.',
-              );
+    try {
+      const rep = await postSubmissionReviewReq(validation.payload, submission.id);
+      setReviewResult(rep);
+      setIsSuccess(true);
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      });
+    } catch (error) {
+      if (error instanceof SubmissionError) {
+        if (error.errors) {
+          const newEntries = error.errors.reduce<ReviewFormErrors>((acc, e) => {
+            const uiField = mapApiFieldToUiField(e.field);
+            if (!uiField) {
+              acc.form = e.message;
+              return acc;
             }
+            return {
+              ...acc,
+              [uiField]: e.message,
+            };
+          }, {});
+
+          if (Object.keys(newEntries).length > 0) {
+            setErrors((prev) => ({ ...prev, ...newEntries }));
           } else {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
           }
         } else {
           setSubmitError('Something went wrong while sending your submission. Please try again.');
         }
-      } finally {
-        setIsSubmitting(false);
+      } else {
+        setSubmitError('Something went wrong while sending your submission. Please try again.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -233,7 +295,7 @@ export default function SubmissionReviewPageContent({
   const [articleNormalized, setArticleNormalized] = useState<ArticleApprovalPayload | null>(null);
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
   const [reviewResult, setReviewResult] = useState<ModerationReviewSuccess | null>(null);
-  const [errors, setErrors] = useState<ArticleSubmissionFormErrors>({});
+  const [errors, setErrors] = useState<ReviewFormErrors>({});
   const visibleSubmission: ModerationSubmissionDetail = {
     ...submission,
     status: reviewResult?.status ?? submission.status,
