@@ -34,11 +34,11 @@ export default function ArticleNormalizationForm({
 
   useEffect(() => {
     onChange({
-      title: title.trim(),
-      summary: summary.trim(),
+      title,
+      summary,
       topicSlugs,
-      author: author.trim() || 'anonymous',
-      content: content.trim(),
+      author,
+      content,
     });
   }, [title, summary, topicSlugs, author, content, onChange]);
 

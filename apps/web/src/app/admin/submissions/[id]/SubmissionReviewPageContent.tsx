@@ -576,6 +576,7 @@ export default function SubmissionReviewPageContent({
                 submission={submission}
                 topics={topics.items}
                 success={isSuccess ?? false}
+                errors={errors}
                 onChange={setEventNormalized}
               />
             )}
