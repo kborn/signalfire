@@ -202,7 +202,9 @@ export default function EventNormalizationForm({
           onChange={(event) => setEventType(parseEventType(event.target.value))}
           disabled={success}
         >
-          <option value="">Select an event type</option>
+          <option value="" disabled>
+            Select an event type
+          </option>
           {EVENT_TYPES.map((eventType) => (
             <option value={eventType} key={eventType}>
               {formatEventTypeLabel(eventType)}
