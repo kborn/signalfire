@@ -2,8 +2,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function ArticlesListPage() {
   return (
-    <div>
-      <div>Articles Page</div>
-    </div>
+    <section className="page-section">
+      <h1 className="pageTitle">Articles</h1>
+      <p className="adminDek">Page under construction</p>
+    </section>
   );
 }
