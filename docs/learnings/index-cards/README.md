@@ -90,6 +90,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 - [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - Delay work until after current JavaScript work finishes and new DOM can render
 - [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper
+- [79-vitest-mock-vs-spyon.md](./79-vitest-mock-vs-spyon.md) - Replace imported module dependencies with mocks and existing object methods with spies
 
 Rule of thumb:
 
