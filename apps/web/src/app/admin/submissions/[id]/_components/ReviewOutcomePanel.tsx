@@ -38,26 +38,39 @@ export default function ReviewOutcomePanel({
 
         <dt>Review notes</dt>
         <dd>{submission.reviewNotes || '--'}</dd>
-        {submission.status === 'APPROVED' && submission.createdRecord && (
-          <>
-            <dt>Created record</dt>
-
-            <dd className="adminCreatedRecordValue">
-              <Link
-                className="adminCreatedRecordLink"
-                href={getHref(
-                  submission.createdRecord.recordType,
-                  submission.createdRecord.publishStatus,
-                )}
-              >
-                {submission.createdRecord.recordType === 'ARTICLE' ? 'View article' : 'View event'}
-              </Link>
-
-              <span className="adminBadge">{submission.createdRecord.publishStatus}</span>
-            </dd>
-          </>
-        )}
       </dl>
+      {submission.status === 'APPROVED' && submission.createdRecord && (
+        <div className="adminCreatedRecord">
+          <p className="adminCreatedRecordLabel">
+            Created {submission.createdRecord.recordType === 'ARTICLE' ? 'article' : 'event'}
+          </p>
+
+          <p className="adminCreatedRecordTitle">{submission.createdRecord.title}</p>
+
+          <dl className="adminCreatedRecordDetails">
+            <dt>
+              {submission.createdRecord.recordType === 'ARTICLE'
+                ? 'Article status'
+                : 'Event status'}
+            </dt>
+            <dd>
+              {submission.createdRecord.publishStatus === 'PUBLISHED' ? 'Published' : 'Draft'}
+            </dd>
+          </dl>
+
+          <Link
+            className="adminCreatedRecordLink"
+            href={getHref(
+              submission.createdRecord.recordType,
+              submission.createdRecord.publishStatus,
+            )}
+          >
+            {submission.createdRecord.publishStatus === 'PUBLISHED'
+              ? 'View live page'
+              : 'Open in admin'}
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

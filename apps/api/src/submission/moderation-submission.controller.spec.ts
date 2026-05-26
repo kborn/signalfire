@@ -118,6 +118,7 @@ describe('ModerationSubmissionController', () => {
       createdRecord: {
         recordType: 'ARTICLE',
         id: 10,
+        title: 'Community Submission',
         slug: 'community-submission',
         publishStatus: 'PUBLISHED',
       },

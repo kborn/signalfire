@@ -59,6 +59,7 @@ type ModerationSubmissionCommonParts = {
   createdRecord: {
     recordType: SubmissionType;
     id: number;
+    title: string;
     slug?: string;
     publishStatus: EntityStatus;
   } | null;
@@ -104,6 +105,7 @@ export class ModerationSubmissionService {
       return {
         recordType: 'ARTICLE',
         id: article.id,
+        title: article.title,
         slug: article.slug,
         publishStatus: article.status,
       };
@@ -120,6 +122,7 @@ export class ModerationSubmissionService {
 
       return {
         recordType: 'EVENT',
+        title: event.title,
         id: event.id,
         publishStatus: event.status,
       };
@@ -312,6 +315,7 @@ export class ModerationSubmissionService {
       createdRecord: {
         recordType: 'ARTICLE',
         id: article.id,
+        title: article.title,
         slug: article.slug,
         publishStatus: article.status,
       },
@@ -358,6 +362,7 @@ export class ModerationSubmissionService {
       createdRecord: {
         recordType: 'EVENT',
         id: event.id,
+        title: event.title,
         publishStatus: event.status,
       },
     };

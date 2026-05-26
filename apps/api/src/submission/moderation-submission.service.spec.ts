@@ -384,7 +384,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({
-        article: { id: 1, status: EntityStatus.PUBLISHED, slug: slug },
+        article: { id: 1, title: 'Article title', status: EntityStatus.PUBLISHED, slug: slug },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -409,6 +409,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'ARTICLE',
           id: 1,
+          title: 'Article title',
           slug: slug,
           publishStatus: EntityStatus.PUBLISHED,
         },
@@ -441,7 +442,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveEventSubmission.mockResolvedValue({
-        event: { id: 1, status: EntityStatus.PUBLISHED },
+        event: { id: 1, title: 'Event title', status: EntityStatus.PUBLISHED },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -478,6 +479,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'EVENT',
           id: 1,
+          title: 'Event title',
           publishStatus: EntityStatus.PUBLISHED,
         },
       });
@@ -522,7 +524,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({
-        article: { id: 1, status: EntityStatus.DRAFT, slug: slug },
+        article: { id: 1, title: 'Article title', status: EntityStatus.DRAFT, slug: slug },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -548,6 +550,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'ARTICLE',
           id: 1,
+          title: 'Article title',
           slug: slug,
           publishStatus: EntityStatus.DRAFT,
         },
@@ -580,7 +583,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveEventSubmission.mockResolvedValue({
-        event: { id: 1, status: EntityStatus.DRAFT },
+        event: { id: 1, title: 'Event title', status: EntityStatus.DRAFT },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -618,6 +621,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'EVENT',
           id: 1,
+          title: 'Event title',
           publishStatus: EntityStatus.DRAFT,
         },
       });

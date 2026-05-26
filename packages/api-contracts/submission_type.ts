@@ -89,6 +89,7 @@ export type ModerationSubmissionSummary = {
 export type CreatedRecordSummary = {
   recordType: SubmissionType;
   id: number;
+  title: string;
   slug?: string;
   publishStatus: EntityStatus;
 };
@@ -204,12 +205,7 @@ export type ModerationReviewSuccess = {
   submissionId: number;
   status: 'APPROVED' | 'REJECTED';
   reviewedAt: string;
-  createdRecord?: {
-    recordType: 'ARTICLE' | 'EVENT';
-    id: number;
-    slug?: string;
-    publishStatus: EntityStatus;
-  };
+  createdRecord?: CreatedRecordSummary;
 };
 
 export type ModerationReviewError = {
