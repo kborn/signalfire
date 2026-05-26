@@ -102,9 +102,7 @@ export async function postSubmissionReview<ModerationReviewSuccess>(
 
   try {
     body = await response.json();
-    console.log(body);
   } catch {
-    console.log('failed');
     body = null;
   }
 
