@@ -1183,7 +1183,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.2 - Review Actions & State Transitions ⏳
+#### ▸ Phase 11.2 - Review Actions & State Transitions ✅
 
 ###### Phase Tasks:
 
@@ -1220,24 +1220,44 @@ Capabilities:
 - [x] Make review notes fully editable and included in approval/rejection requests
 - [x] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
 - [x] Disable or hide review actions once a submission is no longer pending
-- [ ] Add focused frontend coverage or documented manual verification for article approval, event approval, draft approval, and rejection paths
-- [ ] Refactor common article/event normalization controls only after request handling and validation behavior are stable
+- [x] Render created-record metadata immediately after approval and on refreshed/direct approved submission detail views using persisted `ModerationSubmissionDetail.createdRecord` data
+- [x] Route published created records to public entity pages and draft created records to admin content routes for continued editorial management
+- [x] Remove moderation review debug logging and type review endpoint IDs as `number`
+- [x] Manually verify article approval, event approval, draft approval, rejection, reviewed-state display, created-content navigation display, and validation-error behavior in the browser (reported complete on 2026-05-26)
+- [ ] Add automated frontend regression coverage for moderation decision handling and validation-error rendering
+- [ ] Consolidate duplicated approve/reject API error mapping and evaluate/refactor common article/event normalization controls without changing validated behavior
 
 ###### Known issues:
 
 - [x] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
 
-###### Current gaps / next steps:
+---
 
-- [x] Render created-record metadata immediately after approval and on refreshed/direct approved submission detail views using persisted `ModerationSubmissionDetail.createdRecord` data.
-- [x] Route published created records to public entity pages and draft created records to admin content routes for continued editorial management.
-- [ ] Clean up moderation review API client/request handling by removing debug logs, typing review IDs as `number`, and avoiding duplicated approve/reject error-mapping code where practical.
-- [ ] Verify article approval, event approval, draft approval, and rejection manually in the browser, including validation-error scrolling and reviewed-state behavior.
-- [ ] Add focused frontend coverage or record documented manual verification before closing Phase 11.4.
+#### ▸ Phase 11.5 - Public Repository Readiness Checkpoint ⏳
+
+###### Goal
+
+Prepare a credible, reviewable public source repository after the completed
+moderation-review workflow, before continuing broader admin feature expansion.
+
+###### Phase Tasks:
+
+- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.4 surface, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
+- [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
+- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, and known deployment limitations
+- [ ] Establish the repository's public licensing and contribution posture
+- [ ] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
+- [ ] Make the repository public only after the readiness review is complete
+
+###### Notes:
+
+- This is a public-source/portfolio readiness checkpoint, not a Release 1 deployment milestone.
+- Admin and moderation UI source code may be public while the application remains local or otherwise non-public; any deployed environment intended for real users still requires authentication/authorization before exposing admin routes.
 
 ---
 
-#### ▸ Phase 11.5 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.6 - Essential Admin Content Management ⏳
 
 ###### Phase Tasks:
 
@@ -1249,7 +1269,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.6 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.7 - Interface Hardening Handoff ⏳
 
 ###### Phase Tasks:
 

@@ -490,10 +490,14 @@ After approval or rejection:
 - update moderation status immediately
 - update reviewed timestamp immediately
 
-After approval, also show a `Created record` row in the review outcome area with:
+After approval, also show a `Created article` or `Created event` subsection in
+the review outcome area with:
 
-- a `View article` or `View event` link
+- the created record title
 - publish status of the created record
+- a contextual action link:
+  - `View live page` for published records
+  - `Open in admin` for draft records
 
 The created-record link destination follows publish state:
 
@@ -502,7 +506,7 @@ The created-record link destination follows publish state:
 - draft records link to the corresponding admin article or event route so
   editorial work can continue before publication
 
-During staged implementation of Phase 11.5, an admin draft detail route may
+During staged implementation of Phase 11.6, an admin draft detail route may
 temporarily resolve to its admin collection/fallback page until full content
 editing views are complete.
 
