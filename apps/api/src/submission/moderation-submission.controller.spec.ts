@@ -87,6 +87,7 @@ describe('ModerationSubmissionController', () => {
         resourceLinks: [],
         author: 'John Doe',
       },
+      createdRecord: null,
     };
     serviceMock.getModerationSubmissionDetails.mockResolvedValue(response);
 

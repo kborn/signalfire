@@ -16,6 +16,8 @@ import {
   ModerationReviewApproveArticleRequest,
   ModerationReviewApproveEventRequest,
   ModerationReviewRejectRequest,
+  EntityStatus,
+  CreatedRecordSummary,
 } from '@signal-fire/api-contracts';
 import {
   ArticleSubmissionApprovedRepositoryInput,
@@ -24,6 +26,8 @@ import {
 import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
 import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import { ArticleRepository } from '../article/article.repository';
+import { EventRepository } from '../event/event.repository';
 
 function requireSubmissionField<T>(
   value: T | null | undefined,
@@ -52,6 +56,12 @@ type ModerationSubmissionCommonParts = {
     summary: string;
     topics: TopicSummary[];
   };
+  createdRecord: {
+    recordType: SubmissionType;
+    id: number;
+    slug?: string;
+    publishStatus: EntityStatus;
+  } | null;
 };
 
 @Injectable()
@@ -59,6 +69,8 @@ export class ModerationSubmissionService {
   constructor(
     private repository: SubmissionRepository,
     private topicRepository: TopicRepository,
+    private articleRepository: ArticleRepository,
+    private eventRepository: EventRepository,
   ) {}
 
   private async requireSubmissionType(submissionId: number, expectedType: SubmissionType) {
@@ -79,8 +91,46 @@ export class ModerationSubmissionService {
     return dateString == null ? null : new Date(dateString);
   }
 
+  private async mapCreatedRecord(submission: Submission): Promise<CreatedRecordSummary | null> {
+    if (submission.articleId) {
+      const article = await this.articleRepository.findById(submission.articleId);
+
+      if (!article) {
+        throw new InternalServerErrorException(
+          `Submission ${submission.id} references missing article ${submission.articleId}`,
+        );
+      }
+
+      return {
+        recordType: 'ARTICLE',
+        id: article.id,
+        slug: article.slug,
+        publishStatus: article.status,
+      };
+    }
+
+    if (submission.eventId) {
+      const event = await this.eventRepository.getById(submission.eventId);
+
+      if (!event) {
+        throw new InternalServerErrorException(
+          `Submission ${submission.id} references missing event ${submission.eventId}`,
+        );
+      }
+
+      return {
+        recordType: 'EVENT',
+        id: event.id,
+        publishStatus: event.status,
+      };
+    }
+
+    return null;
+  }
+
   async mapCommonSubmissionParts(submission: Submission): Promise<ModerationSubmissionCommonParts> {
     const topics: Topic[] = await this.topicRepository.findBySubmissionId(submission.id);
+
     return {
       id: submission.id,
       status: submission.status,
@@ -99,6 +149,7 @@ export class ModerationSubmissionService {
           description: topic.description,
         })),
       },
+      createdRecord: await this.mapCreatedRecord(submission),
     };
   }
 
@@ -156,6 +207,7 @@ export class ModerationSubmissionService {
         website: submission.website,
         contactEmail: submission.contactEmail,
       },
+      createdRecord: common.createdRecord,
     };
   }
 
@@ -177,6 +229,7 @@ export class ModerationSubmissionService {
         resourceLinks: resourceLinks.map((resourceLink) => resourceLink.url),
         author: submission.author,
       },
+      createdRecord: common.createdRecord,
     };
   }
 

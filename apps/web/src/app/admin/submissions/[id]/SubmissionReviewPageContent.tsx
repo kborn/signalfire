@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SubmittedContentPanel from './_components/SubmittedContentPanel';
 import SubmissionMetadataPanel from './_components/SubmissionMetadataPanel';
 import SubmissionReviewHeader from './_components/SubmissionReviewHeader';
+import ReviewOutcomePanel from './_components/ReviewOutcomePanel';
 import SubmissionReviewBadgeBar from './_components/SubmissionReviewBadgeBar';
 import ArticleNormalizationForm from './_components/ArticleNormalizedForm';
 import EventNormalizationForm from './_components/EventNormalizedForm';
@@ -475,7 +476,6 @@ export default function SubmissionReviewPageContent({
         ? validateArticleApproval(articleNormalized)
         : validateEventApproval(eventNormalized);
 
-    console.log(validation);
     if (!validation.ok) {
       setErrors(validation.errors);
       setIsSubmitting(false);
@@ -587,6 +587,8 @@ export default function SubmissionReviewPageContent({
     ...submission,
     status: reviewResult?.status ?? submission.status,
     reviewedAt: reviewResult?.reviewedAt ?? submission.reviewedAt,
+    createdRecord: reviewResult?.createdRecord ?? submission.createdRecord,
+    reviewNotes: reviewNotes,
   };
 
   return (
@@ -599,14 +601,17 @@ export default function SubmissionReviewPageContent({
           <p className="adminReviewBannerText">This moderation decision was saved successfully.</p>
         </div>
       )}
+      {visibleSubmission.status !== 'PENDING' && (
+        <ReviewOutcomePanel submission={visibleSubmission} />
+      )}
       {submitError && (
-        <div className="adminReviewBannerError" role="status">
+        <div className="adminReviewBanner adminReviewBannerError" role="status">
           <p className="adminReviewBannerTitle">Unexpected review failure</p>
           <p className="adminReviewBannerText">{submitError}.</p>
         </div>
       )}
       {Object.keys(errors).length > 0 && (
-        <div className="adminReviewBannerError" role="status">
+        <div className="adminReviewBanner adminReviewBannerError" role="status">
           <p className="adminReviewBannerTitle">Review could not be recorded</p>
           <p className="adminReviewBannerText">Fix the highlighted fields and try again.</p>
         </div>
@@ -641,26 +646,28 @@ export default function SubmissionReviewPageContent({
           </section>
         </div>
       )}
-      <section className="adminPanel" aria-labelledby="review-notes-heading">
-        <div className="adminPanelHeader">
-          <h2 id="review-notes-heading">Review notes</h2>
-        </div>
-        <label htmlFor="review-notes">Internal notes</label>
-        {errors.reviewNotes ? (
-          <p id="review-notes-error" className="submissionError">
-            {errors.reviewNotes}
-          </p>
-        ) : null}
-        <textarea
-          id="review-notes"
-          className="submissionTextarea"
-          rows={5}
-          aria-describedby={errors.reviewNotes ? 'review-notes-error' : undefined}
-          value={reviewNotes}
-          onChange={(event) => setReviewNotes(event.target.value)}
-          disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}
-        />
-      </section>
+      {submission.status === 'PENDING' && (
+        <section className="adminPanel" aria-labelledby="review-notes-heading">
+          <div className="adminPanelHeader">
+            <h2 id="review-notes-heading">Review notes</h2>
+          </div>
+          <label htmlFor="review-notes">Internal notes</label>
+          {errors.reviewNotes ? (
+            <p id="review-notes-error" className="submissionError">
+              {errors.reviewNotes}
+            </p>
+          ) : null}
+          <textarea
+            id="review-notes"
+            className="submissionTextarea"
+            rows={5}
+            aria-describedby={errors.reviewNotes ? 'review-notes-error' : undefined}
+            value={reviewNotes}
+            onChange={(event) => setReviewNotes(event.target.value)}
+            disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}
+          />
+        </section>
+      )}
       {submission.status === 'PENDING' && (
         <div className="adminReviewMain">
           <section className="adminPanel" aria-labelledby="decision-actions-heading">

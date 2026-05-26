@@ -1215,10 +1215,10 @@ Capabilities:
 ###### Phase Tasks:
 
 - [x] Complete client-side approval/rejection request handling from the admin submission detail page
-- [ ] Add response processing for successful approval/rejection, including reviewed state and created-record metadata
-- [ ] Add API error handling and validation-error display for moderation approval and rejection requests
+- [x] Add response processing for successful approval/rejection, including reviewed state and created-record metadata
+- [x] Add API error handling and validation-error display for moderation approval and rejection requests
 - [x] Make review notes fully editable and included in approval/rejection requests
-- [ ] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
+- [x] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
 - [x] Disable or hide review actions once a submission is no longer pending
 - [ ] Add focused frontend coverage or documented manual verification for article approval, event approval, draft approval, and rejection paths
 - [ ] Refactor common article/event normalization controls only after request handling and validation behavior are stable
@@ -1226,6 +1226,14 @@ Capabilities:
 ###### Known issues:
 
 - [x] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
+
+###### Current gaps / next steps:
+
+- [x] Render created-record metadata immediately after approval and on refreshed/direct approved submission detail views using persisted `ModerationSubmissionDetail.createdRecord` data.
+- [x] Route published created records to public entity pages and draft created records to admin content routes for continued editorial management.
+- [ ] Clean up moderation review API client/request handling by removing debug logs, typing review IDs as `number`, and avoiding duplicated approve/reject error-mapping code where practical.
+- [ ] Verify article approval, event approval, draft approval, and rejection manually in the browser, including validation-error scrolling and reviewed-state behavior.
+- [ ] Add focused frontend coverage or record documented manual verification before closing Phase 11.4.
 
 ---
 

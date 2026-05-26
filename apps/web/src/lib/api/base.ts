@@ -88,7 +88,7 @@ export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
 
 export async function postSubmissionReview<ModerationReviewSuccess>(
   req: ModerationReviewRequest,
-  id,
+  id: number,
 ): Promise<ModerationReviewSuccess> {
   const url = `${getApiBase()}/admin/submissions/${id}/review`;
 
@@ -107,8 +107,6 @@ export async function postSubmissionReview<ModerationReviewSuccess>(
     console.log('failed');
     body = null;
   }
-
-  console.log(response.status);
 
   if (!response.ok) {
     if (hasValidationErrors(body)) {

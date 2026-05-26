@@ -86,6 +86,13 @@ export type ModerationSubmissionSummary = {
   submitterEmail: string | null;
 };
 
+export type CreatedRecordSummary = {
+  recordType: SubmissionType;
+  id: number;
+  slug?: string;
+  publishStatus: EntityStatus;
+};
+
 export type ModerationSubmissionDetail =
   | {
       id: number;
@@ -104,6 +111,7 @@ export type ModerationSubmissionDetail =
         resourceLinks: string[];
         author: string | null;
       };
+      createdRecord: CreatedRecordSummary | null;
     }
   | {
       id: number;
@@ -133,6 +141,7 @@ export type ModerationSubmissionDetail =
         contactEmail: string | null;
         topics: TopicSummary[];
       };
+      createdRecord: CreatedRecordSummary | null;
     };
 
 export type ModerationReviewDecision = 'REJECT' | 'APPROVE_ARTICLE' | 'APPROVE_EVENT';

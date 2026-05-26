@@ -19,7 +19,7 @@ export async function getSubmissionsDetails(id: number): Promise<ModerationSubmi
 
 export async function postSubmissionReviewReq(
   req: ModerationReviewRequest,
-  id,
+  id: number,
 ): Promise<ModerationReviewSuccess> {
   return await postSubmissionReview<ModerationReviewSuccess>(req, id);
 }

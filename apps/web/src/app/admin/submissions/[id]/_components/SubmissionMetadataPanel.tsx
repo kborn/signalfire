@@ -14,18 +14,14 @@ export default function SubmissionMetadataPanel({
         <dt>Submission ID</dt>
         <dd>{submission.id}</dd>
 
-        <dt>Submitter</dt>
-        <dd>{submission.submitterName}</dd>
+        <dt>Submitted</dt>
+        <dd>{new Date(submission.submittedAt).toLocaleDateString()}</dd>
 
         <dt>Email</dt>
         <dd>{submission.submitterEmail}</dd>
 
-        <dt>Reviewed</dt>
-        <dd>
-          {submission.reviewedAt
-            ? new Date(submission.reviewedAt).toLocaleDateString()
-            : 'Not reviewed'}
-        </dd>
+        <dt>Submitter</dt>
+        <dd>{submission.submitterName}</dd>
       </dl>
     </section>
   );
