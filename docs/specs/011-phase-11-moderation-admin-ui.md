@@ -506,7 +506,7 @@ The created-record link destination follows publish state:
 - draft records link to the corresponding admin article or event route so
   editorial work can continue before publication
 
-During staged implementation of Phase 11.6, an admin draft detail route may
+During staged implementation of Phase 11.7, an admin draft detail route may
 temporarily resolve to its admin collection/fallback page until full content
 editing views are complete.
 

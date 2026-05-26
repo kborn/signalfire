@@ -1227,25 +1227,47 @@ Capabilities:
 - [ ] Add automated frontend regression coverage for moderation decision handling and validation-error rendering
 - [ ] Consolidate duplicated approve/reject API error mapping and evaluate/refactor common article/event normalization controls without changing validated behavior
 
-###### Known issues:
+---
 
-- [x] Article approval can fail when the generated Article slug collides with an existing slug because the repository retries `article.create` inside an already-aborted PostgreSQL transaction. Fix by choosing a unique slug before entering the transaction or moving uniqueness probing outside the transaction.
+#### ▸ Phase 11.5 - Public Experience & Visual Identity ⏳
+
+###### Goal
+
+Raise the public-facing product from a coherent functional baseline to an
+intentional, portfolio-ready civic discovery experience before making the
+repository public.
+
+###### Phase Tasks:
+
+- [ ] Re-evaluate the public product name and tagline, including whether to keep `CivicSignal` or present the public brand as `Signal Fire`
+- [ ] Establish an intentional public visual direction through typography, color, spacing, imagery, and component presentation while preserving usability and accessibility
+- [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
+- [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
+- [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
+- [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation
+- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made
+
+###### Notes:
+
+- This phase demonstrates competent public UI/product presentation; it is not a speculative redesign or a deployment milestone.
+- The admin interface should remain restrained and operational; the public experience is the primary focus of visual differentiation.
 
 ---
 
-#### ▸ Phase 11.5 - Public Repository Readiness Checkpoint ⏳
+#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ⏳
 
 ###### Goal
 
 Prepare a credible, reviewable public source repository after the completed
-moderation-review workflow, before continuing broader admin feature expansion.
+moderation workflow and public-experience pass, before continuing broader
+admin feature expansion.
 
 ###### Phase Tasks:
 
-- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.4 surface, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
-- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, and known deployment limitations
+- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
 - [ ] Establish the repository's public licensing and contribution posture
 - [ ] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
 - [ ] Make the repository public only after the readiness review is complete
@@ -1257,7 +1279,7 @@ moderation-review workflow, before continuing broader admin feature expansion.
 
 ---
 
-#### ▸ Phase 11.6 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.7 - Essential Admin Content Management ⏳
 
 ###### Phase Tasks:
 
@@ -1269,7 +1291,7 @@ moderation-review workflow, before continuing broader admin feature expansion.
 
 ---
 
-#### ▸ Phase 11.7 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.8 - Interface Hardening Handoff ⏳
 
 ###### Phase Tasks:
 
@@ -1329,18 +1351,6 @@ Capabilities:
 ###### Goal
 
 Bug fixes, polish, and observability improvements.
-
----
-
-#### ▸ Phase 15.1 - Public Brand Refresh ⏳
-
-###### Phase Tasks:
-
-- [ ] Re-evaluate the public site name before launch, including whether to keep `CivicSignal` or move the public brand to `Signal Fire`
-- [ ] Decide whether `Find your fight` becomes the primary public tagline
-- [ ] Refresh homepage hero copy so the product name and tagline are visible on the page, not only in metadata
-- [ ] Add more visual energy to the public site while preserving readability, accessibility, and the existing civic-action product scope
-- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and docs after the brand decision is made
 
 ---
 
