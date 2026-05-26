@@ -50,7 +50,7 @@ function createPendingArticleSubmission(
   };
 
   return {
-    id: 3,
+    id: 5,
     submissionType: 'ARTICLE',
     status: 'PENDING',
     submittedAt: '2026-05-20T14:00:00.000Z',
@@ -107,10 +107,10 @@ vi.mock('@/lib/api/admin', () => ({
   postSubmissionReviewReq: vi.fn(),
 }));
 
-describe('ArticleSubmissionForm', () => {
+describe('SubmissionReviewPageContent', () => {
   afterEach(() => {
     cleanup();
-    vi.clearAllMocks();
+    vi.restoreAllMocks();
   });
 
   beforeEach(() => {
@@ -153,7 +153,7 @@ describe('ArticleSubmissionForm', () => {
           author: 'anonymous',
         }),
       }),
-      3,
+      5,
     );
     expect(await screen.findByText('Review recorded')).toBeInTheDocument();
     expect(screen.getByText('Approved')).toBeInTheDocument();
@@ -168,6 +168,8 @@ describe('ArticleSubmissionForm', () => {
 
     expect(reviewOutcome).not.toBeNull();
     expect(within(reviewOutcome!).getByText('How Local Climate Policy Works')).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'Approve and Publish' })).toBeDisabled();
   });
 
   it('Event draft approval normalizes and renders success', async () => {
@@ -186,7 +188,12 @@ describe('ArticleSubmissionForm', () => {
     render(
       <SubmissionReviewPageContent
         submission={createPendingEventSubmission({
-          submittedContent: { publicLocationDescription: null, website: '' },
+          submittedContent: {
+            publicLocationDescription: null,
+            addressLine2: '   ',
+            website: '',
+            contactEmail: '   ',
+          },
         })}
         topics={topics}
       />,
@@ -201,6 +208,7 @@ describe('ArticleSubmissionForm', () => {
         normalized: expect.objectContaining({
           title: 'City Hall Transit Accountability Rally',
           publicLocationDescription: null,
+          addressLine2: null,
           website: null,
           startTime: '2026-06-11T21:00:00.000Z',
           endTime: '2026-06-11T23:00:00.000Z',
@@ -208,7 +216,7 @@ describe('ArticleSubmissionForm', () => {
           region: 'PA',
           country: 'US',
           postalCode: '19107',
-          contactEmail: 'organizer@example.org',
+          contactEmail: null,
         }),
       }),
       5,
@@ -228,5 +236,47 @@ describe('ArticleSubmissionForm', () => {
     expect(
       within(reviewOutcome!).getByText('City Hall Transit Accountability Rally'),
     ).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'Approve as Draft' })).toBeDisabled();
+  });
+
+  it('Rejection sends notes and renders a rejected outcome', async () => {
+    vi.mocked(postSubmissionReviewReq).mockResolvedValue({
+      submissionId: 3,
+      status: 'REJECTED',
+      reviewedAt: '2026-05-25T09:00:00.000Z',
+    });
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.type(screen.getByLabelText('Internal notes'), 'Insufficiently cited.');
+
+    await user.click(screen.getByRole('button', { name: 'Reject' }));
+
+    expect(postSubmissionReviewReq).toHaveBeenCalledWith(
+      {
+        decision: 'REJECT',
+        reviewNotes: 'Insufficiently cited.',
+      },
+      5,
+    );
+    expect(await screen.findByText('Review recorded')).toBeInTheDocument();
+    expect(screen.getByText('Rejected')).toBeInTheDocument();
+    expect(screen.queryByText('Created article')).not.toBeInTheDocument();
+    expect(screen.queryByText('Created event')).not.toBeInTheDocument();
+
+    expect(screen.getByLabelText('Internal notes')).toBeDisabled();
+    expect(screen.getByLabelText('Title')).toBeDisabled();
+
+    const reviewOutcome = screen
+      .getByRole('heading', { name: 'Review outcome' })
+      .closest('section');
+
+    expect(reviewOutcome).not.toBeNull();
+    expect(within(reviewOutcome!).getByText('Insufficiently cited.')).toBeInTheDocument();
+
+    expect(screen.getByRole('button', { name: 'Reject' })).toBeDisabled();
   });
 });
