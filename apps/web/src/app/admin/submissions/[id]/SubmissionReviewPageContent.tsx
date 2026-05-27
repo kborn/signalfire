@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SubmittedContentPanel from './_components/SubmittedContentPanel';
 import SubmissionMetadataPanel from './_components/SubmissionMetadataPanel';
 import SubmissionReviewHeader from './_components/SubmissionReviewHeader';
@@ -84,6 +84,63 @@ function mapApiFieldToUiField(field: string | undefined): keyof ReviewFormErrors
   }
 }
 
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  });
+}
+
+function getErrorElementId(field: keyof ReviewFormErrors): string {
+  const specialErrorIds: Partial<Record<keyof ReviewFormErrors, string>> = {
+    eventType: 'normalized-eventType-error',
+    startTime: 'normalized-event-start-error',
+    endTime: 'normalized-event-end-error',
+    topicSlugs: 'normalized-topics-error',
+    reviewNotes: 'review-notes-error',
+  };
+
+  return specialErrorIds[field] ?? `normalized-${field}-error`;
+}
+
+function scrollToFirstError(errors: ReviewFormErrors) {
+  const fieldOrder: (keyof ReviewFormErrors)[] = [
+    'title',
+    'summary',
+    'content',
+    'author',
+    'description',
+    'eventType',
+    'startTime',
+    'endTime',
+    'locationName',
+    'publicLocationDescription',
+    'addressLine1',
+    'addressLine2',
+    'city',
+    'region',
+    'country',
+    'postalCode',
+    'website',
+    'contactEmail',
+    'topicSlugs',
+    'reviewNotes',
+  ];
+
+  const firstField = fieldOrder.find((field) => errors[field]);
+  if (!firstField) {
+    scrollToTop();
+    return;
+  }
+
+  const id = getErrorElementId(firstField);
+  document.getElementById(id)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  });
+}
+
 export default function SubmissionReviewPageContent({
   submission,
   topics,
@@ -94,63 +151,6 @@ export default function SubmissionReviewPageContent({
   type ValidationResult<TPayload> =
     | { ok: true; payload: TPayload }
     | { ok: false; errors: ReviewFormErrors };
-
-  function scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-  }
-
-  function getErrorElementId(field: keyof ReviewFormErrors): string {
-    const specialErrorIds: Partial<Record<keyof ReviewFormErrors, string>> = {
-      eventType: 'normalized-eventType-error',
-      startTime: 'normalized-event-start-error',
-      endTime: 'normalized-event-end-error',
-      topicSlugs: 'normalized-topics-error',
-      reviewNotes: 'review-notes-error',
-    };
-
-    return specialErrorIds[field] ?? `normalized-${field}-error`;
-  }
-
-  function scrollToFirstError(errors: ReviewFormErrors) {
-    const fieldOrder: (keyof ReviewFormErrors)[] = [
-      'title',
-      'summary',
-      'content',
-      'author',
-      'description',
-      'eventType',
-      'startTime',
-      'endTime',
-      'locationName',
-      'publicLocationDescription',
-      'addressLine1',
-      'addressLine2',
-      'city',
-      'region',
-      'country',
-      'postalCode',
-      'website',
-      'contactEmail',
-      'topicSlugs',
-      'reviewNotes',
-    ];
-
-    const firstField = fieldOrder.find((field) => errors[field]);
-    if (!firstField) {
-      scrollToTop();
-      return;
-    }
-
-    const id = getErrorElementId(firstField);
-    document.getElementById(id)?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-    });
-  }
 
   function handleReviewRequestError(error: unknown) {
     if (error instanceof SubmissionError && error.errors?.length) {
@@ -164,7 +164,6 @@ export default function SubmissionReviewPageContent({
       }, {});
 
       setErrors(fieldErrors);
-      setTimeout(() => scrollToFirstError(fieldErrors), 0);
       return;
     }
 
@@ -461,7 +460,6 @@ export default function SubmissionReviewPageContent({
     if (!validation.ok) {
       setErrors(validation.errors);
       setIsSubmitting(false);
-      setTimeout(() => scrollToFirstError(validation.errors), 0);
       return;
     }
 
@@ -510,6 +508,13 @@ export default function SubmissionReviewPageContent({
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
   const [reviewResult, setReviewResult] = useState<ModerationReviewSuccess | null>(null);
   const [errors, setErrors] = useState<ReviewFormErrors>({});
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      scrollToFirstError(errors);
+    }
+  }, [errors]);
+
   const visibleSubmission: ModerationSubmissionDetail = {
     ...submission,
     status: reviewResult?.status ?? submission.status,
