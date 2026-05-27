@@ -2,7 +2,7 @@ import NavLink from '@/app/navbar';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="adminShell">
+    <div className="container site-main adminShell">
       <header className="adminHeader">
         <div className="adminNavLabel">Admin workspace</div>
         <nav className="adminNav" aria-label="Admin">
@@ -13,7 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <NavLink href="/admin/events">Events</NavLink>
         </nav>
       </header>
-      {children}
+      <main>{children}</main>
     </div>
   );
 }
