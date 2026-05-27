@@ -1210,7 +1210,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.4 - Admin Editorial Review UI Completion ⏳
+#### ▸ Phase 11.4 - Admin Editorial Review UI Completion ✅
 
 ###### Phase Tasks:
 
@@ -1225,7 +1225,7 @@ Capabilities:
 - [x] Remove moderation review debug logging and type review endpoint IDs as `number`
 - [x] Manually verify article approval, event approval, draft approval, rejection, reviewed-state display, created-content navigation display, and validation-error behavior in the browser (reported complete on 2026-05-26)
 - [x] Add automated frontend regression coverage for moderation decision handling, validation-error rendering, refreshed reviewed-state display, and created-record destination routing
-- [ ] Consolidate duplicated approve/reject API error mapping and evaluate/refactor common article/event normalization controls without changing validated behavior
+- [x] Consolidate duplicated approve/reject API error mapping and evaluate common article/event normalization controls; retain separate forms because their distinct fields and behaviors do not justify a shared abstraction
 
 ---
 

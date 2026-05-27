@@ -420,6 +420,37 @@ describe('SubmissionReviewPageContent', () => {
     });
   });
 
+  it('maps rejection API validation errors to the review notes field', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError('Request failed for submissions', 400, 'submissions', [
+        { field: 'reviewNotes', message: 'Review notes are too long' },
+      ]),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Reject' }));
+
+    expect(postSubmissionReviewReq).toHaveBeenCalledWith(
+      {
+        decision: 'REJECT',
+        reviewNotes: '',
+      },
+      5,
+    );
+    expect(await screen.findByText('Review could not be recorded')).toBeInTheDocument();
+    expect(screen.getByText('Review notes are too long')).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+  });
+
   it('preserves editable state after a non-validation API failure', async () => {
     vi.mocked(postSubmissionReviewReq).mockRejectedValue(new Error('failed'));
     const user = userEvent.setup();

@@ -28,6 +28,9 @@ import {
   validateRequiredString,
 } from '@/lib/submission-form-validation';
 
+const REVIEW_FAILURE_MESSAGE =
+  'Something went wrong while sending your submission. Please try again.';
+
 function parseLocalDateTime(value: string): Date | null {
   if (!value) {
     return null;
@@ -188,6 +191,26 @@ export default function SubmissionReviewPageContent({
       behavior: 'smooth',
       block: 'center',
     });
+  }
+
+  function handleReviewRequestError(error: unknown) {
+    if (error instanceof SubmissionError && error.errors?.length) {
+      const fieldErrors = error.errors.reduce<ReviewFormErrors>((acc, entry) => {
+        const uiField = mapApiFieldToUiField(entry.field);
+
+        return {
+          ...acc,
+          [uiField]: entry.message,
+        };
+      }, {});
+
+      setErrors((previousErrors) => ({ ...previousErrors, ...fieldErrors }));
+      setTimeout(() => scrollToFirstError(fieldErrors), 0);
+      return;
+    }
+
+    setSubmitError(REVIEW_FAILURE_MESSAGE);
+    scrollToTop();
   }
 
   function buildArticleApprovalRequest(
@@ -494,35 +517,7 @@ export default function SubmissionReviewPageContent({
       setIsSuccess(true);
       scrollToTop();
     } catch (error) {
-      if (error instanceof SubmissionError) {
-        if (error.errors) {
-          const newEntries = error.errors.reduce<ReviewFormErrors>((acc, e) => {
-            const uiField = mapApiFieldToUiField(e.field);
-            if (!uiField) {
-              acc.form = e.message;
-              return acc;
-            }
-            return {
-              ...acc,
-              [uiField]: e.message,
-            };
-          }, {});
-
-          if (Object.keys(newEntries).length > 0) {
-            setErrors((prev) => ({ ...prev, ...newEntries }));
-            setTimeout(() => scrollToFirstError(newEntries), 0);
-          } else {
-            setSubmitError('Something went wrong while sending your submission. Please try again.');
-            scrollToTop();
-          }
-        } else {
-          setSubmitError('Something went wrong while sending your submission. Please try again.');
-          scrollToTop();
-        }
-      } else {
-        setSubmitError('Something went wrong while sending your submission. Please try again.');
-        scrollToTop();
-      }
+      handleReviewRequestError(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -542,34 +537,7 @@ export default function SubmissionReviewPageContent({
       setReviewResult(rep);
       scrollToTop();
     } catch (error) {
-      if (error instanceof SubmissionError) {
-        if (error.errors) {
-          const newEntries = error.errors.reduce((acc, e) => {
-            const uiField = mapApiFieldToUiField(e.field);
-            if (!uiField) {
-              return acc;
-            }
-            return {
-              ...acc,
-              [uiField]: e.message,
-            };
-          }, {});
-
-          if (Object.keys(newEntries).length > 0) {
-            setErrors((prev) => ({ ...prev, ...newEntries }));
-            setTimeout(() => scrollToFirstError(newEntries), 0);
-          } else {
-            setSubmitError('Something went wrong while sending your submission. Please try again.');
-            scrollToTop();
-          }
-        } else {
-          setSubmitError('Something went wrong while sending your submission. Please try again.');
-          scrollToTop();
-        }
-      } else {
-        setSubmitError('Something went wrong while sending your submission. Please try again.');
-        scrollToTop();
-      }
+      handleReviewRequestError(error);
     } finally {
       setIsSubmitting(false);
     }
