@@ -422,4 +422,45 @@ describe('SubmissionReviewPageContent', () => {
       });
     });
   });
+
+  it('preserves editable state after a non-validation API failure', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(new Error('failed'));
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.clear(screen.getByLabelText('Title'));
+    await user.type(screen.getByLabelText('Title'), 'How Local Climate Policy Works');
+
+    await user.type(screen.getByLabelText('Internal notes'), 'Ready to publish.');
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(postSubmissionReviewReq).toHaveBeenCalledWith(
+      expect.objectContaining({
+        decision: 'APPROVE_ARTICLE',
+        publishStatus: 'PUBLISHED',
+        reviewNotes: 'Ready to publish.',
+        normalized: expect.objectContaining({
+          title: 'How Local Climate Policy Works',
+        }),
+      }),
+      5,
+    );
+    expect(await screen.findByText('Unexpected review failure')).toBeInTheDocument();
+    expect(
+      screen.getByText('Something went wrong while sending your submission. Please try again.'),
+    ).toBeInTheDocument();
+
+    expect(screen.getByLabelText('Title')).toHaveValue('How Local Climate Policy Works');
+    expect(screen.getByLabelText('Internal notes')).toHaveValue('Ready to publish.');
+    expect(window.scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+
+    expect(screen.getByRole('button', { name: 'Approve and Publish' })).toBeEnabled();
+  });
 });

@@ -607,7 +607,7 @@ export default function SubmissionReviewPageContent({
       {submitError && (
         <div className="adminReviewBanner adminReviewBannerError" role="status">
           <p className="adminReviewBannerTitle">Unexpected review failure</p>
-          <p className="adminReviewBannerText">{submitError}.</p>
+          <p className="adminReviewBannerText">{submitError}</p>
         </div>
       )}
       {Object.keys(errors).length > 0 && (
