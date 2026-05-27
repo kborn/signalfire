@@ -1239,9 +1239,12 @@ repository public.
 
 ###### Phase Tasks:
 
-- [ ] Re-evaluate the public product name and tagline, including whether to keep `CivicSignal` or present the public brand as `Signal Fire`
+- [x] Select `Find Your Fight` as the public product name and define its
+      focus-to-action brand philosophy
 - [ ] Establish an intentional public visual direction through typography, color, spacing, imagery, and component presentation while preserving usability and accessibility
 - [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
+- [ ] Add a public About page explaining the focus-to-action philosophy and why
+      visitors do not need to carry every issue in order to participate
 - [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
 - [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
 - [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation
@@ -1251,6 +1254,10 @@ repository public.
 
 - This phase demonstrates competent public UI/product presentation; it is not a speculative redesign or a deployment milestone.
 - The admin interface should remain restrained and operational; the public experience is the primary focus of visual differentiation.
+- Canonical product/UI requirements for this subphase are defined in
+  `docs/specs/012-phase-11-5-public-experience-visual-identity.md`.
+- `findmyfight.com` is a candidate public domain; domain registration and
+  deployment decisions do not block Phase 11.5 implementation.
 
 ---
 
