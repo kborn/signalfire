@@ -197,6 +197,7 @@ export default function EventNormalizationForm({
           </p>
         ) : null}
         <select
+          id="normalized-eventType"
           className="submissionControl"
           value={eventType}
           onChange={(event) => setEventType(parseEventType(event.target.value))}
@@ -223,6 +224,7 @@ export default function EventNormalizationForm({
           </p>
         ) : null}
         <input
+          id="normalized-event-start"
           type="datetime-local"
           className="submissionControl"
           value={startTime}
@@ -241,6 +243,7 @@ export default function EventNormalizationForm({
           </p>
         ) : null}
         <input
+          id="normalized-event-end"
           type="datetime-local"
           className="submissionControl"
           value={endTime}
@@ -268,7 +271,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-locatton-description">Location Description</label>
+        <label htmlFor="normalized-location-description">Location Description</label>
       </dt>
       <dd>
         {errors.publicLocationDescription ? (

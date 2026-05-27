@@ -1224,7 +1224,7 @@ Capabilities:
 - [x] Route published created records to public entity pages and draft created records to admin content routes for continued editorial management
 - [x] Remove moderation review debug logging and type review endpoint IDs as `number`
 - [x] Manually verify article approval, event approval, draft approval, rejection, reviewed-state display, created-content navigation display, and validation-error behavior in the browser (reported complete on 2026-05-26)
-- [ ] Add automated frontend regression coverage for moderation decision handling and validation-error rendering
+- [x] Add automated frontend regression coverage for moderation decision handling, validation-error rendering, refreshed reviewed-state display, and created-record destination routing
 - [ ] Consolidate duplicated approve/reject API error mapping and evaluate/refactor common article/event normalization controls without changing validated behavior
 
 ---

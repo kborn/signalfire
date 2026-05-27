@@ -1,10 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
 import SubmissionReviewPageContent from '@/app/admin/submissions/[id]/SubmissionReviewPageContent';
 import { postSubmissionReviewReq } from '@/lib/api/admin';
-import { within } from '@testing-library/react';
 import { SubmissionError } from '@/lib/api/error';
 
 const topics = {
@@ -115,6 +114,14 @@ Object.defineProperty(Element.prototype, 'scrollIntoView', {
   value: scrollIntoView,
 });
 
+function getReviewOutcomePanel() {
+  const panel = screen.getByRole('heading', { name: 'Review outcome' }).closest('section');
+
+  expect(panel).not.toBeNull();
+
+  return panel!;
+}
+
 describe('SubmissionReviewPageContent', () => {
   afterEach(() => {
     cleanup();
@@ -128,7 +135,7 @@ describe('SubmissionReviewPageContent', () => {
 
   it('Article publish approval normalizes and renders success', async () => {
     vi.mocked(postSubmissionReviewReq).mockResolvedValue({
-      submissionId: 3,
+      submissionId: 5,
       status: 'APPROVED',
       reviewedAt: '2026-05-25T09:00:00.000Z',
       createdRecord: {
@@ -171,12 +178,9 @@ describe('SubmissionReviewPageContent', () => {
       '/articles/how-local-climate-policy-works',
     );
 
-    const reviewOutcome = screen
-      .getByRole('heading', { name: 'Review outcome' })
-      .closest('section');
-
-    expect(reviewOutcome).not.toBeNull();
-    expect(within(reviewOutcome!).getByText('How Local Climate Policy Works')).toBeInTheDocument();
+    expect(
+      within(getReviewOutcomePanel()).getByText('How Local Climate Policy Works'),
+    ).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Approve and Publish' })).toBeDisabled();
 
@@ -189,7 +193,7 @@ describe('SubmissionReviewPageContent', () => {
 
   it('Event draft approval normalizes and renders success', async () => {
     vi.mocked(postSubmissionReviewReq).mockResolvedValue({
-      submissionId: 3,
+      submissionId: 5,
       status: 'APPROVED',
       reviewedAt: '2026-05-25T09:00:00.000Z',
       createdRecord: {
@@ -243,13 +247,8 @@ describe('SubmissionReviewPageContent', () => {
       '/admin/events/4',
     );
 
-    const reviewOutcome = screen
-      .getByRole('heading', { name: 'Review outcome' })
-      .closest('section');
-
-    expect(reviewOutcome).not.toBeNull();
     expect(
-      within(reviewOutcome!).getByText('City Hall Transit Accountability Rally'),
+      within(getReviewOutcomePanel()).getByText('City Hall Transit Accountability Rally'),
     ).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Approve as Draft' })).toBeDisabled();
@@ -263,7 +262,7 @@ describe('SubmissionReviewPageContent', () => {
 
   it('Rejection sends notes and renders a rejected outcome', async () => {
     vi.mocked(postSubmissionReviewReq).mockResolvedValue({
-      submissionId: 3,
+      submissionId: 5,
       status: 'REJECTED',
       reviewedAt: '2026-05-25T09:00:00.000Z',
     });
@@ -291,12 +290,7 @@ describe('SubmissionReviewPageContent', () => {
     expect(screen.getByLabelText('Internal notes')).toBeDisabled();
     expect(screen.getByLabelText('Title')).toBeDisabled();
 
-    const reviewOutcome = screen
-      .getByRole('heading', { name: 'Review outcome' })
-      .closest('section');
-
-    expect(reviewOutcome).not.toBeNull();
-    expect(within(reviewOutcome!).getByText('Insufficiently cited.')).toBeInTheDocument();
+    expect(within(getReviewOutcomePanel()).getByText('Insufficiently cited.')).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Reject' })).toBeDisabled();
 
@@ -331,20 +325,23 @@ describe('SubmissionReviewPageContent', () => {
     });
   });
 
-  it('blocks event approval when required normalized fields are invalid', async () => {
+  it('blocks event approval when event-specific normalized fields are invalid', async () => {
     const user = userEvent.setup();
     render(
       <SubmissionReviewPageContent submission={createPendingEventSubmission()} topics={topics} />,
     );
 
-    await user.clear(screen.getByLabelText('Title'));
-    await user.click(screen.getByRole('checkbox', { name: 'Climate' }));
+    await user.clear(screen.getByLabelText('Zip'));
+    await user.clear(screen.getByLabelText('Event End'));
+    await user.type(screen.getByLabelText('Event End'), '2026-06-11T16:00');
 
     await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
 
     expect(postSubmissionReviewReq).not.toHaveBeenCalled();
-    expect(screen.getByText('Title is required')).toBeInTheDocument();
-    expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
+    expect(
+      screen.getByText('End date and time must be after the start date and time'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Review could not be recorded')).toBeInTheDocument();
 
     await vi.waitFor(() => {
@@ -462,5 +459,58 @@ describe('SubmissionReviewPageContent', () => {
     });
 
     expect(screen.getByRole('button', { name: 'Approve and Publish' })).toBeEnabled();
+  });
+
+  it('renders a persisted approved submission without editable review actions', () => {
+    render(
+      <SubmissionReviewPageContent
+        submission={createPendingArticleSubmission({
+          status: 'APPROVED',
+          reviewedAt: '2026-05-25T09:00:00.000Z',
+          reviewNotes: 'Ready to publish.',
+          createdRecord: {
+            recordType: 'ARTICLE',
+            id: 4,
+            title: 'Climate Basics',
+            slug: 'climate-basics',
+            publishStatus: 'PUBLISHED',
+          },
+        })}
+        topics={topics}
+      />,
+    );
+
+    expect(within(getReviewOutcomePanel()).getByText('Ready to publish.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View live page' })).toHaveAttribute(
+      'href',
+      '/articles/climate-basics',
+    );
+    expect(screen.queryByText('Review recorded')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Approve and Publish' })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Internal notes')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Title')).not.toBeInTheDocument();
+  });
+
+  it('renders a persisted rejected submission without editable review actions', () => {
+    render(
+      <SubmissionReviewPageContent
+        submission={createPendingEventSubmission({
+          status: 'REJECTED',
+          reviewedAt: '2026-05-25T09:00:00.000Z',
+          reviewNotes: 'Event information could not be verified.',
+        })}
+        topics={topics}
+      />,
+    );
+
+    expect(screen.getByText('Rejected')).toBeInTheDocument();
+    expect(
+      within(getReviewOutcomePanel()).getByText('Event information could not be verified.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByText('Created article')).not.toBeInTheDocument();
+    expect(screen.queryByText('Created event')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Reject' })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Internal notes')).not.toBeInTheDocument();
+    expect(screen.queryByLabelText('Title')).not.toBeInTheDocument();
   });
 });
