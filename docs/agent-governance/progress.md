@@ -1245,6 +1245,8 @@ repository public.
 - [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
 - [ ] Add a public About page explaining the focus-to-action philosophy and why
       visitors do not need to carry every issue in order to participate
+- [ ] Improve public web error handling when API/database-backed content is
+      unavailable so visitors see a clear, non-technical recovery message
 - [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
 - [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
 - [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation

@@ -123,6 +123,7 @@ these paths are clear and accessible.
 - `/events`
 - `/events/[id]`
 - current public submission routes
+- public error and unavailable states for API/database-backed public content
 
 ### New route
 
@@ -354,6 +355,7 @@ Phase 11.5 does not include:
 - social features or user coordination tools
 - new filtering, search, or map behavior
 - backend contract expansion solely to support presentation
+- backend database retry, caching, queueing, or observability infrastructure
 - authentication implementation for admin routes
 
 ---
@@ -729,7 +731,70 @@ At minimum verify:
 
 ---
 
-## 16. Implementation Boundary And Validation
+## 16. Public Error And Unavailable States
+
+### Purpose
+
+The public web app should handle API/database-backed content failures with a
+clear user-facing message instead of exposing implementation details or leaving
+visitors with a raw framework error.
+
+This requirement covers presentation and recovery behavior in the web app. It
+does not add backend infrastructure work.
+
+### Failure cases to cover
+
+At minimum, public routes should handle:
+
+- API server unavailable
+- API request failure caused by the API's database being unavailable
+- unexpected non-404 API errors while loading public collections or detail
+  pages
+- missing public API base URL in local development
+
+The exact technical cause does not need to be diagnosed for visitors. The UI
+should communicate that the content cannot be loaded right now.
+
+### Public error copy
+
+Use a stable, non-technical message:
+
+- heading: `We could not load this page.`
+- body: `The content for this page is temporarily unavailable. Try again in a moment.`
+- primary action: `Try again`
+- secondary action when useful: `Go home`
+
+Do not render raw exception messages, API endpoint names, stack traces, Prisma
+errors, or database terminology in public error UI.
+
+### Route behavior
+
+- 404/not-found behavior remains distinct from unavailable-state behavior.
+- Detail routes should continue using not-found pages for unpublished or
+  missing records.
+- Non-404 API errors should be surfaced through public error handling.
+- The public error state should use the `Find Your Fight` visual system and
+  remain readable on mobile.
+
+### Admin boundary
+
+Admin routes may keep more operational error language where useful for local
+development, but they should not receive the public marketing treatment unless
+shared route layout changes require it.
+
+### Testing
+
+Add focused frontend coverage proving:
+
+- public error UI does not expose raw error messages
+- the retry action is present where the route error boundary supports reset
+- non-404 API failures on at least one representative public route reach the
+  public unavailable-state path
+- 404 behavior remains separate from unavailable-state behavior
+
+---
+
+## 17. Implementation Boundary And Validation
 
 ### Likely frontend touchpoints
 
@@ -744,6 +809,7 @@ including:
 - existing summary components
 - public collection and detail routes
 - public submission presentation
+- public error boundary or route-group error UI
 
 Do not change admin experience except where shared application-shell decisions
 otherwise produce an unintended regression.
