@@ -107,10 +107,18 @@ vi.mock('@/lib/api/admin', () => ({
   postSubmissionReviewReq: vi.fn(),
 }));
 
+const scrollIntoView = vi.fn();
+
+Object.defineProperty(Element.prototype, 'scrollIntoView', {
+  configurable: true,
+  value: scrollIntoView,
+});
+
 describe('SubmissionReviewPageContent', () => {
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   beforeEach(() => {
@@ -170,6 +178,12 @@ describe('SubmissionReviewPageContent', () => {
     expect(within(reviewOutcome!).getByText('How Local Climate Policy Works')).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Approve and Publish' })).toBeDisabled();
+
+    expect(window.scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   });
 
   it('Event draft approval normalizes and renders success', async () => {
@@ -238,6 +252,12 @@ describe('SubmissionReviewPageContent', () => {
     ).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Approve as Draft' })).toBeDisabled();
+
+    expect(window.scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
   });
 
   it('Rejection sends notes and renders a rejected outcome', async () => {
@@ -278,5 +298,59 @@ describe('SubmissionReviewPageContent', () => {
     expect(within(reviewOutcome!).getByText('Insufficiently cited.')).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Reject' })).toBeDisabled();
+
+    expect(window.scrollTo).toHaveBeenCalledWith({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  });
+
+  it('blocks article approval when required normalized fields are invalid', async () => {
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.clear(screen.getByLabelText('Title'));
+    await user.click(screen.getByRole('checkbox', { name: 'Climate' }));
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(postSubmissionReviewReq).not.toHaveBeenCalled();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByText('Review could not be recorded')).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+  });
+
+  it('blocks event approval when required normalized fields are invalid', async () => {
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingEventSubmission()} topics={topics} />,
+    );
+
+    await user.clear(screen.getByLabelText('Title'));
+    await user.click(screen.getByRole('checkbox', { name: 'Climate' }));
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(postSubmissionReviewReq).not.toHaveBeenCalled();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByText('Review could not be recorded')).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
   });
 });
