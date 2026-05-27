@@ -22,3 +22,4 @@ Current walkthroughs:
 - `phase-9-1-active-nav-client-component-walkthrough.md`
 - `phase-10-4-public-submission-form-walkthrough.md`
 - `phase-11-2-review-actions-walkthrough.md`
+- `phase-11-5-public-admin-layout-split-walkthrough.md`
