@@ -5,6 +5,7 @@ import type { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
 import SubmissionReviewPageContent from '@/app/admin/submissions/[id]/SubmissionReviewPageContent';
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { within } from '@testing-library/react';
+import { SubmissionError } from '@/lib/api/error';
 
 const topics = {
   items: [
@@ -345,6 +346,74 @@ describe('SubmissionReviewPageContent', () => {
     expect(screen.getByText('Title is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
     expect(screen.getByText('Review could not be recorded')).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+  });
+
+  it('maps article API validation errors to inline review fields', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
+        { field: 'normalized.title', message: 'Title is required' },
+        { field: 'reviewNotes', message: 'Review notes are too long' },
+      ]),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(postSubmissionReviewReq).toHaveBeenCalledWith(
+      expect.objectContaining({
+        decision: 'APPROVE_ARTICLE',
+        publishStatus: 'PUBLISHED',
+      }),
+      5,
+    );
+
+    expect(await screen.findByText('Review could not be recorded')).toBeInTheDocument();
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+    expect(screen.getByText('Review notes are too long')).toBeInTheDocument();
+
+    await vi.waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+  });
+
+  it('maps event API validation errors to inline review fields', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
+        { field: 'normalized.postalCode', message: 'Postal code is required' },
+        { field: 'normalized.contactEmail', message: 'Email must be valid' },
+      ]),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingEventSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(postSubmissionReviewReq).toHaveBeenCalledWith(
+      expect.objectContaining({
+        decision: 'APPROVE_EVENT',
+        publishStatus: 'PUBLISHED',
+      }),
+      5,
+    );
+
+    expect(await screen.findByText('Review could not be recorded')).toBeInTheDocument();
+    expect(screen.getByText('Postal code is required')).toBeInTheDocument();
+    expect(screen.getByText('Email must be valid')).toBeInTheDocument();
 
     await vi.waitFor(() => {
       expect(scrollIntoView).toHaveBeenCalledWith({
