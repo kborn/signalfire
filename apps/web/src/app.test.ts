@@ -2,7 +2,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 
-import HomePage from './app/page';
+import HomePage from './app/(public)/page';
 
 describe('HomePage', () => {
   function renderHomePage() {
