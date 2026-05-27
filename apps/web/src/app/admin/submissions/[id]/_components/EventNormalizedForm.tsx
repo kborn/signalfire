@@ -7,7 +7,7 @@ import {
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';
-import { ReviewFormErrors } from '@/app/admin/submissions/[id]/SubmissionReviewPageContent';
+import type { ReviewFormErrors } from './review-form.types';
 
 type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
 
@@ -30,14 +30,6 @@ function toDateTimeLocalValue(value: string | null): string {
 
   return localDate.toISOString().slice(0, 16);
 }
-
-// function fromDateTimeLocalValue(value: string): string | null {
-//   if (!value) {
-//     return null;
-//   }
-//
-//   return new Date(value).toISOString();
-// }
 
 function parseEventType(value: string): EventType {
   if (EVENT_TYPES.includes(value as EventType)) {

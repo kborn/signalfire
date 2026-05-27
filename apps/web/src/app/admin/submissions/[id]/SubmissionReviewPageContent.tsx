@@ -7,6 +7,7 @@ import ReviewOutcomePanel from './_components/ReviewOutcomePanel';
 import SubmissionReviewBadgeBar from './_components/SubmissionReviewBadgeBar';
 import ArticleNormalizationForm from './_components/ArticleNormalizedForm';
 import EventNormalizationForm from './_components/EventNormalizedForm';
+import type { ReviewFormErrors } from './_components/review-form.types';
 
 import {
   ArticleApprovalPayload,
@@ -22,6 +23,7 @@ import {
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { SubmissionError } from '@/lib/api/error';
 import {
+  parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
   validateOptionalStringMax,
@@ -30,49 +32,6 @@ import {
 
 const REVIEW_FAILURE_MESSAGE =
   'Something went wrong while sending your submission. Please try again.';
-
-function parseLocalDateTime(value: string): Date | null {
-  if (!value) {
-    return null;
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  return date;
-}
-
-export type ReviewFormErrors = {
-  form?: string;
-
-  // Article + shared fields
-  title?: string;
-  summary?: string;
-  content?: string;
-  author?: string;
-  topicSlugs?: string;
-
-  // Event fields
-  description?: string;
-  eventType?: string;
-  startTime?: string;
-  endTime?: string;
-  locationName?: string;
-  publicLocationDescription?: string;
-  addressLine1?: string;
-  addressLine2?: string;
-  city?: string;
-  region?: string;
-  country?: string;
-  postalCode?: string;
-  website?: string;
-  contactEmail?: string;
-
-  // Review metadata
-  reviewNotes?: string;
-};
 
 function mapApiFieldToUiField(field: string | undefined): keyof ReviewFormErrors {
   switch (field) {
@@ -204,7 +163,7 @@ export default function SubmissionReviewPageContent({
         };
       }, {});
 
-      setErrors((previousErrors) => ({ ...previousErrors, ...fieldErrors }));
+      setErrors(fieldErrors);
       setTimeout(() => scrollToFirstError(fieldErrors), 0);
       return;
     }
@@ -431,7 +390,7 @@ export default function SubmissionReviewPageContent({
 
     const addressLine2Error = validateOptionalStringMax(
       normalizedAddressLine2,
-      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine2,
     );
     if (addressLine2Error) {
       errors.addressLine2 = addressLine2Error;

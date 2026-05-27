@@ -41,6 +41,7 @@ async function fillRequiredEventFields() {
   await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
   await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
   await user.selectOptions(screen.getByLabelText('* Region'), 'PA');
+  await user.type(screen.getByLabelText('* ZIP Code'), '  19107  ');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -68,6 +69,7 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Location name is required')).toBeInTheDocument();
     expect(screen.getByText('Location address city is required')).toBeInTheDocument();
     expect(screen.getByText('Location address region is required')).toBeInTheDocument();
+    expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
   });
 
@@ -90,7 +92,6 @@ describe('EventSubmissionForm', () => {
     await user.type(screen.getByLabelText('Location Description (optional)'), '  Liberty Plaza  ');
     await user.type(screen.getByLabelText('Address Line 1 (optional)'), '  1 Main St  ');
     await user.type(screen.getByLabelText('Address Line 2 (optional)'), '  Ste 1A  ');
-    await user.type(screen.getByLabelText('ZIP Code (optional)'), '  19107  ');
     await user.type(screen.getByLabelText('Contact Email (optional)'), '  organizer@example.org  ');
     await user.type(screen.getByLabelText('Name (optional)'), '  Sam Submitter  ');
     await user.type(screen.getByLabelText('Email (optional)'), '  sam@example.org  ');
@@ -132,6 +133,7 @@ describe('EventSubmissionForm', () => {
     mockPostEventSubmission().mockRejectedValue(
       new SubmissionError('Request failed for submissions', 400, 'submissions', [
         { field: 'payload.endTime', message: 'End datetime must be valid' },
+        { field: 'payload.locationAddressLine2', message: 'Address line 2 is invalid' },
         { field: 'payload.locationAddressZip', message: 'Must be 32 characters or fewer' },
         { field: 'payload.contactEmail', message: 'Email must be valid' },
       ]),
@@ -141,12 +143,12 @@ describe('EventSubmissionForm', () => {
 
     const user = await fillRequiredEventFields();
     await user.type(screen.getByLabelText('End date and time (optional)'), '2026-05-14T19:00');
-    await user.type(screen.getByLabelText('ZIP Code (optional)'), '19107');
     await user.type(screen.getByLabelText('Contact Email (optional)'), 'organizer@example.org');
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
     expect(screen.getByText('End datetime must be valid')).toBeInTheDocument();
+    expect(screen.getByText('Address line 2 is invalid')).toBeInTheDocument();
     expect(screen.getByText('Must be 32 characters or fewer')).toBeInTheDocument();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
   });
@@ -190,5 +192,17 @@ describe('EventSubmissionForm', () => {
 
     expect(postEventSubmission).not.toHaveBeenCalled();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
+  });
+
+  it('requires a postal code on the client before submit', async () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredEventFields();
+    await user.clear(screen.getByLabelText('* ZIP Code'));
+
+    await user.click(screen.getByRole('button', { name: 'Submit Event' }));
+
+    expect(postEventSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
   });
 });

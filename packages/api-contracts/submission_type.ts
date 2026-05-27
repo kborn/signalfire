@@ -34,7 +34,7 @@ type SubmissionRequestEventPayload = {
   locationAddressCity: string;
   locationAddressRegion: string;
   locationAddressCountry: string;
-  locationAddressZip?: string | null;
+  locationAddressZip: string;
   contactEmail?: string | null;
   topicSlugs: string[];
   websiteUrl?: string | null;

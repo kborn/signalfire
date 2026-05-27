@@ -21,6 +21,15 @@ export const SUBMISSION_FIELD_LIMITS = {
   websiteUrl: 2000,
 } as const;
 
+export function parseLocalDateTime(value: string): Date | null {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
 export function validateRequiredString(
   value: string,
   fieldLabel: string,

@@ -1264,7 +1264,7 @@ admin feature expansion.
 
 ###### Phase Tasks:
 
-- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations

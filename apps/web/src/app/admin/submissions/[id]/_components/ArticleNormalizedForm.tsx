@@ -5,7 +5,7 @@ import {
   TopicSummary,
 } from '@signal-fire/api-contracts';
 
-import { ReviewFormErrors } from '../SubmissionReviewPageContent';
+import type { ReviewFormErrors } from './review-form.types';
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
   { submissionType: 'ARTICLE' }
