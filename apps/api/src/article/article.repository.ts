@@ -14,6 +14,14 @@ export class ArticleRepository {
     });
   }
 
+  findById(id: number): Promise<Article | null> {
+    return this.prisma.article.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  }
+
   findPublished(): Promise<Article[]> {
     return this.prisma.article.findMany({
       where: {

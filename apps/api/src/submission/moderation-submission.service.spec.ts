@@ -11,6 +11,8 @@ import {
 import { withFrozenTime } from '../../common/test/time';
 import { EntityStatus, SubmissionType } from '@prisma/client';
 import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import { ArticleRepository } from '../article/article.repository';
+import { EventRepository } from '../event/event.repository';
 
 const submission = {
   id: 1,
@@ -40,6 +42,12 @@ describe('SubmissionService', () => {
     findBySubmissionId: jest.fn(),
     findIdsBySlugs: jest.fn(),
   };
+  const articleRepoMock = {
+    findById: jest.fn(),
+  };
+  const eventRepoMock = {
+    getById: jest.fn(),
+  };
   beforeEach(async () => {
     jest.clearAllMocks();
 
@@ -48,6 +56,8 @@ describe('SubmissionService', () => {
         ModerationSubmissionService,
         { provide: SubmissionRepository, useValue: repoMock },
         { provide: TopicRepository, useValue: topicRepoMock },
+        { provide: ArticleRepository, useValue: articleRepoMock },
+        { provide: EventRepository, useValue: eventRepoMock },
       ],
     }).compile();
     service = module.get(ModerationSubmissionService);
@@ -156,6 +166,7 @@ describe('SubmissionService', () => {
 
     expect(ret).toEqual({
       id: 3,
+      reviewNotes: 'Looks good.',
       submissionType: 'ARTICLE',
       status: 'APPROVED',
       submittedAt: submittedAt.toISOString(),
@@ -183,6 +194,7 @@ describe('SubmissionService', () => {
         resourceLinks: ['https://example.org/source-one', 'https://example.org/source-two'],
         author: 'John Doe',
       },
+      createdRecord: null,
     });
     expect(repoMock.findById).toHaveBeenCalledWith(3);
     expect(topicRepoMock.findBySubmissionId).toHaveBeenCalledWith(3);
@@ -240,6 +252,7 @@ describe('SubmissionService', () => {
 
     expect(ret).toEqual({
       id: 4,
+      reviewNotes: null,
       submissionType: 'EVENT',
       status: 'PENDING',
       submittedAt: submittedAt.toISOString(),
@@ -272,6 +285,7 @@ describe('SubmissionService', () => {
         website: 'https://example.org/event',
         contactEmail: 'press@example.org',
       },
+      createdRecord: null,
     });
     expect(repoMock.findById).toHaveBeenCalledWith(4);
     expect(topicRepoMock.findBySubmissionId).toHaveBeenCalledWith(4);
@@ -370,7 +384,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({
-        article: { id: 1, status: EntityStatus.PUBLISHED, slug: slug },
+        article: { id: 1, title: 'Article title', status: EntityStatus.PUBLISHED, slug: slug },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -395,6 +409,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'ARTICLE',
           id: 1,
+          title: 'Article title',
           slug: slug,
           publishStatus: EntityStatus.PUBLISHED,
         },
@@ -427,7 +442,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveEventSubmission.mockResolvedValue({
-        event: { id: 1, status: EntityStatus.PUBLISHED },
+        event: { id: 1, title: 'Event title', status: EntityStatus.PUBLISHED },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -464,6 +479,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'EVENT',
           id: 1,
+          title: 'Event title',
           publishStatus: EntityStatus.PUBLISHED,
         },
       });
@@ -508,7 +524,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveArticleSubmission.mockResolvedValue({
-        article: { id: 1, status: EntityStatus.DRAFT, slug: slug },
+        article: { id: 1, title: 'Article title', status: EntityStatus.DRAFT, slug: slug },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -534,6 +550,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'ARTICLE',
           id: 1,
+          title: 'Article title',
           slug: slug,
           publishStatus: EntityStatus.DRAFT,
         },
@@ -566,7 +583,7 @@ describe('SubmissionService', () => {
       });
 
       repoMock.approveEventSubmission.mockResolvedValue({
-        event: { id: 1, status: EntityStatus.DRAFT },
+        event: { id: 1, title: 'Event title', status: EntityStatus.DRAFT },
       });
 
       topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
@@ -604,6 +621,7 @@ describe('SubmissionService', () => {
         createdRecord: {
           recordType: 'EVENT',
           id: 1,
+          title: 'Event title',
           publishStatus: EntityStatus.DRAFT,
         },
       });

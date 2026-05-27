@@ -87,6 +87,11 @@ These cards may be created or updated alongside task-linked syllabi in
 - [73-nullish-checks-vs-truthy-checks.md](./73-nullish-checks-vs-truthy-checks.md) - When to use `== null`, `??`, `?.`, and truthy checks
 - [74-client-wrapper-owns-decision-state.md](./74-client-wrapper-owns-decision-state.md) - Use a client wrapper and callbacks to collect child form state for moderation decisions
 - [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
+- [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
+- [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - A zero-delay timer runs later but does not guarantee React committed new DOM
+- [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper
+- [79-vitest-mock-vs-spyon.md](./79-vitest-mock-vs-spyon.md) - Replace imported module dependencies with mocks and existing object methods with spies
+- [80-react-functional-state-updates.md](./80-react-functional-state-updates.md) - Understand callback setter parameters, object merging, and direct state replacement
 
 Rule of thumb:
 

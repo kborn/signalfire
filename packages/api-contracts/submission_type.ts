@@ -34,7 +34,7 @@ type SubmissionRequestEventPayload = {
   locationAddressCity: string;
   locationAddressRegion: string;
   locationAddressCountry: string;
-  locationAddressZip?: string | null;
+  locationAddressZip: string;
   contactEmail?: string | null;
   topicSlugs: string[];
   websiteUrl?: string | null;
@@ -86,6 +86,14 @@ export type ModerationSubmissionSummary = {
   submitterEmail: string | null;
 };
 
+export type CreatedRecordSummary = {
+  recordType: SubmissionType;
+  id: number;
+  title: string;
+  slug?: string;
+  publishStatus: EntityStatus;
+};
+
 export type ModerationSubmissionDetail =
   | {
       id: number;
@@ -95,6 +103,7 @@ export type ModerationSubmissionDetail =
       submitterName: string | null;
       submitterEmail: string | null;
       reviewedAt: string | null;
+      reviewNotes: string | null;
       submittedContent: {
         title: string;
         summary: string;
@@ -103,6 +112,7 @@ export type ModerationSubmissionDetail =
         resourceLinks: string[];
         author: string | null;
       };
+      createdRecord: CreatedRecordSummary | null;
     }
   | {
       id: number;
@@ -111,6 +121,7 @@ export type ModerationSubmissionDetail =
       submittedAt: string;
       submitterName: string | null;
       submitterEmail: string | null;
+      reviewNotes: string | null;
       reviewedAt: string | null;
       submittedContent: {
         title: string;
@@ -131,6 +142,7 @@ export type ModerationSubmissionDetail =
         contactEmail: string | null;
         topics: TopicSummary[];
       };
+      createdRecord: CreatedRecordSummary | null;
     };
 
 export type ModerationReviewDecision = 'REJECT' | 'APPROVE_ARTICLE' | 'APPROVE_EVENT';
@@ -193,12 +205,7 @@ export type ModerationReviewSuccess = {
   submissionId: number;
   status: 'APPROVED' | 'REJECTED';
   reviewedAt: string;
-  createdRecord?: {
-    recordType: 'ARTICLE' | 'EVENT';
-    id: number;
-    slug?: string;
-    publishStatus: EntityStatus;
-  };
+  createdRecord?: CreatedRecordSummary;
 };
 
 export type ModerationReviewError = {

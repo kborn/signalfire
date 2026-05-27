@@ -40,6 +40,7 @@ describe('SubmissionRepository', () => {
     },
     article: {
       create: jest.fn(),
+      findUnique: jest.fn(),
     },
     event: {
       create: jest.fn(),
@@ -469,6 +470,7 @@ describe('SubmissionRepository', () => {
     };
 
     prismaMock.article.create.mockResolvedValue({ id: 10 });
+    prismaMock.article.findUnique.mockResolvedValue(null);
     prismaMock.submission.updateMany.mockResolvedValue({ count: 0 });
 
     const ret = await repository.approveArticleSubmission(input);

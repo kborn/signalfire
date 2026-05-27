@@ -1183,7 +1183,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.2 - Review Actions & State Transitions ⏳
+#### ▸ Phase 11.2 - Review Actions & State Transitions ✅
 
 ###### Phase Tasks:
 
@@ -1210,22 +1210,76 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.4 - Admin Editorial Review UI Completion ⏳
+#### ▸ Phase 11.4 - Admin Editorial Review UI Completion ✅
 
 ###### Phase Tasks:
 
-- [ ] Complete client-side approval/rejection request handling from the admin submission detail page
-- [ ] Add response processing for successful approval/rejection, including reviewed state and created-record metadata
-- [ ] Add API error handling and validation-error display for moderation approval and rejection requests
-- [ ] Make review notes fully editable and included in approval/rejection requests
-- [ ] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
-- [ ] Disable or hide review actions once a submission is no longer pending
-- [ ] Add focused frontend coverage or documented manual verification for article approval, event approval, draft approval, and rejection paths
-- [ ] Refactor common article/event normalization controls only after request handling and validation behavior are stable
+- [x] Complete client-side approval/rejection request handling from the admin submission detail page
+- [x] Add response processing for successful approval/rejection, including reviewed state and created-record metadata
+- [x] Add API error handling and validation-error display for moderation approval and rejection requests
+- [x] Make review notes fully editable and included in approval/rejection requests
+- [x] Complete field normalization from editor state to approval payloads, including article author defaulting and optional Event fields
+- [x] Disable or hide review actions once a submission is no longer pending
+- [x] Render created-record metadata immediately after approval and on refreshed/direct approved submission detail views using persisted `ModerationSubmissionDetail.createdRecord` data
+- [x] Route published created records to public entity pages and draft created records to admin content routes for continued editorial management
+- [x] Remove moderation review debug logging and type review endpoint IDs as `number`
+- [x] Manually verify article approval, event approval, draft approval, rejection, reviewed-state display, created-content navigation display, and validation-error behavior in the browser (reported complete on 2026-05-26)
+- [x] Add automated frontend regression coverage for moderation decision handling, validation-error rendering, refreshed reviewed-state display, and created-record destination routing
+- [x] Consolidate duplicated approve/reject API error mapping and evaluate common article/event normalization controls; retain separate forms because their distinct fields and behaviors do not justify a shared abstraction
 
 ---
 
-#### ▸ Phase 11.5 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.5 - Public Experience & Visual Identity ⏳
+
+###### Goal
+
+Raise the public-facing product from a coherent functional baseline to an
+intentional, portfolio-ready civic discovery experience before making the
+repository public.
+
+###### Phase Tasks:
+
+- [ ] Re-evaluate the public product name and tagline, including whether to keep `CivicSignal` or present the public brand as `Signal Fire`
+- [ ] Establish an intentional public visual direction through typography, color, spacing, imagery, and component presentation while preserving usability and accessibility
+- [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
+- [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
+- [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
+- [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation
+- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made
+
+###### Notes:
+
+- This phase demonstrates competent public UI/product presentation; it is not a speculative redesign or a deployment milestone.
+- The admin interface should remain restrained and operational; the public experience is the primary focus of visual differentiation.
+
+---
+
+#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ⏳
+
+###### Goal
+
+Prepare a credible, reviewable public source repository after the completed
+moderation workflow and public-experience pass, before continuing broader
+admin feature expansion.
+
+###### Phase Tasks:
+
+- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
+- [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
+- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
+- [ ] Establish the repository's public licensing and contribution posture
+- [ ] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
+- [ ] Make the repository public only after the readiness review is complete
+
+###### Notes:
+
+- This is a public-source/portfolio readiness checkpoint, not a Release 1 deployment milestone.
+- Admin and moderation UI source code may be public while the application remains local or otherwise non-public; any deployed environment intended for real users still requires authentication/authorization before exposing admin routes.
+
+---
+
+#### ▸ Phase 11.7 - Essential Admin Content Management ⏳
 
 ###### Phase Tasks:
 
@@ -1237,7 +1291,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.6 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.8 - Interface Hardening Handoff ⏳
 
 ###### Phase Tasks:
 
@@ -1246,6 +1300,10 @@ Capabilities:
 - [ ] Define the minimum authentication/authorization requirements that Phase 13 must satisfy before deployment
 - [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
 - [ ] Confirm Phase 11 leaves Search/Discovery and Deployment phases unblocked
+
+###### Notes:
+
+- Admin and moderation routes may remain openly reachable during local-only development, but must be protected by authentication/authorization before deployment to any environment intended for real users.
 
 ---
 
@@ -1293,18 +1351,6 @@ Capabilities:
 ###### Goal
 
 Bug fixes, polish, and observability improvements.
-
----
-
-#### ▸ Phase 15.1 - Public Brand Refresh ⏳
-
-###### Phase Tasks:
-
-- [ ] Re-evaluate the public site name before launch, including whether to keep `CivicSignal` or move the public brand to `Signal Fire`
-- [ ] Decide whether `Find your fight` becomes the primary public tagline
-- [ ] Refresh homepage hero copy so the product name and tagline are visible on the page, not only in metadata
-- [ ] Add more visual energy to the public site while preserving readability, accessibility, and the existing civic-action product scope
-- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and docs after the brand decision is made
 
 ---
 

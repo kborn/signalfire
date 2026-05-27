@@ -209,6 +209,7 @@ export function buildModerationReviewApproveArticleSuccessResponse(
     createdRecord: {
       recordType: 'ARTICLE',
       id: 10,
+      title: 'How Local Organizing Works',
       slug: 'how-local-organizing-works',
       publishStatus: 'PUBLISHED',
     },
@@ -226,6 +227,7 @@ export function buildModerationReviewApproveEventSuccessResponse(
     createdRecord: {
       recordType: 'EVENT',
       id: 20,
+      title: 'Tenant Rights Rally',
       publishStatus: 'PUBLISHED',
     },
     ...overrides,

@@ -86,10 +86,10 @@ export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
   return body as T;
 }
 
-export async function postSubmissionReview<ModerationReviewResponse>(
+export async function postSubmissionReview<ModerationReviewSuccess>(
   req: ModerationReviewRequest,
-  id,
-): Promise<ModerationReviewResponse> {
+  id: number,
+): Promise<ModerationReviewSuccess> {
   const url = `${getApiBase()}/admin/submissions/${id}/review`;
 
   const response = await fetch(url, {
@@ -102,13 +102,9 @@ export async function postSubmissionReview<ModerationReviewResponse>(
 
   try {
     body = await response.json();
-    console.log(body);
   } catch {
-    console.log('failed');
     body = null;
   }
-
-  console.log(response.status);
 
   if (!response.ok) {
     if (hasValidationErrors(body)) {
@@ -122,5 +118,5 @@ export async function postSubmissionReview<ModerationReviewResponse>(
       throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
     }
   }
-  return body as ModerationReviewResponse;
+  return body as ModerationReviewSuccess;
 }

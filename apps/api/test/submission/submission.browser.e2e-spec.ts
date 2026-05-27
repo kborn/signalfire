@@ -110,7 +110,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Location Description (optional)').fill('Liberty Square');
     await page!.getByLabel('Address Line 1 (optional)').fill('1400 John F Kennedy Blvd');
     await page!.getByLabel('Address Line 2 (optional)').fill('Ste 1A');
-    await page!.getByLabel('ZIP Code (optional)').fill('19107');
+    await page!.getByLabel('* ZIP Code').fill('19107');
     await page!.getByLabel('Economic Justice').check();
     await page!.getByLabel('Contact Email (optional)').fill('press@example.org');
     await page!.getByLabel('Name (optional)').fill('Alex Rivera');

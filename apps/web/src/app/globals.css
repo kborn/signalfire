@@ -774,6 +774,14 @@ h3 {
   text-transform: uppercase;
 }
 
+.adminBadgeBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
 .adminEmptyState {
   display: grid;
   gap: var(--space-1);
@@ -944,6 +952,113 @@ h3 {
   line-height: 1.45;
 }
 
+.adminReviewBanner {
+  border: 1px solid #9cc9a7;
+  border-radius: 8px;
+  background: #edf8f0;
+  color: #173b22;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+}
+
+.adminReviewBannerTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.adminReviewBannerText {
+  margin: 0.35rem 0 0;
+  color: #275235;
+}
+
+.adminReviewBannerError {
+  border-color: #e2a2a2;
+  background: #fff0f0;
+  color: #5c1d1d;
+}
+
+.adminReviewBannerError .adminReviewBannerText {
+  color: #7a2b2b;
+}
+
+.adminCreatedRecordLink {
+  color: #171717;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.adminCreatedRecordLink:hover {
+  color: #444444;
+}
+
+.adminCreatedRecordValue {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.adminCreatedRecord {
+  display: grid;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid #e5e7eb;
+}
+
+.adminCreatedRecordLabel {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.adminCreatedRecordTitle {
+  margin: 0 0 var(--space-1);
+  color: #171717;
+  font-weight: 700;
+}
+
+.adminCreatedRecordDetails {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--space-1);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.adminCreatedRecordDetails dt {
+  color: #6b7280;
+  font-weight: 700;
+}
+
+.adminCreatedRecordDetails dd {
+  margin: 0;
+  color: #171717;
+}
+
+.adminCreatedRecordMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.adminCreatedRecordMeta a {
+  color: #171717;
+  text-underline-offset: 0.18em;
+}
+
+.adminCreatedRecordLink {
+  width: fit-content;
+  margin-top: var(--space-1);
+  color: #171717;
+  font-weight: 500;
+  text-underline-offset: 0.18em;
+}
 /* Responsive */
 
 @media (max-width: 640px) {

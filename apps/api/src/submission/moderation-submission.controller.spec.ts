@@ -72,6 +72,7 @@ describe('ModerationSubmissionController', () => {
   it('findSubmission retrieves submission details', async () => {
     const response: ModerationSubmissionDetail = {
       id: 1,
+      reviewNotes: null,
       submissionType: 'ARTICLE',
       status: 'PENDING',
       submittedAt: '2026-05-01T10:00:00.000Z',
@@ -86,6 +87,7 @@ describe('ModerationSubmissionController', () => {
         resourceLinks: [],
         author: 'John Doe',
       },
+      createdRecord: null,
     };
     serviceMock.getModerationSubmissionDetails.mockResolvedValue(response);
 
@@ -116,6 +118,7 @@ describe('ModerationSubmissionController', () => {
       createdRecord: {
         recordType: 'ARTICLE',
         id: 10,
+        title: 'Community Submission',
         slug: 'community-submission',
         publishStatus: 'PUBLISHED',
       },

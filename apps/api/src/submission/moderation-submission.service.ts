@@ -16,6 +16,8 @@ import {
   ModerationReviewApproveArticleRequest,
   ModerationReviewApproveEventRequest,
   ModerationReviewRejectRequest,
+  EntityStatus,
+  CreatedRecordSummary,
 } from '@signal-fire/api-contracts';
 import {
   ArticleSubmissionApprovedRepositoryInput,
@@ -24,6 +26,8 @@ import {
 import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
 import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import { ArticleRepository } from '../article/article.repository';
+import { EventRepository } from '../event/event.repository';
 
 function requireSubmissionField<T>(
   value: T | null | undefined,
@@ -46,11 +50,19 @@ type ModerationSubmissionCommonParts = {
   submitterName: string | null;
   submitterEmail: string | null;
   reviewedAt: string | null;
+  reviewNotes: string | null;
   submittedContentCommon: {
     title: string;
     summary: string;
     topics: TopicSummary[];
   };
+  createdRecord: {
+    recordType: SubmissionType;
+    id: number;
+    title: string;
+    slug?: string;
+    publishStatus: EntityStatus;
+  } | null;
 };
 
 @Injectable()
@@ -58,6 +70,8 @@ export class ModerationSubmissionService {
   constructor(
     private repository: SubmissionRepository,
     private topicRepository: TopicRepository,
+    private articleRepository: ArticleRepository,
+    private eventRepository: EventRepository,
   ) {}
 
   private async requireSubmissionType(submissionId: number, expectedType: SubmissionType) {
@@ -78,8 +92,48 @@ export class ModerationSubmissionService {
     return dateString == null ? null : new Date(dateString);
   }
 
+  private async mapCreatedRecord(submission: Submission): Promise<CreatedRecordSummary | null> {
+    if (submission.articleId) {
+      const article = await this.articleRepository.findById(submission.articleId);
+
+      if (!article) {
+        throw new InternalServerErrorException(
+          `Submission ${submission.id} references missing article ${submission.articleId}`,
+        );
+      }
+
+      return {
+        recordType: 'ARTICLE',
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        publishStatus: article.status,
+      };
+    }
+
+    if (submission.eventId) {
+      const event = await this.eventRepository.getById(submission.eventId);
+
+      if (!event) {
+        throw new InternalServerErrorException(
+          `Submission ${submission.id} references missing event ${submission.eventId}`,
+        );
+      }
+
+      return {
+        recordType: 'EVENT',
+        title: event.title,
+        id: event.id,
+        publishStatus: event.status,
+      };
+    }
+
+    return null;
+  }
+
   async mapCommonSubmissionParts(submission: Submission): Promise<ModerationSubmissionCommonParts> {
     const topics: Topic[] = await this.topicRepository.findBySubmissionId(submission.id);
+
     return {
       id: submission.id,
       status: submission.status,
@@ -87,6 +141,7 @@ export class ModerationSubmissionService {
       submitterName: submission.submitterName,
       submitterEmail: submission.submitterEmail,
       reviewedAt: submission.reviewedAt ? submission.reviewedAt.toISOString() : null,
+      reviewNotes: submission.reviewNotes ? submission.reviewNotes : null,
       submittedContentCommon: {
         title: submission.title,
         summary: submission.summary,
@@ -97,6 +152,7 @@ export class ModerationSubmissionService {
           description: topic.description,
         })),
       },
+      createdRecord: await this.mapCreatedRecord(submission),
     };
   }
 
@@ -128,6 +184,7 @@ export class ModerationSubmissionService {
       submitterName: common.submitterName,
       submitterEmail: common.submitterEmail,
       reviewedAt: common.reviewedAt,
+      reviewNotes: common.reviewNotes,
       submittedContent: {
         ...common.submittedContentCommon,
         description: submission.submittedContent,
@@ -153,6 +210,7 @@ export class ModerationSubmissionService {
         website: submission.website,
         contactEmail: submission.contactEmail,
       },
+      createdRecord: common.createdRecord,
     };
   }
 
@@ -167,12 +225,14 @@ export class ModerationSubmissionService {
       submitterName: common.submitterName,
       submitterEmail: common.submitterEmail,
       reviewedAt: common.reviewedAt,
+      reviewNotes: common.reviewNotes,
       submittedContent: {
         ...common.submittedContentCommon,
         content: submission.submittedContent,
         resourceLinks: resourceLinks.map((resourceLink) => resourceLink.url),
         author: submission.author,
       },
+      createdRecord: common.createdRecord,
     };
   }
 
@@ -255,6 +315,7 @@ export class ModerationSubmissionService {
       createdRecord: {
         recordType: 'ARTICLE',
         id: article.id,
+        title: article.title,
         slug: article.slug,
         publishStatus: article.status,
       },
@@ -301,6 +362,7 @@ export class ModerationSubmissionService {
       createdRecord: {
         recordType: 'EVENT',
         id: event.id,
+        title: event.title,
         publishStatus: event.status,
       },
     };

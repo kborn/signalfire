@@ -8,11 +8,6 @@ import {
   FindModerationSubmissionsInput,
   RejectSubmissionRepositoryInput,
 } from './submission.repository.types';
-import { Prisma } from '@prisma/client';
-
-function isUniqueConstraintError(error: unknown): error is Prisma.PrismaClientKnownRequestError {
-  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002';
-}
 
 class SubmissionApprovalClaimError extends Error {}
 
@@ -141,30 +136,27 @@ export class SubmissionRepository {
     try {
       return await this.prisma.$transaction(async (tx) => {
         const { topicIds, ...articleData } = input.articleData;
-        let article: Article;
-        try {
-          article = await tx.article.create({
-            data: {
-              ...articleData,
-              topicArticles: {
-                create: this.buildTopicCreates(topicIds),
-              },
+
+        // 1. Check if the slug already exists
+        const existingArticle = await tx.article.findUnique({
+          where: { slug: articleData.slug },
+          select: { id: true },
+        });
+
+        // 2. Adjust the slug conditionally before running the create statement
+        const finalSlug = existingArticle
+          ? `${articleData.slug}-${new Date().getTime()}`
+          : articleData.slug;
+
+        const article = await tx.article.create({
+          data: {
+            ...articleData,
+            slug: finalSlug,
+            topicArticles: {
+              create: this.buildTopicCreates(topicIds),
             },
-          });
-        } catch (error) {
-          if (!isUniqueConstraintError(error)) {
-            throw error;
-          }
-          article = await tx.article.create({
-            data: {
-              ...articleData,
-              slug: `${input.articleData.slug}-${input.submissionId}`,
-              topicArticles: {
-                create: this.buildTopicCreates(topicIds),
-              },
-            },
-          });
-        }
+          },
+        });
 
         const claim = await tx.submission.updateMany({
           where: {

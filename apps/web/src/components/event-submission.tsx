@@ -7,6 +7,7 @@ import { SubmissionError } from '@/lib/api/error';
 import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
 import {
   mapSubmissionApiFieldToUiField,
+  parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
   validateOptionalStringMax,
@@ -86,7 +87,7 @@ type EventSubmissionFormProps = {
 
 type FormSubmitHandler = NonNullable<ComponentProps<'form'>['onSubmit']>;
 
-type ArticleSubmissionFormErrors = {
+type EventSubmissionFormErrors = {
   title?: string;
   summary?: string;
   description?: string;
@@ -138,7 +139,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
-  const [errors, setErrors] = useState<ArticleSubmissionFormErrors>({});
+  const [errors, setErrors] = useState<EventSubmissionFormErrors>({});
   // ------------------------------------
 
   const handleToggle = (topic: string) => {
@@ -149,19 +150,6 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           : [...prev, topic], // Add if not checked
     );
   };
-
-  function parseLocalDateTime(value: string): Date | null {
-    if (!value) {
-      return null;
-    }
-
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      return null;
-    }
-
-    return date;
-  }
 
   function mapApiFieldToUiField(field: string): string | null {
     const sharedField = mapSubmissionApiFieldToUiField(field);
@@ -186,9 +174,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         return 'locationName';
       case 'payload.publicLocationDescription':
         return 'publicLocationDescription';
-      case 'payload.addressLine1':
+      case 'payload.locationAddressLine1':
         return 'addressLine1';
-      case 'payload.addressLine2':
+      case 'payload.locationAddressLine2':
         return 'addressLine2';
       case 'payload.locationAddressCity':
         return 'city';
@@ -234,7 +222,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const normalizedPublicLocationDescription = publicLocationDescription.trim() || null;
     const normalizedAddressLine1 = addressLine1.trim() || null;
     const normalizedAddressLine2 = addressLine2.trim() || null;
-    const normalizedPostalCode = postalCode.trim() || null;
+    const normalizedPostalCode = postalCode.trim();
     const normalizedContactEmail = contactEmail.trim() || null;
     const normalizedWebsiteUrl = websiteUrl.trim() || null;
     const normalizedSubmitterName = submitterName.trim() || null;
@@ -243,7 +231,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     const startDate = parseLocalDateTime(normalizedStartAt);
     const endDate = normalizedEndAt ? parseLocalDateTime(normalizedEndAt) : null;
 
-    const errors: ArticleSubmissionFormErrors = {};
+    const errors: EventSubmissionFormErrors = {};
     const titleError = validateRequiredString(
       normalizedTitle,
       'Title',
@@ -344,14 +332,15 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
     const addressLine2Error = validateOptionalStringMax(
       normalizedAddressLine2,
-      SUBMISSION_FIELD_LIMITS.locationAddressLine1,
+      SUBMISSION_FIELD_LIMITS.locationAddressLine2,
     );
     if (addressLine2Error) {
       errors.addressLine2 = addressLine2Error;
     }
 
-    const postalCodeError = validateOptionalStringMax(
+    const postalCodeError = validateRequiredString(
       normalizedPostalCode,
+      'Postal Code',
       SUBMISSION_FIELD_LIMITS.locationAddressZip,
     );
     if (postalCodeError) {
@@ -671,7 +660,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
             <section className="submissionField">
               <label className="submissionLabel">
-                <span>ZIP Code (optional)</span>
+                <span>* ZIP Code</span>
                 <input
                   className={'submissionControl'}
                   value={postalCode}
