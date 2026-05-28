@@ -14,8 +14,10 @@ describe('HomePage', () => {
 
     expect(markup).toContain('Find Your Fight');
     expect(markup).toContain(
-      'The world demands your attention from every direction. Focus on the issue that matters\n' +
-        '          most to you, and find a way to act.',
+      'The world keeps throwing more at you: another crisis, another headline, ' +
+        'another fight that matters. If everything feels urgent and you are not sure where to begin, ' +
+        'start here. Find the issue that matters most to you, learn what is at stake, and take one ' +
+        'concrete step. Find your fight, then show up for it.',
     );
   });
 

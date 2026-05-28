@@ -7,9 +7,10 @@ export default function HomePage() {
         <h1 className="pageTitle">Find Your Fight</h1>
 
         <p className="page-intro">
-          If you are angry, scared, and unsure what to do, start here. Find the issue that matters
-          most to you, learn what&#39;s at stake, and take one concrete step. Find your fight, then
-          show up for it.
+          The world keeps throwing more at you: another crisis, another headline, another fight that
+          matters. If everything feels urgent and you are not sure where to begin, start here. Find
+          the issue that matters most to you, learn what is at stake, and take one concrete step.
+          Find your fight, then show up for it.
         </p>
 
         <div className="ctaGroup">
