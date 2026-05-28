@@ -12,9 +12,10 @@ describe('HomePage', () => {
   it('renders the homepage heading and supporting description', () => {
     const markup = renderHomePage();
 
-    expect(markup).toContain('Learn what matters. Take meaningful action.');
+    expect(markup).toContain('Find Your Fight');
     expect(markup).toContain(
-      'Explore civic issues, understand how they affect real people, and find clear actions you can take',
+      'The world demands your attention from every direction. Focus on the issue that matters\n' +
+        '          most to you, and find a way to act.',
     );
   });
 

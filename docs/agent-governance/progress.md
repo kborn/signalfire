@@ -1274,6 +1274,13 @@ admin feature expansion.
 ###### Phase Tasks:
 
 - [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
+      `apps/web/src/components/` ownership and decide whether submission-review
+      components should remain route-local or move into shared component
+      directories before public repository visibility
+- [ ] Review the shared Markdown rendering component currently named
+      `article-body`/`ArticleBody` and decide whether to rename it to reflect
+      that it is used by both Article and Event detail pages
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
@@ -1285,6 +1292,13 @@ admin feature expansion.
 
 - This is a public-source/portfolio readiness checkpoint, not a Release 1 deployment milestone.
 - Admin and moderation UI source code may be public while the application remains local or otherwise non-public; any deployed environment intended for real users still requires authentication/authorization before exposing admin routes.
+- Route-local admin submission components may be appropriate while they are
+  tightly coupled to `/admin/submissions/[id]`, but Phase 11.6 should make that
+  ownership explicit and clean up naming if any component has become reusable
+  across admin routes.
+- If the Markdown renderer remains shared by Article and Event detail pages,
+  its public name should describe Markdown rendering rather than one content
+  type.
 
 ---
 

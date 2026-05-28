@@ -149,18 +149,75 @@ p {
   gap: var(--space-2);
 }
 
-.home-how-it-works {
+.home-how-it-works,
+.home-philosophy {
   padding: var(--space-5) 0 0;
   border-top: 1px solid #c9c9c9;
 }
 
-.home-how-it-works h2 {
+.home-philosophy {
+  margin-bottom: var(--space-5);
+}
+
+.home-how-it-works h2,
+.home-philosophy h2 {
   font-size: 1.5rem;
 }
 
-.home-how-it-works p {
+.home-how-it-works p,
+.home-philosophy p {
   max-width: 60ch;
   line-height: 1.6;
+}
+
+.getting-started a {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.about-hero,
+.about-body,
+.about-journey,
+.about-actions {
+  max-width: 760px;
+}
+
+.about-body,
+.about-journey,
+.about-actions {
+  padding-top: var(--space-5);
+  border-top: 1px solid #c9c9c9;
+}
+
+.about-body,
+.about-journey {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.about-body p,
+.about-actions p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+.about-steps {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.about-step {
+  display: grid;
+  gap: var(--space-0);
+  padding: var(--space-3);
+  border: 1px solid #c9c9c9;
+  border-radius: 16px;
+}
+
+.about-step h3 {
+  font-size: 1.25rem;
+  line-height: 1.2;
 }
 
 .home-hero {
