@@ -1229,7 +1229,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.5 - Public Experience & Visual Identity ⏳
+#### ▸ Phase 11.5 - Public Experience & Visual Identity ✅
 
 ###### Goal
 
@@ -1247,7 +1247,7 @@ repository public.
 - [x] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
 - [x] Add a public About page explaining the focus-to-action philosophy and why
       visitors do not need to carry every issue in order to participate
-- [ ] Improve public web error handling when API/database-backed content is
+- [x] Improve public web error handling when API/database-backed content is
       unavailable so visitors see a clear, non-technical recovery message
 - [x] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
 - [x] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made

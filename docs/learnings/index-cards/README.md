@@ -93,6 +93,7 @@ These cards may be created or updated alongside task-linked syllabi in
 - [79-vitest-mock-vs-spyon.md](./79-vitest-mock-vs-spyon.md) - Replace imported module dependencies with mocks and existing object methods with spies
 - [80-react-functional-state-updates.md](./80-react-functional-state-updates.md) - Understand callback setter parameters, object merging, and direct state replacement
 - [81-next-route-groups.md](./81-next-route-groups.md) - Use `(group)` folders to separate layout ownership without changing URLs
+- [82-browser-request-vs-server-render-api-call.md](./82-browser-request-vs-server-render-api-call.md) - Why Chrome Network may show the Next page response instead of the backend API request
 
 Rule of thumb:
 
