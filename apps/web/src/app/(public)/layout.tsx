@@ -8,19 +8,21 @@ export const metadata: Metadata = {
 
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <div className="container site-main publicShell">
-      <header className="site-header">
-        <nav className="site-nav">
-          <NavLink href="/">Home</NavLink>
-          <NavLink href="/topics">Issues</NavLink>
-          <NavLink href="/articles">Articles</NavLink>
-          <NavLink href="/actions">Actions</NavLink>
-          <NavLink href="/events">Events</NavLink>
-          <NavLink href="/about">About</NavLink>
-          <NavLink href="/submit">Submit a Resource</NavLink>
-        </nav>
-      </header>
-      <main>{children}</main>
+    <div className="publicShell">
+      <div className="container site-main publicContent">
+        <header className="site-header">
+          <nav className="site-nav">
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/topics">Issues</NavLink>
+            <NavLink href="/articles">Articles</NavLink>
+            <NavLink href="/actions">Actions</NavLink>
+            <NavLink href="/events">Events</NavLink>
+            <NavLink href="/about">About</NavLink>
+            <NavLink href="/submit">Submit a Resource</NavLink>
+          </nav>
+        </header>
+        <main>{children}</main>
+      </div>
     </div>
   );
 }

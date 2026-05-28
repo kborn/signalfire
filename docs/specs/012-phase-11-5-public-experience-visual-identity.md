@@ -282,26 +282,30 @@ Required usage:
 
 ### Color palette
 
-Use this public palette as the implementation baseline:
+Use semantic public color tokens as the implementation baseline. Token names
+should describe the role the color plays, not the current palette name, so the
+visual direction can be revised later by changing values in one place.
 
-| Token            | Value     | Use                                                     |
-| ---------------- | --------- | ------------------------------------------------------- |
-| `--color-paper`  | `#F6F1E8` | Public page background                                  |
-| `--color-ink`    | `#181713` | Primary text and high-emphasis controls                 |
-| `--color-forest` | `#233A32` | Primary brand surface and primary CTA                   |
-| `--color-ember`  | `#C45132` | Small emphasis, selected/active accent, and action cues |
-| `--color-sand`   | `#E9DFD0` | Supporting panels and quiet highlighted content         |
-| `--color-stone`  | `#CFC1AF` | Dividers and default borders                            |
-| `--color-muted`  | `#5D584F` | Secondary text and metadata                             |
-| `--color-error`  | `#A8382B` | Validation/error text and borders                       |
+| Token                   | Initial value | Use                                                     |
+| ----------------------- | ------------- | ------------------------------------------------------- |
+| `--color-page-bg`       | `#F6F1E8`     | Public page background                                  |
+| `--color-text-primary`  | `#181713`     | Primary text and high-emphasis controls                 |
+| `--color-brand-primary` | `#233A32`     | Primary brand surface and primary CTA                   |
+| `--color-brand-accent`  | `#C45132`     | Small emphasis, selected/active accent, and action cues |
+| `--color-surface-soft`  | `#E9DFD0`     | Supporting panels and quiet highlighted content         |
+| `--color-border-subtle` | `#CFC1AF`     | Dividers and default borders                            |
+| `--color-text-muted`    | `#5D584F`     | Secondary text and metadata                             |
+| `--color-status-error`  | `#A8382B`     | Validation/error text and borders                       |
 
 Color rules:
 
-- default public pages use paper backgrounds and ink text
-- use forest for high-confidence primary actions and header/brand accents
-- reserve ember for purposeful emphasis; do not flood pages with orange blocks
-- keep body copy high contrast and do not place muted text on sand unless it
-  remains accessible
+- default public pages use `--color-page-bg` and `--color-text-primary`
+- use `--color-brand-primary` for high-confidence primary actions and
+  header/brand accents
+- reserve `--color-brand-accent` for purposeful emphasis; do not flood pages
+  with accent blocks
+- keep body copy high contrast and do not place muted text on soft surfaces
+  unless it remains accessible
 - forms, focus states, and error states must remain legible and not depend on
   color alone
 
@@ -402,7 +406,7 @@ Submission action:
 
 - label: `Submit a Resource`
 - destination: `/submit`
-- treat as a restrained outlined or sand-surface action, not the primary hero
+- treat as a restrained outlined or soft-surface action, not the primary hero
   CTA
 
 ### Header behavior
@@ -410,7 +414,7 @@ Submission action:
 - Desktop: wordmark sits left; navigation and submission action sit right.
 - Small screens: allow the wordmark and nav/action row to wrap cleanly without
   introducing a menu interaction in this phase.
-- Active navigation state should use typography plus the ember accent, such as
+- Active navigation state should use typography plus the brand accent, such as
   an underline or bottom border.
 - All navigation and CTA focus styles must be clearly visible.
 
@@ -434,21 +438,21 @@ Admin page layout is not required to adopt the expanded public container.
 
 Primary CTA:
 
-- forest background with paper text
+- brand-primary background with page-background text
 - rounded but not oversized
 - used for the most important next step on a page
 
 Secondary CTA:
 
-- transparent or paper background
-- forest border and ink/forest text
+- transparent or page-background surface
+- brand-primary border and primary/brand-primary text
 - used for adjacent discovery pathways
 
 Text action link:
 
-- ink or forest text
+- primary or brand-primary text
 - visible underline behavior on hover/focus
-- optional ember arrow/accent only if it remains subtle
+- optional brand-accent arrow/accent only if it remains subtle
 
 Required states:
 
@@ -460,7 +464,7 @@ Required states:
 ### Section labels
 
 Use short uppercase sans-serif eyebrow labels sparingly to establish journey
-orientation. They may use muted or ember text, but should not overpower
+orientation. They may use muted or brand-accent text, but should not overpower
 headings.
 
 Approved examples:
@@ -480,7 +484,7 @@ editorial preview surfaces:
   selection is the primary journey entry.
 - Article, Action, and Event collections should remain scannable lists or
   simple panels rather than image-heavy cards.
-- Use sand backgrounds or stone rules selectively to separate content.
+- Use soft surfaces or subtle borders selectively to separate content.
 - Keep titles, summaries, and critical metadata visible without hover.
 
 Preview content requirements:
@@ -523,7 +527,7 @@ feel calm and trustworthy rather than promotional:
 
 - use the new wordmark, typography, palette, and shared public shell
 - retain existing validation and form behavior
-- use sand or paper panels to organize long forms where useful
+- use soft-surface or page-background panels to organize long forms where useful
 - keep controls high contrast and easy to scan
 - do not change submission contracts or moderation meaning in this visual phase
 
@@ -554,8 +558,8 @@ The hero should contain:
 - primary CTA: `Explore Issues`
 - secondary CTA: `Why This Exists`
 
-Use a strong text-led composition. A quiet forest or sand graphic panel may
-balance the hero, but hero imagery is not required.
+Use a strong text-led composition. A quiet brand-primary or soft-surface
+graphic panel may balance the hero, but hero imagery is not required.
 
 ### Issue-first journey section
 
