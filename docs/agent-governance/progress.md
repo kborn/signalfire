@@ -1279,7 +1279,7 @@ admin feature expansion.
 
 ###### Phase Tasks:
 
-- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [x] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
 - [x] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
       `apps/web/src/components/` ownership and decide whether submission-review
       components should remain route-local or move into shared component
@@ -1297,13 +1297,13 @@ admin feature expansion.
 - [ ] Verify representative public routes at mobile, tablet, and desktop
       widths after the Phase 11.5 visual refresh, including homepage, About,
       one detail route, Events, submit landing, and one submit form path
-- [ ] Prepare credible seed/demo content and screenshot-ready primary flows
+- [x] Prepare credible seed/demo content and screenshot-ready primary flows
       for portfolio presentation before making the repository public
-- [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
-- [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
-- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
-- [ ] Establish the repository's public licensing and contribution posture
-- [ ] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
+- [x] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
+- [x] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
+- [x] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
+- [x] Establish the repository's public licensing and contribution posture
+- [x] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
 - [ ] Make the repository public only after the readiness review is complete
 
 ###### Notes:
@@ -1327,6 +1327,31 @@ admin feature expansion.
   header alignment, error actions, submit option cards, and admin created-record
   metadata. Manual viewport verification remains tracked separately because CSS
   coverage and visual QA are different tasks.
+- Demo content was reviewed for screenshot readiness on 2026-05-28. The demo
+  seed now includes multiple published public events, and
+  `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md` records the
+  recommended public/admin screenshot paths and checks.
+- The focused cleanup scan on 2026-05-28 removed a stale `SignalFire Staff`
+  fixture from an article e2e test. Remaining `CivicSignal` references are
+  historical/spec context or superseded-decision records rather than active
+  public UI copy.
+- The public-repository audit on 2026-05-28 found only tracked example env files
+  in current files/history. Local `.env`, `.env.local`, `.DS_Store`, and
+  `.turbo` artifacts are present on disk but ignored and not tracked.
+- The root README was refreshed on 2026-05-28 with current scope, setup,
+  commands, architecture, demo review guidance, roadmap status, and the admin
+  deployment caveat. It explicitly states that public source visibility is not
+  production deployment readiness.
+- Phase 11.6 validation passed on 2026-05-28 with `pnpm typecheck` and
+  `pnpm test`. The first sandboxed `pnpm test` run failed because API route
+  tests could not bind local HTTP ports (`listen EPERM`); rerunning with local
+  port binding allowed the suite to complete successfully across lint, build,
+  API tests, and web tests. Focused API article e2e coverage remains
+  environment-blocked locally by missing Testcontainers container runtime.
+- The repository licensing posture was set on 2026-05-28 to public-source for
+  portfolio review, but not open-source licensed for reuse. Package metadata is
+  marked `UNLICENSED`, no `LICENSE` file is present, and external contributions
+  are not being solicited until a formal policy is added.
 - Phase 11.6 CSS cleanup should verify both class usage and responsive
   coverage, not just visual appearance at the default desktop viewport.
 
