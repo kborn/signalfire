@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
 import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
+import { SubmissionGuidance } from '@/components/submission-guidance';
 import {
   mapSubmissionApiFieldToUiField,
   parseLocalDateTime,
@@ -461,6 +462,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           <p className="page-intro">Share an event others can attend and participate in</p>
           <p className="metaText">Submissions are reviewed before publication.</p>
           <p className="metaText">Fields marked with * are required.</p>
+          <SubmissionGuidance />
           <section className="submissionSection">
             <h2>Basic Information</h2>
             <section className="submissionField">

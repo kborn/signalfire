@@ -22,7 +22,7 @@ const article = {
   summary: 'A short article summary.',
   content: 'Full article content.',
   status: 'PUBLISHED',
-  author: 'SignalFire Staff',
+  author: 'Find Your Fight Editorial',
   createdAt: date,
   publishedAt: date,
   updatedAt: date,

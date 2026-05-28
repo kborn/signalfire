@@ -7,8 +7,8 @@ describe('ChooseSubmitTypePage', () => {
   it('renders article and event submission entry links', async () => {
     const markup = renderToStaticMarkup(ChooseSubmitTypePage());
 
-    expect(markup).toContain('Submit Content');
-    expect(markup).toContain('Share an article or event to help others learn and take action');
+    expect(markup).toContain('Share a Resource');
+    expect(markup).toContain('Submit an article or event for review.');
     expect(markup).toContain('href="/submit/article"');
     expect(markup).toContain('Submit an Article');
     expect(markup).toContain(

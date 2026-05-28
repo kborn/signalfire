@@ -593,6 +593,60 @@ metadata, and other externally visible product language.
 - Internal documentation, repo paths, and implementation references may still
   use `SignalFire` where the repository/project identity is what matters.
 
+###### Superseded
+
+This public-name decision is superseded by `Public product name is Find Your
+Fight` dated 2026-05-27. It remains recorded here as historical context for
+completed UI work.
+
+---
+
+---
+
+### ► Public product name is Find Your Fight
+
+###### 2026-05-27
+
+---
+
+###### Decision
+
+`Find Your Fight` is the public product name for Phase 11.5 and subsequent
+public-facing work. It replaces `CivicSignal` in public UI copy, metadata, and
+branding when those surfaces are updated through the active visual-identity
+work. `SignalFire` remains the repository and internal project name.
+
+The public identity is grounded in focused civic participation: people may be
+overwhelmed or paralyzed when many issues compete for their attention, and the
+product helps them select an issue that matters to them, understand it, and
+take concrete action.
+
+###### Rationale
+
+- `Find Your Fight` communicates the product promise directly rather than
+  requiring an abstract name to be explained.
+- The name aligns with the existing Learn -> Decide -> Act platform model and
+  places personal agency at the beginning of the user journey.
+- The identity acknowledges attention overload without requiring visitors to
+  respond to every issue before taking meaningful action.
+- The approved philosophy supports a public About page that explains the
+  product without introducing new backend behavior or community features.
+
+###### Implications
+
+- New or refreshed public branding, metadata, and navigation-adjacent copy
+  should use `Find Your Fight` rather than `CivicSignal`.
+- Phase 11.5 must include a public About surface that explains focused
+  participation as the product philosophy.
+- Public messaging should communicate that choosing a focus enables action; it
+  must not suggest indifference, social networking, or platform-hosted
+  organizing functionality that does not exist.
+- Topics should be presented as the natural starting point for visitors seeking
+  to identify an issue, while Articles, Actions, and Events support learning
+  and participation.
+- `findmyfight.com` is a candidate domain only and does not define product
+  scope or deployment readiness.
+
 ---
 
 ---

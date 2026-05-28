@@ -1229,7 +1229,7 @@ Capabilities:
 
 ---
 
-#### ▸ Phase 11.5 - Public Experience & Visual Identity ⏳
+#### ▸ Phase 11.5 - Public Experience & Visual Identity ✅
 
 ###### Goal
 
@@ -1239,18 +1239,32 @@ repository public.
 
 ###### Phase Tasks:
 
-- [ ] Re-evaluate the public product name and tagline, including whether to keep `CivicSignal` or present the public brand as `Signal Fire`
-- [ ] Establish an intentional public visual direction through typography, color, spacing, imagery, and component presentation while preserving usability and accessibility
-- [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
-- [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
-- [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
-- [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation
-- [ ] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made
+- [x] Select `Find Your Fight` as the public product name and define its
+      focus-to-action brand philosophy
+- [x] Establish an intentional public visual direction through typography,
+      color, spacing, and component presentation while preserving usability
+      and accessibility
+- [x] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
+- [x] Add a public About page explaining the focus-to-action philosophy and why
+      visitors do not need to carry every issue in order to participate
+- [x] Improve public web error handling when API/database-backed content is
+      unavailable so visitors see a clear, non-technical recovery message
+- [x] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
+- [x] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made
 
 ###### Notes:
 
 - This phase demonstrates competent public UI/product presentation; it is not a speculative redesign or a deployment milestone.
 - The admin interface should remain restrained and operational; the public experience is the primary focus of visual differentiation.
+- Canonical product/UI requirements for this subphase are defined in
+  `docs/specs/012-phase-11-5-public-experience-visual-identity.md`.
+- `findmyfight.com` is a candidate public domain; domain registration and
+  deployment decisions do not block Phase 11.5 implementation.
+- Remaining Phase 11.5 closeout should stay narrow: header/homepage CTA
+  alignment with the spec and public unavailable/error UI.
+- Responsive review and seed/demo content were moved to the Phase 11.6
+  readiness checkpoint because they are portfolio-readiness validation tasks,
+  not blockers for the core Phase 11.5 visual implementation.
 
 ---
 
@@ -1265,6 +1279,28 @@ admin feature expansion.
 ###### Phase Tasks:
 
 - [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [ ] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
+      `apps/web/src/components/` ownership and decide whether submission-review
+      components should remain route-local or move into shared component
+      directories before public repository visibility
+- [ ] Review the shared Markdown rendering component currently named
+      `article-body`/`ArticleBody` and decide whether to rename it to reflect
+      that it is used by both Article and Event detail pages
+- [ ] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
+      misleading classes after the Phase 11.5 public visual refresh and admin
+      route-group split
+- [ ] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
+      and confirm every layout class that needs mobile-specific behavior is
+      represented in the mobile section or intentionally does not need an
+      override
+- [ ] Verify representative public routes at mobile, tablet, and desktop
+      widths after the Phase 11.5 visual refresh, including homepage, About,
+      one detail route, Events, submit landing, and one submit form path
+- [ ] Prepare credible seed/demo content and screenshot-ready primary flows
+      for portfolio presentation before making the repository public
+- [ ] Decide whether public collection cards should be fully clickable or keep
+      title-only links, then align hover/focus affordances and accessibility
+      behavior with that decision
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
@@ -1276,6 +1312,15 @@ admin feature expansion.
 
 - This is a public-source/portfolio readiness checkpoint, not a Release 1 deployment milestone.
 - Admin and moderation UI source code may be public while the application remains local or otherwise non-public; any deployed environment intended for real users still requires authentication/authorization before exposing admin routes.
+- Route-local admin submission components may be appropriate while they are
+  tightly coupled to `/admin/submissions/[id]`, but Phase 11.6 should make that
+  ownership explicit and clean up naming if any component has become reusable
+  across admin routes.
+- If the Markdown renderer remains shared by Article and Event detail pages,
+  its public name should describe Markdown rendering rather than one content
+  type.
+- Phase 11.6 CSS cleanup should verify both class usage and responsive
+  coverage, not just visual appearance at the default desktop viewport.
 
 ---
 

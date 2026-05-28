@@ -4,6 +4,7 @@ import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
+import { SubmissionGuidance } from '@/components/submission-guidance';
 import {
   mapSubmissionApiFieldToUiField,
   SUBMISSION_FIELD_LIMITS,
@@ -249,6 +250,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           </p>
           <p className="metaText">Submissions are reviewed before publication.</p>
           <p className="metaText">Fields marked with * are required.</p>
+          <SubmissionGuidance />
           <section className="submissionSection">
             <h2>Basic Information</h2>
             <section className="submissionField">

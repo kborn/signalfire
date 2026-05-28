@@ -10,3 +10,14 @@ Primary discovery paths include:
 4. Event discovery
 
 Topics connect all content types together.
+
+## Phase 11.5 Public Identity Emphasis
+
+Under the `Find Your Fight` public identity, issue exploration is the primary
+homepage starting point. Public copy may call Topics `Issues` when describing
+the visitor journey, while the route and domain model remain Topic-based.
+Visitors choose an issue to focus on, use Articles to understand it, and use
+Actions or Events to participate.
+
+This emphasis does not restrict direct entry through Articles, Actions, or
+Events and does not introduce personalization or recommendation behavior.

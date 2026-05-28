@@ -116,7 +116,7 @@ describe('EventService', () => {
         summary: 'A short article summary.',
         content: 'Full article content.',
         status: EntityStatus.PUBLISHED,
-        author: 'SignalFire Staff',
+        author: 'Find Your Fight Editorial',
         createdAt: ACTION_TEST_DATE,
         publishedAt: ACTION_TEST_DATE,
         updatedAt: ACTION_TEST_DATE,

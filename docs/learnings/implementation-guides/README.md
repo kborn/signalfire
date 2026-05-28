@@ -45,4 +45,5 @@ Current Phase 11 guides:
 - `phase-11-2-review-actions-guide.md`
 - `phase-11-3-editorial-normalization-guide.md`
 - `phase-11-4-react-rendering-dom-and-browser-timing-guide.md`
+- `phase-11-5-next-route-groups-and-css-boundaries-guide.md`
 - `phase-11-moderation-state-and-admin-form-guide.md`

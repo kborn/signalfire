@@ -13,12 +13,19 @@ function isActivePath(href: string, pathname: string): boolean {
   return pathname === href || pathname.startsWith(href + '/');
 }
 
-export default function NavLink({ href, children }) {
+type NavLinkProps = {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+};
+
+export default function NavLink({ href, children, className }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = isActivePath(href, pathname);
   return (
     <Link
       href={href}
+      className={className}
       // Dynamically set the aria-current attribute
       aria-current={isActive ? 'page' : undefined}
     >
