@@ -1288,6 +1288,9 @@ admin feature expansion.
       and confirm every layout class that needs mobile-specific behavior is
       represented in the mobile section or intentionally does not need an
       override
+- [ ] Decide whether public collection cards should be fully clickable or keep
+      title-only links, then align hover/focus affordances and accessibility
+      behavior with that decision
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations

@@ -14,6 +14,7 @@
   --color-brand-primary: #233a32;
   --color-brand-accent: #c45132;
   --color-surface-soft: #e9dfd0;
+  --color-field-bg: #fffaf2;
   --color-border-subtle: #cfc1af;
   --color-text-muted: #5d584f;
   --color-status-error: #a8382b;
@@ -75,8 +76,7 @@ p {
 }
 
 .publicShell h1,
-.publicShell h2,
-.publicShell .collectionItemTitle {
+.publicShell h2 {
   font-family: var(--font-display), Georgia, 'Times New Roman', serif;
   font-weight: 700;
 }
@@ -427,9 +427,9 @@ h3 {
 }
 
 .collectionItemTitle {
-  font-size: clamp(1.45rem, 2.2vw, 2rem);
-  line-height: 1.12;
-  letter-spacing: -0.025em;
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
 }
 
 .collectionItemSummary {
@@ -808,7 +808,7 @@ h3 {
 .publicShell .submissionControl,
 .publicShell .submissionTextarea {
   border-color: var(--color-border-subtle);
-  background: var(--color-page-bg);
+  background: var(--color-field-bg);
   color: var(--color-text-primary);
 }
 
