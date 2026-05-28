@@ -23,6 +23,7 @@ It is the canonical answer to: “Where are we in the plan?”
 | [13](#-phase-13--deployment-infrastructure-)       | Deployment Infrastructure        | ⏳              |
 | [14](#-phase-14--analytics-)                       | Analytics                        | ⏳              |
 | [15](#-phase-15--release-stabilization-)           | Release Stabilization            | ⏳              |
+| [15.5](#-phase-155--final-public-ui-polish-)       | Final Public UI Polish           | ⏳              |
 | [16](#-phase-16--public-launch-)                   | Public Launch                    | ⏳              |
 
 ---
@@ -1298,9 +1299,6 @@ admin feature expansion.
       one detail route, Events, submit landing, and one submit form path
 - [ ] Prepare credible seed/demo content and screenshot-ready primary flows
       for portfolio presentation before making the repository public
-- [ ] Decide whether public collection cards should be fully clickable or keep
-      title-only links, then align hover/focus affordances and accessibility
-      behavior with that decision
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
@@ -1396,6 +1394,34 @@ Capabilities:
 ###### Goal
 
 Bug fixes, polish, and observability improvements.
+
+---
+
+### ► Phase 15.5 — Final Public UI Polish ⏳
+
+###### Goal
+
+Perform one final launch-adjacent public UI polish pass after core release
+stabilization and before Phase 16 public launch.
+
+###### Phase Tasks:
+
+- [ ] Decide whether public collection cards should be fully clickable or keep
+      title-only links, then align hover/focus affordances and accessibility
+      behavior with that decision
+- [ ] Complete a final public copy review across homepage, About, navigation,
+      collection pages, detail pages, submit flows, empty states, and error
+      states
+- [ ] Make minor color, spacing, typography, and CTA adjustments needed after
+      reviewing the full public flow in realistic browser viewports
+- [ ] Verify the final public polish pass does not introduce admin UI regressions
+      or conflict with the established Phase 11.5 visual identity
+
+###### Notes:
+
+- This phase is intentionally small. It should handle last-mile presentation
+  polish before launch, not reopen product identity, route architecture, or
+  core feature scope.
 
 ---
 
