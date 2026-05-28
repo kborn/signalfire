@@ -1290,7 +1290,7 @@ admin feature expansion.
 - [x] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
       misleading classes after the Phase 11.5 public visual refresh and admin
       route-group split
-- [ ] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
+- [x] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
       and confirm every layout class that needs mobile-specific behavior is
       represented in the mobile section or intentionally does not need an
       override
@@ -1323,6 +1323,10 @@ admin feature expansion.
   unstyled event detail class hooks; related-list classes remain intentionally
   defined because summary components construct those variant class names
   dynamically.
+- The responsive CSS coverage review added missing mobile overrides for public
+  header alignment, error actions, submit option cards, and admin created-record
+  metadata. Manual viewport verification remains tracked separately because CSS
+  coverage and visual QA are different tasks.
 - Phase 11.6 CSS cleanup should verify both class usage and responsive
   coverage, not just visual appearance at the default desktop viewport.
 

@@ -1388,7 +1388,12 @@ h3 {
   }
 
   .site-header {
+    align-items: flex-start;
     padding: 16px 0 10px;
+  }
+
+  .site-nav-group {
+    justify-content: flex-start;
   }
 
   .site-nav {
@@ -1437,6 +1442,15 @@ h3 {
     justify-items: start;
   }
 
+  .publicErrorActions {
+    display: grid;
+    justify-items: start;
+  }
+
+  .submitOptionCard {
+    padding: var(--space-2);
+  }
+
   .submissionFieldRow {
     display: grid;
   }
@@ -1463,6 +1477,10 @@ h3 {
   }
 
   .adminDefinitionList {
+    grid-template-columns: 1fr;
+  }
+
+  .adminCreatedRecordDetails {
     grid-template-columns: 1fr;
   }
 }
