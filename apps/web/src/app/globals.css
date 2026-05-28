@@ -155,10 +155,6 @@ p {
   border-top: 1px solid #c9c9c9;
 }
 
-.home-philosophy {
-  margin-bottom: var(--space-5);
-}
-
 .home-how-it-works h2,
 .home-philosophy h2 {
   font-size: 1.5rem;
@@ -170,25 +166,11 @@ p {
   line-height: 1.6;
 }
 
-.getting-started a {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-}
-
 .about-hero,
 .about-body,
 .about-journey,
-.about-actions {
-  max-width: 760px;
-}
-
 .about-body,
 .about-journey,
-.about-actions {
-  padding-top: var(--space-5);
-  border-top: 1px solid #c9c9c9;
-}
-
 .about-body,
 .about-journey {
   display: grid;
@@ -196,25 +178,28 @@ p {
 }
 
 .about-body p,
-.about-actions p {
-  font-size: 1.125rem;
-  line-height: 1.6;
-  max-width: 68ch;
-}
-
 .about-steps {
   display: grid;
   gap: var(--space-2);
 }
 
+.publicShell {
+  padding-bottom: calc(80px + var(--space-5));
+}
+
 .about-step {
   display: grid;
-  gap: var(--space-0);
+  gap: var(--space-2);
+  align-content: start;
   padding: var(--space-3);
   border: 1px solid #c9c9c9;
   border-radius: 16px;
 }
 
+.about-step .primaryCTA,
+.about-step .secondaryCTA {
+  margin-top: var(--space-1);
+}
 .about-step h3 {
   font-size: 1.25rem;
   line-height: 1.2;

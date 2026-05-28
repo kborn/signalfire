@@ -29,8 +29,8 @@ export default async function AboutPage() {
       </section>
 
       <section className="page-section about-journey">
-        <p className="section-label">Start here</p>
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
+
         <div className="about-steps">
           <section className="about-step">
             <p className="section-label">Step 1</p>
@@ -39,7 +39,9 @@ export default async function AboutPage() {
               Start with one area that you cannot stop thinking about. You do not need to solve
               everything. You need a place to focus.
             </p>
-            <Link href="/topics">Explore issues</Link>
+            <Link href="/topics" className="primaryCTA">
+              Explore Issues
+            </Link>
           </section>
 
           <section className="about-step">
@@ -49,35 +51,29 @@ export default async function AboutPage() {
               Read enough context to move from outrage or confusion into a clearer sense of what is
               at stake and where pressure can matter.
             </p>
-            <Link href="/articles">Read articles</Link>
+            <Link href="/articles" className="secondaryCTA">
+              Read Articles
+            </Link>
           </section>
 
           <section className="about-step">
             <p className="section-label">Step 3</p>
             <h3>Take one concrete action.</h3>
             <p>
-              Contact someone, donate, volunteer, join an event, or support work already in motion.
-              The first action does not have to be perfect. It has to be real.
+              You do not need to have the whole answer. Contact someone, volunteer, join an event,
+              or support work already in motion. The first action does not have to be perfect. It
+              has to be real.
             </p>
             <div className="ctaRow">
               <Link href="/actions" className="secondaryCTA">
-                Find actions
+                Find Actions
               </Link>
               <Link href="/events" className="secondaryCTA">
-                Find events
+                Find Events
               </Link>
             </div>
           </section>
         </div>
-      </section>
-
-      <section className="page-section about-actions">
-        <h2>You do not need to have the whole answer.</h2>
-        <p>
-          Start with one fight. Explore the issues, find an action, or show up where people are
-          already doing the work.
-        </p>
-        <div className="ctaRow">...</div>
       </section>
     </section>
   );
