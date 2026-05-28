@@ -617,7 +617,7 @@ h3 {
 
 .submissionForm {
   display: grid;
-  gap: 40px;
+  gap: var(--space-3);
   max-width: 720px;
   margin-left: 0;
   margin-right: auto;
@@ -625,11 +625,14 @@ h3 {
 
 .submissionSection {
   display: grid;
-  gap: 20px;
+  gap: var(--space-2);
 }
 
 .submissionSection h2 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
 }
 
 .submissionField {
@@ -659,8 +662,8 @@ h3 {
 .submissionControl,
 .submissionTextarea {
   width: 100%;
-  border: 1px solid #9ca3af;
-  border-radius: 12px;
+  border: 1.5px solid #9ca3af;
+  border-radius: 10px;
   background: #ffffff;
   color: #171717;
   font: inherit;
@@ -673,7 +676,7 @@ h3 {
 }
 
 .submissionTextarea {
-  min-height: 120px;
+  min-height: 104px;
   padding: 0.85rem 0.9rem;
   resize: vertical;
 }
@@ -744,7 +747,7 @@ h3 {
 .submissionActions {
   display: flex;
   justify-content: flex-start;
-  margin-top: 32px;
+  margin-top: var(--space-2);
 }
 
 .submissionActions button:disabled,
@@ -806,11 +809,26 @@ h3 {
   color: var(--color-text-primary);
 }
 
+.publicShell .submissionSection {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--color-surface-soft);
+}
+
+.publicShell .submissionSection h2 {
+  color: var(--color-text-primary);
+}
+
 .publicShell .submissionControl,
 .publicShell .submissionTextarea {
-  border-color: var(--color-border-subtle);
+  border-color: #b8c2cf;
   background: var(--color-field-bg);
   color: var(--color-text-primary);
+}
+
+.publicShell .submissionForm > .submissionSection:first-of-type .submissionTextarea {
+  min-height: 260px;
 }
 
 .publicShell .submissionControl:focus,
@@ -852,6 +870,11 @@ h3 {
 .publicShell .submissionSuccess {
   border-color: var(--color-border-subtle);
   background: var(--color-surface-soft);
+}
+
+.publicShell .submissionActions .primaryCTA {
+  min-height: 48px;
+  padding: 0.85rem 1.35rem;
 }
 
 /* Admin */
