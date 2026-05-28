@@ -1281,6 +1281,13 @@ admin feature expansion.
 - [ ] Review the shared Markdown rendering component currently named
       `article-body`/`ArticleBody` and decide whether to rename it to reflect
       that it is used by both Article and Event detail pages
+- [ ] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
+      misleading classes after the Phase 11.5 public visual refresh and admin
+      route-group split
+- [ ] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
+      and confirm every layout class that needs mobile-specific behavior is
+      represented in the mobile section or intentionally does not need an
+      override
 - [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
 - [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
 - [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
@@ -1299,6 +1306,8 @@ admin feature expansion.
 - If the Markdown renderer remains shared by Article and Event detail pages,
   its public name should describe Markdown rendering rather than one content
   type.
+- Phase 11.6 CSS cleanup should verify both class usage and responsive
+  coverage, not just visual appearance at the default desktop viewport.
 
 ---
 
