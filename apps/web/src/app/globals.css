@@ -82,9 +82,37 @@ p {
 }
 
 .site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
   padding: 20px 0 12px;
   border-bottom: 1px solid var(--color-border-subtle);
   margin-bottom: var(--space-4);
+}
+
+.site-wordmark {
+  color: var(--color-text-primary);
+  font-family: var(--font-display), Georgia, 'Times New Roman', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.site-wordmark:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-accent);
+  text-underline-offset: 0.18em;
+}
+
+.site-nav-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2) var(--space-3);
 }
 
 .site-nav {
@@ -112,6 +140,26 @@ p {
   text-decoration-color: var(--color-brand-accent);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.28em;
+}
+
+.site-submit-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--color-brand-primary);
+  border-radius: 999px;
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.site-submit-link:hover,
+.site-submit-link[aria-current='page'] {
+  background: var(--color-brand-primary);
+  color: var(--color-page-bg);
+  text-decoration: none;
 }
 
 .site-main {
@@ -177,7 +225,7 @@ p {
 
 .home-page {
   display: grid;
-  gap: 56px;
+  gap: var(--space-5);
 }
 
 .ctaGroup {
@@ -196,18 +244,21 @@ p {
   gap: var(--space-2);
 }
 
-.home-how-it-works,
+.home-journey,
+.home-participation,
 .home-philosophy {
-  padding: var(--space-5) 0 0;
+  padding: var(--space-4) 0 0;
   border-top: 1px solid var(--color-border-subtle);
 }
 
-.home-how-it-works h2,
+.home-journey h2,
+.home-participation h2,
 .home-philosophy h2 {
   font-size: 1.5rem;
 }
 
-.home-how-it-works p,
+.home-journey p,
+.home-participation p,
 .home-philosophy p {
   max-width: 60ch;
   line-height: 1.6;
@@ -264,18 +315,18 @@ p {
 }
 
 .home-hero {
-  padding: var(--space-4) 0 20px;
+  padding: var(--space-3) 0 0;
 }
 
 .home-hero h1 {
   max-width: 13ch;
-  font-size: clamp(4rem, 12vw, 7.5rem);
-  line-height: 0.9;
+  font-size: clamp(3.75rem, 10vw, 6.5rem);
+  line-height: 0.92;
   letter-spacing: -0.04em;
 }
 
 .home-hero p {
-  max-width: 34rem;
+  max-width: 38rem;
   font-size: 1.125rem;
   line-height: 1.6;
 }
@@ -391,6 +442,20 @@ p {
 
 .secondaryCTA:active {
   transform: translateY(1px);
+}
+
+.textCTA {
+  width: fit-content;
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+}
+
+.textCTA:hover {
+  color: var(--color-brand-primary-hover);
 }
 
 /* Typography */
