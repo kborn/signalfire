@@ -91,7 +91,7 @@ Local climate policy shapes transit, zoning, building rules, and public investme
 ### What to do after reading
 
 Start with one concrete ask, bring it to a public meeting, and then join a recurring local coalition so the pressure continues after a single hearing.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-10T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
@@ -118,7 +118,7 @@ Election administration is often decided close to home. County boards, clerks, a
 ### Practical next steps
 
 Attend meetings, document procedural changes, and plug into election-protection volunteers who can turn observation into public pressure.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-14T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
@@ -141,7 +141,7 @@ Consumer pressure is strongest when it is tied to a public demand, a target deci
 ### What not to do
 
 Do not treat every bad company as the same target. Match the tactic to the leverage point: purchasing pressure, donor pressure, labor solidarity, or public contact.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-16T00:00:00.000Z'),
     topicSlugs: ['consumer-activism', 'economic-justice'],
@@ -164,7 +164,7 @@ Book removals, review committees, and curriculum debates often move through scho
 ### Then move from concern to action
 
 Build a small response team that can email decision-makers, show up in person, and keep library access visible as a civil-rights and education issue.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-18T00:00:00.000Z'),
     topicSlugs: ['education', 'civil-rights', 'local-community'],
@@ -191,7 +191,7 @@ When local bodies shorten speaking time, move meetings without notice, or tighte
 ### Why it matters
 
 These rules shape whose voices are heard in public. Tracking them helps communities respond before exclusion becomes normal.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-20T00:00:00.000Z'),
     topicSlugs: ['democracy', 'civil-rights', 'local-community'],
@@ -215,7 +215,7 @@ Extreme heat exposes weak transit, poor housing conditions, and underfunded neig
 ### The political takeaway
 
 Treat heat response as both immediate care and long-term civic pressure. Neighborhood-level organizing can connect climate action to economic justice quickly.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-22T00:00:00.000Z'),
     topicSlugs: ['climate', 'economic-justice', 'local-community'],
@@ -416,7 +416,7 @@ The most useful next actions are usually:
 Long-form content should reduce confusion, not end in abstraction.
 
 If the article clarifies the problem but leaves the reader with no next step, it has not yet completed the civic loop.`,
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-03-24T00:00:00.000Z'),
     topicSlugs: ['democracy', 'climate', 'education', 'local-community'],
@@ -431,7 +431,7 @@ If the article clarifies the problem but leaves the reader with no next step, it
     title: 'Draft Civic Content Playbook',
     summary: 'A draft-only article used for local API filtering checks.',
     content: 'This draft article should never appear on public read routes.',
-    author: 'SignalFire Staff',
+    author: 'Find Your Fight Editorial',
     status: EntityStatus.DRAFT,
     publishedAt: null,
     topicSlugs: ['education'],

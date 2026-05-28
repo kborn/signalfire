@@ -273,7 +273,7 @@ Status: `200 OK`
   "slug": "how-local-climate-policy-works",
   "title": "How Local Climate Policy Works",
   "summary": "A guide to city-level climate policy.",
-  "author": "SignalFire Staff",
+  "author": "Find Your Fight Editorial",
   "content": "Full article body...",
   "publishedAt": "2026-03-10T00:00:00.000Z",
   "updatedAt": "2026-03-12T00:00:00.000Z",

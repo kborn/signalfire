@@ -26,7 +26,7 @@ describe('ArticleDetailsPage', () => {
       slug: 'climate-policy-basics',
       title: 'Climate Policy Basics',
       summary: 'Learn the baseline policy tradeoffs.',
-      author: 'CivicSignal Editorial',
+      author: 'Find Your Fight Editorial',
       content: '## Why it matters\n\nStrong policy changes daily life.',
       publishedAt: '2026-03-20T12:00:00.000Z',
       updatedAt: '2026-03-22T12:00:00.000Z',
@@ -59,7 +59,7 @@ describe('ArticleDetailsPage', () => {
     expect(getArticleDetails).toHaveBeenCalledWith('climate-policy-basics');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
-    expect(markup).toContain('CivicSignal Editorial');
+    expect(markup).toContain('Find Your Fight Editorial');
     expect(markup).toContain('Author');
     expect(markup).toContain('Published');
     expect(markup).toContain('March 20, 2026');

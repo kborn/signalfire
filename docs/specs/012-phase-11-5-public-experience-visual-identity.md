@@ -288,14 +288,15 @@ visual direction can be revised later by changing values in one place.
 
 | Token                   | Initial value | Use                                                     |
 | ----------------------- | ------------- | ------------------------------------------------------- |
-| `--color-page-bg`       | `#F6F1E8`     | Public page background                                  |
-| `--color-text-primary`  | `#181713`     | Primary text and high-emphasis controls                 |
-| `--color-brand-primary` | `#233A32`     | Primary brand surface and primary CTA                   |
-| `--color-brand-accent`  | `#C45132`     | Small emphasis, selected/active accent, and action cues |
-| `--color-surface-soft`  | `#E9DFD0`     | Supporting panels and quiet highlighted content         |
-| `--color-border-subtle` | `#CFC1AF`     | Dividers and default borders                            |
-| `--color-text-muted`    | `#5D584F`     | Secondary text and metadata                             |
-| `--color-status-error`  | `#A8382B`     | Validation/error text and borders                       |
+| `--color-page-bg`       | `#FFFFFF`     | Public page background                                  |
+| `--color-text-primary`  | `#111827`     | Primary text and high-emphasis controls                 |
+| `--color-brand-primary` | `#183B6B`     | Primary brand surface and primary CTA                   |
+| `--color-brand-accent`  | `#B8322A`     | Small emphasis, selected/active accent, and action cues |
+| `--color-surface-soft`  | `#FFFFFF`     | Supporting panels and quiet highlighted content         |
+| `--color-field-bg`      | `#FFFFFF`     | Public form controls                                    |
+| `--color-border-subtle` | `#D7DDE5`     | Dividers and default borders                            |
+| `--color-text-muted`    | `#4B5563`     | Secondary text and metadata                             |
+| `--color-status-error`  | `#B42318`     | Validation/error text and borders                       |
 
 Color rules:
 
@@ -555,8 +556,7 @@ The hero should contain:
 - wordmark context is supplied by the header; do not repeat a small logo lockup
 - H1: `Find Your Fight`
 - supporting paragraph based on the approved positioning direction
-- primary CTA: `Explore Issues`
-- secondary CTA: `Why This Exists`
+- quiet text link: `Why This Exists`
 
 Use a strong text-led composition. A quiet brand-primary or soft-surface
 graphic panel may balance the hero, but hero imagery is not required.
@@ -578,6 +578,10 @@ This section may display a short selection of existing Topic summaries only if
 the existing public Topic contract supports the implementation cleanly. A
 direct `Explore Issues` path is sufficient if data integration would introduce
 unnecessary work.
+
+CTA:
+
+- `Explore Issues` -> `/topics`
 
 ### Participation pathways section
 

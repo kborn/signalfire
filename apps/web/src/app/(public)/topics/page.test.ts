@@ -35,8 +35,10 @@ describe('TopicListPage', () => {
     const markup = renderToStaticMarkup(await TopicListPage());
 
     expect(getTopicsList).toHaveBeenCalledTimes(1);
-    expect(markup).toContain('Topics');
-    expect(markup).toContain('Browse civic issues and discover related articles and actions');
+    expect(markup).toContain('Issues');
+    expect(markup).toContain(
+      'Explore the issues that matter to you and find ways to learn or act.',
+    );
     expect(markup).toContain('href="/topics/climate"');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Climate issue overview.');
@@ -53,8 +55,10 @@ describe('TopicListPage', () => {
     const markup = renderToStaticMarkup(await TopicListPage());
 
     expect(getTopicsList).toHaveBeenCalledTimes(1);
-    expect(markup).toContain('Topics');
-    expect(markup).toContain('No topics available yet.');
-    expect(markup).not.toContain('Browse civic issues and discover related articles and actions');
+    expect(markup).toContain('Issues');
+    expect(markup).toContain('No issues available yet.');
+    expect(markup).not.toContain(
+      'Explore the issues that matter to you and find ways to learn or act.',
+    );
   });
 });
