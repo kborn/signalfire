@@ -168,16 +168,28 @@ p {
 
 .about-hero,
 .about-body,
-.about-journey,
+.about-journey {
+  max-width: 760px;
+}
+
 .about-body,
-.about-journey,
+.about-journey {
+  padding-top: var(--space-5);
+  border-top: 1px solid #c9c9c9;
+}
+
 .about-body,
 .about-journey {
   display: grid;
   gap: var(--space-3);
 }
 
-.about-body p,
+.about-body p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
 .about-steps {
   display: grid;
   gap: var(--space-2);
