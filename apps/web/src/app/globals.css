@@ -9,16 +9,16 @@
   --space-3: 24px;
   --space-4: 40px;
   --space-5: 48px;
-  --color-page-bg: #f6f1e8;
-  --color-text-primary: #181713;
-  --color-brand-primary: #233a32;
-  --color-brand-accent: #c45132;
-  --color-surface-soft: #e9dfd0;
-  --color-field-bg: #fffaf2;
-  --color-border-subtle: #cfc1af;
-  --color-text-muted: #5d584f;
-  --color-status-error: #a8382b;
-  --color-brand-primary-hover: #1b2f28;
+  --color-page-bg: #ffffff;
+  --color-text-primary: #111827;
+  --color-brand-primary: #183b6b;
+  --color-brand-accent: #b8322a;
+  --color-surface-soft: #ffffff;
+  --color-field-bg: #ffffff;
+  --color-border-subtle: #d7dde5;
+  --color-text-muted: #4b5563;
+  --color-status-error: #b42318;
+  --color-brand-primary-hover: #102a4d;
 }
 
 /* Base */
@@ -443,7 +443,8 @@ h3 {
   position: relative;
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
-  border-radius: 18px;
+  border-left-width: 4px;
+  border-radius: 12px;
   background: var(--color-surface-soft);
   transition:
     border-color 0.2s ease,
@@ -451,7 +452,7 @@ h3 {
 }
 
 .publicShell .collectionItem:hover {
-  border-color: var(--color-brand-primary);
+  border-left-color: var(--color-brand-accent);
   transform: translateY(-1px);
 }
 

@@ -1241,15 +1241,15 @@ repository public.
 
 - [x] Select `Find Your Fight` as the public product name and define its
       focus-to-action brand philosophy
-- [ ] Establish an intentional public visual direction through typography, color, spacing, imagery, and component presentation while preserving usability and accessibility
+- [x] Establish an intentional public visual direction through typography,
+      color, spacing, and component presentation while preserving usability
+      and accessibility
 - [ ] Refresh the homepage and public navigation identity so the product purpose and primary discovery/action paths are immediately clear
-- [ ] Add a public About page explaining the focus-to-action philosophy and why
+- [x] Add a public About page explaining the focus-to-action philosophy and why
       visitors do not need to carry every issue in order to participate
 - [ ] Improve public web error handling when API/database-backed content is
       unavailable so visitors see a clear, non-technical recovery message
-- [ ] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
-- [ ] Verify responsive layouts and key public states across representative desktop and mobile viewports
-- [ ] Prepare credible seed/demo content and screenshot-ready primary flows for portfolio presentation
+- [x] Improve the public Article, Action, Event, and Topic browsing/detail surfaces enough to present a cohesive product experience
 - [ ] Align public metadata, navigation-adjacent branding, homepage copy, and relevant docs after the identity decision is made
 
 ###### Notes:
@@ -1260,6 +1260,11 @@ repository public.
   `docs/specs/012-phase-11-5-public-experience-visual-identity.md`.
 - `findmyfight.com` is a candidate public domain; domain registration and
   deployment decisions do not block Phase 11.5 implementation.
+- Remaining Phase 11.5 closeout should stay narrow: header/homepage CTA
+  alignment with the spec and public unavailable/error UI.
+- Responsive review and seed/demo content were moved to the Phase 11.6
+  readiness checkpoint because they are portfolio-readiness validation tasks,
+  not blockers for the core Phase 11.5 visual implementation.
 
 ---
 
@@ -1288,6 +1293,11 @@ admin feature expansion.
       and confirm every layout class that needs mobile-specific behavior is
       represented in the mobile section or intentionally does not need an
       override
+- [ ] Verify representative public routes at mobile, tablet, and desktop
+      widths after the Phase 11.5 visual refresh, including homepage, About,
+      one detail route, Events, submit landing, and one submit form path
+- [ ] Prepare credible seed/demo content and screenshot-ready primary flows
+      for portfolio presentation before making the repository public
 - [ ] Decide whether public collection cards should be fully clickable or keep
       title-only links, then align hover/focus affordances and accessibility
       behavior with that decision
