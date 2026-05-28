@@ -802,6 +802,43 @@ h3 {
   color: #6b7280;
 }
 
+.submissionGuidance {
+  display: grid;
+  gap: var(--space-1);
+  max-width: 720px;
+}
+
+.submissionGuidance details {
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 10px;
+  background: var(--color-page-bg);
+}
+
+.submissionGuidance summary {
+  cursor: pointer;
+  padding: 0.85rem 1rem;
+  color: var(--color-brand-primary);
+  font-weight: 700;
+}
+
+.submissionGuidance details[open] summary {
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.submissionGuidance details > div {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.submissionGuidance ul {
+  display: grid;
+  gap: var(--space-1);
+  padding-left: 1.2rem;
+}
+
 .submissionError {
   max-width: 60ch;
   font-size: 0.95rem;
