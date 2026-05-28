@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -10,6 +10,13 @@ import { EventSubmissionForm } from './event-submission';
 vi.mock('@/lib/api/submit', () => ({
   postEventSubmission: vi.fn(),
 }));
+
+const scrollIntoView = vi.fn();
+
+Object.defineProperty(Element.prototype, 'scrollIntoView', {
+  configurable: true,
+  value: scrollIntoView,
+});
 
 const topics = [
   {
@@ -71,6 +78,13 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Location address region is required')).toBeInTheDocument();
     expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('Title is required'));
   });
 
   it('defaults country to US and keeps it disabled', () => {
@@ -151,6 +165,9 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Address line 2 is invalid')).toBeInTheDocument();
     expect(screen.getByText('Must be 32 characters or fewer')).toBeInTheDocument();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('End datetime must be valid'));
+    });
   });
 
   it('shows inline client validation when end time is before start time', async () => {
@@ -179,6 +196,11 @@ describe('EventSubmissionForm', () => {
     expect(
       screen.getByText('Something went wrong while sending your submission. Please try again.'),
     ).toHaveClass('submissionGlobalError');
+    await waitFor(() => {
+      expect(scrollIntoView.mock.contexts[0]).toBe(
+        screen.getByText('Something went wrong while sending your submission. Please try again.'),
+      );
+    });
     expect(screen.getByLabelText('* Title')).toHaveValue('  Transit Rally  ');
   });
 

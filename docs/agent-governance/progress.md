@@ -1294,7 +1294,7 @@ admin feature expansion.
       and confirm every layout class that needs mobile-specific behavior is
       represented in the mobile section or intentionally does not need an
       override
-- [ ] Verify representative public routes at mobile, tablet, and desktop
+- [x] Verify representative public routes at mobile, tablet, and desktop
       widths after the Phase 11.5 visual refresh, including homepage, About,
       one detail route, Events, submit landing, and one submit form path
 - [x] Prepare credible seed/demo content and screenshot-ready primary flows
@@ -1352,6 +1352,10 @@ admin feature expansion.
   portfolio review, but not open-source licensed for reuse. Package metadata is
   marked `UNLICENSED`, no `LICENSE` file is present, and external contributions
   are not being solicited until a formal policy is added.
+- Manual viewport QA was completed on 2026-05-28 during the public readiness
+  pass. The submit flow was checked down to a 320px responsive viewport, and
+  the public shell spacing was adjusted so mobile content retains horizontal
+  breathing room.
 - Phase 11.6 CSS cleanup should verify both class usage and responsive
   coverage, not just visual appearance at the default desktop viewport.
 

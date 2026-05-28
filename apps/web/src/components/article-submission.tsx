@@ -1,7 +1,7 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
 import { SubmissionGuidance } from '@/components/submission-guidance';
@@ -31,6 +31,24 @@ type ArticleSubmissionFormErrors = {
   submitterEmail?: string;
 };
 
+const articleErrorFieldOrder: Array<keyof ArticleSubmissionFormErrors> = [
+  'title',
+  'summary',
+  'topicSlugs',
+  'content',
+  'resourceLinks',
+  'author',
+  'submitterName',
+  'submitterEmail',
+];
+
+function scrollToError(id: string) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  });
+}
+
 export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   const [title, setTitle] = useState('');
   const [summary, setSummary] = useState('');
@@ -44,6 +62,17 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   const [isSuccess, setIsSuccess] = useState<boolean | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<ArticleSubmissionFormErrors>({});
+
+  useEffect(() => {
+    const firstErrorField = articleErrorFieldOrder.find((field) => errors[field]);
+    if (firstErrorField) {
+      scrollToError(`article-${firstErrorField}-error`);
+      return;
+    }
+    if (submitError) {
+      scrollToError('article-submit-error');
+    }
+  }, [errors, submitError]);
 
   const handleToggle = (topic: string) => {
     setTopicSlugs(
@@ -263,7 +292,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   onChange={(event) => setTitle(event.target.value)}
                 />
               </label>
-              {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+              {errors.title ? (
+                <p id="article-title-error" className="submissionError">
+                  {errors.title}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -277,7 +310,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   onChange={(event) => setSummary(event.target.value)}
                 />
               </label>
-              {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+              {errors.summary ? (
+                <p id="article-summary-error" className="submissionError">
+                  {errors.summary}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -295,7 +332,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   </label>
                 ))}
               </div>
-              {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+              {errors.topicSlugs ? (
+                <p id="article-topicSlugs-error" className="submissionError">
+                  {errors.topicSlugs}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -312,7 +353,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   onChange={(event) => setContent(event.target.value)}
                 />
               </label>
-              {errors.content ? <p className="submissionError">{errors.content}</p> : null}
+              {errors.content ? (
+                <p id="article-content-error" className="submissionError">
+                  {errors.content}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -357,7 +402,9 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 </button>
               </div>
               {errors.resourceLinks ? (
-                <p className="submissionError">{errors.resourceLinks}</p>
+                <p id="article-resourceLinks-error" className="submissionError">
+                  {errors.resourceLinks}
+                </p>
               ) : null}
             </section>
           </section>
@@ -374,7 +421,11 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   onChange={(event) => setAuthor(event.target.value)}
                 />
               </label>
-              {errors.author ? <p className="submissionError">{errors.author}</p> : null}
+              {errors.author ? (
+                <p id="article-author-error" className="submissionError">
+                  {errors.author}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -389,7 +440,9 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
               </label>
 
               {errors.submitterName ? (
-                <p className="submissionError">{errors.submitterName}</p>
+                <p id="article-submitterName-error" className="submissionError">
+                  {errors.submitterName}
+                </p>
               ) : null}
             </section>
 
@@ -409,13 +462,19 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 onChange={(event) => setSubmitterEmail(event.target.value)}
               />
               {errors.submitterEmail ? (
-                <p className="submissionError">{errors.submitterEmail}</p>
+                <p id="article-submitterEmail-error" className="submissionError">
+                  {errors.submitterEmail}
+                </p>
               ) : null}
             </section>
           </section>
         </section>
 
-        {submitError ? <p className="submissionGlobalError">{submitError}</p> : null}
+        {submitError ? (
+          <p id="article-submit-error" className="submissionGlobalError">
+            {submitError}
+          </p>
+        ) : null}
         <div className="submissionActions">
           <button className="primaryCTA" type="submit" disabled={isSubmitting}>
             Submit Article

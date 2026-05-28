@@ -1,7 +1,7 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
 import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
@@ -110,6 +110,35 @@ type EventSubmissionFormErrors = {
   submitterEmail?: string;
 };
 
+const eventErrorFieldOrder: Array<keyof EventSubmissionFormErrors> = [
+  'title',
+  'summary',
+  'description',
+  'eventType',
+  'startAt',
+  'endAt',
+  'locationName',
+  'city',
+  'region',
+  'country',
+  'publicLocationDescription',
+  'addressLine1',
+  'addressLine2',
+  'postalCode',
+  'topicSlugs',
+  'websiteUrl',
+  'contactEmail',
+  'submitterName',
+  'submitterEmail',
+];
+
+function scrollToError(id: string) {
+  document.getElementById(id)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  });
+}
+
 export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   // ------ form fields --------
   // required
@@ -142,6 +171,17 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<EventSubmissionFormErrors>({});
   // ------------------------------------
+
+  useEffect(() => {
+    const firstErrorField = eventErrorFieldOrder.find((field) => errors[field]);
+    if (firstErrorField) {
+      scrollToError(`event-${firstErrorField}-error`);
+      return;
+    }
+    if (submitError) {
+      scrollToError('event-submit-error');
+    }
+  }, [errors, submitError]);
 
   const handleToggle = (topic: string) => {
     setTopicSlugs(
@@ -475,7 +515,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setTitle(event.target.value)}
                 />
               </label>
-              {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+              {errors.title ? (
+                <p id="event-title-error" className="submissionError">
+                  {errors.title}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -489,7 +533,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setSummary(event.target.value)}
                 />
               </label>
-              {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+              {errors.summary ? (
+                <p id="event-summary-error" className="submissionError">
+                  {errors.summary}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -503,7 +551,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setDescription(event.target.value)}
                 />
               </label>
-              {errors.description ? <p className="submissionError">{errors.description}</p> : null}
+              {errors.description ? (
+                <p id="event-description-error" className="submissionError">
+                  {errors.description}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -522,7 +574,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   ))}
                 </select>
               </label>
-              {errors.eventType ? <p className="submissionError">{errors.eventType}</p> : null}
+              {errors.eventType ? (
+                <p id="event-eventType-error" className="submissionError">
+                  {errors.eventType}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -540,7 +596,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                     onChange={(event) => setStartAt(event.target.value)}
                   />
                 </label>
-                {errors.startAt ? <p className="submissionError">{errors.startAt}</p> : null}
+                {errors.startAt ? (
+                  <p id="event-startAt-error" className="submissionError">
+                    {errors.startAt}
+                  </p>
+                ) : null}
               </section>
 
               <section className="submissionField">
@@ -553,7 +613,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                     onChange={(event) => setEndAt(event.target.value)}
                   />
                 </label>
-                {errors.endAt ? <p className="submissionError">{errors.endAt}</p> : null}
+                {errors.endAt ? (
+                  <p id="event-endAt-error" className="submissionError">
+                    {errors.endAt}
+                  </p>
+                ) : null}
               </section>
             </div>
           </section>
@@ -571,7 +635,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.locationName ? (
-                <p className="submissionError">{errors.locationName}</p>
+                <p id="event-locationName-error" className="submissionError">
+                  {errors.locationName}
+                </p>
               ) : null}
             </section>
 
@@ -585,7 +651,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setCity(event.target.value)}
                 />
               </label>
-              {errors.city ? <p className="submissionError">{errors.city}</p> : null}
+              {errors.city ? (
+                <p id="event-city-error" className="submissionError">
+                  {errors.city}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -604,7 +674,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   ))}
                 </select>
               </label>
-              {errors.region ? <p className="submissionError">{errors.region}</p> : null}
+              {errors.region ? (
+                <p id="event-region-error" className="submissionError">
+                  {errors.region}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -612,7 +686,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 <span>* Country</span>
                 <input className={'submissionControl'} value={country} disabled readOnly />
               </label>
-              {errors.country ? <p className="submissionError">{errors.country}</p> : null}
+              {errors.country ? (
+                <p id="event-country-error" className="submissionError">
+                  {errors.country}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
@@ -626,7 +704,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.publicLocationDescription ? (
-                <p className="submissionError">{errors.publicLocationDescription}</p>
+                <p id="event-publicLocationDescription-error" className="submissionError">
+                  {errors.publicLocationDescription}
+                </p>
               ) : null}
             </section>
 
@@ -641,7 +721,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.addressLine1 ? (
-                <p className="submissionError">{errors.addressLine1}</p>
+                <p id="event-addressLine1-error" className="submissionError">
+                  {errors.addressLine1}
+                </p>
               ) : null}
             </section>
 
@@ -656,7 +738,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.addressLine2 ? (
-                <p className="submissionError">{errors.addressLine2}</p>
+                <p id="event-addressLine2-error" className="submissionError">
+                  {errors.addressLine2}
+                </p>
               ) : null}
             </section>
 
@@ -670,7 +754,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   onChange={(event) => setPostalCode(event.target.value)}
                 />
               </label>
-              {errors.postalCode ? <p className="submissionError">{errors.postalCode}</p> : null}
+              {errors.postalCode ? (
+                <p id="event-postalCode-error" className="submissionError">
+                  {errors.postalCode}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -691,7 +779,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   </label>
                 ))}
               </div>
-              {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+              {errors.topicSlugs ? (
+                <p id="event-topicSlugs-error" className="submissionError">
+                  {errors.topicSlugs}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -710,7 +802,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 value={websiteUrl}
                 onChange={(event) => setWebsiteUrl(event.target.value)}
               />
-              {errors.websiteUrl ? <p className="submissionError">{errors.websiteUrl}</p> : null}
+              {errors.websiteUrl ? (
+                <p id="event-websiteUrl-error" className="submissionError">
+                  {errors.websiteUrl}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -732,7 +828,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 onChange={(event) => setContactEmail(event.target.value)}
               />
               {errors.contactEmail ? (
-                <p className="submissionError">{errors.contactEmail}</p>
+                <p id="event-contactEmail-error" className="submissionError">
+                  {errors.contactEmail}
+                </p>
               ) : null}
             </section>
 
@@ -748,7 +846,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
               </label>
 
               {errors.submitterName ? (
-                <p className="submissionError">{errors.submitterName}</p>
+                <p id="event-submitterName-error" className="submissionError">
+                  {errors.submitterName}
+                </p>
               ) : null}
             </section>
 
@@ -768,13 +868,19 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 onChange={(event) => setSubmitterEmail(event.target.value)}
               />
               {errors.submitterEmail ? (
-                <p className="submissionError">{errors.submitterEmail}</p>
+                <p id="event-submitterEmail-error" className="submissionError">
+                  {errors.submitterEmail}
+                </p>
               ) : null}
             </section>
           </section>
         </section>
 
-        {submitError ? <p className="submissionGlobalError">{submitError}</p> : null}
+        {submitError ? (
+          <p id="event-submit-error" className="submissionGlobalError">
+            {submitError}
+          </p>
+        ) : null}
         <div className="submissionActions">
           <button className="primaryCTA" type="submit" disabled={isSubmitting}>
             Submit Event

@@ -73,6 +73,7 @@ p {
 
 .publicContent.container {
   max-width: 1120px;
+  padding-inline: 24px;
 }
 
 .publicShell h1,
@@ -113,6 +114,7 @@ p {
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-2) var(--space-3);
+  min-width: 0;
 }
 
 .site-nav {
@@ -121,6 +123,7 @@ p {
   gap: 24px;
   font-size: 1rem;
   line-height: 1.2;
+  min-width: 0;
 }
 
 .site-nav a {
@@ -163,7 +166,8 @@ p {
 }
 
 .site-main {
-  padding: var(--space-3) 0 80px;
+  padding-top: var(--space-3);
+  padding-bottom: 80px;
 }
 
 .publicContent.site-main {
@@ -173,6 +177,7 @@ p {
 .page-section {
   display: grid;
   gap: var(--space-3);
+  min-width: 0;
 }
 
 .page-section + .page-section {
@@ -702,7 +707,9 @@ h3 {
 .submissionForm {
   display: grid;
   gap: var(--space-3);
+  width: 100%;
   max-width: 720px;
+  min-width: 0;
   margin-left: 0;
   margin-right: auto;
 }
@@ -824,7 +831,9 @@ h3 {
 .submissionGuidance {
   display: grid;
   gap: var(--space-1);
+  width: 100%;
   max-width: 720px;
+  min-width: 0;
 }
 
 .submissionGuidance details {
@@ -1384,7 +1393,7 @@ h3 {
 
 @media (max-width: 640px) {
   .container {
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .site-header {
@@ -1394,6 +1403,7 @@ h3 {
 
   .site-nav-group {
     justify-content: flex-start;
+    width: 100%;
   }
 
   .site-nav {
@@ -1402,7 +1412,8 @@ h3 {
   }
 
   .site-main {
-    padding: 20px 0 64px;
+    padding-top: 20px;
+    padding-bottom: 64px;
   }
 
   .publicContent.site-main {
