@@ -11,5 +11,5 @@ paragraphs.
 Rule of thumb:
 
 - database/API: text source
-- article-body component: `react-markdown` render step
+- markdown-content component: `react-markdown` render step
 - CSS: presentation of the rendered output

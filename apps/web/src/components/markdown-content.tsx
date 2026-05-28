@@ -1,8 +1,8 @@
 import ReactMarkdown from 'react-markdown';
 
-export function ArticleBody({ content }: { content: string }) {
+export function MarkdownContent({ content }: { content: string }) {
   return (
-    <div className="articleBody">
+    <div className="markdownContent">
       <ReactMarkdown>{content}</ReactMarkdown>
     </div>
   );

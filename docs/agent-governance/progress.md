@@ -1280,14 +1280,14 @@ admin feature expansion.
 ###### Phase Tasks:
 
 - [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
-- [ ] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
+- [x] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
       `apps/web/src/components/` ownership and decide whether submission-review
       components should remain route-local or move into shared component
       directories before public repository visibility
-- [ ] Review the shared Markdown rendering component currently named
-      `article-body`/`ArticleBody` and decide whether to rename it to reflect
-      that it is used by both Article and Event detail pages
-- [ ] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
+- [x] Rename the shared Markdown rendering component from
+      `article-body`/`ArticleBody` to `markdown-content`/`MarkdownContent` so
+      its name reflects use across Article, Action, and Event detail pages
+- [x] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
       misleading classes after the Phase 11.5 public visual refresh and admin
       route-group split
 - [ ] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
@@ -1314,9 +1314,15 @@ admin feature expansion.
   tightly coupled to `/admin/submissions/[id]`, but Phase 11.6 should make that
   ownership explicit and clean up naming if any component has become reusable
   across admin routes.
-- If the Markdown renderer remains shared by Article and Event detail pages,
-  its public name should describe Markdown rendering rather than one content
-  type.
+- The `/admin/submissions/[id]/_components` components were reviewed on
+  2026-05-28 and intentionally kept route-local because they are tightly
+  coupled to the submission review detail workflow.
+- The shared Markdown renderer was renamed to `MarkdownContent` on 2026-05-28
+  because it now renders Article, Action, and Event long-form content.
+- The initial `globals.css` usage audit removed stale admin/layout rules and
+  unstyled event detail class hooks; related-list classes remain intentionally
+  defined because summary components construct those variant class names
+  dynamically.
 - Phase 11.6 CSS cleanup should verify both class usage and responsive
   coverage, not just visual appearance at the default desktop viewport.
 

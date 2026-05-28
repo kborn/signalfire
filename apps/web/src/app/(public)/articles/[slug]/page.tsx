@@ -1,6 +1,6 @@
 import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
-import { ArticleBody } from '@/components/article-body';
+import { MarkdownContent } from '@/components/markdown-content';
 import { notFound } from 'next/navigation';
 import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
@@ -56,7 +56,7 @@ export default async function ArticleDetailsPage({
         </section>
 
         <section>
-          <ArticleBody content={article.content} />
+          <MarkdownContent content={article.content} />
         </section>
         {article.topics.length > 0 && (
           <section className="relatedSection">

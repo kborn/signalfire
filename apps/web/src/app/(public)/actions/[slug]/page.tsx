@@ -1,7 +1,7 @@
 import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
-import { ArticleBody } from '@/components/article-body';
+import { MarkdownContent } from '@/components/markdown-content';
 export const dynamic = 'force-dynamic';
 import { TopicSummary } from '@/components/topic-summary';
 import { ArticleSummary } from '@/components/article-summary';
@@ -50,7 +50,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         </section>
 
         <section>
-          <ArticleBody content={action.description} />
+          <MarkdownContent content={action.description} />
         </section>
         {action.topics.length > 0 && (
           <section className="relatedSection">

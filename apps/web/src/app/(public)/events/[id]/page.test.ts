@@ -96,8 +96,6 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/actions/contact-city-council"');
     expect(markup).toContain('class="metaValue eventType"');
-    expect(markup).toContain('class="metaValue eventDateTime"');
-    expect(markup).toContain('class="metaValue eventLocation"');
     expect(markup).toContain('class="relatedList"');
   });
 

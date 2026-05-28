@@ -6,7 +6,7 @@ import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { formatEventTime } from '@/lib/common/time';
 import { TopicSummary } from '@/components/topic-summary';
-import { ArticleBody } from '@/components/article-body';
+import { MarkdownContent } from '@/components/markdown-content';
 import { titleCase } from '@/lib/common/utils';
 export const dynamic = 'force-dynamic';
 
@@ -54,13 +54,11 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           </div>
           <div className="metaBlock">
             <p className="metaLabel">Date & Time</p>
-            <p className="metaValue eventDateTime">
-              {formatEventTime(event.startTime, event.endTime)}
-            </p>
+            <p className="metaValue">{formatEventTime(event.startTime, event.endTime)}</p>
           </div>
           <div className="metaBlock">
             <p className="metaLabel">Location</p>
-            <p className="metaValue eventLocation">{event.locationName}</p>
+            <p className="metaValue">{event.locationName}</p>
           </div>
           <div className="metaBlock">
             <p className="metaLabel">Location Description</p>
@@ -98,7 +96,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           )}
         </section>
         <section>
-          <ArticleBody content={event.description} />
+          <MarkdownContent content={event.description} />
         </section>
         {event.topics.length > 0 && (
           <section className="relatedSection">
