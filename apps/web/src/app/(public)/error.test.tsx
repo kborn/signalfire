@@ -26,5 +26,7 @@ describe('PublicError', () => {
 
     expect(screen.getByRole('button', { name: 'Try again' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Go home' })).toBeInTheDocument();
+
+    expect(reset).not.toHaveBeenCalled();
   });
 });

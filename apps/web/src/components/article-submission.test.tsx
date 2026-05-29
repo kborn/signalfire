@@ -110,8 +110,8 @@ describe('ArticleSubmissionForm', () => {
   it('maps API validation errors to inline field errors', async () => {
     mockPostArticleSubmission().mockRejectedValue(
       new SubmissionError('Request failed for submissions', 400, 'submissions', [
-        { field: 'payload.title', message: 'Title is too short' },
-        { field: 'submitterEmail', message: 'Email must be valid' },
+        { type: 'field', field: 'payload.title', message: 'Title is too short' },
+        { type: 'field', field: 'submitterEmail', message: 'Email must be valid' },
       ]),
     );
 
@@ -126,6 +126,24 @@ describe('ArticleSubmissionForm', () => {
     await waitFor(() => {
       expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('Title is too short'));
     });
+  });
+
+  it('renders fieldless API validation errors as submit-level errors', async () => {
+    mockPostArticleSubmission().mockRejectedValue(
+      new SubmissionError('Request failed for submissions', 400, 'submissions', [
+        { type: 'form', message: 'Submission intake is temporarily unavailable.' },
+      ]),
+    );
+
+    render(<ArticleSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredArticleFields();
+
+    await user.click(screen.getByRole('button', { name: 'Submit Article' }));
+
+    expect(screen.getByText('Submission intake is temporarily unavailable.')).toHaveClass(
+      'submissionGlobalError',
+    );
   });
 
   it('shows the canonical global error for non-validation failures', async () => {

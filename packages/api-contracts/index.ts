@@ -29,4 +29,7 @@ export type {
   ModerationSubmissionSummary,
   EntityStatus,
   CreatedRecordSummary,
+  FieldValidationError,
+  FormValidationError,
+  ValidationError,
 } from './submission_type.js';

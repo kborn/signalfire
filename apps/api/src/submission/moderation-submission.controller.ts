@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Get,
   HttpCode,
@@ -19,6 +20,7 @@ import {
 } from '@signal-fire/api-contracts';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
 import { SubmissionModerationValidationPipe } from './submission-validation.pipe';
+import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
 
 @Controller('admin/submissions')
 export class ModerationSubmissionController {
@@ -73,6 +75,28 @@ export class ModerationSubmissionController {
     @Param('id', ParseIntPipe) submissionId: number,
     @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,
   ): Promise<ModerationReviewResponse> {
-    return this.moderationSubmissionService.reviewSubmission(submissionId, reqBody);
+    try {
+      return await this.moderationSubmissionService.reviewSubmission(submissionId, reqBody);
+    } catch (error) {
+      if (error instanceof ReviewSubmissionTypeError) {
+        throw new ConflictException({
+          errors: [{ type: 'form', message: error.message }],
+        });
+      }
+
+      if (error instanceof UnknownSubmissionTopicsError) {
+        throw new BadRequestException({
+          errors: [
+            {
+              type: 'field',
+              field: 'normalized.topicSlugs',
+              message: error.message,
+            },
+          ],
+        });
+      }
+
+      throw error;
+    }
   }
 }

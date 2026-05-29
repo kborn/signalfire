@@ -21,7 +21,7 @@ import {
 } from '@signal-fire/api-contracts';
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
-import { SubmissionError } from '@/lib/api/error';
+import { ApiError, SubmissionError } from '@/lib/api/error';
 import {
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
@@ -32,6 +32,11 @@ import {
 
 const REVIEW_FAILURE_MESSAGE =
   'Something went wrong while sending your submission. Please try again.';
+const REVIEW_NOT_FOUND_MESSAGE =
+  'This submission is no longer available. Return to the queue and refresh.';
+const REVIEW_CONFLICT_MESSAGE =
+  'This submission has already been reviewed. Refresh to see the latest state.';
+const REVIEW_VALIDATION_MESSAGE = 'Fix the highlighted fields and try again.';
 
 function mapApiFieldToUiField(field: string | undefined): keyof ReviewFormErrors {
   switch (field) {
@@ -141,6 +146,44 @@ function scrollToFirstError(errors: ReviewFormErrors) {
   });
 }
 
+function mapApiErrorsToReviewErrors(errors: SubmissionError['errors']): ReviewFormErrors {
+  if (!errors?.length) {
+    return {};
+  }
+
+  return errors.reduce<ReviewFormErrors>((acc, entry) => {
+    if (entry.type === 'form') {
+      return {
+        ...acc,
+        form: entry.message,
+      };
+    }
+
+    const uiField = mapApiFieldToUiField(entry.field);
+
+    return {
+      ...acc,
+      [uiField]: entry.message,
+    };
+  }, {});
+}
+
+function getReviewStatusMessage(error: unknown): string | null {
+  if (!(error instanceof ApiError)) {
+    return null;
+  }
+
+  if (error.status === 404) {
+    return REVIEW_NOT_FOUND_MESSAGE;
+  }
+
+  if (error.status === 409) {
+    return REVIEW_CONFLICT_MESSAGE;
+  }
+
+  return null;
+}
+
 export default function SubmissionReviewPageContent({
   submission,
   topics,
@@ -153,21 +196,20 @@ export default function SubmissionReviewPageContent({
     | { ok: false; errors: ReviewFormErrors };
 
   function handleReviewRequestError(error: unknown) {
-    if (error instanceof SubmissionError && error.errors?.length) {
-      const fieldErrors = error.errors.reduce<ReviewFormErrors>((acc, entry) => {
-        const uiField = mapApiFieldToUiField(entry.field);
-
-        return {
-          ...acc,
-          [uiField]: entry.message,
-        };
-      }, {});
-
+    if (error instanceof SubmissionError) {
+      const fieldErrors = mapApiErrorsToReviewErrors(error.errors);
       setErrors(fieldErrors);
-      return;
+
+      if (fieldErrors.form) {
+        setSubmitError(fieldErrors.form);
+      }
+
+      if (Object.keys(fieldErrors).length > 0) {
+        return;
+      }
     }
 
-    setSubmitError(REVIEW_FAILURE_MESSAGE);
+    setSubmitError(getReviewStatusMessage(error) ?? REVIEW_FAILURE_MESSAGE);
     scrollToTop();
   }
 
@@ -545,7 +587,7 @@ export default function SubmissionReviewPageContent({
       {Object.keys(errors).length > 0 && (
         <div className="adminReviewBanner adminReviewBannerError" role="status">
           <p className="adminReviewBannerTitle">Review could not be recorded</p>
-          <p className="adminReviewBannerText">Fix the highlighted fields and try again.</p>
+          <p className="adminReviewBannerText">{REVIEW_VALIDATION_MESSAGE}</p>
         </div>
       )}
       <SubmissionMetadataPanel submission={visibleSubmission} />

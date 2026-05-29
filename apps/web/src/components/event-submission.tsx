@@ -8,6 +8,7 @@ import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
 import { SubmissionGuidance } from '@/components/submission-guidance';
 import {
   mapSubmissionApiFieldToUiField,
+  mapSubmissionApiErrors,
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
@@ -192,10 +193,10 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     );
   };
 
-  function mapApiFieldToUiField(field: string): string | null {
+  function mapApiFieldToUiField(field: string): keyof EventSubmissionFormErrors | null {
     const sharedField = mapSubmissionApiFieldToUiField(field);
     if (sharedField) {
-      return sharedField;
+      return sharedField as keyof EventSubmissionFormErrors;
     }
 
     switch (field) {
@@ -451,26 +452,18 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         setIsSuccess(true);
       } catch (error) {
         if (error instanceof SubmissionError) {
-          if (error.errors) {
-            const newEntries = error.errors.reduce((acc, e) => {
-              const uiField = mapApiFieldToUiField(e.field);
-              if (!uiField) {
-                return acc;
-              }
-              return {
-                ...acc,
-                [uiField]: e.message,
-              };
-            }, {});
+          const { fieldErrors, formError } = mapSubmissionApiErrors(
+            error.errors,
+            mapApiFieldToUiField,
+          );
 
-            if (Object.keys(newEntries).length > 0) {
-              setErrors((prev) => ({ ...prev, ...newEntries }));
-            } else {
-              setSubmitError(
-                'Something went wrong while sending your submission. Please try again.',
-              );
-            }
-          } else {
+          if (Object.keys(fieldErrors).length > 0) {
+            setErrors((prev) => ({ ...prev, ...fieldErrors }));
+          }
+
+          if (formError) {
+            setSubmitError(formError);
+          } else if (Object.keys(fieldErrors).length === 0) {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
           }
         } else {

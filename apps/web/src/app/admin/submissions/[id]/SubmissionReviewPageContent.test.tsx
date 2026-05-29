@@ -355,8 +355,8 @@ describe('SubmissionReviewPageContent', () => {
   it('maps article API validation errors to inline review fields', async () => {
     vi.mocked(postSubmissionReviewReq).mockRejectedValue(
       new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
-        { field: 'normalized.title', message: 'Title is required' },
-        { field: 'reviewNotes', message: 'Review notes are too long' },
+        { type: 'field', field: 'normalized.title', message: 'Title is required' },
+        { type: 'field', field: 'reviewNotes', message: 'Review notes are too long' },
       ]),
     );
     const user = userEvent.setup();
@@ -389,8 +389,8 @@ describe('SubmissionReviewPageContent', () => {
   it('maps event API validation errors to inline review fields', async () => {
     vi.mocked(postSubmissionReviewReq).mockRejectedValue(
       new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
-        { field: 'normalized.postalCode', message: 'Postal code is required' },
-        { field: 'normalized.contactEmail', message: 'Email must be valid' },
+        { type: 'field', field: 'normalized.postalCode', message: 'Postal code is required' },
+        { type: 'field', field: 'normalized.contactEmail', message: 'Email must be valid' },
       ]),
     );
     const user = userEvent.setup();
@@ -423,7 +423,7 @@ describe('SubmissionReviewPageContent', () => {
   it('renders review-notes validation returned from a rejection request', async () => {
     vi.mocked(postSubmissionReviewReq).mockRejectedValue(
       new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
-        { field: 'reviewNotes', message: 'Review notes are too long' },
+        { type: 'field', field: 'reviewNotes', message: 'Review notes are too long' },
       ]),
     );
     const user = userEvent.setup();
@@ -449,6 +449,59 @@ describe('SubmissionReviewPageContent', () => {
         block: 'center',
       });
     });
+  });
+
+  it('renders form-level validation errors when API errors omit field names', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError(`Request failed for submissions`, 400, 'submissions', [
+        { type: 'form', message: 'Submission has already been reviewed.' },
+      ]),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(await screen.findByText('Review could not be recorded')).toBeInTheDocument();
+    expect(screen.getByText('Submission has already been reviewed.')).toBeInTheDocument();
+  });
+
+  it('renders not-found message for 404 review responses', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError(`Request failed for submissions`, 404, 'submissions', null),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(await screen.findByText('Unexpected review failure')).toBeInTheDocument();
+    expect(
+      screen.getByText('This submission is no longer available. Return to the queue and refresh.'),
+    ).toBeInTheDocument();
+  });
+
+  it('renders conflict message for 409 review responses', async () => {
+    vi.mocked(postSubmissionReviewReq).mockRejectedValue(
+      new SubmissionError(`Request failed for submissions`, 409, 'submissions', null),
+    );
+    const user = userEvent.setup();
+    render(
+      <SubmissionReviewPageContent submission={createPendingArticleSubmission()} topics={topics} />,
+    );
+
+    await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
+
+    expect(await screen.findByText('Unexpected review failure')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'This submission has already been reviewed. Refresh to see the latest state.',
+      ),
+    ).toBeInTheDocument();
   });
 
   it('preserves editable state after a non-validation API failure', async () => {

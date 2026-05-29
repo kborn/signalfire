@@ -1,4 +1,4 @@
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
@@ -8,6 +8,7 @@ import type {
   ModerationSubmissionDetail,
   ModerationSubmissionList,
 } from '@signal-fire/api-contracts';
+import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
 
 describe('ModerationSubmissionController', () => {
   let controller: ModerationSubmissionController;
@@ -128,5 +129,45 @@ describe('ModerationSubmissionController', () => {
     const ret = await controller.reviewSubmission(1, req);
     expect(ret).toEqual(resp);
     expect(serviceMock.reviewSubmission).toHaveBeenCalledWith(1, req);
+  });
+
+  it('reviewSubmission maps ReviewSubmissionTypeError to ConflictException', async () => {
+    const req = {
+      decision: 'APPROVE_ARTICLE' as const,
+      publishStatus: 'PUBLISHED' as const,
+      reviewNotes: null,
+      normalized: {
+        title: 'x',
+        summary: 'x',
+        content: 'x',
+        topicSlugs: ['democracy'],
+        author: 'x',
+      },
+    };
+    serviceMock.reviewSubmission.mockRejectedValue(
+      new ReviewSubmissionTypeError('ARTICLE', 'EVENT'),
+    );
+
+    await expect(controller.reviewSubmission(1, req)).rejects.toThrow(ConflictException);
+  });
+
+  it('reviewSubmission maps UnknownSubmissionTopicsError to BadRequestException', async () => {
+    const req = {
+      decision: 'APPROVE_ARTICLE' as const,
+      publishStatus: 'PUBLISHED' as const,
+      reviewNotes: null,
+      normalized: {
+        title: 'x',
+        summary: 'x',
+        content: 'x',
+        topicSlugs: ['democracy'],
+        author: 'x',
+      },
+    };
+    serviceMock.reviewSubmission.mockRejectedValue(
+      new UnknownSubmissionTopicsError(['unknown-topic']),
+    );
+
+    await expect(controller.reviewSubmission(1, req)).rejects.toThrow(BadRequestException);
   });
 });

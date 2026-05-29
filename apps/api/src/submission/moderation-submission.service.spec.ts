@@ -512,6 +512,38 @@ describe('SubmissionService', () => {
     });
   });
 
+  it('returns ConflictException when approving an event submission that is already reviewed', async () => {
+    await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
+      repoMock.findById.mockResolvedValue({
+        submissionId: 1,
+        submissionType: SubmissionType.EVENT,
+      });
+      topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+      repoMock.approveEventSubmission.mockResolvedValue(null);
+
+      await expect(
+        service.reviewSubmission(
+          1,
+          buildModerationReviewApproveEventRequest({
+            normalized: {
+              title: 'Event title',
+              summary: 'Event summary',
+              description: 'Event description',
+              eventType: 'RALLY',
+              startTime: '2026-05-14T17:00:00.000Z',
+              topicSlugs: ['democracy'],
+              city: 'Philadelphia',
+              region: 'PA',
+              country: 'US',
+              locationName: 'City Hall',
+              postalCode: '19107',
+            },
+          }),
+        ),
+      ).rejects.toThrow('has already been reviewed or converted');
+    });
+  });
+
   it('leaves publishedAt null when article submission publishStatus is DRAFT', async () => {
     const reviewedTime = '2025-03-15T12:34:56.001Z';
     await withFrozenTime(reviewedTime, async () => {

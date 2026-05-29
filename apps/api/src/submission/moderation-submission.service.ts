@@ -352,7 +352,9 @@ export class ModerationSubmissionService {
     };
     const reviewResponse = await this.repository.approveEventSubmission(repoInput);
     if (!reviewResponse) {
-      throw new NotFoundException(`No pending submission found with id ${submissionId}`);
+      throw new ConflictException(
+        `Submission ${submissionId} has already been reviewed or converted`,
+      );
     }
     const event = reviewResponse.event;
     return {

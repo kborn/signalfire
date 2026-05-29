@@ -1,3 +1,5 @@
+import type { ValidationError } from '@signal-fire/api-contracts';
+
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const SUBMISSION_FIELD_LIMITS = {
@@ -100,4 +102,35 @@ export function mapSubmissionApiFieldToUiField(field: string): string | null {
   }
 
   return null;
+}
+
+export function mapSubmissionApiErrors<TField extends string>(
+  errors: ValidationError[] | null,
+  mapField: (field: string) => TField | null,
+): {
+  fieldErrors: Partial<Record<TField, string>>;
+  formError: string | null;
+} {
+  const fieldErrors: Partial<Record<TField, string>> = {};
+  const formMessages: string[] = [];
+
+  for (const error of errors ?? []) {
+    if (error.type === 'form') {
+      formMessages.push(error.message);
+      continue;
+    }
+
+    const uiField = mapField(error.field);
+    if (!uiField) {
+      formMessages.push(error.message);
+      continue;
+    }
+
+    fieldErrors[uiField] = error.message;
+  }
+
+  return {
+    fieldErrors,
+    formError: formMessages.length > 0 ? formMessages.join(' ') : null,
+  };
 }

@@ -7,6 +7,7 @@ import { SubmissionError } from '@/lib/api/error';
 import { SubmissionGuidance } from '@/components/submission-guidance';
 import {
   mapSubmissionApiFieldToUiField,
+  mapSubmissionApiErrors,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
   validateOptionalStringMax,
@@ -101,10 +102,10 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     setResourceLinks((prev) => prev.filter((_, currentIndex) => currentIndex !== index));
   }
 
-  function mapApiFieldToUiField(field: string): string | null {
+  function mapApiFieldToUiField(field: string): keyof ArticleSubmissionFormErrors | null {
     const sharedField = mapSubmissionApiFieldToUiField(field);
     if (sharedField) {
-      return sharedField;
+      return sharedField as keyof ArticleSubmissionFormErrors;
     }
 
     switch (field) {
@@ -225,26 +226,18 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
         setIsSuccess(true);
       } catch (error) {
         if (error instanceof SubmissionError) {
-          if (error.errors) {
-            const newEntries = error.errors.reduce((acc, e) => {
-              const uiField = mapApiFieldToUiField(e.field);
-              if (!uiField) {
-                return acc;
-              }
-              return {
-                ...acc,
-                [uiField]: e.message,
-              };
-            }, {});
+          const { fieldErrors, formError } = mapSubmissionApiErrors(
+            error.errors,
+            mapApiFieldToUiField,
+          );
 
-            if (Object.keys(newEntries).length > 0) {
-              setErrors((prev) => ({ ...prev, ...newEntries }));
-            } else {
-              setSubmitError(
-                'Something went wrong while sending your submission. Please try again.',
-              );
-            }
-          } else {
+          if (Object.keys(fieldErrors).length > 0) {
+            setErrors((prev) => ({ ...prev, ...fieldErrors }));
+          }
+
+          if (formError) {
+            setSubmitError(formError);
+          } else if (Object.keys(fieldErrors).length === 0) {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
           }
         } else {

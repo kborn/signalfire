@@ -20,6 +20,7 @@ export class SubmissionController {
         throw new BadRequestException({
           errors: [
             {
+              type: 'field',
               field: 'payload.topicSlugs',
               message: `Unknown topic slugs: ${error.slugs.join(', ')}`,
             },

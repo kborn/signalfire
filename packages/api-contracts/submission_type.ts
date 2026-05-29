@@ -52,10 +52,18 @@ export type EventSubmissionRequest = SubmissionRequestCommon & {
 
 export type SubmissionRequest = ArticleSubmissionRequest | EventSubmissionRequest;
 
-type ValidationError = {
-  field?: string;
+export type FieldValidationError = {
+  type: 'field';
+  field: string;
   message: string;
 };
+
+export type FormValidationError = {
+  type: 'form';
+  message: string;
+};
+
+export type ValidationError = FieldValidationError | FormValidationError;
 export type SubmissionResponseSuccess = {
   id: number;
 };

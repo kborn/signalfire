@@ -28,6 +28,7 @@ function formatIssuePath(path: PropertyKey[]): string {
 function buildSubmissionValidationError(error: ZodError): SubmissionResponseError {
   return {
     errors: error.issues.map((issue: ZodIssue) => ({
+      type: 'field',
       field: formatIssuePath(issue.path),
       message: issue.message,
     })),
