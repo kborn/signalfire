@@ -102,10 +102,11 @@ Event normalization:
 - topics
 - status
 
-For Release 1, Event `city`, `region`, `country`, and `postalCode` are
-required by API contracts, moderation approval validation, and admin publication
-flows. They may remain nullable in Prisma so future online or geography-free
-Events do not require a persistence migration before product support exists.
+For Release 1, Event `summary`, `description`, `city`, `region`, `country`, and
+`postalCode` are required by API contracts, moderation approval validation, and
+admin publication flows. Event geographic fields may remain nullable in Prisma
+so future online or geography-free Events do not require a persistence
+migration before product support exists.
 
 The approval buttons own the final status:
 

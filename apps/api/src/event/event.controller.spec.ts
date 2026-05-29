@@ -34,7 +34,7 @@ describe('EventController', () => {
       expect(ret).toEqual(eventListResponse);
       expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith({
         startDate: new Date('2025-03-15T00:00:00.000Z'),
-        endDate: new Date('2025-04-14T00:00:00.000Z'),
+        endDate: new Date('2025-06-15T00:00:00.000Z'),
         topicSlug: undefined,
       });
     });

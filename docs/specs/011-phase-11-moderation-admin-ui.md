@@ -401,6 +401,8 @@ Rules:
 Required Event normalization fields:
 
 - title
+- summary
+- description
 - event type
 - start time
 - location name
@@ -412,8 +414,6 @@ Required Event normalization fields:
 
 Optional Event normalization fields:
 
-- summary
-- description
 - end time
 - street address
 - website
@@ -721,6 +721,8 @@ Render fields in this order:
 ### Required Event fields
 
 - title
+- summary
+- description
 - event type
 - start time
 - location name
@@ -732,8 +734,6 @@ Render fields in this order:
 
 ### Optional Event fields
 
-- summary
-- description
 - end time
 - street address
 - website
