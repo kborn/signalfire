@@ -32,29 +32,23 @@ export default async function AboutPage() {
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 
         <div className="about-steps">
-          <section className="about-step collectionItem">
+          <Link href="/topics" className="about-step collectionItem">
             <p className="section-label">Step 1</p>
             <h3>Choose an issue.</h3>
             <p>
               Start with one area that you cannot stop thinking about. You do not need to solve
               everything. You need a place to focus.
             </p>
-            <Link href="/topics" className="primaryCTA">
-              Explore Issues
-            </Link>
-          </section>
+          </Link>
 
-          <section className="about-step collectionItem">
+          <Link href="/articles" className="about-step collectionItem">
             <p className="section-label">Step 2</p>
             <h3>Understand what is happening.</h3>
             <p>
               Read enough context to move from outrage or confusion into a clearer sense of what is
               at stake and where pressure can matter.
             </p>
-            <Link href="/articles" className="secondaryCTA">
-              Read Articles
-            </Link>
-          </section>
+          </Link>
 
           <section className="about-step collectionItem">
             <p className="section-label">Step 3</p>

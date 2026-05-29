@@ -15,11 +15,9 @@ export function TopicSummary({ topic, variant = 'collection' }: TopicSummaryProp
     variant === 'related' ? 'relatedListItemSummary' : 'collectionItemSummary';
   const TitleTag = variant === 'related' ? 'h4' : 'h2';
   return (
-    <article className={itemClassName}>
-      <TitleTag className={titleClassName}>
-        <Link href={`/topics/${topic.slug}`}>{topic.name}</Link>
-      </TitleTag>
+    <Link href={`/topics/${topic.slug}`} className={itemClassName}>
+      <TitleTag className={titleClassName}>{topic.name}</TitleTag>
       <p className={summaryClassName}>{topic.description}</p>
-    </article>
+    </Link>
   );
 }
