@@ -1361,6 +1361,26 @@ admin feature expansion.
 
 ---
 
+#### ▸ Phase 11.6.1 - Public Repository Code Quality Pass ⏳
+
+###### Goal
+
+Complete a pre-public code quality review and cleanup pass before changing
+repository visibility.
+
+###### Phase Tasks:
+
+- [ ] Complete pre-public code quality review and cleanup pass
+
+###### Notes:
+
+- Detailed review findings and handoff notes are transient local artifacts under
+  `.ai/phase-notes/`, not repository documentation.
+- This pass should complete before the Phase 11.6 repository visibility gate is
+  checked.
+
+---
+
 #### ▸ Phase 11.7 - Essential Admin Content Management ⏳
 
 ###### Phase Tasks:

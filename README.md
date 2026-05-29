@@ -64,7 +64,7 @@ docker-compose up -d
 Set local environment files from the examples:
 
 ```bash
-cp apps/api/.env.local.example apps/api/.env
+cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.local.example apps/web/.env.local
 ```
 

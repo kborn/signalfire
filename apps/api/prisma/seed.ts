@@ -10,8 +10,12 @@ import {
   SubmissionType,
 } from '@prisma/client';
 
-const connectionString = `${process.env.DATABASE_URL}`;
-const seedMode = `${process.env.SEED_MODE}`.toLowerCase();
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error('Missing required environment variable: DATABASE_URL');
+}
+
+const seedMode = (process.env.SEED_MODE ?? 'baseline').toLowerCase();
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);

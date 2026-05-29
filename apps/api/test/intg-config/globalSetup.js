@@ -21,5 +21,5 @@ module.exports = async () => {
   // 5. Run seed
   execSync('pnpm prisma:migrate:seed', { env: { ...process.env, SEED_MODE: 'baseline' } });
 
-  console.log(`\nDatabase started at: ${process.env.DATABASE_URL}`);
+  console.log('\nIntegration database started.');
 };
