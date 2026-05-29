@@ -340,6 +340,8 @@ p {
 .about-step.collectionItem:hover .secondaryCTA {
   transform: scale(1.1);
   animation: blink 400ms steps(1, start) 3;
+  background: var(--color-brand-primary);
+  color: var(--color-page-bg);
 }
 
 .home-hero {
