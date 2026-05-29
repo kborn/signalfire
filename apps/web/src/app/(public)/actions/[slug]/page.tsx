@@ -6,6 +6,7 @@ export const dynamic = 'force-dynamic';
 import { TopicSummary } from '@/components/topic-summary';
 import { ArticleSummary } from '@/components/article-summary';
 import { formatContentDate } from '@/lib/common/time';
+import { formatActionTypeLabel } from '@/lib/common/utils';
 
 async function fetchActionDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -23,6 +24,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
   const action = await fetchActionDetails(params);
   const publishedAt = formatContentDate(action.publishedAt);
   const updatedAt = formatContentDate(action.updatedAt);
+  const actionType = formatActionTypeLabel(action.actionType);
   return (
     <div className="detailPage">
       <section className="detailHeader">
@@ -33,7 +35,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           <p>{action.summary}</p>
           <div className="metaBlock">
             <p className="metaLabel">Action Type</p>
-            <p className="metaValue">{action.actionType}</p>
+            <p className="metaValue">{actionType}</p>
           </div>
           {publishedAt && (
             <div className="metaBlock">

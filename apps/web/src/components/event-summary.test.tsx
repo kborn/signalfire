@@ -25,7 +25,8 @@ describe('EventSummary', () => {
     expect(markup).toContain('href="/events/42"');
     expect(markup).toContain('City Hall Town Hall');
     expect(markup).toContain('Public discussion with local officials.');
-    expect(markup).toContain('TOWN_HALL');
+    expect(markup).toContain('Town Hall');
+    expect(markup).not.toContain('TOWN_HALL');
     expect(markup).toContain('Boston, MA, USA');
   });
 

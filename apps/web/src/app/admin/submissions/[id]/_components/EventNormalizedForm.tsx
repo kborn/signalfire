@@ -7,17 +7,10 @@ import {
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';
+import { formatEventTypeLabel } from '@/lib/common/utils';
 import type { ReviewFormErrors } from './review-form.types';
 
 type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
-
-function formatEventTypeLabel(value: string): string {
-  return value
-    .toLowerCase()
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
 
 function toDateTimeLocalValue(value: string | null): string {
   if (!value) {

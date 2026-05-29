@@ -15,6 +15,7 @@ import {
   validateOptionalStringMax,
   validateRequiredString,
 } from '@/lib/submission-form-validation';
+import { formatEventTypeLabel } from '@/lib/common/utils';
 
 const US_STATE_OPTIONS = [
   ['AL', 'Alabama'],
@@ -74,14 +75,6 @@ const US_STATE_OPTIONS = [
   ['WI', 'Wisconsin'],
   ['WY', 'Wyoming'],
 ] as const;
-
-function formatEventTypeLabel(value: string): string {
-  return value
-    .toLowerCase()
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];

@@ -1,8 +1,21 @@
 import Link from 'next/link';
+import { getSubmissionsList } from '@/lib/api/admin';
+import type { SubmissionStatus } from '@signal-fire/api-contracts';
 
 export const dynamic = 'force-dynamic';
 
+async function getSubmissionCount(status: SubmissionStatus): Promise<number> {
+  const result = await getSubmissionsList({ status });
+  return result.items.length;
+}
+
 export default async function AdminPage() {
+  const [pendingCount, approvedCount, rejectedCount] = await Promise.all([
+    getSubmissionCount('PENDING'),
+    getSubmissionCount('APPROVED'),
+    getSubmissionCount('REJECTED'),
+  ]);
+
   return (
     <section className="page-section">
       <h1 className="pageTitle">Admin</h1>
@@ -16,10 +29,8 @@ export default async function AdminPage() {
               <h3 id="pending-review-heading">Pending review</h3>
             </div>
 
-            <p>--</p>
-            <p>
-              Submissions awaiting review will appear here after the moderation API is connected.
-            </p>
+            <p className="adminStat">{pendingCount}</p>
+            <p>Submissions awaiting review are the primary moderation queue.</p>
 
             <Link href="/admin/submissions?status=PENDING" className="secondaryCTA">
               Review pending submissions
@@ -30,7 +41,7 @@ export default async function AdminPage() {
               <h3 id="approved-heading">Approved</h3>
             </div>
 
-            <p>--</p>
+            <p className="adminStat">{approvedCount}</p>
             <p>Reviewed submissions remain available for traceability and moderation history.</p>
 
             <Link href="/admin/submissions?status=APPROVED" className="secondaryCTA">
@@ -43,7 +54,7 @@ export default async function AdminPage() {
               <h3 id="rejected-heading">Rejected</h3>
             </div>
 
-            <p>--</p>
+            <p className="adminStat">{rejectedCount}</p>
             <p>Reviewed submissions remain available for traceability and moderation history.</p>
 
             <Link href="/admin/submissions?status=REJECTED" className="secondaryCTA">

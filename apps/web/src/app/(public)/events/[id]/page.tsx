@@ -7,12 +7,8 @@ import { ActionSummary } from '@/components/action-summary';
 import { formatEventTime } from '@/lib/common/time';
 import { TopicSummary } from '@/components/topic-summary';
 import { MarkdownContent } from '@/components/markdown-content';
-import { titleCase } from '@/lib/common/utils';
+import { formatEventTypeLabel } from '@/lib/common/utils';
 export const dynamic = 'force-dynamic';
-
-function formatEventType(eventType: string): string {
-  return titleCase(eventType.toLowerCase().replaceAll('_', '-'));
-}
 
 async function fetchEventDetails(params: Promise<{ id: string }>): Promise<EventDetailResponse> {
   const { id } = await params;
@@ -32,11 +28,29 @@ async function fetchEventDetails(params: Promise<{ id: string }>): Promise<Event
   }
 }
 
+function formatEventArea({
+  city,
+  region,
+  postalCode,
+  country,
+}: Pick<EventDetailResponse, 'city' | 'region' | 'postalCode' | 'country'>): string | null {
+  const cityState = [city, region].filter(Boolean).join(', ');
+  const cityStatePostal = [cityState, postalCode].filter(Boolean).join(' ');
+
+  if (!cityStatePostal && !country) {
+    return null;
+  }
+
+  if (!country || country === 'USA' || country === 'United States') {
+    return cityStatePostal || country;
+  }
+
+  return [cityStatePostal, country].filter(Boolean).join(', ');
+}
+
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const event = await fetchEventDetails(params);
-  const locationParts = [event.city, event.region, event.postalCode, event.country].filter(
-    (value): value is string => Boolean(value),
-  );
+  const eventArea = formatEventArea(event);
 
   return (
     <div className="detailPage">
@@ -50,7 +64,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         <section className="eventInfoBlock">
           <div className="metaBlock">
             <p className="metaLabel">Event Type</p>
-            <p className="metaValue eventType">{formatEventType(event.eventType)}</p>
+            <p className="metaValue eventType">{formatEventTypeLabel(event.eventType)}</p>
           </div>
           <div className="metaBlock">
             <p className="metaLabel">Date & Time</p>
@@ -60,22 +74,28 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
             <p className="metaLabel">Location</p>
             <p className="metaValue">{event.locationName}</p>
           </div>
-          <div className="metaBlock">
-            <p className="metaLabel">Location Description</p>
-            <p className="metaValue">{event.publicLocationDescription}</p>
-          </div>
-          <div className="metaBlock">
-            <p className="metaLabel">Address Line 1</p>
-            <p className="metaValue">{event.addressLine1}</p>
-          </div>
-          <div className="metaBlock">
-            <p className="metaLabel">Address Line 2</p>
-            <p className="metaValue">{event.addressLine2}</p>
-          </div>
-          {locationParts.length > 0 && (
+          {event.publicLocationDescription && (
             <div className="metaBlock">
-              <p className="metaLabel">Region</p>
-              <p className="metaValue">{locationParts.join(', ')}</p>
+              <p className="metaLabel">Location Description</p>
+              <p className="metaValue">{event.publicLocationDescription}</p>
+            </div>
+          )}
+          {event.addressLine1 && (
+            <div className="metaBlock">
+              <p className="metaLabel">Address Line 1</p>
+              <p className="metaValue">{event.addressLine1}</p>
+            </div>
+          )}
+          {event.addressLine2 && (
+            <div className="metaBlock">
+              <p className="metaLabel">Address Line 2</p>
+              <p className="metaValue">{event.addressLine2}</p>
+            </div>
+          )}
+          {eventArea && (
+            <div className="metaBlock">
+              <p className="metaLabel">City, State &amp; ZIP</p>
+              <p className="metaValue">{eventArea}</p>
             </div>
           )}
           {event.website && (

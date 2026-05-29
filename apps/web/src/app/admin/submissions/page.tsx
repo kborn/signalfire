@@ -37,6 +37,41 @@ function parseType(value?: string): SubmissionType | undefined {
   return undefined;
 }
 
+function getEmptyStateCopy(status: SubmissionStatus, type?: SubmissionType) {
+  const typeLabel =
+    type === 'ARTICLE'
+      ? 'article submissions'
+      : type === 'EVENT'
+        ? 'event submissions'
+        : 'submissions';
+
+  if (type) {
+    return {
+      headline: `No ${typeLabel.toLowerCase()} match this ${status.toLowerCase()} view.`,
+      description: 'Try a different status or clear the type filter to review all submissions.',
+    };
+  }
+
+  if (status === 'APPROVED') {
+    return {
+      headline: 'No approved submissions yet.',
+      description: 'Approved submissions will appear here after moderators publish them.',
+    };
+  }
+
+  if (status === 'REJECTED') {
+    return {
+      headline: 'No rejected submissions yet.',
+      description: 'Rejected submissions will appear here after moderators decline them.',
+    };
+  }
+
+  return {
+    headline: 'No pending submissions right now.',
+    description: 'New community article and event submissions will appear here for review.',
+  };
+}
+
 export default async function SubmissionListPage({ searchParams }: SubmissionListPageProps) {
   const { status, type } = await searchParams;
   const currentStatus = parseStatus(status);
@@ -46,6 +81,7 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
     submissionType: currentType,
   });
   const submissions = submissionList.items;
+  const emptyState = getEmptyStateCopy(currentStatus, currentType);
   const tableHeaders = ['Title', 'Type', 'Status', 'Submitted', 'Submitter', 'Email'];
   const tableBody =
     submissions.length > 0 ? (
@@ -66,8 +102,11 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
       ))
     ) : (
       <tr>
-        <td colSpan={tableHeaders.length} style={{ textAlign: 'center' }}>
-          No data available.
+        <td colSpan={tableHeaders.length}>
+          <div className="adminEmptyState">
+            <p className="adminEmptyStateTitle">{emptyState.headline}</p>
+            <p>{emptyState.description}</p>
+          </div>
         </td>
       </tr>
     );
