@@ -66,13 +66,18 @@ describe('ArticleSubmissionForm', () => {
     expect(screen.getByText('Summary is required')).toBeInTheDocument();
     expect(screen.getByText('Content is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByLabelText('* Title')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('* Title')).toHaveAttribute(
+      'aria-describedby',
+      'article-title-error',
+    );
     await waitFor(() => {
       expect(scrollIntoView).toHaveBeenCalledWith({
         behavior: 'smooth',
         block: 'center',
       });
     });
-    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('Title is required'));
+    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('* Title'));
   });
 
   it('submits a normalized article payload and shows the success state', async () => {
@@ -124,7 +129,7 @@ describe('ArticleSubmissionForm', () => {
     expect(screen.getByText('Title is too short')).toBeInTheDocument();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
     await waitFor(() => {
-      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('Title is too short'));
+      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('* Title'));
     });
   });
 

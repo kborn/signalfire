@@ -274,6 +274,9 @@ describe('SubmissionReviewPageContent', () => {
     await user.type(screen.getByLabelText('Internal notes'), 'Insufficiently cited.');
 
     await user.click(screen.getByRole('button', { name: 'Reject' }));
+    expect(postSubmissionReviewReq).not.toHaveBeenCalled();
+    expect(screen.getByText(/Rejecting a submission is final/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Confirm Reject' }));
 
     expect(postSubmissionReviewReq).toHaveBeenCalledWith(
       {
@@ -316,6 +319,11 @@ describe('SubmissionReviewPageContent', () => {
     expect(screen.getByText('Title is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
     expect(screen.getByText('Review could not be recorded')).toBeInTheDocument();
+    expect(screen.getByLabelText('Title')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('Title')).toHaveAttribute(
+      'aria-describedby',
+      'normalized-title-error',
+    );
 
     await vi.waitFor(() => {
       expect(scrollIntoView).toHaveBeenCalledWith({
@@ -432,6 +440,7 @@ describe('SubmissionReviewPageContent', () => {
     );
 
     await user.click(screen.getByRole('button', { name: 'Reject' }));
+    await user.click(screen.getByRole('button', { name: 'Confirm Reject' }));
 
     expect(postSubmissionReviewReq).toHaveBeenCalledWith(
       {

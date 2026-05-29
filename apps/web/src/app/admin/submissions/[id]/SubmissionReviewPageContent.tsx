@@ -93,20 +93,31 @@ function scrollToTop() {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth',
+    behavior: getScrollBehavior(),
   });
 }
 
-function getErrorElementId(field: keyof ReviewFormErrors): string {
-  const specialErrorIds: Partial<Record<keyof ReviewFormErrors, string>> = {
-    eventType: 'normalized-eventType-error',
-    startTime: 'normalized-event-start-error',
-    endTime: 'normalized-event-end-error',
-    topicSlugs: 'normalized-topics-error',
-    reviewNotes: 'review-notes-error',
+function getScrollBehavior(): ScrollBehavior {
+  if (typeof window.matchMedia !== 'function') {
+    return 'smooth';
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function getControlElementId(field: keyof ReviewFormErrors): string {
+  const specialControlIds: Partial<Record<keyof ReviewFormErrors, string>> = {
+    eventType: 'normalized-eventType',
+    startTime: 'normalized-event-start',
+    endTime: 'normalized-event-end',
+    locationName: 'normalized-location-name',
+    publicLocationDescription: 'normalized-location-description',
+    contactEmail: 'normalized-contact-email',
+    topicSlugs: 'normalized-topic-group',
+    reviewNotes: 'review-notes',
   };
 
-  return specialErrorIds[field] ?? `normalized-${field}-error`;
+  return specialControlIds[field] ?? `normalized-${field}`;
 }
 
 function scrollToFirstError(errors: ReviewFormErrors) {
@@ -139,9 +150,16 @@ function scrollToFirstError(errors: ReviewFormErrors) {
     return;
   }
 
-  const id = getErrorElementId(firstField);
-  document.getElementById(id)?.scrollIntoView({
-    behavior: 'smooth',
+  const id = getControlElementId(firstField);
+  const element = document.getElementById(id);
+  if (!(element instanceof HTMLElement)) {
+    scrollToTop();
+    return;
+  }
+
+  element.focus({ preventScroll: true });
+  element.scrollIntoView({
+    behavior: getScrollBehavior(),
     block: 'center',
   });
 }
@@ -501,6 +519,7 @@ export default function SubmissionReviewPageContent({
 
     if (!validation.ok) {
       setErrors(validation.errors);
+      setIsRejectConfirming(false);
       setIsSubmitting(false);
       return;
     }
@@ -514,6 +533,7 @@ export default function SubmissionReviewPageContent({
       const result = await postSubmissionReviewReq(req, submission.id);
       setReviewResult(result);
       setIsSuccess(true);
+      setIsRejectConfirming(false);
       scrollToTop();
     } catch (error) {
       handleReviewRequestError(error);
@@ -534,6 +554,7 @@ export default function SubmissionReviewPageContent({
       );
       setIsSuccess(true);
       setReviewResult(rep);
+      setIsRejectConfirming(false);
       scrollToTop();
     } catch (error) {
       handleReviewRequestError(error);
@@ -550,6 +571,7 @@ export default function SubmissionReviewPageContent({
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
   const [reviewResult, setReviewResult] = useState<ModerationReviewSuccess | null>(null);
   const [errors, setErrors] = useState<ReviewFormErrors>({});
+  const [isRejectConfirming, setIsRejectConfirming] = useState(false);
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -636,6 +658,7 @@ export default function SubmissionReviewPageContent({
             className="submissionTextarea"
             rows={5}
             aria-describedby={errors.reviewNotes ? 'review-notes-error' : undefined}
+            aria-invalid={errors.reviewNotes ? true : undefined}
             value={reviewNotes}
             onChange={(event) => setReviewNotes(event.target.value)}
             disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}
@@ -663,14 +686,39 @@ export default function SubmissionReviewPageContent({
               >
                 Approve as Draft
               </button>
-              <button
-                type="submit"
-                onClick={() => reject()}
-                disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
-              >
-                Reject
-              </button>
+              {isRejectConfirming ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => reject()}
+                    disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
+                  >
+                    Confirm Reject
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsRejectConfirming(false)}
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsRejectConfirming(true)}
+                  disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
+                >
+                  Reject
+                </button>
+              )}
             </div>
+            {isRejectConfirming ? (
+              <p className="adminReviewConfirmation" role="status">
+                Rejecting a submission is final for this review flow. Confirm to record the
+                rejection.
+              </p>
+            ) : null}
           </section>
         </div>
       )}

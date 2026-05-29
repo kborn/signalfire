@@ -48,6 +48,13 @@ export default function ArticleNormalizationForm({
     );
   };
 
+  function getFieldA11y(field: keyof ReviewFormErrors, errorId: string) {
+    return {
+      'aria-describedby': errors[field] ? errorId : undefined,
+      'aria-invalid': errors[field] ? true : undefined,
+    };
+  }
+
   return (
     <dl className="adminDefinitionList">
       <dt>
@@ -65,6 +72,7 @@ export default function ArticleNormalizationForm({
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           disabled={success}
+          {...getFieldA11y('title', 'normalized-title-error')}
         />
       </dd>
       <dt>
@@ -82,6 +90,7 @@ export default function ArticleNormalizationForm({
           value={summary}
           onChange={(event) => setSummary(event.target.value)}
           disabled={success}
+          {...getFieldA11y('summary', 'normalized-summary-error')}
         />
       </dd>
 
@@ -100,6 +109,7 @@ export default function ArticleNormalizationForm({
           value={content}
           onChange={(event) => setContent(event.target.value)}
           disabled={success}
+          {...getFieldA11y('content', 'normalized-content-error')}
         />
       </dd>
       <dt>
@@ -117,10 +127,15 @@ export default function ArticleNormalizationForm({
           value={author}
           onChange={(event) => setAuthor(event.target.value)}
           disabled={success}
+          {...getFieldA11y('author', 'normalized-author-error')}
         />
       </dd>
-      <dt>Topics</dt>
-      <dd>
+      <dt id="normalized-topic-group">Topics</dt>
+      <dd
+        role="group"
+        aria-labelledby="normalized-topic-group"
+        {...getFieldA11y('topicSlugs', 'normalized-topics-error')}
+      >
         {errors.topicSlugs ? (
           <p id="normalized-topics-error" className="submissionError">
             {errors.topicSlugs}

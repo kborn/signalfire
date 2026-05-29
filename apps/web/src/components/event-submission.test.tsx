@@ -47,7 +47,7 @@ async function fillRequiredEventFields() {
   await user.type(screen.getByLabelText('* Start date and time'), '2026-05-14T17:00');
   await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
   await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
-  await user.selectOptions(screen.getByLabelText('* Region'), 'PA');
+  await user.selectOptions(screen.getByLabelText('* State'), 'PA');
   await user.type(screen.getByLabelText('* ZIP Code'), '  19107  ');
   await user.click(screen.getByLabelText('Climate'));
 
@@ -78,13 +78,18 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Location address region is required')).toBeInTheDocument();
     expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByLabelText('* Title')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('* Title')).toHaveAttribute(
+      'aria-describedby',
+      'event-title-error',
+    );
     await waitFor(() => {
       expect(scrollIntoView).toHaveBeenCalledWith({
         behavior: 'smooth',
         block: 'center',
       });
     });
-    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('Title is required'));
+    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('* Title'));
   });
 
   it('defaults country to US and keeps it disabled', () => {
@@ -174,7 +179,9 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Must be 32 characters or fewer')).toBeInTheDocument();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
     await waitFor(() => {
-      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByText('End datetime must be valid'));
+      expect(scrollIntoView.mock.contexts[0]).toBe(
+        screen.getByLabelText('End date and time (optional)'),
+      );
     });
   });
 
