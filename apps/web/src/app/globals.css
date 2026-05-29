@@ -1,6 +1,6 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d1b2a;
+  --foreground: #e0e1dd;
   --font-display: Georgia, 'Times New Roman', serif;
   --font-body: Arial, Helvetica, sans-serif;
   --space-0: 4px;
@@ -9,16 +9,16 @@
   --space-3: 24px;
   --space-4: 40px;
   --space-5: 48px;
-  --color-page-bg: #ffffff;
-  --color-text-primary: #111827;
-  --color-brand-primary: #183b6b;
-  --color-brand-accent: #b8322a;
-  --color-surface-soft: #ffffff;
-  --color-field-bg: #ffffff;
-  --color-border-subtle: #d7dde5;
-  --color-text-muted: #4b5563;
-  --color-status-error: #b42318;
-  --color-brand-primary-hover: #102a4d;
+  --color-page-bg: #0d1b2a;
+  --color-text-primary: #e0e1dd;
+  --color-brand-primary: #ffc300;
+  --color-brand-accent: #ffd60a;
+  --color-surface-soft: #001d3d;
+  --color-field-bg: #001d3d;
+  --color-border-subtle: #415a77;
+  --color-text-muted: #8d99ae;
+  --color-status-error: #e63946;
+  --color-brand-primary-hover: #ffd60a;
 }
 
 /* Base */
