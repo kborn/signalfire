@@ -1,9 +1,14 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <div className="container home-page">
       <section className="page-section home-hero">
+        <div className="hero-logo">
+          <Image src="/hero-logo.png" alt="Find Your Fight" width={1800} height={320} priority />
+        </div>
+
         <h1 className="pageTitle">Find Your Fight</h1>
 
         <p className="page-intro">

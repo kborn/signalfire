@@ -77,6 +77,20 @@ p {
   padding-inline: 24px;
 }
 
+.publicShell::before {
+  content: '';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: min(80vw, 600px);
+  height: min(80vw, 600px);
+  transform: translate(-50%, -50%);
+  background: url('/background_logo.png') no-repeat center / contain;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .publicShell h1,
 .publicShell h2 {
   font-family: var(--font-display), Georgia, 'Times New Roman', serif;
@@ -342,6 +356,32 @@ p {
   animation: blink 400ms steps(1, start) 3;
   background: var(--color-brand-primary);
   color: var(--color-page-bg);
+}
+
+.hero-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo img {
+  width: min(80vw, 900px);
+  height: auto;
+}
+
+.about-hero-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 2;
+}
+
+.about-hero-logo img {
+  width: min(70vw, 900px);
+  height: auto;
 }
 
 .home-hero {
