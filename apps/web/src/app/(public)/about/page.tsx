@@ -32,7 +32,7 @@ export default async function AboutPage() {
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 
         <div className="about-steps">
-          <section className="about-step">
+          <section className="about-step collectionItem">
             <p className="section-label">Step 1</p>
             <h3>Choose an issue.</h3>
             <p>
@@ -44,7 +44,7 @@ export default async function AboutPage() {
             </Link>
           </section>
 
-          <section className="about-step">
+          <section className="about-step collectionItem">
             <p className="section-label">Step 2</p>
             <h3>Understand what is happening.</h3>
             <p>
@@ -56,7 +56,7 @@ export default async function AboutPage() {
             </Link>
           </section>
 
-          <section className="about-step">
+          <section className="about-step collectionItem">
             <p className="section-label">Step 3</p>
             <h3>Take one concrete action.</h3>
             <p>

@@ -546,14 +546,18 @@ h3 {
   border-left-width: 4px;
   border-radius: 12px;
   background: var(--color-surface-soft);
+  box-shadow: 5px 5px 2px 2px rgba(0, 0, 0, 0.1);
   transition:
     border-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .publicShell .collectionItem:hover {
   border-left-color: var(--color-brand-accent);
-  transform: translateY(-1px);
+  transform: translate(-10px, -10px);
+
+  box-shadow: 10px 10px 7px 7px rgba(0, 0, 0, 0.15);
 }
 
 .publicShell .collectionItemSummary,
