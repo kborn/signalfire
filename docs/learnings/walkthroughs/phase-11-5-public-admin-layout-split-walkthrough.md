@@ -18,6 +18,10 @@ requirements remain in:
 
 - `docs/specs/012-phase-11-5-public-experience-visual-identity.md`
 
+Historical note: this walkthrough was written before the split was applied.
+Current public route source now lives under `apps/web/src/app/(public)/...`;
+the pre-split paths below describe the phase-time starting point.
+
 ## Current Repo Shape
 
 Relevant existing files:

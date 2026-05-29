@@ -16,6 +16,11 @@ For Phase 6.2, the required outcomes are:
 This walkthrough is about repo edit order for the first correct implementation,
 not full styling polish and not later article/action detail work.
 
+Historical note: this walkthrough predates the Phase 11.5 public route group
+split. Current public topic route source now lives under
+`apps/web/src/app/(public)/topics/...`, while the paths below show the Phase
+6.2 implementation-time source layout.
+
 ## Files And Folders Involved
 
 Existing files you should start from:

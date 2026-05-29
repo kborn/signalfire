@@ -9,3 +9,15 @@ status:
 
 The web app expects the NestJS API to be available through the configured
 `API_BASE_URL`.
+
+Public routes live under the `(public)` route group in source while preserving
+the visitor-facing URLs such as `/topics`, `/articles`, `/actions`, `/events`,
+and `/submit`. Admin routes live under `/admin`.
+
+Useful package-local validation from the repository root:
+
+```bash
+pnpm --filter web typecheck
+pnpm --filter web lint
+pnpm --filter web test
+```
