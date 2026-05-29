@@ -5,6 +5,13 @@ import { TopicRepository } from '../topic/topic.repository';
 import { ActionRepository } from '../action/action.repository';
 import { ArticleRepository } from '../article/article.repository';
 import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
+import {
+  requirePublishedAt,
+  toActionSummary,
+  toArticleSummary,
+  toEventSummary,
+  toTopicSummary,
+} from '../common/public-content.mapper';
 
 @Injectable()
 export class EventService {
@@ -14,14 +21,6 @@ export class EventService {
     private actionRepository: ActionRepository,
     private articleRepository: ArticleRepository,
   ) {}
-
-  private requirePublishedAt(publishedAt: Date | null): Date {
-    if (!publishedAt) {
-      throw new Error('Published entity is missing publishedAt');
-    }
-
-    return publishedAt;
-  }
 
   async getPublishedEventList(params: {
     startDate: Date;
@@ -34,18 +33,7 @@ export class EventService {
 
     const events = await this.eventRepository.findPublished(startDate, endDate, topicSlug);
     return {
-      items: events.map((event) => ({
-        id: event.id,
-        title: event.title,
-        summary: event.summary,
-        eventType: event.eventType,
-        startTime: event.startTime.toISOString(),
-        endTime: event.endTime ? event.endTime.toISOString() : null,
-        city: event.city,
-        region: event.region,
-        postalCode: event.postalCode,
-        country: event.country,
-      })),
+      items: events.map(toEventSummary),
     };
   }
 
@@ -80,30 +68,6 @@ export class EventService {
     articles: Article[],
     actions: Action[],
   ): EventDetailResponse {
-    const topicSummaries = topics.map((topic) => ({
-      id: topic.id,
-      slug: topic.slug,
-      name: topic.name,
-      description: topic.description,
-    }));
-
-    const actionSummaries = actions.map((action) => ({
-      id: action.id,
-      slug: action.slug,
-      title: action.title,
-      summary: action.summary,
-      actionType: action.actionType,
-      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
-    }));
-
-    const articleSummaries = articles.map((article) => ({
-      id: article.id,
-      slug: article.slug,
-      title: article.title,
-      summary: article.summary,
-      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
-    }));
-
     return {
       id: event.id,
       title: event.title,
@@ -124,11 +88,11 @@ export class EventService {
       country: event.country,
       latitude: event.latitude ? event.latitude.toNumber() : null,
       longitude: event.longitude ? event.longitude.toNumber() : null,
-      publishedAt: this.requirePublishedAt(event.publishedAt).toISOString(),
+      publishedAt: requirePublishedAt(event.publishedAt).toISOString(),
       updatedAt: event.updatedAt.toISOString(),
-      topics: topicSummaries,
-      actions: actionSummaries,
-      articles: articleSummaries,
+      topics: topics.map(toTopicSummary),
+      actions: actions.map(toActionSummary),
+      articles: articles.map(toArticleSummary),
     };
   }
 }

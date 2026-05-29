@@ -4,6 +4,12 @@ import { Article } from '@prisma/client';
 import type { ArticleDetailResponse, ArticleListResponse } from '@signal-fire/api-contracts';
 import { TopicRepository } from '../topic/topic.repository';
 import { ActionRepository } from '../action/action.repository';
+import {
+  requirePublishedAt,
+  toActionSummary,
+  toArticleSummary,
+  toTopicSummary,
+} from '../common/public-content.mapper';
 
 @Injectable()
 export class ArticleService {
@@ -13,24 +19,10 @@ export class ArticleService {
     private actionRepository: ActionRepository,
   ) {}
 
-  private requirePublishedAt(publishedAt: Date | null): Date {
-    if (!publishedAt) {
-      throw new Error('Published entity is missing publishedAt');
-    }
-
-    return publishedAt;
-  }
-
   async getPublishedArticleList(): Promise<ArticleListResponse> {
     const articles = await this.repository.findPublished();
     return {
-      items: articles.map((article) => ({
-        id: article.id,
-        slug: article.slug,
-        title: article.title,
-        summary: article.summary,
-        publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
-      })),
+      items: articles.map(toArticleSummary),
     };
   }
   getArticleDetail(slug: string): Promise<Article | null> {
@@ -64,22 +56,6 @@ export class ArticleService {
     topics: Awaited<ReturnType<TopicRepository['findByArticleId']>>,
     actions: Awaited<ReturnType<ActionRepository['findPublishedByArticleId']>>,
   ): ArticleDetailResponse {
-    const topicSummaries = topics.map((topic) => ({
-      id: topic.id,
-      slug: topic.slug,
-      name: topic.name,
-      description: topic.description,
-    }));
-
-    const actionSummaries = actions.map((action) => ({
-      id: action.id,
-      slug: action.slug,
-      title: action.title,
-      summary: action.summary,
-      actionType: action.actionType,
-      publishedAt: this.requirePublishedAt(action.publishedAt).toISOString(),
-    }));
-
     return {
       id: article.id,
       slug: article.slug,
@@ -87,10 +63,10 @@ export class ArticleService {
       summary: article.summary,
       author: article.author,
       content: article.content,
-      publishedAt: this.requirePublishedAt(article.publishedAt).toISOString(),
+      publishedAt: requirePublishedAt(article.publishedAt).toISOString(),
       updatedAt: article.updatedAt.toISOString(),
-      topics: topicSummaries,
-      actions: actionSummaries,
+      topics: topics.map(toTopicSummary),
+      actions: actions.map(toActionSummary),
     };
   }
 }

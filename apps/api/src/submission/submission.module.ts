@@ -8,15 +8,12 @@ import { SubmissionValidationPipe } from './submission-validation.pipe';
 import { SubmissionController } from './submission.controller';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
-import { ArticleRepository } from '../article/article.repository';
-import { EventRepository } from '../event/event.repository';
+import { EventModule } from '../event/event.module';
 
 @Module({
-  imports: [PrismaModule, TopicModule, ArticleModule],
+  imports: [PrismaModule, TopicModule, ArticleModule, EventModule],
   providers: [
     ModerationSubmissionService,
-    ArticleRepository,
-    EventRepository,
     SubmissionService,
     SubmissionRepository,
     SubmissionValidationPipe,

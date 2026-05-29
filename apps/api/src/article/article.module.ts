@@ -9,7 +9,7 @@ import { ActionRepository } from '../action/action.repository';
 @Module({
   imports: [PrismaModule],
   providers: [ArticleService, ArticleRepository, TopicRepository, ActionRepository],
-  exports: [ArticleService],
+  exports: [ArticleService, ArticleRepository],
   controllers: [ArticleController],
 })
 export class ArticleModule {}
