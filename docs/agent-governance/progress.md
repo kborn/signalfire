@@ -1269,7 +1269,7 @@ repository public.
 
 ---
 
-#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ⏳
+#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ✅
 
 ###### Goal
 
@@ -1304,7 +1304,6 @@ admin feature expansion.
 - [x] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
 - [x] Establish the repository's public licensing and contribution posture
 - [x] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
-- [ ] Make the repository public only after the readiness review is complete
 
 ###### Notes:
 
