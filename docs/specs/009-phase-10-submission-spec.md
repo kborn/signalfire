@@ -81,7 +81,7 @@ An optional chooser route may also exist:
 - `locationAddressCity` (required)
 - `locationAddressRegion` (required)
 - `locationAddressCountry` (required; public form may default to `US` for now)
-- `locationAddressZip` (optional)
+- `locationAddressZip` (required)
 - `contactEmail` (optional)
 - `topicSlugs` (required, array)
 - `websiteUrl` (optional, string)
@@ -155,7 +155,7 @@ Frontend validation mirrors backend rules for UX only and must not invent separa
 - `endTime` may be omitted or set to `null`
 - article `resourceLinks` may be omitted, set to `null`, or provided as a non-empty array
 - event `websiteUrl` may be omitted or set to `null`
-- optional location fields may be omitted or set to `null`
+- optional location fields may be omitted or set to `null`, except `locationAddressZip` which is required
 - `author`, `submitterName`, and `submitterEmail` may be omitted or set to `null`
 
 ---
@@ -497,12 +497,12 @@ Field order:
 9. `Region` — text input — required
 10. `Country` — text input — required
 11. `Street address` — text input — optional
-12. `ZIP code` — text input — optional
+12. `ZIP code` — text input — required
 
 Field notes:
 
 - require only the location structure needed for basic verification
-- do not require a perfect postal address
+- require a ZIP/postal code value for event submissions in Release 1
 - do not require latitude/longitude
 - the UI may prefill `Country` with `US`, but users must still be able to submit another country when needed
 

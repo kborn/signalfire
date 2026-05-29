@@ -103,7 +103,7 @@ describe('ArticleController (e2e)', () => {
       title: 'Published Article',
       summary: 'Published article summary',
       content: 'Published article content',
-      author: 'SignalFire Staff',
+      author: 'Find Your Fight Editorial',
       publishedAt: new Date('2026-03-10T00:00:00.000Z'),
     });
     const firstPublishedAction = await createAction({

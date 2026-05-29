@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -10,6 +10,13 @@ import { EventSubmissionForm } from './event-submission';
 vi.mock('@/lib/api/submit', () => ({
   postEventSubmission: vi.fn(),
 }));
+
+const scrollIntoView = vi.fn();
+
+Object.defineProperty(Element.prototype, 'scrollIntoView', {
+  configurable: true,
+  value: scrollIntoView,
+});
 
 const topics = [
   {
@@ -40,7 +47,7 @@ async function fillRequiredEventFields() {
   await user.type(screen.getByLabelText('* Start date and time'), '2026-05-14T17:00');
   await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
   await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
-  await user.selectOptions(screen.getByLabelText('* Region'), 'PA');
+  await user.selectOptions(screen.getByLabelText('* State'), 'PA');
   await user.type(screen.getByLabelText('* ZIP Code'), '  19107  ');
   await user.click(screen.getByLabelText('Climate'));
 
@@ -71,6 +78,18 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Location address region is required')).toBeInTheDocument();
     expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one related topic')).toBeInTheDocument();
+    expect(screen.getByLabelText('* Title')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('* Title')).toHaveAttribute(
+      'aria-describedby',
+      'event-title-error',
+    );
+    await waitFor(() => {
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    });
+    expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('* Title'));
   });
 
   it('defaults country to US and keeps it disabled', () => {
@@ -132,10 +151,18 @@ describe('EventSubmissionForm', () => {
   it('maps API validation errors to inline event field errors', async () => {
     mockPostEventSubmission().mockRejectedValue(
       new SubmissionError('Request failed for submissions', 400, 'submissions', [
-        { field: 'payload.endTime', message: 'End datetime must be valid' },
-        { field: 'payload.locationAddressLine2', message: 'Address line 2 is invalid' },
-        { field: 'payload.locationAddressZip', message: 'Must be 32 characters or fewer' },
-        { field: 'payload.contactEmail', message: 'Email must be valid' },
+        { type: 'field', field: 'payload.endTime', message: 'End datetime must be valid' },
+        {
+          type: 'field',
+          field: 'payload.locationAddressLine2',
+          message: 'Address line 2 is invalid',
+        },
+        {
+          type: 'field',
+          field: 'payload.locationAddressZip',
+          message: 'Must be 32 characters or fewer',
+        },
+        { type: 'field', field: 'payload.contactEmail', message: 'Email must be valid' },
       ]),
     );
 
@@ -151,6 +178,29 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Address line 2 is invalid')).toBeInTheDocument();
     expect(screen.getByText('Must be 32 characters or fewer')).toBeInTheDocument();
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(scrollIntoView.mock.contexts[0]).toBe(
+        screen.getByLabelText('End date and time (optional)'),
+      );
+    });
+  });
+
+  it('renders fieldless API validation errors as submit-level errors', async () => {
+    mockPostEventSubmission().mockRejectedValue(
+      new SubmissionError('Request failed for submissions', 400, 'submissions', [
+        { type: 'form', message: 'Submission intake is temporarily unavailable.' },
+      ]),
+    );
+
+    render(<EventSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredEventFields();
+
+    await user.click(screen.getByRole('button', { name: 'Submit Event' }));
+
+    expect(screen.getByText('Submission intake is temporarily unavailable.')).toHaveClass(
+      'submissionGlobalError',
+    );
   });
 
   it('shows inline client validation when end time is before start time', async () => {
@@ -179,6 +229,11 @@ describe('EventSubmissionForm', () => {
     expect(
       screen.getByText('Something went wrong while sending your submission. Please try again.'),
     ).toHaveClass('submissionGlobalError');
+    await waitFor(() => {
+      expect(scrollIntoView.mock.contexts[0]).toBe(
+        screen.getByText('Something went wrong while sending your submission. Please try again.'),
+      );
+    });
     expect(screen.getByLabelText('* Title')).toHaveValue('  Transit Rally  ');
   });
 

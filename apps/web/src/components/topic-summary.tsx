@@ -1,10 +1,5 @@
 import Link from 'next/link';
-
-type TopicSummaryData = {
-  slug: string;
-  name: string;
-  description: string;
-};
+import type { TopicSummary as TopicSummaryData } from '@signal-fire/api-contracts';
 
 type TopicSummaryVariant = 'collection' | 'related';
 

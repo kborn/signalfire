@@ -44,9 +44,15 @@ describe('ActionListPage', () => {
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
+    expect(markup).toContain('Contact');
+    expect(markup).toContain('March 21, 2026');
     expect(markup).toContain('href="/actions/donate-to-local-organizers"');
     expect(markup).toContain('Donate to Local Organizers');
     expect(markup).toContain('Support direct local civic work financially.');
+    expect(markup).toContain('Donate');
+    expect(markup).toContain('March 22, 2026');
+    expect(markup).not.toContain('CONTACT');
+    expect(markup).not.toContain('DONATE');
   });
 
   it('renders the empty state when there are no actions', async () => {

@@ -15,6 +15,11 @@ For Phase 6.1, the required outcomes are:
 This walkthrough is about repo edit order, not final styling or full API
 rendering.
 
+Historical note: this walkthrough predates the Phase 11.5 public route group
+split. Current public route source now lives under
+`apps/web/src/app/(public)/...`, while the paths below show the Phase 6.1
+implementation-time source layout.
+
 ## Files And Folders Involved
 
 Existing files:

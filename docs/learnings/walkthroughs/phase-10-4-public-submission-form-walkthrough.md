@@ -22,6 +22,11 @@ For now, the best learning path is:
 
 Do not try to solve article and event at the same time.
 
+Historical note: this walkthrough predates the Phase 11.5 public route group
+split. Current public route source now lives under
+`apps/web/src/app/(public)/submit/...`, while the paths below show the Phase
+10.4 implementation-time source layout.
+
 ## Files And Folders Involved
 
 Read before editing:

@@ -1,3 +1,5 @@
+import type { ValidationError } from '@signal-fire/api-contracts';
+
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -13,7 +15,7 @@ export class SubmissionError extends ApiError {
     message: string,
     public status: number,
     public endpoint: string,
-    public errors: { field: string; message: string }[] | null,
+    public errors: ValidationError[] | null,
   ) {
     super(message, status, endpoint);
   }

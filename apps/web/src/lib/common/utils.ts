@@ -12,3 +12,15 @@ export function titleCase(str: string | undefined): string {
 
   return capitalizedArray.join(' ');
 }
+
+export function formatEnumLabel(value: string | undefined): string {
+  return titleCase(value?.toLowerCase().replaceAll('_', '-'));
+}
+
+export function formatActionTypeLabel(actionType: string | undefined): string {
+  return formatEnumLabel(actionType);
+}
+
+export function formatEventTypeLabel(eventType: string | undefined): string {
+  return formatEnumLabel(eventType);
+}

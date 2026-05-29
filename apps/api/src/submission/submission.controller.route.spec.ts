@@ -92,6 +92,7 @@ describe('SubmissionController HTTP', () => {
       .expect({
         errors: [
           {
+            type: 'field',
             field: 'payload.title',
             message: 'Title is required',
           },
@@ -113,6 +114,7 @@ describe('SubmissionController HTTP', () => {
       .expect({
         errors: [
           {
+            type: 'field',
             field: 'submitterEmail',
             message: 'Email must be valid',
           },
@@ -136,6 +138,7 @@ describe('SubmissionController HTTP', () => {
       .expect({
         errors: [
           {
+            type: 'field',
             field: 'payload.endTime',
             message: 'End datetime must be greater than or equal to start datetime',
           },

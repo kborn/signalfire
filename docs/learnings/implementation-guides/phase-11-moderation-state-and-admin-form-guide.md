@@ -162,10 +162,10 @@ Existing backend modules:
 
 Existing frontend public routes:
 
-- `apps/web/src/app/actions`
-- `apps/web/src/app/articles`
-- `apps/web/src/app/events`
-- `apps/web/src/app/submit`
+- Phase-time examples used `apps/web/src/app/actions`,
+  `apps/web/src/app/articles`, `apps/web/src/app/events`, and
+  `apps/web/src/app/submit`
+- Current public route source lives under `apps/web/src/app/(public)/...`
 
 What Phase 11 adds conceptually:
 

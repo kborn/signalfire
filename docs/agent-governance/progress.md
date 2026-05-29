@@ -1269,7 +1269,7 @@ repository public.
 
 ---
 
-#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ⏳
+#### ▸ Phase 11.6 - Public Repository Readiness Checkpoint ✅
 
 ###### Goal
 
@@ -1279,32 +1279,31 @@ admin feature expansion.
 
 ###### Phase Tasks:
 
-- [ ] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
-- [ ] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
+- [x] Perform a focused code review and cleanup pass across the completed Phase 0-11.5 surface, including remaining public-submission/admin-moderation validation and form duplication, resolving defects appropriate to fix before public visibility and documenting intentional deferrals
+- [x] Review `apps/web/src/app/admin/submissions/[id]/_components/` versus
       `apps/web/src/components/` ownership and decide whether submission-review
       components should remain route-local or move into shared component
       directories before public repository visibility
-- [ ] Review the shared Markdown rendering component currently named
-      `article-body`/`ArticleBody` and decide whether to rename it to reflect
-      that it is used by both Article and Event detail pages
-- [ ] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
+- [x] Rename the shared Markdown rendering component from
+      `article-body`/`ArticleBody` to `markdown-content`/`MarkdownContent` so
+      its name reflects use across Article, Action, and Event detail pages
+- [x] Audit `apps/web/src/app/globals.css` for unused, stale, duplicated, or
       misleading classes after the Phase 11.5 public visual refresh and admin
       route-group split
-- [ ] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
+- [x] Review responsive/mobile CSS coverage in `apps/web/src/app/globals.css`
       and confirm every layout class that needs mobile-specific behavior is
       represented in the mobile section or intentionally does not need an
       override
-- [ ] Verify representative public routes at mobile, tablet, and desktop
+- [x] Verify representative public routes at mobile, tablet, and desktop
       widths after the Phase 11.5 visual refresh, including homepage, About,
       one detail route, Events, submit landing, and one submit form path
-- [ ] Prepare credible seed/demo content and screenshot-ready primary flows
+- [x] Prepare credible seed/demo content and screenshot-ready primary flows
       for portfolio presentation before making the repository public
-- [ ] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
-- [ ] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
-- [ ] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
-- [ ] Establish the repository's public licensing and contribution posture
-- [ ] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
-- [ ] Make the repository public only after the readiness review is complete
+- [x] Add or complete regression coverage needed to support the public portfolio checkpoint and run the relevant build, typecheck, lint, and test suites
+- [x] Audit the tracked repository and git history for secrets, private material, local-path artifacts, generated output, or other content unsuitable for a public repository; rotate or remove anything discovered before changing visibility
+- [x] Refresh public-facing repository documentation with current feature scope, setup and verification commands, architecture summary, roadmap status, screenshots, and known deployment limitations
+- [x] Establish the repository's public licensing and contribution posture
+- [x] Confirm that making the source repository public does not imply a public deployment of unprotected moderation/admin routes
 
 ###### Notes:
 
@@ -1314,11 +1313,70 @@ admin feature expansion.
   tightly coupled to `/admin/submissions/[id]`, but Phase 11.6 should make that
   ownership explicit and clean up naming if any component has become reusable
   across admin routes.
-- If the Markdown renderer remains shared by Article and Event detail pages,
-  its public name should describe Markdown rendering rather than one content
-  type.
+- The `/admin/submissions/[id]/_components` components were reviewed on
+  2026-05-28 and intentionally kept route-local because they are tightly
+  coupled to the submission review detail workflow.
+- The shared Markdown renderer was renamed to `MarkdownContent` on 2026-05-28
+  because it now renders Article, Action, and Event long-form content.
+- The initial `globals.css` usage audit removed stale admin/layout rules and
+  unstyled event detail class hooks; related-list classes remain intentionally
+  defined because summary components construct those variant class names
+  dynamically.
+- The responsive CSS coverage review added missing mobile overrides for public
+  header alignment, error actions, submit option cards, and admin created-record
+  metadata. Manual viewport verification remains tracked separately because CSS
+  coverage and visual QA are different tasks.
+- Demo content was reviewed for screenshot readiness on 2026-05-28. The demo
+  seed now includes multiple published public events, and
+  `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md` records the
+  recommended public/admin screenshot paths and checks.
+- The focused cleanup scan on 2026-05-28 removed a stale `SignalFire Staff`
+  fixture from an article e2e test. Remaining `CivicSignal` references are
+  historical/spec context or superseded-decision records rather than active
+  public UI copy.
+- The public-repository audit on 2026-05-28 found only tracked example env files
+  in current files/history. Local `.env`, `.env.local`, `.DS_Store`, and
+  `.turbo` artifacts are present on disk but ignored and not tracked.
+- The root README was refreshed on 2026-05-28 with current scope, setup,
+  commands, architecture, demo review guidance, roadmap status, and the admin
+  deployment caveat. It explicitly states that public source visibility is not
+  production deployment readiness.
+- Phase 11.6 validation passed on 2026-05-28 with `pnpm typecheck` and
+  `pnpm test`. The first sandboxed `pnpm test` run failed because API route
+  tests could not bind local HTTP ports (`listen EPERM`); rerunning with local
+  port binding allowed the suite to complete successfully across lint, build,
+  API tests, and web tests. Focused API article e2e coverage remains
+  environment-blocked locally by missing Testcontainers container runtime.
+- The repository licensing posture was set on 2026-05-28 to public-source for
+  portfolio review, but not open-source licensed for reuse. Package metadata is
+  marked `UNLICENSED`, no `LICENSE` file is present, and external contributions
+  are not being solicited until a formal policy is added.
+- Manual viewport QA was completed on 2026-05-28 during the public readiness
+  pass. The submit flow was checked down to a 320px responsive viewport, and
+  the public shell spacing was adjusted so mobile content retains horizontal
+  breathing room.
 - Phase 11.6 CSS cleanup should verify both class usage and responsive
   coverage, not just visual appearance at the default desktop viewport.
+
+---
+
+#### ▸ Phase 11.6.1 - Public Repository Code Quality Pass ⏳
+
+###### Goal
+
+Complete a pre-public code quality review and cleanup pass before changing
+repository visibility.
+
+###### Phase Tasks:
+
+- [x] Complete pre-public code quality review and cleanup pass
+
+###### Notes:
+
+- Detailed review findings and handoff notes are transient local artifacts under
+  `.ai/phase-notes/`, not repository documentation.
+- This pass should complete before the Phase 11.6 repository visibility gate is
+  checked.
 
 ---
 

@@ -1,10 +1,6 @@
 import Link from 'next/link';
-
-type ArticleSummaryData = {
-  slug: string;
-  title: string;
-  summary: string;
-};
+import type { ArticleSummary as ArticleSummaryData } from '@signal-fire/api-contracts';
+import { formatContentDate } from '@/lib/common/time';
 
 type ArticleSummaryVariant = 'collection' | 'related';
 
@@ -19,12 +15,14 @@ export function ArticleSummary({ article, variant = 'collection' }: ArticleSumma
   const summaryClassName =
     variant === 'related' ? 'relatedListItemSummary' : 'collectionItemSummary';
   const TitleTag = variant === 'related' ? 'h4' : 'h2';
+  const publishedAt = formatContentDate(article.publishedAt);
 
   return (
     <article className={itemClassName}>
       <TitleTag className={titleClassName}>
         <Link href={`/articles/${article.slug}`}>{article.title}</Link>
       </TitleTag>
+      {publishedAt && <p className="summaryMeta">Published {publishedAt}</p>}
       <p className={summaryClassName}>{article.summary}</p>
     </article>
   );

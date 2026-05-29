@@ -84,7 +84,10 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('Rally');
     expect(markup).toContain('City Hall Plaza');
     expect(markup).toContain('1 Civic Center Plaza');
-    expect(markup).toContain('Boston, MA, 02108, USA');
+    expect(markup).toContain('City, State &amp; ZIP');
+    expect(markup).toContain('Boston, MA 02108');
+    expect(markup).not.toContain('Boston, MA, 02108, USA');
+    expect(markup).not.toContain('Region');
     expect(markup).toContain('https://example.org/housing-rally');
     expect(markup).toContain('contact@my-event.com');
     expect(markup).toContain('What to expect');
@@ -96,8 +99,6 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/actions/contact-city-council"');
     expect(markup).toContain('class="metaValue eventType"');
-    expect(markup).toContain('class="metaValue eventDateTime"');
-    expect(markup).toContain('class="metaValue eventLocation"');
     expect(markup).toContain('class="relatedList"');
   });
 
@@ -113,9 +114,9 @@ describe('EventDetailsPage', () => {
       startTime: '2026-05-01T16:00:00.000Z',
       endTime: null,
       locationName: 'Community Center',
-      publicLocationDescription: 'Liberty Plaza',
-      addressLine1: '10 Main Street',
-      addressLine2: 'Ste 1A',
+      publicLocationDescription: null,
+      addressLine1: null,
+      addressLine2: null,
       city: 'Providence',
       region: 'RI',
       postalCode: null,
@@ -141,6 +142,9 @@ describe('EventDetailsPage', () => {
     expect(markup).not.toContain('Take Action');
     expect(markup).toContain('Neighborhood Meeting');
     expect(markup).toContain('Community Center');
+    expect(markup).not.toContain('Location Description');
+    expect(markup).not.toContain('Address Line 1');
+    expect(markup).not.toContain('Address Line 2');
   });
 
   it('translates a 404 event API error into route not-found behavior', async () => {

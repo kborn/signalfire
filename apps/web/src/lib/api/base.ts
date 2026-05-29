@@ -1,5 +1,9 @@
 import { ApiError, SubmissionError } from '@/lib/api/error';
-import { ModerationReviewRequest, SubmissionRequest } from '@signal-fire/api-contracts';
+import {
+  ModerationReviewRequest,
+  SubmissionRequest,
+  type ValidationError,
+} from '@signal-fire/api-contracts';
 
 function getApiBase() {
   const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -31,27 +35,34 @@ export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams
   return response.json() as Promise<T>;
 }
 
-function hasValidationErrors(
-  body: unknown,
-): body is { errors: { field: string; message: string }[] } {
+function isValidationError(item: unknown): item is ValidationError {
+  if (!item || typeof item !== 'object' || !('type' in item) || !('message' in item)) {
+    return false;
+  }
+
+  if (typeof item.message !== 'string') {
+    return false;
+  }
+
+  if (item.type === 'form') {
+    return !('field' in item);
+  }
+
+  return item.type === 'field' && 'field' in item && typeof item.field === 'string';
+}
+
+function hasValidationErrors(body: unknown): body is { errors: ValidationError[] } {
   if (!body || typeof body !== 'object' || !('errors' in body)) {
     return false;
   }
 
   const errors = (body as { errors: unknown }).errors;
 
-  return (
-    Array.isArray(errors) &&
-    errors.every(
-      (item) =>
-        item &&
-        typeof item === 'object' &&
-        'field' in item &&
-        'message' in item &&
-        typeof item.field === 'string' &&
-        typeof item.message === 'string',
-    )
-  );
+  return Array.isArray(errors) && errors.every((item) => isValidationError(item));
+}
+
+function getValidationErrors(body: unknown): ValidationError[] | null {
+  return hasValidationErrors(body) ? body.errors : null;
 }
 
 export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
@@ -72,12 +83,13 @@ export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
   }
 
   if (!response.ok) {
-    if (hasValidationErrors(body)) {
+    const validationErrors = getValidationErrors(body);
+    if (validationErrors) {
       throw new SubmissionError(
         `Request failed for submissions`,
         response.status,
         'submissions',
-        (body as { errors: { field: string; message: string }[] }).errors,
+        validationErrors,
       );
     } else {
       throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
@@ -107,12 +119,13 @@ export async function postSubmissionReview<ModerationReviewSuccess>(
   }
 
   if (!response.ok) {
-    if (hasValidationErrors(body)) {
+    const validationErrors = getValidationErrors(body);
+    if (validationErrors) {
       throw new SubmissionError(
         `Request failed for submissions`,
         response.status,
         'submissions',
-        (body as { errors: { field: string; message: string }[] }).errors,
+        validationErrors,
       );
     } else {
       throw new ApiError(`Request failed for submissions`, response.status, 'submissions');

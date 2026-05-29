@@ -20,7 +20,8 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "pnpm test:unit",
     "test:unit": "jest --config ./jest.unit.config.json",
     "test:integration": "jest --config ./jest.integration.config.json --runInBand",
@@ -28,7 +29,7 @@
     "test:unit:watch": "pnpm test:unit --watch",
     "test:unit:cov": "pnpm test:unit --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --config ./jest.unit.config.json --runInBand",
-    "test:e2e": "jest --config ./jest.e2e.config.json",
+    "test:e2e": "jest --config ./jest.e2e.config.json --runInBand",
     "pretypecheck": "pnpm --filter @signal-fire/api-contracts build",
     "typecheck": "tsc --noEmit"
   },

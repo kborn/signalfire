@@ -59,7 +59,8 @@ describe('ActionDetailsPage', () => {
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
     expect(markup).toContain('Action Type');
-    expect(markup).toContain('CONTACT');
+    expect(markup).toContain('Contact');
+    expect(markup).not.toContain('CONTACT');
     expect(markup).toContain('Published');
     expect(markup).toContain('March 21, 2026');
     expect(markup).toContain('Updated');

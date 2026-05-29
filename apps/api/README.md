@@ -1,6 +1,14 @@
-# API App
+# Find Your Fight API App
 
-NestJS backend service for SignalFire.
+NestJS backend service for Find Your Fight.
+
+Use the root README for repository setup, local environment files, demo seed
+guidance, and public repository status:
+
+- `../../README.md`
+
+This package owns the API runtime, Prisma persistence workflow, public content
+endpoints, public submission intake, and moderation/admin API endpoints.
 
 ## Run Locally
 
@@ -21,11 +29,7 @@ pnpm api:prisma:migrate:deploy
 pnpm api:prisma:migrate:seed
 ```
 
-Phase 2.2 baseline migration example:
-
-```bash
-pnpm api:prisma:migrate:dev --name infrastructure_probe
-```
+Use a descriptive migration name when creating local development migrations.
 
 ## Seed Modes
 
@@ -56,16 +60,16 @@ From repository root:
 pnpm api:prisma:generate
 pnpm --filter api typecheck
 pnpm --filter api lint
+pnpm --filter api test:unit
+pnpm --filter api test:e2e
 ```
 
-## Phase 4 Test Infrastructure
+API e2e and integration tests use Testcontainers and require a working local
+container runtime.
 
-Phase 4 persistence integration workflow documentation lives in:
+## Operational Notes
+
+Persistence integration workflow documentation lives in:
 
 - `docs/architecture/007-phase-4-test-infrastructure.md`
 - `docs/runbooks/phase-4-integration-test-workflow.md`
-
-## Phase 2 Notes
-
-- Local end-to-end migration validation is required.
-- CI migration execution is deferred unless low-complexity DB orchestration is available.

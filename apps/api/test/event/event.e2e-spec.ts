@@ -48,14 +48,23 @@ describe('EventController (e2e)', () => {
         startTime: new Date('2025-03-25T12:00:00.000Z'),
         publishedAt: null,
       });
-      const wrongDayEvent = await createEvent({
-        title: 'Wrong Day Event',
-        summary: 'Wrong day event summary',
+      const threeMonthWindowEvent = await createEvent({
+        title: 'Three Month Window Event',
+        summary: 'Three month window event summary',
         region: 'PA',
         city: 'Philadelphia',
         postalCode: '19107',
         country: 'USA',
-        startTime: new Date('2025-04-16T09:00:00.000Z'),
+        startTime: new Date('2025-06-14T09:00:00.000Z'),
+      });
+      const outsideWindowEvent = await createEvent({
+        title: 'Outside Window Event',
+        summary: 'Outside window event summary',
+        region: 'PA',
+        city: 'Philadelphia',
+        postalCode: '19107',
+        country: 'USA',
+        startTime: new Date('2025-06-16T09:00:00.000Z'),
       });
       const otherTopicEvent = await createEvent({
         title: 'Other Topic Event',
@@ -75,7 +84,8 @@ describe('EventController (e2e)', () => {
       await linkTopicEvent(topic.id, earlierEvent.id);
       await linkTopicEvent(topic.id, laterEvent.id);
       await linkTopicEvent(topic.id, draftEvent.id);
-      await linkTopicEvent(topic.id, wrongDayEvent.id);
+      await linkTopicEvent(topic.id, threeMonthWindowEvent.id);
+      await linkTopicEvent(topic.id, outsideWindowEvent.id);
       await linkTopicEvent(otherTopic.id, otherTopicEvent.id);
 
       const response = await request(harness.httpServer)
@@ -85,7 +95,11 @@ describe('EventController (e2e)', () => {
         })
         .expect(200);
       const body = response.body as EventListResponse;
-      expect(body.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
+      expect(body.items.map((item) => item.id)).toEqual([
+        earlierEvent.id,
+        laterEvent.id,
+        threeMonthWindowEvent.id,
+      ]);
       expect(body.items).toEqual([
         expect.objectContaining({
           id: earlierEvent.id,
@@ -101,9 +115,16 @@ describe('EventController (e2e)', () => {
           region: 'PA',
           startTime: '2025-03-25T18:00:00.000Z',
         }),
+        expect.objectContaining({
+          id: threeMonthWindowEvent.id,
+          title: threeMonthWindowEvent.title,
+          summary: threeMonthWindowEvent.summary,
+          region: 'PA',
+          startTime: '2025-06-14T09:00:00.000Z',
+        }),
       ]);
       expect(body.items.map((item) => item.id)).not.toContain(draftEvent.id);
-      expect(body.items.map((item) => item.id)).not.toContain(wrongDayEvent.id);
+      expect(body.items.map((item) => item.id)).not.toContain(outsideWindowEvent.id);
       expect(body.items.map((item) => item.id)).not.toContain(otherTopicEvent.id);
     });
   });

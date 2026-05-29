@@ -16,7 +16,7 @@ For this repo, the right default is `react-markdown`.
 
 - Markdown is stored source text
 - the article API should keep returning that source text as a string
-- the web app should render Markdown at the article-body display boundary
+- the web app should render Markdown at the dedicated Markdown content display boundary
 - `react-markdown` turns Markdown into React elements
 - styling rendered Markdown is separate from parsing it correctly
 
@@ -49,7 +49,7 @@ display.
 In this repo, the render boundary belongs near:
 
 - `apps/web/src/app/articles/[slug]/page.tsx`
-- `apps/web/src/components/article-body.tsx`
+- `apps/web/src/components/markdown-content.tsx`
 
 It does not belong in:
 
@@ -101,7 +101,7 @@ syntax stays visible instead of becoming structured output.
 ### Correct mental model
 
 ```tsx
-function ArticleBody({ content }: { content: string }) {
+function MarkdownContent({ content }: { content: string }) {
   return <ReactMarkdown>{content}</ReactMarkdown>;
 }
 ```
@@ -133,14 +133,14 @@ If the browser still shows `##` and `-`, Markdown is not actually wired.
 Relevant files:
 
 - `apps/web/src/app/articles/[slug]/page.tsx`
-- `apps/web/src/components/article-body.tsx`
+- `apps/web/src/components/markdown-content.tsx`
 - `apps/web/src/app/globals.css`
 
 The article page should:
 
 1. fetch the article detail
 2. format article metadata
-3. render the article body through `ArticleBody`
+3. render the article body through `MarkdownContent`
 4. keep related topics and related actions below the body
 
 That preserves the Phase 6 discovery flow while using the correct content
@@ -154,7 +154,7 @@ Canonical architecture context:
 ## Practical Recommendation For This Repo
 
 Use `react-markdown` in a small dedicated component such as
-`apps/web/src/components/article-body.tsx`.
+`apps/web/src/components/markdown-content.tsx`.
 
 That is the right middle ground because it:
 
@@ -165,7 +165,7 @@ That is the right middle ground because it:
 
 ## Tiny Rules Of Thumb
 
-- Store Markdown as text; render it at the article-body boundary.
+- Store Markdown as text; render it at the Markdown content boundary.
 - Use `react-markdown` before considering anything more custom.
 - Keep fetch logic in the page and body rendering in a small component/helper.
 - Do not use `dangerouslySetInnerHTML` just to display Markdown.
@@ -183,6 +183,6 @@ That is the right middle ground because it:
 ## Pointed Questions To Ask When Blocked
 
 - Am I actually rendering Markdown, or just printing its raw text?
-- Can this stay a small `ArticleBody` component instead of spreading across the route?
+- Can this stay a small `MarkdownContent` component instead of spreading across the route?
 - Am I reaching for HTML injection when a Markdown renderer is the correct tool?
 - Is the current problem parsing correctness, or only styling?

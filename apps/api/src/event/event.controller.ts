@@ -8,7 +8,7 @@ export class EventController {
 
   private getDateRangeEnd(startDate: Date): Date {
     const endDate = new Date(startDate);
-    endDate.setUTCDate(endDate.getUTCDate() + 30);
+    endDate.setUTCMonth(endDate.getUTCMonth() + 3);
     return endDate;
   }
 

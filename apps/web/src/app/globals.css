@@ -73,6 +73,7 @@ p {
 
 .publicContent.container {
   max-width: 1120px;
+  padding-inline: 24px;
 }
 
 .publicShell h1,
@@ -113,6 +114,7 @@ p {
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-2) var(--space-3);
+  min-width: 0;
 }
 
 .site-nav {
@@ -121,6 +123,7 @@ p {
   gap: 24px;
   font-size: 1rem;
   line-height: 1.2;
+  min-width: 0;
 }
 
 .site-nav a {
@@ -163,7 +166,8 @@ p {
 }
 
 .site-main {
-  padding: var(--space-3) 0 80px;
+  padding-top: var(--space-3);
+  padding-bottom: 80px;
 }
 
 .publicContent.site-main {
@@ -173,6 +177,7 @@ p {
 .page-section {
   display: grid;
   gap: var(--space-3);
+  min-width: 0;
 }
 
 .page-section + .page-section {
@@ -207,10 +212,6 @@ p {
   max-width: 960px;
   margin: 0 auto;
   padding: 0 24px;
-}
-
-.summary {
-  padding-left: 1rem;
 }
 
 .section-label {
@@ -308,6 +309,17 @@ p {
 .about-step .secondaryCTA {
   margin-top: var(--space-1);
 }
+
+.about-closing-panel {
+  max-width: 760px;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.about-closing-panel h2 {
+  max-width: 14ch;
+}
+
 .about-step h3 {
   font-family: var(--font-body), Arial, Helvetica, sans-serif;
   font-size: 1.25rem;
@@ -549,6 +561,13 @@ h3 {
   color: var(--color-text-muted);
 }
 
+.summaryMeta {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
 .publicShell .collectionItemTitle a,
 .publicShell .relatedListItemTitle a {
   color: var(--color-text-primary);
@@ -670,14 +689,14 @@ h3 {
   color: var(--color-text-primary);
 }
 
-.articleBody {
+.markdownContent {
   display: grid;
   gap: 18px;
   max-width: 72ch;
 }
 
-.articleBody h2,
-.articleBody h3 {
+.markdownContent h2,
+.markdownContent h3 {
   margin-top: var(--space-2);
 }
 
@@ -692,12 +711,17 @@ h3 {
   font-weight: 600;
 }
 
-.publicShell .articleBody {
+.notFoundPanel {
+  max-width: 760px;
+  padding-top: var(--space-4);
+}
+
+.publicShell .markdownContent {
   color: var(--color-text-primary);
 }
 
-.publicShell .articleBody p,
-.publicShell .articleBody li {
+.publicShell .markdownContent p,
+.publicShell .markdownContent li {
   color: var(--color-text-muted);
 }
 
@@ -706,7 +730,9 @@ h3 {
 .submissionForm {
   display: grid;
   gap: var(--space-3);
+  width: 100%;
   max-width: 720px;
+  min-width: 0;
   margin-left: 0;
   margin-right: auto;
 }
@@ -828,7 +854,9 @@ h3 {
 .submissionGuidance {
   display: grid;
   gap: var(--space-1);
+  width: 100%;
   max-width: 720px;
+  min-width: 0;
 }
 
 .submissionGuidance details {
@@ -1024,6 +1052,13 @@ h3 {
   line-height: 1.55;
 }
 
+.adminStat {
+  color: #171717;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
 .adminNav {
   display: flex;
   flex-wrap: wrap;
@@ -1091,14 +1126,6 @@ h3 {
   font-size: 1.25rem;
   line-height: 1.2;
   letter-spacing: 0;
-}
-
-.adminToolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: end;
-  justify-content: space-between;
 }
 
 .adminSegmentedControl,
@@ -1194,55 +1221,10 @@ h3 {
   margin: var(--space-2) 0 var(--space-3);
 }
 
-.adminEmptyState {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-3);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #f3f4f6;
-  color: #444444;
-}
-
-.adminEmptyState h2,
-.adminEmptyState h3 {
-  color: #171717;
-  font-size: 1.25rem;
-  line-height: 1.2;
-  letter-spacing: 0;
-}
-
-.adminDetailLayout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 280px;
-  gap: var(--space-3);
-  align-items: start;
-}
-
 .adminReviewMain {
   display: grid;
   gap: var(--space-3);
   min-width: 0;
-}
-
-.adminMetadataPanel {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-2);
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #444444;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-.adminMetadataPanel h2,
-.adminMetadataPanel h3 {
-  color: #171717;
-  font-size: 1.1rem;
-  line-height: 1.2;
-  letter-spacing: 0;
 }
 
 .adminSection {
@@ -1255,18 +1237,6 @@ h3 {
   font-size: 1.35rem;
   line-height: 1.2;
   letter-spacing: 0;
-}
-
-.adminPlaceholder {
-  display: grid;
-  gap: var(--space-1);
-  padding: var(--space-2);
-  border: 1px dashed #9ca3af;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #6b7280;
-  font-size: 0.95rem;
-  line-height: 1.45;
 }
 
 .adminDefinitionList {
@@ -1403,13 +1373,6 @@ h3 {
   color: #444444;
 }
 
-.adminCreatedRecordValue {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-}
-
 .adminCreatedRecord {
   display: grid;
   gap: var(--space-1);
@@ -1449,21 +1412,6 @@ h3 {
   color: #171717;
 }
 
-.adminCreatedRecordMeta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.45rem;
-  color: #6b7280;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-.adminCreatedRecordMeta a {
-  color: #171717;
-  text-underline-offset: 0.18em;
-}
-
 .adminCreatedRecordLink {
   width: fit-content;
   margin-top: var(--space-1);
@@ -1471,15 +1419,54 @@ h3 {
   font-weight: 500;
   text-underline-offset: 0.18em;
 }
+
+.adminEmptyState {
+  display: grid;
+  gap: var(--space-0);
+  max-width: 52ch;
+  padding: var(--space-3) 0;
+  white-space: normal;
+}
+
+.adminEmptyStateTitle {
+  color: #171717;
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .primaryCTA,
+  .secondaryCTA,
+  .publicShell .collectionItem {
+    transition-duration: 0.01ms !important;
+  }
+
+  .primaryCTA:active,
+  .secondaryCTA:active,
+  .publicShell .collectionItem:hover {
+    transform: none;
+  }
+}
 /* Responsive */
 
 @media (max-width: 640px) {
   .container {
-    padding: 0 20px;
+    padding: 0 24px;
   }
 
   .site-header {
+    align-items: flex-start;
     padding: 16px 0 10px;
+  }
+
+  .site-nav-group {
+    justify-content: flex-start;
+    width: 100%;
   }
 
   .site-nav {
@@ -1488,7 +1475,8 @@ h3 {
   }
 
   .site-main {
-    padding: 20px 0 64px;
+    padding-top: 20px;
+    padding-bottom: 64px;
   }
 
   .publicContent.site-main {
@@ -1509,8 +1497,7 @@ h3 {
   }
 
   .collectionItemSummary,
-  .relatedListItemSummary,
-  .summary {
+  .relatedListItemSummary {
     padding-left: 0;
   }
 
@@ -1529,6 +1516,15 @@ h3 {
     justify-items: start;
   }
 
+  .publicErrorActions {
+    display: grid;
+    justify-items: start;
+  }
+
+  .submitOptionCard {
+    padding: var(--space-2);
+  }
+
   .submissionFieldRow {
     display: grid;
   }
@@ -1538,7 +1534,6 @@ h3 {
     align-items: stretch;
   }
 
-  .adminToolbar,
   .adminSegmentedControl,
   .adminFilterGroup {
     display: grid;
@@ -1555,11 +1550,11 @@ h3 {
     white-space: nowrap;
   }
 
-  .adminDetailLayout {
+  .adminDefinitionList {
     grid-template-columns: 1fr;
   }
 
-  .adminDefinitionList {
+  .adminCreatedRecordDetails {
     grid-template-columns: 1fr;
   }
 }

@@ -106,7 +106,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('End date and time (optional)').fill('2026-05-14T19:00');
     await page!.getByLabel('* Location Name').fill('City Hall North Plaza');
     await page!.getByLabel('* City').fill('Philadelphia');
-    await page!.getByLabel('* Region').selectOption('PA');
+    await page!.getByLabel('* State').selectOption('PA');
     await page!.getByLabel('Location Description (optional)').fill('Liberty Square');
     await page!.getByLabel('Address Line 1 (optional)').fill('1400 John F Kennedy Blvd');
     await page!.getByLabel('Address Line 2 (optional)').fill('Ste 1A');
@@ -114,7 +114,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Economic Justice').check();
     await page!.getByLabel('Contact Email (optional)').fill('press@example.org');
     await page!.getByLabel('Name (optional)').fill('Alex Rivera');
-    await page!.locator('#event-submitter-email').fill('organizer@example.org');
+    await page!.locator('#event-submitterEmail').fill('organizer@example.org');
     await page!.getByLabel('Website URL (optional)').fill('example.org/event');
     await page!.getByRole('button', { name: 'Submit Event' }).click();
 

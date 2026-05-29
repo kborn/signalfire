@@ -910,3 +910,37 @@ to `publicLocationDescription`.
 - Phase 11.3 must update Event persistence, submission persistence, API
   contracts, moderation normalization forms, approval mapping, seed data, and
   public Event rendering to remove `addressRaw` as a canonical field.
+
+---
+
+---
+
+### ► Event summary, description, and postal code remain required in Release 1
+
+###### 2026-05-28
+
+---
+
+###### Decision
+
+For Release 1, Event `summary`, `description`, and `postalCode` are required in
+the public submission contract and in moderation normalization before approval.
+They must not be treated as optional in canonical specs, API contracts, or UI
+validation rules.
+
+###### Rationale
+
+- Event discovery and moderation quality in Release 1 relies on all three
+  fields being present and reviewable.
+- Optional treatment across docs previously created conflicting implementation
+  guidance and test expectations.
+- The project already enforces required Event `postalCode` in Release 1
+  publication decisions; this keeps submission and normalization aligned.
+
+###### Implications
+
+- Phase 10 submission spec must define `locationAddressZip` as required.
+- Phase 11 moderation/admin spec must define Event `summary`, `description`,
+  and `postalCode` as required normalization fields.
+- Learning guides may discuss nullable persistence internals, but they must not
+  represent these fields as optional in Release 1 behavior.

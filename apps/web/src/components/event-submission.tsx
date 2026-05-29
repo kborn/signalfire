@@ -1,19 +1,21 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
 import type { ComponentProps } from 'react';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
 import { EVENT_TYPES, EventType } from '@signal-fire/api-contracts';
 import { SubmissionGuidance } from '@/components/submission-guidance';
 import {
   mapSubmissionApiFieldToUiField,
+  mapSubmissionApiErrors,
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
   validateOptionalStringMax,
   validateRequiredString,
 } from '@/lib/submission-form-validation';
+import { formatEventTypeLabel } from '@/lib/common/utils';
 
 const US_STATE_OPTIONS = [
   ['AL', 'Alabama'],
@@ -74,14 +76,6 @@ const US_STATE_OPTIONS = [
   ['WY', 'Wyoming'],
 ] as const;
 
-function formatEventTypeLabel(value: string): string {
-  return value
-    .toLowerCase()
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
-
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
 };
@@ -109,6 +103,49 @@ type EventSubmissionFormErrors = {
   submitterName?: string;
   submitterEmail?: string;
 };
+
+const eventErrorFieldOrder: Array<keyof EventSubmissionFormErrors> = [
+  'title',
+  'summary',
+  'description',
+  'eventType',
+  'startAt',
+  'endAt',
+  'locationName',
+  'city',
+  'region',
+  'country',
+  'publicLocationDescription',
+  'addressLine1',
+  'addressLine2',
+  'postalCode',
+  'topicSlugs',
+  'websiteUrl',
+  'contactEmail',
+  'submitterName',
+  'submitterEmail',
+];
+
+function getScrollBehavior(): ScrollBehavior {
+  if (typeof window.matchMedia !== 'function') {
+    return 'smooth';
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function focusAndScrollTo(id: string) {
+  const element = document.getElementById(id);
+  if (!(element instanceof HTMLElement)) {
+    return;
+  }
+
+  element.focus({ preventScroll: true });
+  element.scrollIntoView({
+    behavior: getScrollBehavior(),
+    block: 'center',
+  });
+}
 
 export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   // ------ form fields --------
@@ -143,6 +180,39 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   const [errors, setErrors] = useState<EventSubmissionFormErrors>({});
   // ------------------------------------
 
+  const getEventControlId = useCallback(
+    (field: keyof EventSubmissionFormErrors): string => {
+      if (field === 'topicSlugs') {
+        return topics[0] ? `event-topic-${topics[0].slug}` : 'event-topic-group';
+      }
+
+      return `event-${field}`;
+    },
+    [topics],
+  );
+
+  useEffect(() => {
+    const firstErrorField = eventErrorFieldOrder.find((field) => errors[field]);
+    if (firstErrorField) {
+      focusAndScrollTo(getEventControlId(firstErrorField));
+      return;
+    }
+    if (submitError) {
+      focusAndScrollTo('event-submit-error');
+    }
+  }, [errors, getEventControlId, submitError]);
+
+  function getFieldA11y(field: keyof EventSubmissionFormErrors, helperId?: string) {
+    const describedBy = [helperId, errors[field] ? `event-${field}-error` : null]
+      .filter(Boolean)
+      .join(' ');
+
+    return {
+      'aria-describedby': describedBy || undefined,
+      'aria-invalid': errors[field] ? true : undefined,
+    };
+  }
+
   const handleToggle = (topic: string) => {
     setTopicSlugs(
       (prev) =>
@@ -152,10 +222,10 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     );
   };
 
-  function mapApiFieldToUiField(field: string): string | null {
+  function mapApiFieldToUiField(field: string): keyof EventSubmissionFormErrors | null {
     const sharedField = mapSubmissionApiFieldToUiField(field);
     if (sharedField) {
-      return sharedField;
+      return sharedField as keyof EventSubmissionFormErrors;
     }
 
     switch (field) {
@@ -411,26 +481,18 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         setIsSuccess(true);
       } catch (error) {
         if (error instanceof SubmissionError) {
-          if (error.errors) {
-            const newEntries = error.errors.reduce((acc, e) => {
-              const uiField = mapApiFieldToUiField(e.field);
-              if (!uiField) {
-                return acc;
-              }
-              return {
-                ...acc,
-                [uiField]: e.message,
-              };
-            }, {});
+          const { fieldErrors, formError } = mapSubmissionApiErrors(
+            error.errors,
+            mapApiFieldToUiField,
+          );
 
-            if (Object.keys(newEntries).length > 0) {
-              setErrors((prev) => ({ ...prev, ...newEntries }));
-            } else {
-              setSubmitError(
-                'Something went wrong while sending your submission. Please try again.',
-              );
-            }
-          } else {
+          if (Object.keys(fieldErrors).length > 0) {
+            setErrors((prev) => ({ ...prev, ...fieldErrors }));
+          }
+
+          if (formError) {
+            setSubmitError(formError);
+          } else if (Object.keys(fieldErrors).length === 0) {
             setSubmitError('Something went wrong while sending your submission. Please try again.');
           }
         } else {
@@ -466,53 +528,73 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           <section className="submissionSection">
             <h2>Basic Information</h2>
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-title">
                 <span>* Title</span>
                 <input
+                  id="event-title"
                   className={'submissionControl'}
                   value={title}
                   placeholder="Title"
                   onChange={(event) => setTitle(event.target.value)}
+                  {...getFieldA11y('title')}
                 />
               </label>
-              {errors.title ? <p className="submissionError">{errors.title}</p> : null}
+              {errors.title ? (
+                <p id="event-title-error" className="submissionError">
+                  {errors.title}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-summary">
                 <span>* Summary</span>
                 <textarea
+                  id="event-summary"
                   className="submissionTextarea"
                   value={summary}
                   placeholder="Briefly describe the event"
                   rows={4}
                   onChange={(event) => setSummary(event.target.value)}
+                  {...getFieldA11y('summary')}
                 />
               </label>
-              {errors.summary ? <p className="submissionError">{errors.summary}</p> : null}
+              {errors.summary ? (
+                <p id="event-summary-error" className="submissionError">
+                  {errors.summary}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-description">
                 <span>* Description</span>
                 <textarea
+                  id="event-description"
                   className="submissionTextarea"
                   value={description}
                   placeholder="Provide additional details about the event"
                   rows={12}
                   onChange={(event) => setDescription(event.target.value)}
+                  {...getFieldA11y('description')}
                 />
               </label>
-              {errors.description ? <p className="submissionError">{errors.description}</p> : null}
+              {errors.description ? (
+                <p id="event-description-error" className="submissionError">
+                  {errors.description}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-eventType">
                 <span>* Event Type</span>
                 <select
+                  id="event-eventType"
                   className="submissionControl"
                   value={eventType}
                   onChange={(event) => setEventType(event.target.value)}
+                  {...getFieldA11y('eventType')}
                 >
                   <option value="">Select an event type</option>
                   {EVENT_TYPES.map((eventType) => (
@@ -522,7 +604,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   ))}
                 </select>
               </label>
-              {errors.eventType ? <p className="submissionError">{errors.eventType}</p> : null}
+              {errors.eventType ? (
+                <p id="event-eventType-error" className="submissionError">
+                  {errors.eventType}
+                </p>
+              ) : null}
             </section>
           </section>
 
@@ -531,29 +617,41 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
 
             <div className="submissionFieldRow">
               <section className="submissionField">
-                <label className="submissionLabel">
+                <label className="submissionLabel" htmlFor="event-startAt">
                   <span>* Start date and time</span>
                   <input
+                    id="event-startAt"
                     type="datetime-local"
                     className="submissionControl"
                     value={startAt}
                     onChange={(event) => setStartAt(event.target.value)}
+                    {...getFieldA11y('startAt')}
                   />
                 </label>
-                {errors.startAt ? <p className="submissionError">{errors.startAt}</p> : null}
+                {errors.startAt ? (
+                  <p id="event-startAt-error" className="submissionError">
+                    {errors.startAt}
+                  </p>
+                ) : null}
               </section>
 
               <section className="submissionField">
-                <label className="submissionLabel">
+                <label className="submissionLabel" htmlFor="event-endAt">
                   <span>End date and time (optional)</span>
                   <input
+                    id="event-endAt"
                     className="submissionControl"
                     value={endAt}
                     type="datetime-local"
                     onChange={(event) => setEndAt(event.target.value)}
+                    {...getFieldA11y('endAt')}
                   />
                 </label>
-                {errors.endAt ? <p className="submissionError">{errors.endAt}</p> : null}
+                {errors.endAt ? (
+                  <p id="event-endAt-error" className="submissionError">
+                    {errors.endAt}
+                  </p>
+                ) : null}
               </section>
             </div>
           </section>
@@ -561,40 +659,52 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           <section className="submissionSection">
             <h2>Location</h2>
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-locationName">
                 <span>* Location Name</span>
                 <input
+                  id="event-locationName"
                   className={'submissionControl'}
                   value={locationName}
                   placeholder="Community Center"
                   onChange={(event) => setLocationName(event.target.value)}
+                  {...getFieldA11y('locationName')}
                 />
               </label>
               {errors.locationName ? (
-                <p className="submissionError">{errors.locationName}</p>
+                <p id="event-locationName-error" className="submissionError">
+                  {errors.locationName}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-city">
                 <span>* City</span>
                 <input
+                  id="event-city"
                   className={'submissionControl'}
                   value={city}
                   placeholder="Philadelphia"
                   onChange={(event) => setCity(event.target.value)}
+                  {...getFieldA11y('city')}
                 />
               </label>
-              {errors.city ? <p className="submissionError">{errors.city}</p> : null}
+              {errors.city ? (
+                <p id="event-city-error" className="submissionError">
+                  {errors.city}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
-                <span>* Region</span>
+              <label className="submissionLabel" htmlFor="event-region">
+                <span>* State</span>
                 <select
+                  id="event-region"
                   className="submissionControl"
                   value={region}
                   onChange={(event) => setRegion(event.target.value)}
+                  {...getFieldA11y('region')}
                 >
                   <option value="">Select a state</option>
                   {US_STATE_OPTIONS.map(([value, label]) => (
@@ -604,85 +714,132 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   ))}
                 </select>
               </label>
-              {errors.region ? <p className="submissionError">{errors.region}</p> : null}
+              {errors.region ? (
+                <p id="event-region-error" className="submissionError">
+                  {errors.region}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-country">
                 <span>* Country</span>
-                <input className={'submissionControl'} value={country} disabled readOnly />
+                <input
+                  id="event-country"
+                  className={'submissionControl'}
+                  value={country}
+                  disabled
+                  readOnly
+                  {...getFieldA11y('country')}
+                />
               </label>
-              {errors.country ? <p className="submissionError">{errors.country}</p> : null}
+              {errors.country ? (
+                <p id="event-country-error" className="submissionError">
+                  {errors.country}
+                </p>
+              ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-publicLocationDescription">
                 <span>Location Description (optional)</span>
                 <input
+                  id="event-publicLocationDescription"
                   className={'submissionControl'}
                   value={publicLocationDescription}
                   placeholder="Meet organizers near the fountain"
                   onChange={(event) => setPublicLocationDescription(event.target.value)}
+                  {...getFieldA11y('publicLocationDescription')}
                 />
               </label>
               {errors.publicLocationDescription ? (
-                <p className="submissionError">{errors.publicLocationDescription}</p>
+                <p id="event-publicLocationDescription-error" className="submissionError">
+                  {errors.publicLocationDescription}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-addressLine1">
                 <span>Address Line 1 (optional)</span>
                 <input
+                  id="event-addressLine1"
                   className={'submissionControl'}
                   value={addressLine1}
                   placeholder="123 Main St"
                   onChange={(event) => setAddressLine1(event.target.value)}
+                  {...getFieldA11y('addressLine1')}
                 />
               </label>
               {errors.addressLine1 ? (
-                <p className="submissionError">{errors.addressLine1}</p>
+                <p id="event-addressLine1-error" className="submissionError">
+                  {errors.addressLine1}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-addressLine2">
                 <span>Address Line 2 (optional)</span>
                 <input
+                  id="event-addressLine2"
                   className={'submissionControl'}
                   value={addressLine2}
                   placeholder="Suite A"
                   onChange={(event) => setAddressLine2(event.target.value)}
+                  {...getFieldA11y('addressLine2')}
                 />
               </label>
               {errors.addressLine2 ? (
-                <p className="submissionError">{errors.addressLine2}</p>
+                <p id="event-addressLine2-error" className="submissionError">
+                  {errors.addressLine2}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-postalCode">
                 <span>* ZIP Code</span>
                 <input
+                  id="event-postalCode"
                   className={'submissionControl'}
                   value={postalCode}
                   placeholder="19107"
                   onChange={(event) => setPostalCode(event.target.value)}
+                  {...getFieldA11y('postalCode')}
                 />
               </label>
-              {errors.postalCode ? <p className="submissionError">{errors.postalCode}</p> : null}
+              {errors.postalCode ? (
+                <p id="event-postalCode-error" className="submissionError">
+                  {errors.postalCode}
+                </p>
+              ) : null}
             </section>
           </section>
 
           <section className="submissionSection">
             <h2>Topics</h2>
             <section className="submissionField">
-              <div className="submissionLabel">* Topics</div>
-              <p className="submissionHelper">Select at least one topic</p>
-              <div className="submissionCheckboxGroup" aria-label="Topics">
+              <div id="event-topic-group" className="submissionLabel">
+                * Topics
+              </div>
+              <p id="event-topic-helper" className="submissionHelper">
+                Select at least one topic
+              </p>
+              <div
+                className="submissionCheckboxGroup"
+                role="group"
+                aria-labelledby="event-topic-group"
+                {...getFieldA11y('topicSlugs', 'event-topic-helper')}
+              >
                 {topics.map((topic) => (
-                  <label className="submissionCheckboxOption" key={topic.name}>
+                  <label
+                    className="submissionCheckboxOption"
+                    htmlFor={`event-topic-${topic.slug}`}
+                    key={topic.name}
+                  >
                     <input
+                      id={`event-topic-${topic.slug}`}
                       type="checkbox"
                       checked={topicSlugs.includes(topic.slug)}
                       onChange={() => handleToggle(topic.slug)}
@@ -691,90 +848,115 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   </label>
                 ))}
               </div>
-              {errors.topicSlugs ? <p className="submissionError">{errors.topicSlugs}</p> : null}
+              {errors.topicSlugs ? (
+                <p id="event-topicSlugs-error" className="submissionError">
+                  {errors.topicSlugs}
+                </p>
+              ) : null}
             </section>
           </section>
 
           <section className="submissionSection">
             <h2>Website</h2>
             <section className="submissionField">
-              <label className="submissionLabel" htmlFor="event-website-url">
+              <label className="submissionLabel" htmlFor="event-websiteUrl">
                 Website URL (optional)
               </label>
-              <p className="submissionHelper">Public event, organizer, or RSVP URL</p>
+              <p id="event-website-helper" className="submissionHelper">
+                Public event, organizer, or RSVP URL
+              </p>
               <input
-                id="event-website-url"
+                id="event-websiteUrl"
                 className="submissionControl"
                 type="text"
                 placeholder="https://example.org/event"
                 value={websiteUrl}
                 onChange={(event) => setWebsiteUrl(event.target.value)}
+                {...getFieldA11y('websiteUrl', 'event-website-helper')}
               />
-              {errors.websiteUrl ? <p className="submissionError">{errors.websiteUrl}</p> : null}
+              {errors.websiteUrl ? (
+                <p id="event-websiteUrl-error" className="submissionError">
+                  {errors.websiteUrl}
+                </p>
+              ) : null}
             </section>
           </section>
 
           <section className="submissionSection">
             <h2>Contact Information</h2>
             <section className="submissionField">
-              <label className="submissionLabel" htmlFor="event-contact-email">
+              <label className="submissionLabel" htmlFor="event-contactEmail">
                 Contact Email (optional)
               </label>
-              <span className="submissionHelper">
+              <span id="event-contact-email-helper" className="submissionHelper">
                 Used publicly only if the event needs a contact address
               </span>
               <input
-                id="event-contact-email"
+                id="event-contactEmail"
                 className={'submissionControl'}
                 value={contactEmail}
                 placeholder="organizer@example.com"
                 type={'email'}
                 onChange={(event) => setContactEmail(event.target.value)}
+                {...getFieldA11y('contactEmail', 'event-contact-email-helper')}
               />
               {errors.contactEmail ? (
-                <p className="submissionError">{errors.contactEmail}</p>
+                <p id="event-contactEmail-error" className="submissionError">
+                  {errors.contactEmail}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel">
+              <label className="submissionLabel" htmlFor="event-submitterName">
                 <span>Name (optional)</span>
                 <input
+                  id="event-submitterName"
                   className={'submissionControl'}
                   value={submitterName}
                   placeholder="Your name"
                   onChange={(event) => setSubmitterName(event.target.value)}
+                  {...getFieldA11y('submitterName')}
                 />
               </label>
 
               {errors.submitterName ? (
-                <p className="submissionError">{errors.submitterName}</p>
+                <p id="event-submitterName-error" className="submissionError">
+                  {errors.submitterName}
+                </p>
               ) : null}
             </section>
 
             <section className="submissionField">
-              <label className="submissionLabel" htmlFor="event-submitter-email">
+              <label className="submissionLabel" htmlFor="event-submitterEmail">
                 Email (optional)
               </label>
-              <span className="submissionHelper">
+              <span id="event-submitter-email-helper" className="submissionHelper">
                 Used only if we need to follow up about your submission
               </span>
               <input
-                id="event-submitter-email"
+                id="event-submitterEmail"
                 className={'submissionControl'}
                 value={submitterEmail}
                 placeholder="name@example.com"
                 type={'email'}
                 onChange={(event) => setSubmitterEmail(event.target.value)}
+                {...getFieldA11y('submitterEmail', 'event-submitter-email-helper')}
               />
               {errors.submitterEmail ? (
-                <p className="submissionError">{errors.submitterEmail}</p>
+                <p id="event-submitterEmail-error" className="submissionError">
+                  {errors.submitterEmail}
+                </p>
               ) : null}
             </section>
           </section>
         </section>
 
-        {submitError ? <p className="submissionGlobalError">{submitError}</p> : null}
+        {submitError ? (
+          <p id="event-submit-error" className="submissionGlobalError" tabIndex={-1}>
+            {submitError}
+          </p>
+        ) : null}
         <div className="submissionActions">
           <button className="primaryCTA" type="submit" disabled={isSubmitting}>
             Submit Event

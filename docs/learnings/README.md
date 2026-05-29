@@ -15,6 +15,11 @@ This directory is intentionally repo-visible. It is part of the project's
 professional-development story and documents how AI was used as a teaching and
 coaching aid rather than as an opaque code generator.
 
+Many files in this directory are historical phase artifacts. They preserve the
+repo shape and implementation path that existed when the phase was built, so an
+older walkthrough may show paths that have since moved. For current project
+authority, use the canonical docs listed above.
+
 ## Start Here
 
 - `docs/learnings/USER_GUIDE.md`
@@ -36,6 +41,7 @@ coaching aid rather than as an opaque code generator.
 ## Notes
 
 - `docs/learnings/` is non-canonical support material.
+- Phase-scoped learning artifacts are allowed to be historical snapshots.
 - Canonical project authority remains in `docs/agent-governance/`,
   `docs/specs/`, and `docs/architecture/`.
 - Do not cite `.ai/` paths from committed learning docs.

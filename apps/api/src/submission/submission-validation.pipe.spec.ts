@@ -26,6 +26,7 @@ describe('SubmissionValidationPipe', () => {
       expect((error as BadRequestException).getResponse()).toEqual({
         errors: [
           {
+            type: 'field',
             field: 'payload.title',
             message: 'Title is required',
           },

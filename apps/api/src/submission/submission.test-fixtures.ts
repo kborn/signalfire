@@ -116,6 +116,7 @@ export function buildSubmissionErrorResponse(
   return {
     errors: [
       {
+        type: 'field',
         field: 'payload.topicSlugs',
         message: 'Unknown topic slugs: unknown-topic',
       },

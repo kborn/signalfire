@@ -7,17 +7,10 @@ import {
   ModerationSubmissionDetail,
   TopicSummary,
 } from '@signal-fire/api-contracts';
+import { formatEventTypeLabel } from '@/lib/common/utils';
 import type { ReviewFormErrors } from './review-form.types';
 
 type EventModerationSubmission = Extract<ModerationSubmissionDetail, { submissionType: 'EVENT' }>;
-
-function formatEventTypeLabel(value: string): string {
-  return value
-    .toLowerCase()
-    .split('_')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
 
 function toDateTimeLocalValue(value: string | null): string {
   if (!value) {
@@ -123,6 +116,13 @@ export default function EventNormalizationForm({
     );
   };
 
+  function getFieldA11y(field: keyof ReviewFormErrors, errorId: string) {
+    return {
+      'aria-describedby': errors[field] ? errorId : undefined,
+      'aria-invalid': errors[field] ? true : undefined,
+    };
+  }
+
   return (
     <dl className="adminDefinitionList">
       <dt>
@@ -140,6 +140,7 @@ export default function EventNormalizationForm({
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           disabled={success}
+          {...getFieldA11y('title', 'normalized-title-error')}
         />
       </dd>
 
@@ -158,6 +159,7 @@ export default function EventNormalizationForm({
           value={summary}
           onChange={(event) => setSummary(event.target.value)}
           disabled={success}
+          {...getFieldA11y('summary', 'normalized-summary-error')}
         />
       </dd>
 
@@ -176,6 +178,7 @@ export default function EventNormalizationForm({
           value={description}
           onChange={(event) => setDescription(event.target.value)}
           disabled={success}
+          {...getFieldA11y('description', 'normalized-description-error')}
         />
       </dd>
 
@@ -194,6 +197,7 @@ export default function EventNormalizationForm({
           value={eventType}
           onChange={(event) => setEventType(parseEventType(event.target.value))}
           disabled={success}
+          {...getFieldA11y('eventType', 'normalized-eventType-error')}
         >
           <option value="" disabled>
             Select an event type
@@ -222,6 +226,7 @@ export default function EventNormalizationForm({
           value={startTime}
           onChange={(event) => setStartTime(event.target.value)}
           disabled={success}
+          {...getFieldA11y('startTime', 'normalized-event-start-error')}
         />
       </dd>
 
@@ -241,6 +246,7 @@ export default function EventNormalizationForm({
           value={endTime}
           onChange={(event) => setEndTime(event.target.value)}
           disabled={success}
+          {...getFieldA11y('endTime', 'normalized-event-end-error')}
         />
       </dd>
 
@@ -259,6 +265,7 @@ export default function EventNormalizationForm({
           value={locationName}
           onChange={(event) => setLocationName(event.target.value)}
           disabled={success}
+          {...getFieldA11y('locationName', 'normalized-location-name-error')}
         />
       </dd>
 
@@ -277,6 +284,7 @@ export default function EventNormalizationForm({
           value={publicLocationDescription}
           onChange={(event) => setPublicLocationDescription(event.target.value)}
           disabled={success}
+          {...getFieldA11y('publicLocationDescription', 'normalized-location-description-error')}
         />
       </dd>
 
@@ -295,6 +303,7 @@ export default function EventNormalizationForm({
               value={addressLine1}
               onChange={(event) => setAddressLine1(event.target.value)}
               disabled={success}
+              {...getFieldA11y('addressLine1', 'normalized-addressLine1-error')}
             />
           </li>
           <li key="addressLine2">
@@ -309,6 +318,7 @@ export default function EventNormalizationForm({
               value={addressLine2}
               onChange={(event) => setAddressLine2(event.target.value)}
               disabled={success}
+              {...getFieldA11y('addressLine2', 'normalized-addressLine2-error')}
             />
           </li>
         </ul>
@@ -329,6 +339,7 @@ export default function EventNormalizationForm({
           value={city}
           onChange={(event) => setCity(event.target.value)}
           disabled={success}
+          {...getFieldA11y('city', 'normalized-city-error')}
         />
       </dd>
 
@@ -347,6 +358,7 @@ export default function EventNormalizationForm({
           value={region}
           onChange={(event) => setRegion(event.target.value)}
           disabled={success}
+          {...getFieldA11y('region', 'normalized-region-error')}
         />
       </dd>
 
@@ -365,6 +377,7 @@ export default function EventNormalizationForm({
           value={country}
           onChange={(event) => setCountry(event.target.value)}
           disabled={success}
+          {...getFieldA11y('country', 'normalized-country-error')}
         />
       </dd>
 
@@ -383,6 +396,7 @@ export default function EventNormalizationForm({
           value={postalCode}
           onChange={(event) => setPostalCode(event.target.value)}
           disabled={success}
+          {...getFieldA11y('postalCode', 'normalized-postalCode-error')}
         />
       </dd>
 
@@ -401,6 +415,7 @@ export default function EventNormalizationForm({
           value={website}
           onChange={(event) => setWebsite(event.target.value)}
           disabled={success}
+          {...getFieldA11y('website', 'normalized-website-error')}
         />
       </dd>
 
@@ -419,11 +434,16 @@ export default function EventNormalizationForm({
           value={contactEmail}
           onChange={(event) => setContactEmail(event.target.value)}
           disabled={success}
+          {...getFieldA11y('contactEmail', 'normalized-contact-email-error')}
         />
       </dd>
 
-      <dt>Topics</dt>
-      <dd>
+      <dt id="normalized-topic-group">Topics</dt>
+      <dd
+        role="group"
+        aria-labelledby="normalized-topic-group"
+        {...getFieldA11y('topicSlugs', 'normalized-topics-error')}
+      >
         {errors.topicSlugs ? (
           <p id="normalized-topics-error" className="submissionError">
             {errors.topicSlugs}

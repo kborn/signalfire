@@ -14,7 +14,11 @@ framework primers and they are not MVP plans.
 For the detailed rules, format, and when-to-use guidance, see
 `docs/learnings/syllabus-workflow.md`.
 
-Current walkthroughs:
+These walkthroughs are phase-time implementation artifacts. Older public-route
+walkthroughs may reference paths before the Next route group split; current
+public route source now lives under `apps/web/src/app/(public)/...`.
+
+Available walkthroughs:
 
 - `phase-6-1-route-tree-walkthrough.md`
 - `phase-6-2-topic-discovery-flow-walkthrough.md`

@@ -2,14 +2,14 @@
 
 ## What You Are Building
 
-You are replacing raw article-body text rendering with real Markdown rendering
+You are replacing raw article content text rendering with real Markdown rendering
 on the article detail route.
 
 The intended end state is:
 
 - the API still returns article `content` as text
 - the article detail page still owns the fetch
-- a small `ArticleBody` component renders that text with `react-markdown`
+- a small `MarkdownContent` component renders that text with `react-markdown`
 - related topics and actions stay in the same page flow
 
 This is a rendering upgrade, not a backend contract change and not a CMS task.
@@ -19,10 +19,10 @@ This is a rendering upgrade, not a backend contract change and not a CMS task.
 Primary repo files:
 
 - `apps/web/src/app/articles/[slug]/page.tsx`
-- `apps/web/src/components/article-body.tsx`
+- `apps/web/src/components/markdown-content.tsx`
 - `apps/web/src/lib/articles.ts`
 - `apps/web/src/app/globals.css`
-- `apps/web/src/components/article-body.test.tsx`
+- `apps/web/src/components/markdown-content.test.tsx`
 
 Dependency surface:
 
@@ -47,11 +47,11 @@ Why first:
 This task should use a standard library. If you skip this step, you are likely
 to drift into ad hoc parsing logic that you will replace later anyway.
 
-### Step 2: Create one article-body rendering component
+### Step 2: Create one Markdown content rendering component
 
 Create or open:
 
-- `apps/web/src/components/article-body.tsx`
+- `apps/web/src/components/markdown-content.tsx`
 
 What to do:
 
@@ -74,7 +74,7 @@ What to do:
 
 - leave the fetch logic and `404` handling in place
 - render article metadata in the header section
-- replace raw body text output with `<ArticleBody content={article.content} />`
+- replace raw body text output with `<MarkdownContent content={article.content} />`
 - leave related topics and actions below the article body
 
 Why third:
@@ -90,7 +90,7 @@ The route page should still read as:
 
 Open:
 
-- `apps/web/src/components/article-body.test.tsx`
+- `apps/web/src/components/markdown-content.test.tsx`
 
 What to do:
 
@@ -111,7 +111,7 @@ Open:
 What to do:
 
 - add readable defaults for headings, lists, paragraphs, and links inside the
-  article-body container
+  Markdown content container
 - stop before building a full article presentation system
 
 Why fifth:
@@ -129,8 +129,8 @@ apps/web/src/
       [slug]/
         page.tsx
   components/
-    article-body.tsx
-    article-body.test.tsx
+    markdown-content.tsx
+    markdown-content.test.tsx
   lib/
     articles.ts
 ```
@@ -154,6 +154,6 @@ You are in a good state when:
 ## Ask-When-Stuck Prompts
 
 - Am I about to write parsing logic that `react-markdown` already handles?
-- Does this code belong in the route page, or in `ArticleBody`?
+- Does this code belong in the route page, or in `MarkdownContent`?
 - Am I proving real Markdown behavior with a test?
 - Is the remaining issue correctness, or only styling?

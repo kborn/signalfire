@@ -11,6 +11,7 @@ import {
   buildModerationReviewApproveEventSuccessResponse,
   buildModerationReviewApproveEventRequest,
 } from './submission.test-fixtures';
+import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
 
 describe('ModerationSubmissionController HTTP', () => {
   let app: INestApplication;
@@ -130,5 +131,48 @@ describe('ModerationSubmissionController HTTP', () => {
 
     await request(httpServer).post('/admin/submissions/1/review').send(req).expect(404);
     expect(moderationSubmissionServiceMock.reviewSubmission).toHaveBeenCalledWith(1, req);
+  });
+
+  it('POST review returns 409 when service raises ReviewSubmissionTypeError', async () => {
+    const req = buildModerationReviewApproveArticleRequest();
+
+    moderationSubmissionServiceMock.reviewSubmission.mockRejectedValue(
+      new ReviewSubmissionTypeError('ARTICLE', 'EVENT'),
+    );
+
+    await request(httpServer)
+      .post('/admin/submissions/1/review')
+      .send(req)
+      .expect(409)
+      .expect({
+        errors: [
+          {
+            type: 'form',
+            message: 'Unexpected type in submission review. Expected ARTICLE but received EVENT',
+          },
+        ],
+      });
+  });
+
+  it('POST review returns 400 with fielded errors when service raises UnknownSubmissionTopicsError', async () => {
+    const req = buildModerationReviewApproveEventRequest();
+
+    moderationSubmissionServiceMock.reviewSubmission.mockRejectedValue(
+      new UnknownSubmissionTopicsError(['unknown-topic']),
+    );
+
+    await request(httpServer)
+      .post('/admin/submissions/1/review')
+      .send(req)
+      .expect(400)
+      .expect({
+        errors: [
+          {
+            type: 'field',
+            field: 'normalized.topicSlugs',
+            message: 'Unknown topic slugs: unknown-topic',
+          },
+        ],
+      });
   });
 });

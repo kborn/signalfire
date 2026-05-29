@@ -21,7 +21,7 @@ import {
 } from '@signal-fire/api-contracts';
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
-import { SubmissionError } from '@/lib/api/error';
+import { ApiError, SubmissionError } from '@/lib/api/error';
 import {
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
@@ -32,6 +32,11 @@ import {
 
 const REVIEW_FAILURE_MESSAGE =
   'Something went wrong while sending your submission. Please try again.';
+const REVIEW_NOT_FOUND_MESSAGE =
+  'This submission is no longer available. Return to the queue and refresh.';
+const REVIEW_CONFLICT_MESSAGE =
+  'This submission has already been reviewed. Refresh to see the latest state.';
+const REVIEW_VALIDATION_MESSAGE = 'Fix the highlighted fields and try again.';
 
 function mapApiFieldToUiField(field: string | undefined): keyof ReviewFormErrors {
   switch (field) {
@@ -88,20 +93,31 @@ function scrollToTop() {
   window.scrollTo({
     top: 0,
     left: 0,
-    behavior: 'smooth',
+    behavior: getScrollBehavior(),
   });
 }
 
-function getErrorElementId(field: keyof ReviewFormErrors): string {
-  const specialErrorIds: Partial<Record<keyof ReviewFormErrors, string>> = {
-    eventType: 'normalized-eventType-error',
-    startTime: 'normalized-event-start-error',
-    endTime: 'normalized-event-end-error',
-    topicSlugs: 'normalized-topics-error',
-    reviewNotes: 'review-notes-error',
+function getScrollBehavior(): ScrollBehavior {
+  if (typeof window.matchMedia !== 'function') {
+    return 'smooth';
+  }
+
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function getControlElementId(field: keyof ReviewFormErrors): string {
+  const specialControlIds: Partial<Record<keyof ReviewFormErrors, string>> = {
+    eventType: 'normalized-eventType',
+    startTime: 'normalized-event-start',
+    endTime: 'normalized-event-end',
+    locationName: 'normalized-location-name',
+    publicLocationDescription: 'normalized-location-description',
+    contactEmail: 'normalized-contact-email',
+    topicSlugs: 'normalized-topic-group',
+    reviewNotes: 'review-notes',
   };
 
-  return specialErrorIds[field] ?? `normalized-${field}-error`;
+  return specialControlIds[field] ?? `normalized-${field}`;
 }
 
 function scrollToFirstError(errors: ReviewFormErrors) {
@@ -134,11 +150,56 @@ function scrollToFirstError(errors: ReviewFormErrors) {
     return;
   }
 
-  const id = getErrorElementId(firstField);
-  document.getElementById(id)?.scrollIntoView({
-    behavior: 'smooth',
+  const id = getControlElementId(firstField);
+  const element = document.getElementById(id);
+  if (!(element instanceof HTMLElement)) {
+    scrollToTop();
+    return;
+  }
+
+  element.focus({ preventScroll: true });
+  element.scrollIntoView({
+    behavior: getScrollBehavior(),
     block: 'center',
   });
+}
+
+function mapApiErrorsToReviewErrors(errors: SubmissionError['errors']): ReviewFormErrors {
+  if (!errors?.length) {
+    return {};
+  }
+
+  return errors.reduce<ReviewFormErrors>((acc, entry) => {
+    if (entry.type === 'form') {
+      return {
+        ...acc,
+        form: entry.message,
+      };
+    }
+
+    const uiField = mapApiFieldToUiField(entry.field);
+
+    return {
+      ...acc,
+      [uiField]: entry.message,
+    };
+  }, {});
+}
+
+function getReviewStatusMessage(error: unknown): string | null {
+  if (!(error instanceof ApiError)) {
+    return null;
+  }
+
+  if (error.status === 404) {
+    return REVIEW_NOT_FOUND_MESSAGE;
+  }
+
+  if (error.status === 409) {
+    return REVIEW_CONFLICT_MESSAGE;
+  }
+
+  return null;
 }
 
 export default function SubmissionReviewPageContent({
@@ -153,21 +214,20 @@ export default function SubmissionReviewPageContent({
     | { ok: false; errors: ReviewFormErrors };
 
   function handleReviewRequestError(error: unknown) {
-    if (error instanceof SubmissionError && error.errors?.length) {
-      const fieldErrors = error.errors.reduce<ReviewFormErrors>((acc, entry) => {
-        const uiField = mapApiFieldToUiField(entry.field);
-
-        return {
-          ...acc,
-          [uiField]: entry.message,
-        };
-      }, {});
-
+    if (error instanceof SubmissionError) {
+      const fieldErrors = mapApiErrorsToReviewErrors(error.errors);
       setErrors(fieldErrors);
-      return;
+
+      if (fieldErrors.form) {
+        setSubmitError(fieldErrors.form);
+      }
+
+      if (Object.keys(fieldErrors).length > 0) {
+        return;
+      }
     }
 
-    setSubmitError(REVIEW_FAILURE_MESSAGE);
+    setSubmitError(getReviewStatusMessage(error) ?? REVIEW_FAILURE_MESSAGE);
     scrollToTop();
   }
 
@@ -459,6 +519,7 @@ export default function SubmissionReviewPageContent({
 
     if (!validation.ok) {
       setErrors(validation.errors);
+      setIsRejectConfirming(false);
       setIsSubmitting(false);
       return;
     }
@@ -472,6 +533,7 @@ export default function SubmissionReviewPageContent({
       const result = await postSubmissionReviewReq(req, submission.id);
       setReviewResult(result);
       setIsSuccess(true);
+      setIsRejectConfirming(false);
       scrollToTop();
     } catch (error) {
       handleReviewRequestError(error);
@@ -492,6 +554,7 @@ export default function SubmissionReviewPageContent({
       );
       setIsSuccess(true);
       setReviewResult(rep);
+      setIsRejectConfirming(false);
       scrollToTop();
     } catch (error) {
       handleReviewRequestError(error);
@@ -508,6 +571,7 @@ export default function SubmissionReviewPageContent({
   const [eventNormalized, setEventNormalized] = useState<EventApprovalPayload | null>(null);
   const [reviewResult, setReviewResult] = useState<ModerationReviewSuccess | null>(null);
   const [errors, setErrors] = useState<ReviewFormErrors>({});
+  const [isRejectConfirming, setIsRejectConfirming] = useState(false);
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -545,7 +609,7 @@ export default function SubmissionReviewPageContent({
       {Object.keys(errors).length > 0 && (
         <div className="adminReviewBanner adminReviewBannerError" role="status">
           <p className="adminReviewBannerTitle">Review could not be recorded</p>
-          <p className="adminReviewBannerText">Fix the highlighted fields and try again.</p>
+          <p className="adminReviewBannerText">{REVIEW_VALIDATION_MESSAGE}</p>
         </div>
       )}
       <SubmissionMetadataPanel submission={visibleSubmission} />
@@ -594,6 +658,7 @@ export default function SubmissionReviewPageContent({
             className="submissionTextarea"
             rows={5}
             aria-describedby={errors.reviewNotes ? 'review-notes-error' : undefined}
+            aria-invalid={errors.reviewNotes ? true : undefined}
             value={reviewNotes}
             onChange={(event) => setReviewNotes(event.target.value)}
             disabled={(isSuccess ?? false) || submission.status !== 'PENDING'}
@@ -621,14 +686,39 @@ export default function SubmissionReviewPageContent({
               >
                 Approve as Draft
               </button>
-              <button
-                type="submit"
-                onClick={() => reject()}
-                disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
-              >
-                Reject
-              </button>
+              {isRejectConfirming ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => reject()}
+                    disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
+                  >
+                    Confirm Reject
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsRejectConfirming(false)}
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => setIsRejectConfirming(true)}
+                  disabled={isSubmitting || visibleSubmission.status !== 'PENDING'}
+                >
+                  Reject
+                </button>
+              )}
             </div>
+            {isRejectConfirming ? (
+              <p className="adminReviewConfirmation" role="status">
+                Rejecting a submission is final for this review flow. Confirm to record the
+                rejection.
+              </p>
+            ) : null}
           </section>
         </div>
       )}

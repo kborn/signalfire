@@ -264,11 +264,14 @@ In the Phase 10.4 form, this error should live inside the relevant
 
 ## How This Appears In The Repo Today
 
-Current repo shape already supports the right foundation:
+Historical Phase 10.4 repo shape already supported the right foundation:
 
-- `apps/web/src/app/submit/article/page.tsx` fetches topics on the server
+- `apps/web/src/app/submit/article/page.tsx` fetched topics on the server
 - `apps/web/src/components/article-submission.tsx` is the client form boundary
 - `packages/api-contracts/submission_type.ts` defines the public request shape
+
+Current public submission routes now live under
+`apps/web/src/app/(public)/submit/...`.
 
 That means your next job is not to invent architecture.
 
