@@ -24,7 +24,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
               <NavLink href="/about">About</NavLink>
             </nav>
             <NavLink href="/submit" className="site-submit-link">
-              Submit a Resource
+              Submit Content
             </NavLink>
           </div>
         </header>
