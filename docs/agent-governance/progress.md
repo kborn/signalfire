@@ -1380,11 +1380,63 @@ repository visibility.
 
 ---
 
-#### ▸ Phase 11.7 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.7 - Public UI Identity Revamp ⏳
+
+###### Goal
+
+Explore and settle the public visual identity system before opening the
+repository and before continuing into broader admin content-management work.
 
 ###### Phase Tasks:
 
-- [ ] Build admin create/edit flow for curated Actions
+- [ ] Audit the current public UI branch against the completed Phase 11.5 and
+      Phase 11.6 surfaces, identifying which visual treatments are successful,
+      uncertain, or unsuitable
+- [x] Explore and compare multiple palette directions in the real application
+      using representative public routes and submission flows
+- [x] Explore and compare typography pairings for headings, body copy, forms,
+      navigation, and dense list/detail content
+- [ ] Explore brand identity treatments, including wordmark, `FYF` mark,
+      supporting background motif, and homepage hero usage
+- [ ] Decide whether the public identity should use one primary brand asset plus
+      a separate supporting motif, and document the usage rules if adopted
+- [ ] Revise homepage and public navigation presentation so first-time visitors
+      understand the product purpose and primary paths into Topics, Actions,
+      Events, About, and contribution flows
+- [x] Revise submission entry messaging so visitor-submitted articles,
+      resources, tips, and events feel explicitly invited while remaining
+      moderated before publication
+- [ ] Apply the selected visual system across public routes without changing
+      backend scope, content models, moderation rules, or Release 1 route
+      architecture
+- [ ] Verify responsive behavior, contrast, form readability, image weight, and
+      cross-route consistency before treating the repository as public-ready
+- [ ] Update canonical specs and progress notes to match the final selected UI
+      direction
+
+###### Notes:
+
+- Canonical product/UI requirements for this exploratory subphase are defined
+  in `docs/specs/013-phase-11-7-public-ui-identity-revamp.md`.
+- This phase may supersede specific visual-direction choices from Phase 11.5,
+  but it does not reopen the public product name, backend scope, moderation
+  workflow, or Release 1 route architecture.
+- Design exploration should be performed in small passes so palette,
+  typography, and brand imagery can be judged independently before final
+  integration.
+- As of 2026-05-29, the active working UI direction is a hybrid `brand-identity-d`
+  pass: C-style two-color wordmark underline, D-style three-color About-step
+  motif mapping, subtle angled background texture, full-card links on public
+  summary cards, fixed/sticky public header wrapper, and clickable About/Submit
+  cards with shared hover/focus motion treatment.
+
+---
+
+#### ▸ Phase 11.8 - Essential Admin Content Management ⏳
+
+###### Phase Tasks:
+
+- [x] Build admin create/edit flow for curated Actions
 - [ ] Build admin create/edit/publish flow for Articles
 - [ ] Build admin create/edit/publish flow for Events
 - [ ] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
@@ -1392,7 +1444,7 @@ repository visibility.
 
 ---
 
-#### ▸ Phase 11.8 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.9 - Interface Hardening Handoff ⏳
 
 ###### Phase Tasks:
 
