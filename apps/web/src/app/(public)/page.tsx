@@ -6,10 +6,14 @@ export default function HomePage() {
     <div className="container home-page">
       <section className="page-section home-hero">
         <div className="hero-logo">
-          <Image src="/hero-logo.png" alt="Find Your Fight" width={1800} height={320} priority />
+          <Image
+            src="/hero.png"
+            alt="Find Your Fight visual identity"
+            width={1774}
+            height={887}
+            priority
+          />
         </div>
-
-        <h1 className="pageTitle">Find Your Fight</h1>
 
         <p className="page-intro">
           The world keeps throwing more at you: another crisis, another headline, another fight that

@@ -6,7 +6,7 @@ export default async function AboutPage() {
     <section className="page-section">
       <section className="page-section about-hero">
         <div className="about-hero-logo">
-          <Image src="/hero-logo.png" alt="Find Your Fight" width={600} height={240} />
+          <Image src="/hero.png" alt="Find Your Fight" width={600} height={240} />
         </div>
 
         <p className="section-label">Why this exists</p>
