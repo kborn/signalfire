@@ -28,6 +28,22 @@ export default async function AboutPage() {
         </p>
       </section>
 
+      <section className="page-section about-community">
+        <p className="section-label">Community-powered by design</p>
+        <h2>Visitors are the primary source of new content.</h2>
+        <p>
+          Find Your Fight is designed to run on community submissions. Articles, resources, guides,
+          and events from visitors are expected to drive the majority of new publishing over time.
+        </p>
+        <p>
+          Every submission is moderated before publication so the site can stay useful, practical,
+          and grounded.
+        </p>
+        <Link href="/submit" className="primaryCTA">
+          Submit Content
+        </Link>
+      </section>
+
       <section className="page-section about-journey">
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 

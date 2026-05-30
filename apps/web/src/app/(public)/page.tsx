@@ -38,6 +38,23 @@ export default function HomePage() {
         </Link>
       </section>
 
+      <section className="page-section home-community">
+        <p className="section-label">Community-powered</p>
+        <h2>Built to run on community contributions.</h2>
+        <p>
+          Visitors are the primary source of articles, guides, resources, and events on this site.
+          Share what you know, what you have found useful, and what is happening locally.
+        </p>
+        <div className="ctaRow">
+          <Link href="/submit" className="primaryCTA">
+            Submit an Article or Event
+          </Link>
+          <Link href="/about" className="secondaryCTA">
+            Why Contribution Matters
+          </Link>
+        </div>
+      </section>
+
       <section className="page-section home-participation">
         <p className="section-label">Take the next step</p>
         <h2>Turn focus into action.</h2>

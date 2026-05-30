@@ -5,8 +5,8 @@ export default function ChooseSubmitTypePage() {
     <section className="page-section">
       <h1 className="pageTitle">Contribute to Find Your Fight</h1>
       <p className="page-intro">
-        Community submissions help expand this site. Submit an article, resource, or event for
-        moderation review.
+        Community submissions are expected to be the primary source of new content on this site.
+        Submit an article, guide, resource, or event for moderation review.
       </p>
       <div className="submitOptionList">
         <Link href="/submit/article" className="collectionItem">
@@ -14,8 +14,8 @@ export default function ChooseSubmitTypePage() {
             <p className="section-label">Article</p>
             <h2>Submit an Article or Guide</h2>
             <p>
-              Submit educational explainers that help people understand an issue, with guides and
-              resources as supporting context for action
+              Submit explainers, guides, and resource-backed articles that help people understand an
+              issue and choose a concrete next step.
             </p>
           </div>
         </Link>
@@ -27,7 +27,10 @@ export default function ChooseSubmitTypePage() {
           </div>
         </Link>
       </div>
-      <p className="metaText">Every submission is reviewed before publication.</p>
+      <p className="metaText">
+        Every submission is reviewed before publication to keep community contributions useful and
+        credible.
+      </p>
     </section>
   );
 }
