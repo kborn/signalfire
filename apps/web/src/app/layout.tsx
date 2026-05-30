@@ -1,22 +1,22 @@
-import { Instrument_Serif, Merriweather } from 'next/font/google';
+import { Inter, Zilla_Slab } from 'next/font/google';
 import './globals.css';
 
-const instrumentSerif = Instrument_Serif({
+const zillaSlab = Zilla_Slab({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: '400',
+  weight: ['600', '700'],
 });
 
-const merriweather = Merriweather({
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-body',
-  weight: ['300', '400', '700'],
+  weight: ['400', '500', '600', '700'],
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${instrumentSerif.variable} ${merriweather.variable}`}>{children}</body>
+      <body className={`${zillaSlab.variable} ${inter.variable}`}>{children}</body>
     </html>
   );
 }

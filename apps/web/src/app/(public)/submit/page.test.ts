@@ -12,7 +12,7 @@ describe('ChooseSubmitTypePage', () => {
       'Community submissions help expand this site. Submit an article, resource, or event for moderation review.',
     );
     expect(markup).toContain('href="/submit/article"');
-    expect(markup).toContain('Submit an Article or Resource');
+    expect(markup).toContain('Submit an Article or Guide');
     expect(markup).toContain(
       'Submit educational explainers that help people understand an issue, with guides and resources as supporting context for action',
     );
