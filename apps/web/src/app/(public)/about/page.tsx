@@ -74,23 +74,6 @@ export default async function AboutPage() {
           </section>
         </div>
       </section>
-
-      <section className="page-section about-closing-panel">
-        <p className="section-label">Start where you can</p>
-        <h2>Pick one issue and one next step.</h2>
-        <p>
-          The work becomes possible when attention turns into a specific action. Browse the current
-          issue areas, then choose a practical way to participate.
-        </p>
-        <div className="ctaRow">
-          <Link href="/topics" className="primaryCTA">
-            Explore Issues
-          </Link>
-          <Link href="/actions" className="secondaryCTA">
-            Find Actions
-          </Link>
-        </div>
-      </section>
     </section>
   );
 }
