@@ -26,11 +26,14 @@ describe('HomePage', () => {
     expect(markup).toContain('href="/topics"');
     expect(markup).toContain('Explore Issues');
     expect(markup).toContain('href="/about"');
-    expect(markup).toContain('Why This Exists');
+    expect(markup).toContain('Why This Site Exists');
+    expect(markup).toContain('Who This Is For');
     expect(markup).toContain('href="/actions"');
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/events"');
     expect(markup).toContain('Find Events');
+    expect(markup).toContain('Built to run on community contributions.');
+    expect(markup).toContain('Submit an Article or Event');
   });
 
   it('renders the issue-first journey and participation sections', () => {

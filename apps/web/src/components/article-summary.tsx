@@ -18,12 +18,10 @@ export function ArticleSummary({ article, variant = 'collection' }: ArticleSumma
   const publishedAt = formatContentDate(article.publishedAt);
 
   return (
-    <article className={itemClassName}>
-      <TitleTag className={titleClassName}>
-        <Link href={`/articles/${article.slug}`}>{article.title}</Link>
-      </TitleTag>
+    <Link href={`/articles/${article.slug}`} className={itemClassName}>
+      <TitleTag className={titleClassName}>{article.title}</TitleTag>
       {publishedAt && <p className="summaryMeta">Published {publishedAt}</p>}
       <p className={summaryClassName}>{article.summary}</p>
-    </article>
+    </Link>
   );
 }

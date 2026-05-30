@@ -4,11 +4,12 @@ import { describe, expect, it } from 'vitest';
 import AboutPage from './page';
 
 describe('AboutPage', () => {
-  it('renders the closing action panel', async () => {
+  it('renders the focus-to-action journey content', async () => {
     const markup = renderToStaticMarkup(await AboutPage());
 
-    expect(markup).toContain('Start where you can');
-    expect(markup).toContain('Pick one issue and one next step.');
+    expect(markup).toContain('Find one issue. Learn enough to act. Take the next step.');
+    expect(markup).toContain('Choose an issue.');
+    expect(markup).toContain('Take one concrete action.');
     expect(markup).toContain('href="/topics"');
     expect(markup).toContain('href="/actions"');
   });

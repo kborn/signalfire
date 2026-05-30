@@ -3,31 +3,34 @@ import Link from 'next/link';
 export default function ChooseSubmitTypePage() {
   return (
     <section className="page-section">
-      <h1 className="pageTitle">Share a Resource</h1>
-      <p className="page-intro">Submit an article or event for review.</p>
+      <h1 className="pageTitle">Contribute to Find Your Fight</h1>
+      <p className="page-intro">
+        Community submissions are expected to be the primary source of new content on this site.
+        Submit an article, guide, resource, or event for moderation review.
+      </p>
       <div className="submitOptionList">
-        <section className="submitOptionCard">
+        <Link href="/submit/article" className="collectionItem">
           <div>
             <p className="section-label">Article</p>
-            <h2>Submit an Article</h2>
-            <p>Share educational or explanatory content that helps others understand an issue</p>
+            <h2>Submit an Article or Guide</h2>
+            <p>
+              Submit explainers, guides, and resource-backed articles that help people understand an
+              issue and choose a concrete next step.
+            </p>
           </div>
-          <Link href="/submit/article" className="secondaryCTA">
-            Submit an Article
-          </Link>
-        </section>
-        <section className="submitOptionCard">
+        </Link>
+        <Link href="/submit/event" className="collectionItem">
           <div>
             <p className="section-label">Event</p>
-            <h2>Submit an Event</h2>
+            <h2>Share an Event</h2>
             <p>Share an upcoming event, rally, meeting, workshop, or volunteer opportunity</p>
           </div>
-          <Link href="/submit/event" className="secondaryCTA">
-            Submit an Event
-          </Link>
-        </section>
+        </Link>
       </div>
-      <p className="metaText">All submissions are reviewed before publication.</p>
+      <p className="metaText">
+        Every submission is reviewed before publication to keep community contributions useful and
+        credible.
+      </p>
     </section>
   );
 }

@@ -1,10 +1,19 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function HomePage() {
   return (
     <div className="container home-page">
       <section className="page-section home-hero">
-        <h1 className="pageTitle">Find Your Fight</h1>
+        <div className="hero-logo">
+          <Image
+            src="/hero.png"
+            alt="Find Your Fight visual identity"
+            width={1774}
+            height={887}
+            priority
+          />
+        </div>
 
         <p className="page-intro">
           The world keeps throwing more at you: another crisis, another headline, another fight that
@@ -14,7 +23,7 @@ export default function HomePage() {
 
         <div className="ctaGroup">
           <Link href="/about" className="textCTA">
-            Why This Exists
+            Why This Site Exists
           </Link>
         </div>
       </section>
@@ -27,6 +36,23 @@ export default function HomePage() {
         <Link href="/topics" className="primaryCTA">
           Explore Issues
         </Link>
+      </section>
+
+      <section className="page-section home-community">
+        <p className="section-label">Community-powered</p>
+        <h2>Built to run on community contributions.</h2>
+        <p>
+          Visitors are the primary source of articles, guides, resources, and events on this site.
+          Share what you know, what you have found useful, and what is happening locally.
+        </p>
+        <div className="ctaRow">
+          <Link href="/submit" className="primaryCTA">
+            Submit an Article or Event
+          </Link>
+          <Link href="/about" className="secondaryCTA">
+            Why Contribution Matters
+          </Link>
+        </div>
       </section>
 
       <section className="page-section home-participation">
@@ -54,7 +80,7 @@ export default function HomePage() {
           Choosing one fight is not looking away. It is choosing where your effort can become real.
         </p>
         <Link href="/about" className="secondaryCTA">
-          Why This Exists
+          Who This Is For
         </Link>
       </section>
     </div>

@@ -20,12 +20,10 @@ export function ActionSummary({ action, variant = 'collection' }: ActionSummaryP
   const actionType = formatActionTypeLabel(action.actionType);
 
   return (
-    <article className={itemClassName}>
-      <TitleTag className={titleClassName}>
-        <Link href={`/actions/${action.slug}`}>{action.title}</Link>
-      </TitleTag>
+    <Link href={`/actions/${action.slug}`} className={itemClassName}>
+      <TitleTag className={titleClassName}>{action.title}</TitleTag>
       <p className="summaryMeta">{[actionType, publishedAt].filter(Boolean).join(' · ')}</p>
       <p className={summaryClassName}>{action.summary}</p>
-    </article>
+    </Link>
   );
 }

@@ -4,11 +4,11 @@ export default async function AboutPage() {
   return (
     <section className="page-section">
       <section className="page-section about-hero">
-        <p className="section-label">Why this exists</p>
-        <h1 className="pageTitle">You cannot fight everything.</h1>
+        <p className="section-label">About Find Your Fight</p>
+        <h1 className="pageTitle">Why This Site Exists</h1>
         <p className="page-intro">
-          Every day brings another headline, another crisis, another urgent demand for attention.
-          Trying to carry all of it can leave us exhausted and unable to act.
+          Find Your Fight is for people who care, want to do something meaningful, and need a clear
+          place to start.
         </p>
       </section>
 
@@ -28,35 +28,45 @@ export default async function AboutPage() {
         </p>
       </section>
 
+      <section className="page-section about-community">
+        <p className="section-label">Community-powered by design</p>
+        <h2>Visitors are the primary source of new content.</h2>
+        <p>
+          Find Your Fight is designed to run on community submissions. Articles, resources, guides,
+          and events from visitors are expected to drive the majority of new publishing over time.
+        </p>
+        <p>
+          Every submission is moderated before publication so the site can stay useful, practical,
+          and grounded.
+        </p>
+        <Link href="/submit" className="primaryCTA">
+          Submit Content
+        </Link>
+      </section>
+
       <section className="page-section about-journey">
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 
         <div className="about-steps">
-          <section className="about-step">
+          <Link href="/topics" className="about-step collectionItem">
             <p className="section-label">Step 1</p>
             <h3>Choose an issue.</h3>
             <p>
               Start with one area that you cannot stop thinking about. You do not need to solve
               everything. You need a place to focus.
             </p>
-            <Link href="/topics" className="primaryCTA">
-              Explore Issues
-            </Link>
-          </section>
+          </Link>
 
-          <section className="about-step">
+          <Link href="/articles" className="about-step collectionItem">
             <p className="section-label">Step 2</p>
             <h3>Understand what is happening.</h3>
             <p>
               Read enough context to move from outrage or confusion into a clearer sense of what is
               at stake and where pressure can matter.
             </p>
-            <Link href="/articles" className="secondaryCTA">
-              Read Articles
-            </Link>
-          </section>
+          </Link>
 
-          <section className="about-step">
+          <section className="about-step collectionItem">
             <p className="section-label">Step 3</p>
             <h3>Take one concrete action.</h3>
             <p>
@@ -73,23 +83,6 @@ export default async function AboutPage() {
               </Link>
             </div>
           </section>
-        </div>
-      </section>
-
-      <section className="page-section about-closing-panel">
-        <p className="section-label">Start where you can</p>
-        <h2>Pick one issue and one next step.</h2>
-        <p>
-          The work becomes possible when attention turns into a specific action. Browse the current
-          issue areas, then choose a practical way to participate.
-        </p>
-        <div className="ctaRow">
-          <Link href="/topics" className="primaryCTA">
-            Explore Issues
-          </Link>
-          <Link href="/actions" className="secondaryCTA">
-            Find Actions
-          </Link>
         </div>
       </section>
     </section>

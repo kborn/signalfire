@@ -12,8 +12,8 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
     <div className="publicShell">
       <div className="container site-main publicContent">
         <header className="site-header">
-          <Link href="/" className="site-wordmark">
-            Find Your Fight
+          <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
+            FYF
           </Link>
           <div className="site-nav-group">
             <nav className="site-nav" aria-label="Public">
@@ -24,7 +24,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
               <NavLink href="/about">About</NavLink>
             </nav>
             <NavLink href="/submit" className="site-submit-link">
-              Submit a Resource
+              Submit Content
             </NavLink>
           </div>
         </header>

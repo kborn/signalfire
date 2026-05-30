@@ -7,18 +7,22 @@ describe('ChooseSubmitTypePage', () => {
   it('renders article and event submission entry links', async () => {
     const markup = renderToStaticMarkup(ChooseSubmitTypePage());
 
-    expect(markup).toContain('Share a Resource');
-    expect(markup).toContain('Submit an article or event for review.');
-    expect(markup).toContain('href="/submit/article"');
-    expect(markup).toContain('Submit an Article');
+    expect(markup).toContain('Contribute to Find Your Fight');
     expect(markup).toContain(
-      'Share educational or explanatory content that helps others understand an issue',
+      'Community submissions are expected to be the primary source of new content on this site. Submit an article, guide, resource, or event for moderation review.',
     );
-    expect(markup).toContain('Submit an Event');
+    expect(markup).toContain('href="/submit/article"');
+    expect(markup).toContain('Submit an Article or Guide');
+    expect(markup).toContain(
+      'Submit explainers, guides, and resource-backed articles that help people understand an issue and choose a concrete next step.',
+    );
+    expect(markup).toContain('Share an Event');
     expect(markup).toContain(
       'Share an upcoming event, rally, meeting, workshop, or volunteer opportunity',
     );
     expect(markup).toContain('href="/submit/event"');
-    expect(markup).toContain('All submissions are reviewed before publication.');
+    expect(markup).toContain(
+      'Every submission is reviewed before publication to keep community contributions useful and credible.',
+    );
   });
 });
