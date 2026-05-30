@@ -15,8 +15,8 @@
   --color-brand-accent: #98503b;
   --color-surface-soft: #162435;
   --color-field-bg: #142131;
-  --color-border-subtle: #3a4e66;
-  --color-text-muted: #a9b3bf;
+  --color-border-subtle: #425975;
+  --color-text-muted: #b7c1cd;
   --color-status-error: #f07b67;
   --color-brand-primary-hover: #dec27f;
 }
@@ -82,13 +82,13 @@ p {
 .publicShell::before {
   content: '';
   position: fixed;
-  top: 72vh;
+  top: 76vh;
   left: 50%;
   width: min(80vw, 600px);
   height: min(80vw, 600px);
   transform: translate(-50%, -50%);
   background: url('/bg-motif.png') no-repeat center / contain;
-  opacity: 0.2;
+  opacity: 0.12;
   pointer-events: none;
   z-index: 1;
 }
@@ -157,6 +157,12 @@ p {
   text-underline-offset: 0.2em;
 }
 
+.site-nav a:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 .site-nav a[aria-current='page'] {
   color: var(--color-brand-primary);
   font-weight: 700;
@@ -186,6 +192,11 @@ p {
   text-decoration: none;
 }
 
+.site-submit-link:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 3px;
+}
+
 .site-main {
   padding-top: var(--space-3);
   padding-bottom: 80px;
@@ -213,6 +224,7 @@ p {
 
 .publicShell .page-intro {
   color: var(--color-text-muted);
+  max-width: 62ch;
 }
 
 .pageTitle {
@@ -380,7 +392,8 @@ p {
 }
 
 .home-hero {
-  padding: var(--space-3) 0 0;
+  padding: 8px 0 0;
+  gap: var(--space-2);
 }
 
 .home-hero h1 {
@@ -391,9 +404,9 @@ p {
 }
 
 .home-hero p {
-  max-width: 38rem;
+  max-width: 44rem;
   font-size: 1.125rem;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 /* Submit landing */
@@ -510,6 +523,10 @@ button.secondaryCTA {
   text-underline-offset: 0.28em;
 }
 
+.textCTA::after {
+  content: ' \2192';
+}
+
 .publicError {
   max-width: 720px;
   padding: var(--space-5) 0;
@@ -577,8 +594,8 @@ h3 {
   border: 1px solid var(--color-border-subtle);
   border-left-width: 4px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--color-surface-soft) 78%, transparent);
-  box-shadow: 0 6px 14px -14px rgb(0 0 0 / 65%);
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+  box-shadow: 0 10px 20px -18px rgb(0 0 0 / 78%);
   transition:
     border-color 0.2s ease,
     transform 0.2s ease,
@@ -588,7 +605,13 @@ h3 {
 .publicShell .collectionItem:hover {
   border-left-color: var(--color-brand-accent);
   transform: translate(-3px, -3px);
-  box-shadow: 0 10px 20px -14px rgb(0 0 0 / 72%);
+  box-shadow: 0 14px 26px -18px rgb(0 0 0 / 82%);
+}
+
+.publicShell .collectionItem:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+  transform: translateY(-2px);
 }
 
 .publicShell .collectionItemSummary,
