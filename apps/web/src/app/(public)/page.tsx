@@ -23,7 +23,7 @@ export default function HomePage() {
 
         <div className="ctaGroup">
           <Link href="/about" className="textCTA">
-            Why This Exists
+            Why This Site Exists
           </Link>
         </div>
       </section>
@@ -63,7 +63,7 @@ export default function HomePage() {
           Choosing one fight is not looking away. It is choosing where your effort can become real.
         </p>
         <Link href="/about" className="secondaryCTA">
-          Why This Exists
+          Who This Is For
         </Link>
       </section>
     </div>

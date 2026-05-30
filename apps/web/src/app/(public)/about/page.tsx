@@ -1,19 +1,18 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 export default async function AboutPage() {
   return (
     <section className="page-section">
       <section className="page-section about-hero">
-        <div className="about-hero-logo">
-          <Image src="/hero.png" alt="Find Your Fight" width={600} height={240} />
-        </div>
-
-        <p className="section-label">Why this exists</p>
+        <p className="section-label">Why this site exists</p>
         <h1 className="pageTitle">You cannot fight everything.</h1>
         <p className="page-intro">
           Every day brings another headline, another crisis, another urgent demand for attention.
           Trying to carry all of it can leave us exhausted and unable to act.
+        </p>
+        <p className="page-intro">
+          This site is for people who care, want to do something meaningful, and need a clear place
+          to start.
         </p>
       </section>
 
