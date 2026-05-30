@@ -12,7 +12,7 @@ export default function ChooseSubmitTypePage() {
         <Link href="/submit/article" className="collectionItem">
           <div>
             <p className="section-label">Article</p>
-            <h2>Submit an Article or Resource</h2>
+            <h2>Submit an Article or Guide</h2>
             <p>
               Submit educational explainers that help people understand an issue, with guides and
               resources as supporting context for action
