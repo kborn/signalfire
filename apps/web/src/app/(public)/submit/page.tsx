@@ -5,8 +5,8 @@ export default function ChooseSubmitTypePage() {
     <section className="page-section">
       <h1 className="pageTitle">Contribute to Find Your Fight</h1>
       <p className="page-intro">
-        Community submissions are expected to be the primary source of new content on this site.
-        Submit an article, guide, resource, or event for moderation review.
+        Community submissions are the primary source of new content on this site. Submit an article,
+        guide, resource, or event for moderation review.
       </p>
       <div className="submitOptionList">
         <Link href="/submit/article" className="collectionItem">

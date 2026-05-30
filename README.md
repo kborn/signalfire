@@ -1,47 +1,55 @@
-# Find Your Fight
+# SignalFire (Product: Find Your Fight)
 
-Find Your Fight is a civic discovery application that helps visitors focus on
-one issue, understand what is at stake, and find a concrete way to act.
+SignalFire is a full-stack civic action platform built for release-quality
+content discovery and moderation workflows. The public product identity is
+**Find Your Fight**.
 
-The repository is still named `signal-fire`, but the public product identity is
-`Find Your Fight`.
+It helps people move from issue understanding to concrete civic participation
+through Topics, Articles, Actions, and Events.
+
+## Portfolio Snapshot
+
+What this repository demonstrates:
+
+- end-to-end product implementation across frontend, backend, and data model
+- structured civic content discovery with cross-linked public resources
+- community submission pipeline with moderation review and publication mapping
+- documented architecture, phased delivery, and engineering decisions
+- test coverage across UI, API contracts, and backend behavior
 
 ## Current Scope
 
-Implemented product areas:
+Implemented areas:
 
-- public issue discovery through Topics
-- public Articles, Actions, and Events
-- related-content links across issues, explainers, actions, and events
-- public article and event submission flows
-- moderation queue for submitted Articles and Events
+- public discovery through Topics, Articles, Actions, and Events
+- article and event submission flows
+- moderation queue and review actions for submissions
 - editorial normalization before approval
-- publication mapping from approved submissions into public content records
-- demo seed content for local portfolio/screenshot review
+- publication mapping from approved submissions into public records
+- demo seed content for portfolio/screenshot review
 
-Out of scope for the current release:
+Not included in Release 1:
 
 - public user accounts
-- social feeds or platform-hosted organizing
-- production deployment
-- authentication/authorization for deployed admin routes
-- topic management beyond the seeded Release 1 topic set
+- social feed/comment features
+- production deployment hardening
+- deployed admin authentication/authorization
+- topic CRUD beyond seeded Release 1 topics
 
 ## Architecture
 
-This is a pnpm monorepo.
+pnpm monorepo:
 
-- `apps/web` - Next.js App Router frontend
-- `apps/api` - NestJS backend API
-- `packages/api-contracts` - shared request/response contracts
-- `docs/specs` - product and feature specs
-- `docs/architecture` - architecture notes and implementation contracts
-- `docs/agent-governance` - roadmap, decisions, and AI collaboration rules
-- `docs/learnings` - implementation guides, walkthroughs, and learning cards
+- `apps/web`: Next.js App Router frontend
+- `apps/api`: NestJS backend API
+- `packages/api-contracts`: shared request/response contracts
+- `docs/specs`: product and feature specs
+- `docs/architecture`: architecture notes and implementation contracts
+- `docs/agent-governance`: roadmap, decisions, and AI collaboration rules
+- `docs/learnings`: implementation guides and walkthroughs
 
-The public web routes use server-rendered data fetching for initial page
-content. Browser-side API calls are used where the user performs an action after
-page load, such as public submissions and admin moderation.
+Public routes use server-rendered fetching for initial content. Browser-side API
+calls handle post-load actions such as submissions and moderation actions.
 
 ## Requirements
 
@@ -109,22 +117,23 @@ API e2e tests use Testcontainers and require a working local container runtime.
 ## Demo Review
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
-submissions suitable for local portfolio review.
+submissions suitable for local portfolio review and screenshots.
 
 Recommended screenshot paths are documented in:
 
 - `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
 
-## Roadmap Status
+## Roadmap and Decisions
 
 The canonical roadmap is:
 
 - `docs/agent-governance/progress.md`
+- `docs/agent-governance/decisions.md`
 
 Current milestone focus is Phase 11.6: public repository readiness after the
 Phase 11.5 public experience refresh.
 
-## Admin And Deployment Caveat
+## Admin Deployment Caveat
 
 The admin/moderation source code is part of this repository, but deployment to
 any environment intended for real users requires authentication and
@@ -133,7 +142,7 @@ authorization before exposing admin routes.
 Making the source repository public does not mean the application is ready for a
 public production deployment.
 
-## License And Contributions
+## License and Contributions
 
 This repository is public-source for portfolio review, but it is not currently
 published under an open-source license.
