@@ -1,34 +1,33 @@
 # SignalFire (Product: Find Your Fight)
 
-SignalFire is a full-stack civic action platform built for release-quality
-content discovery and moderation workflows. The public product identity is
+SignalFire is a full-stack civic action platform. The public product identity is
 **Find Your Fight**.
 
-It helps people move from issue understanding to concrete civic participation
-through Topics, Articles, Actions, and Events.
+The product helps people move from issue understanding to concrete civic
+participation through Topics, Articles, Actions, and Events.
 
-## Portfolio Snapshot
+## Why This Repo Matters
 
-What this repository demonstrates:
+This repository demonstrates:
 
-- end-to-end product implementation across frontend, backend, and data model
-- structured civic content discovery with cross-linked public resources
-- community submission pipeline with moderation review and publication mapping
-- documented architecture, phased delivery, and engineering decisions
-- test coverage across UI, API contracts, and backend behavior
+- full-stack product implementation across UI, API, and database layers
+- civic content discovery with cross-linked public resources
+- community submission workflows with moderation and publication mapping
+- phased delivery with explicit architecture and decisions documentation
+- test coverage across frontend behavior, backend logic, and contracts
 
-## Current Scope
+## Feature Scope (Release 1)
 
-Implemented areas:
+Implemented:
 
 - public discovery through Topics, Articles, Actions, and Events
 - article and event submission flows
 - moderation queue and review actions for submissions
 - editorial normalization before approval
 - publication mapping from approved submissions into public records
-- demo seed content for portfolio/screenshot review
+- demo seed content for portfolio screenshots and review
 
-Not included in Release 1:
+Not included yet:
 
 - public user accounts
 - social feed/comment features
@@ -51,11 +50,24 @@ pnpm monorepo:
 Public routes use server-rendered fetching for initial content. Browser-side API
 calls handle post-load actions such as submissions and moderation actions.
 
-## Requirements
+## Quick Reviewer Path (10-15 min)
 
-- Node.js compatible with the repo toolchain
+1. Start locally with demo seed data (commands below).
+2. Review public discovery pages (`/topics`, `/articles`, `/actions`, `/events`).
+3. Review contribution flow (`/submit/article`, `/submit/event`).
+4. Review moderation/admin flow (`/admin/submissions`).
+
+Recommended screenshot flow:
+
+- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
+
+## Local Setup
+
+Requirements:
+
+- Node.js compatible with repo toolchain
 - pnpm `10.30.3`
-- Docker or another local PostgreSQL option for database-backed development
+- Docker or local PostgreSQL
 
 Install dependencies:
 
@@ -69,7 +81,7 @@ Start PostgreSQL:
 docker-compose up -d
 ```
 
-Set local environment files from the examples:
+Set environment files:
 
 ```bash
 cp apps/api/.env.example apps/api/.env
@@ -83,13 +95,13 @@ pnpm api:prisma:migrate:dev
 pnpm api:prisma:migrate:seed
 ```
 
-For local demo content:
+Seed demo portfolio content:
 
 ```bash
 pnpm api:prisma:migrate:seed:demo
 ```
 
-Run the app:
+Run apps:
 
 ```bash
 pnpm dev
@@ -114,42 +126,25 @@ pnpm --filter api test:e2e
 
 API e2e tests use Testcontainers and require a working local container runtime.
 
-## Demo Review
-
-Demo seed mode creates Articles, Actions, Events, relationships, and moderation
-submissions suitable for local portfolio review and screenshots.
-
-Recommended screenshot paths are documented in:
-
-- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
-
 ## Roadmap and Decisions
 
-The canonical roadmap is:
+Canonical planning docs:
 
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current milestone focus is Phase 11.6: public repository readiness after the
-Phase 11.5 public experience refresh.
+Current focus: Phase 11.6 (public repository readiness).
 
 ## Admin Deployment Caveat
 
-The admin/moderation source code is part of this repository, but deployment to
-any environment intended for real users requires authentication and
-authorization before exposing admin routes.
-
-Making the source repository public does not mean the application is ready for a
-public production deployment.
+Admin/moderation routes are included in source, but any real-user deployment
+must enforce authentication and authorization before exposing admin surfaces.
 
 ## License and Contributions
 
-This repository is public-source for portfolio review, but it is not currently
+This repository is public-source for portfolio review, but not currently
 published under an open-source license.
 
 - package metadata is marked `UNLICENSED`
 - no `LICENSE` file is included yet
 - external contributions are not being solicited at this stage
-
-A formal license and contribution policy should be added before inviting reuse
-or outside contributions.
