@@ -1113,7 +1113,7 @@ h3 {
 
 .adminDek {
   max-width: 48rem;
-  color: #444444;
+  color: var(--color-text-muted);
   font-size: 1.1rem;
   line-height: 1.55;
 }
@@ -1131,14 +1131,14 @@ h3 {
   gap: var(--space-2);
   align-items: center;
   padding: 0 0 var(--space-1) 0;
-  color: #444444;
+  color: var(--color-text-muted);
   font-size: 0.95rem;
   line-height: 1.2;
 }
 
 .adminNavLabel,
 .submissionFilterActionLabel {
-  color: #6b7280;
+  color: #7f8ea1;
   font-size: 0.75rem;
   font-weight: 700;
   padding: var(--space-3) 0 0;
@@ -1154,11 +1154,12 @@ h3 {
 }
 
 .adminNav a {
-  color: #444444;
-  font-weight: 400;
+  color: #aeb8c5;
+  font-weight: 500;
 }
 
 .adminNav a[aria-current='page'] {
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
@@ -1180,6 +1181,7 @@ h3 {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   background: #ffffff;
+  color: #171717;
 }
 
 .adminPanelHeader {
@@ -1189,6 +1191,7 @@ h3 {
 
 .adminPanelHeader h2,
 .adminPanelHeader h3 {
+  color: #171717;
   font-size: 1.25rem;
   line-height: 1.2;
   letter-spacing: 0;
