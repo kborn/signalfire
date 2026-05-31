@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "private": true,
-  "license": "MIT",
+  "license": "UNLICENSED",
   "scripts": {
     "prelint": "pnpm --filter @signal-fire/api-contracts build",
     "prebuild": "pnpm --filter @signal-fire/api-contracts build",

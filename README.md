@@ -138,8 +138,10 @@ public production deployment.
 
 ## License and Contributions
 
-This repository is published under the MIT License.
+This repository is source-available for portfolio review only.
 
+- all rights are reserved by the author
+- no permission is granted to copy, modify, redistribute, or deploy this code
 - external contributions are not being solicited at this stage
 
 See `LICENSE` for full terms.

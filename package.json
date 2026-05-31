@@ -22,7 +22,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "packageManager": "pnpm@10.30.3",
   "devDependencies": {
     "eslint": "^10.0.3",
