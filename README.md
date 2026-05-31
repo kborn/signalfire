@@ -1,33 +1,34 @@
 # SignalFire (Product: Find Your Fight)
 
-SignalFire is a full-stack civic action platform. The public product identity is
+SignalFire is a full-stack civic action platform built for release-quality
+content discovery and moderation workflows. The public product identity is
 **Find Your Fight**.
 
-The product helps people move from issue understanding to concrete civic
-participation through Topics, Articles, Actions, and Events.
+It helps people move from issue understanding to concrete civic participation
+through Topics, Articles, Actions, and Events.
 
-## Why This Repo Matters
+## Portfolio Snapshot
 
-This repository demonstrates:
+What this repository demonstrates:
 
-- full-stack product implementation across UI, API, and database layers
-- civic content discovery with cross-linked public resources
-- community submission workflows with moderation and publication mapping
-- phased delivery with explicit architecture and decisions documentation
-- test coverage across frontend behavior, backend logic, and contracts
+- end-to-end product implementation across frontend, backend, and data model
+- structured civic content discovery with cross-linked public resources
+- community submission pipeline with moderation review and publication mapping
+- documented architecture, phased delivery, and engineering decisions
+- test coverage across UI, API contracts, and backend behavior
 
-## Feature Scope (Release 1)
+## Current Scope
 
-Implemented:
+Implemented areas:
 
 - public discovery through Topics, Articles, Actions, and Events
 - article and event submission flows
 - moderation queue and review actions for submissions
 - editorial normalization before approval
 - publication mapping from approved submissions into public records
-- demo seed content for portfolio screenshots and review
+- demo seed content for portfolio/screenshot review
 
-Not included yet:
+Not included in Release 1:
 
 - public user accounts
 - social feed/comment features
@@ -50,61 +51,29 @@ pnpm monorepo:
 Public routes use server-rendered fetching for initial content. Browser-side API
 calls handle post-load actions such as submissions and moderation actions.
 
-## Quick Reviewer Path (10-15 min)
+## Requirements
 
-1. Start locally with demo seed data (commands below).
-2. Review public discovery pages (`/topics`, `/articles`, `/actions`, `/events`).
-3. Review contribution flow (`/submit/article`, `/submit/event`).
-4. Review moderation/admin flow (`/admin/submissions`).
-
-Recommended screenshot flow:
-
-- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
-
-## Local Setup
-
-Requirements:
-
-- Node.js compatible with repo toolchain
+- Node.js compatible with the repo toolchain
 - pnpm `10.30.3`
-- Docker or local PostgreSQL
+- Docker or another local PostgreSQL option for database-backed development
 
-Install dependencies:
+## Quick Start (Portfolio Review)
 
 ```bash
 pnpm install
-```
-
-Start PostgreSQL:
-
-```bash
 docker-compose up -d
-```
-
-Set environment files:
-
-```bash
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.local.example apps/web/.env.local
-```
-
-Apply migrations and seed baseline data:
-
-```bash
 pnpm api:prisma:migrate:dev
 pnpm api:prisma:migrate:seed
-```
-
-Seed demo portfolio content:
-
-```bash
 pnpm api:prisma:migrate:seed:demo
+pnpm dev
 ```
 
-Run apps:
+Run only baseline seed (without demo content):
 
 ```bash
-pnpm dev
+pnpm api:prisma:migrate:seed
 ```
 
 Local ports:
@@ -126,25 +95,59 @@ pnpm --filter api test:e2e
 
 API e2e tests use Testcontainers and require a working local container runtime.
 
+## Visual Review Assets
+
+Architecture diagram:
+
+![SignalFire High-Level System Diagram](docs/architecture/diagrams/high-level-system-diagram.png)
+
+Screenshot capture flow:
+
+- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
+
+Recommended screenshot file names in `screenshots/`:
+
+- `01-home.png`
+- `02-topics-index.png`
+- `03-topic-detail.png`
+- `04-article-detail.png`
+- `05-events-index.png`
+- `06-submit-entry.png`
+- `07-admin-submissions-queue.png`
+- `08-admin-submission-review.png`
+
+## Demo Review
+
+Demo seed mode creates Articles, Actions, Events, relationships, and moderation
+submissions suitable for local portfolio review and screenshots.
+
+Recommended screenshot paths are documented in:
+
+- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
+
 ## Roadmap and Decisions
 
-Canonical planning docs:
+The canonical roadmap is:
 
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current focus: Phase 11.6 (public repository readiness).
+Current milestone focus is Phase 11.6: public repository readiness after the
+Phase 11.5 public experience refresh.
 
 ## Admin Deployment Caveat
 
-Admin/moderation routes are included in source, but any real-user deployment
-must enforce authentication and authorization before exposing admin surfaces.
+The admin/moderation source code is part of this repository, but deployment to
+any environment intended for real users requires authentication and
+authorization before exposing admin routes.
+
+Making the source repository public does not mean the application is ready for a
+public production deployment.
 
 ## License and Contributions
 
-This repository is public-source for portfolio review, but not currently
-published under an open-source license.
+This repository is published under the MIT License.
 
-- package metadata is marked `UNLICENSED`
-- no `LICENSE` file is included yet
 - external contributions are not being solicited at this stage
+
+See `LICENSE` for full terms.
