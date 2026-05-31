@@ -1479,6 +1479,11 @@ Improve browsing and filtering across topics, actions, and events.
 
 Configure hosting, environment management, and CI/CD.
 
+###### Phase Tasks:
+
+- [ ] Add repository security automation before public launch hardening, including Dependabot update PRs and dependency vulnerability validation in CI
+- [ ] Define branch protection/status-check requirements for `main` and apply them across primary public-facing repositories
+
 ---
 
 ---
@@ -1505,6 +1510,10 @@ Capabilities:
 ###### Goal
 
 Bug fixes, polish, and observability improvements.
+
+###### Phase Tasks:
+
+- [ ] Run a full dependency risk review (direct and transitive) and resolve or explicitly defer remaining high-severity findings with documented rationale
 
 ---
 

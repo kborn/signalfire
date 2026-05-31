@@ -9,7 +9,7 @@ describe('ChooseSubmitTypePage', () => {
 
     expect(markup).toContain('Contribute to Find Your Fight');
     expect(markup).toContain(
-      'Community submissions are expected to be the primary source of new content on this site. Submit an article, guide, resource, or event for moderation review.',
+      'Community submissions are the primary source of new content on this site. Submit an article, guide, resource, or event for moderation review.',
     );
     expect(markup).toContain('href="/submit/article"');
     expect(markup).toContain('Submit an Article or Guide');

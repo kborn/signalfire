@@ -1,47 +1,55 @@
-# Find Your Fight
+# SignalFire (Product: Find Your Fight)
 
-Find Your Fight is a civic discovery application that helps visitors focus on
-one issue, understand what is at stake, and find a concrete way to act.
+SignalFire is a full-stack civic action platform built for release-quality
+content discovery and moderation workflows. The public product identity is
+**Find Your Fight**.
 
-The repository is still named `signal-fire`, but the public product identity is
-`Find Your Fight`.
+It helps people move from issue understanding to concrete civic participation
+through Topics, Articles, Actions, and Events.
+
+## Portfolio Snapshot
+
+What this repository demonstrates:
+
+- end-to-end product implementation across frontend, backend, and data model
+- structured civic content discovery with cross-linked public resources
+- community submission pipeline with moderation review and publication mapping
+- documented architecture, phased delivery, and engineering decisions
+- test coverage across UI, API contracts, and backend behavior
 
 ## Current Scope
 
-Implemented product areas:
+Implemented areas:
 
-- public issue discovery through Topics
-- public Articles, Actions, and Events
-- related-content links across issues, explainers, actions, and events
-- public article and event submission flows
-- moderation queue for submitted Articles and Events
+- public discovery through Topics, Articles, Actions, and Events
+- article and event submission flows
+- moderation queue and review actions for submissions
 - editorial normalization before approval
-- publication mapping from approved submissions into public content records
-- demo seed content for local portfolio/screenshot review
+- publication mapping from approved submissions into public records
+- demo seed content for portfolio/screenshot review
 
-Out of scope for the current release:
+Not included in Release 1:
 
 - public user accounts
-- social feeds or platform-hosted organizing
-- production deployment
-- authentication/authorization for deployed admin routes
-- topic management beyond the seeded Release 1 topic set
+- social feed/comment features
+- production deployment hardening
+- deployed admin authentication/authorization
+- topic CRUD beyond seeded Release 1 topics
 
 ## Architecture
 
-This is a pnpm monorepo.
+pnpm monorepo:
 
-- `apps/web` - Next.js App Router frontend
-- `apps/api` - NestJS backend API
-- `packages/api-contracts` - shared request/response contracts
-- `docs/specs` - product and feature specs
-- `docs/architecture` - architecture notes and implementation contracts
-- `docs/agent-governance` - roadmap, decisions, and AI collaboration rules
-- `docs/learnings` - implementation guides, walkthroughs, and learning cards
+- `apps/web`: Next.js App Router frontend
+- `apps/api`: NestJS backend API
+- `packages/api-contracts`: shared request/response contracts
+- `docs/specs`: product and feature specs
+- `docs/architecture`: architecture notes and implementation contracts
+- `docs/agent-governance`: roadmap, decisions, and AI collaboration rules
+- `docs/learnings`: implementation guides and walkthroughs
 
-The public web routes use server-rendered data fetching for initial page
-content. Browser-side API calls are used where the user performs an action after
-page load, such as public submissions and admin moderation.
+Public routes use server-rendered fetching for initial content. Browser-side API
+calls handle post-load actions such as submissions and moderation actions.
 
 ## Requirements
 
@@ -49,42 +57,23 @@ page load, such as public submissions and admin moderation.
 - pnpm `10.30.3`
 - Docker or another local PostgreSQL option for database-backed development
 
-Install dependencies:
+## Quick Start (Portfolio Review)
 
 ```bash
 pnpm install
-```
-
-Start PostgreSQL:
-
-```bash
 docker-compose up -d
-```
-
-Set local environment files from the examples:
-
-```bash
 cp apps/api/.env.example apps/api/.env
 cp apps/web/.env.local.example apps/web/.env.local
-```
-
-Apply migrations and seed baseline data:
-
-```bash
 pnpm api:prisma:migrate:dev
 pnpm api:prisma:migrate:seed
-```
-
-For local demo content:
-
-```bash
 pnpm api:prisma:migrate:seed:demo
+pnpm dev
 ```
 
-Run the app:
+Run only baseline seed (without demo content):
 
 ```bash
-pnpm dev
+pnpm api:prisma:migrate:seed
 ```
 
 Local ports:
@@ -106,25 +95,58 @@ pnpm --filter api test:e2e
 
 API e2e tests use Testcontainers and require a working local container runtime.
 
+## Visual Review Assets
+
+Architecture diagram:
+
+![SignalFire High-Level System Diagram](docs/architecture/diagrams/high-level-system-diagram.png)
+
+Featured screenshots:
+
+**Home (Hero)**
+![Home Hero](docs/screenshots/01-home.png)
+
+**Issue Detail**
+![Issue Detail](docs/screenshots/03-topic-detail.png)
+
+**Submit Entry**
+![Submit Entry](docs/screenshots/06-submit-entry.png)
+
+**Submission Review (Decision)**
+![Submission Review Decision](docs/screenshots/08-submission-review-decision.png)
+
+<details>
+  <summary>All screenshots</summary>
+
+- [Home (Hero)](docs/screenshots/01-home.png)
+- [Home (Lower Sections)](docs/screenshots/01b-home-lower.png)
+- [Issues Index](docs/screenshots/02-topics-index.png)
+- [Issue Detail](docs/screenshots/03-topic-detail.png)
+- [Article Detail](docs/screenshots/04-article-detail.png)
+- [Events Index](docs/screenshots/05-events-index.png)
+- [Submit Entry](docs/screenshots/06-submit-entry.png)
+- [Admin Submissions Queue](docs/screenshots/07-admin-submissions-queue.png)
+- [Submission Review](docs/screenshots/08-submission-review.png)
+- [Submission Review (Decision)](docs/screenshots/08-submission-review-decision.png)
+
+</details>
+
 ## Demo Review
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
-submissions suitable for local portfolio review.
+submissions suitable for local portfolio review and screenshots.
 
-Recommended screenshot paths are documented in:
-
-- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
-
-## Roadmap Status
+## Roadmap and Decisions
 
 The canonical roadmap is:
 
 - `docs/agent-governance/progress.md`
+- `docs/agent-governance/decisions.md`
 
 Current milestone focus is Phase 11.6: public repository readiness after the
 Phase 11.5 public experience refresh.
 
-## Admin And Deployment Caveat
+## Admin Deployment Caveat
 
 The admin/moderation source code is part of this repository, but deployment to
 any environment intended for real users requires authentication and
@@ -133,14 +155,12 @@ authorization before exposing admin routes.
 Making the source repository public does not mean the application is ready for a
 public production deployment.
 
-## License And Contributions
+## License and Contributions
 
-This repository is public-source for portfolio review, but it is not currently
-published under an open-source license.
+This repository is source-available for portfolio review only.
 
-- package metadata is marked `UNLICENSED`
-- no `LICENSE` file is included yet
+- all rights are reserved by the author
+- no permission is granted to copy, modify, redistribute, or deploy this code
 - external contributions are not being solicited at this stage
 
-A formal license and contribution policy should be added before inviting reuse
-or outside contributions.
+See `LICENSE` for full terms.
