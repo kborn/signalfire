@@ -101,29 +101,21 @@ Architecture diagram:
 
 ![SignalFire High-Level System Diagram](docs/architecture/diagrams/high-level-system-diagram.png)
 
-Screenshot capture flow:
+Screenshots:
 
-- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
-
-Recommended screenshot file names in `screenshots/`:
-
-- `01-home.png`
-- `02-topics-index.png`
-- `03-topic-detail.png`
-- `04-article-detail.png`
-- `05-events-index.png`
-- `06-submit-entry.png`
-- `07-admin-submissions-queue.png`
-- `08-admin-submission-review.png`
+- [Home (Hero)](docs/screenshots/01-home.png)
+- [Home (Lower Sections)](docs/screenshots/01b-home-lower.png)
+- [Issues Index](docs/screenshots/02-topics-index.png)
+- [Issue Detail](docs/screenshots/03-topic-detail.png)
+- [Article Detail](docs/screenshots/04-article-detail.png)
+- [Events Index](docs/screenshots/05-events-index.png)
+- [Submit Entry](docs/screenshots/06-submit-entry.png)
+- [Admin Submissions Queue](docs/screenshots/07-admin-submissions-queue.png)
 
 ## Demo Review
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
 submissions suitable for local portfolio review and screenshots.
-
-Recommended screenshot paths are documented in:
-
-- `docs/runbooks/phase-11-6-demo-content-screenshot-flow.md`
 
 ## Roadmap and Decisions
 

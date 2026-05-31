@@ -28,8 +28,15 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
       <section className="detailContent">
         <p>{topic.description}</p>
         {topic.articles.length > 0 && (
-          <section className="relatedSection">
-            <h3>Articles</h3>
+          <section className="relatedSection" aria-labelledby="topic-articles-label">
+            <div className="relatedSectionHeader">
+              <p id="topic-articles-label" className="section-label">
+                Articles
+              </p>
+              <p className="relatedSectionTagline">
+                Read background and explainers for this issue.
+              </p>
+            </div>
             <div className="relatedList">
               {topic.articles.map((article) => (
                 <ArticleSummary key={article.id} article={article} variant="related" />
@@ -38,8 +45,13 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           </section>
         )}
         {topic.actions.length > 0 && (
-          <section className="relatedSection">
-            <h3>Actions</h3>
+          <section className="relatedSection" aria-labelledby="topic-actions-label">
+            <div className="relatedSectionHeader">
+              <p id="topic-actions-label" className="section-label">
+                Actions
+              </p>
+              <p className="relatedSectionTagline">Take practical next steps you can do now.</p>
+            </div>
             <div className="relatedList">
               {topic.actions.map((action) => (
                 <ActionSummary key={action.id} action={action} variant="related" />
@@ -48,8 +60,12 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           </section>
         )}
         <section className="ctaGroup topicEventCTA">
-          <h3>Events</h3>
-          <p className="metaText">Looking for in-person ways to participate?</p>
+          <div className="relatedSectionHeader">
+            <p className="section-label">Events</p>
+            <p className="relatedSectionTagline">
+              Find upcoming in-person opportunities tied to this issue.
+            </p>
+          </div>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
             Browse Events
           </Link>

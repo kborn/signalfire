@@ -650,7 +650,9 @@ h3 {
 
 .relatedList {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-3);
+  border-left: 1px solid color-mix(in srgb, var(--color-brand-accent) 45%, transparent);
+  padding-left: 1rem;
 }
 
 .relatedListItem {
@@ -706,7 +708,47 @@ h3 {
 
 .relatedSection {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-3);
+}
+
+.relatedSectionHeader {
+  display: grid;
+  gap: 6px;
+  position: relative;
+}
+
+.relatedSectionHeader .section-label::before {
+  content: '\25CF';
+  margin-right: 0.4rem;
+  color: var(--color-brand-accent);
+  font-size: 0.62rem;
+  vertical-align: middle;
+}
+
+.relatedSectionHeader .section-label::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 2px;
+  margin-top: 0.35rem;
+  background: var(--color-brand-accent);
+  opacity: 0.92;
+}
+
+.relatedSectionTagline {
+  margin: 0;
+  color: color-mix(in srgb, var(--color-text-primary) 88%, transparent);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  max-width: 66ch;
+  padding-left: 1.35rem;
+}
+
+.relatedSectionTagline::before {
+  content: '\203A';
+  margin-right: 0.5rem;
+  color: color-mix(in srgb, var(--color-brand-accent) 58%, var(--color-text-primary));
+  font-size: 0.85rem;
 }
 
 .detailContent {
