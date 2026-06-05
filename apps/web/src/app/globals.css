@@ -1510,16 +1510,30 @@ h3 {
 
 .actionEditorLayout {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(260px, 0.85fr);
   gap: var(--space-3);
-  align-items: start;
 }
 
-.actionEditorMain,
+.actionEditorTitleField,
+.actionEditorDescriptionField {
+  grid-column: 1 / -1;
+}
+
+.actionEditorTopRow {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(260px, 0.95fr);
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.actionEditorSummaryField,
 .actionEditorSidebar {
   display: grid;
   gap: var(--space-3);
   min-width: 0;
+}
+
+.actionEditorSummaryField {
+  min-height: 100%;
 }
 
 .actionEditorSidebar {
@@ -1553,11 +1567,15 @@ h3 {
 }
 
 .actionEditorTextareaSummary {
-  min-height: 220px;
+  min-height: 280px;
+}
+
+.actionEditorSummaryField .actionEditorTextareaSummary {
+  flex: 1 1 auto;
 }
 
 .actionEditorTextareaDescription {
-  min-height: 520px;
+  min-height: 420px;
 }
 
 .actionEditorForm .submissionCheckboxGroup {
@@ -1592,18 +1610,36 @@ h3 {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-2);
-  margin-top: var(--space-1);
-  padding-top: var(--space-2);
+  gap: var(--space-1);
+  margin-top: var(--space-0);
+  padding-top: var(--space-1);
   border-top: 1px solid var(--color-border-subtle);
 }
 
+.actionEditorFooterActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
 .actionEditorFooter .primaryCTA {
-  min-width: 12rem;
+  min-width: 9.5rem;
 }
 
 .actionEditorForm .adminError {
   color: var(--color-status-error);
+}
+
+.actionEditorForm .actionEditorSuccessBanner {
+  margin: 0;
+  border-color: color-mix(in srgb, var(--color-brand-primary) 28%, var(--color-border-subtle) 72%);
+  background: color-mix(in srgb, var(--color-surface-soft) 80%, var(--color-brand-primary) 20%);
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .actionEditorSuccessBanner .adminReviewBannerText {
+  color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
 }
 
 .adminMetadataPanel {
@@ -1846,8 +1882,12 @@ h3 {
 /* Responsive */
 
 @media (max-width: 960px) {
-  .actionEditorLayout {
+  .actionEditorTopRow {
     grid-template-columns: 1fr;
+  }
+
+  .actionEditorDescriptionField {
+    grid-column: 1 / -1;
   }
 
   .actionEditorTextareaSummary {

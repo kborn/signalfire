@@ -145,6 +145,7 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialValues.topicSlugs);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [errors, setErrors] = useState<ActionEditorFormErrors>({});
 
   const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics]);
@@ -172,6 +173,7 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaveError(null);
+    setSaveSuccess(null);
     setErrors({});
 
     const nextStatus = getSubmitStatus(event);
@@ -240,8 +242,17 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       }
 
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });
-      router.replace(`/admin/actions/${result.slug}`, { scroll: true });
-      router.refresh();
+      if (mode === 'create') {
+        router.replace(`/admin/actions/${result.slug}`, { scroll: true });
+        router.refresh();
+      } else {
+        setSaveSuccess(
+          result.status === 'PUBLISHED'
+            ? 'Action updated and published successfully.'
+            : 'Action updated and saved as draft.',
+        );
+        router.refresh();
+      }
     } catch (error) {
       if (error instanceof SubmissionError) {
         const { fieldErrors, formError } = mapSubmissionApiErrors(
@@ -273,28 +284,35 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
           <h2>{mode === 'create' ? 'Create action' : 'Edit action'}</h2>
         </div>
 
-        <div className="actionEditorLayout">
-          <div className="actionEditorMain">
-            <section className="submissionField">
-              <label className="submissionLabel" htmlFor="action-title">
-                Title
-              </label>
-              <input
-                id="action-title"
-                className="submissionControl"
-                value={title}
-                onChange={(event) => setTitle(event.target.value)}
-                {...getActionFieldA11y('title', errors)}
-                required
-              />
-              {errors.title ? (
-                <p id="action-title-error" className="submissionError">
-                  {errors.title}
-                </p>
-              ) : null}
-            </section>
+        {saveSuccess ? (
+          <div className="adminReviewBanner actionEditorSuccessBanner" role="status">
+            <p className="adminReviewBannerTitle">Action saved</p>
+            <p className="adminReviewBannerText">{saveSuccess}</p>
+          </div>
+        ) : null}
 
-            <section className="submissionField">
+        <div className="actionEditorLayout">
+          <section className="submissionField actionEditorTitleField">
+            <label className="submissionLabel" htmlFor="action-title">
+              Title
+            </label>
+            <input
+              id="action-title"
+              className="submissionControl"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              {...getActionFieldA11y('title', errors)}
+              required
+            />
+            {errors.title ? (
+              <p id="action-title-error" className="submissionError">
+                {errors.title}
+              </p>
+            ) : null}
+          </section>
+
+          <div className="actionEditorTopRow">
+            <section className="submissionField actionEditorSummaryField">
               <label className="submissionLabel" htmlFor="action-summary">
                 Summary
               </label>
@@ -314,84 +332,84 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
               ) : null}
             </section>
 
-            <section className="submissionField">
-              <label className="submissionLabel" htmlFor="action-description">
-                Description
-              </label>
-              <textarea
-                id="action-description"
-                className="submissionTextarea actionEditorTextareaDescription"
-                value={description}
-                rows={18}
-                onChange={(event) => setDescription(event.target.value)}
-                {...getActionFieldA11y('description', errors)}
-                required
-              />
-              {errors.description ? (
-                <p id="action-description-error" className="submissionError">
-                  {errors.description}
+            <aside className="actionEditorSidebar" aria-label="Action settings">
+              <section className="submissionField">
+                <label className="submissionLabel" htmlFor="action-type">
+                  Action type
+                </label>
+                <select
+                  id="action-type"
+                  className="submissionControl"
+                  value={actionType}
+                  onChange={(event) => setActionType(event.target.value as ActionType)}
+                  {...getActionFieldA11y('actionType', errors)}
+                  required
+                >
+                  {ACTION_TYPES.map((item) => (
+                    <option key={item} value={item}>
+                      {formatActionTypeLabel(item)}
+                    </option>
+                  ))}
+                </select>
+                {errors.actionType ? (
+                  <p id="action-actionType-error" className="submissionError">
+                    {errors.actionType}
+                  </p>
+                ) : null}
+              </section>
+
+              <fieldset
+                id="action-topic-group"
+                className="submissionCheckboxGroup"
+                tabIndex={-1}
+                {...getActionFieldA11y('topicSlugs', errors)}
+              >
+                <legend className="submissionLabel">Topics</legend>
+                {topics.length === 0 ? (
+                  <p>No topics are available to assign.</p>
+                ) : (
+                  <div className="adminTopicGrid">
+                    {topics.map((topic) => (
+                      <label key={topic.slug} className="submissionCheckboxOption">
+                        <input
+                          id={`action-topic-${topic.slug}`}
+                          type="checkbox"
+                          checked={selectedTopicSet.has(topic.slug)}
+                          onChange={() => toggleTopic(topic.slug)}
+                        />
+                        <span>{topic.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </fieldset>
+              {errors.topicSlugs ? (
+                <p id="action-topicSlugs-error" className="submissionError">
+                  {errors.topicSlugs}
                 </p>
               ) : null}
-            </section>
+            </aside>
           </div>
 
-          <aside className="actionEditorSidebar" aria-label="Action settings">
-            <section className="submissionField">
-              <label className="submissionLabel" htmlFor="action-type">
-                Action type
-              </label>
-              <select
-                id="action-type"
-                className="submissionControl"
-                value={actionType}
-                onChange={(event) => setActionType(event.target.value as ActionType)}
-                {...getActionFieldA11y('actionType', errors)}
-                required
-              >
-                {ACTION_TYPES.map((item) => (
-                  <option key={item} value={item}>
-                    {formatActionTypeLabel(item)}
-                  </option>
-                ))}
-              </select>
-              {errors.actionType ? (
-                <p id="action-actionType-error" className="submissionError">
-                  {errors.actionType}
-                </p>
-              ) : null}
-            </section>
-
-            <fieldset
-              id="action-topic-group"
-              className="submissionCheckboxGroup"
-              tabIndex={-1}
-              {...getActionFieldA11y('topicSlugs', errors)}
-            >
-              <legend className="submissionLabel">Topics</legend>
-              {topics.length === 0 ? (
-                <p>No topics are available to assign.</p>
-              ) : (
-                <div className="adminTopicGrid">
-                  {topics.map((topic) => (
-                    <label key={topic.slug} className="submissionCheckboxOption">
-                      <input
-                        id={`action-topic-${topic.slug}`}
-                        type="checkbox"
-                        checked={selectedTopicSet.has(topic.slug)}
-                        onChange={() => toggleTopic(topic.slug)}
-                      />
-                      <span>{topic.name}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-            </fieldset>
-            {errors.topicSlugs ? (
-              <p id="action-topicSlugs-error" className="submissionError">
-                {errors.topicSlugs}
+          <section className="submissionField actionEditorDescriptionField">
+            <label className="submissionLabel" htmlFor="action-description">
+              Description
+            </label>
+            <textarea
+              id="action-description"
+              className="submissionTextarea actionEditorTextareaDescription"
+              value={description}
+              rows={18}
+              onChange={(event) => setDescription(event.target.value)}
+              {...getActionFieldA11y('description', errors)}
+              required
+            />
+            {errors.description ? (
+              <p id="action-description-error" className="submissionError">
+                {errors.description}
               </p>
             ) : null}
-          </aside>
+          </section>
         </div>
 
         <div className="actionEditorFooter">
@@ -400,24 +418,26 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
               {saveError}
             </p>
           ) : null}
-          <button
-            className="primaryCTA"
-            type="submit"
-            name="status"
-            value="publish"
-            disabled={isSaving}
-          >
-            {mode === 'create' ? 'Create published' : 'Publish changes'}
-          </button>
-          <button
-            className="primaryCTA"
-            type="submit"
-            name="status"
-            value="draft"
-            disabled={isSaving}
-          >
-            {mode === 'create' ? 'Create draft' : 'Save draft'}
-          </button>
+          <div className="actionEditorFooterActions">
+            <button
+              className="primaryCTA"
+              type="submit"
+              name="status"
+              value="publish"
+              disabled={isSaving}
+            >
+              {mode === 'create' ? 'Create published' : 'Publish changes'}
+            </button>
+            <button
+              className="primaryCTA"
+              type="submit"
+              name="status"
+              value="draft"
+              disabled={isSaving}
+            >
+              {mode === 'create' ? 'Create draft' : 'Save draft'}
+            </button>
+          </div>
         </div>
       </section>
     </form>

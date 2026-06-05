@@ -191,6 +191,39 @@ describe('ActionEditorForm', () => {
     });
   });
 
+  it('shows a success banner after updating an action', async () => {
+    mockUpdateAdminAction().mockResolvedValue({
+      id: 42,
+      slug: 'community-action',
+      title: 'Existing Title',
+      summary: 'Existing summary',
+      description: 'Existing description',
+      actionType: 'CONTACT',
+      status: 'PUBLISHED',
+      updatedAt: '2026-01-02T12:00:00.000Z',
+      publishedAt: '2026-01-02T12:00:00.000Z',
+      topicSlugs: ['climate'],
+    });
+
+    renderEditForm();
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Publish changes' }));
+
+    expect(updateAdminAction).toHaveBeenCalledWith('community-action', {
+      title: 'Existing Title',
+      summary: 'Existing summary',
+      description: 'Existing description',
+      actionType: 'CONTACT',
+      status: 'PUBLISHED',
+      topicSlugs: ['climate'],
+    });
+    expect(screen.getByText('Action saved')).toBeInTheDocument();
+    expect(screen.getByText('Action updated and published successfully.')).toBeInTheDocument();
+    expect(routerMock.replace).not.toHaveBeenCalled();
+    expect(routerMock.refresh).toHaveBeenCalled();
+  });
+
   it('shows API error details for non-validation failures and scrolls to the submit error', async () => {
     mockCreateAdminAction().mockRejectedValue(
       new ApiError('Internal Server Error', 500, 'admin/actions'),
