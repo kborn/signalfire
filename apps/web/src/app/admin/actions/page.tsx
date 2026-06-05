@@ -84,22 +84,26 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
             ) : (
               actionList.items.map((action) => (
                 <tr key={action.id}>
-                  <td>
+                  <td colSpan={5}>
                     <Link
                       href={`/admin/actions/${action.slug}`}
-                      className="adminTableRecordLink"
+                      className="adminTableRecordLink adminTableRowLink"
                       aria-label={`Open action ${action.title}`}
                     >
-                      <span className="adminTableRecordTitle">
-                        {action.title} <span aria-hidden="true">→</span>
+                      <span className="adminTableRowPrimary">
+                        <span className="adminTableRecordTitle">
+                          {action.title} <span aria-hidden="true">→</span>
+                        </span>
+                        <span className="adminTableCellMeta">{action.summary}</span>
                       </span>
-                      <span className="adminTableCellMeta">{action.summary}</span>
+                      <span className="adminTableRowCell">{action.actionType}</span>
+                      <span className="adminTableRowCell">{action.status}</span>
+                      <span className="adminTableRowCell">{action.topicSlugs.join(', ')}</span>
+                      <span className="adminTableRowCell">
+                        {new Date(action.updatedAt).toLocaleString()}
+                      </span>
                     </Link>
                   </td>
-                  <td>{action.actionType}</td>
-                  <td>{action.status}</td>
-                  <td>{action.topicSlugs.join(', ')}</td>
-                  <td>{new Date(action.updatedAt).toLocaleString()}</td>
                 </tr>
               ))
             )}
