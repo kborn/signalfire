@@ -38,7 +38,7 @@ describe('ActionController', () => {
 
     const ret = await actionController.findActions();
     expect(ret).toEqual(actionListResponse);
-    expect(serviceMock.getActionList).toHaveBeenCalled();
+    expect(serviceMock.getActionList).toHaveBeenCalledWith('PUBLISHED');
   });
 
   it('findActionNotFound', async () => {

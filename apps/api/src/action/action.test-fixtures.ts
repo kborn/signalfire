@@ -5,6 +5,7 @@ import {
   AdminActionDetailResponse,
   AdminActionListResponse,
 } from '@signal-fire/api-contracts';
+import type { ActionWithTopics } from './action.repository';
 
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 
@@ -76,6 +77,30 @@ export function buildActionDetailResponse(
   };
 }
 
+export function buildActionWithTopicsEntity(
+  overrides: Partial<ActionWithTopics> = {},
+): ActionWithTopics {
+  return {
+    ...buildActionEntity(),
+    topicActions: [
+      {
+        topicId: 1,
+        actionId: 1,
+        assignedAt: ACTION_TEST_DATE,
+        assignedBy: 'admin',
+        topic: {
+          id: 1,
+          slug: 'democracy',
+          name: 'Democracy',
+          description: 'desc',
+          createdAt: ACTION_TEST_DATE,
+        },
+      },
+    ],
+    ...overrides,
+  } satisfies ActionWithTopics;
+}
+
 export function buildAdminActionListResponse(
   overrides: Partial<AdminActionListResponse> = {},
 ): AdminActionListResponse {
@@ -90,6 +115,7 @@ export function buildAdminActionListResponse(
         status: 'PUBLISHED',
         updatedAt: ACTION_TEST_DATE.toISOString(),
         publishedAt: ACTION_TEST_DATE.toISOString(),
+        topicSlugs: ['democracy'],
       },
       {
         id: 2,
@@ -100,6 +126,7 @@ export function buildAdminActionListResponse(
         status: 'DRAFT',
         updatedAt: ACTION_TEST_DATE.toISOString(),
         publishedAt: null,
+        topicSlugs: ['local-community'],
       },
     ],
     ...overrides,
@@ -119,6 +146,7 @@ export function buildAdminActionDetailResponse(
     status: 'PUBLISHED',
     updatedAt: ACTION_TEST_DATE.toISOString(),
     publishedAt: ACTION_TEST_DATE.toISOString(),
+    topicSlugs: ['democracy'],
     topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
     articles: [
       {

@@ -1,7 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { ActionRepository } from './action.repository';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { ActionRepository, type ActionWithTopics } from './action.repository';
 import { Action, EntityStatus } from '@prisma/client';
-import type { AdminActionResponse } from '@signal-fire/api-contracts';
 import {
   AdminActionDetailResponse,
   AdminActionListResponse,
@@ -33,7 +32,14 @@ export class ActionService {
   ) {}
 
   async getActionList(status?: EntityStatus | null): Promise<ActionListResponse> {
-    const actions = await this.repository.findActions(status);
+    if (status == null) {
+      status = EntityStatus.PUBLISHED;
+    }
+
+    const actions = await this.repository.findActions(status, [
+      { publishedAt: 'desc' },
+      { id: 'asc' },
+    ]);
 
     return {
       items: actions.map(toActionSummary),
@@ -41,9 +47,13 @@ export class ActionService {
   }
 
   async getActionDetail(slug: string, status?: EntityStatus | null): Promise<ActionDetailResponse> {
+    if (status == null) {
+      status = EntityStatus.PUBLISHED;
+    }
+
     const action = await this.repository.findBySlugAndStatus(slug, status);
     if (!action) {
-      throw new NotFoundException(`No action found with slug ${slug} and status ${status}`);
+      throw new NotFoundException(`No action found with slug ${slug}${this.statusSuffix(status)}`);
     }
     const [topics, articles] = await Promise.all([
       this.topicRepository.findByActionId(action.id),
@@ -53,7 +63,10 @@ export class ActionService {
   }
 
   async getAdminActionList(status?: EntityStatus | null): Promise<AdminActionListResponse> {
-    const actions = await this.repository.findActions(status);
+    const actions = await this.repository.findActionsWithTopics(status, [
+      { updatedAt: 'desc' },
+      { id: 'asc' },
+    ]);
 
     return {
       items: actions.map((action) => this.toAdminActionSummary(action)),
@@ -64,9 +77,9 @@ export class ActionService {
     slug: string,
     status?: EntityStatus | null,
   ): Promise<AdminActionDetailResponse> {
-    const action = await this.repository.findBySlugAndStatus(slug, status);
+    const action = await this.repository.findBySlugWithTopics(slug, status);
     if (!action) {
-      throw new NotFoundException(`No action found with slug ${slug} and status ${status}`);
+      throw new NotFoundException(`No action found with slug ${slug}${this.statusSuffix(status)}`);
     }
     const [topics, articles] = await Promise.all([
       this.topicRepository.findByActionId(action.id),
@@ -102,7 +115,11 @@ export class ActionService {
     };
   }
 
-  private toAdminActionSummary(action: Action): AdminActionSummary {
+  private statusSuffix(status?: EntityStatus | null): string {
+    return status ? ` and status ${status}` : '';
+  }
+
+  private toAdminActionSummary(action: ActionWithTopics): AdminActionSummary {
     return {
       id: action.id,
       slug: action.slug,
@@ -112,11 +129,12 @@ export class ActionService {
       status: action.status,
       updatedAt: action.updatedAt.toISOString(),
       publishedAt: action.publishedAt ? action.publishedAt.toISOString() : null,
+      topicSlugs: action.topicActions.map((item) => item.topic.slug),
     };
   }
 
   private toAdminActionDetailResponse(
-    action: Action,
+    action: ActionWithTopics,
     topics: Awaited<ReturnType<TopicRepository['findByActionId']>>,
     articles: Awaited<ReturnType<ArticleRepository['findPublishedByActionId']>>,
   ): AdminActionDetailResponse {
@@ -150,9 +168,14 @@ export class ActionService {
   private async mapCreateActionRequest(
     reqBody: AdminActionRequest,
   ): Promise<CreateAdminActionRepositoryInput> {
+    const slug = this.titleToSlug(reqBody.title);
+    if (!slug) {
+      throw new BadRequestException('Title must produce a valid slug');
+    }
+
     return {
       title: reqBody.title,
-      slug: this.titleToSlug(reqBody.title),
+      slug: slug,
       summary: reqBody.summary,
       description: reqBody.description,
       actionType: reqBody.actionType,
@@ -175,11 +198,21 @@ export class ActionService {
     };
   }
 
-  async create(reqBody: AdminActionRequest): Promise<AdminActionResponse> {
-    return await this.repository.create(await this.mapCreateActionRequest(reqBody));
+  async create(reqBody: AdminActionRequest): Promise<AdminActionDetailResponse> {
+    const action = await this.repository.create(await this.mapCreateActionRequest(reqBody));
+    const [topics, articles] = await Promise.all([
+      this.topicRepository.findByActionId(action.id),
+      this.articleRepository.findPublishedByActionId(action.id),
+    ]);
+    return this.toAdminActionDetailResponse(action, topics, articles);
   }
 
-  async update(slug: string, reqBody: AdminActionRequest): Promise<AdminActionResponse> {
-    return await this.repository.update(slug, await this.mapUpdateActionRequest(reqBody));
+  async update(slug: string, reqBody: AdminActionRequest): Promise<AdminActionDetailResponse> {
+    const action = await this.repository.update(slug, await this.mapUpdateActionRequest(reqBody));
+    const [topics, articles] = await Promise.all([
+      this.topicRepository.findByActionId(action.id),
+      this.articleRepository.findPublishedByActionId(action.id),
+    ]);
+    return this.toAdminActionDetailResponse(action, topics, articles);
   }
 }

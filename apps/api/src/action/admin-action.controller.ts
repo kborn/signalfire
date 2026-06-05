@@ -9,30 +9,65 @@ import {
   Query,
 } from '@nestjs/common';
 import { ActionService } from './action.service';
+import { AdminActionValidationPipe } from './admin-action-validation.pipe';
 import type {
   AdminActionDetailResponse,
   AdminActionListResponse,
   AdminActionRequest,
-  AdminActionResponse,
 } from '@signal-fire/api-contracts';
 
 import { EntityStatus } from '@prisma/client';
+import { UnknownSubmissionTopicsError } from '../submission/submission.error';
 
 @Controller('admin/actions')
 export class AdminActionController {
   constructor(private readonly actionService: ActionService) {}
 
   @Post()
-  async create(@Body() reqBody: AdminActionRequest): Promise<AdminActionResponse> {
-    return this.actionService.create(reqBody);
+  async create(
+    @Body(new AdminActionValidationPipe()) reqBody: AdminActionRequest,
+  ): Promise<AdminActionDetailResponse> {
+    try {
+      return await this.actionService.create(reqBody);
+    } catch (error) {
+      if (error instanceof UnknownSubmissionTopicsError) {
+        throw new BadRequestException({
+          errors: [
+            {
+              type: 'field',
+              field: 'topicSlugs',
+              message: error.message,
+            },
+          ],
+        });
+      }
+
+      throw error;
+    }
   }
 
   @Patch('/:slug')
   async update(
     @Param('slug') slug: string,
-    @Body() reqBody: AdminActionRequest,
-  ): Promise<AdminActionResponse> {
-    return this.actionService.update(slug, reqBody);
+    @Body(new AdminActionValidationPipe()) reqBody: AdminActionRequest,
+  ): Promise<AdminActionDetailResponse> {
+    try {
+      return await this.actionService.update(slug, reqBody);
+    } catch (error) {
+      if (error instanceof UnknownSubmissionTopicsError) {
+        throw new BadRequestException({
+          errors: [
+            {
+              type: 'field',
+              field: 'topicSlugs',
+              message: error.message,
+            },
+          ],
+        });
+      }
+
+      throw error;
+    }
   }
 
   private parsePublishedStatus(value: string | undefined): EntityStatus | null {

@@ -2,6 +2,9 @@
 
 Tiny reminders for stack concepts that are easy to forget.
 
+Index cards are generic implementation notes. They should explain a framework
+or architecture concept, not a one-off task detail from a specific phase.
+
 These cards may be created or updated alongside task-linked syllabi in
 `docs/learnings/syllabi/`, implementation guides in
 `docs/learnings/implementation-guides/`, or walkthroughs in
@@ -94,6 +97,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [80-react-functional-state-updates.md](./80-react-functional-state-updates.md) - Understand callback setter parameters, object merging, and direct state replacement
 - [81-next-route-groups.md](./81-next-route-groups.md) - Use `(group)` folders to separate layout ownership without changing URLs
 - [82-browser-request-vs-server-render-api-call.md](./82-browser-request-vs-server-render-api-call.md) - Why Chrome Network may show the Next page response instead of the backend API request
+- [83-findunique-vs-findfirst-in-prisma.md](./83-findunique-vs-findfirst-in-prisma.md) - When to use `findUnique` vs `findFirst` in Prisma
+- [84-nest-request-pipes-at-the-controller-boundary.md](./84-nest-request-pipes-at-the-controller-boundary.md) - Why request pipes belong at the controller boundary
+- [85-repository-service-controller-responsibilities.md](./85-repository-service-controller-responsibilities.md) - How to separate repository, service, and controller responsibilities
 
 Rule of thumb:
 
@@ -106,5 +112,7 @@ Card guidelines:
 
 - Keep cards short enough to re-read in under a minute.
 - Prefer one durable concept per card.
+- Explain the framework or approach in generic terms first, then mention the
+  project only if it clarifies why the concept matters.
 - Update an existing card instead of creating a duplicate whenever possible.
 - This directory is curated; do not use it for throwaway session notes.

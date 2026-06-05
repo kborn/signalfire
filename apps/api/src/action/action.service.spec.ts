@@ -11,6 +11,7 @@ import {
   buildActionListResponse,
   buildActionDetailResponse,
   buildActionEntity,
+  buildActionWithTopicsEntity,
 } from './action.test-fixtures';
 import { ActionType, EntityStatus } from '@prisma/client';
 
@@ -19,11 +20,16 @@ describe('ActionService', () => {
   const repoMock = {
     findActions: jest.fn(),
     findBySlugAndStatus: jest.fn(),
+    findActionsWithTopics: jest.fn(),
+    findBySlugWithTopics: jest.fn(),
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByArticleId: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
   };
   const topicRepoMock = {
     findByActionId: jest.fn(),
+    findIdsBySlugs: jest.fn(),
   };
   const articleRepoMock = {
     findPublishedByActionId: jest.fn(),
@@ -80,7 +86,10 @@ describe('ActionService', () => {
         ],
       }),
     );
-    expect(repoMock.findActions).toHaveBeenCalled();
+    expect(repoMock.findActions).toHaveBeenCalledWith(EntityStatus.PUBLISHED, [
+      { publishedAt: 'desc' },
+      { id: 'asc' },
+    ]);
   });
 
   it('getActionDetail', async () => {
@@ -196,8 +205,8 @@ describe('ActionService', () => {
   });
 
   it('getAdminActionList', async () => {
-    const action1 = buildActionEntity();
-    const draftAction = buildActionEntity({
+    const action1 = buildActionWithTopicsEntity();
+    const draftAction = buildActionWithTopicsEntity({
       id: 2,
       slug: 'join-neighborhood-climate-coalition',
       title: 'Join A Neighborhood Climate Coalition',
@@ -205,17 +214,36 @@ describe('ActionService', () => {
       actionType: ActionType.VOLUNTEER,
       status: EntityStatus.DRAFT,
       publishedAt: null,
+      topicActions: [
+        {
+          topicId: 2,
+          actionId: 2,
+          assignedAt: ACTION_TEST_DATE,
+          assignedBy: 'admin',
+          topic: {
+            id: 2,
+            slug: 'local-community',
+            name: 'Local Community',
+            description: 'desc',
+            createdAt: ACTION_TEST_DATE,
+          },
+        },
+      ],
     });
-    repoMock.findActions.mockResolvedValue([action1, draftAction]);
+    repoMock.findActionsWithTopics.mockResolvedValue([action1, draftAction]);
 
     const ret = await service.getAdminActionList();
 
     expect(ret).toEqual(buildAdminActionListResponse());
+    expect(repoMock.findActionsWithTopics).toHaveBeenCalledWith(undefined, [
+      { updatedAt: 'desc' },
+      { id: 'asc' },
+    ]);
   });
 
   it('getAdminActionDetail', async () => {
-    const action = buildActionEntity();
-    repoMock.findBySlugAndStatus.mockResolvedValue(action);
+    const action = buildActionWithTopicsEntity();
+    repoMock.findBySlugWithTopics.mockResolvedValue(action);
     topicRepoMock.findByActionId.mockResolvedValue([
       {
         id: 1,
@@ -240,9 +268,94 @@ describe('ActionService', () => {
       },
     ]);
 
-    const ret = await service.getAdminActionDetail('test', EntityStatus.PUBLISHED);
+    const ret = await service.getAdminActionDetail('test');
 
     expect(ret).toEqual(buildAdminActionDetailResponse());
+    expect(repoMock.findBySlugWithTopics).toHaveBeenCalledWith('test', undefined);
+  });
+
+  it('create returns rich admin action details', async () => {
+    const action = buildActionWithTopicsEntity();
+    repoMock.create.mockResolvedValue(action);
+    topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+    topicRepoMock.findByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ACTION_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Find Your Fight Editorial',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
+
+    const ret = await service.create({
+      title: 'Call Your Representative',
+      summary: 'A short action summary.',
+      description: 'A longer action description.',
+      actionType: ActionType.CONTACT,
+      topicSlugs: ['democracy'],
+      status: EntityStatus.PUBLISHED,
+    });
+
+    expect(ret).toEqual(buildAdminActionDetailResponse());
+    expect(topicRepoMock.findIdsBySlugs).toHaveBeenCalledWith(['democracy']);
+    expect(repoMock.create).toHaveBeenCalled();
+  });
+
+  it('update returns rich admin action details', async () => {
+    const action = buildActionWithTopicsEntity();
+    repoMock.update.mockResolvedValue(action);
+    topicRepoMock.findIdsBySlugs.mockResolvedValue([{ id: 1, slug: 'democracy' }]);
+    topicRepoMock.findByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ACTION_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Find Your Fight Editorial',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
+
+    const ret = await service.update('call-your-representative', {
+      title: 'Call Your Representative',
+      summary: 'A short action summary.',
+      description: 'A longer action description.',
+      actionType: ActionType.CONTACT,
+      topicSlugs: ['democracy'],
+      status: EntityStatus.PUBLISHED,
+    });
+
+    expect(ret).toEqual(buildAdminActionDetailResponse());
+    expect(topicRepoMock.findIdsBySlugs).toHaveBeenCalledWith(['democracy']);
+    expect(repoMock.update).toHaveBeenCalled();
   });
 
   it('getActionsForTopic', async () => {

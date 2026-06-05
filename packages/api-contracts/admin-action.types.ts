@@ -1,5 +1,5 @@
 import { ActionType, ArticleSummary, TopicSummary } from './common.types.js';
-export type EntityStatus = 'DRAFT' | 'PUBLISHED';
+import type { EntityStatus } from './submission_type.js';
 
 export type AdminActionRequest = {
   title: string;
@@ -8,11 +8,6 @@ export type AdminActionRequest = {
   actionType: ActionType;
   topicSlugs: string[];
   status: EntityStatus;
-};
-
-export type AdminActionResponse = {
-  id: number;
-  slug: string;
 };
 
 export type AdminActionSummary = {
@@ -24,6 +19,7 @@ export type AdminActionSummary = {
   status: EntityStatus;
   updatedAt: string;
   publishedAt: string | null;
+  topicSlugs: string[];
 };
 
 export type AdminActionDetailResponse = AdminActionSummary & {

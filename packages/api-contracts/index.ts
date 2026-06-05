@@ -15,7 +15,6 @@ export type {
   AdminActionRequest,
   AdminActionListResponse,
   AdminActionSummary,
-  AdminActionResponse,
 } from './admin-action.types.js';
 export type { ActionListResponse, ActionDetailResponse } from './action.types.js';
 export type { EventDetailResponse, EventListResponse } from './event.types.js';

@@ -20,8 +20,3 @@ export type UpdateAdminActionRepositoryInput = {
   status: EntityStatus;
   topicIds: number[];
 };
-
-export type AdminActionResponse = {
-  id: number;
-  slug: string;
-};
