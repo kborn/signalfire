@@ -2,7 +2,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { SubmissionError } from '@/lib/api/error';
+import { ApiError, SubmissionError } from '@/lib/api/error';
 import { createAdminAction, updateAdminAction } from '@/lib/api/admin';
 
 import ActionEditorForm from './ActionEditorForm';
@@ -68,7 +68,6 @@ function renderCreateForm() {
         summary: '',
         description: '',
         actionType: 'GUIDE',
-        status: 'DRAFT',
         topicSlugs: [],
       }}
     />,
@@ -86,7 +85,6 @@ function renderEditForm() {
         summary: 'Existing summary',
         description: 'Existing description',
         actionType: 'CONTACT',
-        status: 'DRAFT',
         topicSlugs: ['climate'],
       }}
     />,
@@ -100,7 +98,6 @@ async function fillValidActionFields() {
   await user.type(screen.getByLabelText('Summary'), '  Short action summary  ');
   await user.type(screen.getByLabelText('Description'), '  Full action description  ');
   await user.selectOptions(screen.getByLabelText('Action type'), 'CONTACT');
-  await user.selectOptions(screen.getByLabelText('Status'), 'PUBLISHED');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -117,7 +114,7 @@ describe('ActionEditorForm', () => {
 
     renderCreateForm();
 
-    await user.click(screen.getByRole('button', { name: 'Save action' }));
+    await user.click(screen.getByRole('button', { name: 'Create published' }));
 
     expect(createAdminAction).not.toHaveBeenCalled();
     expect(screen.getByText('Title is required')).toBeInTheDocument();
@@ -156,7 +153,7 @@ describe('ActionEditorForm', () => {
     renderCreateForm();
 
     const user = await fillValidActionFields();
-    await user.click(screen.getByRole('button', { name: 'Save action' }));
+    await user.click(screen.getByRole('button', { name: 'Create published' }));
 
     expect(createAdminAction).toHaveBeenCalledWith({
       title: 'Climate Action',
@@ -184,13 +181,31 @@ describe('ActionEditorForm', () => {
     renderEditForm();
 
     const user = userEvent.setup();
-    await user.click(screen.getByRole('button', { name: 'Save changes' }));
+    await user.click(screen.getByRole('button', { name: 'Publish changes' }));
 
     expect(screen.getByText('Description is too long')).toBeInTheDocument();
     expect(screen.getByText('Select at least one topic')).toBeInTheDocument();
 
     await waitFor(() => {
       expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('Description'));
+    });
+  });
+
+  it('shows API error details for non-validation failures and scrolls to the submit error', async () => {
+    mockCreateAdminAction().mockRejectedValue(
+      new ApiError('Internal Server Error', 500, 'admin/actions'),
+    );
+
+    renderCreateForm();
+
+    const user = await fillValidActionFields();
+    await user.click(screen.getByRole('button', { name: 'Create published' }));
+
+    expect(screen.getByText('Save failed (500): Internal Server Error')).toHaveClass('adminError');
+    await waitFor(() => {
+      expect(scrollIntoView.mock.contexts[0]).toBe(
+        screen.getByText('Save failed (500): Internal Server Error'),
+      );
     });
   });
 });

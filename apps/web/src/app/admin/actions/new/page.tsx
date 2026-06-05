@@ -31,7 +31,6 @@ export default async function NewAdminActionPage() {
           summary: '',
           description: '',
           actionType: 'GUIDE',
-          status: 'DRAFT',
           topicSlugs: [],
         }}
       />

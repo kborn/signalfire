@@ -18,7 +18,6 @@ import {
 import { useRouter } from 'next/navigation';
 
 const ACTION_TYPES: ActionType[] = ['GUIDE', 'LINK', 'CONTACT', 'DONATE', 'VOLUNTEER'];
-const STATUS_OPTIONS: EntityStatus[] = ['DRAFT', 'PUBLISHED'];
 
 type ActionEditorInitialValues = {
   slug: string;
@@ -26,7 +25,6 @@ type ActionEditorInitialValues = {
   summary: string;
   description: string;
   actionType: ActionType;
-  status: EntityStatus;
   topicSlugs: string[];
 };
 
@@ -41,7 +39,6 @@ type ActionEditorFormErrors = {
   summary?: string;
   description?: string;
   actionType?: string;
-  status?: string;
   topicSlugs?: string;
 };
 
@@ -50,7 +47,6 @@ const actionEditorErrorFieldOrder: Array<keyof ActionEditorFormErrors> = [
   'summary',
   'description',
   'actionType',
-  'status',
   'topicSlugs',
 ];
 
@@ -87,7 +83,6 @@ function mapAdminApiFieldToUiField(field: string): keyof ActionEditorFormErrors 
     case 'summary':
     case 'description':
     case 'actionType':
-    case 'status':
     case 'topicSlugs':
       return normalizedField;
     default:
@@ -134,13 +129,19 @@ function parseApiError(error: unknown): string {
   return 'Save failed due to an unexpected error.';
 }
 
+function getSubmitStatus(event: FormEvent<HTMLFormElement>): EntityStatus {
+  const submitter = event.nativeEvent instanceof SubmitEvent ? event.nativeEvent.submitter : null;
+  const action = submitter?.getAttribute('value');
+
+  return action === 'publish' ? 'PUBLISHED' : 'DRAFT';
+}
+
 export default function ActionEditorForm({ mode, initialValues, topics }: ActionEditorFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState(initialValues.title);
   const [summary, setSummary] = useState(initialValues.summary);
   const [description, setDescription] = useState(initialValues.description);
   const [actionType, setActionType] = useState<ActionType>(initialValues.actionType);
-  const [status, setStatus] = useState<EntityStatus>(initialValues.status);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialValues.topicSlugs);
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -172,6 +173,8 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
     event.preventDefault();
     setSaveError(null);
     setErrors({});
+
+    const nextStatus = getSubmitStatus(event);
 
     const normalizedTitle = title.trim();
     const normalizedSummary = summary.trim();
@@ -209,10 +212,6 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       nextErrors.actionType = 'Action type is required';
     }
 
-    if (!status) {
-      nextErrors.status = 'Status is required';
-    }
-
     if (selectedTopics.length === 0) {
       nextErrors.topicSlugs = 'Select at least one topic';
     }
@@ -227,7 +226,7 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       summary: normalizedSummary,
       description: normalizedDescription,
       actionType,
-      status,
+      status: nextStatus,
       topicSlugs: selectedTopics,
     };
 
@@ -257,10 +256,10 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
         if (formError) {
           setSaveError(formError);
         } else if (Object.keys(fieldErrors).length === 0) {
-          setSaveError('Something went wrong while saving the action. Please try again.');
+          setSaveError(parseApiError(error));
         }
       } else {
-        setSaveError('Something went wrong while saving the action. Please try again.');
+        setSaveError(parseApiError(error));
       }
     } finally {
       setIsSaving(false);
@@ -362,31 +361,6 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
               ) : null}
             </section>
 
-            <section className="submissionField">
-              <label className="submissionLabel" htmlFor="action-status">
-                Status
-              </label>
-              <select
-                id="action-status"
-                className="submissionControl"
-                value={status}
-                onChange={(event) => setStatus(event.target.value as EntityStatus)}
-                {...getActionFieldA11y('status', errors)}
-                required
-              >
-                {STATUS_OPTIONS.map((item) => (
-                  <option key={item} value={item}>
-                    {item === 'DRAFT' ? 'Draft' : 'Published'}
-                  </option>
-                ))}
-              </select>
-              {errors.status ? (
-                <p id="action-status-error" className="submissionError">
-                  {errors.status}
-                </p>
-              ) : null}
-            </section>
-
             <fieldset
               id="action-topic-group"
               className="submissionCheckboxGroup"
@@ -426,8 +400,23 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
               {saveError}
             </p>
           ) : null}
-          <button className="primaryCTA" type="submit" disabled={isSaving}>
-            {mode === 'create' ? 'Save action' : 'Save changes'}
+          <button
+            className="primaryCTA"
+            type="submit"
+            name="status"
+            value="publish"
+            disabled={isSaving}
+          >
+            {mode === 'create' ? 'Create published' : 'Publish changes'}
+          </button>
+          <button
+            className="primaryCTA"
+            type="submit"
+            name="status"
+            value="draft"
+            disabled={isSaving}
+          >
+            {mode === 'create' ? 'Create draft' : 'Save draft'}
           </button>
         </div>
       </section>
