@@ -1,5 +1,9 @@
-import { makeRequest, postSubmissionReview } from '@/lib/api/base';
+import { makeRequest, patchJson, postJson, postSubmissionReview } from '@/lib/api/base';
 import {
+  AdminActionDetailResponse,
+  AdminActionListFilters,
+  AdminActionListResponse,
+  AdminActionRequest,
   ModerationSubmissionListFilters,
   ModerationSubmissionList,
   ModerationSubmissionDetail,
@@ -22,4 +26,27 @@ export async function postSubmissionReviewReq(
   id: number,
 ): Promise<ModerationReviewSuccess> {
   return await postSubmissionReview<ModerationReviewSuccess>(req, id);
+}
+
+export async function getAdminActionsList(
+  filters?: AdminActionListFilters,
+): Promise<AdminActionListResponse> {
+  return await makeRequest<AdminActionListResponse>('admin/actions', filters);
+}
+
+export async function getAdminActionDetails(slug: string): Promise<AdminActionDetailResponse> {
+  return await makeRequest<AdminActionDetailResponse>(`admin/actions/${slug}`);
+}
+
+export async function createAdminAction(
+  payload: AdminActionRequest,
+): Promise<AdminActionDetailResponse> {
+  return await postJson<AdminActionDetailResponse>('admin/actions', payload);
+}
+
+export async function updateAdminAction(
+  slug: string,
+  payload: AdminActionRequest,
+): Promise<AdminActionDetailResponse> {
+  return await patchJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
 }

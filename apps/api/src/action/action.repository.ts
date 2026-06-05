@@ -1,6 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Action, EntityStatus } from '@prisma/client';
+import { Action, EntityStatus, Prisma } from '@prisma/client';
+import {
+  CreateAdminActionRepositoryInput,
+  UpdateAdminActionRepositoryInput,
+} from './admin-action.repository.type';
+
+const actionWithTopicsInclude = {
+  topicActions: {
+    include: {
+      topic: true,
+    },
+    orderBy: {
+      topicId: 'asc',
+    },
+  },
+} satisfies Prisma.ActionInclude;
+
+export type ActionWithTopics = Prisma.ActionGetPayload<{
+  include: typeof actionWithTopicsInclude;
+}>;
+
+type ActionOrderBy =
+  | Prisma.ActionOrderByWithRelationInput
+  | Prisma.ActionOrderByWithRelationInput[];
 
 @Injectable()
 export class ActionRepository {
@@ -14,21 +37,71 @@ export class ActionRepository {
     });
   }
 
-  findPublished(): Promise<Action[]> {
+  findActions(
+    status?: EntityStatus | null,
+    orderBy: ActionOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
+  ): Promise<Action[]> {
     return this.prisma.action.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-      },
-      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      where: status
+        ? {
+            status: status,
+          }
+        : undefined,
+      orderBy,
     });
   }
 
-  findPublishedBySlug(slug: string): Promise<Action | null> {
-    return this.prisma.action.findUnique({
+  async findBySlugAndStatus(slug: string, status?: EntityStatus | null): Promise<Action | null> {
+    if (!status) {
+      return this.prisma.action.findUnique({
+        where: {
+          slug: slug,
+        },
+      });
+    }
+
+    return this.prisma.action.findFirst({
       where: {
-        status: EntityStatus.PUBLISHED,
         slug: slug,
+        status: status,
       },
+    });
+  }
+
+  async findActionsWithTopics(
+    status?: EntityStatus | null,
+    orderBy: ActionOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
+  ): Promise<ActionWithTopics[]> {
+    return this.prisma.action.findMany({
+      where: status
+        ? {
+            status: status,
+          }
+        : undefined,
+      include: actionWithTopicsInclude,
+      orderBy,
+    });
+  }
+
+  async findBySlugWithTopics(
+    slug: string,
+    status?: EntityStatus | null,
+  ): Promise<ActionWithTopics | null> {
+    if (!status) {
+      return this.prisma.action.findUnique({
+        where: {
+          slug: slug,
+        },
+        include: actionWithTopicsInclude,
+      });
+    }
+
+    return this.prisma.action.findFirst({
+      where: {
+        slug: slug,
+        status: status,
+      },
+      include: actionWithTopicsInclude,
     });
   }
 
@@ -81,6 +154,82 @@ export class ActionRepository {
         },
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+    });
+  }
+
+  private buildTopicCreates(topicIds: number[]) {
+    const assignedAt = new Date();
+    return topicIds.map((topicId) => ({
+      topic: { connect: { id: topicId } },
+      assignedAt: assignedAt,
+      assignedBy: 'admin',
+    }));
+  }
+
+  async create(input: CreateAdminActionRepositoryInput): Promise<ActionWithTopics> {
+    return await this.prisma.$transaction(async (tx) => {
+      const { topicIds, ...actionData } = input;
+
+      const existingAction = await tx.action.findUnique({
+        where: { slug: actionData.slug },
+        select: { id: true },
+      });
+
+      const finalSlug = existingAction ? `${input.slug}-${new Date().getTime()}` : input.slug;
+
+      const action = await tx.action.create({
+        data: {
+          ...actionData,
+          slug: finalSlug,
+          topicActions: {
+            create: this.buildTopicCreates(topicIds),
+          },
+        },
+        include: actionWithTopicsInclude,
+      });
+      return action;
+    });
+  }
+
+  async update(slug: string, input: UpdateAdminActionRepositoryInput): Promise<ActionWithTopics> {
+    return await this.prisma.$transaction(async (tx) => {
+      const { topicIds, ...actionData } = input;
+
+      const existing = await tx.action.findUnique({
+        where: { slug: slug },
+        select: { publishedAt: true, status: true },
+      });
+
+      if (!existing) throw new NotFoundException(`Action ${slug} not found`);
+
+      function getPublishedAt(
+        existing: Pick<Action, 'publishedAt' | 'status'>,
+        input: UpdateAdminActionRepositoryInput,
+      ): Date | null {
+        if (existing.status === input.status) {
+          return existing.publishedAt;
+        }
+        if (input.status === EntityStatus.DRAFT) {
+          return null;
+        }
+        return new Date();
+      }
+
+      const action = await tx.action.update({
+        where: {
+          slug: slug,
+        },
+        data: {
+          ...actionData,
+          publishedAt: getPublishedAt(existing, input),
+          topicActions: {
+            deleteMany: {},
+            create: this.buildTopicCreates(topicIds),
+          },
+        },
+        include: actionWithTopicsInclude,
+      });
+      return action;
     });
   }
 }

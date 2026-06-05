@@ -16,7 +16,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
     origin: getWebOrigins(),
-    methods: ['GET', 'POST', 'OPTIONS'],
+    methods: ['GET', 'PATCH', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
   });
   const prisma = app.get(PrismaService);

@@ -1443,6 +1443,11 @@ repository and before continuing into broader admin content-management work.
 - [ ] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
 - [ ] Keep Topic assignment limited to the seeded Release 1 topic set with no topic-management expansion
 
+###### Notes:
+
+- Actions admin list/editor now uses the settled wide content-first layout, immutable slugs, status-by-submit flow, metadata strip, validation, and save feedback.
+- Next admin content surface to implement: Articles.
+
 ---
 
 #### ▸ Phase 11.9 - Interface Hardening Handoff ⏳

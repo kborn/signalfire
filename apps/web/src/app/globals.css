@@ -261,6 +261,12 @@ p {
   padding: 0 24px;
 }
 
+.container.adminShell {
+  width: min(1320px, calc(100vw - 48px));
+  max-width: 1320px;
+  padding-inline: 32px;
+}
+
 .section-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -1179,7 +1185,8 @@ h3 {
 }
 
 .adminNavLabel,
-.submissionFilterActionLabel {
+.submissionFilterActionLabel,
+.adminFilterActionLabel {
   color: #7f8ea1;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1214,6 +1221,15 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-2);
+}
+
+.adminStack {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.actionEditorPage {
+  padding-bottom: var(--space-5);
 }
 
 .adminPanel {
@@ -1258,8 +1274,8 @@ h3 {
   padding: 0.45rem 0.75rem;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  background: #ffffff;
-  color: #171717;
+  background: color-mix(in srgb, var(--color-surface-soft) 55%, #ffffff 45%);
+  color: var(--color-text-primary);
   font: inherit;
   font-size: 0.95rem;
   line-height: 1;
@@ -1270,9 +1286,10 @@ h3 {
 .adminSegmentedControl button[aria-pressed='true'],
 .adminFilterGroup a[aria-current='page'],
 .adminFilterGroup button[aria-pressed='true'] {
-  border-color: #171717;
-  background: #171717;
-  color: #ffffff;
+  border-color: var(--color-brand-primary);
+  background: color-mix(in srgb, var(--color-brand-primary) 22%, var(--color-surface-soft));
+  color: var(--color-brand-primary-hover);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-brand-primary) 24%, transparent);
 }
 
 .adminSegmentedControl button:disabled,
@@ -1294,6 +1311,10 @@ h3 {
   border-bottom: 1px solid #e5e7eb;
   text-align: left;
   vertical-align: top;
+}
+
+.adminTable tbody tr:hover td {
+  background: #fafafa;
 }
 
 .adminTable th {
@@ -1359,9 +1380,26 @@ h3 {
   line-height: 1.45;
 }
 
+.adminDefinitionListStacked {
+  grid-template-columns: 1fr;
+  gap: var(--space-0);
+}
+
 .adminDefinitionList dt {
   color: #6b7280;
   font-weight: 700;
+}
+
+.adminDefinitionListStacked dt {
+  margin-top: var(--space-2);
+  color: #7f8ea1;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminDefinitionListStacked dt:first-child {
+  margin-top: 0;
 }
 
 .submissionLabel,
@@ -1376,6 +1414,26 @@ h3 {
   text-underline-offset: 0.18em;
 }
 
+.adminBackLink {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 32px;
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.adminBackLink:hover {
+  color: var(--color-brand-primary-hover);
+  text-decoration: underline;
+}
+
+.adminBackLink:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 3px;
+}
+
 .adminTableLink:hover {
   color: #444444;
   text-decoration: underline;
@@ -1384,6 +1442,50 @@ h3 {
 .adminTableLink:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
+}
+
+.adminTableRecordLink {
+  display: grid;
+  gap: var(--space-0);
+  width: 100%;
+  padding: 0.15rem 0;
+  color: #171717;
+  text-decoration: none;
+}
+
+.adminTableRowLink {
+  grid-template-columns: minmax(0, 2.3fr) repeat(4, minmax(0, 0.9fr));
+  gap: var(--space-2);
+  align-items: start;
+  padding: var(--space-2) var(--space-3);
+}
+
+.adminTableRecordLink:hover {
+  text-decoration: none;
+}
+
+.adminTableRecordLink:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.adminTableRecordTitle {
+  font-weight: 700;
+  text-underline-offset: 0.18em;
+}
+
+.adminTableRowPrimary {
+  display: grid;
+  gap: var(--space-0);
+  min-width: 0;
+}
+
+.adminTableRowCell {
+  min-width: 0;
+  color: #171717;
+  font-size: 0.95rem;
+  line-height: 1.35;
 }
 
 .adminTableCellMeta {
@@ -1399,6 +1501,240 @@ h3 {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.adminFieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.actionEditorForm {
+  width: 100%;
+  max-width: none;
+  color-scheme: dark;
+}
+
+.actionEditorForm .adminPanel {
+  display: grid;
+  gap: var(--space-3);
+  border-color: var(--color-border-subtle);
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
+  box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
+}
+
+.actionEditorForm .adminPanelHeader h2,
+.actionEditorForm .adminPanelHeader h3 {
+  color: var(--color-text-primary);
+}
+
+.actionEditorLayout {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.actionEditorTitleField,
+.actionEditorDescriptionField {
+  grid-column: 1 / -1;
+}
+
+.actionEditorTopRow {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(260px, 0.95fr);
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.actionEditorSummaryField,
+.actionEditorSidebar {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.actionEditorSummaryField {
+  min-height: 100%;
+}
+
+.actionEditorSidebar {
+  align-content: start;
+  padding: var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 85%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
+}
+
+.actionEditorForm .submissionLabel {
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionControl,
+.actionEditorForm .submissionTextarea {
+  border-color: color-mix(in srgb, var(--color-border-subtle) 82%, #ffffff 18%);
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionControl::placeholder,
+.actionEditorForm .submissionTextarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.actionEditorForm .submissionControl:focus,
+.actionEditorForm .submissionTextarea:focus {
+  border-color: var(--color-brand-primary);
+  outline-color: var(--color-brand-primary);
+}
+
+.actionEditorTextareaSummary {
+  min-height: 280px;
+}
+
+.actionEditorSummaryField .actionEditorTextareaSummary {
+  flex: 1 1 auto;
+}
+
+.actionEditorTextareaDescription {
+  min-height: 420px;
+}
+
+.actionEditorForm .submissionCheckboxGroup {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.actionEditorForm .adminTopicGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+.actionEditorForm .submissionCheckboxOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  width: fit-content;
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionCheckboxOption input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-brand-primary);
+}
+
+.actionEditorFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-0);
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.actionEditorFooterActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.actionEditorFooter .primaryCTA {
+  min-width: 9.5rem;
+}
+
+.actionEditorForm .adminError {
+  color: var(--color-status-error);
+}
+
+.actionEditorForm .actionEditorSuccessBanner {
+  margin: 0;
+  border-color: color-mix(in srgb, var(--color-brand-primary) 28%, var(--color-border-subtle) 72%);
+  background: color-mix(in srgb, var(--color-surface-soft) 80%, var(--color-brand-primary) 20%);
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .actionEditorSuccessBanner .adminReviewBannerText {
+  color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
+}
+
+.adminMetadataPanel {
+  width: 100%;
+  max-width: none;
+  padding-block: var(--space-1);
+  border-color: color-mix(in srgb, var(--color-border-subtle) 88%, var(--color-brand-primary) 12%);
+  background: color-mix(in srgb, var(--color-surface-soft) 72%, var(--color-page-bg) 28%);
+}
+
+.adminMetadataBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+  padding: 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--color-surface-soft) 84%, var(--color-page-bg) 16%);
+}
+
+.adminMetadataItem {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.55rem 0.9rem;
+  min-width: 0;
+}
+
+.adminMetadataItem + .adminMetadataItem {
+  border-inline-start: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+}
+
+.adminMetadataItem dt {
+  color: color-mix(in srgb, var(--color-text-primary) 76%, var(--color-text-muted) 24%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminMetadataItem dd {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 0.98rem;
+  font-weight: 600;
+}
+
+.adminMetadataLink {
+  color: var(--color-brand-primary-hover);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-brand-primary-hover) 70%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+.adminMetadataLink:hover {
+  color: #f0d18a;
+}
+
+.adminMetadataTime {
+  white-space: nowrap;
+}
+
+.adminMetadataPanel .adminBadge {
+  border-color: color-mix(in srgb, var(--color-brand-primary) 45%, transparent);
+  background: color-mix(in srgb, var(--color-brand-primary) 18%, var(--color-surface-soft));
+  color: var(--color-brand-primary-hover);
+}
+
+.adminStack > .adminPanel,
+.adminStack > .submissionForm {
+  width: 100%;
+  max-width: none;
 }
 
 .adminLongTextPreview {
@@ -1565,6 +1901,24 @@ h3 {
 }
 /* Responsive */
 
+@media (max-width: 960px) {
+  .actionEditorTopRow {
+    grid-template-columns: 1fr;
+  }
+
+  .actionEditorDescriptionField {
+    grid-column: 1 / -1;
+  }
+
+  .actionEditorTextareaSummary {
+    min-height: 180px;
+  }
+
+  .actionEditorTextareaDescription {
+    min-height: 300px;
+  }
+}
+
 @media (max-width: 640px) {
   .site-wordmark {
     font-size: 1.45rem;
@@ -1587,6 +1941,20 @@ h3 {
   .site-nav {
     gap: 16px;
     font-size: 0.98rem;
+  }
+
+  .adminMetadataBar {
+    padding: 0;
+  }
+
+  .adminMetadataItem {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .adminMetadataItem + .adminMetadataItem {
+    border-inline-start: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
   }
 
   .site-main {
