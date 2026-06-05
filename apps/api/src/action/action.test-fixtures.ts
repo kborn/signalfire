@@ -1,5 +1,10 @@
 import { Action, ActionType, EntityStatus } from '@prisma/client';
-import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
+import {
+  ActionDetailResponse,
+  ActionListResponse,
+  AdminActionDetailResponse,
+  AdminActionListResponse,
+} from '@signal-fire/api-contracts';
 
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 
@@ -55,6 +60,63 @@ export function buildActionDetailResponse(
     summary: 'A short action summary.',
     description: 'A longer action description.',
     actionType: ActionType.CONTACT,
+    updatedAt: ACTION_TEST_DATE.toISOString(),
+    publishedAt: ACTION_TEST_DATE.toISOString(),
+    topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
+    articles: [
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        publishedAt: ACTION_TEST_DATE.toISOString(),
+      },
+    ],
+    ...overrides,
+  };
+}
+
+export function buildAdminActionListResponse(
+  overrides: Partial<AdminActionListResponse> = {},
+): AdminActionListResponse {
+  return {
+    items: [
+      {
+        id: 1,
+        slug: 'call-your-representative',
+        title: 'Call Your Representative',
+        summary: 'A short action summary.',
+        actionType: ActionType.CONTACT,
+        status: 'PUBLISHED',
+        updatedAt: ACTION_TEST_DATE.toISOString(),
+        publishedAt: ACTION_TEST_DATE.toISOString(),
+      },
+      {
+        id: 2,
+        slug: 'join-neighborhood-climate-coalition',
+        title: 'Join A Neighborhood Climate Coalition',
+        summary: 'Work with local residents on recurring climate pressure campaigns.',
+        actionType: ActionType.VOLUNTEER,
+        status: 'DRAFT',
+        updatedAt: ACTION_TEST_DATE.toISOString(),
+        publishedAt: null,
+      },
+    ],
+    ...overrides,
+  };
+}
+
+export function buildAdminActionDetailResponse(
+  overrides: Partial<AdminActionDetailResponse> = {},
+): AdminActionDetailResponse {
+  return {
+    id: 1,
+    slug: 'call-your-representative',
+    title: 'Call Your Representative',
+    summary: 'A short action summary.',
+    description: 'A longer action description.',
+    actionType: ActionType.CONTACT,
+    status: 'PUBLISHED',
     updatedAt: ACTION_TEST_DATE.toISOString(),
     publishedAt: ACTION_TEST_DATE.toISOString(),
     topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],

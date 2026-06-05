@@ -9,11 +9,9 @@ describe('ActionController HTTP', () => {
   let app: INestApplication;
   let httpServer: Parameters<typeof request>[0];
 
-  const actionServiceMock: jest.Mocked<
-    Pick<ActionService, 'getPublishedActionDetail' | 'getPublishedActionList'>
-  > = {
-    getPublishedActionDetail: jest.fn(),
-    getPublishedActionList: jest.fn(),
+  const actionServiceMock: jest.Mocked<Pick<ActionService, 'getActionDetail' | 'getActionList'>> = {
+    getActionDetail: jest.fn(),
+    getActionList: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -35,14 +33,14 @@ describe('ActionController HTTP', () => {
 
   it('GET /actions returns the action discovery list', async () => {
     const actionListResponse = buildActionListResponse();
-    actionServiceMock.getPublishedActionList.mockResolvedValue(actionListResponse);
+    actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
 
     await request(httpServer).get('/actions').expect(200).expect(actionListResponse);
   });
 
   it('GET /actions/:slug returns the action detail payload', async () => {
     const actionDetailResponse = buildActionDetailResponse();
-    actionServiceMock.getPublishedActionDetail.mockResolvedValue(actionDetailResponse);
+    actionServiceMock.getActionDetail.mockResolvedValue(actionDetailResponse);
 
     await request(httpServer)
       .get(`/actions/${actionDetailResponse.slug}`)
@@ -51,7 +49,7 @@ describe('ActionController HTTP', () => {
   });
 
   it('GET /actions/:slug returns 404 when the action is missing', async () => {
-    actionServiceMock.getPublishedActionDetail.mockRejectedValue(
+    actionServiceMock.getActionDetail.mockRejectedValue(
       new NotFoundException('No action found with slug missing'),
     );
 
@@ -59,8 +57,8 @@ describe('ActionController HTTP', () => {
   });
 
   it('GET /actions/:slug returns 404 when the action is unpublished', async () => {
-    actionServiceMock.getPublishedActionDetail.mockRejectedValue(
-      new NotFoundException('No published action found with slug draft-action'),
+    actionServiceMock.getActionDetail.mockRejectedValue(
+      new NotFoundException('No action found with slug draft-action and status PUBLISHED'),
     );
 
     await request(httpServer).get('/actions/draft-action').expect(404);

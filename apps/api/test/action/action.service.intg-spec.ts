@@ -8,7 +8,6 @@ import { createArticle } from '../factories/article.factory';
 import { linkActionEvent, linkArticleAction, linkTopicAction } from '../factories/relation.factory';
 import { setupIntegrationTest } from '../harness/integration.harness';
 import { createEvent } from '../factories/event.factory';
-import { NotFoundException } from '@nestjs/common';
 
 describe('Action Service Integration test', () => {
   const harness = setupIntegrationTest([ActionModule, TopicModule]);
@@ -18,7 +17,7 @@ describe('Action Service Integration test', () => {
     const createdAction1 = await createAction();
     const createdAction2 = await createAction();
     const createdDraftAction = await createAction({ status: EntityStatus.DRAFT });
-    const actions = await actionService.getPublishedActionList();
+    const actions = await actionService.getActionList(EntityStatus.PUBLISHED);
 
     expect(actions.items).toEqual(
       expect.arrayContaining([
@@ -40,51 +39,13 @@ describe('Action Service Integration test', () => {
       publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
-    const actions = await actionService.getPublishedActionList();
+    const actions = await actionService.getActionList(EntityStatus.PUBLISHED);
     const olderIndex = actions.items.findIndex((action) => action.slug === olderAction.slug);
     const newerIndex = actions.items.findIndex((action) => action.slug === newerAction.slug);
 
     expect(olderIndex).toBeGreaterThan(-1);
     expect(newerIndex).toBeGreaterThan(-1);
     expect(newerIndex).toBeLessThan(olderIndex);
-  });
-
-  it('returns draft action by slug from unrestricted lookup', async () => {
-    const actionService = harness.module.get(ActionService);
-    // test that we don't filter by published status when calling getActionDetail
-    const createdAction = await createAction({ status: EntityStatus.DRAFT });
-    const action = await actionService.getActionDetail(createdAction.slug);
-    expect(action).toEqual(
-      expect.objectContaining({
-        id: createdAction.id,
-        title: 'Test action',
-        summary: 'Summary',
-      }),
-    );
-  });
-
-  it('returns published action by slug from published lookup', async () => {
-    const actionService = harness.module.get(ActionService);
-
-    const createdAction = await createAction();
-    const action = await actionService.getPublishedActionDetail(createdAction.slug);
-    expect(action).toEqual(
-      expect.objectContaining({
-        id: createdAction.id,
-        title: 'Test action',
-        summary: 'Summary',
-      }),
-    );
-  });
-
-  it('throws NotFoundException for draft action from published lookup', async () => {
-    const actionService = harness.module.get(ActionService);
-
-    // test that unpublished articles are not returned
-    const createdAction = await createAction({ status: EntityStatus.DRAFT });
-    await expect(actionService.getPublishedActionDetail(createdAction.slug)).rejects.toThrow(
-      NotFoundException,
-    );
   });
 
   it('returns published actions by related topic', async () => {

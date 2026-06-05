@@ -33,14 +33,14 @@ describe('ActionRepository', () => {
     });
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
-    const ret = await repository.findPublished();
+    const ret = await repository.findActions(EntityStatus.PUBLISHED);
 
     expect(ret).toEqual([action1, action2]);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
       },
-      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      orderBy: [{ updatedAt: 'desc' }, { id: 'asc' }],
     });
   });
 
@@ -60,11 +60,11 @@ describe('ActionRepository', () => {
     prismaMock.action.findUnique.mockResolvedValue(action);
 
     const slug = 'test';
-    const ret = await repository.findPublishedBySlug(slug);
+    const ret = await repository.findBySlugAndStatus(slug, EntityStatus.PUBLISHED);
 
     expect(ret).toEqual(action);
     expect(prismaMock.action.findUnique).toHaveBeenCalledWith({
-      where: { slug: slug, status: EntityStatus.PUBLISHED },
+      where: { slug: slug },
     });
   });
 

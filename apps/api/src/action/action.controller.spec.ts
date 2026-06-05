@@ -7,8 +7,8 @@ import { buildActionDetailResponse, buildActionListResponse } from './action.tes
 describe('ActionController', () => {
   let actionController: ActionController;
   const serviceMock = {
-    getPublishedActionList: jest.fn(),
-    getPublishedActionDetail: jest.fn(),
+    getActionList: jest.fn(),
+    getActionDetail: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -24,25 +24,25 @@ describe('ActionController', () => {
 
   it('findAction', async () => {
     const actionDetailResponse = buildActionDetailResponse();
-    serviceMock.getPublishedActionDetail.mockResolvedValue(actionDetailResponse);
+    serviceMock.getActionDetail.mockResolvedValue(actionDetailResponse);
 
     const slug = 'test';
     const ret = await actionController.findAction(slug);
     expect(ret).toEqual(actionDetailResponse);
-    expect(serviceMock.getPublishedActionDetail).toHaveBeenCalledWith(slug);
+    expect(serviceMock.getActionDetail).toHaveBeenCalledWith(slug, 'PUBLISHED');
   });
 
   it('findActions', async () => {
     const actionListResponse = buildActionListResponse();
-    serviceMock.getPublishedActionList.mockResolvedValue(actionListResponse);
+    serviceMock.getActionList.mockResolvedValue(actionListResponse);
 
     const ret = await actionController.findActions();
     expect(ret).toEqual(actionListResponse);
-    expect(serviceMock.getPublishedActionList).toHaveBeenCalled();
+    expect(serviceMock.getActionList).toHaveBeenCalled();
   });
 
   it('findActionNotFound', async () => {
-    serviceMock.getPublishedActionDetail.mockRejectedValue(new NotFoundException());
+    serviceMock.getActionDetail.mockRejectedValue(new NotFoundException());
 
     const slug = 'test';
     await expect(actionController.findAction(slug)).rejects.toThrow(NotFoundException);

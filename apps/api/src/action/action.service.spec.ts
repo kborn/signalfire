@@ -6,6 +6,8 @@ import { ArticleRepository } from '../article/article.repository';
 import { NotFoundException } from '@nestjs/common';
 import {
   ACTION_TEST_DATE,
+  buildAdminActionDetailResponse,
+  buildAdminActionListResponse,
   buildActionListResponse,
   buildActionDetailResponse,
   buildActionEntity,
@@ -15,9 +17,8 @@ import { ActionType, EntityStatus } from '@prisma/client';
 describe('ActionService', () => {
   let service: ActionService;
   const repoMock = {
-    findBySlug: jest.fn(),
-    findPublished: jest.fn(),
-    findPublishedBySlug: jest.fn(),
+    findActions: jest.fn(),
+    findBySlugAndStatus: jest.fn(),
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByArticleId: jest.fn(),
   };
@@ -53,9 +54,9 @@ describe('ActionService', () => {
       actionType: ActionType.VOLUNTEER,
       publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
-    repoMock.findPublished.mockResolvedValue([action1, action2]);
+    repoMock.findActions.mockResolvedValue([action1, action2]);
 
-    const ret = await service.getPublishedActionList();
+    const ret = await service.getActionList();
 
     expect(ret).toEqual(
       buildActionListResponse({
@@ -79,23 +80,12 @@ describe('ActionService', () => {
         ],
       }),
     );
-    expect(repoMock.findPublished).toHaveBeenCalled();
+    expect(repoMock.findActions).toHaveBeenCalled();
   });
 
   it('getActionDetail', async () => {
     const action = buildActionEntity();
-    repoMock.findBySlug.mockResolvedValue(action);
-
-    const slug = 'test';
-    const ret = await service.getActionDetail(slug);
-
-    expect(ret).toEqual(action);
-    expect(repoMock.findBySlug).toHaveBeenCalledWith(slug);
-  });
-
-  it('getPublishedActionDetail', async () => {
-    const publishedAction = buildActionEntity();
-    repoMock.findPublishedBySlug.mockResolvedValue(publishedAction);
+    repoMock.findBySlugAndStatus.mockResolvedValue(action);
     topicRepoMock.findByActionId.mockResolvedValue([
       {
         id: 1,
@@ -121,11 +111,45 @@ describe('ActionService', () => {
     ]);
 
     const slug = 'test';
-    const ret = await service.getPublishedActionDetail(slug);
+    const ret = await service.getActionDetail(slug, EntityStatus.PUBLISHED);
+
+    expect(ret).toEqual(buildActionDetailResponse());
+    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
+  });
+
+  it('getPublishedActionDetail', async () => {
+    const publishedAction = buildActionEntity();
+    repoMock.findBySlugAndStatus.mockResolvedValue(publishedAction);
+    topicRepoMock.findByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ACTION_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Find Your Fight Editorial',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
+
+    const slug = 'test';
+    const ret = await service.getActionDetail(slug, EntityStatus.PUBLISHED);
 
     expect(ret).toEqual(buildActionDetailResponse());
 
-    expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
+    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
     expect(topicRepoMock.findByActionId).toHaveBeenCalledWith(1);
     expect(articleRepoMock.findPublishedByActionId).toHaveBeenCalledWith(1);
     expect(articleRepoMock.findBySlug).not.toHaveBeenCalled();
@@ -133,7 +157,7 @@ describe('ActionService', () => {
 
   it('getPublishedActionDetail only includes related articles returned by the published lookup', async () => {
     const publishedAction = buildActionEntity();
-    repoMock.findPublishedBySlug.mockResolvedValue(publishedAction);
+    repoMock.findBySlugAndStatus.mockResolvedValue(publishedAction);
     topicRepoMock.findByActionId.mockResolvedValue([
       {
         id: 1,
@@ -158,7 +182,7 @@ describe('ActionService', () => {
       },
     ]);
 
-    const ret = await service.getPublishedActionDetail('test');
+    const ret = await service.getActionDetail('test', EntityStatus.PUBLISHED);
 
     expect(ret.articles).toEqual([
       {
@@ -169,6 +193,56 @@ describe('ActionService', () => {
         publishedAt: ACTION_TEST_DATE.toISOString(),
       },
     ]);
+  });
+
+  it('getAdminActionList', async () => {
+    const action1 = buildActionEntity();
+    const draftAction = buildActionEntity({
+      id: 2,
+      slug: 'join-neighborhood-climate-coalition',
+      title: 'Join A Neighborhood Climate Coalition',
+      summary: 'Work with local residents on recurring climate pressure campaigns.',
+      actionType: ActionType.VOLUNTEER,
+      status: EntityStatus.DRAFT,
+      publishedAt: null,
+    });
+    repoMock.findActions.mockResolvedValue([action1, draftAction]);
+
+    const ret = await service.getAdminActionList();
+
+    expect(ret).toEqual(buildAdminActionListResponse());
+  });
+
+  it('getAdminActionDetail', async () => {
+    const action = buildActionEntity();
+    repoMock.findBySlugAndStatus.mockResolvedValue(action);
+    topicRepoMock.findByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'democracy',
+        name: 'Democracy',
+        description: 'desc',
+        createdAt: ACTION_TEST_DATE,
+      },
+    ]);
+    articleRepoMock.findPublishedByActionId.mockResolvedValue([
+      {
+        id: 1,
+        slug: 'protect-voting-rights',
+        title: 'Protect Voting Rights',
+        summary: 'A short article summary.',
+        content: 'Full article content.',
+        status: EntityStatus.PUBLISHED,
+        author: 'Find Your Fight Editorial',
+        createdAt: ACTION_TEST_DATE,
+        publishedAt: ACTION_TEST_DATE,
+        updatedAt: ACTION_TEST_DATE,
+      },
+    ]);
+
+    const ret = await service.getAdminActionDetail('test', EntityStatus.PUBLISHED);
+
+    expect(ret).toEqual(buildAdminActionDetailResponse());
   });
 
   it('getActionsForTopic', async () => {
@@ -194,8 +268,10 @@ describe('ActionService', () => {
   });
 
   it('getPublishedActionDetailNotFound', async () => {
-    repoMock.findPublishedBySlug.mockResolvedValue(null);
+    repoMock.findBySlugAndStatus.mockResolvedValue(null);
 
-    await expect(service.getPublishedActionDetail('missing')).rejects.toThrow(NotFoundException);
+    await expect(service.getActionDetail('missing', EntityStatus.PUBLISHED)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 });

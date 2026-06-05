@@ -4,7 +4,7 @@ import type {
   EventSummary,
   TopicSummary,
 } from '@signal-fire/api-contracts';
-import type { Action, Article, Event, Topic } from '@prisma/client';
+import { Action, Article, Event, Topic } from '@prisma/client';
 
 export function requirePublishedAt(publishedAt: Date | null): Date {
   if (!publishedAt) {
