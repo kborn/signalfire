@@ -147,16 +147,6 @@ export function buildAdminActionDetailResponse(
     updatedAt: ACTION_TEST_DATE.toISOString(),
     publishedAt: ACTION_TEST_DATE.toISOString(),
     topicSlugs: ['democracy'],
-    topics: [{ id: 1, slug: 'democracy', name: 'Democracy', description: 'desc' }],
-    articles: [
-      {
-        id: 1,
-        slug: 'protect-voting-rights',
-        title: 'Protect Voting Rights',
-        summary: 'A short article summary.',
-        publishedAt: ACTION_TEST_DATE.toISOString(),
-      },
-    ],
     ...overrides,
   };
 }

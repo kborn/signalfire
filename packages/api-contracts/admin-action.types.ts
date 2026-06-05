@@ -1,4 +1,4 @@
-import { ActionType, ArticleSummary, TopicSummary } from './common.types.js';
+import { ActionType } from './common.types.js';
 import type { EntityStatus } from './submission_type.js';
 
 export type AdminActionRequest = {
@@ -24,8 +24,6 @@ export type AdminActionSummary = {
 
 export type AdminActionDetailResponse = AdminActionSummary & {
   description: string;
-  topics: TopicSummary[];
-  articles: ArticleSummary[];
 };
 
 export type AdminActionListResponse = {

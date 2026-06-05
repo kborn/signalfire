@@ -81,11 +81,7 @@ export class ActionService {
     if (!action) {
       throw new NotFoundException(`No action found with slug ${slug}${this.statusSuffix(status)}`);
     }
-    const [topics, articles] = await Promise.all([
-      this.topicRepository.findByActionId(action.id),
-      this.articleRepository.findPublishedByActionId(action.id),
-    ]);
-    return this.toAdminActionDetailResponse(action, topics, articles);
+    return this.toAdminActionDetailResponse(action);
   }
 
   getActionsForTopic(topicSlug: string): Promise<Action[]> {
@@ -133,16 +129,10 @@ export class ActionService {
     };
   }
 
-  private toAdminActionDetailResponse(
-    action: ActionWithTopics,
-    topics: Awaited<ReturnType<TopicRepository['findByActionId']>>,
-    articles: Awaited<ReturnType<ArticleRepository['findPublishedByActionId']>>,
-  ): AdminActionDetailResponse {
+  private toAdminActionDetailResponse(action: ActionWithTopics): AdminActionDetailResponse {
     return {
       ...this.toAdminActionSummary(action),
       description: action.description,
-      topics: topics.map(toTopicSummary),
-      articles: articles.map(toArticleSummary),
     };
   }
 
@@ -200,19 +190,11 @@ export class ActionService {
 
   async create(reqBody: AdminActionRequest): Promise<AdminActionDetailResponse> {
     const action = await this.repository.create(await this.mapCreateActionRequest(reqBody));
-    const [topics, articles] = await Promise.all([
-      this.topicRepository.findByActionId(action.id),
-      this.articleRepository.findPublishedByActionId(action.id),
-    ]);
-    return this.toAdminActionDetailResponse(action, topics, articles);
+    return this.toAdminActionDetailResponse(action);
   }
 
   async update(slug: string, reqBody: AdminActionRequest): Promise<AdminActionDetailResponse> {
     const action = await this.repository.update(slug, await this.mapUpdateActionRequest(reqBody));
-    const [topics, articles] = await Promise.all([
-      this.topicRepository.findByActionId(action.id),
-      this.articleRepository.findPublishedByActionId(action.id),
-    ]);
-    return this.toAdminActionDetailResponse(action, topics, articles);
+    return this.toAdminActionDetailResponse(action);
   }
 }

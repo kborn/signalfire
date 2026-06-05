@@ -15,6 +15,14 @@ function getApiBase() {
 
 type QueryParams = Record<string, string | undefined>;
 
+async function readJsonBody(response: Response): Promise<unknown> {
+  try {
+    return await response.json();
+  } catch {
+    return null;
+  }
+}
+
 export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
   const params = new URLSearchParams();
 
@@ -66,70 +74,58 @@ function getValidationErrors(body: unknown): ValidationError[] | null {
 }
 
 export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
-  const url = `${getApiBase()}/submissions`;
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(req),
-  });
-
-  let body: unknown;
-
-  try {
-    body = await response.json();
-  } catch {
-    body = null;
-  }
-
-  if (!response.ok) {
-    const validationErrors = getValidationErrors(body);
-    if (validationErrors) {
-      throw new SubmissionError(
-        `Request failed for submissions`,
-        response.status,
-        'submissions',
-        validationErrors,
-      );
-    } else {
-      throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
-    }
-  }
-  return body as T;
+  return sendJsonRequest<T>('submissions', 'POST', req, 'submissions');
 }
 
 export async function postSubmissionReview<ModerationReviewSuccess>(
   req: ModerationReviewRequest,
   id: number,
 ): Promise<ModerationReviewSuccess> {
-  const url = `${getApiBase()}/admin/submissions/${id}/review`;
+  return sendJsonRequest<ModerationReviewSuccess>(
+    `admin/submissions/${id}/review`,
+    'POST',
+    req,
+    'submissions',
+  );
+}
+
+async function sendJsonRequest<T>(
+  endpoint: string,
+  method: 'POST' | 'PATCH',
+  payload: unknown,
+  errorEndpoint: string = endpoint,
+): Promise<T> {
+  const url = `${getApiBase()}/${endpoint}`;
 
   const response = await fetch(url, {
-    method: 'POST',
+    method,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(req),
+    body: JSON.stringify(payload),
   });
 
-  let body: unknown;
-
-  try {
-    body = await response.json();
-  } catch {
-    body = null;
-  }
+  const body = await readJsonBody(response);
 
   if (!response.ok) {
     const validationErrors = getValidationErrors(body);
     if (validationErrors) {
       throw new SubmissionError(
-        `Request failed for submissions`,
+        `Request failed for ${errorEndpoint}`,
         response.status,
-        'submissions',
+        errorEndpoint,
         validationErrors,
       );
-    } else {
-      throw new ApiError(`Request failed for submissions`, response.status, 'submissions');
     }
+
+    throw new ApiError(`Request failed for ${errorEndpoint}`, response.status, errorEndpoint);
   }
-  return body as ModerationReviewSuccess;
+
+  return body as T;
+}
+
+export async function postJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendJsonRequest<T>(endpoint, 'POST', payload);
+}
+
+export async function patchJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendJsonRequest<T>(endpoint, 'PATCH', payload);
 }
