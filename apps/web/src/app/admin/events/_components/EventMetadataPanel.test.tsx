@@ -40,7 +40,14 @@ describe('EventMetadataPanel', () => {
     expect(screen.getByRole('link', { name: '42' })).toHaveAttribute('href', '/events/42');
     expect(screen.getByText('PUBLISHED')).toBeInTheDocument();
     expect(screen.getByText('Rally')).toBeInTheDocument();
-    expect(screen.getByText('5/14/2026, 1:00:00 PM')).toBeInTheDocument();
+    expect(
+      screen.getByText((_, element) => {
+        return (
+          element?.tagName.toLowerCase() === 'time' &&
+          element.getAttribute('datetime') === '2026-05-14T17:00:00.000Z'
+        );
+      }),
+    ).toBeInTheDocument();
     expect(screen.getByText('02108')).toBeInTheDocument();
   });
 
