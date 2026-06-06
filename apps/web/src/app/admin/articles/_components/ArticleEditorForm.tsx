@@ -335,26 +335,6 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
             </section>
           </div>
 
-          <section className="submissionField articleEditorContentField">
-            <label className="submissionLabel" htmlFor="article-content">
-              Content
-            </label>
-            <textarea
-              id="article-content"
-              className="submissionTextarea articleEditorTextareaContent"
-              value={content}
-              rows={18}
-              onChange={(event) => setContent(event.target.value)}
-              {...getArticleFieldA11y('content', errors)}
-              required
-            />
-            {errors.content ? (
-              <p id="article-content-error" className="submissionError">
-                {errors.content}
-              </p>
-            ) : null}
-          </section>
-
           <aside className="articleEditorSidebar" aria-label="Article settings">
             <fieldset
               id="article-topic-group"
@@ -403,6 +383,26 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
             {errors.author ? (
               <p id="article-author-error" className="submissionError">
                 {errors.author}
+              </p>
+            ) : null}
+          </section>
+
+          <section className="submissionField articleEditorContentField">
+            <label className="submissionLabel" htmlFor="article-content">
+              Content
+            </label>
+            <textarea
+              id="article-content"
+              className="submissionTextarea articleEditorTextareaContent"
+              value={content}
+              rows={18}
+              onChange={(event) => setContent(event.target.value)}
+              {...getArticleFieldA11y('content', errors)}
+              required
+            />
+            {errors.content ? (
+              <p id="article-content-error" className="submissionError">
+                {errors.content}
               </p>
             ) : null}
           </section>

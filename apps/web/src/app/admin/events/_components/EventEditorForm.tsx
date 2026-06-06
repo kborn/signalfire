@@ -523,26 +523,6 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
             ) : null}
           </section>
 
-          <section className="submissionField eventEditorContentField">
-            <label className="submissionLabel" htmlFor="event-content">
-              Body
-            </label>
-            <textarea
-              id="event-content"
-              className="submissionTextarea eventEditorTextareaContent"
-              value={content}
-              rows={18}
-              onChange={(event) => setContent(event.target.value)}
-              {...getEventFieldA11y('content', errors)}
-              required
-            />
-            {errors.content ? (
-              <p id="event-content-error" className="submissionError">
-                {errors.content}
-              </p>
-            ) : null}
-          </section>
-
           <div className="eventEditorBottomRow">
             <section className="eventEditorLocationCard" aria-label="Location details">
               <section className="submissionField eventEditorLocationField">
@@ -794,6 +774,26 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
               </section>
             </aside>
           </div>
+
+          <section className="submissionField eventEditorContentField">
+            <label className="submissionLabel" htmlFor="event-content">
+              Body
+            </label>
+            <textarea
+              id="event-content"
+              className="submissionTextarea eventEditorTextareaContent"
+              value={content}
+              rows={18}
+              onChange={(event) => setContent(event.target.value)}
+              {...getEventFieldA11y('content', errors)}
+              required
+            />
+            {errors.content ? (
+              <p id="event-content-error" className="submissionError">
+                {errors.content}
+              </p>
+            ) : null}
+          </section>
         </div>
 
         <div className="eventEditorFooter">
