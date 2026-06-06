@@ -44,19 +44,6 @@ describe('ArticleRepository', () => {
     });
   });
 
-  it('findBySlug', async () => {
-    const article = buildArticleEntity();
-    prismaMock.article.findUnique.mockResolvedValue(article);
-
-    const slug = 'test';
-    const ret = await repository.findBySlug(slug);
-
-    expect(ret).toEqual(article);
-    expect(prismaMock.article.findUnique).toHaveBeenCalledWith({
-      where: { slug: slug },
-    });
-  });
-
   it('findPublishedBySlug', async () => {
     const article = buildArticleEntity();
     prismaMock.article.findUnique.mockResolvedValue(article);

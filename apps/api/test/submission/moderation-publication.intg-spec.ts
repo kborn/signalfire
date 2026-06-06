@@ -59,7 +59,10 @@ describe('Moderation publication integration', () => {
       }),
     );
 
-    const article = await articleService.getPublishedArticleDetail(createdRecord.slug!);
+    const article = await articleService.getArticleDetail(
+      createdRecord.slug!,
+      EntityStatus.PUBLISHED,
+    );
     expect(article).toEqual(
       expect.objectContaining({
         title: 'Normalized Article Title',
@@ -105,9 +108,9 @@ describe('Moderation publication integration', () => {
     });
     const createdRecord = requireCreatedRecord(review);
 
-    await expect(articleService.getPublishedArticleDetail(createdRecord.slug!)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(
+      articleService.getArticleDetail(createdRecord.slug!, EntityStatus.PUBLISHED),
+    ).rejects.toThrow(NotFoundException);
   });
 
   it('publishes approved event submissions through public event reads', async () => {

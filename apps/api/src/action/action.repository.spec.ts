@@ -58,7 +58,7 @@ describe('ActionRepository', () => {
     prismaMock.action.findUnique.mockResolvedValue(action);
 
     const slug = 'test';
-    const ret = await repository.findBySlug(slug);
+    const ret = await repository.findBySlugAndStatus(slug);
 
     expect(ret).toEqual(action);
     expect(prismaMock.action.findUnique).toHaveBeenCalledWith({ where: { slug: slug } });

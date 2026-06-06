@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { PrismaModule } from '../prisma/prisma.module';
 import { ArticleService } from './article.service';
 import { ArticleRepository } from './article.repository';
+import { AdminArticleController } from './admin-article.controller';
 import { ArticleController } from './article.controller';
 import { TopicRepository } from '../topic/topic.repository';
 import { ActionRepository } from '../action/action.repository';
@@ -10,6 +11,6 @@ import { ActionRepository } from '../action/action.repository';
   imports: [PrismaModule],
   providers: [ArticleService, ArticleRepository, TopicRepository, ActionRepository],
   exports: [ArticleService, ArticleRepository],
-  controllers: [ArticleController],
+  controllers: [AdminArticleController, ArticleController],
 })
 export class ArticleModule {}

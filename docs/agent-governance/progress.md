@@ -1438,7 +1438,7 @@ repository and before continuing into broader admin content-management work.
 ###### Phase Tasks:
 
 - [x] Build admin create/edit flow for curated Actions
-- [ ] Build admin create/edit/publish flow for Articles
+- [x] Build admin create/edit/publish flow for Articles
 - [ ] Build admin create/edit/publish flow for Events
 - [ ] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
 - [ ] Keep Topic assignment limited to the seeded Release 1 topic set with no topic-management expansion

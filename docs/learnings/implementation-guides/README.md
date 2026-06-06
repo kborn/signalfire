@@ -47,3 +47,4 @@ Available Phase 11 guides:
 - `phase-11-4-react-rendering-dom-and-browser-timing-guide.md`
 - `phase-11-5-next-route-groups-and-css-boundaries-guide.md`
 - `phase-11-moderation-state-and-admin-form-guide.md`
+- `phase-11-8-admin-content-reuse-vs-coupling-guide.md`

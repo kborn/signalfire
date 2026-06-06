@@ -2,13 +2,14 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { NotFoundException } from '@nestjs/common';
+import { EntityStatus } from '@prisma/client';
 import { buildArticleListResponse, buildArticleDetailResponse } from './article.test-fixtures';
 
 describe('ArticleController', () => {
   let articleController: ArticleController;
   const serviceMock = {
-    getPublishedArticleDetail: jest.fn(),
-    getPublishedArticleList: jest.fn(),
+    getArticleDetail: jest.fn(),
+    getArticleList: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -24,23 +25,23 @@ describe('ArticleController', () => {
 
   it('findArticles', async () => {
     const articleListResponse = buildArticleListResponse();
-    serviceMock.getPublishedArticleList.mockResolvedValue(articleListResponse);
+    serviceMock.getArticleList.mockResolvedValue(articleListResponse);
     const ret = await articleController.findArticles();
     expect(ret).toEqual(articleListResponse);
-    expect(serviceMock.getPublishedArticleList).toHaveBeenCalled();
+    expect(serviceMock.getArticleList).toHaveBeenCalled();
   });
 
   it('findArticle', async () => {
     const articleDetailResponse = buildArticleDetailResponse();
-    serviceMock.getPublishedArticleDetail.mockResolvedValue(articleDetailResponse);
+    serviceMock.getArticleDetail.mockResolvedValue(articleDetailResponse);
     const slug = 'test';
     const ret = await articleController.findArticle(slug);
     expect(ret).toEqual(articleDetailResponse);
-    expect(serviceMock.getPublishedArticleDetail).toHaveBeenCalledWith(slug);
+    expect(serviceMock.getArticleDetail).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
   });
 
   it('findArticleNotFound', async () => {
-    serviceMock.getPublishedArticleDetail.mockRejectedValue(new NotFoundException());
+    serviceMock.getArticleDetail.mockRejectedValue(new NotFoundException());
 
     const slug = 'test';
     await expect(articleController.findArticle(slug)).rejects.toThrow(NotFoundException);

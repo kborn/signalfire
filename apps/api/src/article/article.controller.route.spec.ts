@@ -10,10 +10,10 @@ describe('ArticleController HTTP', () => {
   let httpServer: Parameters<typeof request>[0];
 
   const articleServiceMock: jest.Mocked<
-    Pick<ArticleService, 'getPublishedArticleDetail' | 'getPublishedArticleList'>
+    Pick<ArticleService, 'getArticleDetail' | 'getArticleList'>
   > = {
-    getPublishedArticleDetail: jest.fn(),
-    getPublishedArticleList: jest.fn(),
+    getArticleDetail: jest.fn(),
+    getArticleList: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -35,14 +35,14 @@ describe('ArticleController HTTP', () => {
 
   it('GET /articles returns the article discovery list', async () => {
     const articleListResponse = buildArticleListResponse();
-    articleServiceMock.getPublishedArticleList.mockResolvedValue(articleListResponse);
+    articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
 
     await request(httpServer).get('/articles').expect(200).expect(articleListResponse);
   });
 
   it('GET /articles/:slug returns the article detail payload', async () => {
     const articleDetailResponse = buildArticleDetailResponse();
-    articleServiceMock.getPublishedArticleDetail.mockResolvedValue(articleDetailResponse);
+    articleServiceMock.getArticleDetail.mockResolvedValue(articleDetailResponse);
 
     await request(httpServer)
       .get(`/articles/${articleDetailResponse.slug}`)
@@ -51,7 +51,7 @@ describe('ArticleController HTTP', () => {
   });
 
   it('GET /articles/:slug returns 404 when the article is missing', async () => {
-    articleServiceMock.getPublishedArticleDetail.mockRejectedValue(
+    articleServiceMock.getArticleDetail.mockRejectedValue(
       new NotFoundException('No article found with slug missing'),
     );
 
@@ -59,7 +59,7 @@ describe('ArticleController HTTP', () => {
   });
 
   it('GET /articles/:slug returns 404 when the article is unpublished', async () => {
-    articleServiceMock.getPublishedArticleDetail.mockRejectedValue(
+    articleServiceMock.getArticleDetail.mockRejectedValue(
       new NotFoundException('No published article found with slug draft-article'),
     );
 
