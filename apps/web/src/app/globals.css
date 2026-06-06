@@ -1560,7 +1560,7 @@ h3 {
 }
 
 .actionEditorTitleField {
-  max-width: 46rem;
+  flex: 1 1 auto;
 }
 
 .actionEditorSummaryField,
