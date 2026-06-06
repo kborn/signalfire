@@ -10,7 +10,7 @@ import {
   buildArticleDetailResponse,
   buildArticleEntity,
 } from './article.test-fixtures';
-import { ActionType } from '@prisma/client';
+import { ActionType, EntityStatus } from '@prisma/client';
 
 describe('ArticleService', () => {
   let service: ArticleService;
@@ -54,7 +54,7 @@ describe('ArticleService', () => {
     });
     repoMock.findPublished.mockResolvedValue([article1, article2]);
 
-    const ret = await service.getPublishedArticleList();
+    const ret = await service.getArticleList();
 
     expect(ret).toEqual(
       buildArticleListResponse({
@@ -118,7 +118,7 @@ describe('ArticleService', () => {
     ]);
 
     const slug = 'test';
-    const ret = await service.getPublishedArticleDetail(slug);
+    const ret = await service.getArticleDetail(slug, EntityStatus.PUBLISHED);
 
     expect(ret).toEqual(buildArticleDetailResponse());
     expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
@@ -154,7 +154,7 @@ describe('ArticleService', () => {
       },
     ]);
 
-    const ret = await service.getPublishedArticleDetail('test');
+    const ret = await service.getArticleDetail('test', EntityStatus.PUBLISHED);
 
     expect(ret.actions).toEqual([
       {
@@ -171,7 +171,9 @@ describe('ArticleService', () => {
   it('getPublishedArticleDetailNotFound', async () => {
     repoMock.findPublishedBySlug.mockResolvedValue(null);
 
-    await expect(service.getPublishedArticleDetail('missing')).rejects.toThrow(NotFoundException);
+    await expect(service.getArticleDetail('missing', EntityStatus.PUBLISHED)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('getArticlesForTopic', async () => {

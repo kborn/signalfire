@@ -29,14 +29,6 @@ type ActionOrderBy =
 export class ActionRepository {
   constructor(private prisma: PrismaService) {}
 
-  findBySlug(slug: string): Promise<Action | null> {
-    return this.prisma.action.findUnique({
-      where: {
-        slug: slug,
-      },
-    });
-  }
-
   findActions(
     status?: EntityStatus | null,
     orderBy: ActionOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],

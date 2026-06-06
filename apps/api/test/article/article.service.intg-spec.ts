@@ -22,7 +22,7 @@ describe('Article Service Integration Test', () => {
     const createdArticle1 = await createArticle();
     const createdArticle2 = await createArticle();
     const createdDraftArticle = await createArticle({ status: EntityStatus.DRAFT });
-    const articles = await service.getPublishedArticleList();
+    const articles = await service.getArticleList();
 
     expect(articles.items.length).toBeGreaterThan(0);
     expect(articles.items).toEqual(
@@ -45,7 +45,7 @@ describe('Article Service Integration Test', () => {
       publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
-    const articles = await service.getPublishedArticleList();
+    const articles = await service.getArticleList();
     const olderIndex = articles.items.findIndex((article) => article.slug === olderArticle.slug);
     const newerIndex = articles.items.findIndex((article) => article.slug === newerArticle.slug);
 
@@ -72,7 +72,10 @@ describe('Article Service Integration Test', () => {
   it('returns published article by slug from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
     const createdArticle = await createArticle();
-    const article = await articleService.getPublishedArticleDetail(createdArticle.slug);
+    const article = await articleService.getArticleDetail(
+      createdArticle.slug,
+      EntityStatus.PUBLISHED,
+    );
     expect(article).toEqual(
       expect.objectContaining({
         id: createdArticle.id,
@@ -86,9 +89,9 @@ describe('Article Service Integration Test', () => {
     const articleService = harness.module.get(ArticleService);
     // test that unpublished articles are not returned
     const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
-    await expect(articleService.getPublishedArticleDetail(createdArticle.slug)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(
+      articleService.getArticleDetail(createdArticle.slug, EntityStatus.PUBLISHED),
+    ).rejects.toThrow(NotFoundException);
   });
 
   it('returns published articles by related topic', async () => {

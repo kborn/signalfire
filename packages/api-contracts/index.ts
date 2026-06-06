@@ -16,6 +16,14 @@ export type {
   AdminActionListResponse,
   AdminActionSummary,
 } from './admin-action.types.js';
+export type {
+  AdminArticleRequest,
+  AdminArticleSummary,
+  AdminArticleDetailResponse,
+  AdminArticleListResponse,
+  AdminArticleListFilters,
+} from './admin-article.type.js';
+
 export type { ActionListResponse, ActionDetailResponse } from './action.types.js';
 export type { EventDetailResponse, EventListResponse } from './event.types.js';
 export type {
