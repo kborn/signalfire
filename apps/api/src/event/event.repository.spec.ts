@@ -116,4 +116,52 @@ describe('EventRepository', () => {
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
   });
+
+  it('findEventsWithTopics', async () => {
+    prismaMock.event.findMany.mockResolvedValue([event]);
+
+    const ret = await repository.findEventsWithTopics(EntityStatus.DRAFT);
+
+    expect(ret).toEqual([event]);
+    expect(prismaMock.event.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.DRAFT,
+      },
+      include: {
+        topicEvents: {
+          include: {
+            topic: true,
+          },
+          orderBy: {
+            topicId: 'asc',
+          },
+        },
+      },
+      orderBy: [{ updatedAt: 'desc' }, { id: 'asc' }],
+    });
+  });
+
+  it('findByIdWithTopics', async () => {
+    prismaMock.event.findUnique.mockResolvedValue(event);
+
+    const id = 1;
+    const ret = await repository.findByIdWithTopics(id);
+
+    expect(ret).toEqual(event);
+    expect(prismaMock.event.findUnique).toHaveBeenCalledWith({
+      where: {
+        id: id,
+      },
+      include: {
+        topicEvents: {
+          include: {
+            topic: true,
+          },
+          orderBy: {
+            topicId: 'asc',
+          },
+        },
+      },
+    });
+  });
 });

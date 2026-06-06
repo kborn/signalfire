@@ -8,6 +8,10 @@ import {
   AdminArticleListFilters,
   AdminArticleListResponse,
   AdminArticleRequest,
+  AdminEventDetailResponse,
+  AdminEventListFilters,
+  AdminEventListResponse,
+  AdminEventRequest,
   ModerationSubmissionListFilters,
   ModerationSubmissionList,
   ModerationSubmissionDetail,
@@ -76,4 +80,27 @@ export async function updateAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
   return await patchJson<AdminArticleDetailResponse>(`admin/articles/${slug}`, payload);
+}
+
+export async function getAdminEventsList(
+  filters?: AdminEventListFilters,
+): Promise<AdminEventListResponse> {
+  return await makeRequest<AdminEventListResponse>('admin/events', filters);
+}
+
+export async function getAdminEventDetails(id: number): Promise<AdminEventDetailResponse> {
+  return await makeRequest<AdminEventDetailResponse>(`admin/events/${id}`);
+}
+
+export async function createAdminEvent(
+  payload: AdminEventRequest,
+): Promise<AdminEventDetailResponse> {
+  return await postJson<AdminEventDetailResponse>('admin/events', payload);
+}
+
+export async function updateAdminEvent(
+  id: number,
+  payload: AdminEventRequest,
+): Promise<AdminEventDetailResponse> {
+  return await patchJson<AdminEventDetailResponse>(`admin/events/${id}`, payload);
 }
