@@ -35,7 +35,6 @@ type ArticleEditorFormErrors = {
   summary?: string;
   content?: string;
   author?: string;
-  articleType?: string;
   topicSlugs?: string;
 };
 
@@ -43,7 +42,7 @@ const articleEditorErrorFieldOrder: Array<keyof ArticleEditorFormErrors> = [
   'title',
   'summary',
   'content',
-  'articleType',
+  'author',
   'topicSlugs',
 ];
 
@@ -79,7 +78,7 @@ function mapAdminApiFieldToUiField(field: string): keyof ArticleEditorFormErrors
     case 'title':
     case 'summary':
     case 'content':
-    case 'articleType':
+    case 'author':
     case 'topicSlugs':
       return normalizedField;
     default:
@@ -206,6 +205,15 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
     );
     if (contentError) {
       nextErrors.content = contentError;
+    }
+
+    const authorError = validateRequiredString(
+      normalizedAuthor,
+      'Author',
+      SUBMISSION_FIELD_LIMITS.author,
+    );
+    if (authorError) {
+      nextErrors.author = authorError;
     }
 
     if (selectedTopics.length === 0) {
@@ -392,9 +400,9 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
               {...getArticleFieldA11y('author', errors)}
               required
             />
-            {errors.content ? (
+            {errors.author ? (
               <p id="article-author-error" className="submissionError">
-                {errors.content}
+                {errors.author}
               </p>
             ) : null}
           </section>

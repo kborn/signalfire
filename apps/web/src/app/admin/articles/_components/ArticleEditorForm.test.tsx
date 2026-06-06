@@ -96,8 +96,8 @@ async function fillValidArticleFields() {
 
   await user.type(screen.getByLabelText('Title'), '  Climate Article  ');
   await user.type(screen.getByLabelText('Summary'), '  Short article summary  ');
-  await user.type(screen.getByLabelText('Description'), '  Full article description  ');
-  await user.selectOptions(screen.getByLabelText('Article type'), 'CONTACT');
+  await user.type(screen.getByLabelText('Content'), '  Full article content  ');
+  await user.type(screen.getByLabelText('Author'), '  John Smith  ');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -119,7 +119,8 @@ describe('ArticleEditorForm', () => {
     expect(createAdminArticle).not.toHaveBeenCalled();
     expect(screen.getByText('Title is required')).toBeInTheDocument();
     expect(screen.getByText('Summary is required')).toBeInTheDocument();
-    expect(screen.getByText('Description is required')).toBeInTheDocument();
+    expect(screen.getByText('Content is required')).toBeInTheDocument();
+    expect(screen.getByText('Author is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one topic')).toBeInTheDocument();
     expect(screen.getByLabelText('Title')).toHaveAttribute('aria-invalid', 'true');
     expect(screen.getByLabelText('Title')).toHaveAttribute(
@@ -158,8 +159,8 @@ describe('ArticleEditorForm', () => {
     expect(createAdminArticle).toHaveBeenCalledWith({
       title: 'Climate Article',
       summary: 'Short article summary',
-      description: 'Full article description',
-      articleType: 'CONTACT',
+      content: 'Full article content',
+      author: 'John Smith',
       status: 'PUBLISHED',
       topicSlugs: ['climate'],
     });
@@ -173,7 +174,7 @@ describe('ArticleEditorForm', () => {
   it('maps API validation errors to inline field errors and scrolls to the first invalid field', async () => {
     mockUpdateAdminArticle().mockRejectedValue(
       new SubmissionError('Request failed for articles', 400, 'articles', [
-        { type: 'field', field: 'description', message: 'Description is too long' },
+        { type: 'field', field: 'content', message: 'Content is too long' },
         { type: 'field', field: 'topicSlugs[0]', message: 'Select at least one topic' },
       ]),
     );
@@ -183,11 +184,11 @@ describe('ArticleEditorForm', () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'Publish changes' }));
 
-    expect(screen.getByText('Description is too long')).toBeInTheDocument();
+    expect(screen.getByText('Content is too long')).toBeInTheDocument();
     expect(screen.getByText('Select at least one topic')).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('Description'));
+      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('Content'));
     });
   });
 
@@ -197,7 +198,7 @@ describe('ArticleEditorForm', () => {
       slug: 'community-article',
       title: 'Existing Title',
       summary: 'Existing summary',
-      content: 'Existing description',
+      content: 'Existing content',
       author: 'John Smith',
       status: 'PUBLISHED',
       updatedAt: '2026-01-02T12:00:00.000Z',
@@ -213,8 +214,8 @@ describe('ArticleEditorForm', () => {
     expect(updateAdminArticle).toHaveBeenCalledWith('community-article', {
       title: 'Existing Title',
       summary: 'Existing summary',
-      description: 'Existing description',
-      articleType: 'CONTACT',
+      content: 'Existing content',
+      author: 'Existing author',
       status: 'PUBLISHED',
       topicSlugs: ['climate'],
     });

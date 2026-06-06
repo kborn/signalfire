@@ -72,7 +72,7 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
           <tbody>
             {articleList.items.length === 0 ? (
               <tr>
-                <td colSpan={5}>
+                <td colSpan={4}>
                   <div className="adminEmptyState">
                     <p className="adminEmptyStateTitle">No articles yet.</p>
                     <p>Create an article to populate this list.</p>
@@ -82,7 +82,7 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
             ) : (
               articleList.items.map((article) => (
                 <tr key={article.id}>
-                  <td colSpan={5}>
+                  <td colSpan={4}>
                     <Link
                       href={`/admin/articles/${article.slug}`}
                       className="adminTableRecordLink adminTableRowLink"
