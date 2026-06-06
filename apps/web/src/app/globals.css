@@ -1186,7 +1186,8 @@ h3 {
 
 .adminNavLabel,
 .submissionFilterActionLabel,
-.adminFilterActionLabel {
+.adminFilterActionLabel,
+.adminFilterArticleLabel {
   color: #7f8ea1;
   font-size: 0.75rem;
   font-weight: 700;
@@ -1229,6 +1230,10 @@ h3 {
 }
 
 .actionEditorPage {
+  padding-bottom: var(--space-5);
+}
+
+.articleEditorPage {
   padding-bottom: var(--space-5);
 }
 

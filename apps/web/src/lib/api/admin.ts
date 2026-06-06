@@ -4,6 +4,10 @@ import {
   AdminActionListFilters,
   AdminActionListResponse,
   AdminActionRequest,
+  AdminArticleDetailResponse,
+  AdminArticleListFilters,
+  AdminArticleListResponse,
+  AdminArticleRequest,
   ModerationSubmissionListFilters,
   ModerationSubmissionList,
   ModerationSubmissionDetail,
@@ -49,4 +53,27 @@ export async function updateAdminAction(
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
   return await patchJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
+}
+
+export async function getAdminArticlesList(
+  filters?: AdminArticleListFilters,
+): Promise<AdminArticleListResponse> {
+  return await makeRequest<AdminArticleListResponse>('admin/articles', filters);
+}
+
+export async function getAdminArticleDetails(slug: string): Promise<AdminArticleDetailResponse> {
+  return await makeRequest<AdminArticleDetailResponse>(`admin/articles/${slug}`);
+}
+
+export async function createAdminArticle(
+  payload: AdminArticleRequest,
+): Promise<AdminArticleDetailResponse> {
+  return await postJson<AdminArticleDetailResponse>('admin/articles', payload);
+}
+
+export async function updateAdminArticle(
+  slug: string,
+  payload: AdminArticleRequest,
+): Promise<AdminArticleDetailResponse> {
+  return await patchJson<AdminArticleDetailResponse>(`admin/articles/${slug}`, payload);
 }
