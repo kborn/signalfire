@@ -1157,12 +1157,15 @@ h3 {
 
 .adminHeader h1 {
   max-width: 18ch;
+  font-size: 3rem;
+  line-height: 1.05;
+  letter-spacing: 0;
 }
 
 .adminDek {
   max-width: 48rem;
   color: var(--color-text-muted);
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.55;
 }
 
@@ -1522,7 +1525,7 @@ h3 {
 
 .actionEditorForm .adminPanel {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
   border-color: var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
   box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
@@ -1592,7 +1595,7 @@ h3 {
 }
 
 .actionEditorTextareaSummary {
-  min-height: 280px;
+  min-height: 220px;
 }
 
 .actionEditorSummaryField .actionEditorTextareaSummary {
@@ -1600,7 +1603,7 @@ h3 {
 }
 
 .actionEditorTextareaDescription {
-  min-height: 420px;
+  min-height: 400px;
 }
 
 .actionEditorForm .submissionCheckboxGroup {
@@ -1649,7 +1652,11 @@ h3 {
 }
 
 .actionEditorFooter .primaryCTA {
-  min-width: 9.5rem;
+  min-width: 8.75rem;
+  min-height: 44px;
+  padding: 0.75rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
 }
 
 .actionEditorForm .adminError {
@@ -1675,7 +1682,7 @@ h3 {
 
 .eventEditorForm .adminPanel {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
   border-color: var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
   box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
@@ -1708,11 +1715,11 @@ h3 {
 }
 
 .eventEditorTextareaSummary {
-  min-height: 180px;
+  min-height: 160px;
 }
 
 .eventEditorTextareaContent {
-  min-height: 540px;
+  min-height: 400px;
 }
 
 .eventEditorBottomRow {
@@ -1811,7 +1818,11 @@ h3 {
 }
 
 .eventEditorFooter .primaryCTA {
-  min-width: 9.5rem;
+  min-width: 8.75rem;
+  min-height: 44px;
+  padding: 0.75rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
 }
 
 .eventEditorForm .adminError {
@@ -1837,7 +1848,7 @@ h3 {
 
 .articleEditorForm .adminPanel {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
   border-color: var(--color-border-subtle);
   background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
   box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
@@ -1922,11 +1933,11 @@ h3 {
 }
 
 .articleEditorTextareaSummary {
-  min-height: 220px;
+  min-height: 180px;
 }
 
 .articleEditorTextareaContent {
-  min-height: 420px;
+  min-height: 400px;
 }
 
 .articleEditorTextareaAuthor {
@@ -1979,7 +1990,11 @@ h3 {
 }
 
 .articleEditorFooter .primaryCTA {
-  min-width: 9.5rem;
+  min-width: 8.75rem;
+  min-height: 44px;
+  padding: 0.75rem 1.15rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
 }
 
 .articleEditorForm .adminError {
@@ -2426,6 +2441,11 @@ h3 {
   h1 {
     font-size: 2.5rem;
     letter-spacing: -0.035em;
+  }
+
+  .adminHeader h1 {
+    font-size: 2.35rem;
+    letter-spacing: 0;
   }
 
   .collectionList {
