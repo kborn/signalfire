@@ -54,11 +54,10 @@ describe('Article Service Integration Test', () => {
     expect(newerIndex).toBeLessThan(olderIndex);
   });
 
-  it('returns draft article by slug from unrestricted lookup', async () => {
+  it('returns published article by slug when no status is provided', async () => {
     const articleService = harness.module.get(ArticleService);
 
-    // test that we don't filter by published status when calling getArticleDetail
-    const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
+    const createdArticle = await createArticle();
     const article = await articleService.getArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
@@ -85,7 +84,7 @@ describe('Article Service Integration Test', () => {
     );
   });
 
-  it('returns null for draft article from published lookup', async () => {
+  it('returns not found for draft article from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
     // test that unpublished articles are not returned
     const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
