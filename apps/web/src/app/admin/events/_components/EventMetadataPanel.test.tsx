@@ -40,8 +40,8 @@ describe('EventMetadataPanel', () => {
     expect(screen.getByRole('link', { name: '42' })).toHaveAttribute('href', '/events/42');
     expect(screen.getByText('PUBLISHED')).toBeInTheDocument();
     expect(screen.getByText('Rally')).toBeInTheDocument();
-    expect(screen.getByText('City Hall')).toBeInTheDocument();
-    expect(screen.getByText('https://example.org/event')).toBeInTheDocument();
+    expect(screen.getByText('5/14/2026, 1:00:00 PM')).toBeInTheDocument();
+    expect(screen.getByText('02108')).toBeInTheDocument();
   });
 
   it('renders the event id as plain text when the event is a draft', () => {
@@ -75,6 +75,6 @@ describe('EventMetadataPanel', () => {
 
     expect(screen.queryByRole('link', { name: '42' })).not.toBeInTheDocument();
     expect(screen.getByText('42')).toBeInTheDocument();
-    expect(screen.getAllByText('--')).toHaveLength(4);
+    expect(screen.queryByText('--')).not.toBeInTheDocument();
   });
 });

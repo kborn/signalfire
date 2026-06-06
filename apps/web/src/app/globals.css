@@ -1667,6 +1667,168 @@ h3 {
   color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
 }
 
+.eventEditorForm {
+  width: 100%;
+  max-width: none;
+  color-scheme: dark;
+}
+
+.eventEditorForm .adminPanel {
+  display: grid;
+  gap: var(--space-3);
+  border-color: var(--color-border-subtle);
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
+  box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
+}
+
+.eventEditorForm .adminPanelHeader h2,
+.eventEditorForm .adminPanelHeader h3 {
+  color: var(--color-text-primary);
+}
+
+.eventEditorLayout {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.eventEditorTitleField {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.eventEditorSummaryField,
+.eventEditorContentField {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.eventEditorContentField {
+  grid-column: 1 / -1;
+}
+
+.eventEditorTextareaSummary {
+  min-height: 180px;
+}
+
+.eventEditorTextareaContent {
+  min-height: 540px;
+}
+
+.eventEditorBottomRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.eventEditorLocationCard,
+.eventEditorSidebar {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  align-content: start;
+  padding: var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 85%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
+}
+
+.eventEditorLocationCard {
+  grid-template-columns: 1fr;
+}
+
+.eventEditorTopics {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.eventEditorForm .submissionLabel {
+  color: var(--color-text-primary);
+}
+
+.eventEditorForm .submissionControl,
+.eventEditorForm .submissionTextarea {
+  border-color: color-mix(in srgb, var(--color-border-subtle) 82%, #ffffff 18%);
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
+}
+
+.eventEditorForm .submissionControl::placeholder,
+.eventEditorForm .submissionTextarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.eventEditorForm .submissionControl:focus,
+.eventEditorForm .submissionTextarea:focus {
+  border-color: var(--color-brand-primary);
+  outline-color: var(--color-brand-primary);
+}
+
+.eventEditorForm .submissionCheckboxGroup {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.eventEditorForm .adminTopicGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+.eventEditorForm .submissionCheckboxOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  width: fit-content;
+  color: var(--color-text-primary);
+}
+
+.eventEditorForm .submissionCheckboxOption input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-brand-primary);
+}
+
+.eventEditorFooter {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-0);
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.eventEditorFooterActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.eventEditorFooter .primaryCTA {
+  min-width: 9.5rem;
+}
+
+.eventEditorForm .adminError {
+  color: var(--color-status-error);
+}
+
+.eventEditorForm .actionEditorSuccessBanner {
+  margin: 0;
+  border-color: color-mix(in srgb, var(--color-brand-primary) 28%, var(--color-border-subtle) 72%);
+  background: color-mix(in srgb, var(--color-surface-soft) 80%, var(--color-brand-primary) 20%);
+  color: var(--color-text-primary);
+}
+
+.eventEditorForm .actionEditorSuccessBanner .adminReviewBannerText {
+  color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
+}
+
 .articleEditorForm {
   width: 100%;
   max-width: none;
@@ -1845,6 +2007,58 @@ h3 {
   padding-block: var(--space-1);
   border-color: color-mix(in srgb, var(--color-border-subtle) 88%, var(--color-brand-primary) 12%);
   background: color-mix(in srgb, var(--color-surface-soft) 72%, var(--color-page-bg) 28%);
+}
+
+.eventMetadataPanel {
+  padding-block: var(--space-2);
+}
+
+.eventMetadataBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-1);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.eventMetadataItem {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 0 1 12rem;
+  width: fit-content;
+  align-content: start;
+  padding: 0.9rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--color-surface-soft) 84%, var(--color-page-bg) 16%);
+}
+
+.eventMetadataItem--compact {
+  flex-basis: 10rem;
+}
+
+.eventMetadataItem--wide {
+  flex-basis: 18rem;
+}
+
+.eventMetadataItem dt {
+  color: color-mix(in srgb, var(--color-text-primary) 76%, var(--color-text-muted) 24%);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.eventMetadataItem dd {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .adminMetadataBar {
@@ -2111,6 +2325,27 @@ h3 {
   .articleEditorTextareaContent {
     min-height: 300px;
   }
+
+  .eventEditorLayout {
+    gap: var(--space-2);
+  }
+
+  .eventEditorBottomRow {
+    grid-template-columns: 1fr;
+  }
+
+  .eventEditorLocationCard,
+  .eventEditorSidebar {
+    padding: var(--space-2);
+  }
+
+  .eventEditorTextareaSummary {
+    min-height: 160px;
+  }
+
+  .eventEditorTextareaContent {
+    min-height: 300px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -2149,6 +2384,12 @@ h3 {
   .adminMetadataItem + .adminMetadataItem {
     border-inline-start: 0;
     border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  }
+
+  .eventMetadataItem {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 0.8rem 0.9rem;
   }
 
   .site-main {

@@ -29,7 +29,7 @@ export default async function NewAdminEventPage() {
           id: 0,
           title: '',
           summary: '',
-          description: '',
+          content: '',
           eventType: 'RALLY',
           startTime: '',
           endTime: null,

@@ -66,7 +66,7 @@ function renderCreateForm() {
         id: 0,
         title: '',
         summary: '',
-        description: '',
+        content: '',
         eventType: 'RALLY',
         startTime: '',
         endTime: null,
@@ -96,7 +96,7 @@ function renderEditForm() {
         id: 42,
         title: 'Existing Title',
         summary: 'Existing summary',
-        description: 'Existing description',
+        content: 'Existing body',
         eventType: 'MEETING',
         startTime: '2026-05-14T17:00:00.000Z',
         endTime: '2026-05-14T19:00:00.000Z',
@@ -122,14 +122,14 @@ async function fillValidEventFields() {
 
   await user.type(screen.getByLabelText('Title'), '  Climate Event  ');
   await user.type(screen.getByLabelText('Summary'), '  Short event summary  ');
-  await user.type(screen.getByLabelText('Description'), '  Full event description  ');
+  await user.type(screen.getByLabelText('Body'), '  Full event body  ');
   await user.selectOptions(screen.getByLabelText('Event type'), 'MEETING');
   await user.type(screen.getByLabelText('Start Time'), '2026-05-14T17:00');
   await user.type(screen.getByLabelText('End Time'), '2026-05-14T19:00');
   await user.type(screen.getByLabelText('Location Name'), '  City Hall  ');
   await user.type(screen.getByLabelText('Street Address'), '  1 Main St  ');
   await user.type(screen.getByLabelText('City'), '  Boston  ');
-  await user.type(screen.getByLabelText('Region'), '  MA  ');
+  await user.type(screen.getByLabelText('State'), '  MA  ');
   await user.type(screen.getByLabelText('Country'), '  USA  ');
   await user.type(screen.getByLabelText('Postal Code'), ' 02108 ');
   await user.type(screen.getByLabelText('Website'), '  https://example.org/event  ');
@@ -154,11 +154,11 @@ describe('EventEditorForm', () => {
     expect(createAdminEvent).not.toHaveBeenCalled();
     expect(screen.getByText('Title is required')).toBeInTheDocument();
     expect(screen.getByText('Summary is required')).toBeInTheDocument();
-    expect(screen.getByText('Description is required')).toBeInTheDocument();
+    expect(screen.getByText('Body is required')).toBeInTheDocument();
     expect(screen.getByText('Start date and time is required')).toBeInTheDocument();
     expect(screen.getByText('Location name is required')).toBeInTheDocument();
     expect(screen.getByText('City is required')).toBeInTheDocument();
-    expect(screen.getByText('Region is required')).toBeInTheDocument();
+    expect(screen.getByText('State is required')).toBeInTheDocument();
     expect(screen.getByText('Country is required')).toBeInTheDocument();
     expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
     expect(screen.getByText('Select at least one topic')).toBeInTheDocument();
@@ -181,7 +181,7 @@ describe('EventEditorForm', () => {
       id: 42,
       title: 'Climate Event',
       summary: 'Short event summary',
-      description: 'Full event description',
+      description: 'Full event body',
       website: 'https://example.org/event',
       contactEmail: null,
       publicLocationDescription: null,
@@ -209,7 +209,7 @@ describe('EventEditorForm', () => {
     expect(createAdminEvent).toHaveBeenCalledWith({
       title: 'Climate Event',
       summary: 'Short event summary',
-      description: 'Full event description',
+      description: 'Full event body',
       eventType: 'MEETING',
       startTime: expectedStartTime,
       endTime: expectedEndTime,
@@ -236,7 +236,7 @@ describe('EventEditorForm', () => {
   it('maps API validation errors to inline field errors and scrolls to the first invalid field', async () => {
     mockUpdateAdminEvent().mockRejectedValue(
       new SubmissionError('Request failed for events', 400, 'events', [
-        { type: 'field', field: 'description', message: 'Description is too long' },
+        { type: 'field', field: 'description', message: 'Body is too long' },
         { type: 'field', field: 'topicSlugs[0]', message: 'Select at least one topic' },
       ]),
     );
@@ -246,11 +246,11 @@ describe('EventEditorForm', () => {
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'Publish changes' }));
 
-    expect(screen.getByText('Description is too long')).toBeInTheDocument();
+    expect(screen.getByText('Body is too long')).toBeInTheDocument();
     expect(screen.getByText('Select at least one topic')).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('Description'));
+      expect(scrollIntoView.mock.contexts[0]).toBe(screen.getByLabelText('Body'));
     });
   });
 
@@ -259,7 +259,7 @@ describe('EventEditorForm', () => {
       id: 42,
       title: 'Existing Title',
       summary: 'Existing summary',
-      description: 'Existing description',
+      description: 'Existing body',
       website: 'https://example.org/event',
       contactEmail: 'contact@example.org',
       publicLocationDescription: 'Existing guidance',
@@ -289,7 +289,7 @@ describe('EventEditorForm', () => {
       expect.objectContaining({
         title: 'Existing Title',
         summary: 'Existing summary',
-        description: 'Existing description',
+        description: 'Existing body',
         eventType: 'MEETING',
         locationName: 'Existing Location',
         status: 'PUBLISHED',

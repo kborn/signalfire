@@ -55,7 +55,7 @@ export default async function AdminEventDetailPage({
             id: event.id,
             title: event.title,
             summary: event.summary,
-            description: event.description,
+            content: event.description,
             eventType: event.eventType,
             startTime: event.startTime,
             endTime: event.endTime,

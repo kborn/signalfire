@@ -81,7 +81,7 @@ export const adminEventRequestSchema = z
     addressLine1: optionalNullableTrimmedString(300),
     addressLine2: optionalNullableTrimmedString(120),
     city: requiredTrimmedString('City', 120),
-    region: requiredTrimmedString('Region', 120),
+    region: requiredTrimmedString('State', 120),
     country: requiredTrimmedString('Country', 120),
     postalCode: requiredTrimmedString('Postal Code', 32),
     website: optionalNullableTrimmedString(2000),
