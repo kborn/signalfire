@@ -1433,20 +1433,20 @@ repository and before continuing into broader admin content-management work.
 
 ---
 
-#### ▸ Phase 11.8 - Essential Admin Content Management ⏳
+#### ▸ Phase 11.8 - Essential Admin Content Management ✅
 
 ###### Phase Tasks:
 
 - [x] Build admin create/edit flow for curated Actions
 - [x] Build admin create/edit/publish flow for Articles
-- [ ] Build admin create/edit/publish flow for Events
-- [ ] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
-- [ ] Keep Topic assignment limited to the seeded Release 1 topic set with no topic-management expansion
+- [x] Build admin create/edit/publish flow for Events
+- [x] Reuse or align validation patterns with existing public/domain contracts so admin forms do not diverge from backend rules
+- [x] Keep Topic assignment limited to the seeded Release 1 topic set with no topic-management expansion
 
 ###### Notes:
 
-- Actions admin list/editor now uses the settled wide content-first layout, immutable slugs, status-by-submit flow, metadata strip, validation, and save feedback.
-- Next admin content surface to implement: Articles.
+- Actions, Articles, and Events admin list/editor flows now share the settled wide content-first layout, immutable slugs or stable record identifiers, status-by-submit flow, metadata strip, validation, and save feedback.
+- Event editor and list pages now match the established admin content-management pattern while staying aligned with backend validation and the seeded topic set.
 
 ---
 

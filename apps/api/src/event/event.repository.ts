@@ -1,6 +1,27 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { EntityStatus, Event } from '@prisma/client';
+import { EntityStatus, Event, Prisma } from '@prisma/client';
+import {
+  CreateAdminEventRepositoryInput,
+  UpdateAdminEventRepositoryInput,
+} from './admin-event.repository.type';
+
+const eventWithTopicsInclude = {
+  topicEvents: {
+    include: {
+      topic: true,
+    },
+    orderBy: {
+      topicId: 'asc',
+    },
+  },
+} satisfies Prisma.EventInclude;
+
+export type EventWithTopics = Prisma.EventGetPayload<{
+  include: typeof eventWithTopicsInclude;
+}>;
+
+type EventOrderBy = Prisma.EventOrderByWithRelationInput | Prisma.EventOrderByWithRelationInput[];
 
 @Injectable()
 export class EventRepository {
@@ -74,6 +95,144 @@ export class EventRepository {
         },
       },
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+    });
+  }
+
+  findEvents(
+    status?: EntityStatus | null,
+    orderBy: EventOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
+  ): Promise<Event[]> {
+    return this.prisma.event.findMany({
+      where: status
+        ? {
+            status: status,
+          }
+        : undefined,
+      orderBy,
+    });
+  }
+
+  async findByIdWithTopics(
+    id: number,
+    status?: EntityStatus | null,
+  ): Promise<EventWithTopics | null> {
+    if (!status) {
+      return this.prisma.event.findUnique({
+        where: {
+          id: id,
+        },
+        include: eventWithTopicsInclude,
+      });
+    }
+
+    return this.prisma.event.findFirst({
+      where: {
+        id: id,
+        status: status,
+      },
+      include: eventWithTopicsInclude,
+    });
+  }
+
+  async findEventsWithTopics(
+    status?: EntityStatus | null,
+    orderBy: EventOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
+  ): Promise<EventWithTopics[]> {
+    return this.prisma.event.findMany({
+      where: status
+        ? {
+            status: status,
+          }
+        : undefined,
+      include: eventWithTopicsInclude,
+      orderBy,
+    });
+  }
+
+  private buildTopicCreates(topicIds: number[]) {
+    const assignedAt = new Date();
+    return topicIds.map((topicId) => ({
+      topic: { connect: { id: topicId } },
+      assignedAt: assignedAt,
+      assignedBy: 'admin',
+    }));
+  }
+
+  async create(input: CreateAdminEventRepositoryInput): Promise<EventWithTopics> {
+    return await this.prisma.$transaction(async (tx) => {
+      const { topicIds, ...eventData } = input;
+
+      const event = await tx.event.create({
+        data: {
+          ...eventData,
+          website: eventData.website ?? null,
+          publicLocationDescription: eventData.publicLocationDescription ?? null,
+          contactEmail: eventData.contactEmail ?? null,
+          addressLine1: eventData.addressLine1 ?? null,
+          addressLine2: eventData.addressLine2 ?? null,
+          latitude: null,
+          longitude: null,
+          endTime: eventData.endTime ?? null,
+          publishedAt: eventData.publishedAt,
+          topicEvents: {
+            create: this.buildTopicCreates(topicIds),
+          },
+        },
+        include: eventWithTopicsInclude,
+      });
+      return event;
+    });
+  }
+
+  async update(id: number, input: UpdateAdminEventRepositoryInput): Promise<EventWithTopics> {
+    return await this.prisma.$transaction(async (tx) => {
+      const { topicIds, ...eventData } = input;
+
+      const existing = await tx.event.findUnique({
+        where: { id: id },
+        select: { publishedAt: true, status: true },
+      });
+
+      if (!existing) {
+        throw new NotFoundException(`Event ${id} not found`);
+      }
+
+      function getPublishedAt(
+        current: Pick<Event, 'publishedAt' | 'status'>,
+        next: UpdateAdminEventRepositoryInput,
+      ): Date | null {
+        if (current.status === next.status) {
+          return current.publishedAt;
+        }
+
+        if (next.status === EntityStatus.DRAFT) {
+          return null;
+        }
+
+        return new Date();
+      }
+
+      const event = await tx.event.update({
+        where: {
+          id: id,
+        },
+        data: {
+          ...eventData,
+          website: eventData.website ?? null,
+          publicLocationDescription: eventData.publicLocationDescription ?? null,
+          contactEmail: eventData.contactEmail ?? null,
+          addressLine1: eventData.addressLine1 ?? null,
+          addressLine2: eventData.addressLine2 ?? null,
+          endTime: eventData.endTime ?? null,
+          publishedAt: getPublishedAt(existing, input),
+          topicEvents: {
+            deleteMany: {},
+            create: this.buildTopicCreates(topicIds),
+          },
+        },
+        include: eventWithTopicsInclude,
+      });
+      return event;
     });
   }
 }

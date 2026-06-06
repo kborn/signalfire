@@ -1,5 +1,10 @@
 import { ActionType, Event, EventType, EntityStatus } from '@prisma/client';
-import { EventListResponse, EventDetailResponse } from '@signal-fire/api-contracts';
+import {
+  AdminEventDetailResponse,
+  AdminEventListResponse,
+  EventListResponse,
+  EventDetailResponse,
+} from '@signal-fire/api-contracts';
 
 export const ARTICLE_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
 export const ACTION_TEST_DATE = new Date('2025-12-17T03:24:00.000Z');
@@ -101,6 +106,62 @@ export function buildEntityDetailResponse(
         publishedAt: ACTION_TEST_DATE.toISOString(),
       },
     ],
+    ...overrides,
+  };
+}
+
+export function buildAdminEventListResponse(
+  overrides: Partial<AdminEventListResponse> = {},
+): AdminEventListResponse {
+  return {
+    items: [
+      {
+        id: 1,
+        title: 'Town Hall Meeting',
+        summary: 'A short event summary.',
+        eventType: EventType.TOWN_HALL,
+        startTime: EVENT_TEST_DATE.toISOString(),
+        endTime: EVENT_TEST_DATE.toISOString(),
+        locationName: 'City Hall',
+        city: 'Springfield',
+        region: 'IL',
+        country: 'USA',
+        postalCode: '62701',
+        status: EntityStatus.PUBLISHED,
+        updatedAt: EVENT_TEST_DATE.toISOString(),
+        publishedAt: EVENT_TEST_DATE.toISOString(),
+        topicSlugs: ['democracy'],
+      },
+    ],
+    ...overrides,
+  };
+}
+
+export function buildAdminEventDetailResponse(
+  overrides: Partial<AdminEventDetailResponse> = {},
+): AdminEventDetailResponse {
+  return {
+    id: 1,
+    title: 'Town Hall Meeting',
+    summary: 'A short event summary.',
+    description: 'A longer event description.',
+    website: 'https://example.org/town-hall',
+    contactEmail: 'contact@event.com',
+    publicLocationDescription: null,
+    addressLine1: '123 Main St',
+    addressLine2: null,
+    eventType: EventType.TOWN_HALL,
+    startTime: EVENT_TEST_DATE.toISOString(),
+    endTime: EVENT_TEST_DATE.toISOString(),
+    locationName: 'City Hall',
+    city: 'Springfield',
+    region: 'IL',
+    country: 'USA',
+    postalCode: '62701',
+    status: EntityStatus.PUBLISHED,
+    updatedAt: EVENT_TEST_DATE.toISOString(),
+    publishedAt: EVENT_TEST_DATE.toISOString(),
+    topicSlugs: ['democracy'],
     ...overrides,
   };
 }

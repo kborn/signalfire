@@ -292,45 +292,47 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
         ) : null}
 
         <div className="actionEditorLayout">
-          <section className="submissionField actionEditorTitleField">
-            <label className="submissionLabel" htmlFor="action-title">
-              Title
-            </label>
-            <input
-              id="action-title"
-              className="submissionControl"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              {...getActionFieldA11y('title', errors)}
-              required
-            />
-            {errors.title ? (
-              <p id="action-title-error" className="submissionError">
-                {errors.title}
-              </p>
-            ) : null}
-          </section>
-
           <div className="actionEditorTopRow">
-            <section className="submissionField actionEditorSummaryField">
-              <label className="submissionLabel" htmlFor="action-summary">
-                Summary
-              </label>
-              <textarea
-                id="action-summary"
-                className="submissionTextarea actionEditorTextareaSummary"
-                value={summary}
-                rows={7}
-                onChange={(event) => setSummary(event.target.value)}
-                {...getActionFieldA11y('summary', errors)}
-                required
-              />
-              {errors.summary ? (
-                <p id="action-summary-error" className="submissionError">
-                  {errors.summary}
-                </p>
-              ) : null}
-            </section>
+            <div className="actionEditorMainColumn">
+              <section className="submissionField actionEditorTitleField">
+                <label className="submissionLabel" htmlFor="action-title">
+                  Title
+                </label>
+                <input
+                  id="action-title"
+                  className="submissionControl"
+                  value={title}
+                  onChange={(event) => setTitle(event.target.value)}
+                  {...getActionFieldA11y('title', errors)}
+                  required
+                />
+                {errors.title ? (
+                  <p id="action-title-error" className="submissionError">
+                    {errors.title}
+                  </p>
+                ) : null}
+              </section>
+
+              <section className="submissionField actionEditorSummaryField">
+                <label className="submissionLabel" htmlFor="action-summary">
+                  Summary
+                </label>
+                <textarea
+                  id="action-summary"
+                  className="submissionTextarea actionEditorTextareaSummary"
+                  value={summary}
+                  rows={7}
+                  onChange={(event) => setSummary(event.target.value)}
+                  {...getActionFieldA11y('summary', errors)}
+                  required
+                />
+                {errors.summary ? (
+                  <p id="action-summary-error" className="submissionError">
+                    {errors.summary}
+                  </p>
+                ) : null}
+              </section>
+            </div>
 
             <aside className="actionEditorSidebar" aria-label="Action settings">
               <section className="submissionField">

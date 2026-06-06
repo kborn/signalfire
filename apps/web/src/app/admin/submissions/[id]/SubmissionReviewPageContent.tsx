@@ -377,12 +377,12 @@ export default function SubmissionReviewPageContent({
     }
 
     if (!normalizedEventType) {
-      errors.eventType = 'Event type is required';
+      errors.eventType = 'Event Type is required';
     }
 
     const locationNameError = validateRequiredString(
       normalizedLocationName,
-      'Location name',
+      'Location Name',
       SUBMISSION_FIELD_LIMITS.locationName,
     );
     if (locationNameError) {
@@ -391,7 +391,7 @@ export default function SubmissionReviewPageContent({
 
     const cityError = validateRequiredString(
       normalizedCity,
-      'Location address city',
+      'City',
       SUBMISSION_FIELD_LIMITS.locationAddressCity,
     );
     if (cityError) {
@@ -400,7 +400,7 @@ export default function SubmissionReviewPageContent({
 
     const regionError = validateRequiredString(
       normalizedRegion,
-      'Location address region',
+      'State',
       SUBMISSION_FIELD_LIMITS.locationAddressRegion,
     );
     if (regionError) {
@@ -409,7 +409,7 @@ export default function SubmissionReviewPageContent({
 
     const countryError = validateRequiredString(
       normalizedCountry,
-      'Location address country',
+      'Country',
       SUBMISSION_FIELD_LIMITS.locationAddressCountry,
     );
     if (countryError) {
@@ -457,7 +457,7 @@ export default function SubmissionReviewPageContent({
 
     const postalCodeError = validateRequiredString(
       normalizedPostalCode,
-      'Postal Code',
+      'ZIP Code',
       SUBMISSION_FIELD_LIMITS.locationAddressZip,
     );
     if (postalCodeError) {
