@@ -211,7 +211,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-event-start">Event Start</label>
+        <label htmlFor="normalized-event-start">Start date and time</label>
       </dt>
       <dd>
         {errors.startTime ? (
@@ -231,7 +231,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-event-end">Event End</label>
+        <label htmlFor="normalized-event-end">End date and time (optional)</label>
       </dt>
       <dd>
         {errors.endTime ? (
@@ -382,7 +382,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-postalCode">Zip</label>
+        <label htmlFor="normalized-postalCode">ZIP Code</label>
       </dt>
       <dd>
         {errors.postalCode ? (
@@ -401,7 +401,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-website">Event Website</label>
+        <label htmlFor="normalized-website">Website URL (optional)</label>
       </dt>
       <dd>
         {errors.website ? (
@@ -420,7 +420,7 @@ export default function EventNormalizationForm({
       </dd>
 
       <dt>
-        <label htmlFor="normalized-contact-email">Event Contact</label>
+        <label htmlFor="normalized-contact-email">Contact Email (optional)</label>
       </dt>
       <dd>
         {errors.contactEmail ? (

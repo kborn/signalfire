@@ -53,9 +53,9 @@ function EventSubmittedContent({ submission }: { submission: EventModerationSubm
       <dd>{submission.submittedContent.description}</dd>
       <dt>Event Type</dt>
       <dd>{submission.submittedContent.eventType}</dd>
-      <dt>Event Start</dt>
+      <dt>Start date and time</dt>
       <dd>{submission.submittedContent.startTime}</dd>
-      <dt>Event End</dt>
+      <dt>End date and time</dt>
       <dd>{submission.submittedContent.endTime ?? '--'}</dd>
       <dt>Location Name</dt>
       <dd>{submission.submittedContent.locationName}</dd>
@@ -71,11 +71,11 @@ function EventSubmittedContent({ submission }: { submission: EventModerationSubm
       <dd>{submission.submittedContent.region}</dd>
       <dt>Country</dt>
       <dd>{submission.submittedContent.country}</dd>
-      <dt>Zip</dt>
+      <dt>ZIP Code</dt>
       <dd>{submission.submittedContent.postalCode ?? '--'}</dd>
-      <dt>Event Website</dt>
+      <dt>Website URL</dt>
       <dd>{submission.submittedContent.website ?? '--'}</dd>
-      <dt>Event Contact</dt>
+      <dt>Contact Email</dt>
       <dd>{submission.submittedContent.contactEmail ?? '--'}</dd>
       <dt>Topics</dt>
       <dd>

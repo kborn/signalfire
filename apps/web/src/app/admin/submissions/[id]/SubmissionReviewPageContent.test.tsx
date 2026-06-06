@@ -339,14 +339,14 @@ describe('SubmissionReviewPageContent', () => {
       <SubmissionReviewPageContent submission={createPendingEventSubmission()} topics={topics} />,
     );
 
-    await user.clear(screen.getByLabelText('Zip'));
-    await user.clear(screen.getByLabelText('Event End'));
-    await user.type(screen.getByLabelText('Event End'), '2026-06-11T16:00');
+    await user.clear(screen.getByLabelText('ZIP Code'));
+    await user.clear(screen.getByLabelText('End date and time (optional)'));
+    await user.type(screen.getByLabelText('End date and time (optional)'), '2026-06-11T16:00');
 
     await user.click(screen.getByRole('button', { name: 'Approve and Publish' }));
 
     expect(postSubmissionReviewReq).not.toHaveBeenCalled();
-    expect(screen.getByText('Postal Code is required')).toBeInTheDocument();
+    expect(screen.getByText('ZIP Code is required')).toBeInTheDocument();
     expect(
       screen.getByText('End date and time must be after the start date and time'),
     ).toBeInTheDocument();

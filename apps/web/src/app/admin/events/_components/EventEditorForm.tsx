@@ -296,7 +296,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
     const contentError = validateRequiredString(
       normalizedContent,
-      'Body',
+      'Description',
       SUBMISSION_FIELD_LIMITS.description,
     );
     if (contentError) {
@@ -304,7 +304,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
     }
 
     if (!eventType) {
-      nextErrors.eventType = 'Event type is required';
+      nextErrors.eventType = 'Event Type is required';
     }
 
     if (!normalizedStartTime) {
@@ -377,7 +377,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
     const postalCodeError = validateRequiredString(
       normalizedPostalCode,
-      'Postal Code',
+      'ZIP Code',
       SUBMISSION_FIELD_LIMITS.locationAddressZip,
     );
     if (postalCodeError) {
@@ -563,7 +563,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
           <section className="eventEditorScheduleRow" aria-label="Event schedule">
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-eventType">
-                Event type
+                Event Type
               </label>
               <select
                 id="event-eventType"
@@ -588,7 +588,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-startTime">
-                Start Time
+                Start date and time
               </label>
               <input
                 id="event-startTime"
@@ -608,7 +608,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-endTime">
-                End Time
+                End date and time (optional)
               </label>
               <input
                 id="event-endTime"
@@ -648,7 +648,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField eventEditorWebsiteField">
               <label className="submissionLabel" htmlFor="event-website">
-                Website
+                Website URL (optional)
               </label>
               <input
                 id="event-website"
@@ -666,7 +666,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-addressLine1">
-                Street Address
+                Address Line 1 (optional)
               </label>
               <input
                 id="event-addressLine1"
@@ -684,7 +684,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-addressLine2">
-                Address Line 2
+                Address Line 2 (optional)
               </label>
               <input
                 id="event-addressLine2"
@@ -759,7 +759,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-postalCode">
-                Postal Code
+                ZIP Code
               </label>
               <input
                 id="event-postalCode"
@@ -779,7 +779,7 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
 
           <section className="submissionField eventEditorContentField">
             <label className="submissionLabel" htmlFor="event-content">
-              Body
+              Description
             </label>
             <textarea
               id="event-content"
