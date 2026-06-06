@@ -484,296 +484,298 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
         ) : null}
 
         <div className="eventEditorLayout">
-          <section className="submissionField eventEditorTitleField">
-            <label className="submissionLabel" htmlFor="event-title">
-              Title
-            </label>
-            <input
-              id="event-title"
-              className="submissionControl"
-              value={title}
-              onChange={(event) => setTitle(event.target.value)}
-              {...getEventFieldA11y('title', errors)}
-              required
-            />
-            {errors.title ? (
-              <p id="event-title-error" className="submissionError">
-                {errors.title}
-              </p>
-            ) : null}
-          </section>
-
-          <section className="submissionField eventEditorSummaryField">
-            <label className="submissionLabel" htmlFor="event-summary">
-              Summary
-            </label>
-            <textarea
-              id="event-summary"
-              className="submissionTextarea eventEditorTextareaSummary"
-              value={summary}
-              rows={6}
-              onChange={(event) => setSummary(event.target.value)}
-              {...getEventFieldA11y('summary', errors)}
-              required
-            />
-            {errors.summary ? (
-              <p id="event-summary-error" className="submissionError">
-                {errors.summary}
-              </p>
-            ) : null}
-          </section>
-
-          <div className="eventEditorBottomRow">
-            <section className="eventEditorLocationCard" aria-label="Location details">
-              <section className="submissionField eventEditorLocationField">
-                <label className="submissionLabel" htmlFor="event-locationName">
-                  Location Name
-                </label>
-                <input
-                  id="event-locationName"
-                  className="submissionControl"
-                  value={locationName}
-                  onChange={(event) => setLocationName(event.target.value)}
-                  {...getEventFieldA11y('locationName', errors)}
-                  required
-                />
-                {errors.locationName ? (
-                  <p id="event-locationName-error" className="submissionError">
-                    {errors.locationName}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField eventEditorWebsiteField">
-                <label className="submissionLabel" htmlFor="event-website">
-                  Website
-                </label>
-                <input
-                  id="event-website"
-                  className="submissionControl"
-                  value={website}
-                  onChange={(event) => setWebsite(event.target.value)}
-                  {...getEventFieldA11y('website', errors)}
-                />
-                {errors.website ? (
-                  <p id="event-website-error" className="submissionError">
-                    {errors.website}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-addressLine1">
-                  Street Address
-                </label>
-                <input
-                  id="event-addressLine1"
-                  className="submissionControl"
-                  value={addressLine1}
-                  onChange={(event) => setAddressLine1(event.target.value)}
-                  {...getEventFieldA11y('addressLine1', errors)}
-                />
-                {errors.addressLine1 ? (
-                  <p id="event-addressLine1-error" className="submissionError">
-                    {errors.addressLine1}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-addressLine2">
-                  Address Line 2
-                </label>
-                <input
-                  id="event-addressLine2"
-                  className="submissionControl"
-                  value={addressLine2}
-                  onChange={(event) => setAddressLine2(event.target.value)}
-                  {...getEventFieldA11y('addressLine2', errors)}
-                />
-                {errors.addressLine2 ? (
-                  <p id="event-addressLine2-error" className="submissionError">
-                    {errors.addressLine2}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-city">
-                  City
-                </label>
-                <input
-                  id="event-city"
-                  className="submissionControl"
-                  value={city}
-                  onChange={(event) => setCity(event.target.value)}
-                  {...getEventFieldA11y('city', errors)}
-                  required
-                />
-                {errors.city ? (
-                  <p id="event-city-error" className="submissionError">
-                    {errors.city}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-region">
-                  State
-                </label>
-                <input
-                  id="event-region"
-                  className="submissionControl"
-                  value={region}
-                  onChange={(event) => setRegion(event.target.value)}
-                  {...getEventFieldA11y('region', errors)}
-                  required
-                />
-                {errors.region ? (
-                  <p id="event-region-error" className="submissionError">
-                    {errors.region}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-country">
-                  Country
-                </label>
-                <input
-                  id="event-country"
-                  className="submissionControl"
-                  value={country}
-                  onChange={(event) => setCountry(event.target.value)}
-                  {...getEventFieldA11y('country', errors)}
-                  required
-                />
-                {errors.country ? (
-                  <p id="event-country-error" className="submissionError">
-                    {errors.country}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-postalCode">
-                  Postal Code
-                </label>
-                <input
-                  id="event-postalCode"
-                  className="submissionControl"
-                  value={postalCode}
-                  onChange={(event) => setPostalCode(event.target.value)}
-                  {...getEventFieldA11y('postalCode', errors)}
-                  required
-                />
-                {errors.postalCode ? (
-                  <p id="event-postalCode-error" className="submissionError">
-                    {errors.postalCode}
-                  </p>
-                ) : null}
-              </section>
+          <div className="eventEditorMainColumn">
+            <section className="submissionField eventEditorTitleField">
+              <label className="submissionLabel" htmlFor="event-title">
+                Title
+              </label>
+              <input
+                id="event-title"
+                className="submissionControl"
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                {...getEventFieldA11y('title', errors)}
+                required
+              />
+              {errors.title ? (
+                <p id="event-title-error" className="submissionError">
+                  {errors.title}
+                </p>
+              ) : null}
             </section>
 
-            <aside className="eventEditorSidebar" aria-label="Event settings">
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-eventType">
-                  Event type
-                </label>
-                <select
-                  id="event-eventType"
-                  className="submissionControl"
-                  value={eventType}
-                  onChange={(event) => setEventType(event.target.value as EventType)}
-                  {...getEventFieldA11y('eventType', errors)}
-                  required
-                >
-                  {EVENT_TYPES_VALUES.map((item) => (
-                    <option key={item} value={item}>
-                      {formatEventTypeLabel(item)}
-                    </option>
-                  ))}
-                </select>
-                {errors.eventType ? (
-                  <p id="event-eventType-error" className="submissionError">
-                    {errors.eventType}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-startTime">
-                  Start Time
-                </label>
-                <input
-                  id="event-startTime"
-                  type="datetime-local"
-                  className="submissionControl"
-                  value={startTime}
-                  onChange={(event) => setStartTime(event.target.value)}
-                  {...getEventFieldA11y('startTime', errors)}
-                  required
-                />
-                {errors.startTime ? (
-                  <p id="event-startTime-error" className="submissionError">
-                    {errors.startTime}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="submissionField">
-                <label className="submissionLabel" htmlFor="event-endTime">
-                  End Time
-                </label>
-                <input
-                  id="event-endTime"
-                  type="datetime-local"
-                  className="submissionControl"
-                  value={endTime}
-                  onChange={(event) => setEndTime(event.target.value)}
-                  {...getEventFieldA11y('endTime', errors)}
-                />
-                {errors.endTime ? (
-                  <p id="event-endTime-error" className="submissionError">
-                    {errors.endTime}
-                  </p>
-                ) : null}
-              </section>
-
-              <section className="eventEditorTopics" aria-label="Event topics">
-                <fieldset
-                  id="event-topic-group"
-                  className="submissionCheckboxGroup"
-                  tabIndex={-1}
-                  {...getEventFieldA11y('topicSlugs', errors)}
-                >
-                  <legend className="submissionLabel">Topics</legend>
-                  {topics.length === 0 ? (
-                    <p>No topics are available to assign.</p>
-                  ) : (
-                    <div className="adminTopicGrid">
-                      {topics.map((topic) => (
-                        <label key={topic.slug} className="submissionCheckboxOption">
-                          <input
-                            id={`event-topic-${topic.slug}`}
-                            type="checkbox"
-                            checked={selectedTopicSet.has(topic.slug)}
-                            onChange={() => toggleTopic(topic.slug)}
-                          />
-                          <span>{topic.name}</span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </fieldset>
-                {errors.topicSlugs ? (
-                  <p id="event-topicSlugs-error" className="submissionError">
-                    {errors.topicSlugs}
-                  </p>
-                ) : null}
-              </section>
-            </aside>
+            <section className="submissionField eventEditorSummaryField">
+              <label className="submissionLabel" htmlFor="event-summary">
+                Summary
+              </label>
+              <textarea
+                id="event-summary"
+                className="submissionTextarea eventEditorTextareaSummary"
+                value={summary}
+                rows={6}
+                onChange={(event) => setSummary(event.target.value)}
+                {...getEventFieldA11y('summary', errors)}
+                required
+              />
+              {errors.summary ? (
+                <p id="event-summary-error" className="submissionError">
+                  {errors.summary}
+                </p>
+              ) : null}
+            </section>
           </div>
+
+          <aside className="eventEditorTopicsPanel" aria-label="Event topics">
+            <section className="eventEditorTopics" aria-label="Event topics">
+              <fieldset
+                id="event-topic-group"
+                className="submissionCheckboxGroup"
+                tabIndex={-1}
+                {...getEventFieldA11y('topicSlugs', errors)}
+              >
+                <legend className="submissionLabel">Topics</legend>
+                {topics.length === 0 ? (
+                  <p>No topics are available to assign.</p>
+                ) : (
+                  <div className="adminTopicGrid">
+                    {topics.map((topic) => (
+                      <label key={topic.slug} className="submissionCheckboxOption">
+                        <input
+                          id={`event-topic-${topic.slug}`}
+                          type="checkbox"
+                          checked={selectedTopicSet.has(topic.slug)}
+                          onChange={() => toggleTopic(topic.slug)}
+                        />
+                        <span>{topic.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                )}
+              </fieldset>
+              {errors.topicSlugs ? (
+                <p id="event-topicSlugs-error" className="submissionError">
+                  {errors.topicSlugs}
+                </p>
+              ) : null}
+            </section>
+          </aside>
+
+          <section className="eventEditorScheduleRow" aria-label="Event schedule">
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-eventType">
+                Event type
+              </label>
+              <select
+                id="event-eventType"
+                className="submissionControl"
+                value={eventType}
+                onChange={(event) => setEventType(event.target.value as EventType)}
+                {...getEventFieldA11y('eventType', errors)}
+                required
+              >
+                {EVENT_TYPES_VALUES.map((item) => (
+                  <option key={item} value={item}>
+                    {formatEventTypeLabel(item)}
+                  </option>
+                ))}
+              </select>
+              {errors.eventType ? (
+                <p id="event-eventType-error" className="submissionError">
+                  {errors.eventType}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-startTime">
+                Start Time
+              </label>
+              <input
+                id="event-startTime"
+                type="datetime-local"
+                className="submissionControl"
+                value={startTime}
+                onChange={(event) => setStartTime(event.target.value)}
+                {...getEventFieldA11y('startTime', errors)}
+                required
+              />
+              {errors.startTime ? (
+                <p id="event-startTime-error" className="submissionError">
+                  {errors.startTime}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-endTime">
+                End Time
+              </label>
+              <input
+                id="event-endTime"
+                type="datetime-local"
+                className="submissionControl"
+                value={endTime}
+                onChange={(event) => setEndTime(event.target.value)}
+                {...getEventFieldA11y('endTime', errors)}
+              />
+              {errors.endTime ? (
+                <p id="event-endTime-error" className="submissionError">
+                  {errors.endTime}
+                </p>
+              ) : null}
+            </section>
+          </section>
+
+          <section className="eventEditorLocationCard" aria-label="Location details">
+            <section className="submissionField eventEditorLocationField">
+              <label className="submissionLabel" htmlFor="event-locationName">
+                Location Name
+              </label>
+              <input
+                id="event-locationName"
+                className="submissionControl"
+                value={locationName}
+                onChange={(event) => setLocationName(event.target.value)}
+                {...getEventFieldA11y('locationName', errors)}
+                required
+              />
+              {errors.locationName ? (
+                <p id="event-locationName-error" className="submissionError">
+                  {errors.locationName}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField eventEditorWebsiteField">
+              <label className="submissionLabel" htmlFor="event-website">
+                Website
+              </label>
+              <input
+                id="event-website"
+                className="submissionControl"
+                value={website}
+                onChange={(event) => setWebsite(event.target.value)}
+                {...getEventFieldA11y('website', errors)}
+              />
+              {errors.website ? (
+                <p id="event-website-error" className="submissionError">
+                  {errors.website}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-addressLine1">
+                Street Address
+              </label>
+              <input
+                id="event-addressLine1"
+                className="submissionControl"
+                value={addressLine1}
+                onChange={(event) => setAddressLine1(event.target.value)}
+                {...getEventFieldA11y('addressLine1', errors)}
+              />
+              {errors.addressLine1 ? (
+                <p id="event-addressLine1-error" className="submissionError">
+                  {errors.addressLine1}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-addressLine2">
+                Address Line 2
+              </label>
+              <input
+                id="event-addressLine2"
+                className="submissionControl"
+                value={addressLine2}
+                onChange={(event) => setAddressLine2(event.target.value)}
+                {...getEventFieldA11y('addressLine2', errors)}
+              />
+              {errors.addressLine2 ? (
+                <p id="event-addressLine2-error" className="submissionError">
+                  {errors.addressLine2}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-city">
+                City
+              </label>
+              <input
+                id="event-city"
+                className="submissionControl"
+                value={city}
+                onChange={(event) => setCity(event.target.value)}
+                {...getEventFieldA11y('city', errors)}
+                required
+              />
+              {errors.city ? (
+                <p id="event-city-error" className="submissionError">
+                  {errors.city}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-region">
+                State
+              </label>
+              <input
+                id="event-region"
+                className="submissionControl"
+                value={region}
+                onChange={(event) => setRegion(event.target.value)}
+                {...getEventFieldA11y('region', errors)}
+                required
+              />
+              {errors.region ? (
+                <p id="event-region-error" className="submissionError">
+                  {errors.region}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-country">
+                Country
+              </label>
+              <input
+                id="event-country"
+                className="submissionControl"
+                value={country}
+                onChange={(event) => setCountry(event.target.value)}
+                {...getEventFieldA11y('country', errors)}
+                required
+              />
+              {errors.country ? (
+                <p id="event-country-error" className="submissionError">
+                  {errors.country}
+                </p>
+              ) : null}
+            </section>
+
+            <section className="submissionField">
+              <label className="submissionLabel" htmlFor="event-postalCode">
+                Postal Code
+              </label>
+              <input
+                id="event-postalCode"
+                className="submissionControl"
+                value={postalCode}
+                onChange={(event) => setPostalCode(event.target.value)}
+                {...getEventFieldA11y('postalCode', errors)}
+                required
+              />
+              {errors.postalCode ? (
+                <p id="event-postalCode-error" className="submissionError">
+                  {errors.postalCode}
+                </p>
+              ) : null}
+            </section>
+          </section>
 
           <section className="submissionField eventEditorContentField">
             <label className="submissionLabel" htmlFor="event-content">

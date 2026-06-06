@@ -1705,13 +1705,22 @@ h3 {
 
 .eventEditorLayout {
   display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(320px, 0.95fr);
   gap: var(--space-2);
+  align-items: start;
+}
+
+.eventEditorMainColumn {
+  display: grid;
+  grid-column: 1 / 2;
+  grid-row: 1;
+  gap: var(--space-2);
+  min-width: 0;
 }
 
 .eventEditorTitleField {
   display: grid;
   gap: var(--space-1);
-  max-width: 46rem;
 }
 
 .eventEditorSummaryField,
@@ -1722,11 +1731,12 @@ h3 {
 }
 
 .eventEditorSummaryField {
-  max-width: 46rem;
+  align-content: start;
 }
 
 .eventEditorContentField {
   grid-column: 1 / -1;
+  grid-row: 4;
 }
 
 .eventEditorTextareaSummary {
@@ -1737,15 +1747,8 @@ h3 {
   min-height: 400px;
 }
 
-.eventEditorBottomRow {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.9fr);
-  gap: var(--space-2);
-  align-items: start;
-}
-
 .eventEditorLocationCard,
-.eventEditorSidebar {
+.eventEditorTopicsPanel {
   display: grid;
   gap: var(--space-2);
   min-width: 0;
@@ -1757,7 +1760,29 @@ h3 {
 }
 
 .eventEditorLocationCard {
-  grid-template-columns: 1fr;
+  grid-column: 1 / -1;
+  grid-row: 3;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.eventEditorTopicsPanel {
+  grid-column: 2 / 3;
+  grid-row: 1;
+  align-self: stretch;
+}
+
+.eventEditorScheduleRow {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.eventEditorLocationField,
+.eventEditorWebsiteField {
+  grid-column: span 1;
 }
 
 .eventEditorTopics {
@@ -2381,15 +2406,28 @@ h3 {
   }
 
   .eventEditorLayout {
+    grid-template-columns: 1fr;
     gap: var(--space-2);
   }
 
-  .eventEditorBottomRow {
+  .eventEditorMainColumn,
+  .eventEditorScheduleRow,
+  .eventEditorTitleField,
+  .eventEditorSummaryField,
+  .eventEditorLocationCard,
+  .eventEditorTopicsPanel,
+  .eventEditorContentField {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .eventEditorScheduleRow,
+  .eventEditorLocationCard {
     grid-template-columns: 1fr;
   }
 
   .eventEditorLocationCard,
-  .eventEditorSidebar {
+  .eventEditorTopicsPanel {
     padding: var(--space-2);
   }
 
