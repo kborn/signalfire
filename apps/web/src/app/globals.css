@@ -2084,6 +2084,9 @@ h3 {
   flex-wrap: wrap;
   align-items: stretch;
   gap: 0;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: 0 auto;
   padding: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
   border-radius: 14px;
@@ -2391,6 +2394,7 @@ h3 {
   }
 
   .adminMetadataBar {
+    width: 100%;
     padding: 0;
   }
 
