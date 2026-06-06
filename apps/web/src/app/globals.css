@@ -2010,41 +2010,59 @@ h3 {
 }
 
 .eventMetadataPanel {
-  padding-block: var(--space-2);
+  padding: var(--space-1);
 }
 
-.eventMetadataBar {
+.eventMetadataPanel .adminMetadataBar {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  gap: var(--space-1);
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-
-.eventMetadataItem {
-  display: grid;
-  gap: 0.35rem;
-  min-width: 0;
-  flex: 0 1 12rem;
-  width: fit-content;
-  align-content: start;
-  padding: 0.9rem 1rem;
+  gap: 0;
+  width: 100%;
+  max-width: none;
+  margin-inline: auto;
+  padding: 0.2rem;
   border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
   border-radius: 14px;
   background: color-mix(in srgb, var(--color-surface-soft) 84%, var(--color-page-bg) 16%);
 }
 
-.eventMetadataItem--compact {
-  flex-basis: 10rem;
+.eventMetadataPanel .adminMetadataItem {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 0;
+  align-content: start;
+  padding: 0.75rem 1rem;
+  border: 0;
+  background: transparent;
+  flex: 0 1 auto;
 }
 
-.eventMetadataItem--wide {
+.eventMetadataPanel .adminMetadataItem + .adminMetadataItem {
+  border-inline-start: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+}
+
+.eventMetadataPanel .adminMetadataItem--id {
+  flex-basis: 5rem;
+}
+
+.eventMetadataPanel .adminMetadataItem--compact {
+  flex-basis: 9rem;
+}
+
+.eventMetadataPanel .adminMetadataItem--type {
+  flex-basis: 11rem;
+}
+
+.eventMetadataPanel .adminMetadataItem--date {
   flex-basis: 18rem;
 }
 
-.eventMetadataItem dt {
+.eventMetadataPanel .adminMetadataItem--zip {
+  flex-basis: 8rem;
+}
+
+.eventMetadataPanel .adminMetadataItem dt {
   color: color-mix(in srgb, var(--color-text-primary) 76%, var(--color-text-muted) 24%);
   font-size: 0.72rem;
   font-weight: 700;
@@ -2052,7 +2070,7 @@ h3 {
   text-transform: uppercase;
 }
 
-.eventMetadataItem dd {
+.eventMetadataPanel .adminMetadataItem dd {
   margin: 0;
   color: var(--color-text-primary);
   font-size: 0.98rem;

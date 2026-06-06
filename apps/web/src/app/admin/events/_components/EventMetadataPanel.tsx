@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { type AdminEventDetailResponse } from '@signal-fire/api-contracts';
+import AdminMetadataPanel from '../../_components/AdminMetadataPanel';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 
 function formatDateTime(value: string | null | undefined) {
@@ -10,50 +11,57 @@ export default function EventMetadataPanel({ event }: { event: AdminEventDetailR
   const livePageHref = event.status === 'PUBLISHED' ? `/events/${event.id}` : null;
 
   return (
-    <section
-      className="adminPanel adminMetadataPanel eventMetadataPanel"
-      aria-label="Event metadata"
-    >
-      <dl className="eventMetadataBar">
-        <div className="eventMetadataItem">
-          <dt>ID</dt>
-          <dd>
-            {livePageHref ? (
-              <Link href={livePageHref} className="adminMetadataLink">
-                {event.id}
-              </Link>
-            ) : (
-              event.id
-            )}
-          </dd>
-        </div>
-
-        <div className="eventMetadataItem eventMetadataItem--compact">
-          <dt>Status</dt>
-          <dd>
-            <span className="adminBadge">{event.status}</span>
-          </dd>
-        </div>
-
-        <div className="eventMetadataItem eventMetadataItem--compact">
-          <dt>Event Type</dt>
-          <dd>{formatEventTypeLabel(event.eventType)}</dd>
-        </div>
-
-        <div className="eventMetadataItem eventMetadataItem--wide">
-          <dt>Start</dt>
-          <dd>
+    <AdminMetadataPanel
+      className="eventMetadataPanel"
+      ariaLabel="Event metadata"
+      items={[
+        {
+          label: 'ID',
+          value: livePageHref ? (
+            <Link href={livePageHref} className="adminMetadataLink">
+              {event.id}
+            </Link>
+          ) : (
+            event.id
+          ),
+          className: 'adminMetadataItem--id',
+        },
+        {
+          label: 'Status',
+          value: <span className="adminBadge">{event.status}</span>,
+          className: 'adminMetadataItem--compact',
+        },
+        {
+          label: 'Event Type',
+          value: formatEventTypeLabel(event.eventType),
+          className: 'adminMetadataItem--type',
+        },
+        {
+          label: 'Start',
+          value: (
             <time className="adminMetadataTime" dateTime={event.startTime}>
               {formatDateTime(event.startTime)}
             </time>
-          </dd>
-        </div>
-
-        <div className="eventMetadataItem eventMetadataItem--compact">
-          <dt>ZIP</dt>
-          <dd>{event.postalCode}</dd>
-        </div>
-      </dl>
-    </section>
+          ),
+          className: 'adminMetadataItem--date',
+        },
+        {
+          label: 'End',
+          value: event.endTime ? (
+            <time className="adminMetadataTime" dateTime={event.endTime}>
+              {formatDateTime(event.endTime)}
+            </time>
+          ) : (
+            '--'
+          ),
+          className: 'adminMetadataItem--date',
+        },
+        {
+          label: 'ZIP',
+          value: event.postalCode,
+          className: 'adminMetadataItem--zip',
+        },
+      ]}
+    />
   );
 }

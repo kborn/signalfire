@@ -75,6 +75,6 @@ describe('EventMetadataPanel', () => {
 
     expect(screen.queryByRole('link', { name: '42' })).not.toBeInTheDocument();
     expect(screen.getByText('42')).toBeInTheDocument();
-    expect(screen.queryByText('--')).not.toBeInTheDocument();
+    expect(screen.getAllByText('--')).toHaveLength(1);
   });
 });
