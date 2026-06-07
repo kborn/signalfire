@@ -458,6 +458,7 @@ instead of `SERIAL NOT NULL`.
 ###### Implications
 
 - When creating migrations with `--create-only`, review generated SQL and replace `SERIAL` PK definitions with identity-column definitions before applying.
+- After editing the generated migration SQL, apply it by running the normal Prisma migration command again without `--create-only` so Prisma executes the reviewed migration against the database.
 - Do not add manual duplicate sequence creation statements for those identity-backed PKs.
 - This convention applies to Phase 3 core-domain tables and future Postgres migrations in this repo.
 

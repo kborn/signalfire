@@ -269,3 +269,27 @@ model SubmissionResourceLink {
   @@id([submissionId, resourceLinkId])
   @@map("_submission_resource_link")
 }
+
+model AdminUser {
+  id             Int             @id @default(autoincrement())
+  email           String          @unique
+  passwordHash String
+  isActive Boolean @default(true)
+  sessions AdminSession[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+
+  @@map("_admin_user")
+}
+
+model AdminSession {
+  id             Int             @id @default(autoincrement())
+  sessionToken String @unique
+  adminUser  AdminUser @relation(fields: [adminUserId], references: [id])
+  adminUserId Int
+  expiresAt DateTime
+  createdAt      DateTime        @default(now())
+  lastUsedAt      DateTime        @default(now())
+
+  @@map("_admin_session")
+}
