@@ -77,6 +77,7 @@ export type ApproveEventSubmissionRepositoryInput = {
     country: string | null;
     postalCode: string | null;
     website: string | null;
+    contactEmail: string | null;
     status: EntityStatus;
     publishedAt: Date | null;
     topicIds: number[];

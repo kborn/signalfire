@@ -328,7 +328,7 @@ export class ModerationSubmissionService {
   private async buildArticleApprovalInput(
     result: ModerationReviewApproveArticleRequest,
     reviewedAt: Date,
-  ) {
+  ): Promise<ArticleSubmissionApprovedRepositoryInput['articleData']> {
     return {
       title: result.normalized.title,
       slug: this.titleToSlug(result.normalized.title),
@@ -376,7 +376,7 @@ export class ModerationSubmissionService {
   private async buildEventApprovalInput(
     result: ModerationReviewApproveEventRequest,
     reviewedAt: Date,
-  ) {
+  ): Promise<EventSubmissionApprovedRepositoryInput['eventData']> {
     return {
       title: result.normalized.title,
       summary: result.normalized.summary,
