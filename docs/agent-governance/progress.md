@@ -1566,6 +1566,7 @@ Run the final cross-cutting verification and readiness pass before public launch
 
 - [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows that still lack confidence after Phase 11.9 auth implementation
 - [ ] Run a final focused regression pass across public and admin flows, including auth, moderation, and essential content-management paths
+- [ ] Review Nest module boundaries for duplicated provider registration across feature modules and replace provider re-registration with cleaner module import/export relationships where appropriate
 - [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
 - [ ] Confirm repository documentation, setup instructions, and deployment caveats match the actual shipped product state
 
