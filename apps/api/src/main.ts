@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
+import cookieParser from 'cookie-parser';
 
 dotenv.config({ path: '.env.local' });
 
@@ -18,7 +19,10 @@ async function bootstrap() {
     origin: getWebOrigins(),
     methods: ['GET', 'PATCH', 'POST', 'OPTIONS'],
     allowedHeaders: ['Content-Type'],
+    credentials: true,
   });
+
+  app.use(cookieParser());
   const prisma = app.get(PrismaService);
   prisma.enableShutdownHooks(app);
   await app.listen(process.env.PORT ?? 3000);
