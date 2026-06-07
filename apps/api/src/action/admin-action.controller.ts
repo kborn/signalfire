@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ActionService } from './action.service';
 import { AdminActionValidationPipe } from './admin-action-validation.pipe';
@@ -19,7 +20,10 @@ import type {
 import { EntityStatus } from '@prisma/client';
 import { UnknownSubmissionTopicsError } from '../submission/submission.error';
 
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+
 @Controller('admin/actions')
+@UseGuards(AdminAuthGuard)
 export class AdminActionController {
   constructor(private readonly actionService: ActionService) {}
 

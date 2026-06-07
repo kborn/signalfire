@@ -6,9 +6,10 @@ import { ActionController } from './action.controller';
 import { TopicRepository } from '../topic/topic.repository';
 import { ArticleRepository } from '../article/article.repository';
 import { AdminActionController } from './admin-action.controller';
+import { AdminAuthModule } from '../auth/admin-auth.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, AdminAuthModule],
   providers: [ActionService, ActionRepository, TopicRepository, ArticleRepository],
   exports: [ActionService, ActionRepository],
   controllers: [AdminActionController, ActionController],

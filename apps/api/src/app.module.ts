@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { AdminAuthModule } from './auth/admin-auth.module';
 import { ConfigModule } from './config/config.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { HealthModule } from './health/health.module';
@@ -10,6 +11,7 @@ import { SubmissionModule } from './submission/submission.module';
 
 @Module({
   imports: [
+    AdminAuthModule,
     ConfigModule,
     PrismaModule,
     HealthModule,

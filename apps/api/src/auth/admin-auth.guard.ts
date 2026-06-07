@@ -1,4 +1,4 @@
-import { AdminAuthService } from './admin-auth-service';
+import { AdminAuthService } from './admin-auth.service';
 import { AdminAuthenticatedRequest } from './admin-auth.request';
 import { COOKIE_NAME } from '@signal-fire/api-contracts';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
