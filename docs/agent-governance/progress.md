@@ -24,7 +24,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [14](#-phase-14--analytics-)                       | Analytics                        | ⏳              |
 | [15](#-phase-15--release-stabilization-)           | Release Stabilization            | ⏳              |
 | [15.5](#-phase-155--final-public-ui-polish-)       | Final Public UI Polish           | ⏳              |
-| [16](#-phase-16--public-launch-)                   | Public Launch                    | ⏳              |
+| [16](#-phase-16--final-repo--product-prep-)        | Final Repo & Product Prep        | ⏳              |
+| [17](#-phase-17--public-launch-)                   | Public Launch                    | ⏳              |
 
 ---
 
@@ -1149,7 +1150,7 @@ Provide the first internal content operations surface for Release 1, covering mo
 - [ ] Approved submissions can be normalized and converted into published Article/Event records through the admin workflow
 - [ ] Administrators can create and edit Actions, Articles, and Events through the same interface surface
 - [ ] Key moderation and admin flows have targeted backend and UI/integration coverage
-- [ ] Deployment-time auth hardening requirements for this interface are documented for Phase 13
+- [ ] Admin authentication/authorization is implemented for deployed environments with the Release 1 access boundary clearly defined
 
 Capabilities:
 
@@ -1450,19 +1451,20 @@ repository and before continuing into broader admin content-management work.
 
 ---
 
-#### ▸ Phase 11.9 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.9 - Admin Authentication & Access Control 🚧
 
 ###### Phase Tasks:
 
-- [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows
-- [ ] Document the temporary local-access assumption for the interface
-- [ ] Define the minimum authentication/authorization requirements that Phase 13 must satisfy before deployment
+- [ ] Implement authentication for the deployed `/admin` interface while preserving workable local development ergonomics
+- [ ] Enforce admin-only authorization checks on admin routes and backing admin APIs for Release 1 deployment
+- [ ] Implement the Release 1 admin-user model with manual provisioning through database, seed, or script operations and no public signup or admin-user management UI
+- [ ] Verify unauthenticated and unauthorized access behavior for admin entry routes and highest-risk admin actions
 - [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
-- [ ] Confirm Phase 11 leaves Search/Discovery and Deployment phases unblocked
 
 ###### Notes:
 
-- Admin and moderation routes may remain openly reachable during local-only development, but must be protected by authentication/authorization before deployment to any environment intended for real users.
+- Admin and moderation routes may remain openly reachable during local-only development if that materially reduces drag, but any deployed environment intended for real users must place them behind authentication/authorization.
+- This subphase owns the actual Release 1 admin access-control implementation rather than only documenting a later handoff.
 
 ---
 
@@ -1488,6 +1490,7 @@ Configure hosting, environment management, and CI/CD.
 
 - [ ] Add repository security automation before public launch hardening, including Dependabot update PRs and dependency vulnerability validation in CI
 - [ ] Define branch protection/status-check requirements for `main` and apply them across primary public-facing repositories
+- [ ] Configure deployment environment variables, secret handling, and runtime wiring needed to support the chosen admin-auth implementation
 
 ---
 
@@ -1527,7 +1530,7 @@ Bug fixes, polish, and observability improvements.
 ###### Goal
 
 Perform one final launch-adjacent public UI polish pass after core release
-stabilization and before Phase 16 public launch.
+stabilization and before the final release-prep and public-launch phases.
 
 ###### Phase Tasks:
 
@@ -1552,7 +1555,29 @@ stabilization and before Phase 16 public launch.
 
 ---
 
-### ► Phase 16 — Public Launch ⏳
+### ► Phase 16 — Final Repo & Product Prep ⏳
+
+###### Goal
+
+Run the final cross-cutting verification and readiness pass before public launch.
+
+###### Phase Tasks:
+
+- [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows that still lack confidence after Phase 11.9 auth implementation
+- [ ] Run a final focused regression pass across public and admin flows, including auth, moderation, and essential content-management paths
+- [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
+- [ ] Confirm repository documentation, setup instructions, and deployment caveats match the actual shipped product state
+
+###### Notes:
+
+- This phase is the final product/repository readiness gate, not a place to introduce new product scope.
+- Public UI polish should remain in Phase 15.5; this phase is for confidence and readiness validation.
+
+---
+
+---
+
+### ► Phase 17 — Public Launch ⏳
 
 ###### Goal
 
