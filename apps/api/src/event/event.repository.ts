@@ -4,7 +4,7 @@ import { EntityStatus, Event, Prisma } from '@prisma/client';
 import {
   CreateAdminEventRepositoryInput,
   UpdateAdminEventRepositoryInput,
-} from './admin-event.repository.type';
+} from '../admin-api/event/admin-event.repository.type';
 
 const eventWithTopicsInclude = {
   topicEvents: {

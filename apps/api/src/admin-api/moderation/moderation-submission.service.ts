@@ -4,7 +4,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import { SubmissionRepository } from './submission.repository';
+import { SubmissionRepository } from '../../submission/submission.repository';
 import {
   ModerationSubmissionList,
   ModerationSubmissionListFilters,
@@ -22,12 +22,15 @@ import {
 import {
   ArticleSubmissionApprovedRepositoryInput,
   EventSubmissionApprovedRepositoryInput,
-} from './submission.repository.types';
+} from '../../submission/submission.repository.types';
 import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
-import { TopicRepository } from '../topic/topic.repository';
-import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
-import { ArticleRepository } from '../article/article.repository';
-import { EventRepository } from '../event/event.repository';
+import { TopicRepository } from '../../topic/topic.repository';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
+import { ArticleRepository } from '../../article/article.repository';
+import { EventRepository } from '../../event/event.repository';
 
 function requireSubmissionField<T>(
   value: T | null | undefined,

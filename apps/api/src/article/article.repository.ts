@@ -4,7 +4,7 @@ import { Article, EntityStatus, Prisma } from '@prisma/client';
 import {
   CreateAdminArticleRepositoryInput,
   UpdateAdminArticleRepositoryInput,
-} from './admin-article.repository.type';
+} from '../admin-api/article/admin-article.repository.type';
 
 const articleWithTopicsInclude = {
   topicArticles: {

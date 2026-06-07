@@ -1,18 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SubmissionRepository } from './submission.repository';
-import { TopicRepository } from '../topic/topic.repository';
+import { SubmissionRepository } from '../../submission/submission.repository';
+import { TopicRepository } from '../../topic/topic.repository';
 import { NotFoundException } from '@nestjs/common';
 import { ModerationSubmissionService } from './moderation-submission.service';
 import {
   buildModerationReviewApproveArticleRequest,
   buildModerationReviewApproveEventRequest,
   buildModerationReviewRejectRequest,
-} from './submission.test-fixtures';
-import { withFrozenTime } from '../../common/test/time';
+} from '../../submission/submission.test-fixtures';
+import { withFrozenTime } from '../../../common/test/time';
 import { EntityStatus, SubmissionType } from '@prisma/client';
-import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
-import { ArticleRepository } from '../article/article.repository';
-import { EventRepository } from '../event/event.repository';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
+import { ArticleRepository } from '../../article/article.repository';
+import { EventRepository } from '../../event/event.repository';
 
 const submission = {
   id: 1,

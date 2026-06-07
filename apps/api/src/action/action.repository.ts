@@ -4,7 +4,7 @@ import { Action, EntityStatus, Prisma } from '@prisma/client';
 import {
   CreateAdminActionRepositoryInput,
   UpdateAdminActionRepositoryInput,
-} from './admin-action.repository.type';
+} from '../admin-api/action/admin-action.repository.type';
 
 const actionWithTopicsInclude = {
   topicActions: {

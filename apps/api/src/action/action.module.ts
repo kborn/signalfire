@@ -5,13 +5,11 @@ import { ActionService } from './action.service';
 import { ActionController } from './action.controller';
 import { TopicRepository } from '../topic/topic.repository';
 import { ArticleRepository } from '../article/article.repository';
-import { AdminActionController } from './admin-action.controller';
-import { AdminAuthModule } from '../auth/admin-auth.module';
 
 @Module({
-  imports: [PrismaModule, AdminAuthModule],
+  imports: [PrismaModule],
   providers: [ActionService, ActionRepository, TopicRepository, ArticleRepository],
   exports: [ActionService, ActionRepository],
-  controllers: [AdminActionController, ActionController],
+  controllers: [ActionController],
 })
 export class ActionModule {}

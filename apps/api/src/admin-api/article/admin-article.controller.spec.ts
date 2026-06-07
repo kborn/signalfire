@@ -1,9 +1,9 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { EntityStatus } from '@prisma/client';
-import { UnknownSubmissionTopicsError } from '../submission/submission.error';
-import { ArticleService } from './article.service';
 import { AdminArticleController } from './admin-article.controller';
+import { AdminArticleService } from './admin-article.service';
+import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
 
 describe('AdminArticleController', () => {
   let controller: AdminArticleController;
@@ -20,7 +20,7 @@ describe('AdminArticleController', () => {
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AdminArticleController],
-      providers: [{ provide: ArticleService, useValue: serviceMock }],
+      providers: [{ provide: AdminArticleService, useValue: serviceMock }],
     }).compile();
 
     controller = app.get(AdminArticleController);

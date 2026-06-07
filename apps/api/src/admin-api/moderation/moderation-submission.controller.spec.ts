@@ -8,7 +8,10 @@ import type {
   ModerationSubmissionDetail,
   ModerationSubmissionList,
 } from '@signal-fire/api-contracts';
-import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
 
 describe('ModerationSubmissionController', () => {
   let controller: ModerationSubmissionController;

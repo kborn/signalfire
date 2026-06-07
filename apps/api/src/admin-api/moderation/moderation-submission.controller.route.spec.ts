@@ -10,8 +10,11 @@ import {
   buildModerationReviewApproveArticleSuccessResponse,
   buildModerationReviewApproveEventSuccessResponse,
   buildModerationReviewApproveEventRequest,
-} from './submission.test-fixtures';
-import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+} from '../../submission/submission.test-fixtures';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
 
 describe('ModerationSubmissionController HTTP', () => {
   let app: INestApplication;

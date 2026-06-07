@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../../prisma/prisma.service';
 import { AdminSession, AdminUser } from '@prisma/client';
 
 @Injectable()
 export class AdminAuthRepository {
   constructor(private prisma: PrismaService) {}
 
-  async getAdminSession(sessionToken: string): Promise<AdminSession | null> {
+  getAdminSession(sessionToken: string): Promise<AdminSession | null> {
     return this.prisma.adminSession.findUnique({
       where: {
         sessionToken: sessionToken,
@@ -14,7 +14,7 @@ export class AdminAuthRepository {
     });
   }
 
-  async getAdminUser(userId: number): Promise<AdminUser | null> {
+  getAdminUser(userId: number): Promise<AdminUser | null> {
     return this.prisma.adminUser.findUnique({
       where: {
         id: userId,
@@ -22,7 +22,7 @@ export class AdminAuthRepository {
     });
   }
 
-  async updateSession(sessionToken: string, nextExpiredAt: Date): Promise<AdminSession> {
+  updateSession(sessionToken: string, nextExpiredAt: Date): Promise<AdminSession> {
     return this.prisma.adminSession.update({
       where: {
         sessionToken: sessionToken,

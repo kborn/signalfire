@@ -9,8 +9,8 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
-import { ModerationSubmissionService } from './moderation-submission.service';
 import {
   type ModerationReviewRequest,
   ModerationReviewResponse,
@@ -19,10 +19,16 @@ import {
   ModerationSubmissionListFilters,
 } from '@signal-fire/api-contracts';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
-import { SubmissionModerationValidationPipe } from './submission-validation.pipe';
-import { ReviewSubmissionTypeError, UnknownSubmissionTopicsError } from './submission.error';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+import { ModerationSubmissionService } from './moderation-submission.service';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
+import { SubmissionModerationValidationPipe } from '../../submission/submission-validation.pipe';
 
 @Controller('admin/submissions')
+@UseGuards(AdminAuthGuard)
 export class ModerationSubmissionController {
   constructor(private readonly moderationSubmissionService: ModerationSubmissionService) {}
 

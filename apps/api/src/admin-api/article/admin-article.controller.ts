@@ -1,28 +1,29 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   Get,
   Param,
-  Post,
   Patch,
+  Post,
   Query,
-  Body,
-  BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
-import { ArticleService } from './article.service';
-
+import { EntityStatus } from '@prisma/client';
 import type {
   AdminArticleDetailResponse,
   AdminArticleListResponse,
   AdminArticleRequest,
 } from '@signal-fire/api-contracts';
-
-import { EntityStatus } from '@prisma/client';
-import { UnknownSubmissionTopicsError } from '../submission/submission.error';
 import { AdminArticleValidationPipe } from './admin-article-validation.pipe';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+import { AdminArticleService } from './admin-article.service';
+import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
 
 @Controller('admin/articles')
+@UseGuards(AdminAuthGuard)
 export class AdminArticleController {
-  constructor(private readonly articleService: ArticleService) {}
+  constructor(private readonly articleService: AdminArticleService) {}
 
   @Post()
   async create(

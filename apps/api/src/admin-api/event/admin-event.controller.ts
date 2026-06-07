@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EntityStatus } from '@prisma/client';
 import type {
@@ -15,13 +16,15 @@ import type {
   AdminEventListResponse,
   AdminEventRequest,
 } from '@signal-fire/api-contracts';
-import { UnknownSubmissionTopicsError } from '../submission/submission.error';
-import { EventService } from './event.service';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
 import { AdminEventValidationPipe } from './admin-event-validation.pipe';
+import { AdminEventService } from './admin-event.service';
+import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
 
 @Controller('admin/events')
+@UseGuards(AdminAuthGuard)
 export class AdminEventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(private readonly eventService: AdminEventService) {}
 
   @Post()
   async create(

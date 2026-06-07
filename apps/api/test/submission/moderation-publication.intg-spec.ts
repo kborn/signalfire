@@ -4,7 +4,7 @@ import { ArticleService } from '../../src/article/article.service';
 import { ArticleModule } from '../../src/article/article.module';
 import { EventService } from '../../src/event/event.service';
 import { EventModule } from '../../src/event/event.module';
-import { ModerationSubmissionService } from '../../src/submission/moderation-submission.service';
+import { ModerationSubmissionService } from '../../src/admin-api/moderation/moderation-submission.service';
 import { SubmissionModule } from '../../src/submission/submission.module';
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
@@ -59,10 +59,7 @@ describe('Moderation publication integration', () => {
       }),
     );
 
-    const article = await articleService.getArticleDetail(
-      createdRecord.slug!,
-      EntityStatus.PUBLISHED,
-    );
+    const article = await articleService.getArticleDetail(createdRecord.slug!);
     expect(article).toEqual(
       expect.objectContaining({
         title: 'Normalized Article Title',
@@ -108,9 +105,9 @@ describe('Moderation publication integration', () => {
     });
     const createdRecord = requireCreatedRecord(review);
 
-    await expect(
-      articleService.getArticleDetail(createdRecord.slug!, EntityStatus.PUBLISHED),
-    ).rejects.toThrow(NotFoundException);
+    await expect(articleService.getArticleDetail(createdRecord.slug!)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('publishes approved event submissions through public event reads', async () => {

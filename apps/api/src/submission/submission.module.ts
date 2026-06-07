@@ -6,19 +6,12 @@ import { TopicModule } from '../topic/topic.module';
 import { ArticleModule } from '../article/article.module';
 import { SubmissionValidationPipe } from './submission-validation.pipe';
 import { SubmissionController } from './submission.controller';
-import { ModerationSubmissionController } from './moderation-submission.controller';
-import { ModerationSubmissionService } from './moderation-submission.service';
 import { EventModule } from '../event/event.module';
 
 @Module({
   imports: [PrismaModule, TopicModule, ArticleModule, EventModule],
-  providers: [
-    ModerationSubmissionService,
-    SubmissionService,
-    SubmissionRepository,
-    SubmissionValidationPipe,
-  ],
+  providers: [SubmissionService, SubmissionRepository, SubmissionValidationPipe],
   exports: [SubmissionService],
-  controllers: [SubmissionController, ModerationSubmissionController],
+  controllers: [SubmissionController],
 })
 export class SubmissionModule {}
