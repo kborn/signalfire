@@ -251,6 +251,102 @@ Release 1 combines moderation workflow implementation and essential admin editin
 
 ---
 
+### ► Release 1 admin auth uses cookie-backed per-user sessions
+
+###### 2026-06-06
+
+---
+
+###### Decision
+
+Release 1 admin authentication will use per-user login sessions carried by
+cookies rather than bearer tokens or a shared web-to-API credential. Admin
+users authenticate once, the browser stores the resulting session cookie, and
+subsequent admin requests present that cookie so the API can validate the
+logged-in admin user on each request.
+
+###### Rationale
+
+- The admin surface is browser-based and internal, not a public third-party API product.
+- Cookie-backed sessions fit the existing Next web app plus Nest API model with less client-side auth state complexity than bearer tokens.
+- Per-user sessions preserve request-level admin identity at the API boundary.
+- This avoids resending raw credentials on every request and avoids trusting a single shared app credential for all admin traffic.
+
+###### Implications
+
+- Admin login should establish a secure session cookie rather than returning a long-lived browser-managed bearer token as the primary Release 1 mechanism.
+- Admin API routes must validate the session presented on each request.
+- Web-layer route protection and API-layer authorization are both required.
+- Release 1 auth docs and implementation should teach cookie/session behavior as the primary mental model.
+
+---
+
+---
+
+### ► Release 1 admin access uses one manually managed AdminUser model
+
+###### 2026-06-06
+
+---
+
+###### Decision
+
+Release 1 admin access uses a single internal `AdminUser` model with no
+moderator/admin permission split. Admin users may be provisioned and managed
+manually through database, seed, or one-off script operations for the initial
+release.
+
+###### Rationale
+
+- Current Release 1 scope does not require distinct permission levels inside the admin surface.
+- Manual admin-user management is sufficient for a small trusted operator set.
+- Avoids expanding scope into public signup, invitations, password reset, or admin-user CRUD UI.
+- Keeps the first auth implementation narrow enough to finish in Phase 11.9.
+
+###### Implications
+
+- All protected `/admin` routes and admin APIs should require an authenticated `AdminUser`.
+- Release 1 does not include public signup, invite flows, password reset flows, or admin-user management UI.
+- Admin-user creation and lifecycle operations may be performed through database records, seed data, or controlled scripts.
+- Future role splits or broader account-management workflows require explicit scope changes.
+
+---
+
+---
+
+### ► Release 1 admin sessions are database-backed
+
+###### 2026-06-06
+
+---
+
+###### Decision
+
+Release 1 admin sessions will be database-backed. The admin auth cookie will
+carry a session identifier, and the API will resolve that identifier against a
+server-managed session record to determine the current authenticated
+`AdminUser`.
+
+###### Rationale
+
+- Database-backed sessions provide the clearest learning path for understanding login, cookie transport, server-side session lookup, logout, and invalidation.
+- They make session revocation and operational debugging easier than signed-cookie sessions.
+- The additional database lookup is acceptable for the small internal admin surface in Release 1.
+- This keeps the cookie payload simple because it only needs to carry a session identifier rather than signed session state.
+
+###### Implications
+
+- Release 1 should add an admin session persistence model in addition to `AdminUser`.
+- Admin logout should invalidate the backing session record and clear the cookie.
+- Admin request authentication should read the cookie, load the session record, then load or resolve the current `AdminUser`.
+- Release 1 should align cookie lifetime with the rolling server-side session lifetime for the clearest behavior and easiest debugging.
+- Signed-cookie session design is deferred as a later learning or comparison exercise, not the primary Release 1 implementation path.
+- A scheduled expired-session cleanup job is deferred as a later operational or learning enhancement; Release 1 expiration enforcement happens during request-time session validation.
+
+---
+
+---
+
 ### ► Topics are seeded and immutable in Release 1
 
 ###### 2026-03-10
