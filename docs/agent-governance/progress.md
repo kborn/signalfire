@@ -1522,6 +1522,7 @@ Bug fixes, polish, and observability improvements.
 ###### Phase Tasks:
 
 - [ ] Run a full dependency risk review (direct and transitive) and resolve or explicitly defer remaining high-severity findings with documented rationale
+- [ ] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
 
 ---
 
@@ -1572,6 +1573,7 @@ Run the final cross-cutting verification and readiness pass before public launch
 
 - This phase is the final product/repository readiness gate, not a place to introduce new product scope.
 - Public UI polish should remain in Phase 15.5; this phase is for confidence and readiness validation.
+- Broader logging architecture should be decided before this phase, but any final backfill or verification of important operational logs should happen here as part of launch-readiness validation.
 
 ---
 
