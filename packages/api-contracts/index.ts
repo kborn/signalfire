@@ -62,4 +62,4 @@ export type {
   FormValidationError,
   ValidationError,
 } from './submission_type.js';
-export { COOKIE_NAME } from './auth.js';
+export { COOKIE_NAME, type AdminLoginRequest } from './admin-auth.js';

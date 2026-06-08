@@ -1,6 +1,9 @@
 import { AdminAuthRepository } from './admin-auth.repository';
 import { AdminSession, AdminUser } from '@prisma/client';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import bcrypt from 'bcryptjs';
+import * as crypto from 'node:crypto';
+import { getNextExpiration } from './admin-auth.common';
 
 @Injectable()
 export class AdminAuthService {
@@ -24,7 +27,40 @@ export class AdminAuthService {
     return user;
   }
 
-  async reAuthorize(sessionToken: string, nextExpiredAt: Date): Promise<AdminSession> {
-    return await this.adminAuthRepository.updateSession(sessionToken, nextExpiredAt);
+  async reAuthorize(sessionToken: string): Promise<AdminSession> {
+    const updateSessionInput = {
+      sessionToken: sessionToken,
+      expiresAt: getNextExpiration(),
+      lastUsedAt: new Date(),
+    };
+    return await this.adminAuthRepository.updateSession(updateSessionInput);
+  }
+
+  async login(email: string, password: string): Promise<AdminSession> {
+    const user = await this.adminAuthRepository.getAdminUserByEmail(email);
+    if (!user) {
+      throw new UnauthorizedException('Authentication required');
+    }
+
+    if (!user.isActive) {
+      throw new UnauthorizedException('Authentication required');
+    }
+
+    if (!(await this.validatePassword(password, user.passwordHash))) {
+      throw new UnauthorizedException('Authentication required');
+    }
+
+    const createSessionInput = {
+      sessionToken: crypto.randomUUID(),
+      adminUserId: user.id,
+      expiresAt: getNextExpiration(),
+      createdAt: new Date(),
+    };
+
+    return await this.adminAuthRepository.createSession(createSessionInput);
+  }
+
+  private async validatePassword(plainPassword: string, storedHash: string): Promise<boolean> {
+    return await bcrypt.compare(plainPassword, storedHash);
   }
 }

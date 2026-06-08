@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AdminSession, AdminUser } from '@prisma/client';
+import { CreateAdminSessionInput, ReauthrorizeSessionInput } from './admin-auth.repository.type';
 
 @Injectable()
 export class AdminAuthRepository {
@@ -22,13 +23,33 @@ export class AdminAuthRepository {
     });
   }
 
-  updateSession(sessionToken: string, nextExpiredAt: Date): Promise<AdminSession> {
+  getAdminUserByEmail(email: string): Promise<AdminUser | null> {
+    return this.prisma.adminUser.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  }
+
+  updateSession(input: ReauthrorizeSessionInput): Promise<AdminSession> {
     return this.prisma.adminSession.update({
       where: {
-        sessionToken: sessionToken,
+        sessionToken: input.sessionToken,
       },
       data: {
-        expiresAt: nextExpiredAt,
+        expiresAt: input.expiresAt,
+        lastUsedAt: input.lastUsedAt,
+      },
+    });
+  }
+
+  createSession(input: CreateAdminSessionInput): Promise<AdminSession> {
+    return this.prisma.adminSession.create({
+      data: {
+        sessionToken: input.sessionToken,
+        adminUserId: input.adminUserId,
+        createdAt: input.createdAt,
+        expiresAt: input.expiresAt,
       },
     });
   }
