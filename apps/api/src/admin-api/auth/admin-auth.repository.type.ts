@@ -5,8 +5,8 @@ export type CreateAdminSessionInput = {
   createdAt: Date;
 };
 
-export type ReauthrorizeSessionInput = {
+export type UpdateAdminSessionInput = {
   sessionToken: string;
   expiresAt: Date;
-  lastUsedAt: Date;
+  lastUsedAt?: Date;
 };

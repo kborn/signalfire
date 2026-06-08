@@ -60,6 +60,15 @@ export class AdminAuthService {
     return await this.adminAuthRepository.createSession(createSessionInput);
   }
 
+  async logout(sessionToken: string): Promise<void> {
+    const updateSessionInput = {
+      sessionToken: sessionToken,
+      expiresAt: new Date(),
+    };
+
+    return await this.adminAuthRepository.logOutAllUserSessions(updateSessionInput);
+  }
+
   private async validatePassword(plainPassword: string, storedHash: string): Promise<boolean> {
     return await bcrypt.compare(plainPassword, storedHash);
   }

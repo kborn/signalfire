@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { AdminSession, AdminUser } from '@prisma/client';
-import { CreateAdminSessionInput, ReauthrorizeSessionInput } from './admin-auth.repository.type';
+import { CreateAdminSessionInput, UpdateAdminSessionInput } from './admin-auth.repository.type';
 
 @Injectable()
 export class AdminAuthRepository {
@@ -31,16 +31,45 @@ export class AdminAuthRepository {
     });
   }
 
-  updateSession(input: ReauthrorizeSessionInput): Promise<AdminSession> {
+  updateSession(input: UpdateAdminSessionInput): Promise<AdminSession> {
     return this.prisma.adminSession.update({
       where: {
         sessionToken: input.sessionToken,
       },
       data: {
         expiresAt: input.expiresAt,
-        lastUsedAt: input.lastUsedAt,
+        lastUsedAt: input.lastUsedAt ? input.lastUsedAt : undefined,
       },
     });
+  }
+
+  async logOutAllUserSessions(input: UpdateAdminSessionInput): Promise<void> {
+    const session = await this.prisma.adminSession.findUnique({
+      where: { sessionToken: input.sessionToken },
+      select: { adminUserId: true },
+    });
+
+    if (!session) {
+      return;
+    }
+
+    // 2. Run the update in a transaction
+    // Prisma rolls back everything if either operation fails
+    await this.prisma.$transaction([
+      this.prisma.adminSession.updateMany({
+        where: {
+          adminUserId: session.adminUserId,
+          expiresAt: {
+            gt: new Date(),
+          },
+        },
+        data: {
+          expiresAt: input.expiresAt,
+        },
+      }),
+    ]);
+
+    return;
   }
 
   createSession(input: CreateAdminSessionInput): Promise<AdminSession> {
