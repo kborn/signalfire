@@ -11,30 +11,51 @@ async function readJsonBody(response: Response): Promise<unknown> {
 }
 
 export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
-  return makeBrowserRequest<T>(endpoint, queryParams);
+  return makePublicBrowserRequest<T>(endpoint, queryParams);
 }
 
 export async function makeAuthenticatedRequest<T>(
   endpoint: string,
   queryParams?: QueryParams,
 ): Promise<T> {
-  return makeBrowserRequest<T>(endpoint, queryParams, true);
+  return makeAuthenticatedBrowserRequest<T>(endpoint, queryParams);
 }
 
 export async function postJson<T>(endpoint: string, payload: unknown): Promise<T> {
-  return sendJsonRequest<T>(endpoint, 'POST', payload);
+  return sendPublicJsonRequest<T>(endpoint, 'POST', payload);
 }
 
-async function makeBrowserRequest<T>(
+export async function postAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendAuthenticatedJsonRequest<T>(endpoint, 'POST', payload);
+}
+
+export async function patchAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendAuthenticatedJsonRequest<T>(endpoint, 'PATCH', payload);
+}
+
+async function makePublicBrowserRequest<T>(
   endpoint: string,
   queryParams?: QueryParams,
-  includeCredentials: boolean = false,
 ): Promise<T> {
-  const url = buildUrl(endpoint, queryParams);
-  const response = await fetch(url, includeCredentials ? { credentials: 'include' } : undefined);
+  const response = await fetch(buildUrl(endpoint, queryParams));
+  return parseJsonResponse<T>(response, endpoint);
+}
+
+async function makeAuthenticatedBrowserRequest<T>(
+  endpoint: string,
+  queryParams?: QueryParams,
+): Promise<T> {
+  const response = await fetch(buildUrl(endpoint, queryParams), {
+    credentials: 'include',
+  });
+  return parseJsonResponse<T>(response, endpoint);
+}
+
+async function parseJsonResponse<T>(response: Response, endpoint: string): Promise<T> {
   if (!response.ok) {
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
+
   return response.json() as Promise<T>;
 }
 
@@ -68,18 +89,35 @@ function getValidationErrors(body: unknown): ValidationError[] | null {
   return hasValidationErrors(body) ? body.errors : null;
 }
 
-async function sendJsonRequest<T>(
+async function sendPublicJsonRequest<T>(
   endpoint: string,
   method: 'POST' | 'PATCH',
   payload: unknown,
   errorEndpoint: string = endpoint,
-  includeCredentials: boolean = false,
 ): Promise<T> {
-  const url = `${getApiBase()}/${endpoint}`;
-  const response = await fetch(url, {
+  return sendJsonRequest<T>(endpoint, method, payload, errorEndpoint, false);
+}
+
+async function sendAuthenticatedJsonRequest<T>(
+  endpoint: string,
+  method: 'POST' | 'PATCH',
+  payload: unknown,
+  errorEndpoint: string = endpoint,
+): Promise<T> {
+  return sendJsonRequest<T>(endpoint, method, payload, errorEndpoint, true);
+}
+
+async function sendJsonRequest<T>(
+  endpoint: string,
+  method: 'POST' | 'PATCH',
+  payload: unknown,
+  errorEndpoint: string,
+  authenticated: boolean,
+): Promise<T> {
+  const response = await fetch(`${getApiBase()}/${endpoint}`, {
     method,
     headers: { 'Content-Type': 'application/json' },
-    ...(includeCredentials ? { credentials: 'include' as const } : {}),
+    ...(authenticated ? { credentials: 'include' as const } : {}),
     body: JSON.stringify(payload),
   });
 
@@ -100,12 +138,4 @@ async function sendJsonRequest<T>(
   }
 
   return body as T;
-}
-
-export async function postAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
-  return sendJsonRequest<T>(endpoint, 'POST', payload, endpoint, true);
-}
-
-export async function patchAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
-  return sendJsonRequest<T>(endpoint, 'PATCH', payload, endpoint, true);
 }
