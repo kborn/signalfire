@@ -162,7 +162,7 @@ export class EventRepository {
     return await this.prisma.$transaction(async (tx) => {
       const { topicIds, ...eventData } = input;
 
-      const event = await tx.event.create({
+      return tx.event.create({
         data: {
           ...eventData,
           website: eventData.website ?? null,
@@ -180,7 +180,6 @@ export class EventRepository {
         },
         include: eventWithTopicsInclude,
       });
-      return event;
     });
   }
 
@@ -212,7 +211,7 @@ export class EventRepository {
         return new Date();
       }
 
-      const event = await tx.event.update({
+      return tx.event.update({
         where: {
           id: id,
         },
@@ -232,7 +231,6 @@ export class EventRepository {
         },
         include: eventWithTopicsInclude,
       });
-      return event;
     });
   }
 }
