@@ -237,6 +237,62 @@ The important exception is server-rendered page data fetching:
 - Next must forward the cookie to the API for protected admin reads
 - `credentials: 'include'` alone is not enough for that server-side hop
 
+## Request Mode Cheat Sheet
+
+Use this quick rule while coding:
+
+### Use the plain browser helper when:
+
+- the request is public
+- no admin session cookie is needed
+- the browser can call the API without credentials
+
+### Use the browser credentialed helper when:
+
+- the browser is making the request
+- the request needs the admin session cookie
+- examples include login, logout, session check, and browser-side admin writes
+
+### Use the server-only helper when:
+
+- the Next server is making the request during page render
+- the request needs the admin session cookie
+- the server must read the incoming cookie and forward it manually
+
+## Why the current modules look like they do
+
+Current structure:
+
+- `apps/web/src/lib/api/base.ts`
+  - browser-safe request helpers
+- `apps/web/src/lib/api/base.server.ts`
+  - server-only admin request helper with cookie forwarding
+- `apps/web/src/lib/api/admin.ts`
+  - browser-side protected admin mutations
+- `apps/web/src/lib/api/admin.server.ts`
+  - server-rendered protected admin reads
+- `apps/web/src/lib/api/auth.ts`
+  - browser-side session lifecycle requests
+
+This explains the current split:
+
+- `GET` reads often live in `admin.server.ts` because admin pages usually fetch
+  their protected data during server render
+- `POST` and `PATCH` often live in `admin.ts` because forms and moderation
+  actions usually happen from browser interaction after the page is loaded
+
+Do not memorize the split as:
+
+- `GET` means server
+- `POST` means browser
+
+That is not the real rule.
+
+The real rule is:
+
+- if Next is the caller, use the server-only path
+- if the browser is the caller, use the browser path
+
 ### Logout
 
 1. browser calls logout

@@ -251,6 +251,115 @@ This is not duplication for its own sake. It is an explicit boundary between:
 - server-only request behavior
 - browser-safe request behavior
 
+### The three request modes in this repo
+
+There are three different request modes in the web app now.
+
+They look similar in code because all of them eventually call `fetch`, but they
+have different cookie behavior and different module boundaries.
+
+#### 1. Simple browser request
+
+Use this for public browser requests that do not need the admin session.
+
+Example shape:
+
+- browser component or browser-safe helper calls `fetch`
+- request goes directly from browser to API
+- no session cookie is required
+
+In this repo that maps to:
+
+- public content reads
+- public submission creation
+- helpers in `apps/web/src/lib/api/base.ts` that do not opt into credentials
+
+#### 2. Browser request with `credentials: 'include'`
+
+Use this when the browser itself is making the request and the request must
+carry the admin session cookie.
+
+Example shape:
+
+- browser component or browser-safe helper calls `fetch`
+- request goes directly from browser to API
+- browser attaches the cookie because `credentials: 'include'` allows it for a
+  cross-origin request
+
+In this repo that maps to:
+
+- admin login
+- admin logout
+- browser-side `/admin/auth/session` checks
+- browser-side admin mutations such as create, update, and moderation review
+
+Important boundary:
+
+- this works only because the browser is the thing making the API call
+- `credentials: 'include'` does not help if the Next server is the caller
+
+#### 3. Server-side request from Next to the API
+
+Use this when a server-rendered admin page needs protected data before the page
+is sent to the browser.
+
+Example shape:
+
+- browser requests `/admin/actions/...`
+- Next server renders that page
+- during render, Next fetches data from the API
+- that fetch is server-to-server, not browser-to-API
+
+Because the browser is not making that second request, the browser cannot
+attach the cookie automatically.
+
+So the server must:
+
+- read the incoming cookie from the request to Next
+- forward that cookie manually to the API
+
+In this repo that maps to:
+
+- `apps/web/src/lib/api/base.server.ts`
+- `apps/web/src/lib/api/admin.server.ts`
+- server-rendered admin page reads
+
+### Why `GET` reads currently live in `admin.server.ts` and `POST`/`PATCH` live in `admin.ts`
+
+This split is driven by who is making the request, not by the HTTP verb alone.
+
+Right now, most admin reads happen during page rendering:
+
+- admin page loads on the Next server
+- page needs data before it renders
+- Next calls the API on the server
+- cookie must be forwarded manually
+
+That is why those reads live in `admin.server.ts`.
+
+Right now, most admin writes happen from interactive UI actions:
+
+- admin clicks save, approve, reject, or update in the browser
+- browser makes the API request directly
+- browser can send the cookie with `credentials: 'include'`
+
+That is why those mutations live in `admin.ts`.
+
+So the current rule is:
+
+- `admin.server.ts` = server-rendered protected admin reads
+- `admin.ts` = browser-side protected admin mutations
+
+This is a current implementation shape, not a universal law of HTTP:
+
+- a `GET` could be browser-side in another design
+- a `POST` could be server-side in another design
+
+The real question is always:
+
+- is the browser making this request?
+- or is the Next server making this request?
+
 ### Example: a bad partial implementation
 
 Bad pattern:
