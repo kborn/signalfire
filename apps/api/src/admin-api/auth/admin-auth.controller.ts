@@ -1,8 +1,15 @@
-import { Body, Controller, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { AdminAuthService } from './admin-auth.service';
-import { type AdminLoginRequest, COOKIE_NAME } from '@signal-fire/api-contracts';
+import {
+  type AdminLoginRequest,
+  type AdminSessionResponse,
+  COOKIE_NAME,
+} from '@signal-fire/api-contracts';
 import type { Request, Response } from 'express';
 import { clearAdminAuthCookie, setAdminAuthCookie } from './admin-auth.common';
+import { AdminAuthGuard } from './admin-auth.guard';
+import { CurrentAdmin } from './current-admin.decorator';
+import type { AdminUser } from '@prisma/client';
 
 @Controller('admin/auth')
 export class AdminAuthController {
@@ -30,5 +37,17 @@ export class AdminAuthController {
 
     clearAdminAuthCookie(res);
     return { ok: true };
+  }
+
+  @Get('/session')
+  @UseGuards(AdminAuthGuard)
+  session(@CurrentAdmin() adminUser: AdminUser): AdminSessionResponse {
+    return {
+      authenticated: true,
+      adminUser: {
+        id: adminUser.id,
+        email: adminUser.email,
+      },
+    };
   }
 }
