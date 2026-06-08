@@ -188,6 +188,69 @@ The important mental model is:
 - the API still authenticates every protected request by resolving the session
   from that cookie
 
+### Why server-rendered admin pages need cookie forwarding
+
+The browser only automatically attaches cookies to requests that the browser is
+making.
+
+That matters because this repo uses both of these request paths:
+
+1. browser -> API
+2. browser -> Next server -> API
+
+The first path is simple:
+
+- browser has the cookie
+- browser makes the request
+- browser attaches the cookie automatically when the cookie rules allow it
+
+The second path is different:
+
+- browser sends the cookie to the Next app when requesting `/admin/...`
+- the Next server then makes a separate fetch to the API
+- that second fetch is not made by the browser
+- so the browser cannot attach the cookie for it
+
+That means the Next server must explicitly forward the admin session cookie to
+the API when a server-rendered admin page loads protected data.
+
+Important consequence:
+
+- `credentials: 'include'` helps browser-side cross-origin fetches
+- it does not solve server-side fetches made inside Next page code
+
+### Why the server-only fetch helper had to be split from the shared admin API module
+
+The first working fix for server-rendered admin pages was a server-only helper
+that used `next/headers` to read the incoming cookie and forward it to the API.
+
+That helper is correct, but it cannot live inside a module that is also
+imported by client components.
+
+Why:
+
+- `next/headers` is server-only
+- `server-only` markers are server-only
+- client components cannot import code that depends on either of those
+
+In this repo the original `admin.ts` API module was shared by:
+
+- server-rendered admin pages
+- client-side editor and review components
+
+So putting server-only imports in that shared file contaminated the client
+bundle and caused build/runtime errors.
+
+The correct split is:
+
+- `admin.server.ts` for server-rendered admin reads that must forward cookies
+- `admin.ts` for client-safe mutation helpers and browser-side requests
+
+This is not duplication for its own sake. It is an explicit boundary between:
+
+- server-only request behavior
+- browser-safe request behavior
+
 ### Example: a bad partial implementation
 
 Bad pattern:

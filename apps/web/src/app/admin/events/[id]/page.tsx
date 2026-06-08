@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ApiError } from '@/lib/api/error';
-import { getAdminEventDetails } from '@/lib/api/admin';
+import { getAdminEventDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
 import EventMetadataPanel from '@/app/admin/events/_components/EventMetadataPanel';

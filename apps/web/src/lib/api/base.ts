@@ -36,7 +36,7 @@ export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams
 
   const query = params.toString();
   const url = query ? `${getApiBase()}/${endpoint}?${query}` : `${getApiBase()}/${endpoint}`;
-  const response = await fetch(url);
+  const response = await fetch(url, { credentials: 'include' });
   if (!response.ok) {
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
@@ -96,10 +96,10 @@ async function sendJsonRequest<T>(
   errorEndpoint: string = endpoint,
 ): Promise<T> {
   const url = `${getApiBase()}/${endpoint}`;
-
   const response = await fetch(url, {
     method,
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
     body: JSON.stringify(payload),
   });
 

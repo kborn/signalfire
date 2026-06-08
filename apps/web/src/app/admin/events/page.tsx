@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { type EntityStatus } from '@signal-fire/api-contracts';
-import { getAdminEventsList } from '@/lib/api/admin';
+import { getAdminEventsList } from '@/lib/api/admin.server';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 
 export const dynamic = 'force-dynamic';

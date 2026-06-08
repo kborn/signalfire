@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getSubmissionsDetails } from '@/lib/api/admin';
+import { getSubmissionsDetails } from '@/lib/api/admin.server';
 import { TopicListResponse } from '@signal-fire/api-contracts';
 
 import { getTopicsList } from '@/lib/api/topics';

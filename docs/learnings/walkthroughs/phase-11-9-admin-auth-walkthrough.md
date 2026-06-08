@@ -206,7 +206,8 @@ Use this exact mental model while implementing:
 
 1. browser requests `/admin/...`
 2. browser sends the session cookie automatically
-3. web/API auth layer reads the cookie value
+3. if the page itself fetches protected data on the Next server, that server
+   must forward the admin cookie to the API explicitly
 4. API or shared auth lookup loads the `AdminSession`
 5. if `expiresAt <= now`, request is rejected
 6. if still valid, `lastUsedAt`, `expiresAt`, and cookie expiration are rolled
@@ -229,6 +230,12 @@ Use this exact mental model while implementing:
 The important detail is that the browser usually handles this cookie transport
 automatically. The web app does not need to manually carry the session id in
 component state.
+
+The important exception is server-rendered page data fetching:
+
+- browser sends the cookie to Next
+- Next must forward the cookie to the API for protected admin reads
+- `credentials: 'include'` alone is not enough for that server-side hop
 
 ### Logout
 
@@ -277,6 +284,34 @@ cookie itself is the transport mechanism for the authenticated session.
 ## Build Order
 
 ### 1. Add the `AdminUser` model to Prisma
+
+### 10. Split server-only admin reads from client-safe admin mutations
+
+Once login works, the next subtle problem is usually server-rendered admin page
+loads.
+
+Do this exactly:
+
+1. create a server-only API helper that reads the incoming cookie from the Next
+   request and forwards it to the API
+2. keep that helper in a server-only file such as
+   `apps/web/src/lib/api/base.server.ts`
+3. create a server-only admin API module such as
+   `apps/web/src/lib/api/admin.server.ts`
+4. move server-rendered admin read helpers there
+5. leave browser-safe mutation helpers in
+   `apps/web/src/lib/api/admin.ts`
+6. update server-rendered admin pages to import reads from `admin.server.ts`
+7. do not import `next/headers` or `server-only` from any module used by client
+   components
+
+Why this step exists:
+
+- the shared admin API module is often imported by both pages and client
+  components
+- server-only cookie forwarding logic cannot live in a mixed-use module
+- splitting the modules preserves a clean boundary and prevents client-bundle
+  errors
 
 Start in `apps/api/prisma/schema.prisma`.
 

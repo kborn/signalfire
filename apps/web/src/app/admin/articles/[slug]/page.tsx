@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
 import ArticleMetadataPanel from '@/app/admin/articles/_components/ArticleMetadataPanel';
-import { getAdminArticleDetails } from '@/lib/api/admin';
+import { getAdminArticleDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';

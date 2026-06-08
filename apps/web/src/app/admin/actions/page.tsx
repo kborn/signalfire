@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getAdminActionsList } from '@/lib/api/admin';
+import { getAdminActionsList } from '@/lib/api/admin.server';
 import type { EntityStatus } from '@signal-fire/api-contracts';
 
 export const dynamic = 'force-dynamic';

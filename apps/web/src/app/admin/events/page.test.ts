@@ -1,11 +1,11 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getAdminEventsList } from '@/lib/api/admin';
+import { getAdminEventsList } from '@/lib/api/admin.server';
 
 import EventsListPage from './page';
 
-vi.mock('@/lib/api/admin', () => ({
+vi.mock('@/lib/api/admin.server', () => ({
   getAdminEventsList: vi.fn(),
 }));
 

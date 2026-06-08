@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getSubmissionsList } from '@/lib/api/admin';
+import { getSubmissionsList } from '@/lib/api/admin.server';
 import type { SubmissionStatus } from '@signal-fire/api-contracts';
 
 export const dynamic = 'force-dynamic';

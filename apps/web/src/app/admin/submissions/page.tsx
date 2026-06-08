@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
-import { getSubmissionsList } from '@/lib/api/admin';
+import { getSubmissionsList } from '@/lib/api/admin.server';
 export const dynamic = 'force-dynamic';
 
 type SubmissionListPageProps = {

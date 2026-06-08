@@ -1,14 +1,14 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { getAdminEventDetails } from '@/lib/api/admin';
+import { getAdminEventDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 
 import AdminEventDetailPage from './page';
 import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
 import EventMetadataPanel from '@/app/admin/events/_components/EventMetadataPanel';
 
-vi.mock('@/lib/api/admin', () => ({
+vi.mock('@/lib/api/admin.server', () => ({
   getAdminEventDetails: vi.fn(),
 }));
 
