@@ -53,21 +53,17 @@ export class AdminAuthRepository {
       return;
     }
 
-    // 2. Run the update in a transaction
-    // Prisma rolls back everything if either operation fails
-    await this.prisma.$transaction([
-      this.prisma.adminSession.updateMany({
-        where: {
-          adminUserId: session.adminUserId,
-          expiresAt: {
-            gt: new Date(),
-          },
+    await this.prisma.adminSession.updateMany({
+      where: {
+        adminUserId: session.adminUserId,
+        expiresAt: {
+          gt: new Date(),
         },
-        data: {
-          expiresAt: input.expiresAt,
-        },
-      }),
-    ]);
+      },
+      data: {
+        expiresAt: input.expiresAt,
+      },
+    });
 
     return;
   }

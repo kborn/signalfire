@@ -1,16 +1,16 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { AdminAuthService } from './admin-auth.service';
 import { type AdminLoginRequest, COOKIE_NAME } from '@signal-fire/api-contracts';
-import express from 'express';
+import type { Request, Response } from 'express';
 
 @Controller('admin/auth')
-export class AdminActionController {
+export class AdminAuthController {
   constructor(private readonly service: AdminAuthService) {}
 
   @Post('/login')
   async login(
     @Body() reqBody: AdminLoginRequest,
-    @Res({ passthrough: true }) res: express.Response,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<{ ok: boolean }> {
     const session = await this.service.login(reqBody.email, reqBody.password);
     res.cookie(COOKIE_NAME, session.sessionToken, {
@@ -26,8 +26,8 @@ export class AdminActionController {
 
   @Post('/logout')
   async logout(
-    @Req() req: express.Request,
-    @Res({ passthrough: true }) res: express.Response,
+    @Req() req: Request,
+    @Res({ passthrough: true }) res: Response,
   ): Promise<{ ok: boolean }> {
     const sessionToken: unknown = req.cookies[COOKIE_NAME];
     if (typeof sessionToken === 'string' && sessionToken.length > 0) {
