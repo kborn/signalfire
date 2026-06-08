@@ -4,6 +4,7 @@ import { COOKIE_NAME } from '@signal-fire/api-contracts';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminSession } from '@prisma/client';
 import type { Response } from 'express';
+import { setAdminAuthCookie } from './admin-auth.common';
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {
@@ -13,14 +14,7 @@ export class AdminAuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<AdminAuthenticatedRequest>();
     const session = await this.validateRequest(request);
     const response = context.switchToHttp().getResponse<Response>();
-    response.cookie(COOKIE_NAME, session.sessionToken, {
-      httpOnly: true,
-      // TODO: make dynamic based on environment
-      secure: false,
-      sameSite: 'lax',
-      path: '/',
-      expires: session.expiresAt,
-    });
+    setAdminAuthCookie(response, session.sessionToken, session.expiresAt);
     return true;
   }
 
