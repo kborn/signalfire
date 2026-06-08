@@ -360,6 +360,36 @@ The real question is always:
 - is the browser making this request?
 - or is the Next server making this request?
 
+### Why logout should usually be a small client component inside a server layout
+
+Logout is a good example of a UI interaction that belongs in a small client
+island rather than in the whole admin layout.
+
+What logout needs:
+
+- a click handler
+- a browser-side API call to the logout endpoint
+- client-side navigation to the login page
+- possibly a pending or disabled button state while the request is in flight
+
+Those are client concerns.
+
+But that does not mean the whole admin layout should become a client component.
+
+The better pattern is:
+
+- keep the admin layout server-rendered
+- render a small `use client` logout button inside the layout header
+- let only that button own the interaction logic
+
+This keeps the boundary clean:
+
+- server layout owns structure and initial admin page composition
+- client button owns click handling and browser navigation
+
+That pattern is especially appropriate here because logout is not a page-level
+rendering concern. It is a small interactive control.
+
 ### Example: a bad partial implementation
 
 Bad pattern:

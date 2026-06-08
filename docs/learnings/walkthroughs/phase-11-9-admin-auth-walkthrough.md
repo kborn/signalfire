@@ -300,6 +300,30 @@ The real rule is:
 3. API clears the cookie
 4. later `/admin` requests fail authentication and redirect to login
 
+## UI Pattern For Logout
+
+Implement logout as a small client component rendered inside the admin layout,
+not by converting the whole layout to client-side rendering.
+
+Recommended structure:
+
+1. keep `apps/web/src/app/admin/layout.tsx` as the server-rendered layout
+2. add a small client component such as `AdminLogoutButton`
+3. render that button in the layout header
+4. inside the button component:
+   - call `logout()` from `apps/web/src/lib/api/auth.ts`
+   - redirect to `/admin/login`
+   - optionally disable the button while pending
+
+Why this shape is correct:
+
+- the layout still owns page structure
+- the button owns browser interaction
+- only the smallest necessary piece needs `use client`
+
+Do not take this as a signal to convert the whole admin layout or whole admin
+surface to client components just to support logout.
+
 ## Cleanup Policy
 
 Do not block Release 1 on a background cleanup job.

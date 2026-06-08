@@ -1152,7 +1152,9 @@ h3 {
 
 .adminHeader {
   display: grid;
-  gap: var(--space-1);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-4);
+  align-items: center;
 }
 
 .adminHeader h1 {
@@ -1181,10 +1183,24 @@ h3 {
   flex-wrap: wrap;
   gap: var(--space-2);
   align-items: center;
-  padding: 0 0 var(--space-1) 0;
+  padding: 0;
   color: var(--color-text-muted);
   font-size: 0.95rem;
   line-height: 1.2;
+}
+
+.adminNavLabel {
+  grid-column: 1 / -1;
+}
+
+.adminNavWrap {
+  min-width: 0;
+}
+
+.adminHeaderActions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
 }
 
 .adminNavLabel,
@@ -1219,6 +1235,39 @@ h3 {
 .adminNav span[aria-disabled='true'] {
   color: #6b7280;
   cursor: default;
+}
+
+.logoutButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(174, 184, 197, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #d7dee8;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.logoutButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(174, 184, 197, 0.5);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid #d7dee8;
+  outline-offset: 2px;
+}
+
+.logoutButton:active {
+  transform: translateY(1px);
 }
 
 .adminGrid {
