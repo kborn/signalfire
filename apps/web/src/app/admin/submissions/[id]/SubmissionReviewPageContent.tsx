@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import SubmittedContentPanel from './_components/SubmittedContentPanel';
 import SubmissionMetadataPanel from './_components/SubmissionMetadataPanel';
 import SubmissionReviewHeader from './_components/SubmissionReviewHeader';
@@ -22,6 +23,7 @@ import {
 
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { ApiError, SubmissionError } from '@/lib/api/error';
+import { withAdminAuthClientRedirect } from '@/lib/admin/auth-redirect.client';
 import {
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
@@ -209,6 +211,7 @@ export default function SubmissionReviewPageContent({
   submission: ModerationSubmissionDetail;
   topics: TopicListResponse;
 }) {
+  const router = useRouter();
   type ValidationResult<TPayload> =
     | { ok: true; payload: TPayload }
     | { ok: false; errors: ReviewFormErrors };
@@ -530,7 +533,9 @@ export default function SubmissionReviewPageContent({
           ? buildArticleApprovalRequest(entityStatus, validation.payload as ArticleApprovalPayload)
           : buildEventApprovalRequest(entityStatus, validation.payload as EventApprovalPayload);
 
-      const result = await postSubmissionReviewReq(req, submission.id);
+      const result = await withAdminAuthClientRedirect(router, async () =>
+        postSubmissionReviewReq(req, submission.id),
+      );
       setReviewResult(result);
       setIsSuccess(true);
       setIsRejectConfirming(false);
@@ -548,9 +553,8 @@ export default function SubmissionReviewPageContent({
     setErrors({});
 
     try {
-      const rep = await postSubmissionReviewReq(
-        { decision: 'REJECT', reviewNotes: reviewNotes },
-        submission.id,
+      const rep = await withAdminAuthClientRedirect(router, async () =>
+        postSubmissionReviewReq({ decision: 'REJECT', reviewNotes: reviewNotes }, submission.id),
       );
       setIsSuccess(true);
       setReviewResult(rep);

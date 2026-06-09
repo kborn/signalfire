@@ -14,6 +14,7 @@ import {
   validateRequiredString,
 } from '@/lib/submission-form-validation';
 import { useRouter } from 'next/navigation';
+import { withAdminAuthClientRedirect } from '@/lib/admin/auth-redirect.client';
 
 type ArticleEditorInitialValues = {
   slug: string;
@@ -238,9 +239,11 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
     try {
       let result: AdminArticleDetailResponse;
       if (mode === 'create') {
-        result = await createAdminArticle(payload);
+        result = await withAdminAuthClientRedirect(router, async () => createAdminArticle(payload));
       } else {
-        result = await updateAdminArticle(initialValues.slug, payload);
+        result = await withAdminAuthClientRedirect(router, async () =>
+          updateAdminArticle(initialValues.slug, payload),
+        );
       }
 
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });

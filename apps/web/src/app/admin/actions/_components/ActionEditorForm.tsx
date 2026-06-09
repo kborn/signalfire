@@ -16,6 +16,7 @@ import {
   validateRequiredString,
 } from '@/lib/submission-form-validation';
 import { useRouter } from 'next/navigation';
+import { withAdminAuthClientRedirect } from '@/lib/admin/auth-redirect.client';
 
 const ACTION_TYPES: ActionType[] = ['GUIDE', 'LINK', 'CONTACT', 'DONATE', 'VOLUNTEER'];
 
@@ -236,9 +237,11 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
     try {
       let result: AdminActionDetailResponse;
       if (mode === 'create') {
-        result = await createAdminAction(payload);
+        result = await withAdminAuthClientRedirect(router, async () => createAdminAction(payload));
       } else {
-        result = await updateAdminAction(initialValues.slug, payload);
+        result = await withAdminAuthClientRedirect(router, async () =>
+          updateAdminAction(initialValues.slug, payload),
+        );
       }
 
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });

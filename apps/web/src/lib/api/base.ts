@@ -1,5 +1,5 @@
 import { buildUrl, getApiBase, type QueryParams } from '@/lib/api/base.shared';
-import { ApiError, SubmissionError } from '@/lib/api/error';
+import { ApiError, AuthenticationError, SubmissionError } from '@/lib/api/error';
 import { type ValidationError } from '@signal-fire/api-contracts';
 
 async function readJsonBody(response: Response): Promise<unknown> {
@@ -124,6 +124,13 @@ async function sendJsonRequest<T>(
   const body = await readJsonBody(response);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new AuthenticationError(
+        `Authentication failed for ${endpoint}`,
+        response.status,
+        endpoint,
+      );
+    }
     const validationErrors = getValidationErrors(body);
     if (validationErrors) {
       throw new SubmissionError(

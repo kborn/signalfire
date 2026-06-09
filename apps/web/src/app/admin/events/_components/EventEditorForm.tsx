@@ -20,6 +20,7 @@ import {
   validateRequiredString,
 } from '@/lib/submission-form-validation';
 import { useRouter } from 'next/navigation';
+import { withAdminAuthClientRedirect } from '@/lib/admin/auth-redirect.client';
 
 const EVENT_TYPES_VALUES = EVENT_TYPES;
 
@@ -428,9 +429,11 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
     try {
       let result: AdminEventDetailResponse;
       if (mode === 'create') {
-        result = await createAdminEvent(payload);
+        result = await withAdminAuthClientRedirect(router, async () => createAdminEvent(payload));
       } else {
-        result = await updateAdminEvent(initialValues.id, payload);
+        result = await withAdminAuthClientRedirect(router, async () =>
+          updateAdminEvent(initialValues.id, payload),
+        );
       }
 
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });
