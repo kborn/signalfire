@@ -5,6 +5,7 @@ import { getAdminEventDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
 import EventMetadataPanel from '@/app/admin/events/_components/EventMetadataPanel';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
@@ -31,7 +32,9 @@ export default async function AdminEventDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [event, topics] = await Promise.all([fetchEventDetails(params), getTopicsList()]);
+  const [event, topics] = await withAdminAuthRedirect(async () => {
+    return await Promise.all([fetchEventDetails(params), getTopicsList()]);
+  });
 
   return (
     <section className="page-section articleEditorPage">
