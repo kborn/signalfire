@@ -1,30 +1,17 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import { ApiError } from '@/lib/api/error';
 import { getAdminEventDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
 import EventMetadataPanel from '@/app/admin/events/_components/EventMetadataPanel';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
+import { parsePositiveIntOrNotFound, withNotFoundOn404 } from '@/lib/admin/not-found';
 
 export const dynamic = 'force-dynamic';
 
 async function fetchEventDetails(params: Promise<{ id: string }>) {
   const { id } = await params;
-  const eventId = Number(id);
-
-  if (!Number.isInteger(eventId) || eventId < 1) {
-    notFound();
-  }
-
-  try {
-    return await getAdminEventDetails(eventId);
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) {
-      notFound();
-    }
-    throw error;
-  }
+  const eventId = parsePositiveIntOrNotFound(id);
+  return await withNotFoundOn404(async () => getAdminEventDetails(eventId));
 }
 
 export default async function AdminEventDetailPage({

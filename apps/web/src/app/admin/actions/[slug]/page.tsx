@@ -4,8 +4,13 @@ import ActionMetadataPanel from '@/app/admin/actions/_components/ActionMetadataP
 import { getAdminActionDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
+import { withNotFoundOn404 } from '@/lib/admin/not-found';
 
 export const dynamic = 'force-dynamic';
+
+async function fetchActionDetails(slug: string) {
+  return await withNotFoundOn404(async () => getAdminActionDetails(slug));
+}
 
 export default async function AdminActionDetailPage({
   params,
@@ -14,7 +19,7 @@ export default async function AdminActionDetailPage({
 }) {
   const { slug } = await params;
   const [action, topics] = await withAdminAuthRedirect(async () => {
-    return await Promise.all([getAdminActionDetails(slug), getTopicsList()]);
+    return await Promise.all([fetchActionDetails(slug), getTopicsList()]);
   });
 
   return (

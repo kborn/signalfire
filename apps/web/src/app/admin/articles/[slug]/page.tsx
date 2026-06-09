@@ -4,8 +4,13 @@ import ArticleMetadataPanel from '@/app/admin/articles/_components/ArticleMetada
 import { getAdminArticleDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
+import { withNotFoundOn404 } from '@/lib/admin/not-found';
 
 export const dynamic = 'force-dynamic';
+
+async function fetchArticleDetails(slug: string) {
+  return await withNotFoundOn404(async () => getAdminArticleDetails(slug));
+}
 
 export default async function AdminArticleDetailPage({
   params,
@@ -14,7 +19,7 @@ export default async function AdminArticleDetailPage({
 }) {
   const { slug } = await params;
   const [article, topics] = await withAdminAuthRedirect(async () => {
-    return await Promise.all([getAdminArticleDetails(slug), getTopicsList()]);
+    return await Promise.all([fetchArticleDetails(slug), getTopicsList()]);
   });
 
   return (
