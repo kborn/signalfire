@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
 import { getSubmissionsList } from '@/lib/api/admin.server';
 export const dynamic = 'force-dynamic';
@@ -76,10 +77,13 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
   const { status, type } = await searchParams;
   const currentStatus = parseStatus(status);
   const currentType = parseType(type);
-  const submissionList = await getSubmissionsList({
-    status: currentStatus,
-    submissionType: currentType,
+  const submissionList = await withAdminAuthRedirect(async () => {
+    return await getSubmissionsList({
+      status: currentStatus,
+      submissionType: currentType,
+    });
   });
+
   const submissions = submissionList.items;
   const emptyState = getEmptyStateCopy(currentStatus, currentType);
   const tableHeaders = ['Title', 'Type', 'Status', 'Submitted', 'Submitter', 'Email'];

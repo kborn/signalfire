@@ -1,5 +1,6 @@
 import type { EntityStatus } from '@signal-fire/api-contracts';
 import Link from 'next/link';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getAdminArticlesList } from '@/lib/api/admin.server';
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +24,10 @@ function buildArticlesHref(status: EntityStatus) {
 export default async function ArticlesListPage({ searchParams }: ArticleListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const articleList = await getAdminArticlesList({ status: currentStatus });
+  const articleList = await withAdminAuthRedirect(async () => {
+    return await getAdminArticlesList({ status: currentStatus });
+  });
+
   return (
     <section className="page-section articleEditorPage">
       <header className="adminHeader">

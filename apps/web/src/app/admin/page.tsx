@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getSubmissionsList } from '@/lib/api/admin.server';
 import type { SubmissionStatus } from '@signal-fire/api-contracts';
 
@@ -10,11 +11,13 @@ async function getSubmissionCount(status: SubmissionStatus): Promise<number> {
 }
 
 export default async function AdminPage() {
-  const [pendingCount, approvedCount, rejectedCount] = await Promise.all([
-    getSubmissionCount('PENDING'),
-    getSubmissionCount('APPROVED'),
-    getSubmissionCount('REJECTED'),
-  ]);
+  const [pendingCount, approvedCount, rejectedCount] = await withAdminAuthRedirect(async () => {
+    return await Promise.all([
+      getSubmissionCount('PENDING'),
+      getSubmissionCount('APPROVED'),
+      getSubmissionCount('REJECTED'),
+    ]);
+  });
 
   return (
     <section className="page-section">

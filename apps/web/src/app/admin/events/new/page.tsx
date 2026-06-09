@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';
 
 export default async function NewAdminEventPage() {
-  const topics = await getTopicsList();
+  const topics = await withAdminAuthRedirect(async () => {
+    return await getTopicsList();
+  });
 
   return (
     <section className="page-section articleEditorPage">

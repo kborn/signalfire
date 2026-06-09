@@ -3,6 +3,7 @@ import ActionEditorForm from '@/app/admin/actions/_components/ActionEditorForm';
 import ActionMetadataPanel from '@/app/admin/actions/_components/ActionMetadataPanel';
 import { getAdminActionDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,9 @@ export default async function AdminActionDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [action, topics] = await Promise.all([getAdminActionDetails(slug), getTopicsList()]);
+  const [action, topics] = await withAdminAuthRedirect(async () => {
+    return await Promise.all([getAdminActionDetails(slug), getTopicsList()]);
+  });
 
   return (
     <section className="page-section actionEditorPage">

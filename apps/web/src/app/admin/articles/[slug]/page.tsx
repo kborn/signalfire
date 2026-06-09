@@ -3,6 +3,7 @@ import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorFor
 import ArticleMetadataPanel from '@/app/admin/articles/_components/ArticleMetadataPanel';
 import { getAdminArticleDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,9 @@ export default async function AdminArticleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [article, topics] = await Promise.all([getAdminArticleDetails(slug), getTopicsList()]);
+  const [article, topics] = await withAdminAuthRedirect(async () => {
+    return await Promise.all([getAdminArticleDetails(slug), getTopicsList()]);
+  });
 
   return (
     <section className="page-section articleEditorPage">

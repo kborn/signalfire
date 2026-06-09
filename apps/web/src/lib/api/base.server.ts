@@ -3,7 +3,7 @@ import 'server-only';
 import { cookies } from 'next/headers';
 import { COOKIE_NAME } from '@signal-fire/api-contracts';
 import { buildUrl, type QueryParams } from '@/lib/api/base.shared';
-import { ApiError } from '@/lib/api/error';
+import { ApiError, AuthenticationError } from '@/lib/api/error';
 
 export async function makeServerAdminRequest<T>(
   endpoint: string,
@@ -23,6 +23,13 @@ export async function makeServerAdminRequest<T>(
   });
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new AuthenticationError(
+        `Authentication failed for ${endpoint}`,
+        response.status,
+        endpoint,
+      );
+    }
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
 

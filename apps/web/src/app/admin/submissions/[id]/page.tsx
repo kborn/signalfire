@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { getSubmissionsDetails } from '@/lib/api/admin.server';
-import { TopicListResponse } from '@signal-fire/api-contracts';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 import { getTopicsList } from '@/lib/api/topics';
 import SubmissionReviewPageContent from './SubmissionReviewPageContent';
@@ -13,8 +13,9 @@ export default async function SubmissionDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const submission = await getSubmissionsDetails(Number(id));
-  const topics: TopicListResponse = await getTopicsList();
+  const [submission, topics] = await withAdminAuthRedirect(async () => {
+    return await Promise.all([getSubmissionsDetails(Number(id)), getTopicsList()]);
+  });
 
   return (
     <section className="page-section">

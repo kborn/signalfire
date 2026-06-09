@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getAdminActionsList } from '@/lib/api/admin.server';
 import type { EntityStatus } from '@signal-fire/api-contracts';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
@@ -23,7 +24,9 @@ function buildActionsHref(status: EntityStatus) {
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const actionList = await getAdminActionsList({ status: currentStatus });
+  const actionList = await withAdminAuthRedirect(async () => {
+    return getAdminActionsList({ status: currentStatus });
+  });
 
   return (
     <section className="page-section actionEditorPage">

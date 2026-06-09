@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getTopicsList } from '@/lib/api/topics';
 
 export const dynamic = 'force-dynamic';
 
 export default async function NewAdminArticlePage() {
-  const topics = await getTopicsList();
+  const topics = await withAdminAuthRedirect(async () => {
+    return await getTopicsList();
+  });
 
   return (
     <section className="page-section articleEditorPage">

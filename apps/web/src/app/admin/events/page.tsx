@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { type EntityStatus } from '@signal-fire/api-contracts';
 import { getAdminEventsList } from '@/lib/api/admin.server';
 import { formatEventTypeLabel } from '@/lib/common/utils';
+import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,7 +25,9 @@ function buildEventsHref(status: EntityStatus) {
 export default async function EventsListPage({ searchParams }: EventListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const eventList = await getAdminEventsList({ status: currentStatus });
+  const eventList = await withAdminAuthRedirect(async () => {
+    return await getAdminEventsList({ status: currentStatus });
+  });
 
   return (
     <section className="page-section articleEditorPage">
