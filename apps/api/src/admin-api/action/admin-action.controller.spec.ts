@@ -1,5 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+jest.mock('../auth/admin-auth.guard', () => ({
+  AdminAuthGuard: class AdminAuthGuard {},
+}));
 import { AdminActionController } from './admin-action.controller';
 import { AdminActionService } from './admin-action.service';
 import { UnknownSubmissionTopicsError } from '../../submission/submission.error';

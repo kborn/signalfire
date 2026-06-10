@@ -428,6 +428,7 @@ describe('SubmissionRepository', () => {
         country: 'US',
         postalCode: '62701',
         website: 'https://example.com/event',
+        contactEmail: 'user@gmail.com',
         status: EntityStatus.PUBLISHED,
         publishedAt: reviewedAt,
         topicEvents: {

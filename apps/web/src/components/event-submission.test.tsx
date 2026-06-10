@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
@@ -37,18 +37,24 @@ function mockPostEventSubmission() {
   return vi.mocked(postEventSubmission);
 }
 
+function setInputValue(label: string, value: string) {
+  fireEvent.change(screen.getByLabelText(label), {
+    target: { value },
+  });
+}
+
 async function fillRequiredEventFields() {
   const user = userEvent.setup();
 
-  await user.type(screen.getByLabelText('* Title'), '  Transit Rally  ');
-  await user.type(screen.getByLabelText('* Summary'), '  Short event summary  ');
-  await user.type(screen.getByLabelText('* Description'), '  Full event description  ');
+  setInputValue('* Title', '  Transit Rally  ');
+  setInputValue('* Summary', '  Short event summary  ');
+  setInputValue('* Description', '  Full event description  ');
   await user.selectOptions(screen.getByLabelText('* Event Type'), 'RALLY');
-  await user.type(screen.getByLabelText('* Start date and time'), '2026-05-14T17:00');
-  await user.type(screen.getByLabelText('* Location Name'), '  City Hall Plaza  ');
-  await user.type(screen.getByLabelText('* City'), '  Philadelphia  ');
+  setInputValue('* Start date and time', '2026-05-14T17:00');
+  setInputValue('* Location Name', '  City Hall Plaza  ');
+  setInputValue('* City', '  Philadelphia  ');
   await user.selectOptions(screen.getByLabelText('* State'), 'PA');
-  await user.type(screen.getByLabelText('* ZIP Code'), '  19107  ');
+  setInputValue('* ZIP Code', '  19107  ');
   await user.click(screen.getByLabelText('Climate'));
 
   return user;
@@ -107,17 +113,14 @@ describe('EventSubmissionForm', () => {
     render(<EventSubmissionForm topics={topics} />);
 
     const user = await fillRequiredEventFields();
-    await user.type(screen.getByLabelText('End date and time (optional)'), '2026-05-14T19:00');
-    await user.type(screen.getByLabelText('Location Description (optional)'), '  Liberty Plaza  ');
-    await user.type(screen.getByLabelText('Address Line 1 (optional)'), '  1 Main St  ');
-    await user.type(screen.getByLabelText('Address Line 2 (optional)'), '  Ste 1A  ');
-    await user.type(screen.getByLabelText('Contact Email (optional)'), '  organizer@example.org  ');
-    await user.type(screen.getByLabelText('Name (optional)'), '  Sam Submitter  ');
-    await user.type(screen.getByLabelText('Email (optional)'), '  sam@example.org  ');
-    await user.type(
-      screen.getByLabelText('Website URL (optional)'),
-      '  https://example.org/event  ',
-    );
+    setInputValue('End date and time (optional)', '2026-05-14T19:00');
+    setInputValue('Location Description (optional)', '  Liberty Plaza  ');
+    setInputValue('Address Line 1 (optional)', '  1 Main St  ');
+    setInputValue('Address Line 2 (optional)', '  Ste 1A  ');
+    setInputValue('Contact Email (optional)', '  organizer@example.org  ');
+    setInputValue('Name (optional)', '  Sam Submitter  ');
+    setInputValue('Email (optional)', '  sam@example.org  ');
+    setInputValue('Website URL (optional)', '  https://example.org/event  ');
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
@@ -169,8 +172,8 @@ describe('EventSubmissionForm', () => {
     render(<EventSubmissionForm topics={topics} />);
 
     const user = await fillRequiredEventFields();
-    await user.type(screen.getByLabelText('End date and time (optional)'), '2026-05-14T19:00');
-    await user.type(screen.getByLabelText('Contact Email (optional)'), 'organizer@example.org');
+    setInputValue('End date and time (optional)', '2026-05-14T19:00');
+    setInputValue('Contact Email (optional)', 'organizer@example.org');
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
@@ -207,7 +210,7 @@ describe('EventSubmissionForm', () => {
     render(<EventSubmissionForm topics={topics} />);
 
     const user = await fillRequiredEventFields();
-    await user.type(screen.getByLabelText('End date and time (optional)'), '2026-05-14T16:00');
+    setInputValue('End date and time (optional)', '2026-05-14T16:00');
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 
@@ -241,7 +244,7 @@ describe('EventSubmissionForm', () => {
     render(<EventSubmissionForm topics={topics} />);
 
     const user = await fillRequiredEventFields();
-    await user.type(screen.getByLabelText('Contact Email (optional)'), 'not-an-email');
+    setInputValue('Contact Email (optional)', 'not-an-email');
 
     await user.click(screen.getByRole('button', { name: 'Submit Event' }));
 

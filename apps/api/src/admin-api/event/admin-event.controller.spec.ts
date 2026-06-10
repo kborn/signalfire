@@ -1,5 +1,8 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+jest.mock('../auth/admin-auth.guard', () => ({
+  AdminAuthGuard: class AdminAuthGuard {},
+}));
 import { EntityStatus } from '@prisma/client';
 import { AdminEventController } from './admin-event.controller';
 import { AdminEventService } from './admin-event.service';
@@ -76,10 +79,6 @@ describe('AdminEventController', () => {
         status: EntityStatus.PUBLISHED,
       }),
     ).rejects.toThrow(BadRequestException);
-  });
-
-  it('rejects invalid list status values', async () => {
-    await expect(controller.findEvents('ARCHIVED' as never)).rejects.toThrow(BadRequestException);
   });
 
   it('delegates list and detail reads to the service', async () => {

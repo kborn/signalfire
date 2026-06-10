@@ -4,7 +4,6 @@ import request from 'supertest';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
 import { AdminAuthGuard } from '../auth/admin-auth.guard';
-import { AdminAuthService } from '../auth/admin-auth.service';
 import {
   buildModerationReviewRejectRequest,
   buildModerationReviewRejectSuccessResponse,
@@ -22,9 +21,11 @@ jest.mock('@signal-fire/api-contracts', () => ({
   COOKIE_NAME: 'signal-fire-admin',
 }));
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('ModerationSubmissionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Parameters<typeof request>[0];
+  let httpServer: RequestTarget;
 
   const moderationSubmissionServiceMock = {
     reviewSubmission: jest.fn(),
@@ -37,17 +38,15 @@ describe('ModerationSubmissionController HTTP', () => {
       controllers: [ModerationSubmissionController],
       providers: [
         { provide: ModerationSubmissionService, useValue: moderationSubmissionServiceMock },
-        { provide: AdminAuthGuard, useValue: { canActivate: jest.fn().mockReturnValue(true) } },
-        {
-          provide: AdminAuthService,
-          useValue: { isAuthorized: jest.fn(), reAuthorize: jest.fn() },
-        },
       ],
-    }).compile();
+    })
+      .overrideGuard(AdminAuthGuard)
+      .useValue({ canActivate: jest.fn().mockResolvedValue(true) })
+      .compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpServer() as Parameters<typeof request>[0];
+    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
   });
 
   afterEach(async () => {
