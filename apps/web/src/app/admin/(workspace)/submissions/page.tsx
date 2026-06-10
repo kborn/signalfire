@@ -95,10 +95,7 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
       submissions.map((submission) => (
         <tr key={submission.id}>
           <td>
-            <Link
-              href={`/@/app/admin/(workspace)/submissions/${submission.id}`}
-              className="adminTableLink"
-            >
+            <Link href={`submissions/${submission.id}`} className="adminTableLink">
               {submission.title} <span aria-hidden="true">→</span>
             </Link>
             <p className="adminTableCellMeta">{submission.summary}</p>

@@ -2619,3 +2619,200 @@ h3 {
     grid-template-columns: 1fr;
   }
 }
+
+.adminLoginPage {
+  display: grid;
+  align-items: start;
+  min-height: calc(100vh - 8rem);
+  padding: clamp(2rem, 7vw, 5rem) clamp(2rem, 4vw, 3.5rem) 0;
+}
+
+.adminLoginShell {
+  display: grid;
+  grid-template-columns: minmax(25rem, 32rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+  width: min(100%, 90rem);
+  margin: 0 auto;
+}
+
+.adminLoginBrandPanel,
+.adminLoginFormPanel {
+  border: 1px solid rgba(174, 184, 197, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(5, 10, 18, 0.24);
+}
+
+.adminLoginFormPanel {
+  display: grid;
+  align-content: start;
+  gap: clamp(1.1rem, 2vw, 1.6rem);
+  padding: clamp(2rem, 3vw, 2.75rem);
+  align-self: start;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(14, 24, 36, 0.96);
+}
+
+.adminLoginBrandPanel {
+  display: grid;
+  align-content: space-between;
+  align-self: stretch;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 40rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  background:
+    linear-gradient(135deg, rgba(8, 15, 24, 0.74), rgba(20, 31, 46, 0.56)),
+    radial-gradient(circle at top left, rgba(212, 177, 88, 0.18), transparent 34%),
+    url('/bg-motif.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.adminLoginBrandCopy {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid rgba(174, 184, 197, 0.14);
+  border-radius: 20px;
+  background: rgba(8, 15, 24, 0.48);
+  backdrop-filter: blur(10px);
+}
+
+.adminLoginIntro {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.adminLoginEyebrow {
+  margin: 0;
+  color: #97a4b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginTitle {
+  max-width: 10ch;
+  margin: 0;
+}
+
+.adminLoginDek {
+  max-width: 42ch;
+  color: #d4dbe5;
+}
+
+.adminLoginFeatureList {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+}
+
+.adminLoginFeatureItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(174, 184, 197, 0.18);
+  border-radius: 16px;
+  background: rgba(10, 18, 29, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.adminLoginFeatureItem p {
+  margin: 0;
+  color: #d7dee8;
+  line-height: 1.5;
+}
+
+.adminLoginFeatureKicker {
+  color: #f0d084;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginStatusPill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(240, 208, 132, 0.24);
+  border-radius: 999px;
+  background: rgba(240, 208, 132, 0.08);
+  color: #f3db9c;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.adminLoginFormTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.adminLoginFormDek {
+  margin: 0;
+  max-width: 30ch;
+  color: #aeb8c5;
+  line-height: 1.5;
+}
+
+.adminLoginForm {
+  max-width: none;
+  margin-right: 0;
+  gap: 1.1rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+}
+
+.adminLoginControl {
+  border-color: rgba(174, 184, 197, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+}
+
+.adminLoginControl::placeholder {
+  color: #94a3b8;
+}
+
+.adminLoginControl:focus {
+  border-color: #f8fafc;
+  outline-color: #f8fafc;
+}
+
+.adminLoginActions {
+  margin-top: 0.35rem;
+}
+
+.adminLoginButton {
+  min-width: 11rem;
+}
+
+.adminLoginForm .submissionField {
+  gap: 0.5rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 960px) {
+  .adminLoginShell {
+    grid-template-columns: 1fr;
+  }
+
+  .adminLoginBrandPanel,
+  .adminLoginFormPanel {
+    min-height: auto;
+  }
+}

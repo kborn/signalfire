@@ -88,7 +88,7 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
                 <tr key={article.id}>
                   <td colSpan={4}>
                     <Link
-                      href={`/@/app/admin/(workspace)/articles/${article.slug}`}
+                      href={`articles/${article.slug}`}
                       className="adminTableRecordLink adminTableRowLink"
                       aria-label={`Open article ${article.title}`}
                     >
