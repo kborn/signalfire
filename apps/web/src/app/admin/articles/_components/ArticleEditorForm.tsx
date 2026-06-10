@@ -39,6 +39,23 @@ type ArticleEditorFormErrors = {
   topicSlugs?: string;
 };
 
+type ArticleDraft = {
+  title: string;
+  summary: string;
+  content: string;
+  author: string;
+  selectedTopics: string[];
+};
+
+function getArticleDraftKey(
+  mode: 'create' | 'edit',
+  initialValues: ArticleEditorInitialValues,
+): string {
+  return mode === 'create'
+    ? 'admin-draft:article:new'
+    : `admin-draft:article:${initialValues.slug}`;
+}
+
 const articleEditorErrorFieldOrder: Array<keyof ArticleEditorFormErrors> = [
   'title',
   'summary',
@@ -143,9 +160,54 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftReady, setDraftReady] = useState(false);
   const [errors, setErrors] = useState<ArticleEditorFormErrors>({});
 
+  const draftKey = useMemo(() => getArticleDraftKey(mode, initialValues), [mode, initialValues]);
   const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const rawDraft = window.sessionStorage.getItem(draftKey);
+    if (!rawDraft) {
+      setDraftReady(true);
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(rawDraft) as Partial<ArticleDraft>;
+      setTitle(draft.title ?? initialValues.title);
+      setSummary(draft.summary ?? initialValues.summary);
+      setContent(draft.content ?? initialValues.content);
+      setAuthor(draft.author ?? initialValues.author);
+      setSelectedTopics(draft.selectedTopics ?? initialValues.topicSlugs);
+      setDraftRestored(true);
+    } catch {
+      window.sessionStorage.removeItem(draftKey);
+    } finally {
+      setDraftReady(true);
+    }
+  }, [draftKey, initialValues]);
+
+  useEffect(() => {
+    if (!draftReady || typeof window === 'undefined') {
+      return;
+    }
+
+    const draft: ArticleDraft = {
+      title,
+      summary,
+      content,
+      author,
+      selectedTopics,
+    };
+
+    window.sessionStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [author, content, draftKey, draftReady, selectedTopics, summary, title]);
 
   useEffect(() => {
     const firstErrorField = articleEditorErrorFieldOrder.find((field) => errors[field]);
@@ -246,6 +308,10 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
         );
       }
 
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(draftKey);
+      }
+      setDraftRestored(false);
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });
       if (mode === 'create') {
         router.replace(`/admin/articles/${result.slug}`, { scroll: true });
@@ -293,6 +359,15 @@ export default function ArticleEditorForm({ mode, initialValues, topics }: Artic
           <div className="adminReviewBanner articleEditorSuccessBanner" role="status">
             <p className="adminReviewBannerTitle">Article saved</p>
             <p className="adminReviewBannerText">{saveSuccess}</p>
+          </div>
+        ) : null}
+
+        {draftRestored && !saveSuccess ? (
+          <div className="adminReviewBanner" role="status">
+            <p className="adminReviewBannerTitle">Draft restored</p>
+            <p className="adminReviewBannerText">
+              Your unsaved article draft was restored in this browser session.
+            </p>
           </div>
         ) : null}
 

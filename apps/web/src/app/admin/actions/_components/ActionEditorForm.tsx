@@ -43,6 +43,21 @@ type ActionEditorFormErrors = {
   topicSlugs?: string;
 };
 
+type ActionDraft = {
+  title: string;
+  summary: string;
+  description: string;
+  actionType: ActionType;
+  selectedTopics: string[];
+};
+
+function getActionDraftKey(
+  mode: 'create' | 'edit',
+  initialValues: ActionEditorInitialValues,
+): string {
+  return mode === 'create' ? 'admin-draft:action:new' : `admin-draft:action:${initialValues.slug}`;
+}
+
 const actionEditorErrorFieldOrder: Array<keyof ActionEditorFormErrors> = [
   'title',
   'summary',
@@ -147,9 +162,54 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftReady, setDraftReady] = useState(false);
   const [errors, setErrors] = useState<ActionEditorFormErrors>({});
 
+  const draftKey = useMemo(() => getActionDraftKey(mode, initialValues), [mode, initialValues]);
   const selectedTopicSet = useMemo(() => new Set(selectedTopics), [selectedTopics]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const rawDraft = window.sessionStorage.getItem(draftKey);
+    if (!rawDraft) {
+      setDraftReady(true);
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(rawDraft) as Partial<ActionDraft>;
+      setTitle(draft.title ?? initialValues.title);
+      setSummary(draft.summary ?? initialValues.summary);
+      setDescription(draft.description ?? initialValues.description);
+      setActionType(draft.actionType ?? initialValues.actionType);
+      setSelectedTopics(draft.selectedTopics ?? initialValues.topicSlugs);
+      setDraftRestored(true);
+    } catch {
+      window.sessionStorage.removeItem(draftKey);
+    } finally {
+      setDraftReady(true);
+    }
+  }, [draftKey, initialValues]);
+
+  useEffect(() => {
+    if (!draftReady || typeof window === 'undefined') {
+      return;
+    }
+
+    const draft: ActionDraft = {
+      title,
+      summary,
+      description,
+      actionType,
+      selectedTopics,
+    };
+
+    window.sessionStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [actionType, description, draftKey, draftReady, selectedTopics, summary, title]);
 
   useEffect(() => {
     const firstErrorField = actionEditorErrorFieldOrder.find((field) => errors[field]);
@@ -244,6 +304,10 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
         );
       }
 
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(draftKey);
+      }
+      setDraftRestored(false);
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });
       if (mode === 'create') {
         router.replace(`/admin/actions/${result.slug}`, { scroll: true });
@@ -291,6 +355,15 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
           <div className="adminReviewBanner actionEditorSuccessBanner" role="status">
             <p className="adminReviewBannerTitle">Action saved</p>
             <p className="adminReviewBannerText">{saveSuccess}</p>
+          </div>
+        ) : null}
+
+        {draftRestored && !saveSuccess ? (
+          <div className="adminReviewBanner" role="status">
+            <p className="adminReviewBannerTitle">Draft restored</p>
+            <p className="adminReviewBannerText">
+              Your unsaved action draft was restored in this browser session.
+            </p>
           </div>
         ) : null}
 

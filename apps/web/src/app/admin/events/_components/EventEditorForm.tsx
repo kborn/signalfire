@@ -70,6 +70,31 @@ type EventEditorFormErrors = {
   topicSlugs?: string;
 };
 
+type EventDraft = {
+  title: string;
+  summary: string;
+  content: string;
+  eventType: EventType;
+  startTime: string;
+  endTime: string;
+  locationName: string;
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  region: string;
+  country: string;
+  postalCode: string;
+  website: string;
+  topicSlugs: string[];
+};
+
+function getEventDraftKey(
+  mode: 'create' | 'edit',
+  initialValues: EventEditorInitialValues,
+): string {
+  return mode === 'create' ? 'admin-draft:event:new' : `admin-draft:event:${initialValues.id}`;
+}
+
 const eventEditorErrorFieldOrder: Array<keyof EventEditorFormErrors> = [
   'title',
   'summary',
@@ -229,9 +254,92 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftReady, setDraftReady] = useState(false);
   const [errors, setErrors] = useState<EventEditorFormErrors>({});
 
+  const draftKey = useMemo(() => getEventDraftKey(mode, initialValues), [mode, initialValues]);
   const selectedTopicSet = useMemo(() => new Set(topicSlugs), [topicSlugs]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    const rawDraft = window.sessionStorage.getItem(draftKey);
+    if (!rawDraft) {
+      setDraftReady(true);
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(rawDraft) as Partial<EventDraft>;
+      setTitle(draft.title ?? initialValues.title);
+      setSummary(draft.summary ?? initialValues.summary);
+      setContent(draft.content ?? initialValues.content);
+      setEventType(draft.eventType ?? initialValues.eventType);
+      setStartTime(draft.startTime ?? toDateTimeLocalValue(initialValues.startTime));
+      setEndTime(draft.endTime ?? toDateTimeLocalValue(initialValues.endTime));
+      setLocationName(draft.locationName ?? initialValues.locationName);
+      setAddressLine1(draft.addressLine1 ?? initialValues.addressLine1 ?? '');
+      setAddressLine2(draft.addressLine2 ?? initialValues.addressLine2 ?? '');
+      setCity(draft.city ?? initialValues.city);
+      setRegion(draft.region ?? initialValues.region);
+      setCountry(draft.country ?? initialValues.country);
+      setPostalCode(draft.postalCode ?? initialValues.postalCode);
+      setWebsite(draft.website ?? initialValues.website ?? '');
+      setTopicSlugs(draft.topicSlugs ?? initialValues.topicSlugs);
+      setDraftRestored(true);
+    } catch {
+      window.sessionStorage.removeItem(draftKey);
+    } finally {
+      setDraftReady(true);
+    }
+  }, [draftKey, initialValues]);
+
+  useEffect(() => {
+    if (!draftReady || typeof window === 'undefined') {
+      return;
+    }
+
+    const draft: EventDraft = {
+      title,
+      summary,
+      content,
+      eventType,
+      startTime,
+      endTime,
+      locationName,
+      addressLine1,
+      addressLine2,
+      city,
+      region,
+      country,
+      postalCode,
+      website,
+      topicSlugs,
+    };
+
+    window.sessionStorage.setItem(draftKey, JSON.stringify(draft));
+  }, [
+    addressLine1,
+    addressLine2,
+    city,
+    content,
+    country,
+    draftKey,
+    draftReady,
+    endTime,
+    eventType,
+    locationName,
+    postalCode,
+    region,
+    startTime,
+    summary,
+    title,
+    topicSlugs,
+    website,
+  ]);
 
   useEffect(() => {
     const firstErrorField = eventEditorErrorFieldOrder.find((field) => errors[field]);
@@ -436,6 +544,10 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
         );
       }
 
+      if (typeof window !== 'undefined') {
+        window.sessionStorage.removeItem(draftKey);
+      }
+      setDraftRestored(false);
       window.scrollTo({ top: 0, behavior: getScrollBehavior() });
       if (mode === 'create') {
         router.replace(`/admin/events/${result.id}`, { scroll: true });
@@ -483,6 +595,15 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
           <div className="adminReviewBanner actionEditorSuccessBanner" role="status">
             <p className="adminReviewBannerTitle">Event saved</p>
             <p className="adminReviewBannerText">{saveSuccess}</p>
+          </div>
+        ) : null}
+
+        {draftRestored && !saveSuccess ? (
+          <div className="adminReviewBanner" role="status">
+            <p className="adminReviewBannerTitle">Draft restored</p>
+            <p className="adminReviewBannerText">
+              Your unsaved event draft was restored in this browser session.
+            </p>
           </div>
         ) : null}
 

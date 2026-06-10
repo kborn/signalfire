@@ -6,7 +6,11 @@ export function redirectClientIfAuthenticationError(
   router: AppRouterInstance,
 ): never | void {
   if (error instanceof AuthenticationError) {
-    router.push('/admin/login');
+    const next =
+      typeof window === 'undefined'
+        ? '/admin'
+        : `${window.location.pathname}${window.location.search}`;
+    router.push(`/admin/login?next=${encodeURIComponent(next)}`);
   }
 }
 
