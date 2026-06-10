@@ -1,7 +1,7 @@
 import 'server-only';
 
 import { cookies } from 'next/headers';
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 import { buildUrl, type QueryParams } from '@/lib/api/base.shared';
 import { ApiError, AuthenticationError } from '@/lib/api/error';
 

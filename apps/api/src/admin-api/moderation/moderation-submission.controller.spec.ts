@@ -15,10 +15,6 @@ import {
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
 
-jest.mock('@signal-fire/api-contracts', () => ({
-  COOKIE_NAME: 'signal-fire-admin',
-}));
-
 describe('ModerationSubmissionController', () => {
   let controller: ModerationSubmissionController;
 

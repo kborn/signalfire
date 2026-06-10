@@ -1,4 +1,4 @@
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 
 export type ParsedAdminSessionCookie = {
   name: string;

@@ -1,6 +1,6 @@
 import { AdminAuthService } from './admin-auth.service';
 import { AdminAuthenticatedRequest } from './admin-auth.request';
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { AdminSession } from '@prisma/client';
 import type { Response } from 'express';

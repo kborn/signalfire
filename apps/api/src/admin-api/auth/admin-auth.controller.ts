@@ -1,10 +1,7 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import type { AdminLoginRequest, AdminSessionResponse } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 import { AdminAuthService } from './admin-auth.service';
-import {
-  type AdminLoginRequest,
-  type AdminSessionResponse,
-  COOKIE_NAME,
-} from '@signal-fire/api-contracts';
 import type { Request, Response } from 'express';
 import { clearAdminAuthCookie, setAdminAuthCookie } from './admin-auth.common';
 import { AdminAuthGuard } from './admin-auth.guard';

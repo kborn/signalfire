@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 import { buildUrl } from '@/lib/api/base.shared';
 import {
   buildAdminLoginRedirectPath,

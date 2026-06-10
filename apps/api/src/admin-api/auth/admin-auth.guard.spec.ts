@@ -3,11 +3,7 @@ import type { ExecutionContext } from '@nestjs/common';
 import type { AdminSession, AdminUser } from '@prisma/client';
 import type { Response } from 'express';
 
-jest.mock('@signal-fire/api-contracts', () => ({
-  COOKIE_NAME: 'signal-fire-admin',
-}));
-
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 
 import { AdminAuthGuard } from './admin-auth.guard';
 import type { AdminAuthenticatedRequest } from './admin-auth.request';

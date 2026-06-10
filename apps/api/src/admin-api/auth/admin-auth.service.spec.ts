@@ -3,10 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import type { AdminSession, AdminUser } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
-jest.mock('@signal-fire/api-contracts', () => ({
-  COOKIE_NAME: 'signal-fire-admin',
-}));
-
 import { AdminAuthRepository } from './admin-auth.repository';
 import { AdminAuthService } from './admin-auth.service';
 

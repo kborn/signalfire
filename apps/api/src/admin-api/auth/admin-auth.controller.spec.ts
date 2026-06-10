@@ -2,11 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import type { AdminSession, AdminUser } from '@prisma/client';
 import type { Request, Response } from 'express';
 
-jest.mock('@signal-fire/api-contracts', () => ({
-  COOKIE_NAME: 'signal-fire-admin',
-}));
-
-import { COOKIE_NAME } from '@signal-fire/api-contracts';
+import { COOKIE_NAME } from '@signal-fire/admin-auth-shared';
 
 import { AdminAuthController } from './admin-auth.controller';
 import { AdminAuthService } from './admin-auth.service';
