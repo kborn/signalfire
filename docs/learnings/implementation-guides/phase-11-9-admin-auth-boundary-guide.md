@@ -219,6 +219,63 @@ Important consequence:
 - `credentials: 'include'` helps browser-side cross-origin fetches
 - it does not solve server-side fetches made inside Next page code
 
+### Why this repo now uses middleware at the admin page boundary
+
+This repo now uses Next middleware for the `/admin` route boundary instead of a
+client-side session refresher timer.
+
+The middleware flow is:
+
+1. browser requests `/admin/...`
+2. Next middleware runs before the page renders
+3. middleware forwards the current admin cookie to the API session endpoint
+4. API validates the session and may return a refreshed `Set-Cookie`
+5. middleware either:
+   - redirects to `/admin/login?next=...` when auth fails, or
+   - copies the refreshed cookie onto the outgoing Next response
+6. browser receives the redirect or the refreshed cookie as part of the normal
+   page response
+
+This solves the important server-render boundary problem:
+
+- API can still own session validation
+- Next can still own browser redirects and browser cookie updates for page
+  requests
+
+### Why middleware is stronger than a polling refresher
+
+A client refresher can work, but it is not the strongest architecture for this
+repo.
+
+Polling behavior would mean:
+
+- a timer runs while the admin page is open
+- session can stay alive because of background refreshes
+- cookie refresh depends on client-side lifecycle behavior
+
+Middleware behavior means:
+
+- auth checks happen on real admin navigation/request boundaries
+- session stays alive because the admin is actively using protected routes
+- idle page-open time does not automatically extend the session
+
+That is a cleaner sliding idle-session model for an internal admin surface.
+
+### Plain-language mental model for the new flow
+
+Think of it this way:
+
+- the API decides whether the session is valid
+- the middleware stands at the web front door for `/admin`
+- if the API says "no", middleware sends you to login
+- if the API says "yes, and here is a refreshed cookie", middleware hands that
+  refreshed cookie to the browser
+
+So middleware is not replacing API auth.
+
+It is translating API auth results into correct browser behavior for
+server-rendered admin page requests.
+
 ### Why the server-only fetch helper had to be split from the shared admin API module
 
 The first working fix for server-rendered admin pages was a server-only helper
