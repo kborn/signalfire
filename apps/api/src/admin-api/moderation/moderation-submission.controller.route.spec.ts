@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import request from 'supertest';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+import { AdminAuthService } from '../auth/admin-auth.service';
 import {
   buildModerationReviewRejectRequest,
   buildModerationReviewRejectSuccessResponse,
@@ -15,6 +17,10 @@ import {
   ReviewSubmissionTypeError,
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
+
+jest.mock('@signal-fire/api-contracts', () => ({
+  COOKIE_NAME: 'signal-fire-admin',
+}));
 
 describe('ModerationSubmissionController HTTP', () => {
   let app: INestApplication;
@@ -31,6 +37,11 @@ describe('ModerationSubmissionController HTTP', () => {
       controllers: [ModerationSubmissionController],
       providers: [
         { provide: ModerationSubmissionService, useValue: moderationSubmissionServiceMock },
+        { provide: AdminAuthGuard, useValue: { canActivate: jest.fn().mockReturnValue(true) } },
+        {
+          provide: AdminAuthService,
+          useValue: { isAuthorized: jest.fn(), reAuthorize: jest.fn() },
+        },
       ],
     }).compile();
 
@@ -40,7 +51,9 @@ describe('ModerationSubmissionController HTTP', () => {
   });
 
   afterEach(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
   });
 
   it('POST moderation rejection returns appropriate response', async () => {

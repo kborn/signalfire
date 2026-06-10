@@ -57,7 +57,7 @@ describe('AdminArticleController', () => {
   });
 
   it('rejects invalid list status values', async () => {
-    await expect(controller.findArticles('ARCHIVED')).rejects.toThrow(BadRequestException);
+    await expect(controller.findArticles('ARCHIVED' as never)).rejects.toThrow(BadRequestException);
   });
 
   it('delegates list and detail reads to the service', async () => {

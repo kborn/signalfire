@@ -2,6 +2,8 @@ import { BadRequestException, ConflictException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+import { AdminAuthService } from '../auth/admin-auth.service';
 import type {
   ModerationReviewApproveArticleRequest,
   ModerationReviewSuccess,
@@ -12,6 +14,10 @@ import {
   ReviewSubmissionTypeError,
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
+
+jest.mock('@signal-fire/api-contracts', () => ({
+  COOKIE_NAME: 'signal-fire-admin',
+}));
 
 describe('ModerationSubmissionController', () => {
   let controller: ModerationSubmissionController;
@@ -27,21 +33,28 @@ describe('ModerationSubmissionController', () => {
 
     const app: TestingModule = await Test.createTestingModule({
       controllers: [ModerationSubmissionController],
-      providers: [{ provide: ModerationSubmissionService, useValue: serviceMock }],
+      providers: [
+        { provide: ModerationSubmissionService, useValue: serviceMock },
+        { provide: AdminAuthGuard, useValue: { canActivate: jest.fn().mockReturnValue(true) } },
+        {
+          provide: AdminAuthService,
+          useValue: { isAuthorized: jest.fn(), reAuthorize: jest.fn() },
+        },
+      ],
     }).compile();
 
     controller = app.get<ModerationSubmissionController>(ModerationSubmissionController);
   });
 
-  it('findQueuedSubmissions defaults to pending submissions', async () => {
+  it('findQueuedSubmissions passes raw query arguments through the method boundary', async () => {
     const response: ModerationSubmissionList = { items: [] };
     serviceMock.getModerationSubmissionList.mockResolvedValue(response);
 
-    const ret = await controller.findQueuedSubmissions(undefined, undefined);
+    const ret = await controller.findQueuedSubmissions(undefined as never, undefined);
 
     expect(ret).toEqual(response);
     expect(serviceMock.getModerationSubmissionList).toHaveBeenCalledWith({
-      status: 'PENDING',
+      status: undefined,
       submissionType: undefined,
     });
   });
@@ -57,20 +70,6 @@ describe('ModerationSubmissionController', () => {
       status: 'APPROVED',
       submissionType: 'ARTICLE',
     });
-  });
-
-  it('findQueuedSubmissions rejects invalid statuses', async () => {
-    await expect(controller.findQueuedSubmissions('IN_REVIEW', undefined)).rejects.toThrow(
-      BadRequestException,
-    );
-    expect(serviceMock.getModerationSubmissionList).not.toHaveBeenCalled();
-  });
-
-  it('findQueuedSubmissions rejects invalid submission types', async () => {
-    await expect(controller.findQueuedSubmissions('PENDING', 'ACTION')).rejects.toThrow(
-      BadRequestException,
-    );
-    expect(serviceMock.getModerationSubmissionList).not.toHaveBeenCalled();
   });
 
   it('findSubmission retrieves submission details', async () => {

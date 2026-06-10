@@ -26,6 +26,10 @@ import {
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
 import { SubmissionModerationValidationPipe } from '../../submission/submission-validation.pipe';
+import {
+  OptionalSubmissionTypeQueryPipe,
+  SubmissionStatusQueryPipe,
+} from '../query/admin-query-validation.pipe';
 
 @Controller('admin/submissions')
 @UseGuards(AdminAuthGuard)
@@ -34,12 +38,13 @@ export class ModerationSubmissionController {
 
   @Get()
   async findQueuedSubmissions(
-    @Query('status') submissionStatus?: string,
-    @Query('submissionType') submissionType?: string,
+    @Query('status', new SubmissionStatusQueryPipe()) submissionStatus: SubmissionStatus,
+    @Query('submissionType', new OptionalSubmissionTypeQueryPipe())
+    submissionType?: SubmissionType,
   ): Promise<ModerationSubmissionList> {
     const filters: ModerationSubmissionListFilters = {
-      status: this.parseSubmissionStatus(submissionStatus),
-      submissionType: this.parseSubmissionType(submissionType),
+      status: submissionStatus,
+      submissionType: submissionType,
     };
     return this.moderationSubmissionService.getModerationSubmissionList(filters);
   }
@@ -49,30 +54,6 @@ export class ModerationSubmissionController {
     @Param('id', ParseIntPipe) submissionId: number,
   ): Promise<ModerationSubmissionDetail> {
     return this.moderationSubmissionService.getModerationSubmissionDetails(submissionId);
-  }
-
-  private parseSubmissionStatus(value: string | undefined): SubmissionStatus {
-    if (value == null) {
-      return 'PENDING';
-    }
-
-    if (value === 'PENDING' || value === 'APPROVED' || value === 'REJECTED') {
-      return value;
-    }
-
-    throw new BadRequestException('Invalid submission status');
-  }
-
-  private parseSubmissionType(value: string | undefined): SubmissionType | undefined {
-    if (value == null) {
-      return undefined;
-    }
-
-    if (value === 'ARTICLE' || value === 'EVENT') {
-      return value;
-    }
-
-    throw new BadRequestException('Invalid submission type');
   }
 
   @Post('/:id/review')

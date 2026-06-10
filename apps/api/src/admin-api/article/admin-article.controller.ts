@@ -19,6 +19,7 @@ import { AdminArticleValidationPipe } from './admin-article-validation.pipe';
 import { AdminAuthGuard } from '../auth/admin-auth.guard';
 import { AdminArticleService } from './admin-article.service';
 import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
+import { OptionalEntityStatusQueryPipe } from '../query/admin-query-validation.pipe';
 
 @Controller('admin/articles')
 @UseGuards(AdminAuthGuard)
@@ -71,21 +72,11 @@ export class AdminArticleController {
     }
   }
 
-  private parsePublishedStatus(value: string | undefined): EntityStatus | null {
-    if (value == null) {
-      return null;
-    }
-
-    if (value === 'PUBLISHED' || value === 'DRAFT') {
-      return value;
-    }
-
-    throw new BadRequestException('Invalid entity status');
-  }
-
   @Get()
-  async findArticles(@Query('status') publishedStatus?: string): Promise<AdminArticleListResponse> {
-    return this.articleService.getAdminArticleList(this.parsePublishedStatus(publishedStatus));
+  async findArticles(
+    @Query('status', new OptionalEntityStatusQueryPipe()) publishedStatus: EntityStatus | null,
+  ): Promise<AdminArticleListResponse> {
+    return this.articleService.getAdminArticleList(publishedStatus);
   }
 
   @Get('/:slug')

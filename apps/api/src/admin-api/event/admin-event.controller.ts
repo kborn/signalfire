@@ -20,6 +20,7 @@ import { AdminAuthGuard } from '../auth/admin-auth.guard';
 import { AdminEventValidationPipe } from './admin-event-validation.pipe';
 import { AdminEventService } from './admin-event.service';
 import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
+import { OptionalEntityStatusQueryPipe } from '../query/admin-query-validation.pipe';
 
 @Controller('admin/events')
 @UseGuards(AdminAuthGuard)
@@ -73,21 +74,11 @@ export class AdminEventController {
     }
   }
 
-  private parsePublishedStatus(value: string | undefined): EntityStatus | null {
-    if (value == null) {
-      return null;
-    }
-
-    if (value === 'PUBLISHED' || value === 'DRAFT') {
-      return value;
-    }
-
-    throw new BadRequestException('Invalid entity status');
-  }
-
   @Get()
-  async findEvents(@Query('status') publishedStatus?: string): Promise<AdminEventListResponse> {
-    return this.eventService.getAdminEventList(this.parsePublishedStatus(publishedStatus));
+  async findEvents(
+    @Query('status', new OptionalEntityStatusQueryPipe()) publishedStatus: EntityStatus | null,
+  ): Promise<AdminEventListResponse> {
+    return this.eventService.getAdminEventList(publishedStatus);
   }
 
   @Get('/:id')

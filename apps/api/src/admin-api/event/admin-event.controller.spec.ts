@@ -79,7 +79,7 @@ describe('AdminEventController', () => {
   });
 
   it('rejects invalid list status values', async () => {
-    await expect(controller.findEvents('ARCHIVED')).rejects.toThrow(BadRequestException);
+    await expect(controller.findEvents('ARCHIVED' as never)).rejects.toThrow(BadRequestException);
   });
 
   it('delegates list and detail reads to the service', async () => {
