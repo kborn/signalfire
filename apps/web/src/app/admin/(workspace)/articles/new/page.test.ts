@@ -10,7 +10,7 @@ vi.mock('@/lib/api/topics', () => ({
   getTopicsList: vi.fn(),
 }));
 
-vi.mock('@/app/admin/articles/_components/ArticleEditorForm', () => ({
+vi.mock('@/app/admin/(workspace)/articles/_components/ArticleEditorForm', () => ({
   default: vi.fn(() => null),
 }));
 

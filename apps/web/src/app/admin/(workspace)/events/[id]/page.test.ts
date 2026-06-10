@@ -16,11 +16,11 @@ vi.mock('@/lib/api/topics', () => ({
   getTopicsList: vi.fn(),
 }));
 
-vi.mock('@/app/admin/events/_components/EventEditorForm', () => ({
+vi.mock('@/app/admin/(workspace)/events/_components/EventEditorForm', () => ({
   default: vi.fn(() => null),
 }));
 
-vi.mock('@/app/admin/events/_components/EventMetadataPanel', () => ({
+vi.mock('@/app/admin/(workspace)/events/_components/EventMetadataPanel', () => ({
   default: vi.fn(() => null),
 }));
 

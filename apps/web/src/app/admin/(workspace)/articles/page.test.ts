@@ -50,12 +50,12 @@ describe('ArticleListPage', () => {
     expect(markup).toContain('Articles');
     expect(markup).toContain('Create and maintain curated public articles.');
     expect(markup).toContain('href="/admin/articles/new"');
-    expect(markup).toContain('href="/admin/articles/climate-policy-basics"');
+    expect(markup).toContain('href="articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
     expect(markup).toContain('DRAFT');
     expect(markup).toContain('Climate');
-    expect(markup).toContain('href="/admin/articles/education-funding-101"');
+    expect(markup).toContain('href="articles/education-funding-101"');
     expect(markup).toContain('Education Funding 101');
     expect(markup).toContain('Understand how school funding decisions are made.');
     expect(markup).toContain('PUBLISHED');

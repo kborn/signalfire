@@ -6,6 +6,16 @@ import SubmissionReviewPageContent from '@/app/admin/(workspace)/submissions/[id
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { SubmissionError } from '@/lib/api/error';
 
+const routerMock = vi.hoisted(() => ({
+  push: vi.fn(),
+  refresh: vi.fn(),
+  replace: vi.fn(),
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => routerMock,
+}));
+
 const topics = {
   items: [
     {
