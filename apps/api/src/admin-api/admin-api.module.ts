@@ -36,5 +36,6 @@ import { ModerationSubmissionService } from './moderation/moderation-submission.
     AdminEventController,
     ModerationSubmissionController,
   ],
+  exports: [ModerationSubmissionService],
 })
 export class AdminApiModule {}

@@ -6,6 +6,7 @@ import { EventService } from '../../src/event/event.service';
 import { EventModule } from '../../src/event/event.module';
 import { ModerationSubmissionService } from '../../src/admin-api/moderation/moderation-submission.service';
 import { SubmissionModule } from '../../src/submission/submission.module';
+import { SubmissionRepository } from '../../src/submission/submission.repository';
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
 import { createSubmission } from '../factories/submission.factory';
@@ -21,7 +22,10 @@ function requireCreatedRecord(review: ModerationReviewResponse) {
 }
 
 describe('Moderation publication integration', () => {
-  const harness = setupIntegrationTest([SubmissionModule, ArticleModule, EventModule, TopicModule]);
+  const harness = setupIntegrationTest({
+    imports: [SubmissionModule, ArticleModule, EventModule, TopicModule],
+    providers: [ModerationSubmissionService, SubmissionRepository],
+  });
 
   it('publishes approved article submissions through public article and topic reads', async () => {
     const moderationService = harness.module.get(ModerationSubmissionService);
