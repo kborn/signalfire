@@ -62,3 +62,4 @@ export type {
   FormValidationError,
   ValidationError,
 } from './submission_type.js';
+export type { AdminLoginRequest, AdminSessionResponse } from './admin-auth.js';

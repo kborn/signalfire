@@ -26,6 +26,7 @@ Implemented areas:
 - moderation queue and review actions for submissions
 - editorial normalization before approval
 - publication mapping from approved submissions into public records
+- deployed admin authentication and access control
 - demo seed content for portfolio/screenshot review
 
 Not included in Release 1:
@@ -33,7 +34,6 @@ Not included in Release 1:
 - public user accounts
 - social feed/comment features
 - production deployment hardening
-- deployed admin authentication/authorization
 - topic CRUD beyond seeded Release 1 topics
 
 ## Architecture
@@ -134,7 +134,17 @@ Featured screenshots:
 ## Demo Review
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
-submissions suitable for local portfolio review and screenshots.
+submissions suitable for local portfolio review and screenshots. It also creates
+a demo admin user for the `/admin` area:
+
+- email: `admin@example.com`
+- password: `FindYourFight1`
+
+Override during the demo seed run if needed:
+
+```bash
+ADMIN_EMAIL=reviewer@example.com ADMIN_PASSWORD=change-me pnpm api:prisma:migrate:seed:demo
+```
 
 ## Roadmap and Decisions
 

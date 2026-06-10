@@ -6,12 +6,16 @@ export type IntegrationHarness = {
   readonly module: TestingModule;
 };
 
-export function setupIntegrationTest(imports: ModuleMetadata['imports'] = []): IntegrationHarness {
+type IntegrationSetup = ModuleMetadata['imports'] | Pick<ModuleMetadata, 'imports' | 'providers'>;
+
+export function setupIntegrationTest(setup: IntegrationSetup = []): IntegrationHarness {
   let module: TestingModule | undefined;
+  const metadata = Array.isArray(setup) ? { imports: setup } : setup;
 
   beforeEach(async () => {
     module = await Test.createTestingModule({
-      imports,
+      imports: metadata.imports ?? [],
+      providers: metadata.providers ?? [],
     })
       .overrideProvider(PrismaService)
       .useValue(jestPrisma.client as PrismaService)

@@ -5,9 +5,11 @@ import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { buildArticleDetailResponse, buildArticleListResponse } from './article.test-fixtures';
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('ArticleController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Parameters<typeof request>[0];
+  let httpServer: RequestTarget;
 
   const articleServiceMock: jest.Mocked<
     Pick<ArticleService, 'getArticleDetail' | 'getArticleList'>
@@ -26,7 +28,7 @@ describe('ArticleController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpServer() as Parameters<typeof request>[0];
+    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
   });
 
   afterEach(async () => {

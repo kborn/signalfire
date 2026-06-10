@@ -1,106 +1,63 @@
-import { makeRequest, patchJson, postJson, postSubmissionReview } from '@/lib/api/base';
+import { patchAuthenticatedJson, postAuthenticatedJson } from '@/lib/api/base';
 import {
   AdminActionDetailResponse,
-  AdminActionListFilters,
-  AdminActionListResponse,
   AdminActionRequest,
   AdminArticleDetailResponse,
-  AdminArticleListFilters,
-  AdminArticleListResponse,
   AdminArticleRequest,
   AdminEventDetailResponse,
-  AdminEventListFilters,
-  AdminEventListResponse,
   AdminEventRequest,
-  ModerationSubmissionListFilters,
-  ModerationSubmissionList,
-  ModerationSubmissionDetail,
   ModerationReviewRequest,
   type ModerationReviewSuccess,
 } from '@signal-fire/api-contracts';
-
-export async function getSubmissionsList(
-  filters?: ModerationSubmissionListFilters,
-): Promise<ModerationSubmissionList> {
-  return await makeRequest<ModerationSubmissionList>('admin/submissions', filters);
-}
-
-export async function getSubmissionsDetails(id: number): Promise<ModerationSubmissionDetail> {
-  return await makeRequest<ModerationSubmissionDetail>(`admin/submissions/${id}`);
-}
 
 export async function postSubmissionReviewReq(
   req: ModerationReviewRequest,
   id: number,
 ): Promise<ModerationReviewSuccess> {
-  return await postSubmissionReview<ModerationReviewSuccess>(req, id);
-}
-
-export async function getAdminActionsList(
-  filters?: AdminActionListFilters,
-): Promise<AdminActionListResponse> {
-  return await makeRequest<AdminActionListResponse>('admin/actions', filters);
-}
-
-export async function getAdminActionDetails(slug: string): Promise<AdminActionDetailResponse> {
-  return await makeRequest<AdminActionDetailResponse>(`admin/actions/${slug}`);
+  return await postAuthenticatedJson<ModerationReviewSuccess>(
+    `admin/submissions/${id}/review`,
+    req,
+  );
 }
 
 export async function createAdminAction(
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await postJson<AdminActionDetailResponse>('admin/actions', payload);
+  return await postAuthenticatedJson<AdminActionDetailResponse>('admin/actions', payload);
 }
 
 export async function updateAdminAction(
   slug: string,
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await patchJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
-}
-
-export async function getAdminArticlesList(
-  filters?: AdminArticleListFilters,
-): Promise<AdminArticleListResponse> {
-  return await makeRequest<AdminArticleListResponse>('admin/articles', filters);
-}
-
-export async function getAdminArticleDetails(slug: string): Promise<AdminArticleDetailResponse> {
-  return await makeRequest<AdminArticleDetailResponse>(`admin/articles/${slug}`);
+  return await patchAuthenticatedJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
 }
 
 export async function createAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
-  return await postJson<AdminArticleDetailResponse>('admin/articles', payload);
+  return await postAuthenticatedJson<AdminArticleDetailResponse>('admin/articles', payload);
 }
 
 export async function updateAdminArticle(
   slug: string,
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
-  return await patchJson<AdminArticleDetailResponse>(`admin/articles/${slug}`, payload);
-}
-
-export async function getAdminEventsList(
-  filters?: AdminEventListFilters,
-): Promise<AdminEventListResponse> {
-  return await makeRequest<AdminEventListResponse>('admin/events', filters);
-}
-
-export async function getAdminEventDetails(id: number): Promise<AdminEventDetailResponse> {
-  return await makeRequest<AdminEventDetailResponse>(`admin/events/${id}`);
+  return await patchAuthenticatedJson<AdminArticleDetailResponse>(
+    `admin/articles/${slug}`,
+    payload,
+  );
 }
 
 export async function createAdminEvent(
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await postJson<AdminEventDetailResponse>('admin/events', payload);
+  return await postAuthenticatedJson<AdminEventDetailResponse>('admin/events', payload);
 }
 
 export async function updateAdminEvent(
   id: number,
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await patchJson<AdminEventDetailResponse>(`admin/events/${id}`, payload);
+  return await patchAuthenticatedJson<AdminEventDetailResponse>(`admin/events/${id}`, payload);
 }

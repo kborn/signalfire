@@ -100,6 +100,12 @@ These cards may be created or updated alongside task-linked syllabi in
 - [83-findunique-vs-findfirst-in-prisma.md](./83-findunique-vs-findfirst-in-prisma.md) - When to use `findUnique` vs `findFirst` in Prisma
 - [84-nest-request-pipes-at-the-controller-boundary.md](./84-nest-request-pipes-at-the-controller-boundary.md) - Why request pipes belong at the controller boundary
 - [85-repository-service-controller-responsibilities.md](./85-repository-service-controller-responsibilities.md) - How to separate repository, service, and controller responsibilities
+- [86-authentication-vs-authorization.md](./86-authentication-vs-authorization.md) - Authentication proves identity; authorization controls admin access
+- [87-ui-route-protection-vs-api-protection.md](./87-ui-route-protection-vs-api-protection.md) - Why admin auth must protect both the page layer and the API layer
+- [88-bcrypt-hash-vs-salt.md](./88-bcrypt-hash-vs-salt.md) - Why bcrypt salts do not need a separate database column
+- [89-pnpm-vs-npx-and-why-types-sometimes-install-separately.md](./89-pnpm-vs-npx-and-why-types-sometimes-install-separately.md) - When to use `pnpm`, what `-D` means, and why some packages need separate `@types`
+- [90-prisma-migrate-vs-generate.md](./90-prisma-migrate-vs-generate.md) - What `migrate` changes, what `generate` changes, and when both are needed
+- [100-next-middleware-can-bridge-set-cookie-to-the-browser.md](./100-next-middleware-can-bridge-set-cookie-to-the-browser.md) - Why Next must explicitly mirror backend `Set-Cookie` headers during server-side auth checks
 
 Rule of thumb:
 

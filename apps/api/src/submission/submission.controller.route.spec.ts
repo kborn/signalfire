@@ -11,9 +11,11 @@ import {
 } from './submission.test-fixtures';
 import { UnknownSubmissionTopicsError } from './submission.error';
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('SubmissionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Parameters<typeof request>[0];
+  let httpServer: RequestTarget;
 
   const submissionServiceMock = {
     create: jest.fn(),
@@ -29,7 +31,7 @@ describe('SubmissionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpServer() as Parameters<typeof request>[0];
+    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
   });
 
   afterEach(async () => {

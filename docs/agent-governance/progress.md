@@ -5,26 +5,27 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                              | Name                             | Status          |
-| -------------------------------------------------- | -------------------------------- | --------------- |
-| [0](#-phase-0--repo-bootstrap-)                    | Repo Bootstrap                   | ✅              |
-| [1](#-phase-1--platform-skeleton-)                 | Repository & Platform Skeleton   | ✅              |
-| [2](#-phase-2--backend-foundations-)               | Backend Foundations              | ✅              |
-| [3](#-phase-3--core-domain-model-)                 | Core Domain Model                | ✅              |
-| [4](#-phase-4--test-infrastructure-)               | Test Infrastructure              | ✅              |
-| [5](#-phase-5--topic--content-apis-)               | Topic & Content APIs             | ✅              |
-| [6](#-phase-6--content-discovery-ui-)              | Content Discovery UI             | ✅              |
-| [7](#-phase-7--event-domain--apis-)                | Event Domain & APIs              | ✅              |
-| [8](#-phase-8--event-ui-)                          | Event UI                         | ✅              |
-| [9](#-phase-9--ui-polish-)                         | UI Polish                        | ✅              |
-| [10](#-phase-10--submission-system-)               | Submission System                | ✅              |
-| **[11](#-phase-11--moderation--admin-interface-)** | **Moderation & Admin Interface** | \*🚧 ACTIVE\*\* |
-| [12](#-phase-12--search--discovery-improvements-)  | Search & Discovery Improvements  | ⏳              |
-| [13](#-phase-13--deployment-infrastructure-)       | Deployment Infrastructure        | ⏳              |
-| [14](#-phase-14--analytics-)                       | Analytics                        | ⏳              |
-| [15](#-phase-15--release-stabilization-)           | Release Stabilization            | ⏳              |
-| [15.5](#-phase-155--final-public-ui-polish-)       | Final Public UI Polish           | ⏳              |
-| [16](#-phase-16--public-launch-)                   | Public Launch                    | ⏳              |
+| Phase                                                 | Name                                | Status        |
+| ----------------------------------------------------- | ----------------------------------- | ------------- |
+| [0](#-phase-0--repo-bootstrap-)                       | Repo Bootstrap                      | ✅            |
+| [1](#-phase-1--platform-skeleton-)                    | Repository & Platform Skeleton      | ✅            |
+| [2](#-phase-2--backend-foundations-)                  | Backend Foundations                 | ✅            |
+| [3](#-phase-3--core-domain-model-)                    | Core Domain Model                   | ✅            |
+| [4](#-phase-4--test-infrastructure-)                  | Test Infrastructure                 | ✅            |
+| [5](#-phase-5--topic--content-apis-)                  | Topic & Content APIs                | ✅            |
+| [6](#-phase-6--content-discovery-ui-)                 | Content Discovery UI                | ✅            |
+| [7](#-phase-7--event-domain--apis-)                   | Event Domain & APIs                 | ✅            |
+| [8](#-phase-8--event-ui-)                             | Event UI                            | ✅            |
+| [9](#-phase-9--ui-polish-)                            | UI Polish                           | ✅            |
+| [10](#-phase-10--submission-system-)                  | Submission System                   | ✅            |
+| [11](#-phase-11--moderation--admin-interface-)        | Moderation & Admin Interface        | ✅            |
+| **[12](#-phase-12--search--discovery-improvements-)** | **Search & Discovery Improvements** | **🚧 ACTIVE** |
+| [13](#-phase-13--deployment-infrastructure-)          | Deployment Infrastructure           | ⏳            |
+| [14](#-phase-14--analytics-)                          | Analytics                           | ⏳            |
+| [15](#-phase-15--release-stabilization-)              | Release Stabilization               | ⏳            |
+| [15.5](#-phase-155--final-public-ui-polish-)          | Final Public UI Polish              | ⏳            |
+| [16](#-phase-16--final-repo--product-prep-)           | Final Repo & Product Prep           | ⏳            |
+| [17](#-phase-17--public-launch-)                      | Public Launch                       | ⏳            |
 
 ---
 
@@ -1125,11 +1126,11 @@ Implement anonymous submission workflow for events and articles.
 
 ###### Phase Tasks:
 
-- [ ] Verify end-to-end submission flow from UI through persistence
-- [ ] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
-- [ ] Guard against divergence between article and event handling inside the unified submission flow
-- [ ] Document assumptions and handoff boundaries to Phase 11 moderation/admin workflow
-- [ ] Add missing smoke or integration coverage needed for release readiness
+- [x] Verify end-to-end submission flow from UI through persistence
+- [x] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
+- [x] Guard against divergence between article and event handling inside the unified submission flow
+- [x] Document assumptions and handoff boundaries to Phase 11 moderation/admin workflow
+- [x] Add missing smoke or integration coverage needed for release readiness
 
 ---
 
@@ -1149,7 +1150,7 @@ Provide the first internal content operations surface for Release 1, covering mo
 - [ ] Approved submissions can be normalized and converted into published Article/Event records through the admin workflow
 - [ ] Administrators can create and edit Actions, Articles, and Events through the same interface surface
 - [ ] Key moderation and admin flows have targeted backend and UI/integration coverage
-- [ ] Deployment-time auth hardening requirements for this interface are documented for Phase 13
+- [ ] Admin authentication/authorization is implemented for deployed environments with the Release 1 access boundary clearly defined
 
 Capabilities:
 
@@ -1450,19 +1451,22 @@ repository and before continuing into broader admin content-management work.
 
 ---
 
-#### ▸ Phase 11.9 - Interface Hardening Handoff ⏳
+#### ▸ Phase 11.9 - Admin Authentication & Access Control ✅
 
 ###### Phase Tasks:
 
-- [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows
-- [ ] Document the temporary local-access assumption for the interface
-- [ ] Define the minimum authentication/authorization requirements that Phase 13 must satisfy before deployment
-- [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
-- [ ] Confirm Phase 11 leaves Search/Discovery and Deployment phases unblocked
+- [x] Implement authentication for the deployed `/admin` interface while preserving workable local development ergonomics
+- [x] Enforce admin-only authorization checks on admin routes and backing admin APIs for Release 1 deployment
+- [x] Implement the Release 1 admin-user model with manual provisioning through database, seed, or script operations and no public signup or admin-user management UI
+- [x] Verify unauthenticated and unauthorized access behavior for admin entry routes and highest-risk admin actions
+- [x] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
 
 ###### Notes:
 
-- Admin and moderation routes may remain openly reachable during local-only development, but must be protected by authentication/authorization before deployment to any environment intended for real users.
+- Admin and moderation routes may remain openly reachable during local-only development if that materially reduces drag, but any deployed environment intended for real users must place them behind authentication/authorization.
+- This subphase owns the actual Release 1 admin access-control implementation rather than only documenting a later handoff.
+- The deployed admin boundary is now implemented with cookie-backed `AdminUser` sessions, admin-only API guards, and web middleware that validates `/admin` requests against the API session endpoint while mirroring refreshed `Set-Cookie` headers back to the browser.
+- Manual admin-user provisioning remains intentionally operational rather than productized in Release 1; the canonical decision allows database, seed, or controlled script operations and keeps signup, invites, password reset, and admin-user management UI out of scope.
 
 ---
 
@@ -1488,6 +1492,7 @@ Configure hosting, environment management, and CI/CD.
 
 - [ ] Add repository security automation before public launch hardening, including Dependabot update PRs and dependency vulnerability validation in CI
 - [ ] Define branch protection/status-check requirements for `main` and apply them across primary public-facing repositories
+- [ ] Configure deployment environment variables, secret handling, and runtime wiring needed to support the chosen admin-auth implementation
 
 ---
 
@@ -1519,6 +1524,7 @@ Bug fixes, polish, and observability improvements.
 ###### Phase Tasks:
 
 - [ ] Run a full dependency risk review (direct and transitive) and resolve or explicitly defer remaining high-severity findings with documented rationale
+- [ ] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
 
 ---
 
@@ -1527,7 +1533,7 @@ Bug fixes, polish, and observability improvements.
 ###### Goal
 
 Perform one final launch-adjacent public UI polish pass after core release
-stabilization and before Phase 16 public launch.
+stabilization and before the final release-prep and public-launch phases.
 
 ###### Phase Tasks:
 
@@ -1552,7 +1558,31 @@ stabilization and before Phase 16 public launch.
 
 ---
 
-### ► Phase 16 — Public Launch ⏳
+### ► Phase 16 — Final Repo & Product Prep ⏳
+
+###### Goal
+
+Run the final cross-cutting verification and readiness pass before public launch.
+
+###### Phase Tasks:
+
+- [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows that still lack confidence after Phase 11.9 auth implementation
+- [ ] Run a final focused regression pass across public and admin flows, including auth, moderation, and essential content-management paths
+- [ ] Review Nest module boundaries for duplicated provider registration across feature modules and replace provider re-registration with cleaner module import/export relationships where appropriate
+- [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
+- [ ] Confirm repository documentation, setup instructions, and deployment caveats match the actual shipped product state
+
+###### Notes:
+
+- This phase is the final product/repository readiness gate, not a place to introduce new product scope.
+- Public UI polish should remain in Phase 15.5; this phase is for confidence and readiness validation.
+- Broader logging architecture should be decided before this phase, but any final backfill or verification of important operational logs should happen here as part of launch-readiness validation.
+
+---
+
+---
+
+### ► Phase 17 — Public Launch ⏳
 
 ###### Goal
 

@@ -4,7 +4,7 @@ import { Action, EntityStatus, Prisma } from '@prisma/client';
 import {
   CreateAdminActionRepositoryInput,
   UpdateAdminActionRepositoryInput,
-} from './admin-action.repository.type';
+} from '../admin-api/action/admin-action.repository.type';
 
 const actionWithTopicsInclude = {
   topicActions: {
@@ -169,7 +169,7 @@ export class ActionRepository {
 
       const finalSlug = existingAction ? `${input.slug}-${new Date().getTime()}` : input.slug;
 
-      const action = await tx.action.create({
+      return tx.action.create({
         data: {
           ...actionData,
           slug: finalSlug,
@@ -179,7 +179,6 @@ export class ActionRepository {
         },
         include: actionWithTopicsInclude,
       });
-      return action;
     });
   }
 
@@ -207,7 +206,7 @@ export class ActionRepository {
         return new Date();
       }
 
-      const action = await tx.action.update({
+      return tx.action.update({
         where: {
           slug: slug,
         },
@@ -221,7 +220,6 @@ export class ActionRepository {
         },
         include: actionWithTopicsInclude,
       });
-      return action;
     });
   }
 }

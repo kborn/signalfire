@@ -4,7 +4,7 @@ import { Article, EntityStatus, Prisma } from '@prisma/client';
 import {
   CreateAdminArticleRepositoryInput,
   UpdateAdminArticleRepositoryInput,
-} from './admin-article.repository.type';
+} from '../admin-api/article/admin-article.repository.type';
 
 const articleWithTopicsInclude = {
   topicArticles: {
@@ -195,7 +195,7 @@ export class ArticleRepository {
 
       const finalSlug = existingArticle ? `${input.slug}-${new Date().getTime()}` : input.slug;
 
-      const article = await tx.article.create({
+      return tx.article.create({
         data: {
           ...articleData,
           slug: finalSlug,
@@ -205,7 +205,6 @@ export class ArticleRepository {
         },
         include: articleWithTopicsInclude,
       });
-      return article;
     });
   }
 
@@ -233,7 +232,7 @@ export class ArticleRepository {
         return new Date();
       }
 
-      const article = await tx.article.update({
+      return tx.article.update({
         where: {
           slug: slug,
         },
@@ -247,7 +246,6 @@ export class ArticleRepository {
         },
         include: articleWithTopicsInclude,
       });
-      return article;
     });
   }
 }

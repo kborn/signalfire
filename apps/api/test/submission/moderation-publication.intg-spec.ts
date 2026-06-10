@@ -4,8 +4,9 @@ import { ArticleService } from '../../src/article/article.service';
 import { ArticleModule } from '../../src/article/article.module';
 import { EventService } from '../../src/event/event.service';
 import { EventModule } from '../../src/event/event.module';
-import { ModerationSubmissionService } from '../../src/submission/moderation-submission.service';
+import { ModerationSubmissionService } from '../../src/admin-api/moderation/moderation-submission.service';
 import { SubmissionModule } from '../../src/submission/submission.module';
+import { SubmissionRepository } from '../../src/submission/submission.repository';
 import { TopicModule } from '../../src/topic/topic.module';
 import { TopicService } from '../../src/topic/topic.service';
 import { createSubmission } from '../factories/submission.factory';
@@ -21,7 +22,10 @@ function requireCreatedRecord(review: ModerationReviewResponse) {
 }
 
 describe('Moderation publication integration', () => {
-  const harness = setupIntegrationTest([SubmissionModule, ArticleModule, EventModule, TopicModule]);
+  const harness = setupIntegrationTest({
+    imports: [SubmissionModule, ArticleModule, EventModule, TopicModule],
+    providers: [ModerationSubmissionService, SubmissionRepository],
+  });
 
   it('publishes approved article submissions through public article and topic reads', async () => {
     const moderationService = harness.module.get(ModerationSubmissionService);
@@ -59,10 +63,7 @@ describe('Moderation publication integration', () => {
       }),
     );
 
-    const article = await articleService.getArticleDetail(
-      createdRecord.slug!,
-      EntityStatus.PUBLISHED,
-    );
+    const article = await articleService.getArticleDetail(createdRecord.slug!);
     expect(article).toEqual(
       expect.objectContaining({
         title: 'Normalized Article Title',
@@ -108,9 +109,9 @@ describe('Moderation publication integration', () => {
     });
     const createdRecord = requireCreatedRecord(review);
 
-    await expect(
-      articleService.getArticleDetail(createdRecord.slug!, EntityStatus.PUBLISHED),
-    ).rejects.toThrow(NotFoundException);
+    await expect(articleService.getArticleDetail(createdRecord.slug!)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('publishes approved event submissions through public event reads', async () => {

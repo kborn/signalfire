@@ -8,8 +8,6 @@ import { ARTICLE_TEST_DATE } from '../article/article.test-fixtures';
 import { ActionType, EntityStatus } from '@prisma/client';
 import { ACTION_TEST_DATE } from '../action/action.test-fixtures';
 import {
-  buildAdminEventDetailResponse,
-  buildAdminEventListResponse,
   buildEntityDetailResponse,
   buildEventEntity,
   buildEventListResponse,
@@ -23,10 +21,6 @@ describe('EventService', () => {
     findPublished: jest.fn(),
     findByArticleId: jest.fn(),
     findByActionId: jest.fn(),
-    findEventsWithTopics: jest.fn(),
-    findByIdWithTopics: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
   };
 
   const topicRepoMock = {
@@ -158,62 +152,5 @@ describe('EventService', () => {
 
     expect(ret).toEqual([event]);
     expect(repoMock.findByActionId).toHaveBeenCalledWith(id);
-  });
-
-  it('getAdminEventList', async () => {
-    const event = {
-      ...buildEventEntity(),
-      topicEvents: [
-        {
-          topicId: 1,
-          eventId: 1,
-          assignedAt: ARTICLE_TEST_DATE,
-          assignedBy: 'admin',
-          topic: {
-            id: 1,
-            slug: 'democracy',
-            name: 'Democracy',
-            description: 'desc',
-            createdAt: ARTICLE_TEST_DATE,
-          },
-        },
-      ],
-    };
-    repoMock.findEventsWithTopics.mockResolvedValue([event]);
-
-    const ret = await service.getAdminEventList(EntityStatus.DRAFT);
-
-    expect(ret).toEqual(buildAdminEventListResponse());
-    expect(repoMock.findEventsWithTopics).toHaveBeenCalledWith(EntityStatus.DRAFT, [
-      { updatedAt: 'desc' },
-      { id: 'asc' },
-    ]);
-  });
-
-  it('getAdminEventDetail', async () => {
-    const event = {
-      ...buildEventEntity(),
-      topicEvents: [
-        {
-          topicId: 1,
-          eventId: 1,
-          assignedAt: ARTICLE_TEST_DATE,
-          assignedBy: 'admin',
-          topic: {
-            id: 1,
-            slug: 'democracy',
-            name: 'Democracy',
-            description: 'desc',
-            createdAt: ARTICLE_TEST_DATE,
-          },
-        },
-      ],
-    };
-    repoMock.findByIdWithTopics.mockResolvedValue(event);
-
-    const ret = await service.getAdminEventDetail(1);
-
-    expect(ret).toEqual(buildAdminEventDetailResponse());
-    expect(repoMock.findByIdWithTopics).toHaveBeenCalledWith(1, undefined);
   });
 });

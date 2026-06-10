@@ -48,9 +48,20 @@ pnpm api:prisma:migrate:seed:demo
 Behavior:
 
 - baseline seed inserts seeded Topics only
-- demo seed inserts Topics plus local demo Articles, Actions, Events, and relationships
+- demo seed inserts Topics plus local demo Articles, Actions, Events, relationships, and a local admin user
 - production should use baseline seed only
 - integration tests should use baseline seed unless a test suite explicitly needs demo content
+
+Demo admin login after `pnpm api:prisma:migrate:seed:demo`:
+
+- email: `admin@example.com`
+- password: `FindYourFight1`
+
+You can override those credentials during the seed run with:
+
+```bash
+ADMIN_EMAIL=reviewer@example.com ADMIN_PASSWORD=change-me pnpm api:prisma:migrate:seed:demo
+```
 
 ## Validation
 

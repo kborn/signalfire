@@ -22,6 +22,24 @@ In Release 1, moderation and essential admin editing are part of the same intern
 - Before any deployed environment intended for real users, the interface must be protected by authentication/authorization.
 - Auth hardening is a deployment-readiness requirement, not a prerequisite for beginning moderation implementation.
 
+## Release 1 Admin Access Model
+
+Release 1 uses a single internal user type for this interface:
+
+- `admin`
+
+Release 1 does not include:
+
+- moderator/admin permission splits
+- public signup
+- invitation flows
+- password reset flows
+- admin-user management UI
+
+Admin users may be created and managed manually for Release 1 through database,
+seed, or one-off script operations. That manual operational path is sufficient
+for the initial project release.
+
 ## Release 1 Phase Scope
 
 Phase 11 covers:

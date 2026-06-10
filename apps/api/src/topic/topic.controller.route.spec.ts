@@ -5,9 +5,11 @@ import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
 import { buildTopicDetailResponse, buildTopicListResponse } from './topic.test-fixtures';
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('TopicController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Parameters<typeof request>[0];
+  let httpServer: RequestTarget;
 
   const topicServiceMock: jest.Mocked<Pick<TopicService, 'getTopics' | 'getTopicDetail'>> = {
     getTopics: jest.fn(),
@@ -24,7 +26,7 @@ describe('TopicController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpServer() as Parameters<typeof request>[0];
+    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
   });
 
   afterEach(async () => {

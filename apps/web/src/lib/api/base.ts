@@ -1,19 +1,6 @@
-import { ApiError, SubmissionError } from '@/lib/api/error';
-import {
-  ModerationReviewRequest,
-  SubmissionRequest,
-  type ValidationError,
-} from '@signal-fire/api-contracts';
-
-function getApiBase() {
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
-  if (!apiBase) {
-    throw new Error('No API base URL configured!');
-  }
-  return apiBase;
-}
-
-type QueryParams = Record<string, string | undefined>;
+import { buildUrl, getApiBase, type QueryParams } from '@/lib/api/base.shared';
+import { ApiError, AuthenticationError, SubmissionError } from '@/lib/api/error';
+import { type ValidationError } from '@signal-fire/api-contracts';
 
 async function readJsonBody(response: Response): Promise<unknown> {
   try {
@@ -24,22 +11,51 @@ async function readJsonBody(response: Response): Promise<unknown> {
 }
 
 export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
-  const params = new URLSearchParams();
+  return makePublicBrowserRequest<T>(endpoint, queryParams);
+}
 
-  if (queryParams) {
-    Object.entries(queryParams).forEach(([key, value]) => {
-      if (value !== undefined) {
-        params.set(key, value);
-      }
-    });
-  }
+export async function makeAuthenticatedRequest<T>(
+  endpoint: string,
+  queryParams?: QueryParams,
+): Promise<T> {
+  return makeAuthenticatedBrowserRequest<T>(endpoint, queryParams);
+}
 
-  const query = params.toString();
-  const url = query ? `${getApiBase()}/${endpoint}?${query}` : `${getApiBase()}/${endpoint}`;
-  const response = await fetch(url);
+export async function postJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendPublicJsonRequest<T>(endpoint, 'POST', payload);
+}
+
+export async function postAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendAuthenticatedJsonRequest<T>(endpoint, 'POST', payload);
+}
+
+export async function patchAuthenticatedJson<T>(endpoint: string, payload: unknown): Promise<T> {
+  return sendAuthenticatedJsonRequest<T>(endpoint, 'PATCH', payload);
+}
+
+async function makePublicBrowserRequest<T>(
+  endpoint: string,
+  queryParams?: QueryParams,
+): Promise<T> {
+  const response = await fetch(buildUrl(endpoint, queryParams));
+  return parseJsonResponse<T>(response, endpoint);
+}
+
+async function makeAuthenticatedBrowserRequest<T>(
+  endpoint: string,
+  queryParams?: QueryParams,
+): Promise<T> {
+  const response = await fetch(buildUrl(endpoint, queryParams), {
+    credentials: 'include',
+  });
+  return parseJsonResponse<T>(response, endpoint);
+}
+
+async function parseJsonResponse<T>(response: Response, endpoint: string): Promise<T> {
   if (!response.ok) {
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
+
   return response.json() as Promise<T>;
 }
 
@@ -73,39 +89,48 @@ function getValidationErrors(body: unknown): ValidationError[] | null {
   return hasValidationErrors(body) ? body.errors : null;
 }
 
-export async function postSubmission<T>(req: SubmissionRequest): Promise<T> {
-  return sendJsonRequest<T>('submissions', 'POST', req, 'submissions');
+async function sendPublicJsonRequest<T>(
+  endpoint: string,
+  method: 'POST' | 'PATCH',
+  payload: unknown,
+  errorEndpoint: string = endpoint,
+): Promise<T> {
+  return sendJsonRequest<T>(endpoint, method, payload, errorEndpoint, false);
 }
 
-export async function postSubmissionReview<ModerationReviewSuccess>(
-  req: ModerationReviewRequest,
-  id: number,
-): Promise<ModerationReviewSuccess> {
-  return sendJsonRequest<ModerationReviewSuccess>(
-    `admin/submissions/${id}/review`,
-    'POST',
-    req,
-    'submissions',
-  );
+async function sendAuthenticatedJsonRequest<T>(
+  endpoint: string,
+  method: 'POST' | 'PATCH',
+  payload: unknown,
+  errorEndpoint: string = endpoint,
+): Promise<T> {
+  return sendJsonRequest<T>(endpoint, method, payload, errorEndpoint, true);
 }
 
 async function sendJsonRequest<T>(
   endpoint: string,
   method: 'POST' | 'PATCH',
   payload: unknown,
-  errorEndpoint: string = endpoint,
+  errorEndpoint: string,
+  authenticated: boolean,
 ): Promise<T> {
-  const url = `${getApiBase()}/${endpoint}`;
-
-  const response = await fetch(url, {
+  const response = await fetch(`${getApiBase()}/${endpoint}`, {
     method,
     headers: { 'Content-Type': 'application/json' },
+    ...(authenticated ? { credentials: 'include' as const } : {}),
     body: JSON.stringify(payload),
   });
 
   const body = await readJsonBody(response);
 
   if (!response.ok) {
+    if (response.status === 401) {
+      throw new AuthenticationError(
+        `Authentication failed for ${endpoint}`,
+        response.status,
+        endpoint,
+      );
+    }
     const validationErrors = getValidationErrors(body);
     if (validationErrors) {
       throw new SubmissionError(
@@ -120,12 +145,4 @@ async function sendJsonRequest<T>(
   }
 
   return body as T;
-}
-
-export async function postJson<T>(endpoint: string, payload: unknown): Promise<T> {
-  return sendJsonRequest<T>(endpoint, 'POST', payload);
-}
-
-export async function patchJson<T>(endpoint: string, payload: unknown): Promise<T> {
-  return sendJsonRequest<T>(endpoint, 'PATCH', payload);
 }

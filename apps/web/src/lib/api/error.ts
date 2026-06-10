@@ -20,3 +20,13 @@ export class SubmissionError extends ApiError {
     super(message, status, endpoint);
   }
 }
+
+export class AuthenticationError extends ApiError {
+  constructor(
+    message: string,
+    public status: number,
+    public endpoint: string,
+  ) {
+    super(message, status, endpoint);
+  }
+}

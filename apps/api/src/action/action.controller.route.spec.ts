@@ -5,9 +5,11 @@ import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
 import { buildActionDetailResponse, buildActionListResponse } from './action.test-fixtures';
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('ActionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Parameters<typeof request>[0];
+  let httpServer: RequestTarget;
 
   const actionServiceMock: jest.Mocked<Pick<ActionService, 'getActionDetail' | 'getActionList'>> = {
     getActionDetail: jest.fn(),
@@ -24,7 +26,7 @@ describe('ActionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpServer() as Parameters<typeof request>[0];
+    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
   });
 
   afterEach(async () => {

@@ -112,7 +112,7 @@ describe('ArticleService', () => {
     const ret = await service.getArticleDetail(slug);
 
     expect(ret).toEqual(buildArticleDetailResponse());
-    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
+    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, 'PUBLISHED');
   });
 
   it('getPublishedArticleDetail', async () => {
@@ -143,10 +143,10 @@ describe('ArticleService', () => {
     ]);
 
     const slug = 'test';
-    const ret = await service.getArticleDetail(slug, EntityStatus.PUBLISHED);
+    const ret = await service.getArticleDetail(slug);
 
     expect(ret).toEqual(buildArticleDetailResponse());
-    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
+    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, 'PUBLISHED');
     expect(topicRepoMock.findByArticleId).toHaveBeenCalledWith(1);
     expect(actionRepoMock.findPublishedByArticleId).toHaveBeenCalledWith(1);
   });
@@ -178,7 +178,7 @@ describe('ArticleService', () => {
       },
     ]);
 
-    const ret = await service.getArticleDetail('test', EntityStatus.PUBLISHED);
+    const ret = await service.getArticleDetail('test');
 
     expect(ret.actions).toEqual([
       {
@@ -195,9 +195,7 @@ describe('ArticleService', () => {
   it('getPublishedArticleDetailNotFound', async () => {
     repoMock.findBySlugAndStatus.mockResolvedValue(null);
 
-    await expect(service.getArticleDetail('missing', EntityStatus.PUBLISHED)).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(service.getArticleDetail('missing')).rejects.toThrow(NotFoundException);
   });
 
   it('getArticlesForTopic', async () => {

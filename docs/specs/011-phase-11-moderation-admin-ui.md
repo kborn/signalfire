@@ -32,7 +32,6 @@ Phase 11 includes:
 
 Phase 11 does not include:
 
-- deployed-environment auth implementation
 - granular role systems
 - topic management
 - audit history tooling
@@ -45,6 +44,15 @@ Phase 11 does not include:
 
 Release 1 uses one internal interface surface for moderation and admin content
 management.
+
+Release 1 also uses one internal user type for that interface:
+
+- `admin`
+
+This phase should implement admin authentication/authorization for deployed
+environments without expanding into a broader account-management product.
+Admin users may be provisioned manually through database, seed, or script
+operations in Release 1.
 
 ### Route namespace
 
@@ -797,7 +805,7 @@ The following remain out of scope for this phase even if useful later:
 - merge flows
 - audit trail UI
 - revision history
-- role-based permissions beyond the future Phase 13 auth boundary
+- role-based permissions beyond the future Phase 11.9 auth boundary
 - topic CRUD
 - moderation assignment
 - comment threads
@@ -820,5 +828,5 @@ Phase 11 is complete when:
 - admin can create and edit Actions, Articles, and Events
 - admin forms use only seeded topics
 - failure states are explicit and testable
-- Phase 13 auth hardening requirements remain documented as a deployment
-  boundary, not silently omitted
+- the Phase 11.9 auth boundary is implemented before any deployed real-user
+  environment exposes admin routes

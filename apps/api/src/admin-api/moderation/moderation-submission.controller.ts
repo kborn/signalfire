@@ -1,0 +1,89 @@
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  type ModerationReviewRequest,
+  ModerationReviewResponse,
+  ModerationSubmissionDetail,
+  ModerationSubmissionList,
+  ModerationSubmissionListFilters,
+} from '@signal-fire/api-contracts';
+import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
+import { AdminAuthGuard } from '../auth/admin-auth.guard';
+import { ModerationSubmissionService } from './moderation-submission.service';
+import {
+  ReviewSubmissionTypeError,
+  UnknownSubmissionTopicsError,
+} from '../../submission/submission.error';
+import { SubmissionModerationValidationPipe } from '../../submission/submission-validation.pipe';
+import {
+  OptionalSubmissionTypeQueryPipe,
+  SubmissionStatusQueryPipe,
+} from '../query/admin-query-validation.pipe';
+
+@Controller('admin/submissions')
+@UseGuards(AdminAuthGuard)
+export class ModerationSubmissionController {
+  constructor(private readonly moderationSubmissionService: ModerationSubmissionService) {}
+
+  @Get()
+  async findQueuedSubmissions(
+    @Query('status', new SubmissionStatusQueryPipe()) submissionStatus: SubmissionStatus,
+    @Query('submissionType', new OptionalSubmissionTypeQueryPipe())
+    submissionType?: SubmissionType,
+  ): Promise<ModerationSubmissionList> {
+    const filters: ModerationSubmissionListFilters = {
+      status: submissionStatus,
+      submissionType: submissionType,
+    };
+    return this.moderationSubmissionService.getModerationSubmissionList(filters);
+  }
+
+  @Get('/:id')
+  async findSubmission(
+    @Param('id', ParseIntPipe) submissionId: number,
+  ): Promise<ModerationSubmissionDetail> {
+    return this.moderationSubmissionService.getModerationSubmissionDetails(submissionId);
+  }
+
+  @Post('/:id/review')
+  @HttpCode(200)
+  async reviewSubmission(
+    @Param('id', ParseIntPipe) submissionId: number,
+    @Body(new SubmissionModerationValidationPipe()) reqBody: ModerationReviewRequest,
+  ): Promise<ModerationReviewResponse> {
+    try {
+      return await this.moderationSubmissionService.reviewSubmission(submissionId, reqBody);
+    } catch (error) {
+      if (error instanceof ReviewSubmissionTypeError) {
+        throw new ConflictException({
+          errors: [{ type: 'form', message: error.message }],
+        });
+      }
+
+      if (error instanceof UnknownSubmissionTopicsError) {
+        throw new BadRequestException({
+          errors: [
+            {
+              type: 'field',
+              field: 'normalized.topicSlugs',
+              message: error.message,
+            },
+          ],
+        });
+      }
+
+      throw error;
+    }
+  }
+}

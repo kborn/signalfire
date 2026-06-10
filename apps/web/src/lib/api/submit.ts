@@ -1,4 +1,4 @@
-import { postSubmission } from '@/lib/api/base';
+import { postJson } from '@/lib/api/base';
 import {
   ArticleSubmissionRequest,
   EventSubmissionRequest,
@@ -8,11 +8,11 @@ import {
 export async function postArticleSubmission(
   req: ArticleSubmissionRequest,
 ): Promise<SubmissionResponse> {
-  return await postSubmission<SubmissionResponse>(req);
+  return await postJson<SubmissionResponse>('submissions', req);
 }
 
 export async function postEventSubmission(
   req: EventSubmissionRequest,
 ): Promise<SubmissionResponse> {
-  return await postSubmission<SubmissionResponse>(req);
+  return await postJson<SubmissionResponse>('submissions', req);
 }

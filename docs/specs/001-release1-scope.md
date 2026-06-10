@@ -99,3 +99,4 @@ The following are intentionally excluded:
 - user accounts
 - comments or forums
 - automated event crawling
+- background session-cleanup scheduling for admin auth

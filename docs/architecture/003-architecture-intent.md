@@ -106,6 +106,10 @@ Release 1 uses a single moderation/admin interface for these workflows.
 For implementation sequencing, that interface may be openly reachable in local-only
 or otherwise non-deployed environments. Authentication/authorization must be added
 before the interface is exposed in any deployed environment intended for real users.
+Release 1 uses one internal admin-user concept for that interface rather than a
+broader account system or role matrix. Admin-user provisioning and lifecycle
+management may be handled manually through database, seed, or script operations
+for the initial release.
 
 ---
 

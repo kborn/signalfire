@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
+import bcrypt from 'bcryptjs';
 import {
   ActionType,
   EntityStatus,
@@ -16,6 +17,8 @@ if (!connectionString) {
 }
 
 const seedMode = (process.env.SEED_MODE ?? 'baseline').toLowerCase();
+const demoAdminEmail = process.env.ADMIN_EMAIL ?? 'admin@example.com';
+const demoAdminPassword = process.env.ADMIN_PASSWORD ?? 'FindYourFight1';
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
@@ -1237,11 +1240,35 @@ async function seedDemoRelationships() {
   await seedDemoPendingSubmissions(topicIds);
 }
 
+async function seedDemoAdminUser() {
+  const passwordHash = await bcrypt.hash(demoAdminPassword, 10);
+
+  await prisma.adminUser.upsert({
+    where: {
+      email: demoAdminEmail,
+    },
+    update: {
+      passwordHash,
+      isActive: true,
+    },
+    create: {
+      email: demoAdminEmail,
+      passwordHash,
+      isActive: true,
+    },
+  });
+
+  console.log(
+    `[seed] Demo admin user ready: email=${demoAdminEmail} password=${demoAdminPassword}`,
+  );
+}
+
 async function seedDemo() {
   await seedDemoArticles();
   await seedDemoActions();
   await seedDemoEvents();
   await seedDemoRelationships();
+  await seedDemoAdminUser();
 }
 
 async function main() {

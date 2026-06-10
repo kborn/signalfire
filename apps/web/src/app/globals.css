@@ -1152,7 +1152,9 @@ h3 {
 
 .adminHeader {
   display: grid;
-  gap: var(--space-1);
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-4);
+  align-items: center;
 }
 
 .adminHeader h1 {
@@ -1181,10 +1183,24 @@ h3 {
   flex-wrap: wrap;
   gap: var(--space-2);
   align-items: center;
-  padding: 0 0 var(--space-1) 0;
+  padding: 0;
   color: var(--color-text-muted);
   font-size: 0.95rem;
   line-height: 1.2;
+}
+
+.adminNavLabel {
+  grid-column: 1 / -1;
+}
+
+.adminNavWrap {
+  min-width: 0;
+}
+
+.adminHeaderActions {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
 }
 
 .adminNavLabel,
@@ -1219,6 +1235,39 @@ h3 {
 .adminNav span[aria-disabled='true'] {
   color: #6b7280;
   cursor: default;
+}
+
+.logoutButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(174, 184, 197, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  color: #d7dee8;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.logoutButton:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(174, 184, 197, 0.5);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid #d7dee8;
+  outline-offset: 2px;
+}
+
+.logoutButton:active {
+  transform: translateY(1px);
 }
 
 .adminGrid {
@@ -1321,8 +1370,44 @@ h3 {
   vertical-align: top;
 }
 
+.adminRecordTablePrimaryCol {
+  width: 43%;
+}
+
+.adminRecordTableTypeCol {
+  width: 11%;
+}
+
+.adminRecordTableStatusCol {
+  width: 10%;
+}
+
+.adminRecordTableTopicsCol {
+  width: 23%;
+}
+
+.adminRecordTableDateCol {
+  width: 13%;
+}
+
+.adminRecordTableNameCol {
+  width: 11%;
+}
+
+.adminRecordTableEmailCol {
+  width: 18%;
+}
+
+.adminTable tbody tr:not(.adminTableSummaryRow) td {
+  border-bottom-color: #edf1f6;
+}
+
 .adminTable tbody tr:hover td {
   background: #fafafa;
+}
+
+.adminTable tbody tr.adminTableSummaryRow:hover td {
+  background: #fcfcfd;
 }
 
 .adminTable th {
@@ -1453,19 +1538,10 @@ h3 {
 }
 
 .adminTableRecordLink {
-  display: grid;
-  gap: var(--space-0);
+  display: inline-flex;
   width: 100%;
-  padding: 0.15rem 0;
   color: #171717;
   text-decoration: none;
-}
-
-.adminTableRowLink {
-  grid-template-columns: minmax(0, 2.3fr) repeat(4, minmax(0, 0.9fr));
-  gap: var(--space-2);
-  align-items: start;
-  padding: var(--space-2) var(--space-3);
 }
 
 .adminTableRecordLink:hover {
@@ -1479,28 +1555,34 @@ h3 {
 }
 
 .adminTableRecordTitle {
+  display: block;
   font-weight: 700;
+  white-space: normal;
   text-underline-offset: 0.18em;
 }
 
-.adminTableRowPrimary {
-  display: grid;
-  gap: var(--space-0);
-  min-width: 0;
-}
-
-.adminTableRowCell {
-  min-width: 0;
-  color: #171717;
-  font-size: 0.95rem;
-  line-height: 1.35;
+.adminTableSummaryRow td {
+  padding-top: 0.15rem;
+  border-bottom-color: #d9e2ec;
 }
 
 .adminTableCellMeta {
-  margin-top: var(--space-0);
+  margin: 0;
+  max-width: none;
   color: #6b7280;
   font-size: 0.9rem;
   line-height: 1.35;
+}
+
+.adminTableSummaryCell {
+  width: 100%;
+  padding-top: 0.15rem;
+  padding-bottom: 0.9rem;
+  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.96));
+}
+
+.adminTableSummaryRow + tr td {
+  border-top: 0;
 }
 
 .adminInlineList {
@@ -2568,5 +2650,202 @@ h3 {
 
   .adminCreatedRecordDetails {
     grid-template-columns: 1fr;
+  }
+}
+
+.adminLoginPage {
+  display: grid;
+  align-items: start;
+  min-height: calc(100vh - 8rem);
+  padding: clamp(2rem, 7vw, 5rem) clamp(2rem, 4vw, 3.5rem) 0;
+}
+
+.adminLoginShell {
+  display: grid;
+  grid-template-columns: minmax(25rem, 32rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+  width: min(100%, 90rem);
+  margin: 0 auto;
+}
+
+.adminLoginBrandPanel,
+.adminLoginFormPanel {
+  border: 1px solid rgba(174, 184, 197, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(5, 10, 18, 0.24);
+}
+
+.adminLoginFormPanel {
+  display: grid;
+  align-content: start;
+  gap: clamp(1.1rem, 2vw, 1.6rem);
+  padding: clamp(2rem, 3vw, 2.75rem);
+  align-self: start;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(14, 24, 36, 0.96);
+}
+
+.adminLoginBrandPanel {
+  display: grid;
+  align-content: space-between;
+  align-self: stretch;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 40rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  background:
+    linear-gradient(135deg, rgba(8, 15, 24, 0.74), rgba(20, 31, 46, 0.56)),
+    radial-gradient(circle at top left, rgba(212, 177, 88, 0.18), transparent 34%),
+    url('/bg-motif.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.adminLoginBrandCopy {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid rgba(174, 184, 197, 0.14);
+  border-radius: 20px;
+  background: rgba(8, 15, 24, 0.48);
+  backdrop-filter: blur(10px);
+}
+
+.adminLoginIntro {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.adminLoginEyebrow {
+  margin: 0;
+  color: #97a4b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginTitle {
+  max-width: 10ch;
+  margin: 0;
+}
+
+.adminLoginDek {
+  max-width: 42ch;
+  color: #d4dbe5;
+}
+
+.adminLoginFeatureList {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+}
+
+.adminLoginFeatureItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(174, 184, 197, 0.18);
+  border-radius: 16px;
+  background: rgba(10, 18, 29, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.adminLoginFeatureItem p {
+  margin: 0;
+  color: #d7dee8;
+  line-height: 1.5;
+}
+
+.adminLoginFeatureKicker {
+  color: #f0d084;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginStatusPill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(240, 208, 132, 0.24);
+  border-radius: 999px;
+  background: rgba(240, 208, 132, 0.08);
+  color: #f3db9c;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.adminLoginFormTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.adminLoginFormDek {
+  margin: 0;
+  max-width: 30ch;
+  color: #aeb8c5;
+  line-height: 1.5;
+}
+
+.adminLoginForm {
+  max-width: none;
+  margin-right: 0;
+  gap: 1.1rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+}
+
+.adminLoginControl {
+  border-color: rgba(174, 184, 197, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+}
+
+.adminLoginControl::placeholder {
+  color: #94a3b8;
+}
+
+.adminLoginControl:focus {
+  border-color: #f8fafc;
+  outline-color: #f8fafc;
+}
+
+.adminLoginActions {
+  margin-top: 0.35rem;
+}
+
+.adminLoginButton {
+  min-width: 11rem;
+}
+
+.adminLoginForm .submissionField {
+  gap: 0.5rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 960px) {
+  .adminLoginShell {
+    grid-template-columns: 1fr;
+  }
+
+  .adminLoginBrandPanel,
+  .adminLoginFormPanel {
+    min-height: auto;
   }
 }
