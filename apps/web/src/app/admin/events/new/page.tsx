@@ -6,7 +6,7 @@ import { getTopicsList } from '@/lib/api/topics';
 export const dynamic = 'force-dynamic';
 
 export default async function NewAdminEventPage() {
-  const topics = await withAdminAuthRedirect(async () => {
+  const topics = await withAdminAuthRedirect('/admin/events/new', async () => {
     return await getTopicsList();
   });
 

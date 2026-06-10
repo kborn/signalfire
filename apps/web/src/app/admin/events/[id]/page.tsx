@@ -19,8 +19,9 @@ export default async function AdminEventDetailPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const [event, topics] = await withAdminAuthRedirect(async () => {
-    return await Promise.all([fetchEventDetails(params), getTopicsList()]);
+  const { id } = await params;
+  const [event, topics] = await withAdminAuthRedirect(`/admin/events/${id}`, async () => {
+    return await Promise.all([fetchEventDetails(Promise.resolve({ id })), getTopicsList()]);
   });
 
   return (

@@ -25,7 +25,7 @@ function buildEventsHref(status: EntityStatus) {
 export default async function EventsListPage({ searchParams }: EventListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const eventList = await withAdminAuthRedirect(async () => {
+  const eventList = await withAdminAuthRedirect(buildEventsHref(currentStatus), async () => {
     return await getAdminEventsList({ status: currentStatus });
   });
 

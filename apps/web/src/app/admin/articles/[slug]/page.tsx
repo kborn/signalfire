@@ -18,7 +18,7 @@ export default async function AdminArticleDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [article, topics] = await withAdminAuthRedirect(async () => {
+  const [article, topics] = await withAdminAuthRedirect(`/admin/articles/${slug}`, async () => {
     return await Promise.all([fetchArticleDetails(slug), getTopicsList()]);
   });
 

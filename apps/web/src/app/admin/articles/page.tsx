@@ -24,7 +24,7 @@ function buildArticlesHref(status: EntityStatus) {
 export default async function ArticlesListPage({ searchParams }: ArticleListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const articleList = await withAdminAuthRedirect(async () => {
+  const articleList = await withAdminAuthRedirect(buildArticlesHref(currentStatus), async () => {
     return await getAdminArticlesList({ status: currentStatus });
   });
 

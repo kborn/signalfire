@@ -6,7 +6,7 @@ import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 export const dynamic = 'force-dynamic';
 
 export default async function NewAdminActionPage() {
-  const topics = await withAdminAuthRedirect(async () => {
+  const topics = await withAdminAuthRedirect('/admin/actions/new', async () => {
     return await getTopicsList();
   });
 

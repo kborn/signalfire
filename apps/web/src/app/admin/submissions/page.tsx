@@ -77,12 +77,15 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
   const { status, type } = await searchParams;
   const currentStatus = parseStatus(status);
   const currentType = parseType(type);
-  const submissionList = await withAdminAuthRedirect(async () => {
-    return await getSubmissionsList({
-      status: currentStatus,
-      submissionType: currentType,
-    });
-  });
+  const submissionList = await withAdminAuthRedirect(
+    buildSubmissionsHref({ status: currentStatus, type: currentType }),
+    async () => {
+      return await getSubmissionsList({
+        status: currentStatus,
+        submissionType: currentType,
+      });
+    },
+  );
 
   const submissions = submissionList.items;
   const emptyState = getEmptyStateCopy(currentStatus, currentType);

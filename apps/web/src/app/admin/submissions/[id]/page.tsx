@@ -19,7 +19,7 @@ export default async function SubmissionDetailsPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const [submission, topics] = await withAdminAuthRedirect(async () => {
+  const [submission, topics] = await withAdminAuthRedirect(`/admin/submissions/${id}`, async () => {
     return await Promise.all([fetchSubmissionDetails(id), getTopicsList()]);
   });
 

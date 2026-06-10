@@ -24,7 +24,7 @@ function buildActionsHref(status: EntityStatus) {
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
-  const actionList = await withAdminAuthRedirect(async () => {
+  const actionList = await withAdminAuthRedirect(buildActionsHref(currentStatus), async () => {
     return getAdminActionsList({ status: currentStatus });
   });
 
