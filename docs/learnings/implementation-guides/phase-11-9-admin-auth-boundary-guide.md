@@ -276,6 +276,45 @@ So middleware is not replacing API auth.
 It is translating API auth results into correct browser behavior for
 server-rendered admin page requests.
 
+### Sequence diagram for the current `/admin` request flow
+
+```text
+Browser                    Next middleware                    API
+   |                              |                            |
+   | GET /admin/articles          |                            |
+   |----------------------------->|                            |
+   |                              | GET /admin/auth/session    |
+   |                              | with forwarded Cookie      |
+   |                              |--------------------------->|
+   |                              |                            | validate session
+   |                              |                            | refresh expiry
+   |                              |<---------------------------|
+   |                              | 200 OK + Set-Cookie        |
+   |                              |                            |
+   |<-----------------------------|                            |
+   | page response + mirrored     |                            |
+   | Set-Cookie                   |                            |
+   |                              |                            |
+```
+
+If the API responds `401` instead, the flow becomes:
+
+```text
+Browser                    Next middleware                    API
+   |                              |                            |
+   | GET /admin/articles          |                            |
+   |----------------------------->|                            |
+   |                              | GET /admin/auth/session    |
+   |                              |--------------------------->|
+   |                              |<---------------------------|
+   |                              | 401 Unauthorized           |
+   |                              |                            |
+   |<-----------------------------|                            |
+   | 302 redirect to /admin/login |                            |
+   | clear expired auth cookie    |                            |
+   |                              |                            |
+```
+
 ### Why the server-only fetch helper had to be split from the shared admin API module
 
 The first working fix for server-rendered admin pages was a server-only helper
