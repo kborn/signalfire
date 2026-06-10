@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getTopicsList } from '@/lib/api/topics';
 
 import NewAdminArticlePage from './page';
-import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
+import ArticleEditorForm from '@/app/admin/(workspace)/articles/_components/ArticleEditorForm';
 
 vi.mock('@/lib/api/topics', () => ({
   getTopicsList: vi.fn(),

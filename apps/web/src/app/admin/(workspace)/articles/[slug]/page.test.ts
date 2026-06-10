@@ -5,8 +5,8 @@ import { getAdminArticleDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 
 import AdminArticleDetailPage from './page';
-import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
-import ArticleMetadataPanel from '@/app/admin/articles/_components/ArticleMetadataPanel';
+import ArticleEditorForm from '@/app/admin/(workspace)/articles/_components/ArticleEditorForm';
+import ArticleMetadataPanel from '@/app/admin/(workspace)/articles/_components/ArticleMetadataPanel';
 
 vi.mock('@/lib/api/admin.server', () => ({
   getAdminArticleDetails: vi.fn(),

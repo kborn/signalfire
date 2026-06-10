@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
-import SubmissionReviewPageContent from '@/app/admin/submissions/[id]/SubmissionReviewPageContent';
+import SubmissionReviewPageContent from '@/app/admin/(workspace)/submissions/[id]/SubmissionReviewPageContent';
 import { postSubmissionReviewReq } from '@/lib/api/admin';
 import { SubmissionError } from '@/lib/api/error';
 

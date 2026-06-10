@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ActionEditorForm from '@/app/admin/actions/_components/ActionEditorForm';
+import ActionEditorForm from '@/app/admin/(workspace)/actions/_components/ActionEditorForm';
 import { getTopicsList } from '@/lib/api/topics';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 

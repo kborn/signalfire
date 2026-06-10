@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ActionEditorForm from '@/app/admin/actions/_components/ActionEditorForm';
-import ActionMetadataPanel from '@/app/admin/actions/_components/ActionMetadataPanel';
+import ActionEditorForm from '@/app/admin/(workspace)/actions/_components/ActionEditorForm';
+import ActionMetadataPanel from '@/app/admin/(workspace)/actions/_components/ActionMetadataPanel';
 import { getAdminActionDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';

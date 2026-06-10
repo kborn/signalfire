@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
+import ArticleEditorForm from '@/app/admin/(workspace)/articles/_components/ArticleEditorForm';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getTopicsList } from '@/lib/api/topics';
 

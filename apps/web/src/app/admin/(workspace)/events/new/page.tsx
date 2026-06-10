@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
+import EventEditorForm from '@/app/admin/(workspace)/events/_components/EventEditorForm';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getTopicsList } from '@/lib/api/topics';
 

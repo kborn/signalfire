@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { getAdminEventDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
-import EventEditorForm from '@/app/admin/events/_components/EventEditorForm';
-import EventMetadataPanel from '@/app/admin/events/_components/EventMetadataPanel';
+import EventEditorForm from '@/app/admin/(workspace)/events/_components/EventEditorForm';
+import EventMetadataPanel from '@/app/admin/(workspace)/events/_components/EventMetadataPanel';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { parsePositiveIntOrNotFound, withNotFoundOn404 } from '@/lib/admin/not-found';
 

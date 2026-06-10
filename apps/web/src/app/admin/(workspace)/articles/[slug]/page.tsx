@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ArticleEditorForm from '@/app/admin/articles/_components/ArticleEditorForm';
-import ArticleMetadataPanel from '@/app/admin/articles/_components/ArticleMetadataPanel';
+import ArticleEditorForm from '@/app/admin/(workspace)/articles/_components/ArticleEditorForm';
+import ArticleMetadataPanel from '@/app/admin/(workspace)/articles/_components/ArticleMetadataPanel';
 import { getAdminArticleDetails } from '@/lib/api/admin.server';
 import { getTopicsList } from '@/lib/api/topics';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';

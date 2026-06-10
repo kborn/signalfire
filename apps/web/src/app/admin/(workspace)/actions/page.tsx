@@ -89,7 +89,7 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
                 <tr key={action.id}>
                   <td colSpan={5}>
                     <Link
-                      href={`/admin/actions/${action.slug}`}
+                      href={`/@/app/admin/(workspace)/actions/${action.slug}`}
                       className="adminTableRecordLink adminTableRowLink"
                       aria-label={`Open action ${action.title}`}
                     >
