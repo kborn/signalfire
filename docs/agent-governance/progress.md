@@ -5,27 +5,27 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                              | Name                             | Status          |
-| -------------------------------------------------- | -------------------------------- | --------------- |
-| [0](#-phase-0--repo-bootstrap-)                    | Repo Bootstrap                   | ✅              |
-| [1](#-phase-1--platform-skeleton-)                 | Repository & Platform Skeleton   | ✅              |
-| [2](#-phase-2--backend-foundations-)               | Backend Foundations              | ✅              |
-| [3](#-phase-3--core-domain-model-)                 | Core Domain Model                | ✅              |
-| [4](#-phase-4--test-infrastructure-)               | Test Infrastructure              | ✅              |
-| [5](#-phase-5--topic--content-apis-)               | Topic & Content APIs             | ✅              |
-| [6](#-phase-6--content-discovery-ui-)              | Content Discovery UI             | ✅              |
-| [7](#-phase-7--event-domain--apis-)                | Event Domain & APIs              | ✅              |
-| [8](#-phase-8--event-ui-)                          | Event UI                         | ✅              |
-| [9](#-phase-9--ui-polish-)                         | UI Polish                        | ✅              |
-| [10](#-phase-10--submission-system-)               | Submission System                | ✅              |
-| **[11](#-phase-11--moderation--admin-interface-)** | **Moderation & Admin Interface** | \*🚧 ACTIVE\*\* |
-| [12](#-phase-12--search--discovery-improvements-)  | Search & Discovery Improvements  | ⏳              |
-| [13](#-phase-13--deployment-infrastructure-)       | Deployment Infrastructure        | ⏳              |
-| [14](#-phase-14--analytics-)                       | Analytics                        | ⏳              |
-| [15](#-phase-15--release-stabilization-)           | Release Stabilization            | ⏳              |
-| [15.5](#-phase-155--final-public-ui-polish-)       | Final Public UI Polish           | ⏳              |
-| [16](#-phase-16--final-repo--product-prep-)        | Final Repo & Product Prep        | ⏳              |
-| [17](#-phase-17--public-launch-)                   | Public Launch                    | ⏳              |
+| Phase                                                 | Name                                | Status        |
+| ----------------------------------------------------- | ----------------------------------- | ------------- |
+| [0](#-phase-0--repo-bootstrap-)                       | Repo Bootstrap                      | ✅            |
+| [1](#-phase-1--platform-skeleton-)                    | Repository & Platform Skeleton      | ✅            |
+| [2](#-phase-2--backend-foundations-)                  | Backend Foundations                 | ✅            |
+| [3](#-phase-3--core-domain-model-)                    | Core Domain Model                   | ✅            |
+| [4](#-phase-4--test-infrastructure-)                  | Test Infrastructure                 | ✅            |
+| [5](#-phase-5--topic--content-apis-)                  | Topic & Content APIs                | ✅            |
+| [6](#-phase-6--content-discovery-ui-)                 | Content Discovery UI                | ✅            |
+| [7](#-phase-7--event-domain--apis-)                   | Event Domain & APIs                 | ✅            |
+| [8](#-phase-8--event-ui-)                             | Event UI                            | ✅            |
+| [9](#-phase-9--ui-polish-)                            | UI Polish                           | ✅            |
+| [10](#-phase-10--submission-system-)                  | Submission System                   | ✅            |
+| [11](#-phase-11--moderation--admin-interface-)        | Moderation & Admin Interface        | ✅            |
+| **[12](#-phase-12--search--discovery-improvements-)** | **Search & Discovery Improvements** | **🚧 ACTIVE** |
+| [13](#-phase-13--deployment-infrastructure-)          | Deployment Infrastructure           | ⏳            |
+| [14](#-phase-14--analytics-)                          | Analytics                           | ⏳            |
+| [15](#-phase-15--release-stabilization-)              | Release Stabilization               | ⏳            |
+| [15.5](#-phase-155--final-public-ui-polish-)          | Final Public UI Polish              | ⏳            |
+| [16](#-phase-16--final-repo--product-prep-)           | Final Repo & Product Prep           | ⏳            |
+| [17](#-phase-17--public-launch-)                      | Public Launch                       | ⏳            |
 
 ---
 
@@ -1126,11 +1126,11 @@ Implement anonymous submission workflow for events and articles.
 
 ###### Phase Tasks:
 
-- [ ] Verify end-to-end submission flow from UI through persistence
-- [ ] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
-- [ ] Guard against divergence between article and event handling inside the unified submission flow
-- [ ] Document assumptions and handoff boundaries to Phase 11 moderation/admin workflow
-- [ ] Add missing smoke or integration coverage needed for release readiness
+- [x] Verify end-to-end submission flow from UI through persistence
+- [x] Confirm stored moderation states and persisted submission shape match Release 1 submission rules
+- [x] Guard against divergence between article and event handling inside the unified submission flow
+- [x] Document assumptions and handoff boundaries to Phase 11 moderation/admin workflow
+- [x] Add missing smoke or integration coverage needed for release readiness
 
 ---
 
@@ -1451,20 +1451,22 @@ repository and before continuing into broader admin content-management work.
 
 ---
 
-#### ▸ Phase 11.9 - Admin Authentication & Access Control 🚧
+#### ▸ Phase 11.9 - Admin Authentication & Access Control ✅
 
 ###### Phase Tasks:
 
-- [ ] Implement authentication for the deployed `/admin` interface while preserving workable local development ergonomics
-- [ ] Enforce admin-only authorization checks on admin routes and backing admin APIs for Release 1 deployment
-- [ ] Implement the Release 1 admin-user model with manual provisioning through database, seed, or script operations and no public signup or admin-user management UI
-- [ ] Verify unauthenticated and unauthorized access behavior for admin entry routes and highest-risk admin actions
-- [ ] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
+- [x] Implement authentication for the deployed `/admin` interface while preserving workable local development ergonomics
+- [x] Enforce admin-only authorization checks on admin routes and backing admin APIs for Release 1 deployment
+- [x] Implement the Release 1 admin-user model with manual provisioning through database, seed, or script operations and no public signup or admin-user management UI
+- [x] Verify unauthenticated and unauthorized access behavior for admin entry routes and highest-risk admin actions
+- [x] Document deferred concerns such as granular roles, audit trails, and topic management if they remain out of scope
 
 ###### Notes:
 
 - Admin and moderation routes may remain openly reachable during local-only development if that materially reduces drag, but any deployed environment intended for real users must place them behind authentication/authorization.
 - This subphase owns the actual Release 1 admin access-control implementation rather than only documenting a later handoff.
+- The deployed admin boundary is now implemented with cookie-backed `AdminUser` sessions, admin-only API guards, and web middleware that validates `/admin` requests against the API session endpoint while mirroring refreshed `Set-Cookie` headers back to the browser.
+- Manual admin-user provisioning remains intentionally operational rather than productized in Release 1; the canonical decision allows database, seed, or controlled script operations and keeps signup, invites, password reset, and admin-user management UI out of scope.
 
 ---
 
