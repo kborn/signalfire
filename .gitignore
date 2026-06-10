@@ -19,6 +19,7 @@ __pycache__/
 .turbo/*
 apps/api/.turbo
 apps/web/.turbo
+packages/admin-auth-shared/.turbo
 
 # Personal working notes
 .ai/phase-notes/
