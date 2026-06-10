@@ -1,8 +1,7 @@
 import { COOKIE_NAME } from '@signal-fire/api-contracts';
 import type { Response } from 'express';
 
-// const SESSION_DURATION_MINS = 60 * 12;
-const SESSION_DURATION_MINS = 1;
+const SESSION_DURATION_MINS = 60 * 12;
 
 export function getNextExpiration(): Date {
   const date = new Date();

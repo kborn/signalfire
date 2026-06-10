@@ -1370,6 +1370,34 @@ h3 {
   vertical-align: top;
 }
 
+.adminRecordTablePrimaryCol {
+  width: 43%;
+}
+
+.adminRecordTableTypeCol {
+  width: 11%;
+}
+
+.adminRecordTableStatusCol {
+  width: 10%;
+}
+
+.adminRecordTableTopicsCol {
+  width: 23%;
+}
+
+.adminRecordTableDateCol {
+  width: 13%;
+}
+
+.adminRecordTableNameCol {
+  width: 11%;
+}
+
+.adminRecordTableEmailCol {
+  width: 18%;
+}
+
 .adminTable tbody tr:hover td {
   background: #fafafa;
 }
@@ -1502,19 +1530,10 @@ h3 {
 }
 
 .adminTableRecordLink {
-  display: grid;
-  gap: var(--space-0);
+  display: inline-flex;
   width: 100%;
-  padding: 0.15rem 0;
   color: #171717;
   text-decoration: none;
-}
-
-.adminTableRowLink {
-  grid-template-columns: minmax(0, 2.3fr) repeat(4, minmax(0, 0.9fr));
-  gap: var(--space-2);
-  align-items: start;
-  padding: var(--space-2) var(--space-3);
 }
 
 .adminTableRecordLink:hover {
@@ -1528,28 +1547,28 @@ h3 {
 }
 
 .adminTableRecordTitle {
+  display: block;
   font-weight: 700;
+  white-space: normal;
   text-underline-offset: 0.18em;
 }
 
-.adminTableRowPrimary {
-  display: grid;
-  gap: var(--space-0);
-  min-width: 0;
-}
-
-.adminTableRowCell {
-  min-width: 0;
-  color: #171717;
-  font-size: 0.95rem;
-  line-height: 1.35;
+.adminTableSummaryRow td {
+  padding-top: 0;
 }
 
 .adminTableCellMeta {
-  margin-top: var(--space-0);
+  margin: 0;
+  max-width: none;
   color: #6b7280;
   font-size: 0.9rem;
   line-height: 1.35;
+}
+
+.adminTableSummaryCell {
+  width: 100%;
+  padding-top: 0;
+  padding-bottom: 1.1rem;
 }
 
 .adminInlineList {

@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import type { EntityStatus } from '@signal-fire/api-contracts';
 import Link from 'next/link';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
@@ -64,7 +65,13 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
           <h2 id="admin-articles-heading">Article records</h2>
         </div>
 
-        <table className="adminTable">
+        <table className="adminTable adminRecordTable adminRecordTableArticles">
+          <colgroup>
+            <col className="adminRecordTablePrimaryCol" />
+            <col className="adminRecordTableStatusCol" />
+            <col className="adminRecordTableTopicsCol" />
+            <col className="adminRecordTableDateCol" />
+          </colgroup>
           <thead>
             <tr>
               <th>Title</th>
@@ -85,27 +92,29 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
               </tr>
             ) : (
               articleList.items.map((article) => (
-                <tr key={article.id}>
-                  <td colSpan={4}>
-                    <Link
-                      href={`articles/${article.slug}`}
-                      className="adminTableRecordLink adminTableRowLink"
-                      aria-label={`Open article ${article.title}`}
-                    >
-                      <span className="adminTableRowPrimary">
+                <Fragment key={article.id}>
+                  <tr>
+                    <td>
+                      <Link
+                        href={`articles/${article.slug}`}
+                        className="adminTableRecordLink"
+                        aria-label={`Open article ${article.title}`}
+                      >
                         <span className="adminTableRecordTitle">
                           {article.title} <span aria-hidden="true">→</span>
                         </span>
-                        <span className="adminTableCellMeta">{article.summary}</span>
-                      </span>
-                      <span className="adminTableRowCell">{article.status}</span>
-                      <span className="adminTableRowCell">{article.topicSlugs.join(', ')}</span>
-                      <span className="adminTableRowCell">
-                        {new Date(article.updatedAt).toLocaleString()}
-                      </span>
-                    </Link>
-                  </td>
-                </tr>
+                      </Link>
+                    </td>
+                    <td>{article.status}</td>
+                    <td>{article.topicSlugs.join(', ')}</td>
+                    <td>{new Date(article.updatedAt).toLocaleString()}</td>
+                  </tr>
+                  <tr className="adminTableSummaryRow">
+                    <td className="adminTableSummaryCell" colSpan={4}>
+                      <p className="adminTableCellMeta">{article.summary}</p>
+                    </td>
+                  </tr>
+                </Fragment>
               ))
             )}
           </tbody>

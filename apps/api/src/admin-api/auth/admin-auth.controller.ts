@@ -10,6 +10,7 @@ import { clearAdminAuthCookie, setAdminAuthCookie } from './admin-auth.common';
 import { AdminAuthGuard } from './admin-auth.guard';
 import { CurrentAdmin } from './current-admin.decorator';
 import type { AdminUser } from '@prisma/client';
+import { AdminAuthValidationPipe } from './admin-auth-validation.pipe';
 
 @Controller('admin/auth')
 export class AdminAuthController {
@@ -17,7 +18,7 @@ export class AdminAuthController {
 
   @Post('/login')
   async login(
-    @Body() reqBody: AdminLoginRequest,
+    @Body(new AdminAuthValidationPipe()) reqBody: AdminLoginRequest,
     @Res({ passthrough: true }) res: Response,
   ): Promise<{ ok: boolean }> {
     const session = await this.service.login(reqBody.email, reqBody.password);

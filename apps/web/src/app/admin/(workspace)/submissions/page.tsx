@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
@@ -93,19 +94,27 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
   const tableBody =
     submissions.length > 0 ? (
       submissions.map((submission) => (
-        <tr key={submission.id}>
-          <td>
-            <Link href={`submissions/${submission.id}`} className="adminTableLink">
-              {submission.title} <span aria-hidden="true">→</span>
-            </Link>
-            <p className="adminTableCellMeta">{submission.summary}</p>
-          </td>
-          <td>{submission.submissionType}</td>
-          <td>{submission.status}</td>
-          <td>{new Date(submission.submittedAt).toLocaleString()}</td>
-          <td>{submission.submitterName ?? 'Anonymous'}</td>
-          <td>{submission.submitterEmail ?? 'Not provided'}</td>
-        </tr>
+        <Fragment key={submission.id}>
+          <tr>
+            <td>
+              <Link href={`submissions/${submission.id}`} className="adminTableRecordLink">
+                <span className="adminTableRecordTitle">
+                  {submission.title} <span aria-hidden="true">→</span>
+                </span>
+              </Link>
+            </td>
+            <td>{submission.submissionType}</td>
+            <td>{submission.status}</td>
+            <td>{new Date(submission.submittedAt).toLocaleString()}</td>
+            <td>{submission.submitterName ?? 'Anonymous'}</td>
+            <td>{submission.submitterEmail ?? 'Not provided'}</td>
+          </tr>
+          <tr className="adminTableSummaryRow">
+            <td className="adminTableSummaryCell" colSpan={tableHeaders.length}>
+              <p className="adminTableCellMeta">{submission.summary}</p>
+            </td>
+          </tr>
+        </Fragment>
       ))
     ) : (
       <tr>
@@ -168,7 +177,15 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
           <h3 id="queue-records-heading">Submission records</h3>
         </div>
 
-        <table className="adminTable">
+        <table className="adminTable adminRecordTable adminRecordTableSubmissions">
+          <colgroup>
+            <col className="adminRecordTablePrimaryCol" />
+            <col className="adminRecordTableTypeCol" />
+            <col className="adminRecordTableStatusCol" />
+            <col className="adminRecordTableDateCol" />
+            <col className="adminRecordTableNameCol" />
+            <col className="adminRecordTableEmailCol" />
+          </colgroup>
           <thead>
             <tr>
               {tableHeaders.map((header) => (

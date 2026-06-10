@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { type EntityStatus } from '@signal-fire/api-contracts';
 import { getAdminEventsList } from '@/lib/api/admin.server';
@@ -65,7 +66,14 @@ export default async function EventsListPage({ searchParams }: EventListPageProp
           <h2 id="admin-events-heading">Event records</h2>
         </div>
 
-        <table className="adminTable">
+        <table className="adminTable adminRecordTable adminRecordTableEvents">
+          <colgroup>
+            <col className="adminRecordTablePrimaryCol" />
+            <col className="adminRecordTableTypeCol" />
+            <col className="adminRecordTableDateCol" />
+            <col className="adminRecordTableStatusCol" />
+            <col className="adminRecordTableDateCol" />
+          </colgroup>
           <thead>
             <tr>
               <th>Title</th>
@@ -87,32 +95,30 @@ export default async function EventsListPage({ searchParams }: EventListPageProp
               </tr>
             ) : (
               eventList.items.map((event) => (
-                <tr key={event.id}>
-                  <td colSpan={5}>
-                    <Link
-                      href={`/admin/events/${event.id}`}
-                      className="adminTableRecordLink adminTableRowLink"
-                      aria-label={`Open event ${event.title}`}
-                    >
-                      <span className="adminTableRowPrimary">
+                <Fragment key={event.id}>
+                  <tr>
+                    <td>
+                      <Link
+                        href={`/admin/events/${event.id}`}
+                        className="adminTableRecordLink"
+                        aria-label={`Open event ${event.title}`}
+                      >
                         <span className="adminTableRecordTitle">
                           {event.title} <span aria-hidden="true">→</span>
                         </span>
-                        <span className="adminTableCellMeta">{event.summary}</span>
-                      </span>
-                      <span className="adminTableRowCell">
-                        {formatEventTypeLabel(event.eventType)}
-                      </span>
-                      <span className="adminTableRowCell">
-                        {new Date(event.startTime).toLocaleString()}
-                      </span>
-                      <span className="adminTableRowCell">{event.status}</span>
-                      <span className="adminTableRowCell">
-                        {new Date(event.updatedAt).toLocaleString()}
-                      </span>
-                    </Link>
-                  </td>
-                </tr>
+                      </Link>
+                    </td>
+                    <td>{formatEventTypeLabel(event.eventType)}</td>
+                    <td>{new Date(event.startTime).toLocaleString()}</td>
+                    <td>{event.status}</td>
+                    <td>{new Date(event.updatedAt).toLocaleString()}</td>
+                  </tr>
+                  <tr className="adminTableSummaryRow">
+                    <td className="adminTableSummaryCell" colSpan={5}>
+                      <p className="adminTableCellMeta">{event.summary}</p>
+                    </td>
+                  </tr>
+                </Fragment>
               ))
             )}
           </tbody>

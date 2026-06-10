@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import Link from 'next/link';
 import { getAdminActionsList } from '@/lib/api/admin.server';
 import type { EntityStatus } from '@signal-fire/api-contracts';
@@ -64,7 +65,14 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
           <h2 id="admin-actions-heading">Action records</h2>
         </div>
 
-        <table className="adminTable">
+        <table className="adminTable adminRecordTable adminRecordTableActions">
+          <colgroup>
+            <col className="adminRecordTablePrimaryCol" />
+            <col className="adminRecordTableTypeCol" />
+            <col className="adminRecordTableStatusCol" />
+            <col className="adminRecordTableTopicsCol" />
+            <col className="adminRecordTableDateCol" />
+          </colgroup>
           <thead>
             <tr>
               <th>Title</th>
@@ -86,28 +94,30 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
               </tr>
             ) : (
               actionList.items.map((action) => (
-                <tr key={action.id}>
-                  <td colSpan={5}>
-                    <Link
-                      href={`actions/${action.slug}`}
-                      className="adminTableRecordLink adminTableRowLink"
-                      aria-label={`Open action ${action.title}`}
-                    >
-                      <span className="adminTableRowPrimary">
+                <Fragment key={action.id}>
+                  <tr>
+                    <td>
+                      <Link
+                        href={`actions/${action.slug}`}
+                        className="adminTableRecordLink"
+                        aria-label={`Open action ${action.title}`}
+                      >
                         <span className="adminTableRecordTitle">
                           {action.title} <span aria-hidden="true">→</span>
                         </span>
-                        <span className="adminTableCellMeta">{action.summary}</span>
-                      </span>
-                      <span className="adminTableRowCell">{action.actionType}</span>
-                      <span className="adminTableRowCell">{action.status}</span>
-                      <span className="adminTableRowCell">{action.topicSlugs.join(', ')}</span>
-                      <span className="adminTableRowCell">
-                        {new Date(action.updatedAt).toLocaleString()}
-                      </span>
-                    </Link>
-                  </td>
-                </tr>
+                      </Link>
+                    </td>
+                    <td>{action.actionType}</td>
+                    <td>{action.status}</td>
+                    <td>{action.topicSlugs.join(', ')}</td>
+                    <td>{new Date(action.updatedAt).toLocaleString()}</td>
+                  </tr>
+                  <tr className="adminTableSummaryRow">
+                    <td className="adminTableSummaryCell" colSpan={5}>
+                      <p className="adminTableCellMeta">{action.summary}</p>
+                    </td>
+                  </tr>
+                </Fragment>
               ))
             )}
           </tbody>
