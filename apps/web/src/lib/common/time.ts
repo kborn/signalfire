@@ -35,6 +35,16 @@ function formatUtcTime(date: Date): string {
   }).format(date);
 }
 
+function formatShortLocalDateTime(date: Date): string {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'numeric',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
+}
+
 function isSameUtcDay(left: Date, right: Date): boolean {
   return (
     left.getUTCFullYear() === right.getUTCFullYear() &&
@@ -82,4 +92,14 @@ export function formatEventTime(startDateString: string, endDateString: string |
   const endDateLabel = formatUtcDate(endDate);
 
   return `${startDateLabel}, ${startTimeLabel} UTC - ${endDateLabel}, ${endTimeLabel} UTC`;
+}
+
+export function formatAdminDateTime(dateString: string): string {
+  const date = parseDate(dateString);
+
+  if (!date) {
+    return '--';
+  }
+
+  return formatShortLocalDateTime(date);
 }

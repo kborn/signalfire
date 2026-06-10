@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getAdminActionsList } from '@/lib/api/admin.server';
 import type { EntityStatus } from '@signal-fire/api-contracts';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
+import { formatAdminDateTime } from '@/lib/common/time';
+import { normalizeDisplaySummary } from '@/lib/common/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,11 +112,13 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
                     <td>{action.actionType}</td>
                     <td>{action.status}</td>
                     <td>{action.topicSlugs.join(', ')}</td>
-                    <td>{new Date(action.updatedAt).toLocaleString()}</td>
+                    <td>{formatAdminDateTime(action.updatedAt)}</td>
                   </tr>
                   <tr className="adminTableSummaryRow">
                     <td className="adminTableSummaryCell" colSpan={5}>
-                      <p className="adminTableCellMeta">{action.summary}</p>
+                      <p className="adminTableCellMeta">
+                        {normalizeDisplaySummary(action.summary)}
+                      </p>
                     </td>
                   </tr>
                 </Fragment>

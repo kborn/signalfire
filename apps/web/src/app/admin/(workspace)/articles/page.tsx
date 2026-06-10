@@ -3,6 +3,8 @@ import type { EntityStatus } from '@signal-fire/api-contracts';
 import Link from 'next/link';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import { getAdminArticlesList } from '@/lib/api/admin.server';
+import { formatAdminDateTime } from '@/lib/common/time';
+import { normalizeDisplaySummary } from '@/lib/common/utils';
 
 export const dynamic = 'force-dynamic';
 
@@ -107,11 +109,13 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
                     </td>
                     <td>{article.status}</td>
                     <td>{article.topicSlugs.join(', ')}</td>
-                    <td>{new Date(article.updatedAt).toLocaleString()}</td>
+                    <td>{formatAdminDateTime(article.updatedAt)}</td>
                   </tr>
                   <tr className="adminTableSummaryRow">
                     <td className="adminTableSummaryCell" colSpan={4}>
-                      <p className="adminTableCellMeta">{article.summary}</p>
+                      <p className="adminTableCellMeta">
+                        {normalizeDisplaySummary(article.summary)}
+                      </p>
                     </td>
                   </tr>
                 </Fragment>

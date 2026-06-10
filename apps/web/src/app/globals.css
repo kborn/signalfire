@@ -1398,8 +1398,16 @@ h3 {
   width: 18%;
 }
 
+.adminTable tbody tr:not(.adminTableSummaryRow) td {
+  border-bottom-color: #edf1f6;
+}
+
 .adminTable tbody tr:hover td {
   background: #fafafa;
+}
+
+.adminTable tbody tr.adminTableSummaryRow:hover td {
+  background: #fcfcfd;
 }
 
 .adminTable th {
@@ -1554,7 +1562,8 @@ h3 {
 }
 
 .adminTableSummaryRow td {
-  padding-top: 0;
+  padding-top: 0.15rem;
+  border-bottom-color: #d9e2ec;
 }
 
 .adminTableCellMeta {
@@ -1567,8 +1576,13 @@ h3 {
 
 .adminTableSummaryCell {
   width: 100%;
-  padding-top: 0;
-  padding-bottom: 1.1rem;
+  padding-top: 0.15rem;
+  padding-bottom: 0.9rem;
+  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.96));
+}
+
+.adminTableSummaryRow + tr td {
+  border-top: 0;
 }
 
 .adminInlineList {

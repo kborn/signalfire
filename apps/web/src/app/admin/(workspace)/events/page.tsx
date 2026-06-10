@@ -2,7 +2,8 @@ import { Fragment } from 'react';
 import Link from 'next/link';
 import { type EntityStatus } from '@signal-fire/api-contracts';
 import { getAdminEventsList } from '@/lib/api/admin.server';
-import { formatEventTypeLabel } from '@/lib/common/utils';
+import { formatAdminDateTime } from '@/lib/common/time';
+import { formatEventTypeLabel, normalizeDisplaySummary } from '@/lib/common/utils';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
@@ -109,13 +110,13 @@ export default async function EventsListPage({ searchParams }: EventListPageProp
                       </Link>
                     </td>
                     <td>{formatEventTypeLabel(event.eventType)}</td>
-                    <td>{new Date(event.startTime).toLocaleString()}</td>
+                    <td>{formatAdminDateTime(event.startTime)}</td>
                     <td>{event.status}</td>
-                    <td>{new Date(event.updatedAt).toLocaleString()}</td>
+                    <td>{formatAdminDateTime(event.updatedAt)}</td>
                   </tr>
                   <tr className="adminTableSummaryRow">
                     <td className="adminTableSummaryCell" colSpan={5}>
-                      <p className="adminTableCellMeta">{event.summary}</p>
+                      <p className="adminTableCellMeta">{normalizeDisplaySummary(event.summary)}</p>
                     </td>
                   </tr>
                 </Fragment>

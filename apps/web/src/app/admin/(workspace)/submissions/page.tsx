@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 import type { SubmissionStatus, SubmissionType } from '@signal-fire/api-contracts';
 import { getSubmissionsList } from '@/lib/api/admin.server';
+import { formatAdminDateTime } from '@/lib/common/time';
+import { normalizeDisplaySummary } from '@/lib/common/utils';
 export const dynamic = 'force-dynamic';
 
 type SubmissionListPageProps = {
@@ -105,13 +107,13 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
             </td>
             <td>{submission.submissionType}</td>
             <td>{submission.status}</td>
-            <td>{new Date(submission.submittedAt).toLocaleString()}</td>
+            <td>{formatAdminDateTime(submission.submittedAt)}</td>
             <td>{submission.submitterName ?? 'Anonymous'}</td>
             <td>{submission.submitterEmail ?? 'Not provided'}</td>
           </tr>
           <tr className="adminTableSummaryRow">
             <td className="adminTableSummaryCell" colSpan={tableHeaders.length}>
-              <p className="adminTableCellMeta">{submission.summary}</p>
+              <p className="adminTableCellMeta">{normalizeDisplaySummary(submission.summary)}</p>
             </td>
           </tr>
         </Fragment>

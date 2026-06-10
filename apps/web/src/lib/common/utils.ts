@@ -24,3 +24,14 @@ export function formatActionTypeLabel(actionType: string | undefined): string {
 export function formatEventTypeLabel(eventType: string | undefined): string {
   return formatEnumLabel(eventType);
 }
+
+export function normalizeDisplaySummary(summary: string | undefined): string {
+  if (!summary) {
+    return '';
+  }
+
+  return summary
+    .replace(/\s+/g, ' ')
+    .replace(/([.!?])([A-Z])/g, '$1 $2')
+    .trim();
+}

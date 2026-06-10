@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatEventTime } from './time';
+import { formatAdminDateTime, formatEventTime } from './time';
 
 describe('formatEventTime', () => {
   it('formats single timestamps in a human-readable UTC format', () => {
@@ -27,5 +27,17 @@ describe('formatEventTime', () => {
     expect(formatEventTime('2026-04-20T22:30:00.000Z', 'not-a-date')).toBe(
       'Unable to determine event time',
     );
+  });
+});
+
+describe('formatAdminDateTime', () => {
+  it('formats admin timestamps in a shorter local date-time form', () => {
+    expect(formatAdminDateTime('2026-06-08T17:07:12.000Z')).toMatch(
+      /6\/8\/2026, \d{1,2}:07 (AM|PM)/,
+    );
+  });
+
+  it('returns a fallback when the timestamp is invalid', () => {
+    expect(formatAdminDateTime('not-a-date')).toBe('--');
   });
 });
