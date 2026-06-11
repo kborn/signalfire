@@ -26,3 +26,6 @@ It does not define bootstrap order or required session initialization steps.
 - Keep responses concise and directly actionable
 - During implementation-oriented sessions, be aware of the learning workflow in `docs/learnings/` and prompt the user if they want a syllabus, implementation guide, or walkthrough refreshed or generated for the current subtask
 - Treat `.ai/phase-notes/` as optional working context when relevant to the active phase and follow `.ai/bootstrap/DOC_AUTHORITY.md` for documentation authority rules
+- When refining future-phase plans or roadmap tasks, consult relevant notes in
+  `docs/future/` as non-canonical planning input and clean them up when their
+  contents are promoted into canonical docs

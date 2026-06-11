@@ -58,3 +58,23 @@ Phase 11 does not require:
 - granular role systems
 - topic management beyond selecting from the seeded topic set
 - full audit/history tooling unless later required by implementation
+
+## Release 1 Article Markdown Normalization
+
+Published Article pages render the Article title from structured metadata.
+Moderation and editorial normalization should therefore enforce a simple body
+structure contract before publication.
+
+Release 1 editorial rules:
+
+- remove a top-level body H1 if it duplicates the page title
+- begin the body with a lead paragraph rather than another top-level title
+- use H2 for major sections
+- use H3 sparingly for subsections
+- prefer lists for steps, watch-fors, or resource groupings when they improve
+  scanability
+- keep action-oriented closing guidance explicit rather than ending abruptly
+- do not rely on raw HTML in published article bodies
+
+These rules are editorial normalization guidance for Release 1 moderation. They
+do not require a separate authoring system or automated markdown rewriting.

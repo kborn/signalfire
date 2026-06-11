@@ -76,6 +76,10 @@ Submissions enter a moderation queue.
 
 Visitors may submit article content for review.
 
+Release 1 submissions are moderated intake, not a full contributor platform.
+The public product should not imply richer contributor account or notification
+capabilities than actually exist in the shipped release.
+
 ---
 
 ## Moderation
@@ -98,5 +102,6 @@ The following are intentionally excluded:
 
 - user accounts
 - comments or forums
+- contributor notification emails or submission-status follow-up automation
 - automated event crawling
 - background session-cleanup scheduling for admin auth

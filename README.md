@@ -36,6 +36,38 @@ Not included in Release 1:
 - production deployment hardening
 - topic CRUD beyond seeded Release 1 topics
 
+## Roadmap
+
+### Milestone 1
+
+Milestone 1 is a portfolio-quality deployed demo:
+
+- polished public discovery experience
+- end-to-end article and event submission flows
+- moderation queue, review actions, and editorial normalization
+- admin authentication and protected internal workflow
+- intentional demo posture for public-site and repo reviewers
+
+This is the current repository goal. It is about shipping a credible product
+artifact, not proving real-user growth.
+
+### Milestone 2
+
+Milestone 2 is a separate product decision: whether and how `Find Your Fight`
+should evolve from a portfolio artifact into a real public product.
+
+Likely Milestone 2 themes:
+
+- contributor feedback loops such as submission-status emails
+- local-first launch strategy and stronger geographic discovery
+- event ingestion / crawler workflow
+- distribution and sustainability planning
+
+For the fuller roadmap, see:
+
+- `docs/specs/002-roadmap.md`
+- `docs/agent-governance/progress.md`
+
 ## Architecture
 
 pnpm monorepo:
@@ -146,15 +178,16 @@ Override during the demo seed run if needed:
 ADMIN_EMAIL=reviewer@example.com ADMIN_PASSWORD=change-me pnpm api:prisma:migrate:seed:demo
 ```
 
-## Roadmap and Decisions
+## Planning Docs
 
-The canonical roadmap is:
+Canonical planning and decision docs:
 
+- `docs/specs/002-roadmap.md`
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current milestone focus is Phase 11.6: public repository readiness after the
-Phase 11.5 public experience refresh.
+Current active implementation phase is Phase 12: Search & Discovery
+Improvements.
 
 ## Admin Deployment Caveat
 
