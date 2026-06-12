@@ -1478,18 +1478,60 @@ repository and before continuing into broader admin content-management work.
 
 Improve browsing and filtering across topics, actions, and events.
 
+###### Definition of Done
+
+- [ ] Scope boundary is documented and implementation-ready
+- [ ] Public collection filtering is expanded within approved Release 1 limits
+- [ ] Public collection pagination is implemented with a stable contract
+- [ ] Tests and documentation cover filtering, pagination, empty states, and
+      published-only visibility behavior
+
+---
+
+#### ▸ Phase 12.1 - Discovery Contract Foundation ⏳
+
 ###### Phase Tasks:
 
-- [ ] Define and document the final Phase 12 scope boundary: filtering and
+- [x] Define and document the final Phase 12 scope boundary: filtering and
       pagination are in scope; full-text search, automated event ingestion,
       browser geolocation, and radius search remain deferred
+- [x] Define the canonical query-param and response-shape direction for
+      Phase 12 filtering and pagination across public collection surfaces
+
+---
+
+#### ▸ Phase 12.2 - Article & Action Collection Filtering ⏳
+
+###### Phase Tasks:
+
 - [ ] Add topic-filtered browsing for the public Articles collection
 - [ ] Add topic-filtered browsing for the public Actions collection
+- [ ] Expose topic filter UI/state on the public Article and Action collection
+      pages in a way that preserves published-only behavior and clear empty
+      states
+
+---
+
+#### ▸ Phase 12.3 - Event Filter Expansion ⏳
+
+###### Phase Tasks:
+
 - [ ] Expose the scoped Release 1 Event filters in the public Events UI using
       the existing canonical filter dimensions: topic, date/date window, and
       location fields supported by the current Event contract
+- [ ] Preserve the existing Event ordering and published-only visibility rules
+      while adding the approved filters
+
+---
+
+#### ▸ Phase 12.4 - Pagination & Hardening ⏳
+
+###### Phase Tasks:
+
 - [ ] Add pagination to public collection APIs and UIs in a way that avoids a
       later breaking contract change when content volume grows
+- [ ] Verify pagination composes correctly with approved filters across public
+      collection surfaces
 - [ ] Add tests and documentation covering filter query behavior, pagination
       behavior, empty states, and interaction with published-only visibility
 
@@ -1499,6 +1541,10 @@ Improve browsing and filtering across topics, actions, and events.
   expand into Milestone 2 systems.
 - Full-text search may be revisited later, but it is not required to complete
   the current phase.
+
+###### Links:
+
+- Specification: `docs/specs/014-phase-12-search-discovery-improvements.md`
 
 ---
 
