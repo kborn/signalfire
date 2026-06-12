@@ -17,6 +17,10 @@ After bootstrap is complete and the active phase is known, optionally check
 `.ai/phase-notes/<phase>/` or similarly named files for the current
 phase when they exist and are relevant to the user's request.
 
+When the user is defining, refining, or breaking down future phase scope,
+optionally check relevant notes in `docs/future/` as non-canonical planning
+input before proposing or editing phase tasks.
+
 Authority and usage rules for canonical versus non-canonical docs are defined in
 `.ai/bootstrap/DOC_AUTHORITY.md`.
 

@@ -34,6 +34,12 @@ This document should not define:
 - admin/editorial write APIs
 - search, filtering, or pagination beyond approved Phase 5 scope
 
+Later-phase note:
+
+- Phase 12 extends the public Article and Action collection routes with approved
+  topic filtering and pagination. The canonical extension boundary lives in
+  `docs/specs/014-phase-12-search-discovery-improvements.md`.
+
 ---
 
 ## Scope
@@ -218,6 +224,10 @@ Return the public list of published articles for top-level article discovery.
   - none
 - Query params:
   - none in Phase 5
+  - later approved in Phase 12:
+    - `topicSlug` optional
+    - `page` optional
+    - `pageSize` optional
 
 #### Success Response
 
@@ -243,10 +253,20 @@ Status: `200 OK`
 - Returns published articles only
 - Ordered by `publishedAt` descending, then `id` ascending in Phase 5
 - Does not include related Topics or Actions in the collection response
+- In Phase 12, this collection may be filtered by `topicSlug` without changing
+  the article summary item shape
+- In Phase 12, this collection may return the shared paginated collection
+  envelope defined in `docs/specs/014-phase-12-search-discovery-improvements.md`
 
 #### Failure Behavior
 
 - `400 Bad Request`: not applicable for the Phase 5 contract
+
+#### Later Phase Extension Notes
+
+- Unknown `topicSlug` filters should resolve as an empty collection in Phase 12,
+  not `404`
+- Empty filtered or paginated results should still return `200 OK`
 
 ---
 
@@ -400,6 +420,10 @@ Return the public list of published actions for top-level action discovery.
   - none
 - Query params:
   - none in Phase 5
+  - later approved in Phase 12:
+    - `topicSlug` optional
+    - `page` optional
+    - `pageSize` optional
 
 #### Success Response
 
@@ -426,10 +450,20 @@ Status: `200 OK`
 - Returns published actions only
 - Ordered by `publishedAt` descending, then `id` ascending in Phase 5
 - Does not include related Topics or Articles in the collection response
+- In Phase 12, this collection may be filtered by `topicSlug` without changing
+  the action summary item shape
+- In Phase 12, this collection may return the shared paginated collection
+  envelope defined in `docs/specs/014-phase-12-search-discovery-improvements.md`
 
 #### Failure Behavior
 
 - `400 Bad Request`: not applicable for the Phase 5 contract
+
+#### Later Phase Extension Notes
+
+- Unknown `topicSlug` filters should resolve as an empty collection in Phase 12,
+  not `404`
+- Empty filtered or paginated results should still return `200 OK`
 
 ---
 

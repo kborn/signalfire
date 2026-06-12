@@ -1478,6 +1478,74 @@ repository and before continuing into broader admin content-management work.
 
 Improve browsing and filtering across topics, actions, and events.
 
+###### Definition of Done
+
+- [ ] Scope boundary is documented and implementation-ready
+- [ ] Public collection filtering is expanded within approved Release 1 limits
+- [ ] Public collection pagination is implemented with a stable contract
+- [ ] Tests and documentation cover filtering, pagination, empty states, and
+      published-only visibility behavior
+
+---
+
+#### ▸ Phase 12.1 - Discovery Contract Foundation ✅
+
+###### Phase Tasks:
+
+- [x] Define and document the final Phase 12 scope boundary: filtering and
+      pagination are in scope; full-text search, automated event ingestion,
+      browser geolocation, and radius search remain deferred
+- [x] Define the canonical query-param and response-shape direction for
+      Phase 12 filtering and pagination across public collection surfaces
+
+---
+
+#### ▸ Phase 12.2 - Article & Action Collection Filtering ⏳
+
+###### Phase Tasks:
+
+- [ ] Add topic-filtered browsing for the public Articles collection
+- [ ] Add topic-filtered browsing for the public Actions collection
+- [ ] Expose topic filter UI/state on the public Article and Action collection
+      pages in a way that preserves published-only behavior and clear empty
+      states
+
+---
+
+#### ▸ Phase 12.3 - Event Filter Expansion ⏳
+
+###### Phase Tasks:
+
+- [ ] Expose the scoped Release 1 Event filters in the public Events UI using
+      the existing canonical filter dimensions: topic, date/date window, and
+      location fields supported by the current Event contract
+- [ ] Preserve the existing Event ordering and published-only visibility rules
+      while adding the approved filters
+
+---
+
+#### ▸ Phase 12.4 - Pagination & Hardening ⏳
+
+###### Phase Tasks:
+
+- [ ] Add pagination to public collection APIs and UIs in a way that avoids a
+      later breaking contract change when content volume grows
+- [ ] Verify pagination composes correctly with approved filters across public
+      collection surfaces
+- [ ] Add tests and documentation covering filter query behavior, pagination
+      behavior, empty states, and interaction with published-only visibility
+
+###### Notes:
+
+- Phase 12 should improve discovery within Release 1 boundaries rather than
+  expand into Milestone 2 systems.
+- Full-text search may be revisited later, but it is not required to complete
+  the current phase.
+
+###### Links:
+
+- Specification: `docs/specs/014-phase-12-search-discovery-improvements.md`
+
 ---
 
 ---
@@ -1525,6 +1593,12 @@ Bug fixes, polish, and observability improvements.
 
 - [ ] Run a full dependency risk review (direct and transitive) and resolve or explicitly defer remaining high-severity findings with documented rationale
 - [ ] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
+- [ ] Clean up remaining obvious formatting-quality issues that undercut launch
+      readiness, including raw or UTC-only timestamp presentation where
+      human-readable date/time formatting should exist
+- [ ] Fix obvious public demo defects that read as bugs rather than product
+      tradeoffs, including duplicate event-summary rendering and similar
+      screenshot-visible data/presentation issues
 
 ---
 
@@ -1545,6 +1619,23 @@ stabilization and before the final release-prep and public-launch phases.
       states
 - [ ] Make minor color, spacing, typography, and CTA adjustments needed after
       reviewing the full public flow in realistic browser viewports
+- [ ] Resolve the known public-site polish issues from the Milestone 1 review,
+      including stronger card definition, clearer primary CTA hierarchy, hero
+      background containment, article metadata/body separation, event time
+      formatting, topic-card differentiation, and improved home-page section
+      rhythm
+- [ ] Simplify the homepage so it does not repeat the same premise across too
+      many equal-weight sections, and ensure the core journey reads as a clear
+      progression rather than a flat scroll
+- [ ] Decide and implement the final demo-site affordance for recruiter-style
+      visitors, such as a banner or similar visible entry point that explains
+      the portfolio-demo posture and directs them into the admin experience
+      intentionally
+- [ ] Align public-facing naming and brand presentation consistently across the
+      live product, including product name usage, admin entry-point labeling,
+      nav terminology, and any abbreviated wordmark treatment
+- [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and
+      does not over-claim community behavior or hide key formatting guidance
 - [ ] Verify the final public polish pass does not introduce admin UI regressions
       or conflict with the established Phase 11.5 visual identity
 
@@ -1553,6 +1644,11 @@ stabilization and before the final release-prep and public-launch phases.
 - This phase is intentionally small. It should handle last-mile presentation
   polish before launch, not reopen product identity, route architecture, or
   core feature scope.
+- The demo-site affordance should help live-site reviewers discover the admin
+  workflow without depending on repository documentation, while still keeping
+  the public experience coherent for ordinary visitors.
+- Public copy should not lean harder on "community-powered" messaging than the
+  actual Release 1 contributor experience can support.
 
 ---
 
@@ -1571,6 +1667,8 @@ Run the final cross-cutting verification and readiness pass before public launch
 - [ ] Review Nest module boundaries for duplicated provider registration across feature modules and replace provider re-registration with cleaner module import/export relationships where appropriate
 - [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
 - [ ] Confirm repository documentation, setup instructions, and deployment caveats match the actual shipped product state
+- [ ] Refresh README screenshots and any reviewer-facing visual references so
+      the repository matches the final public/admin experience being shipped
 
 ###### Notes:
 
@@ -1587,3 +1685,18 @@ Run the final cross-cutting verification and readiness pass before public launch
 ###### Goal
 
 Deployment verification, documentation completion, and launch readiness.
+
+###### Phase Tasks:
+
+- [ ] Launch a public demo instance that is appropriate for portfolio and
+      recruiter review at the end of Milestone 1
+- [ ] Verify the deployed public site and the repository provide distinct but
+      complementary entry points for their audiences: live-site demo discovery
+      for recruiters and repository/docs depth for engineering reviewers
+- [ ] Confirm the live demo experience provides a clear, intentional path into
+      the admin workflow and any required demo credentials or instructions
+      without forcing visitors to discover them from the repository
+- [ ] Ensure the demo dataset is broad and intentional enough to showcase the
+      system credibly, including sufficient volume, moderation-state variety,
+      and either geographically diverse content or explicit demo/example
+      framing when geography is intentionally concentrated
