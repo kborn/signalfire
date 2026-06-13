@@ -40,6 +40,20 @@ describe('ArticleController HTTP', () => {
     articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
 
     await request(httpServer).get('/articles').expect(200).expect(articleListResponse);
+    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith(undefined);
+  });
+
+  it('GET /articles passes topicSlug through to the article discovery list', async () => {
+    const articleListResponse = buildArticleListResponse();
+    articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
+
+    await request(httpServer)
+      .get('/articles')
+      .query({ topicSlug: 'democracy' })
+      .expect(200)
+      .expect(articleListResponse);
+
+    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith('democracy');
   });
 
   it('GET /articles/:slug returns the article detail payload', async () => {

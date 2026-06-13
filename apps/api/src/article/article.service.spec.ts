@@ -78,6 +78,28 @@ describe('ArticleService', () => {
     expect(repoMock.findPublished).toHaveBeenCalledWith(undefined);
   });
 
+  it('getPublishedArticleList filters by topic slug when provided', async () => {
+    const article = buildArticleEntity();
+    repoMock.findPublished.mockResolvedValue([article]);
+
+    const ret = await service.getArticleList('democracy');
+
+    expect(ret).toEqual(
+      buildArticleListResponse({
+        items: [
+          {
+            id: article.id,
+            slug: article.slug,
+            title: article.title,
+            summary: article.summary,
+            publishedAt: ARTICLE_TEST_DATE.toISOString(),
+          },
+        ],
+      }),
+    );
+    expect(repoMock.findPublished).toHaveBeenCalledWith('democracy');
+  });
+
   it('getArticleDetail', async () => {
     const article = buildArticleEntity();
     repoMock.findPublishedBySlug.mockResolvedValue(article);

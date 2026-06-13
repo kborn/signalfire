@@ -27,7 +27,16 @@ describe('ArticleController', () => {
     serviceMock.getArticleList.mockResolvedValue(articleListResponse);
     const ret = await articleController.findArticles();
     expect(ret).toEqual(articleListResponse);
-    expect(serviceMock.getArticleList).toHaveBeenCalled();
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith(undefined);
+  });
+
+  it('findArticles with topicSlug', async () => {
+    const articleListResponse = buildArticleListResponse();
+    serviceMock.getArticleList.mockResolvedValue(articleListResponse);
+
+    const ret = await articleController.findArticles('democracy');
+    expect(ret).toEqual(articleListResponse);
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith('democracy');
   });
 
   it('findArticle', async () => {
