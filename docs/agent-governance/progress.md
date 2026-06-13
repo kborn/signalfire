@@ -1619,6 +1619,9 @@ stabilization and before the final release-prep and public-launch phases.
       states
 - [ ] Make minor color, spacing, typography, and CTA adjustments needed after
       reviewing the full public flow in realistic browser viewports
+- [ ] Resolve the known sticky topic-filter edge case where animated collection
+      card hover/focus treatment can visually bleed under the pinned filter
+      block on public Articles/Actions pages
 - [ ] Resolve the known public-site polish issues from the Milestone 1 review,
       including stronger card definition, clearer primary CTA hierarchy, hero
       background containment, article metadata/body separation, event time

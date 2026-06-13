@@ -1,5 +1,7 @@
 import { getArticlesList } from '@/lib/api/articles';
 import { ArticleSummary } from '@/components/article-summary';
+import { getTopicsList } from '@/lib/api/topics';
+import { TopicSelector } from '@/components/topic-selector';
 export const dynamic = 'force-dynamic';
 
 function getNoResultsResponse() {
@@ -11,8 +13,15 @@ function getNoResultsResponse() {
   );
 }
 
-export default async function ArticleListPage() {
-  const resp = await getArticlesList();
+type ArticleListPageProps = {
+  searchParams: Promise<{
+    topicSlug?: string;
+  }>;
+};
+
+export default async function ArticleListPage({ searchParams }: ArticleListPageProps) {
+  const { topicSlug } = await searchParams;
+  const [resp, topics] = await Promise.all([getArticlesList(topicSlug), getTopicsList()]);
   if (resp.items.length === 0) {
     return getNoResultsResponse();
   }
@@ -22,6 +31,7 @@ export default async function ArticleListPage() {
       <p className="page-intro">
         Read reporting, explainers, and field guides about the issues that matter
       </p>
+      <TopicSelector topics={topics} basePath="/articles" currentTopicSlug={topicSlug} />
       <section className="collectionList">
         {resp.items.map((article) => (
           <ArticleSummary key={article.id} article={article} />
