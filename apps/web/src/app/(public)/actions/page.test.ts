@@ -36,7 +36,9 @@ describe('ActionListPage', () => {
       ],
     });
 
-    const markup = renderToStaticMarkup(await ActionListPage());
+    const markup = renderToStaticMarkup(
+      await ActionListPage({ searchParams: Promise.resolve({ topicSlug: 'democracy' }) }),
+    );
 
     expect(getActionsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
@@ -60,7 +62,9 @@ describe('ActionListPage', () => {
       items: [],
     });
 
-    const markup = renderToStaticMarkup(await ActionListPage());
+    const markup = renderToStaticMarkup(
+      await ActionListPage({ searchParams: Promise.resolve({ topicSlug: 'democracy' }) }),
+    );
 
     expect(getActionsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
