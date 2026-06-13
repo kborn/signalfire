@@ -60,7 +60,7 @@ describe('ArticleListPage', () => {
     expect(markup).toContain(
       'Read reporting, explainers, and field guides about the issues that matter',
     );
-    expect(markup).toContain('TOPIC');
+    expect(markup).toContain('Topic');
     expect(markup).toContain('href="/articles?topicSlug=democracy"');
     expect(markup).toContain('aria-current="page"');
     expect(markup).toContain('href="/articles/climate-policy-basics"');

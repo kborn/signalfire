@@ -60,7 +60,7 @@ describe('ActionListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('Find practical ways to take meaningful action');
-    expect(markup).toContain('TOPIC');
+    expect(markup).toContain('Topic');
     expect(markup).toContain('href="/actions?topicSlug=democracy"');
     expect(markup).toContain('aria-current="page"');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
