@@ -10,15 +10,18 @@ function buildActionsHref(topicSlug?: string) {
 }
 export function TopicSelector({ topics }: { topics: TopicListResponse }) {
   return (
-    <div>
-      {topics.items.map((topic) => (
-        <div key={topic.id}>
-          <Link href={buildActionsHref(topic.slug)}>{topic.name} </Link>
-        </div>
-      ))}
-      <div>
-        <Link href={buildActionsHref()}>{'All'} </Link>
-      </div>
-    </div>
+    <nav className="topicSelector" aria-label="Filter by topic">
+      <span className="topicSelectorLabel">Topic</span>
+      <ul className="topicSelectorList">
+        <li className="topicSelectorItem">
+          <Link href={buildActionsHref()}>{'All'} </Link>
+        </li>
+        {topics.items.map((topic) => (
+          <li className="topicSelectorItem" key={topic.id}>
+            <Link href={buildActionsHref(topic.slug)}>{topic.name} </Link>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
