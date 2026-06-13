@@ -100,7 +100,7 @@ describe('ActionListPage', () => {
     expect(getActionsList).toHaveBeenCalledWith('democracy');
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
-    expect(markup).toContain('No actions available yet.');
+    expect(markup).toContain('No actions found for this topic yet.');
     expect(markup).not.toContain('Find practical ways to take meaningful action');
   });
 });

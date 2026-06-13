@@ -96,7 +96,7 @@ describe('ArticleListPage', () => {
     expect(getArticlesList).toHaveBeenCalledWith('democracy');
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Articles');
-    expect(markup).toContain('No articles available yet.');
+    expect(markup).toContain('No articles found for this topic yet.');
     expect(markup).not.toContain(
       'Read reporting, explainers, and field guides about the issues that matter',
     );

@@ -1500,13 +1500,13 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-#### ▸ Phase 12.2 - Article & Action Collection Filtering ⏳
+#### ▸ Phase 12.2 - Article & Action Collection Filtering ✅
 
 ###### Phase Tasks:
 
-- [ ] Add topic-filtered browsing for the public Articles collection
-- [ ] Add topic-filtered browsing for the public Actions collection
-- [ ] Expose topic filter UI/state on the public Article and Action collection
+- [x] Add topic-filtered browsing for the public Articles collection
+- [x] Add topic-filtered browsing for the public Actions collection
+- [x] Expose topic filter UI/state on the public Article and Action collection
       pages in a way that preserves published-only behavior and clear empty
       states
 

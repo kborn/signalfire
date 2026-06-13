@@ -5,11 +5,11 @@ import { getTopicsList } from '@/lib/api/topics';
 import { TopicSelector } from '@/components/topic-selector';
 export const dynamic = 'force-dynamic';
 
-function getNoResultsResponse() {
+function getNoResultsResponse(topicSlug?: string) {
   return (
     <section className="page-section">
       <h1 className="pageTitle">Actions</h1>
-      <p>No actions available yet.</p>
+      <p>{topicSlug ? 'No actions found for this topic yet.' : 'No actions available yet.'}</p>
     </section>
   );
 }
@@ -25,7 +25,7 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
   const [actions, topics] = await Promise.all([getActionsList(topicSlug), getTopicsList()]);
 
   if (actions.items.length === 0) {
-    return getNoResultsResponse();
+    return getNoResultsResponse(topicSlug);
   }
   return (
     <section className="page-section">
