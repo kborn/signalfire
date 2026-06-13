@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ArticleRepository } from './article.repository';
-import { Article, EntityStatus } from '@prisma/client';
+import { Article } from '@prisma/client';
 import { ArticleDetailResponse, ArticleListResponse } from '@signal-fire/api-contracts';
 import { TopicRepository } from '../topic/topic.repository';
 import { ActionRepository } from '../action/action.repository';
@@ -19,27 +19,17 @@ export class ArticleService {
     private actionRepository: ActionRepository,
   ) {}
 
-  async getArticleList(status?: EntityStatus | null): Promise<ArticleListResponse> {
-    const publishedStatus = status ?? EntityStatus.PUBLISHED;
-    const articles = await this.repository.findArticles(publishedStatus, [
-      { publishedAt: 'desc' },
-      { id: 'asc' },
-    ]);
+  async getArticleList(topicSlug?: string): Promise<ArticleListResponse> {
+    const articles = await this.repository.findPublished(topicSlug);
     return {
       items: articles.map(toArticleSummary),
     };
   }
 
-  async getArticleDetail(
-    slug: string,
-    status?: EntityStatus | null,
-  ): Promise<ArticleDetailResponse> {
-    const publishedStatus = status ?? EntityStatus.PUBLISHED;
-    const article = await this.repository.findBySlugAndStatus(slug, publishedStatus);
+  async getArticleDetail(slug: string): Promise<ArticleDetailResponse> {
+    const article = await this.repository.findPublishedBySlug(slug);
     if (!article) {
-      throw new NotFoundException(
-        `No article found with slug ${slug} and status ${publishedStatus}`,
-      );
+      throw new NotFoundException(`No published article found with slug ${slug}`);
     }
 
     const [topics, actions] = await Promise.all([

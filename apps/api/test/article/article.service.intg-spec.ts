@@ -71,10 +71,7 @@ describe('Article Service Integration Test', () => {
   it('returns published article by slug from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
     const createdArticle = await createArticle();
-    const article = await articleService.getArticleDetail(
-      createdArticle.slug,
-      EntityStatus.PUBLISHED,
-    );
+    const article = await articleService.getArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
         id: createdArticle.id,
@@ -88,9 +85,9 @@ describe('Article Service Integration Test', () => {
     const articleService = harness.module.get(ArticleService);
     // test that unpublished articles are not returned
     const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
-    await expect(
-      articleService.getArticleDetail(createdArticle.slug, EntityStatus.PUBLISHED),
-    ).rejects.toThrow(NotFoundException);
+    await expect(articleService.getArticleDetail(createdArticle.slug)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published articles by related topic', async () => {

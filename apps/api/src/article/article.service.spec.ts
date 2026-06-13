@@ -10,13 +10,13 @@ import {
   buildArticleDetailResponse,
   buildArticleEntity,
 } from './article.test-fixtures';
-import { ActionType, EntityStatus } from '@prisma/client';
+import { ActionType } from '@prisma/client';
 
 describe('ArticleService', () => {
   let service: ArticleService;
   const repoMock = {
-    findArticles: jest.fn(),
-    findBySlugAndStatus: jest.fn(),
+    findPublished: jest.fn(),
+    findPublishedBySlug: jest.fn(),
     findPublishedByTopicSlug: jest.fn(),
     findPublishedByActionId: jest.fn(),
   };
@@ -51,7 +51,7 @@ describe('ArticleService', () => {
       summary: 'A guide to city-level climate policy.',
       publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
-    repoMock.findArticles.mockResolvedValue([article1, article2]);
+    repoMock.findPublished.mockResolvedValue([article1, article2]);
 
     const ret = await service.getArticleList();
 
@@ -75,15 +75,12 @@ describe('ArticleService', () => {
         ],
       }),
     );
-    expect(repoMock.findArticles).toHaveBeenCalledWith(EntityStatus.PUBLISHED, [
-      { publishedAt: 'desc' },
-      { id: 'asc' },
-    ]);
+    expect(repoMock.findPublished).toHaveBeenCalledWith(undefined);
   });
 
   it('getArticleDetail', async () => {
     const article = buildArticleEntity();
-    repoMock.findBySlugAndStatus.mockResolvedValue(article);
+    repoMock.findPublishedBySlug.mockResolvedValue(article);
     topicRepoMock.findByArticleId.mockResolvedValue([
       {
         id: 1,
@@ -112,12 +109,12 @@ describe('ArticleService', () => {
     const ret = await service.getArticleDetail(slug);
 
     expect(ret).toEqual(buildArticleDetailResponse());
-    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, 'PUBLISHED');
+    expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
   });
 
   it('getPublishedArticleDetail', async () => {
     const publishedArticle = buildArticleEntity();
-    repoMock.findBySlugAndStatus.mockResolvedValue(publishedArticle);
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticle);
     topicRepoMock.findByArticleId.mockResolvedValue([
       {
         id: 1,
@@ -146,14 +143,14 @@ describe('ArticleService', () => {
     const ret = await service.getArticleDetail(slug);
 
     expect(ret).toEqual(buildArticleDetailResponse());
-    expect(repoMock.findBySlugAndStatus).toHaveBeenCalledWith(slug, 'PUBLISHED');
+    expect(repoMock.findPublishedBySlug).toHaveBeenCalledWith(slug);
     expect(topicRepoMock.findByArticleId).toHaveBeenCalledWith(1);
     expect(actionRepoMock.findPublishedByArticleId).toHaveBeenCalledWith(1);
   });
 
   it('getPublishedArticleDetail only includes related actions returned by the published lookup', async () => {
     const publishedArticle = buildArticleEntity();
-    repoMock.findBySlugAndStatus.mockResolvedValue(publishedArticle);
+    repoMock.findPublishedBySlug.mockResolvedValue(publishedArticle);
     topicRepoMock.findByArticleId.mockResolvedValue([
       {
         id: 1,
@@ -193,7 +190,7 @@ describe('ArticleService', () => {
   });
 
   it('getPublishedArticleDetailNotFound', async () => {
-    repoMock.findBySlugAndStatus.mockResolvedValue(null);
+    repoMock.findPublishedBySlug.mockResolvedValue(null);
 
     await expect(service.getArticleDetail('missing')).rejects.toThrow(NotFoundException);
   });

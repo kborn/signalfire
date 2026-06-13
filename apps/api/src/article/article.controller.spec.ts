@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { NotFoundException } from '@nestjs/common';
-import { EntityStatus } from '@prisma/client';
 import { buildArticleListResponse, buildArticleDetailResponse } from './article.test-fixtures';
 
 describe('ArticleController', () => {
@@ -37,7 +36,7 @@ describe('ArticleController', () => {
     const slug = 'test';
     const ret = await articleController.findArticle(slug);
     expect(ret).toEqual(articleDetailResponse);
-    expect(serviceMock.getArticleDetail).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
+    expect(serviceMock.getArticleDetail).toHaveBeenCalledWith(slug);
   });
 
   it('findArticleNotFound', async () => {

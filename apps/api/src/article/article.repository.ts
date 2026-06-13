@@ -37,37 +37,6 @@ export class ArticleRepository {
     });
   }
 
-  findArticles(
-    status?: EntityStatus | null,
-    orderBy: ArticleOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
-  ): Promise<Article[]> {
-    return this.prisma.article.findMany({
-      where: status
-        ? {
-            status: status,
-          }
-        : undefined,
-      orderBy,
-    });
-  }
-
-  async findBySlugAndStatus(slug: string, status?: EntityStatus | null): Promise<Article | null> {
-    if (!status) {
-      return this.prisma.article.findUnique({
-        where: {
-          slug: slug,
-        },
-      });
-    }
-
-    return this.prisma.article.findFirst({
-      where: {
-        slug: slug,
-        status: status,
-      },
-    });
-  }
-
   async findArticlesWithTopics(
     status?: EntityStatus | null,
     orderBy: ArticleOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
@@ -105,10 +74,19 @@ export class ArticleRepository {
     });
   }
 
-  findPublished(): Promise<Article[]> {
+  findPublished(topicSlug?: string): Promise<Article[]> {
     return this.prisma.article.findMany({
       where: {
         status: EntityStatus.PUBLISHED,
+        topicArticles: topicSlug
+          ? {
+              some: {
+                topic: {
+                  slug: topicSlug,
+                },
+              },
+            }
+          : undefined,
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
