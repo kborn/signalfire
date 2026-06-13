@@ -176,13 +176,24 @@ Define deterministic ordering for public Event results.
 
 ### Collection Ordering
 
-Default Event collection behavior is:
+Phase 7 established the initial Event collection behavior as:
 
 1. return upcoming published Events by default, covering roughly now through
    the next three months
 2. accept only an optional `topicSlug` public filter
 3. sort by `startTime` ascending
 4. sort by `id` ascending as a deterministic tie-breaker
+
+Phase 12 refines the public Event collection interaction model without changing
+the underlying filtered ordering rules:
+
+1. public Event filtering may use `topicSlug`, `startDate`, `endDate`,
+   `region`, and `city`
+2. the public `/events` page may act as a filter-led finder surface rather than
+   rendering a default broad result set before the user supplies meaningful
+   filter state
+3. once queried, Event results remain sorted by `startTime` ascending
+4. `id` ascending remains the deterministic tie-breaker
 
 Rationale:
 
@@ -196,6 +207,13 @@ Rationale:
   introducing extra ranking logic
 - `id` ascending keeps responses stable when multiple Events share the same
   start time
+
+Phase 12 note:
+
+- the original default-browse rationale above explains the Phase 7 baseline, but
+  Phase 12 may intentionally move the public page to a stricter filter-led
+  discovery posture while preserving the same deterministic ordering once a
+  filtered query runs
 
 ### Detail Relationship Ordering
 
@@ -265,3 +283,7 @@ These concerns remain outside the approved Phase 7 contract scope:
 - slug-based Event public identifiers
 - derived status such as `isUpcoming` or `isPast`
 - embedding Event arrays into Topic detail payloads
+
+Later approved phases may refine the collection interaction model, query
+validation rules, or public page behavior without replacing the Event summary
+or detail payload shapes defined in this document.

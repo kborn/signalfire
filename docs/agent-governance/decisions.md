@@ -836,6 +836,47 @@ Events surface using `topicSlug` passthrough navigation.
 
 ---
 
+### ► Public Event discovery shifts to a filter-led finder flow
+
+###### 2026-06-13
+
+---
+
+###### Decision
+
+Phase 12 public Event discovery should shift from default broad browse behavior
+to a filter-led finder flow. The public `/events` page should not render a
+generic Event list before the user supplies a meaningful filter set in URL
+state. Approved public Event filters remain limited to Topic, date/date window,
+and broad location fields already supported by the Event contract.
+
+###### Rationale
+
+- The team no longer considers a broad default Event list useful enough to
+  justify making it the initial public experience.
+- Event discovery is more intent-driven than Article or Action browsing because
+  users usually care about both where and roughly when something happens.
+- Moving the public page to a filter-led model avoids spending Phase 12 effort
+  on behavior that is likely to be reversed before Milestone 1 is complete.
+- The existing query-param direction still provides a durable base for later UI
+  refinement without forcing a new endpoint or payload model.
+
+###### Implications
+
+- Phase 12.3 should define `/events` as a filter-led public discovery surface.
+- The Events page may render a pre-results state on initial load instead of a
+  default broad Event collection.
+- Event API validation should continue to validate provided filter inputs, while
+  the page layer decides when the current URL state is sufficient to run a
+  query.
+- Deterministic filtered ordering and published-only visibility remain in force
+  once a query is executed.
+- This decision supersedes the default-browse page behavior described in the
+  earlier simplified upcoming list decision, while leaving Event detail payload
+  shape and filtered ordering semantics intact.
+
+---
+
 ---
 
 ### ► Event submissions use a canonical website URL; article submissions retain moderation links

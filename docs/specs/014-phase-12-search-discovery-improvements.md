@@ -71,6 +71,9 @@ Rules:
 - date filtering narrows the public collection surface but does not change the
   underlying Event ordering model
 - Event UI controls should reflect these scoped filters only
+- the public `/events` page is filter-led in Phase 12 and should not render a
+  default broad Event result set before the user supplies a meaningful filter
+  set
 
 ### Pagination
 
@@ -158,6 +161,10 @@ Direction and rules:
   `startDate` and `endDate`
 - Event location filtering should use current contract-aligned broad fields,
   not raw address search and not geographic proximity
+- for the filter-led public `/events` page, results should only be requested
+  after a meaningful filter set is present; the recommended minimum rule is a
+  location signal (`region` or `city`) plus a complete date window
+  (`startDate` and `endDate`)
 - `page` is a 1-based positive integer
 - `pageSize` is an optional positive integer chosen from a small, server-owned
   allowed set
@@ -218,6 +225,8 @@ Preferred direction:
 
 - invalid query-param types or invalid numeric pagination inputs return
   `400 Bad Request`
+- incomplete Event date windows should return `400 Bad Request` when either
+  `startDate` or `endDate` is supplied without the other
 - unknown `topicSlug` values used as filters should return an empty collection,
   not `404`, because the route itself still exists as a collection surface
 - page requests beyond the available result set should return `200 OK` with an
@@ -231,6 +240,8 @@ Public discovery UI work in this phase should:
 
 - expose only the approved filter controls for each collection
 - persist filter and page state in the URL
+- allow the Events page to withhold API requests until the URL contains the
+  minimum filter state chosen for the public Event finder flow
 - render clear empty states when no published results match the current query
 - avoid introducing sort builders, advanced search forms, or map interfaces
 
@@ -256,4 +267,6 @@ This phase refines, but does not override, prior canonical constraints:
 - `docs/architecture/008-phase-5-topic-content-api-contracts.md` remains the
   base public Topic, Article, and Action API contract
 - `docs/architecture/009-phase-7-event-api-contracts.md` remains the base
-  public Event contract and ordering model
+  public Event contract and ordering model, except where Phase 12 explicitly
+  refines the public Event collection from default browse behavior into a
+  filter-led finder flow

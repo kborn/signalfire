@@ -1517,10 +1517,14 @@ Improve browsing and filtering across topics, actions, and events.
 ###### Phase Tasks:
 
 - [ ] Expose the scoped Release 1 Event filters in the public Events UI using
-      the existing canonical filter dimensions: topic, date/date window, and
+      the approved Release 1 Event filter dimensions: topic, date/date window,
+      and
       location fields supported by the current Event contract
-- [ ] Preserve the existing Event ordering and published-only visibility rules
-      while adding the approved filters
+- [ ] Shift the public Events surface to a filter-led discovery flow that
+      requests results only after a meaningful user-supplied filter set is
+      present in URL state
+- [ ] Preserve published-only visibility and deterministic filtered ordering
+      while adding the approved Event filters
 
 ---
 
@@ -1539,6 +1543,9 @@ Improve browsing and filtering across topics, actions, and events.
 
 - Phase 12 should improve discovery within Release 1 boundaries rather than
   expand into Milestone 2 systems.
+- Public Event discovery in Phase 12 is filter-led rather than default-list-led;
+  `/events` should render a pre-results state until the URL contains a
+  meaningful filter set.
 - Full-text search may be revisited later, but it is not required to complete
   the current phase.
 
