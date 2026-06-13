@@ -54,6 +54,41 @@ describe('Article Service Integration Test', () => {
     expect(newerIndex).toBeLessThan(olderIndex);
   });
 
+  it('returns published articles filtered by topic slug in the discovery list', async () => {
+    const articleService = harness.module.get(ArticleService);
+    const topicService = harness.module.get(TopicService);
+
+    const createdArticle1 = await createArticle();
+    const createdArticle2 = await createArticle();
+    const unrelatedArticle = await createArticle();
+    const draftLinkedArticle = await createArticle({ status: EntityStatus.DRAFT });
+    const topic = await topicService.getTopicDetail('democracy');
+
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+
+    await linkTopicArticle(topic.id, createdArticle1.id);
+    await linkTopicArticle(topic.id, createdArticle2.id);
+    await linkTopicArticle(topic.id, draftLinkedArticle.id);
+
+    const articles = await articleService.getArticleList(topic.slug);
+
+    expect(articles.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: createdArticle1.slug }),
+        expect.objectContaining({ slug: createdArticle2.slug }),
+      ]),
+    );
+    expect(articles.items).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: unrelatedArticle.slug }),
+        expect.objectContaining({ slug: draftLinkedArticle.slug }),
+      ]),
+    );
+  });
+
   it('returns published article by slug when no status is provided', async () => {
     const articleService = harness.module.get(ArticleService);
 
@@ -71,10 +106,7 @@ describe('Article Service Integration Test', () => {
   it('returns published article by slug from published lookup', async () => {
     const articleService = harness.module.get(ArticleService);
     const createdArticle = await createArticle();
-    const article = await articleService.getArticleDetail(
-      createdArticle.slug,
-      EntityStatus.PUBLISHED,
-    );
+    const article = await articleService.getArticleDetail(createdArticle.slug);
     expect(article).toEqual(
       expect.objectContaining({
         id: createdArticle.id,
@@ -88,9 +120,9 @@ describe('Article Service Integration Test', () => {
     const articleService = harness.module.get(ArticleService);
     // test that unpublished articles are not returned
     const createdArticle = await createArticle({ status: EntityStatus.DRAFT });
-    await expect(
-      articleService.getArticleDetail(createdArticle.slug, EntityStatus.PUBLISHED),
-    ).rejects.toThrow(NotFoundException);
+    await expect(articleService.getArticleDetail(createdArticle.slug)).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   it('returns published articles by related topic', async () => {

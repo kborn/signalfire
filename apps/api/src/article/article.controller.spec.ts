@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { NotFoundException } from '@nestjs/common';
-import { EntityStatus } from '@prisma/client';
 import { buildArticleListResponse, buildArticleDetailResponse } from './article.test-fixtures';
 
 describe('ArticleController', () => {
@@ -28,7 +27,16 @@ describe('ArticleController', () => {
     serviceMock.getArticleList.mockResolvedValue(articleListResponse);
     const ret = await articleController.findArticles();
     expect(ret).toEqual(articleListResponse);
-    expect(serviceMock.getArticleList).toHaveBeenCalled();
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith(undefined);
+  });
+
+  it('findArticles with topicSlug', async () => {
+    const articleListResponse = buildArticleListResponse();
+    serviceMock.getArticleList.mockResolvedValue(articleListResponse);
+
+    const ret = await articleController.findArticles('democracy');
+    expect(ret).toEqual(articleListResponse);
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith('democracy');
   });
 
   it('findArticle', async () => {
@@ -37,7 +45,7 @@ describe('ArticleController', () => {
     const slug = 'test';
     const ret = await articleController.findArticle(slug);
     expect(ret).toEqual(articleDetailResponse);
-    expect(serviceMock.getArticleDetail).toHaveBeenCalledWith(slug, EntityStatus.PUBLISHED);
+    expect(serviceMock.getArticleDetail).toHaveBeenCalledWith(slug);
   });
 
   it('findArticleNotFound', async () => {

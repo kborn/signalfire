@@ -17,7 +17,7 @@ describe('Action Service Integration test', () => {
     const createdAction1 = await createAction();
     const createdAction2 = await createAction();
     const createdDraftAction = await createAction({ status: EntityStatus.DRAFT });
-    const actions = await actionService.getActionList(EntityStatus.PUBLISHED);
+    const actions = await actionService.getActionList();
 
     expect(actions.items).toEqual(
       expect.arrayContaining([
@@ -39,13 +39,48 @@ describe('Action Service Integration test', () => {
       publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
-    const actions = await actionService.getActionList(EntityStatus.PUBLISHED);
+    const actions = await actionService.getActionList();
     const olderIndex = actions.items.findIndex((action) => action.slug === olderAction.slug);
     const newerIndex = actions.items.findIndex((action) => action.slug === newerAction.slug);
 
     expect(olderIndex).toBeGreaterThan(-1);
     expect(newerIndex).toBeGreaterThan(-1);
     expect(newerIndex).toBeLessThan(olderIndex);
+  });
+
+  it('returns published actions filtered by topic slug in the discovery list', async () => {
+    const actionService = harness.module.get(ActionService);
+    const topicService = harness.module.get(TopicService);
+
+    const createdAction1 = await createAction();
+    const createdAction2 = await createAction();
+    const unrelatedAction = await createAction();
+    const draftLinkedAction = await createAction({ status: EntityStatus.DRAFT });
+    const topic = await topicService.getTopicDetail('democracy');
+
+    expect(topic).not.toBeNull();
+    if (!topic) {
+      throw new Error('Seeded topic unexpectedly null');
+    }
+
+    await linkTopicAction(topic.id, createdAction1.id);
+    await linkTopicAction(topic.id, createdAction2.id);
+    await linkTopicAction(topic.id, draftLinkedAction.id);
+
+    const actions = await actionService.getActionList(topic.slug);
+
+    expect(actions.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: createdAction1.slug }),
+        expect.objectContaining({ slug: createdAction2.slug }),
+      ]),
+    );
+    expect(actions.items).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ slug: unrelatedAction.slug }),
+        expect.objectContaining({ slug: draftLinkedAction.slug }),
+      ]),
+    );
   });
 
   it('returns published actions by related topic', async () => {

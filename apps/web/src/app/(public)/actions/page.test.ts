@@ -2,11 +2,16 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { getActionsList } from '@/lib/api/actions';
+import { getTopicsList } from '@/lib/api/topics';
 
 import ActionListPage from './page';
 
 vi.mock('@/lib/api/actions', () => ({
   getActionsList: vi.fn(),
+}));
+
+vi.mock('@/lib/api/topics', () => ({
+  getTopicsList: vi.fn(),
 }));
 
 describe('ActionListPage', () => {
@@ -35,12 +40,29 @@ describe('ActionListPage', () => {
         },
       ],
     });
+    vi.mocked(getTopicsList).mockResolvedValue({
+      items: [
+        {
+          id: 1,
+          slug: 'democracy',
+          name: 'Democracy',
+          description: 'Voting, participation, and civic institutions.',
+        },
+      ],
+    });
 
-    const markup = renderToStaticMarkup(await ActionListPage());
+    const markup = renderToStaticMarkup(
+      await ActionListPage({ searchParams: Promise.resolve({ topicSlug: 'democracy' }) }),
+    );
 
     expect(getActionsList).toHaveBeenCalledTimes(1);
+    expect(getActionsList).toHaveBeenCalledWith('democracy');
+    expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('Find practical ways to take meaningful action');
+    expect(markup).toContain('Topic');
+    expect(markup).toContain('href="/actions?topicSlug=democracy"');
+    expect(markup).toContain('aria-current="page"');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
@@ -59,12 +81,26 @@ describe('ActionListPage', () => {
     vi.mocked(getActionsList).mockResolvedValue({
       items: [],
     });
+    vi.mocked(getTopicsList).mockResolvedValue({
+      items: [
+        {
+          id: 1,
+          slug: 'democracy',
+          name: 'Democracy',
+          description: 'Voting, participation, and civic institutions.',
+        },
+      ],
+    });
 
-    const markup = renderToStaticMarkup(await ActionListPage());
+    const markup = renderToStaticMarkup(
+      await ActionListPage({ searchParams: Promise.resolve({ topicSlug: 'democracy' }) }),
+    );
 
     expect(getActionsList).toHaveBeenCalledTimes(1);
+    expect(getActionsList).toHaveBeenCalledWith('democracy');
+    expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
-    expect(markup).toContain('No actions available yet.');
+    expect(markup).toContain('No actions found for this topic yet.');
     expect(markup).not.toContain('Find practical ways to take meaningful action');
   });
 });

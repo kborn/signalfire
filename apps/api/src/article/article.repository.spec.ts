@@ -39,6 +39,29 @@ describe('ArticleRepository', () => {
     expect(prismaMock.article.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
+        topicArticles: undefined,
+      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+    });
+  });
+
+  it('findPublished filters by topic slug', async () => {
+    const article = buildArticleEntity();
+    prismaMock.article.findMany.mockResolvedValue([article]);
+
+    const ret = await repository.findPublished('democracy');
+
+    expect(ret).toEqual([article]);
+    expect(prismaMock.article.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        topicArticles: {
+          some: {
+            topic: {
+              slug: 'democracy',
+            },
+          },
+        },
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });

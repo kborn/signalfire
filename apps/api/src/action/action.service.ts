@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ActionRepository } from './action.repository';
-import { Action, EntityStatus } from '@prisma/client';
+import { Action } from '@prisma/client';
 import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
 import { TopicRepository } from '../topic/topic.repository';
 import { ArticleRepository } from '../article/article.repository';
@@ -19,25 +19,18 @@ export class ActionService {
     private articleRepository: ArticleRepository,
   ) {}
 
-  async getActionList(status?: EntityStatus | null): Promise<ActionListResponse> {
-    const publishedStatus = status ?? EntityStatus.PUBLISHED;
-    const actions = await this.repository.findActions(publishedStatus, [
-      { publishedAt: 'desc' },
-      { id: 'asc' },
-    ]);
+  async getActionList(topicSlug?: string): Promise<ActionListResponse> {
+    const actions = await this.repository.findPublished(topicSlug);
 
     return {
       items: actions.map(toActionSummary),
     };
   }
 
-  async getActionDetail(slug: string, status?: EntityStatus | null): Promise<ActionDetailResponse> {
-    const publishedStatus = status ?? EntityStatus.PUBLISHED;
-    const action = await this.repository.findBySlugAndStatus(slug, publishedStatus);
+  async getActionDetail(slug: string): Promise<ActionDetailResponse> {
+    const action = await this.repository.findPublishedBySlug(slug);
     if (!action) {
-      throw new NotFoundException(
-        `No action found with slug ${slug} and status ${publishedStatus}`,
-      );
+      throw new NotFoundException(`No published action found with slug ${slug}`);
     }
     const [topics, articles] = await Promise.all([
       this.topicRepository.findByActionId(action.id),

@@ -38,6 +38,20 @@ describe('ActionController HTTP', () => {
     actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
 
     await request(httpServer).get('/actions').expect(200).expect(actionListResponse);
+    expect(actionServiceMock.getActionList).toHaveBeenCalledWith(undefined);
+  });
+
+  it('GET /actions passes topicSlug through to the action discovery list', async () => {
+    const actionListResponse = buildActionListResponse();
+    actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
+
+    await request(httpServer)
+      .get('/actions')
+      .query({ topicSlug: 'democracy' })
+      .expect(200)
+      .expect(actionListResponse);
+
+    expect(actionServiceMock.getActionList).toHaveBeenCalledWith('democracy');
   });
 
   it('GET /actions/:slug returns the action detail payload', async () => {
@@ -60,7 +74,7 @@ describe('ActionController HTTP', () => {
 
   it('GET /actions/:slug returns 404 when the action is unpublished', async () => {
     actionServiceMock.getActionDetail.mockRejectedValue(
-      new NotFoundException('No action found with slug draft-action and status PUBLISHED'),
+      new NotFoundException('No published action found with slug draft-action'),
     );
 
     await request(httpServer).get('/actions/draft-action').expect(404);
