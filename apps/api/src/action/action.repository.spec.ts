@@ -42,26 +42,38 @@ describe('ActionRepository', () => {
     });
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
-    const ret = await repository.findActions(EntityStatus.PUBLISHED);
+    const ret = await repository.findPublished();
 
     expect(ret).toEqual([action1, action2]);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
+        topicActions: undefined,
       },
-      orderBy: [{ updatedAt: 'desc' }, { id: 'asc' }],
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   });
 
-  it('findBySlug', async () => {
+  it('findPublished filters by topic slug', async () => {
     const action = buildActionEntity();
-    prismaMock.action.findUnique.mockResolvedValue(action);
+    prismaMock.action.findMany.mockResolvedValue([action]);
 
-    const slug = 'test';
-    const ret = await repository.findBySlugAndStatus(slug);
+    const ret = await repository.findPublished('democracy');
 
-    expect(ret).toEqual(action);
-    expect(prismaMock.action.findUnique).toHaveBeenCalledWith({ where: { slug: slug } });
+    expect(ret).toEqual([action]);
+    expect(prismaMock.action.findMany).toHaveBeenCalledWith({
+      where: {
+        status: EntityStatus.PUBLISHED,
+        topicActions: {
+          some: {
+            topic: {
+              slug: 'democracy',
+            },
+          },
+        },
+      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+    });
   });
 
   it('findPublishedBySlug', async () => {
@@ -69,7 +81,7 @@ describe('ActionRepository', () => {
     prismaMock.action.findFirst.mockResolvedValue(action);
 
     const slug = 'test';
-    const ret = await repository.findBySlugAndStatus(slug, EntityStatus.PUBLISHED);
+    const ret = await repository.findPublishedBySlug(slug);
 
     expect(ret).toEqual(action);
     expect(prismaMock.action.findFirst).toHaveBeenCalledWith({

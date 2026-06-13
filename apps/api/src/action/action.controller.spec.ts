@@ -29,7 +29,7 @@ describe('ActionController', () => {
     const slug = 'test';
     const ret = await actionController.findAction(slug);
     expect(ret).toEqual(actionDetailResponse);
-    expect(serviceMock.getActionDetail).toHaveBeenCalledWith(slug, 'PUBLISHED');
+    expect(serviceMock.getActionDetail).toHaveBeenCalledWith(slug);
   });
 
   it('findActions', async () => {
@@ -38,7 +38,16 @@ describe('ActionController', () => {
 
     const ret = await actionController.findActions();
     expect(ret).toEqual(actionListResponse);
-    expect(serviceMock.getActionList).toHaveBeenCalledWith('PUBLISHED');
+    expect(serviceMock.getActionList).toHaveBeenCalledWith(undefined);
+  });
+
+  it('findActions with topicSlug', async () => {
+    const actionListResponse = buildActionListResponse();
+    serviceMock.getActionList.mockResolvedValue(actionListResponse);
+
+    const ret = await actionController.findActions('democracy');
+    expect(ret).toEqual(actionListResponse);
+    expect(serviceMock.getActionList).toHaveBeenCalledWith('democracy');
   });
 
   it('findActionNotFound', async () => {

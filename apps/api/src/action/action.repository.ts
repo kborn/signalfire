@@ -29,33 +29,29 @@ type ActionOrderBy =
 export class ActionRepository {
   constructor(private prisma: PrismaService) {}
 
-  findActions(
-    status?: EntityStatus | null,
-    orderBy: ActionOrderBy = [{ updatedAt: 'desc' }, { id: 'asc' }],
-  ): Promise<Action[]> {
+  findPublished(topicSlug?: string): Promise<Action[]> {
     return this.prisma.action.findMany({
-      where: status
-        ? {
-            status: status,
-          }
-        : undefined,
-      orderBy,
+      where: {
+        status: EntityStatus.PUBLISHED,
+        topicActions: topicSlug
+          ? {
+              some: {
+                topic: {
+                  slug: topicSlug,
+                },
+              },
+            }
+          : undefined,
+      },
+      orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
     });
   }
 
-  async findBySlugAndStatus(slug: string, status?: EntityStatus | null): Promise<Action | null> {
-    if (!status) {
-      return this.prisma.action.findUnique({
-        where: {
-          slug: slug,
-        },
-      });
-    }
-
+  findPublishedBySlug(slug: string): Promise<Action | null> {
     return this.prisma.action.findFirst({
       where: {
         slug: slug,
-        status: status,
+        status: EntityStatus.PUBLISHED,
       },
     });
   }
