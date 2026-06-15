@@ -39,8 +39,8 @@ export type EventDetailResponse = {
 
 export type EventListRequest = {
   topicSlug?: string;
-  startTime?: string;
-  endTime?: string;
+  startDate?: string;
+  endDate?: string;
   city?: string;
-  state?: string;
+  region?: string;
 };

@@ -13,10 +13,10 @@ type EntityParams =
     }
   | {
       topicSlug?: string;
-      startTime?: string;
-      endTime?: string;
+      startDate?: string;
+      endDate?: string;
       city?: string;
-      state?: string;
+      region?: string;
     };
 
 function buildTopicHref(basePath: string, queryParams: EntityParams) {

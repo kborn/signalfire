@@ -17,13 +17,13 @@ const optionalNullableTrimmedString = (max: number) =>
     z.string().trim().max(max, `Must be ${max} characters or fewer`).nullable(),
   );
 
-function getDefaultStartTime(): Date {
+function getDefaultStartDate(): Date {
   return new Date();
 }
 
-function getDefaultEndTime(start: Date): Date {
+function getDefaultEndDate(start: Date): Date {
   const date = new Date(start);
-  date.setDate(date.getDate() + 90);
+  date.setUTCMonth(date.getUTCMonth() + 3);
   return date;
 }
 
@@ -67,11 +67,11 @@ const optionalNullableDatetime = (fieldLabel: string) =>
 
 function addEndTimeAfterStartIssue(
   ctx: z.RefinementCtx,
-  startTime: Date,
-  endTime: Date,
+  startDate: Date,
+  endDate: Date,
   path: (string | number)[],
 ) {
-  if (endTime < startTime) {
+  if (endDate < startDate) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path,
@@ -83,12 +83,12 @@ function addEndTimeAfterStartIssue(
 export const eventRequestSchema = z
   .object({
     topicSlug: optionalNullableTrimmedString(120),
-    startTime: requiredDatetimeWithDefault('Start datetime', getDefaultStartTime),
-    endTime: optionalNullableDatetime('End datetime'),
+    startDate: requiredDatetimeWithDefault('Start datetime', getDefaultStartDate),
+    endDate: optionalNullableDatetime('End datetime'),
     city: optionalNullableTrimmedString(120),
-    state: optionalNullableTrimmedString(120),
+    region: optionalNullableTrimmedString(120),
   })
   .superRefine((value, ctx) => {
-    value.endTime = value.endTime ?? getDefaultEndTime(value.startTime);
-    addEndTimeAfterStartIssue(ctx, value.startTime, value.endTime, ['endTime']);
+    value.endDate = value.endDate ?? getDefaultEndDate(value.startDate);
+    addEndTimeAfterStartIssue(ctx, value.startDate, value.endDate, ['endDate']);
   });

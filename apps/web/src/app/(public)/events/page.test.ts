@@ -2,6 +2,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { getEventsList } from '@/lib/api/events';
+import { getTopicsList } from '@/lib/api/topics';
 
 import EventListPage from './page';
 
@@ -9,12 +10,36 @@ vi.mock('@/lib/api/events', () => ({
   getEventsList: vi.fn(),
 }));
 
+vi.mock('@/lib/api/topics', () => ({
+  getTopicsList: vi.fn(),
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 describe('EventListPage', () => {
   afterEach(() => {
     vi.clearAllMocks();
   });
 
+  function mockTopics() {
+    vi.mocked(getTopicsList).mockResolvedValue({
+      items: [
+        {
+          id: 1,
+          slug: 'democracy',
+          name: 'Democracy',
+          description: 'desc',
+        },
+      ],
+    });
+  }
+
   it('renders the events list and detail links without a topic filter', async () => {
+    mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       items: [
         {
@@ -44,13 +69,16 @@ describe('EventListPage', () => {
       ],
     });
 
-    const markup = renderToStaticMarkup(await EventListPage({}));
+    const markup = renderToStaticMarkup(
+      await EventListPage({
+        searchParams: Promise.resolve({ region: 'IL' }),
+      }),
+    );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith(undefined);
+    expect(getEventsList).toHaveBeenCalledWith({ region: 'IL' });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
-    expect(markup).not.toContain('Events related to');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -60,6 +88,7 @@ describe('EventListPage', () => {
   });
 
   it('renders the events list with a topic filter banner when events are found', async () => {
+    mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       items: [
         {
@@ -79,49 +108,52 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ topicSlug: 'local-community' }),
+        searchParams: Promise.resolve({ topicSlug: 'local-community', region: 'PA' }),
       }),
     );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith('local-community');
+    expect(getEventsList).toHaveBeenCalledWith({
+      topicSlug: 'local-community',
+      region: 'PA',
+    });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
-    expect(markup).toContain('Events related to Local Community');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');
   });
 
-  it('renders the unfiltered empty state when there are no events', async () => {
+  it('renders the pre-results state when no region filter is present', async () => {
+    mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       items: [],
     });
 
     const markup = renderToStaticMarkup(await EventListPage({}));
 
-    expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith(undefined);
+    expect(getEventsList).not.toHaveBeenCalled();
     expect(markup).toContain('Events');
-    expect(markup).toContain('No upcoming events found');
-    expect(markup).not.toContain('Browse upcoming events and find ways to participate in person');
-    expect(markup).not.toContain('Events related to');
+    expect(markup).toContain('Enter a state to search upcoming events.');
   });
 
-  it('renders the topic-specific empty state when a filtered query returns no events', async () => {
+  it('renders the empty state when a filtered query returns no events', async () => {
+    mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       items: [],
     });
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ topicSlug: 'consumer-activism' }),
+        searchParams: Promise.resolve({ topicSlug: 'consumer-activism', region: 'PA' }),
       }),
     );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith('consumer-activism');
+    expect(getEventsList).toHaveBeenCalledWith({
+      topicSlug: 'consumer-activism',
+      region: 'PA',
+    });
     expect(markup).toContain('Events');
     expect(markup).toContain('No upcoming events found related to Consumer Activism');
-    expect(markup).not.toContain('Browse upcoming events and find ways to participate in person');
   });
 });

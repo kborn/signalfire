@@ -25,20 +25,15 @@ function getNoTopicResultsResponse(topic: string) {
 }
 
 function canRequest(props: EventListPageProps): boolean {
-  const { state } = props;
-  const { city } = props;
-  const { startTime } = props;
-  const { endTime } = props;
-
-  return !!(state && city && startTime && endTime);
+  return Boolean(props.region?.trim());
 }
 
 type EventListPageProps = {
   topicSlug?: string;
-  startTime?: string;
-  endTime?: string;
+  startDate?: string;
+  endDate?: string;
   city?: string;
-  state?: string;
+  region?: string;
 };
 
 type EventListPagePropsWrapper = {
@@ -47,7 +42,11 @@ type EventListPagePropsWrapper = {
 
 async function getContents(params: EventListPageProps) {
   if (!canRequest(params)) {
-    return <p>Need more params</p>;
+    return (
+      <p className="metaText">
+        Enter a state to search upcoming events. City and dates are optional filters.
+      </p>
+    );
   }
 
   const { topicSlug } = params;
@@ -72,11 +71,6 @@ async function getContents(params: EventListPageProps) {
 export default async function EventListPage({ searchParams }: EventListPagePropsWrapper) {
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
-  const { topicSlug } = params;
-  const { state } = params;
-  const { city } = params;
-  const { startTime } = params;
-  const { endTime } = params;
 
   return (
     <section className="page-section">

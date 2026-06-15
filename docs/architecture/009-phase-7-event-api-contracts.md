@@ -192,8 +192,11 @@ the underlying filtered ordering rules:
 2. the public `/events` page may act as a filter-led finder surface rather than
    rendering a default broad result set before the user supplies meaningful
    filter state
-3. once queried, Event results remain sorted by `startTime` ascending
-4. `id` ascending remains the deterministic tie-breaker
+3. omitted date bounds may resolve through the established upcoming-window
+   default, with `startDate` defaulting to now and `endDate` defaulting to
+   three calendar months after the resolved start bound
+4. once queried, Event results remain sorted by `startTime` ascending
+5. `id` ascending remains the deterministic tie-breaker
 
 Rationale:
 

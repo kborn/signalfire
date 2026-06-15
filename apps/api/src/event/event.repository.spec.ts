@@ -53,8 +53,8 @@ describe('EventRepository', () => {
     const topicSlug = 'democracy';
     const ret = await repository.findPublished({
       topicSlug,
-      startTime: startOfDay,
-      endTime: startOfNextDay,
+      startDate: startOfDay,
+      endDate: startOfNextDay,
     });
 
     expect(ret).toEqual([event]);

@@ -50,11 +50,11 @@ export class EventRepository {
       where: {
         status: EntityStatus.PUBLISHED,
         startTime: {
-          gte: reqBody['startTime'],
-          lt: reqBody['endTime'],
+          gte: reqBody['startDate'],
+          lt: reqBody['endDate'],
         },
         city: reqBody['city'],
-        region: reqBody['state'],
+        region: reqBody['region'],
         topicEvents: reqBody['topicSlug']
           ? {
               some: {

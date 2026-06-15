@@ -65,21 +65,21 @@ describe('EventService', () => {
     const event = buildEventEntity();
     repoMock.findPublished.mockResolvedValue([event]);
 
-    const startTime = new Date('2025-12-17T00:00:00.000Z');
-    const endTime = new Date('2025-12-18T00:00:00.000Z');
+    const startDate = new Date('2025-12-17T00:00:00.000Z');
+    const endDate = new Date('2025-12-18T00:00:00.000Z');
 
     const ret = await service.getPublishedEventList({
-      startTime,
-      endTime,
+      startDate,
+      endDate,
       topicSlug: 'democracy',
     });
 
     expect(ret).toEqual(buildEventListResponse());
-    expect(repoMock.findPublished).toHaveBeenCalledWith(
-      new Date('2025-12-17T00:00:00.000Z'),
-      new Date('2025-12-18T00:00:00.000Z'),
-      'democracy',
-    );
+    expect(repoMock.findPublished).toHaveBeenCalledWith({
+      startDate: new Date('2025-12-17T00:00:00.000Z'),
+      endDate: new Date('2025-12-18T00:00:00.000Z'),
+      topicSlug: 'democracy',
+    });
   });
 
   it('getPublishedEventDetail', async () => {

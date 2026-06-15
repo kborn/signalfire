@@ -48,8 +48,8 @@ describe('Event Service Integration Test', () => {
     await linkTopicEvent(topic.id, wrongDayEvent.id);
 
     const response = await eventService.getPublishedEventList({
-      startTime: new Date('2025-03-15T00:00:00.000Z'),
-      endTime: new Date('2025-03-16T00:00:00.000Z'),
+      startDate: new Date('2025-03-15T00:00:00.000Z'),
+      endDate: new Date('2025-03-16T00:00:00.000Z'),
     });
 
     expect(response.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
@@ -94,8 +94,8 @@ describe('Event Service Integration Test', () => {
     await linkTopicEvent(climateTopic.id, otherTopicEvent.id);
 
     const response = await eventService.getPublishedEventList({
-      startTime: new Date('2025-03-15T00:00:00.000Z'),
-      endTime: new Date('2025-03-16T00:00:00.000Z'),
+      startDate: new Date('2025-03-15T00:00:00.000Z'),
+      endDate: new Date('2025-03-16T00:00:00.000Z'),
       topicSlug: 'democracy',
     });
 

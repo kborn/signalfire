@@ -5,10 +5,10 @@ import { useState } from 'react';
 
 type EventListPageProps = {
   topicSlug?: string;
-  startTime?: string;
-  endTime?: string;
+  startDate?: string;
+  endDate?: string;
   city?: string;
-  state?: string;
+  region?: string;
 };
 
 type EventListPagePropsWrapper = {
@@ -35,9 +35,9 @@ function route(router: AppRouterInstance, url: string) {
 export default function EventFilters({ params }: EventListPagePropsWrapper) {
   const router = useRouter();
   const [city, setCity] = useState(params['city'] ?? '');
-  const [state, setState] = useState(params['state'] ?? '');
-  const [startTime, setStartTime] = useState(params['startTime'] ?? '');
-  const [endTime, setEndTime] = useState(params['endTime'] ?? '');
+  const [region, setRegion] = useState(params['region'] ?? '');
+  const [startDate, setStartDate] = useState(params['startDate'] ?? '');
+  const [endDate, setEndDate] = useState(params['endDate'] ?? '');
 
   return (
     <div>
@@ -47,38 +47,36 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
         value={city}
         placeholder="City"
         onChange={(event) => setCity(event.target.value)}
-        onBlur={(event) => route(router, `events?${buildUrl({ ...params, city })}`)}
+        onBlur={() => route(router, `/events?${buildUrl({ ...params, city })}`)}
       />
       <input
-        id="event-state"
+        id="event-region"
         className={'submissionControl'}
-        value={state}
+        value={region}
         placeholder="State"
-        onChange={(event) => setState(event.target.value)}
-        onBlur={(event) => route(router, `events?${buildUrl({ ...params, state })}`)}
+        onChange={(event) => setRegion(event.target.value)}
+        onBlur={() => route(router, `/events?${buildUrl({ ...params, region })}`)}
       />
-      <label className="submissionLabel" htmlFor="event-startTime">
+      <label className="submissionLabel" htmlFor="event-start-date">
         <span>Start date and time </span>
         <input
-          id="event-startTime"
+          id="event-start-date"
           className="submissionControl"
-          value={startTime}
+          value={startDate}
           type="datetime-local"
-          onChange={(event) => setStartTime(event.target.value)}
-          onBlur={(event) =>
-            route(router, `events?${buildUrl({ ...params, startTime: startTime })}`)
-          }
+          onChange={(event) => setStartDate(event.target.value)}
+          onBlur={() => route(router, `/events?${buildUrl({ ...params, startDate })}`)}
         />
       </label>
-      <label className="submissionLabel" htmlFor="event-endTime">
+      <label className="submissionLabel" htmlFor="event-end-date">
         <span>End date and time </span>
         <input
-          id="event-endTime"
+          id="event-end-date"
           className="submissionControl"
-          value={endTime}
+          value={endDate}
           type="datetime-local"
-          onChange={(event) => setEndTime(event.target.value)}
-          onBlur={(event) => route(router, `events?${buildUrl({ ...params, endTime })}`)}
+          onChange={(event) => setEndDate(event.target.value)}
+          onBlur={() => route(router, `/events?${buildUrl({ ...params, endDate })}`)}
         />
       </label>
     </div>

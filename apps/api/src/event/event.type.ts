@@ -1,7 +1,7 @@
 export type ValidatedEventListQuery = {
   topicSlug?: string;
-  startTime?: Date;
-  endTime?: Date;
+  startDate: Date;
+  endDate: Date;
   city?: string;
-  state?: string;
+  region?: string;
 };

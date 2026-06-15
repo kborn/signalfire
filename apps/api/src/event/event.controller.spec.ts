@@ -27,16 +27,16 @@ describe('EventController', () => {
   it('findEvents', async () => {
     await withFrozenTime('2025-03-15T12:34:56.001Z', async () => {
       const eventListResponse = buildEventListResponse();
-      serviceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
-
-      const ret = await eventController.findEvents({});
-
-      expect(ret).toEqual(eventListResponse);
-      expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith({
+      const query = {
         startDate: new Date('2025-03-15T00:00:00.000Z'),
         endDate: new Date('2025-06-15T00:00:00.000Z'),
-        topicSlug: undefined,
-      });
+      };
+      serviceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
+
+      const ret = await eventController.findEvents(query);
+
+      expect(ret).toEqual(eventListResponse);
+      expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith(query);
     });
   });
 

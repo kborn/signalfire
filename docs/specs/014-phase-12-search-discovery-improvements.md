@@ -159,12 +159,15 @@ Direction and rules:
   surfaces
 - Event date filtering should use inclusive date-window semantics through
   `startDate` and `endDate`
+- when `startDate` is omitted, the collection defaults to the current time
+- when `endDate` is omitted, the collection defaults to three calendar months
+  after the resolved `startDate`
 - Event location filtering should use current contract-aligned broad fields,
   not raw address search and not geographic proximity
 - for the filter-led public `/events` page, results should only be requested
-  after a meaningful filter set is present; the recommended minimum rule is a
-  location signal (`region` or `city`) plus a complete date window
-  (`startDate` and `endDate`)
+  after a meaningful filter set is present; the Release 1 minimum rule is a
+  `region` value, with `city`, `startDate`, and `endDate` acting as optional
+  refinements
 - `page` is a 1-based positive integer
 - `pageSize` is an optional positive integer chosen from a small, server-owned
   allowed set
@@ -225,8 +228,12 @@ Preferred direction:
 
 - invalid query-param types or invalid numeric pagination inputs return
   `400 Bad Request`
-- incomplete Event date windows should return `400 Bad Request` when either
-  `startDate` or `endDate` is supplied without the other
+- supplied Event date bounds should resolve against the same default upcoming
+  window posture used by the public collection route:
+  - `startDate` alone narrows the lower bound and defaults `endDate` to three
+    calendar months later
+  - `endDate` alone narrows the upper bound while `startDate` defaults to the
+    current time
 - unknown `topicSlug` values used as filters should return an empty collection,
   not `404`, because the route itself still exists as a collection surface
 - page requests beyond the available result set should return `200 OK` with an
