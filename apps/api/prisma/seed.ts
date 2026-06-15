@@ -35,6 +35,30 @@ function relativeDate(params: { daysFromNow?: number; hours?: number; minutes?: 
   return date;
 }
 
+const TARGET_PUBLISHED_ARTICLE_COUNT = 120;
+const TARGET_PUBLISHED_ACTION_COUNT = 120;
+const TARGET_PUBLISHED_EVENT_COUNT = 120;
+
+const LOREM_SENTENCE =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+const LOREM_PARAGRAPH = `${LOREM_SENTENCE} Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
+const LOREM_LONG_FORM = `${LOREM_PARAGRAPH}
+
+${LOREM_PARAGRAPH}
+
+${LOREM_PARAGRAPH}`;
+
+function titleCaseWords(value: string): string {
+  return value
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
+function publishedDateFromIndex(index: number): Date {
+  return new Date(Date.UTC(2026, 0, 1 + index, 0, 0, 0, 0));
+}
+
 const topics = [
   {
     slug: 'democracy',
@@ -100,7 +124,7 @@ Local climate policy shapes transit, zoning, building rules, and public investme
 Start with one concrete ask, bring it to a public meeting, and then join a recurring local coalition so the pressure continues after a single hearing.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-10T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-03T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
     actionSlugs: [
       'contact-city-council-about-transit',
@@ -127,7 +151,7 @@ Election administration is often decided close to home. County boards, clerks, a
 Attend meetings, document procedural changes, and plug into election-protection volunteers who can turn observation into public pressure.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-14T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-05T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
     actionSlugs: ['attend-election-board-meeting', 'volunteer-as-election-protection-observer'],
   },
@@ -150,7 +174,7 @@ Consumer pressure is strongest when it is tied to a public demand, a target deci
 Do not treat every bad company as the same target. Match the tactic to the leverage point: purchasing pressure, donor pressure, labor solidarity, or public contact.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-16T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-07T00:00:00.000Z'),
     topicSlugs: ['consumer-activism', 'economic-justice'],
     actionSlugs: ['boycott-megastore-private-label', 'donate-to-worker-solidarity-fund'],
   },
@@ -173,7 +197,7 @@ Book removals, review committees, and curriculum debates often move through scho
 Build a small response team that can email decision-makers, show up in person, and keep library access visible as a civil-rights and education issue.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-18T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-09T00:00:00.000Z'),
     topicSlugs: ['education', 'civil-rights', 'local-community'],
     actionSlugs: [
       'email-school-board-about-library-access',
@@ -200,7 +224,7 @@ When local bodies shorten speaking time, move meetings without notice, or tighte
 These rules shape whose voices are heard in public. Tracking them helps communities respond before exclusion becomes normal.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-20T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-11T00:00:00.000Z'),
     topicSlugs: ['democracy', 'civil-rights', 'local-community'],
     actionSlugs: ['testify-at-city-council-hearing', 'volunteer-as-election-protection-observer'],
   },
@@ -224,7 +248,7 @@ Extreme heat exposes weak transit, poor housing conditions, and underfunded neig
 Treat heat response as both immediate care and long-term civic pressure. Neighborhood-level organizing can connect climate action to economic justice quickly.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-22T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-12T00:00:00.000Z'),
     topicSlugs: ['climate', 'economic-justice', 'local-community'],
     actionSlugs: ['join-neighborhood-climate-coalition', 'join-tenant-solidarity-network'],
   },
@@ -425,13 +449,83 @@ Long-form content should reduce confusion, not end in abstraction.
 If the article clarifies the problem but leaves the reader with no next step, it has not yet completed the civic loop.`,
     author: 'Find Your Fight Editorial',
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-24T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-13T00:00:00.000Z'),
     topicSlugs: ['democracy', 'climate', 'education', 'local-community'],
     actionSlugs: [
       'join-neighborhood-climate-coalition',
       'testify-at-city-council-hearing',
       'email-school-board-about-library-access',
     ],
+  },
+  {
+    slug: 'how-mutual-aid-and-public-pressure-fit-together',
+    title: 'How Mutual Aid And Public Pressure Fit Together',
+    summary: 'Why direct support work and civic pressure often need each other.',
+    content: `## Mutual aid and public pressure solve different parts of the same problem
+
+Immediate support helps people survive. Public pressure helps change the conditions that created the need in the first place.
+
+### Useful ways to connect them
+
+- document recurring needs
+- identify the public agency or institution tied to those needs
+- move from crisis response into repeated civic demands
+
+### The practical takeaway
+
+Treat care work and public action as connected lanes. One keeps people afloat while the other tries to change the system around them.`,
+    author: 'Find Your Fight Editorial',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-14T00:00:00.000Z'),
+    topicSlugs: ['local-community', 'economic-justice', 'civil-rights'],
+    actionSlugs: ['join-tenant-solidarity-network', 'testify-at-city-council-hearing'],
+  },
+  {
+    slug: 'what-a-school-board-agenda-can-reveal',
+    title: 'What A School Board Agenda Can Reveal',
+    summary: 'A short guide to reading agendas before a public school board fight escalates.',
+    content: `## Agendas often show the real conflict before the public debate begins
+
+Committee reports, policy updates, and consent items can preview major changes before most families realize a decision is close.
+
+### Look for
+
+- policy revisions
+- review committee updates
+- consent items that hide meaningful changes
+
+### What to do next
+
+Read agendas early, compare them to prior meetings, and organize around the actual vote path instead of the rumor cycle.`,
+    author: 'Find Your Fight Editorial',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-15T00:00:00.000Z'),
+    topicSlugs: ['education', 'democracy', 'local-community'],
+    actionSlugs: ['email-school-board-about-library-access', 'host-school-board-study-group'],
+  },
+  {
+    slug: 'how-to-prepare-for-a-statewide-day-of-action',
+    title: 'How To Prepare For A Statewide Day Of Action',
+    summary:
+      'A practical checklist for turning a one-day mobilization into longer civic follow-through.',
+    content: `## A day of action only matters if people know the next step
+
+Large mobilizations create attention, but they do not automatically create durable local pressure.
+
+### Before the action
+
+- define the demand
+- prepare follow-up asks
+- connect attendees to local groups
+
+### After the action
+
+Turn turnout into meetings, pressure, and recurring participation so the event becomes a beginning rather than a finale.`,
+    author: 'Find Your Fight Editorial',
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-16T00:00:00.000Z'),
+    topicSlugs: ['civil-rights', 'climate', 'local-community'],
+    actionSlugs: ['join-neighborhood-climate-coalition', 'volunteer-with-friends-of-the-library'],
   },
   {
     slug: 'draft-civic-content-playbook',
@@ -455,7 +549,7 @@ const demoActions = [
       'Call or email your local council member and ask for dedicated bus-lane funding and improved weekend service.',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-10T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-03T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
     articleSlugs: ['how-local-climate-policy-works'],
   },
@@ -467,7 +561,7 @@ const demoActions = [
       'Join an existing local coalition or start a recurring organizing group focused on transit, housing, and emissions policy.',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-11T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-04T00:00:00.000Z'),
     topicSlugs: ['climate', 'local-community'],
     articleSlugs: [
       'how-local-climate-policy-works',
@@ -483,7 +577,7 @@ const demoActions = [
       'Attend the next public election board meeting, take notes, and follow up on procedural changes that affect voting access.',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-14T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-05T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
     articleSlugs: ['protect-voting-access-in-your-county'],
   },
@@ -495,7 +589,7 @@ const demoActions = [
       "Move purchases away from the company's private-label products, share the campaign demand publicly, and invite others to follow the same target list.",
     actionType: ActionType.GUIDE,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-16T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-06T00:00:00.000Z'),
     topicSlugs: ['consumer-activism', 'economic-justice'],
     articleSlugs: ['how-to-read-a-corporate-pressure-campaign'],
   },
@@ -507,7 +601,7 @@ const demoActions = [
       'Contribute to a vetted worker solidarity fund so workers can sustain public pressure while facing retaliation, reduced hours, or strike-related costs.',
     actionType: ActionType.DONATE,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-17T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-07T00:00:00.000Z'),
     topicSlugs: ['consumer-activism', 'economic-justice'],
     articleSlugs: ['how-to-read-a-corporate-pressure-campaign'],
   },
@@ -519,7 +613,7 @@ const demoActions = [
       'Email board members before the next meeting with one concrete ask: preserve library access, oppose removals without due process, and keep review rules public.',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-18T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-08T00:00:00.000Z'),
     topicSlugs: ['education', 'civil-rights', 'local-community'],
     articleSlugs: [
       'defend-library-access-in-your-school-district',
@@ -534,7 +628,7 @@ const demoActions = [
       'Join a local library-support group to help with turnout, outreach, and public education around why free access to books and staff matters.',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-19T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-09T00:00:00.000Z'),
     topicSlugs: ['education', 'local-community'],
     articleSlugs: ['defend-library-access-in-your-school-district'],
   },
@@ -546,7 +640,7 @@ const demoActions = [
       'Prepare a short statement, sign up early, and connect your testimony to a specific vote, funding choice, or public rule change that officials cannot ignore.',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-20T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-10T00:00:00.000Z'),
     topicSlugs: ['democracy', 'civil-rights', 'local-community'],
     articleSlugs: [
       'what-public-comment-rules-can-tell-you',
@@ -561,7 +655,7 @@ const demoActions = [
       'Join a local election-protection effort, learn the reporting process, and help track barriers such as long lines, polling-place confusion, or disability access failures.',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-21T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-11T00:00:00.000Z'),
     topicSlugs: ['democracy', 'local-community'],
     articleSlugs: [
       'protect-voting-access-in-your-county',
@@ -576,9 +670,45 @@ const demoActions = [
       'Plug into a tenant network that can check on vulnerable neighbors, document unsafe conditions, and push for neighborhood-level heat and housing protections.',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
-    publishedAt: new Date('2026-03-22T00:00:00.000Z'),
+    publishedAt: new Date('2026-06-12T00:00:00.000Z'),
     topicSlugs: ['climate', 'economic-justice', 'local-community'],
     articleSlugs: ['how-local-climate-policy-works', 'organize-for-neighborhood-heat-safety'],
+  },
+  {
+    slug: 'deliver-mutual-aid-supply-drop',
+    title: 'Deliver A Mutual Aid Supply Drop',
+    summary: 'Coordinate a concrete supply run for neighbors during a local pressure campaign.',
+    description:
+      'Join a scheduled supply run that supports neighbors directly while organizers document unmet needs and connect them to public demands.',
+    actionType: ActionType.VOLUNTEER,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-13T00:00:00.000Z'),
+    topicSlugs: ['local-community', 'economic-justice'],
+    articleSlugs: ['how-mutual-aid-and-public-pressure-fit-together'],
+  },
+  {
+    slug: 'review-next-school-board-agenda',
+    title: 'Review The Next School Board Agenda',
+    summary: 'Read the agenda early and flag decisions that deserve public attention.',
+    description:
+      'Scan the next school board agenda, compare it to the prior meeting, and share any policy, library, or curriculum items that need organized turnout.',
+    actionType: ActionType.GUIDE,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-14T00:00:00.000Z'),
+    topicSlugs: ['education', 'democracy', 'local-community'],
+    articleSlugs: ['what-a-school-board-agenda-can-reveal'],
+  },
+  {
+    slug: 'join-statewide-day-of-action-turnout-team',
+    title: 'Join The Statewide Day Of Action Turnout Team',
+    summary: 'Help move supporters from RSVP to real turnout and follow-up.',
+    description:
+      'Support phonebanks, texts, and follow-up coordination so a statewide mobilization leads to sustained local participation afterward.',
+    actionType: ActionType.VOLUNTEER,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-15T00:00:00.000Z'),
+    topicSlugs: ['civil-rights', 'climate', 'local-community'],
+    articleSlugs: ['how-to-prepare-for-a-statewide-day-of-action'],
   },
   {
     slug: 'host-school-board-study-group',
@@ -602,7 +732,7 @@ const demoEvents = [
     website: 'https://example.org/transit-rally',
     eventType: EventType.RALLY,
     status: EntityStatus.PUBLISHED,
-    publishedAt: relativeDate({ daysFromNow: -2, hours: 12 }),
+    publishedAt: new Date('2026-06-13T08:00:00.000Z'),
     startTime: relativeDate({ daysFromNow: 7, hours: 17, minutes: 30 }),
     endTime: relativeDate({ daysFromNow: 7, hours: 19 }),
     locationName: 'City Hall Plaza',
@@ -638,7 +768,7 @@ const demoEvents = [
       submitterName: 'Jordan Lee',
       submitterEmail: 'jordan.lee@example.org',
       reviewNotes: 'Approved for demo data.',
-      reviewedAt: relativeDate({ daysFromNow: -2, hours: 12 }),
+      reviewedAt: new Date('2026-06-13T08:00:00.000Z'),
     },
   },
   {
@@ -696,7 +826,7 @@ const demoEvents = [
     website: 'https://example.org/heat-safety-training',
     eventType: EventType.WORKSHOP,
     status: EntityStatus.PUBLISHED,
-    publishedAt: relativeDate({ daysFromNow: -1, hours: 10 }),
+    publishedAt: new Date('2026-06-14T08:00:00.000Z'),
     startTime: relativeDate({ daysFromNow: 18, hours: 10 }),
     endTime: relativeDate({ daysFromNow: 18, hours: 12 }),
     locationName: 'Southside Community Center',
@@ -732,10 +862,193 @@ const demoEvents = [
       submitterName: 'Andre Williams',
       submitterEmail: 'andre.williams@example.org',
       reviewNotes: 'Approved for demo data.',
-      reviewedAt: relativeDate({ daysFromNow: -1, hours: 10 }),
+      reviewedAt: new Date('2026-06-14T08:00:00.000Z'),
+    },
+  },
+  {
+    title: 'Statewide Day Of Action Launch Meetup',
+    summary: 'Organizers gather ahead of a coordinated statewide mobilization.',
+    description:
+      'A public organizing meetup focused on turnout, signage, accessibility planning, and local follow-up after a statewide day of action.',
+    website: 'https://example.org/day-of-action-launch',
+    eventType: EventType.MEETING,
+    status: EntityStatus.PUBLISHED,
+    publishedAt: new Date('2026-06-15T08:00:00.000Z'),
+    startTime: relativeDate({ daysFromNow: 24, hours: 18 }),
+    endTime: relativeDate({ daysFromNow: 24, hours: 20 }),
+    locationName: 'Broad Street Organizing Hub',
+    publicLocationDescription: 'Second floor meeting room',
+    addressLine1: '1550 Broad Street',
+    addressLine2: null,
+    city: 'Philadelphia',
+    region: 'PA',
+    postalCode: '19146',
+    country: 'USA',
+    topicSlugs: ['civil-rights', 'climate', 'local-community'],
+    articleSlugs: ['how-to-prepare-for-a-statewide-day-of-action'],
+    actionSlugs: ['join-statewide-day-of-action-turnout-team'],
+    submission: {
+      submissionType: SubmissionType.EVENT,
+      status: SubmissionStatus.APPROVED,
+      title: 'Statewide Day Of Action Launch Meetup',
+      summary: 'Organizers gather ahead of a coordinated statewide mobilization.',
+      submittedContent:
+        'A public meetup for volunteers handling turnout, accessibility planning, and post-event follow-up for a statewide mobilization.',
+      eventType: EventType.MEETING,
+      startTime: relativeDate({ daysFromNow: 24, hours: 18 }),
+      endTime: relativeDate({ daysFromNow: 24, hours: 20 }),
+      locationName: 'Broad Street Organizing Hub',
+      publicLocationDescription: 'Second floor meeting room',
+      addressLine1: '1550 Broad Street',
+      addressLine2: null,
+      city: 'Philadelphia',
+      region: 'PA',
+      postalCode: '19146',
+      country: 'USA',
+      contactEmail: 'organizing@example.org',
+      submitterName: 'Leah Ortiz',
+      submitterEmail: 'leah.ortiz@example.org',
+      reviewNotes: 'Approved for demo data.',
+      reviewedAt: new Date('2026-06-15T08:00:00.000Z'),
     },
   },
 ] as const;
+
+const publishedDemoArticles = demoArticles.filter(
+  (article) => article.status === EntityStatus.PUBLISHED,
+);
+const publishedDemoActions = demoActions.filter(
+  (action) => action.status === EntityStatus.PUBLISHED,
+);
+const publishedDemoEvents = demoEvents.filter((event) => event.status === EntityStatus.PUBLISHED);
+
+const generatedDemoArticles = Array.from(
+  { length: Math.max(0, TARGET_PUBLISHED_ARTICLE_COUNT - publishedDemoArticles.length) },
+  (_, index) => {
+    const topic = topics[index % topics.length];
+
+    return {
+      slug: `lorem-article-${String(index + 1).padStart(3, '0')}`,
+      title: `${titleCaseWords(topic.slug)} Briefing ${index + 1}`,
+      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} article ${index + 1}.`,
+      content: `# ${topic.name} Briefing ${index + 1}
+
+${LOREM_LONG_FORM}`,
+      author: 'SignalFire Demo Seed',
+      status: EntityStatus.PUBLISHED,
+      publishedAt: publishedDateFromIndex(index),
+      topicSlugs: [topic.slug],
+      actionSlugs: [] as string[],
+    };
+  },
+);
+
+const generatedDemoActions = Array.from(
+  { length: Math.max(0, TARGET_PUBLISHED_ACTION_COUNT - publishedDemoActions.length) },
+  (_, index) => {
+    const topic = topics[index % topics.length];
+    const actionTypes = [
+      ActionType.CONTACT,
+      ActionType.VOLUNTEER,
+      ActionType.GUIDE,
+      ActionType.DONATE,
+    ] as const;
+
+    return {
+      slug: `lorem-action-${String(index + 1).padStart(3, '0')}`,
+      title: `${topic.name} Action ${index + 1}`,
+      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} action ${index + 1}.`,
+      description: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+      actionType: actionTypes[index % actionTypes.length],
+      status: EntityStatus.PUBLISHED,
+      publishedAt: publishedDateFromIndex(index),
+      topicSlugs: [topic.slug],
+      articleSlugs: [] as string[],
+    };
+  },
+);
+
+const eventRegions = [
+  { region: 'PA', city: 'Philadelphia', postalCode: '19107' },
+  { region: 'PA', city: 'Pittsburgh', postalCode: '15222' },
+  { region: 'NY', city: 'Albany', postalCode: '12207' },
+  { region: 'NY', city: 'Buffalo', postalCode: '14202' },
+  { region: 'NJ', city: 'Newark', postalCode: '07102' },
+  { region: 'MA', city: 'Boston', postalCode: '02108' },
+  { region: 'MD', city: 'Baltimore', postalCode: '21202' },
+];
+
+const eventTypes = [
+  EventType.PROTEST,
+  EventType.RALLY,
+  EventType.VOLUNTEER,
+  EventType.TOWN_HALL,
+  EventType.WORKSHOP,
+  EventType.MEETING,
+] as const;
+
+const generatedDemoEvents = Array.from(
+  { length: Math.max(0, TARGET_PUBLISHED_EVENT_COUNT - publishedDemoEvents.length) },
+  (_, index) => {
+    const topic = topics[index % topics.length];
+    const regionData = eventRegions[index % eventRegions.length];
+    const startTime = relativeDate({ daysFromNow: 30 + index, hours: 18 });
+    const endTime = relativeDate({ daysFromNow: 30 + index, hours: 20 });
+    const title = `${topic.name} Community Event ${index + 1}`;
+    const locationName = `${regionData.city} Civic Space ${index + 1}`;
+
+    return {
+      title,
+      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} event ${index + 1}.`,
+      description: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+      website: `https://example.org/events/lorem-${index + 1}`,
+      eventType: eventTypes[index % eventTypes.length],
+      status: EntityStatus.PUBLISHED,
+      publishedAt: publishedDateFromIndex(index),
+      startTime,
+      endTime,
+      locationName,
+      publicLocationDescription: 'Main room',
+      addressLine1: `${100 + index} Civic Center Way`,
+      addressLine2: null,
+      city: regionData.city,
+      region: regionData.region,
+      postalCode: regionData.postalCode,
+      country: 'USA',
+      topicSlugs: [topic.slug],
+      articleSlugs: [] as string[],
+      actionSlugs: [] as string[],
+      submission: {
+        submissionType: SubmissionType.EVENT,
+        status: SubmissionStatus.APPROVED,
+        title,
+        summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} event ${index + 1}.`,
+        submittedContent: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+        eventType: eventTypes[index % eventTypes.length],
+        startTime,
+        endTime,
+        locationName,
+        publicLocationDescription: 'Main room',
+        addressLine1: `${100 + index} Civic Center Way`,
+        addressLine2: null,
+        city: regionData.city,
+        region: regionData.region,
+        postalCode: regionData.postalCode,
+        country: 'USA',
+        website: `https://example.org/events/lorem-${index + 1}`,
+        contactEmail: 'events@example.org',
+        submitterName: 'Demo Organizer',
+        submitterEmail: 'organizer@example.org',
+        reviewNotes: 'Approved for demo data.',
+        reviewedAt: publishedDateFromIndex(index),
+      },
+    };
+  },
+);
+
+const allDemoArticles = [...demoArticles, ...generatedDemoArticles];
+const allDemoActions = [...demoActions, ...generatedDemoActions];
+const allDemoEvents = [...demoEvents, ...generatedDemoEvents];
 
 const demoPendingSubmissions = [
   {
@@ -798,7 +1111,7 @@ async function seedTopics() {
 }
 
 async function seedDemoArticles() {
-  for (const article of demoArticles) {
+  for (const article of allDemoArticles) {
     await prisma.article.upsert({
       where: { slug: article.slug },
       update: {
@@ -823,7 +1136,7 @@ async function seedDemoArticles() {
 }
 
 async function seedDemoActions() {
-  for (const action of demoActions) {
+  for (const action of allDemoActions) {
     await prisma.action.upsert({
       where: { slug: action.slug },
       update: {
@@ -848,7 +1161,7 @@ async function seedDemoActions() {
 }
 
 async function seedDemoEvents() {
-  for (const event of demoEvents) {
+  for (const event of allDemoEvents) {
     const existingEvent = await prisma.event.findFirst({
       where: {
         title: event.title,
@@ -1058,7 +1371,7 @@ async function connectArticleTopics(
   topicIds: Map<string, number>,
   articleIds: Map<string, number>,
 ) {
-  for (const article of demoArticles) {
+  for (const article of allDemoArticles) {
     const articleId = requireId(articleIds, article.slug, 'article');
 
     for (const topicSlug of article.topicSlugs) {
@@ -1083,7 +1396,7 @@ async function connectArticleTopics(
 }
 
 async function connectActionTopics(topicIds: Map<string, number>, actionIds: Map<string, number>) {
-  for (const action of demoActions) {
+  for (const action of allDemoActions) {
     const actionId = requireId(actionIds, action.slug, 'action');
 
     for (const topicSlug of action.topicSlugs) {
@@ -1111,7 +1424,7 @@ async function connectArticleActions(
   articleIds: Map<string, number>,
   actionIds: Map<string, number>,
 ) {
-  for (const article of demoArticles) {
+  for (const article of allDemoArticles) {
     const articleId = requireId(articleIds, article.slug, 'article');
 
     for (const actionSlug of article.actionSlugs) {
@@ -1136,7 +1449,7 @@ async function connectArticleActions(
 }
 
 async function connectTopicEvents(topicIds: Map<string, number>, eventIds: Map<string, number>) {
-  for (const event of demoEvents) {
+  for (const event of allDemoEvents) {
     const eventId = requireId(
       eventIds,
       `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
@@ -1168,7 +1481,7 @@ async function connectArticleEvents(
   articleIds: Map<string, number>,
   eventIds: Map<string, number>,
 ) {
-  for (const event of demoEvents) {
+  for (const event of allDemoEvents) {
     const eventId = requireId(
       eventIds,
       `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
@@ -1197,7 +1510,7 @@ async function connectArticleEvents(
 }
 
 async function connectActionEvents(actionIds: Map<string, number>, eventIds: Map<string, number>) {
-  for (const event of demoEvents) {
+  for (const event of allDemoEvents) {
     const eventId = requireId(
       eventIds,
       `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
