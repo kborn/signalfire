@@ -1103,6 +1103,15 @@ h3 {
   opacity: 0.9;
 }
 
+.publicShell input[type='date'] {
+  color-scheme: dark;
+}
+
+.publicShell input[type='date']::-webkit-calendar-picker-indicator {
+  opacity: 1;
+  filter: invert(34%) sepia(26%) saturate(1048%) hue-rotate(336deg) brightness(97%) contrast(91%);
+}
+
 .publicShell .submissionForm > .submissionSection:first-of-type .submissionTextarea {
   min-height: 260px;
 }

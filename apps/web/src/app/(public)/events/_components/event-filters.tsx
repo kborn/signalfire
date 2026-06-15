@@ -45,9 +45,7 @@ function parseDateValue(value: string): Date | null {
   }
 
   const [, yearText, monthText, dayText] = match;
-  const date = new Date(Date.UTC(Number(yearText), Number(monthText) - 1, Number(dayText)));
-
-  return date;
+  return new Date(Date.UTC(Number(yearText), Number(monthText) - 1, Number(dayText)));
 }
 
 function route(router: AppRouterInstance, queryParams: EventListPageProps) {
@@ -130,8 +128,11 @@ export default function EventFilters({
             className="submissionControl"
             value={startDate}
             type="date"
-            onChange={(event) => setStartDate(event.target.value)}
-            onBlur={() => commitFilters({ startDate })}
+            onChange={(event) => {
+              const nextStartDate = event.target.value;
+              setStartDate(nextStartDate);
+              commitFilters({ startDate: nextStartDate });
+            }}
           />
         </label>
         <label className="submissionLabel eventFilterField" htmlFor="event-end-date">
@@ -141,8 +142,11 @@ export default function EventFilters({
             className="submissionControl"
             value={endDate}
             type="date"
-            onChange={(event) => setEndDate(event.target.value)}
-            onBlur={() => commitFilters({ endDate })}
+            onChange={(event) => {
+              const nextEndDate = event.target.value;
+              setEndDate(nextEndDate);
+              commitFilters({ endDate: nextEndDate });
+            }}
           />
         </label>
       </div>
