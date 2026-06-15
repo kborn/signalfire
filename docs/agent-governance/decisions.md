@@ -314,6 +314,42 @@ release.
 
 ---
 
+### ► Phase 12.4 public discovery uses explicit page-number pagination
+
+###### 2026-06-15
+
+---
+
+###### Decision
+
+Phase 12.4 public discovery should use explicit page-number pagination across
+public collection surfaces rather than infinite scroll.
+
+###### Rationale
+
+- Public discovery in SignalFire is a browse-and-return flow: users will often
+  open an article, action, or event from a collection page and then come back
+  to continue browsing.
+- Infinite scroll makes that return path brittle because the browser back flow
+  commonly drops the user at the top of the list or loses the previously loaded
+  depth, forcing them to rebuild context.
+- Explicit pages create a stable URL and stable position for each slice of the
+  collection, which is easier to share, revisit, test, and reason about in a
+  content-discovery product.
+
+###### Implications
+
+- Public collection query params should use `page` and `pageSize` rather than a
+  cursor contract.
+- Public collection responses should return page-oriented metadata sufficient
+  for previous/next and numbered-page behavior.
+- Phase 12 docs and learning materials should teach URL-driven pagination
+  rather than client-side append behavior.
+
+---
+
+---
+
 ### ► Release 1 admin sessions are database-backed
 
 ###### 2026-06-06

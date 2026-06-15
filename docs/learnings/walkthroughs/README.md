@@ -29,3 +29,4 @@ Available walkthroughs:
 - `phase-11-5-public-admin-layout-split-walkthrough.md`
 - `phase-11-8-admin-articles-walkthrough.md`
 - `phase-12-public-discovery-walkthrough.md`
+- `phase-12-4-pagination-hardening-walkthrough.md`
