@@ -157,8 +157,8 @@ Direction and rules:
 
 - `topicSlug` remains the canonical topic filter key across public collection
   surfaces
-- Event date filtering should use inclusive date-window semantics through
-  `startDate` and `endDate`
+- Event date filtering should use inclusive day-level date-window semantics
+  through `startDate` and `endDate`
 - when `startDate` is omitted, the collection defaults to the current time
 - when `endDate` is omitted, the collection defaults to three calendar months
   after the resolved `startDate`
@@ -234,6 +234,8 @@ Preferred direction:
     calendar months later
   - `endDate` alone narrows the upper bound while `startDate` defaults to the
     current time
+- public finder inputs should capture dates at day granularity rather than
+  requiring time-of-day selection
 - unknown `topicSlug` values used as filters should return an empty collection,
   not `404`, because the route itself still exists as a collection surface
 - page requests beyond the available result set should return `200 OK` with an

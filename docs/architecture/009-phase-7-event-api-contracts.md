@@ -195,8 +195,10 @@ the underlying filtered ordering rules:
 3. omitted date bounds may resolve through the established upcoming-window
    default, with `startDate` defaulting to now and `endDate` defaulting to
    three calendar months after the resolved start bound
-4. once queried, Event results remain sorted by `startTime` ascending
-5. `id` ascending remains the deterministic tie-breaker
+4. public date inputs may operate at day granularity even though Event records
+   remain timestamped and ordered by `startTime`
+5. once queried, Event results remain sorted by `startTime` ascending
+6. `id` ascending remains the deterministic tie-breaker
 
 Rationale:
 

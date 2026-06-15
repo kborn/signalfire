@@ -18,7 +18,9 @@ const optionalNullableTrimmedString = (max: number) =>
   );
 
 function getDefaultStartDate(): Date {
-  return new Date();
+  const date = new Date();
+  date.setUTCHours(0, 0, 0, 0);
+  return date;
 }
 
 function getDefaultEndDate(start: Date): Date {
@@ -27,7 +29,37 @@ function getDefaultEndDate(start: Date): Date {
   return date;
 }
 
-const optionalDatetime = (fieldLabel: string) =>
+function parseDateOnlyString(value: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+
+  if (!match) {
+    return null;
+  }
+
+  const [, yearText, monthText, dayText] = match;
+  const year = Number(yearText);
+  const month = Number(monthText);
+  const day = Number(dayText);
+  const date = new Date(Date.UTC(year, month - 1, day));
+
+  if (
+    date.getUTCFullYear() !== year ||
+    date.getUTCMonth() !== month - 1 ||
+    date.getUTCDate() !== day
+  ) {
+    return null;
+  }
+
+  return date;
+}
+
+function toExclusiveEndOfDay(date: Date): Date {
+  const exclusiveEnd = new Date(date);
+  exclusiveEnd.setUTCDate(exclusiveEnd.getUTCDate() + 1);
+  return exclusiveEnd;
+}
+
+const optionalDateOnly = (fieldLabel: string) =>
   z
     .preprocess(
       (value) => {
@@ -43,8 +75,8 @@ const optionalDatetime = (fieldLabel: string) =>
       z
         .string()
         .trim()
-        .datetime({ offset: false, local: true, message: `${fieldLabel} must be valid` })
-        .transform((value) => new Date(value)),
+        .refine((value) => parseDateOnlyString(value) !== null, `${fieldLabel} must be valid`)
+        .transform((value) => parseDateOnlyString(value)!),
     )
     .optional();
 
@@ -65,8 +97,8 @@ function addEndTimeAfterStartIssue(
 
 const parsedEventRequestSchema = z.object({
   topicSlug: optionalNullableTrimmedString(120),
-  startDate: optionalDatetime('Start datetime'),
-  endDate: optionalDatetime('End datetime'),
+  startDate: optionalDateOnly('Start date'),
+  endDate: optionalDateOnly('End date'),
   city: optionalNullableTrimmedString(120),
   region: optionalNullableTrimmedString(120),
 });
@@ -74,7 +106,9 @@ const parsedEventRequestSchema = z.object({
 export const eventRequestSchema = parsedEventRequestSchema
   .transform((value) => {
     const startDate = value.startDate ?? getDefaultStartDate();
-    const endDate = value.endDate ?? getDefaultEndDate(startDate);
+    const endDate = value.endDate
+      ? toExclusiveEndOfDay(value.endDate)
+      : getDefaultEndDate(startDate);
 
     return {
       topicSlug: value.topicSlug ?? undefined,

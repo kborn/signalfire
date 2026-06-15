@@ -49,6 +49,7 @@ type EventListPagePropsWrapper = {
 
 function resolveDateWindow(params: EventListPageProps) {
   const startDate = parseDate(params.startDate ?? '') ?? new Date();
+  startDate.setUTCHours(0, 0, 0, 0);
   const endDate =
     parseDate(params.endDate ?? '') ??
     (() => {
@@ -60,14 +61,12 @@ function resolveDateWindow(params: EventListPageProps) {
   return { startDate, endDate };
 }
 
-function toLocalDateTimeInputValue(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
+function toDateInputValue(date: Date): string {
+  const year = date.getUTCFullYear();
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(date.getUTCDate()).padStart(2, '0');
 
-  return `${year}-${month}-${day}T${hours}:${minutes}`;
+  return `${year}-${month}-${day}`;
 }
 
 async function getContents(params: EventListPageProps) {
@@ -113,8 +112,8 @@ export default async function EventListPage({ searchParams }: EventListPageProps
       <p className="page-intro">Browse upcoming events and find ways to participate in person</p>
       <EventFilters
         params={params}
-        initialStartDate={toLocalDateTimeInputValue(startDate)}
-        initialEndDate={toLocalDateTimeInputValue(endDate)}
+        initialStartDate={toDateInputValue(startDate)}
+        initialEndDate={toDateInputValue(endDate)}
       />
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(params)}</div>

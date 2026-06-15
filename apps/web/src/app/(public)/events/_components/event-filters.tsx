@@ -34,16 +34,18 @@ function buildUrl(queryParams: EventListPageProps) {
   return params.toString();
 }
 
-function parseLocalDateValue(value: string): Date | null {
+function parseDateValue(value: string): Date | null {
   if (!value) {
     return null;
   }
 
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) {
     return null;
   }
+
+  const [, yearText, monthText, dayText] = match;
+  const date = new Date(Date.UTC(Number(yearText), Number(monthText) - 1, Number(dayText)));
 
   return date;
 }
@@ -63,11 +65,11 @@ export default function EventFilters({
   const [region, setRegion] = useState(params['region'] ?? '');
   const [startDate, setStartDate] = useState(params['startDate'] ?? initialStartDate);
   const [endDate, setEndDate] = useState(params['endDate'] ?? initialEndDate);
-  const startDateValue = parseLocalDateValue(startDate);
-  const endDateValue = parseLocalDateValue(endDate);
+  const startDateValue = parseDateValue(startDate);
+  const endDateValue = parseDateValue(endDate);
   const dateRangeError =
     startDateValue && endDateValue && endDateValue < startDateValue
-      ? 'End date and time must be after the start date and time'
+      ? 'End date must be on or after the start date'
       : null;
 
   function commitFilters(nextValues?: Partial<EventListPageProps>) {
@@ -80,8 +82,8 @@ export default function EventFilters({
       ...nextValues,
     };
 
-    const nextStartDate = parseLocalDateValue(queryParams.startDate ?? '');
-    const nextEndDate = parseLocalDateValue(queryParams.endDate ?? '');
+    const nextStartDate = parseDateValue(queryParams.startDate ?? '');
+    const nextEndDate = parseDateValue(queryParams.endDate ?? '');
 
     if (nextStartDate && nextEndDate && nextEndDate < nextStartDate) {
       return;
@@ -116,29 +118,29 @@ export default function EventFilters({
             id="event-city"
             className="submissionControl"
             value={city}
-            placeholder="Philadelphia"
+            placeholder="City"
             onChange={(event) => setCity(event.target.value)}
             onBlur={() => commitFilters({ city })}
           />
         </label>
         <label className="submissionLabel eventFilterField" htmlFor="event-start-date">
-          <span>Start date and time</span>
+          <span>Start date</span>
           <input
             id="event-start-date"
             className="submissionControl"
             value={startDate}
-            type="datetime-local"
+            type="date"
             onChange={(event) => setStartDate(event.target.value)}
             onBlur={() => commitFilters({ startDate })}
           />
         </label>
         <label className="submissionLabel eventFilterField" htmlFor="event-end-date">
-          <span>End date and time</span>
+          <span>End date</span>
           <input
             id="event-end-date"
             className="submissionControl"
             value={endDate}
-            type="datetime-local"
+            type="date"
             onChange={(event) => setEndDate(event.target.value)}
             onBlur={() => commitFilters({ endDate })}
           />

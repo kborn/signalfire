@@ -626,7 +626,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   id="event-city"
                   className={'submissionControl'}
                   value={city}
-                  placeholder="Philadelphia"
+                  placeholder="City"
                   onChange={(event) => setCity(event.target.value)}
                   {...getFieldA11y('city')}
                 />
