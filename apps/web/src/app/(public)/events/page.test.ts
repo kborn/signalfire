@@ -79,8 +79,8 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledWith({ region: 'IL' });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
-    expect(markup).toContain('Current date range:');
-    expect(markup).toContain('State is required. City and dates refine the active window.');
+    expect(markup).toContain('event-start-date');
+    expect(markup).toContain('event-end-date');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -121,7 +121,7 @@ describe('EventListPage', () => {
     });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
-    expect(markup).toContain('Current date range:');
+    expect(markup).toContain('event-start-date');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');
   });
@@ -157,6 +157,6 @@ describe('EventListPage', () => {
       region: 'PA',
     });
     expect(markup).toContain('Events');
-    expect(markup).toContain('No upcoming events found related to Consumer Activism');
+    expect(markup).toContain('No upcoming events found for Consumer Activism');
   });
 });

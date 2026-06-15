@@ -3,24 +3,30 @@ import { getEventsList } from '@/lib/api/events';
 import { titleCase } from '@/lib/common/utils';
 import { TopicSelector } from '@/components/topic-selector';
 import { getTopicsList } from '@/lib/api/topics';
-import { formatContentDate, parseDate } from '@/lib/common/time';
+import { parseDate } from '@/lib/common/time';
 export const dynamic = 'force-dynamic';
 import EventFilters from '@/app/(public)/events/_components/event-filters';
 
 function getNoResultsResponse() {
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Events</h1>
-      <p>No upcoming events found</p>
+    <section className="discoveryEmptyState">
+      <p className="section-label">No results</p>
+      <h2>No upcoming events found</h2>
+      <p className="metaText">
+        Try a nearby city, broaden the date window, or browse a different topic within this state.
+      </p>
     </section>
   );
 }
 
 function getNoTopicResultsResponse(topic: string) {
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Events</h1>
-      <p>No upcoming events found related to {topic}</p>
+    <section className="discoveryEmptyState">
+      <p className="section-label">No results</p>
+      <h2>No upcoming events found for {topic}</h2>
+      <p className="metaText">
+        Keep the current location and date range, or switch topics to widen the search.
+      </p>
     </section>
   );
 }
@@ -51,18 +57,29 @@ function resolveDateWindow(params: EventListPageProps) {
       return date;
     })();
 
-  return {
-    startLabel: formatContentDate(startDate.toISOString()) ?? 'today',
-    endLabel: formatContentDate(endDate.toISOString()) ?? 'three months from now',
-  };
+  return { startDate, endDate };
+}
+
+function toLocalDateTimeInputValue(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
 async function getContents(params: EventListPageProps) {
   if (!canRequest(params)) {
     return (
-      <p className="metaText">
-        Select a state to start browsing events. Topic, city, and dates can narrow the results.
-      </p>
+      <section className="discoveryEmptyState">
+        <p className="section-label">Start here</p>
+        <h2>Find upcoming events near you</h2>
+        <p className="metaText">
+          Select a state to start browsing events. Topic, city, and dates can narrow the results.
+        </p>
+      </section>
     );
   }
 
@@ -88,13 +105,17 @@ async function getContents(params: EventListPageProps) {
 export default async function EventListPage({ searchParams }: EventListPagePropsWrapper) {
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
-  const { startLabel, endLabel } = resolveDateWindow(params);
+  const { startDate, endDate } = resolveDateWindow(params);
 
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
       <p className="page-intro">Browse upcoming events and find ways to participate in person</p>
-      <EventFilters params={params} activeDateRangeLabel={`${startLabel} through ${endLabel}`} />
+      <EventFilters
+        params={params}
+        initialStartDate={toLocalDateTimeInputValue(startDate)}
+        initialEndDate={toLocalDateTimeInputValue(endDate)}
+      />
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(params)}</div>
     </section>

@@ -14,7 +14,8 @@ type EventListPageProps = {
 
 type EventListPagePropsWrapper = {
   params: EventListPageProps;
-  activeDateRangeLabel: string;
+  initialStartDate: string;
+  initialEndDate: string;
 };
 
 function buildUrl(queryParams: EventListPageProps) {
@@ -52,12 +53,16 @@ function route(router: AppRouterInstance, queryParams: EventListPageProps) {
   router.replace(query ? `/events?${query}` : '/events');
 }
 
-export default function EventFilters({ params, activeDateRangeLabel }: EventListPagePropsWrapper) {
+export default function EventFilters({
+  params,
+  initialStartDate,
+  initialEndDate,
+}: EventListPagePropsWrapper) {
   const router = useRouter();
   const [city, setCity] = useState(params['city'] ?? '');
   const [region, setRegion] = useState(params['region'] ?? '');
-  const [startDate, setStartDate] = useState(params['startDate'] ?? '');
-  const [endDate, setEndDate] = useState(params['endDate'] ?? '');
+  const [startDate, setStartDate] = useState(params['startDate'] ?? initialStartDate);
+  const [endDate, setEndDate] = useState(params['endDate'] ?? initialEndDate);
   const startDateValue = parseLocalDateValue(startDate);
   const endDateValue = parseLocalDateValue(endDate);
   const dateRangeError =
@@ -87,11 +92,6 @@ export default function EventFilters({ params, activeDateRangeLabel }: EventList
 
   return (
     <section className="eventFilterPanel" aria-label="Event filters">
-      <div className="eventFilterHeader">
-        <p className="eventFilterKicker">Event finder</p>
-        <p className="metaText">State is required. City and dates refine the active window.</p>
-        <p className="eventFilterWindow">Current date range: {activeDateRangeLabel}</p>
-      </div>
       <div className="eventFilterGrid">
         <label className="submissionLabel eventFilterField" htmlFor="event-region">
           <span>State</span>
