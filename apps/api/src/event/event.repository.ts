@@ -53,7 +53,12 @@ export class EventRepository {
           gte: reqBody['startDate'],
           lt: reqBody['endDate'],
         },
-        city: reqBody['city'],
+        city: reqBody['city']
+          ? {
+              equals: reqBody['city'],
+              mode: 'insensitive',
+            }
+          : undefined,
         region: reqBody['region'],
         topicEvents: reqBody['topicSlug']
           ? {

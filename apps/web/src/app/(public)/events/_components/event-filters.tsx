@@ -99,8 +99,11 @@ export default function EventFilters({
             id="event-region"
             className="submissionControl"
             value={region}
-            onChange={(event) => setRegion(event.target.value)}
-            onBlur={() => commitFilters({ region })}
+            onChange={(event) => {
+              const nextRegion = event.target.value;
+              setRegion(nextRegion);
+              commitFilters({ region: nextRegion });
+            }}
           >
             <option value="">Select a state</option>
             {US_STATE_OPTIONS.map(([value, label]) => (
