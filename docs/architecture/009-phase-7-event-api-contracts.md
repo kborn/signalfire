@@ -193,7 +193,7 @@ the underlying filtered ordering rules:
    rendering a default broad result set before the user supplies meaningful
    filter state
 3. omitted date bounds may resolve through the established upcoming-window
-   default, with `startDate` defaulting to now and `endDate` defaulting to
+   default, with `startDate` defaulting to the current day and `endDate` defaulting to
    three calendar months after the resolved start bound
 4. public date inputs may operate at day granularity even though Event records
    remain timestamped and ordered by `startTime`

@@ -159,7 +159,7 @@ Direction and rules:
   surfaces
 - Event date filtering should use inclusive day-level date-window semantics
   through `startDate` and `endDate`
-- when `startDate` is omitted, the collection defaults to the current time
+- when `startDate` is omitted, the collection defaults to the current day
 - when `endDate` is omitted, the collection defaults to three calendar months
   after the resolved `startDate`
 - Event location filtering should use current contract-aligned broad fields,
@@ -233,7 +233,7 @@ Preferred direction:
   - `startDate` alone narrows the lower bound and defaults `endDate` to three
     calendar months later
   - `endDate` alone narrows the upper bound while `startDate` defaults to the
-    current time
+    current day
 - public finder inputs should capture dates at day granularity rather than
   requiring time-of-day selection
 - unknown `topicSlug` values used as filters should return an empty collection,
