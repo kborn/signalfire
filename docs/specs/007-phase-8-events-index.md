@@ -8,6 +8,10 @@ Enable users to:
 - view basic Event info (what, when, where)
 - optionally view Events filtered by topic using URL query state
 
+This document records the original Phase 8 baseline. Phase 12 later refines the
+public `/events` experience into a filter-led finder flow; when these documents
+conflict, the later Phase 12 spec and decisions control current behavior.
+
 ---
 
 ## Route

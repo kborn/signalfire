@@ -68,7 +68,7 @@ export default function HomePage() {
             Take Action
           </Link>
           <Link href="/events" className="secondaryCTA">
-            Find Events
+            Search Events
           </Link>
         </div>
       </section>

@@ -1512,15 +1512,25 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-#### ▸ Phase 12.3 - Event Filter Expansion ⏳
+#### ▸ Phase 12.3 - Event Filter Expansion ✅
 
 ###### Phase Tasks:
 
-- [ ] Expose the scoped Release 1 Event filters in the public Events UI using
-      the existing canonical filter dimensions: topic, date/date window, and
+- [x] Expose the scoped Release 1 Event filters in the public Events UI using
+      the approved Release 1 Event filter dimensions: topic, date/date window,
+      and
       location fields supported by the current Event contract
-- [ ] Preserve the existing Event ordering and published-only visibility rules
-      while adding the approved filters
+- [x] Shift the public Events surface to a filter-led discovery flow that
+      requests results only after a meaningful user-supplied filter set is
+      present in URL state
+- [x] Preserve published-only visibility and deterministic filtered ordering
+      while adding the approved Event filters
+
+###### Notes:
+
+- Public Event finder interaction and visual polish may still be refined, but
+  the Release 1 filter contract, URL-state flow, and ordering/visibility rules
+  are now implemented for Phase 12.3.
 
 ---
 
@@ -1539,6 +1549,9 @@ Improve browsing and filtering across topics, actions, and events.
 
 - Phase 12 should improve discovery within Release 1 boundaries rather than
   expand into Milestone 2 systems.
+- Public Event discovery in Phase 12 is filter-led rather than default-list-led;
+  `/events` should render a pre-results state until the URL contains a
+  meaningful filter set.
 - Full-text search may be revisited later, but it is not required to complete
   the current phase.
 
@@ -1639,6 +1652,9 @@ stabilization and before the final release-prep and public-launch phases.
       nav terminology, and any abbreviated wordmark treatment
 - [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and
       does not over-claim community behavior or hide key formatting guidance
+- [ ] Refine the public Events finder, empty states, and Event list/detail
+      presentation so the filter surface, result cards, and detail pages read
+      as one coherent public UI system rather than visually distinct subflows
 - [ ] Verify the final public polish pass does not introduce admin UI regressions
       or conflict with the established Phase 11.5 visual identity
 

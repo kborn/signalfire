@@ -12,6 +12,7 @@ import {
   toEventSummary,
   toTopicSummary,
 } from '../common/public-content.mapper';
+import type { ValidatedEventListQuery } from './event.type';
 
 @Injectable()
 export class EventService {
@@ -22,16 +23,8 @@ export class EventService {
     private articleRepository: ArticleRepository,
   ) {}
 
-  async getPublishedEventList(params: {
-    startDate: Date;
-    endDate: Date;
-    topicSlug?: string;
-  }): Promise<EventListResponse> {
-    const { startDate } = params;
-    const { endDate } = params;
-    const { topicSlug } = params;
-
-    const events = await this.eventRepository.findPublished(startDate, endDate, topicSlug);
+  async getPublishedEventList(reqBody: ValidatedEventListQuery): Promise<EventListResponse> {
+    const events = await this.eventRepository.findPublished(reqBody);
     return {
       items: events.map(toEventSummary),
     };

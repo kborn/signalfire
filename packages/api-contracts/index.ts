@@ -32,7 +32,7 @@ export type {
 } from './admin-article.type.js';
 
 export type { ActionListResponse, ActionDetailResponse } from './action.types.js';
-export type { EventDetailResponse, EventListResponse } from './event.types.js';
+export type { EventListRequest, EventDetailResponse, EventListResponse } from './event.types.js';
 export type {
   EventSubmissionRequest,
   ArticleSubmissionRequest,

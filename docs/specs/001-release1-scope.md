@@ -62,6 +62,9 @@ Events may be filtered by:
 - date
 - location
 
+Public Event discovery may use a filter-led finder flow rather than requiring a
+default unfiltered Event result set on first page load.
+
 ---
 
 ## Event Submission

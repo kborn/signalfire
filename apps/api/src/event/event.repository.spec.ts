@@ -51,7 +51,13 @@ describe('EventRepository', () => {
     const startOfDay = new Date('2025-12-17T00:00:00.000Z');
     const startOfNextDay = new Date('2025-12-18T00:00:00.000Z');
     const topicSlug = 'democracy';
-    const ret = await repository.findPublished(startOfDay, startOfNextDay, topicSlug);
+    const city = 'Philadelphia';
+    const ret = await repository.findPublished({
+      topicSlug,
+      startDate: startOfDay,
+      endDate: startOfNextDay,
+      city,
+    });
 
     expect(ret).toEqual([event]);
     expect(prismaMock.event.findMany).toHaveBeenCalledWith({
@@ -60,6 +66,10 @@ describe('EventRepository', () => {
         startTime: {
           gte: startOfDay,
           lt: startOfNextDay,
+        },
+        city: {
+          equals: city,
+          mode: 'insensitive',
         },
         topicEvents: {
           some: {

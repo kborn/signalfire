@@ -31,7 +31,7 @@ export default async function ArticleListPage({ searchParams }: ArticleListPageP
       <p className="page-intro">
         Read reporting, explainers, and field guides about the issues that matter
       </p>
-      <TopicSelector topics={topics} basePath="/articles" currentTopicSlug={topicSlug} />
+      <TopicSelector topics={topics} basePath="/articles" params={await searchParams} />
       <section className="collectionList">
         {resp.items.map((article) => (
           <ArticleSummary key={article.id} article={article} />

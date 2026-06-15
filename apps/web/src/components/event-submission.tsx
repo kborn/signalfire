@@ -16,65 +16,7 @@ import {
   validateRequiredString,
 } from '@/lib/submission-form-validation';
 import { formatEventTypeLabel } from '@/lib/common/utils';
-
-const US_STATE_OPTIONS = [
-  ['AL', 'Alabama'],
-  ['AK', 'Alaska'],
-  ['AZ', 'Arizona'],
-  ['AR', 'Arkansas'],
-  ['CA', 'California'],
-  ['CO', 'Colorado'],
-  ['CT', 'Connecticut'],
-  ['DE', 'Delaware'],
-  ['DC', 'District of Columbia'],
-  ['FL', 'Florida'],
-  ['GA', 'Georgia'],
-  ['HI', 'Hawaii'],
-  ['ID', 'Idaho'],
-  ['IL', 'Illinois'],
-  ['IN', 'Indiana'],
-  ['IA', 'Iowa'],
-  ['KS', 'Kansas'],
-  ['KY', 'Kentucky'],
-  ['LA', 'Louisiana'],
-  ['ME', 'Maine'],
-  ['MD', 'Maryland'],
-  ['MA', 'Massachusetts'],
-  ['MI', 'Michigan'],
-  ['MN', 'Minnesota'],
-  ['MS', 'Mississippi'],
-  ['MO', 'Missouri'],
-  ['MT', 'Montana'],
-  ['NE', 'Nebraska'],
-  ['NV', 'Nevada'],
-  ['NH', 'New Hampshire'],
-  ['NJ', 'New Jersey'],
-  ['NM', 'New Mexico'],
-  ['NY', 'New York'],
-  ['NC', 'North Carolina'],
-  ['ND', 'North Dakota'],
-  ['OH', 'Ohio'],
-  ['OK', 'Oklahoma'],
-  ['OR', 'Oregon'],
-  ['PA', 'Pennsylvania'],
-  ['RI', 'Rhode Island'],
-  ['SC', 'South Carolina'],
-  ['SD', 'South Dakota'],
-  ['TN', 'Tennessee'],
-  ['TX', 'Texas'],
-  ['UT', 'Utah'],
-  ['VT', 'Vermont'],
-  ['VA', 'Virginia'],
-  ['AS', 'American Samoa'],
-  ['GU', 'Guam'],
-  ['MP', 'Northern Mariana Islands'],
-  ['PR', 'Puerto Rico'],
-  ['VI', 'U.S. Virgin Islands'],
-  ['WA', 'Washington'],
-  ['WV', 'West Virginia'],
-  ['WI', 'Wisconsin'],
-  ['WY', 'Wyoming'],
-] as const;
+import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 
 type EventSubmissionFormProps = {
   topics: TopicSummary[];
@@ -684,7 +626,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   id="event-city"
                   className={'submissionControl'}
                   value={city}
-                  placeholder="Philadelphia"
+                  placeholder="City"
                   onChange={(event) => setCity(event.target.value)}
                   {...getFieldA11y('city')}
                 />

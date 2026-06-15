@@ -31,7 +31,7 @@ describe('HomePage', () => {
     expect(markup).toContain('href="/actions"');
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/events"');
-    expect(markup).toContain('Find Events');
+    expect(markup).toContain('Search Events');
     expect(markup).toContain('Built to run on community contributions.');
     expect(markup).toContain('Submit an Article or Event');
   });

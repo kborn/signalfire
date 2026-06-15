@@ -71,6 +71,9 @@ Rules:
 - date filtering narrows the public collection surface but does not change the
   underlying Event ordering model
 - Event UI controls should reflect these scoped filters only
+- the public `/events` page is filter-led in Phase 12 and should not render a
+  default broad Event result set before the user supplies a meaningful filter
+  set
 
 ### Pagination
 
@@ -154,10 +157,17 @@ Direction and rules:
 
 - `topicSlug` remains the canonical topic filter key across public collection
   surfaces
-- Event date filtering should use inclusive date-window semantics through
-  `startDate` and `endDate`
+- Event date filtering should use inclusive day-level date-window semantics
+  through `startDate` and `endDate`
+- when `startDate` is omitted, the collection defaults to the current day
+- when `endDate` is omitted, the collection defaults to three calendar months
+  after the resolved `startDate`
 - Event location filtering should use current contract-aligned broad fields,
   not raw address search and not geographic proximity
+- for the filter-led public `/events` page, results should only be requested
+  after a meaningful filter set is present; the Release 1 minimum rule is a
+  `region` value, with `city`, `startDate`, and `endDate` acting as optional
+  refinements
 - `page` is a 1-based positive integer
 - `pageSize` is an optional positive integer chosen from a small, server-owned
   allowed set
@@ -218,6 +228,14 @@ Preferred direction:
 
 - invalid query-param types or invalid numeric pagination inputs return
   `400 Bad Request`
+- supplied Event date bounds should resolve against the same default upcoming
+  window posture used by the public collection route:
+  - `startDate` alone narrows the lower bound and defaults `endDate` to three
+    calendar months later
+  - `endDate` alone narrows the upper bound while `startDate` defaults to the
+    current day
+- public finder inputs should capture dates at day granularity rather than
+  requiring time-of-day selection
 - unknown `topicSlug` values used as filters should return an empty collection,
   not `404`, because the route itself still exists as a collection surface
 - page requests beyond the available result set should return `200 OK` with an
@@ -231,6 +249,8 @@ Public discovery UI work in this phase should:
 
 - expose only the approved filter controls for each collection
 - persist filter and page state in the URL
+- allow the Events page to withhold API requests until the URL contains the
+  minimum filter state chosen for the public Event finder flow
 - render clear empty states when no published results match the current query
 - avoid introducing sort builders, advanced search forms, or map interfaces
 
@@ -256,4 +276,6 @@ This phase refines, but does not override, prior canonical constraints:
 - `docs/architecture/008-phase-5-topic-content-api-contracts.md` remains the
   base public Topic, Article, and Action API contract
 - `docs/architecture/009-phase-7-event-api-contracts.md` remains the base
-  public Event contract and ordering model
+  public Event contract and ordering model, except where Phase 12 explicitly
+  refines the public Event collection from default browse behavior into a
+  filter-led finder flow
