@@ -79,7 +79,7 @@ export default async function AboutPage() {
                 Find Actions
               </Link>
               <Link href="/events" className="secondaryCTA">
-                Find Events
+                Search Events
               </Link>
             </div>
           </section>

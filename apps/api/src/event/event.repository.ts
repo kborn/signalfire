@@ -5,6 +5,7 @@ import {
   CreateAdminEventRepositoryInput,
   UpdateAdminEventRepositoryInput,
 } from '../admin-api/event/admin-event.repository.type';
+import type { ValidatedEventListQuery } from './event.type';
 
 const eventWithTopicsInclude = {
   topicEvents: {
@@ -44,19 +45,21 @@ export class EventRepository {
     });
   }
 
-  findPublished(startDate: Date, endDate: Date, topicSlug?: string): Promise<Event[]> {
+  findPublished(reqBody: ValidatedEventListQuery): Promise<Event[]> {
     return this.prisma.event.findMany({
       where: {
         status: EntityStatus.PUBLISHED,
         startTime: {
-          gte: startDate,
-          lt: endDate,
+          gte: reqBody['startTime'],
+          lt: reqBody['endTime'],
         },
-        topicEvents: topicSlug
+        city: reqBody['city'],
+        region: reqBody['state'],
+        topicEvents: reqBody['topicSlug']
           ? {
               some: {
                 topic: {
-                  slug: topicSlug,
+                  slug: reqBody['topicSlug'],
                 },
               },
             }

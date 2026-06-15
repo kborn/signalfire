@@ -36,3 +36,11 @@ export type EventDetailResponse = {
   articles: ArticleSummary[];
   actions: ActionSummary[];
 };
+
+export type EventListRequest = {
+  topicSlug?: string;
+  startTime?: string;
+  endTime?: string;
+  city?: string;
+  state?: string;
+};

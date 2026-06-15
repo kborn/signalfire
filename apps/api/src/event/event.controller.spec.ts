@@ -29,7 +29,7 @@ describe('EventController', () => {
       const eventListResponse = buildEventListResponse();
       serviceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
 
-      const ret = await eventController.findEvents(undefined);
+      const ret = await eventController.findEvents({});
 
       expect(ret).toEqual(eventListResponse);
       expect(serviceMock.getPublishedEventList).toHaveBeenCalledWith({

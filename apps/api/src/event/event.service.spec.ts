@@ -65,12 +65,12 @@ describe('EventService', () => {
     const event = buildEventEntity();
     repoMock.findPublished.mockResolvedValue([event]);
 
-    const startDate = new Date('2025-12-17T00:00:00.000Z');
-    const endDate = new Date('2025-12-18T00:00:00.000Z');
+    const startTime = new Date('2025-12-17T00:00:00.000Z');
+    const endTime = new Date('2025-12-18T00:00:00.000Z');
 
     const ret = await service.getPublishedEventList({
-      startDate,
-      endDate,
+      startTime,
+      endTime,
       topicSlug: 'democracy',
     });
 

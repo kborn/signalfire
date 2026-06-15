@@ -188,8 +188,8 @@ describe('Moderation publication integration', () => {
     expect(event).not.toHaveProperty('reviewNotes');
 
     const events = await eventService.getPublishedEventList({
-      startDate: new Date('2026-07-04T00:00:00.000Z'),
-      endDate: new Date('2026-07-05T00:00:00.000Z'),
+      startTime: new Date('2026-07-04T00:00:00.000Z'),
+      endTime: new Date('2026-07-05T00:00:00.000Z'),
       topicSlug: 'democracy',
     });
     expect(events.items).toEqual(

@@ -31,7 +31,7 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
     <section className="page-section">
       <h1 className="pageTitle">Actions</h1>
       <p className="page-intro">Find practical ways to take meaningful action</p>
-      <TopicSelector topics={topics} basePath="/actions" currentTopicSlug={topicSlug} />
+      <TopicSelector topics={topics} basePath="/actions" params={await searchParams} />
       <section className="collectionList">
         {actions.items.map((action) => (
           <ActionSummary key={action.id} action={action} />

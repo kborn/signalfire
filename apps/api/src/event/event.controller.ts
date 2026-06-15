@@ -1,27 +1,18 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { EventService } from './event.service';
 import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
+import type { ValidatedEventListQuery } from './event.type';
+import { EventValidationPipe } from './event-validation.pipe';
 
 @Controller('events')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
-  private getDateRangeEnd(startDate: Date): Date {
-    const endDate = new Date(startDate);
-    endDate.setUTCMonth(endDate.getUTCMonth() + 3);
-    return endDate;
-  }
-
   @Get()
-  async findEvents(@Query('topicSlug') topicSlug?: string): Promise<EventListResponse> {
-    const startDate = new Date();
-    startDate.setUTCHours(0, 0, 0, 0);
-    const endDate = this.getDateRangeEnd(startDate);
-    return this.eventService.getPublishedEventList({
-      startDate,
-      endDate,
-      topicSlug,
-    });
+  async findEvents(
+    @Query(new EventValidationPipe()) reqBody: ValidatedEventListQuery,
+  ): Promise<EventListResponse> {
+    return this.eventService.getPublishedEventList(reqBody);
   }
 
   @Get('/:id')
