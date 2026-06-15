@@ -1108,8 +1108,7 @@ h3 {
 }
 
 .publicShell input[type='date']::-webkit-calendar-picker-indicator {
-  opacity: 1;
-  filter: invert(34%) sepia(26%) saturate(1048%) hue-rotate(336deg) brightness(97%) contrast(91%);
+  opacity: 0;
 }
 
 .publicShell .submissionForm > .submissionSection:first-of-type .submissionTextarea {
@@ -2544,6 +2543,35 @@ h3 {
 
 .eventFilterField {
   min-width: 0;
+}
+
+.eventDateControl {
+  position: relative;
+  display: block;
+}
+
+.eventDateControl .submissionControl {
+  padding-right: 3rem;
+}
+
+.eventDateIcon {
+  position: absolute;
+  right: 0.95rem;
+  top: 50%;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-brand-accent);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.eventDateIcon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
