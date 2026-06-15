@@ -40,7 +40,11 @@ describe('ArticleController HTTP', () => {
     articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
 
     await request(httpServer).get('/articles').expect(200).expect(articleListResponse);
-    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith(undefined);
+    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
   });
 
   it('GET /articles passes topicSlug through to the article discovery list', async () => {
@@ -53,7 +57,11 @@ describe('ArticleController HTTP', () => {
       .expect(200)
       .expect(articleListResponse);
 
-    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith('democracy');
+    expect(articleServiceMock.getArticleList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('GET /articles/:slug returns the article detail payload', async () => {

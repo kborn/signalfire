@@ -41,6 +41,10 @@ describe('EventListPage', () => {
   it('renders the events list and detail links without a topic filter', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 2,
+      totalPages: 1,
       items: [
         {
           id: 1,
@@ -92,6 +96,10 @@ describe('EventListPage', () => {
   it('renders the events list with a topic filter banner when events are found', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 1,
+      totalPages: 1,
       items: [
         {
           id: 10,
@@ -129,6 +137,10 @@ describe('EventListPage', () => {
   it('renders the pre-results state when no region filter is present', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
 
@@ -142,6 +154,10 @@ describe('EventListPage', () => {
   it('renders the empty state when a filtered query returns no events', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
 

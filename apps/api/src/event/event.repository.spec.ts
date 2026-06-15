@@ -57,6 +57,8 @@ describe('EventRepository', () => {
       startDate: startOfDay,
       endDate: startOfNextDay,
       city,
+      page: 1,
+      pageSize: 10,
     });
 
     expect(ret).toEqual([event]);

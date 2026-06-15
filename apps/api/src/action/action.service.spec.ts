@@ -54,7 +54,7 @@ describe('ActionService', () => {
     });
     repoMock.findPublished.mockResolvedValue([action1, action2]);
 
-    const ret = await service.getActionList();
+    const ret = await service.getActionList({ page: 1, pageSize: 10 });
 
     expect(ret).toEqual(
       buildActionListResponse({
@@ -85,7 +85,7 @@ describe('ActionService', () => {
     const action = buildActionEntity();
     repoMock.findPublished.mockResolvedValue([action]);
 
-    const ret = await service.getActionList('democracy');
+    const ret = await service.getActionList({ page: 1, pageSize: 10, topicSlug: 'democracy' });
 
     expect(ret).toEqual(
       buildActionListResponse({

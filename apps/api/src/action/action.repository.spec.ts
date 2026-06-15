@@ -42,9 +42,12 @@ describe('ActionRepository', () => {
     });
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
-    const ret = await repository.findPublished();
-
-    expect(ret).toEqual([action1, action2]);
+    const ret = await repository.findPublished({ page: 1, pageSize: 10, topicSlug: undefined });
+    expect(ret.page).toBe(1);
+    expect(ret.pageSize).toBe(10);
+    expect(ret.totalItems).toBe(2);
+    expect(ret.totalPages).toBe(1);
+    expect(ret.items).toHaveLength(2);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
@@ -58,9 +61,16 @@ describe('ActionRepository', () => {
     const action = buildActionEntity();
     prismaMock.action.findMany.mockResolvedValue([action]);
 
-    const ret = await repository.findPublished('democracy');
-
-    expect(ret).toEqual([action]);
+    const ret = await repository.findPublished({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
+    expect(ret.page).toBe(1);
+    expect(ret.pageSize).toBe(10);
+    expect(ret.totalItems).toBe(1);
+    expect(ret.totalPages).toBe(1);
+    expect(ret.items).toHaveLength(1);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,

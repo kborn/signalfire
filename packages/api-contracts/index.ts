@@ -4,11 +4,17 @@ export type {
   ArticleSummary,
   EventSummary,
   EventType,
+  PaginatedListResponse,
+  PaginationParams,
   TopicSummary,
 } from './common.types.js';
 export { EVENT_TYPES } from './event-type.constants.js';
 export type { TopicDetailResponse, TopicListResponse } from './topic.types.js';
-export type { ArticleDetailResponse, ArticleListResponse } from './article.types.js';
+export type {
+  ArticleDetailResponse,
+  ArticleListRequest,
+  ArticleListResponse,
+} from './article.types.js';
 export type {
   AdminActionListFilters,
   AdminActionDetailResponse,
@@ -31,7 +37,11 @@ export type {
   AdminArticleListFilters,
 } from './admin-article.type.js';
 
-export type { ActionListResponse, ActionDetailResponse } from './action.types.js';
+export type {
+  ActionListRequest,
+  ActionListResponse,
+  ActionDetailResponse,
+} from './action.types.js';
 export type { EventListRequest, EventDetailResponse, EventListResponse } from './event.types.js';
 export type {
   EventSubmissionRequest,

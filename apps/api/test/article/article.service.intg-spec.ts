@@ -22,7 +22,7 @@ describe('Article Service Integration Test', () => {
     const createdArticle1 = await createArticle();
     const createdArticle2 = await createArticle();
     const createdDraftArticle = await createArticle({ status: EntityStatus.DRAFT });
-    const articles = await service.getArticleList();
+    const articles = await service.getArticleList({ page: 1, pageSize: 10 });
 
     expect(articles.items.length).toBeGreaterThan(0);
     expect(articles.items).toEqual(
@@ -45,7 +45,7 @@ describe('Article Service Integration Test', () => {
       publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
-    const articles = await service.getArticleList();
+    const articles = await service.getArticleList({ page: 1, pageSize: 10 });
     const olderIndex = articles.items.findIndex((article) => article.slug === olderArticle.slug);
     const newerIndex = articles.items.findIndex((article) => article.slug === newerArticle.slug);
 
@@ -73,7 +73,11 @@ describe('Article Service Integration Test', () => {
     await linkTopicArticle(topic.id, createdArticle2.id);
     await linkTopicArticle(topic.id, draftLinkedArticle.id);
 
-    const articles = await articleService.getArticleList(topic.slug);
+    const articles = await articleService.getArticleList({
+      topicSlug: topic.slug,
+      page: 1,
+      pageSize: 10,
+    });
 
     expect(articles.items).toEqual(
       expect.arrayContaining([

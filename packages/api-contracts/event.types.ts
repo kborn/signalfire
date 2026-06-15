@@ -3,12 +3,12 @@ import {
   ArticleSummary,
   EventSummary,
   EventType,
+  PaginatedListResponse,
+  PaginationParams,
   TopicSummary,
 } from './common.types.js';
 
-export type EventListResponse = {
-  items: EventSummary[];
-};
+export type EventListResponse = PaginatedListResponse<EventSummary>;
 
 export type EventDetailResponse = {
   id: number;
@@ -37,7 +37,7 @@ export type EventDetailResponse = {
   actions: ActionSummary[];
 };
 
-export type EventListRequest = {
+export type EventListRequest = PaginationParams & {
   topicSlug?: string;
   startDate?: string;
   endDate?: string;

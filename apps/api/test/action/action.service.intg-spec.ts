@@ -17,7 +17,7 @@ describe('Action Service Integration test', () => {
     const createdAction1 = await createAction();
     const createdAction2 = await createAction();
     const createdDraftAction = await createAction({ status: EntityStatus.DRAFT });
-    const actions = await actionService.getActionList();
+    const actions = await actionService.getActionList({ page: 1, pageSize: 10 });
 
     expect(actions.items).toEqual(
       expect.arrayContaining([
@@ -39,7 +39,7 @@ describe('Action Service Integration test', () => {
       publishedAt: new Date('2026-01-02T00:00:00.000Z'),
     });
 
-    const actions = await actionService.getActionList();
+    const actions = await actionService.getActionList({ page: 1, pageSize: 10 });
     const olderIndex = actions.items.findIndex((action) => action.slug === olderAction.slug);
     const newerIndex = actions.items.findIndex((action) => action.slug === newerAction.slug);
 
@@ -67,7 +67,11 @@ describe('Action Service Integration test', () => {
     await linkTopicAction(topic.id, createdAction2.id);
     await linkTopicAction(topic.id, draftLinkedAction.id);
 
-    const actions = await actionService.getActionList(topic.slug);
+    const actions = await actionService.getActionList({
+      topicSlug: topic.slug,
+      page: 1,
+      pageSize: 10,
+    });
 
     expect(actions.items).toEqual(
       expect.arrayContaining([

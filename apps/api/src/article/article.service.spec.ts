@@ -53,7 +53,7 @@ describe('ArticleService', () => {
     });
     repoMock.findPublished.mockResolvedValue([article1, article2]);
 
-    const ret = await service.getArticleList();
+    const ret = await service.getArticleList({ page: 1, pageSize: 10 });
 
     expect(ret).toEqual(
       buildArticleListResponse({
@@ -82,7 +82,7 @@ describe('ArticleService', () => {
     const article = buildArticleEntity();
     repoMock.findPublished.mockResolvedValue([article]);
 
-    const ret = await service.getArticleList('democracy');
+    const ret = await service.getArticleList({ page: 1, pageSize: 10, topicSlug: 'democracy' });
 
     expect(ret).toEqual(
       buildArticleListResponse({

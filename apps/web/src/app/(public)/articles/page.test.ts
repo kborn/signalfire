@@ -21,6 +21,10 @@ describe('ArticleListPage', () => {
 
   it('renders the articles list and article detail links', async () => {
     vi.mocked(getArticlesList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 2,
+      totalPages: 1,
       items: [
         {
           id: 1,
@@ -75,6 +79,10 @@ describe('ArticleListPage', () => {
 
   it('renders the empty state when there are no articles', async () => {
     vi.mocked(getArticlesList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
     vi.mocked(getTopicsList).mockResolvedValue({

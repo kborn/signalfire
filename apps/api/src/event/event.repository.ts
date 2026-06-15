@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EntityStatus, Event, Prisma } from '@prisma/client';
+import { EventListResponse } from '@signal-fire/api-contracts';
 import {
   CreateAdminEventRepositoryInput,
   UpdateAdminEventRepositoryInput,
 } from '../admin-api/event/admin-event.repository.type';
 import type { ValidatedEventListQuery } from './event.type';
+import { toEventSummary } from '../common/public-content.mapper';
 
 const eventWithTopicsInclude = {
   topicEvents: {
@@ -45,8 +47,8 @@ export class EventRepository {
     });
   }
 
-  findPublished(reqBody: ValidatedEventListQuery): Promise<Event[]> {
-    return this.prisma.event.findMany({
+  async findPublished(reqBody: ValidatedEventListQuery): Promise<EventListResponse> {
+    const items = await this.prisma.event.findMany({
       where: {
         status: EntityStatus.PUBLISHED,
         startTime: {
@@ -72,6 +74,15 @@ export class EventRepository {
       },
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
     });
+
+    // TODO: move total-count and page slicing into the query layer for real pagination.
+    return {
+      items: items.map(toEventSummary),
+      page: reqBody.page,
+      pageSize: reqBody.pageSize,
+      totalItems: items.length,
+      totalPages: items.length === 0 ? 0 : Math.ceil(items.length / reqBody.pageSize),
+    };
   }
 
   findByArticleId(articleId: number): Promise<Event[]> {

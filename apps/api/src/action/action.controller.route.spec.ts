@@ -38,7 +38,11 @@ describe('ActionController HTTP', () => {
     actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
 
     await request(httpServer).get('/actions').expect(200).expect(actionListResponse);
-    expect(actionServiceMock.getActionList).toHaveBeenCalledWith(undefined);
+    expect(actionServiceMock.getActionList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
   });
 
   it('GET /actions passes topicSlug through to the action discovery list', async () => {
@@ -51,7 +55,11 @@ describe('ActionController HTTP', () => {
       .expect(200)
       .expect(actionListResponse);
 
-    expect(actionServiceMock.getActionList).toHaveBeenCalledWith('democracy');
+    expect(actionServiceMock.getActionList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('GET /actions/:slug returns the action detail payload', async () => {

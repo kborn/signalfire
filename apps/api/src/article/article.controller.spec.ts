@@ -25,18 +25,34 @@ describe('ArticleController', () => {
   it('findArticles', async () => {
     const articleListResponse = buildArticleListResponse();
     serviceMock.getArticleList.mockResolvedValue(articleListResponse);
-    const ret = await articleController.findArticles();
+    const ret = await articleController.findArticles({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
     expect(ret).toEqual(articleListResponse);
-    expect(serviceMock.getArticleList).toHaveBeenCalledWith(undefined);
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
   });
 
   it('findArticles with topicSlug', async () => {
     const articleListResponse = buildArticleListResponse();
     serviceMock.getArticleList.mockResolvedValue(articleListResponse);
 
-    const ret = await articleController.findArticles('democracy');
+    const ret = await articleController.findArticles({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
     expect(ret).toEqual(articleListResponse);
-    expect(serviceMock.getArticleList).toHaveBeenCalledWith('democracy');
+    expect(serviceMock.getArticleList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('findArticle', async () => {

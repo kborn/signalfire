@@ -50,6 +50,8 @@ describe('Event Service Integration Test', () => {
     const response = await eventService.getPublishedEventList({
       startDate: new Date('2025-03-15T00:00:00.000Z'),
       endDate: new Date('2025-03-16T00:00:00.000Z'),
+      page: 1,
+      pageSize: 10,
     });
 
     expect(response.items.map((item) => item.id)).toEqual([earlierEvent.id, laterEvent.id]);
@@ -97,6 +99,8 @@ describe('Event Service Integration Test', () => {
       startDate: new Date('2025-03-15T00:00:00.000Z'),
       endDate: new Date('2025-03-16T00:00:00.000Z'),
       topicSlug: 'democracy',
+      page: 1,
+      pageSize: 10,
     });
 
     expect(response.items.map((item) => item.id)).toEqual([matchingEvent.id]);

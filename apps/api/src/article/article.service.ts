@@ -7,9 +7,9 @@ import { ActionRepository } from '../action/action.repository';
 import {
   requirePublishedAt,
   toActionSummary,
-  toArticleSummary,
   toTopicSummary,
 } from '../common/public-content.mapper';
+import type { ValidatedArticleListQuery } from './article.type';
 
 @Injectable()
 export class ArticleService {
@@ -19,11 +19,8 @@ export class ArticleService {
     private actionRepository: ActionRepository,
   ) {}
 
-  async getArticleList(topicSlug?: string): Promise<ArticleListResponse> {
-    const articles = await this.repository.findPublished(topicSlug);
-    return {
-      items: articles.map(toArticleSummary),
-    };
+  async getArticleList(req: ValidatedArticleListQuery): Promise<ArticleListResponse> {
+    return this.repository.findPublished(req);
   }
 
   async getArticleDetail(slug: string): Promise<ArticleDetailResponse> {

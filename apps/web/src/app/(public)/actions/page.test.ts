@@ -21,6 +21,10 @@ describe('ActionListPage', () => {
 
   it('renders the actions list and action detail links', async () => {
     vi.mocked(getActionsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 2,
+      totalPages: 1,
       items: [
         {
           id: 1,
@@ -79,6 +83,10 @@ describe('ActionListPage', () => {
 
   it('renders the empty state when there are no actions', async () => {
     vi.mocked(getActionsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
     vi.mocked(getTopicsList).mockResolvedValue({
