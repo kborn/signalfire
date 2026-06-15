@@ -16,7 +16,7 @@ vi.mock('@/lib/api/topics', () => ({
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
-    push: vi.fn(),
+    replace: vi.fn(),
   }),
 }));
 
@@ -79,6 +79,8 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledWith({ region: 'IL' });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
+    expect(markup).toContain('Current date range:');
+    expect(markup).toContain('State is required. City and dates refine the active window.');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -119,6 +121,7 @@ describe('EventListPage', () => {
     });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
+    expect(markup).toContain('Current date range:');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');
   });
@@ -133,7 +136,7 @@ describe('EventListPage', () => {
 
     expect(getEventsList).not.toHaveBeenCalled();
     expect(markup).toContain('Events');
-    expect(markup).toContain('Enter a state to search upcoming events.');
+    expect(markup).toContain('Select a state to start browsing events.');
   });
 
   it('renders the empty state when a filtered query returns no events', async () => {
