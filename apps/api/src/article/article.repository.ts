@@ -78,29 +78,34 @@ export class ArticleRepository {
   }
 
   async findPublished(req: ValidatedArticleListQuery): Promise<ArticleListResponse> {
-    const items = await this.prisma.article.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-        topicArticles: req.topicSlug
-          ? {
-              some: {
-                topic: {
-                  slug: req.topicSlug,
-                },
+    const where: Prisma.ArticleWhereInput = {
+      status: EntityStatus.PUBLISHED,
+      topicArticles: req.topicSlug
+        ? {
+            some: {
+              topic: {
+                slug: req.topicSlug,
               },
-            }
-          : undefined,
-      },
+            },
+          }
+        : undefined,
+    };
+
+    const totalItems = await this.prisma.article.count({ where });
+
+    const items = await this.prisma.article.findMany({
+      where,
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: (req.page - 1) * req.pageSize,
+      take: req.pageSize,
     });
 
-    // TODO: move total-count and page slicing into the query layer for real pagination.
     return {
       items: items.map(toArticleSummary),
       page: req.page,
       pageSize: req.pageSize,
-      totalItems: items.length,
-      totalPages: items.length === 0 ? 0 : Math.ceil(items.length / req.pageSize),
+      totalItems: totalItems,
+      totalPages: Math.ceil(totalItems / req.pageSize),
     };
   }
 
