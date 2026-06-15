@@ -33,29 +33,34 @@ export class ActionRepository {
   constructor(private prisma: PrismaService) {}
 
   async findPublished(req: ValidatedActionListQuery): Promise<ActionListResponse> {
-    const items = await this.prisma.action.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-        topicActions: req.topicSlug
-          ? {
-              some: {
-                topic: {
-                  slug: req.topicSlug,
-                },
+    const where: Prisma.ActionWhereInput = {
+      status: EntityStatus.PUBLISHED,
+      topicActions: req.topicSlug
+        ? {
+            some: {
+              topic: {
+                slug: req.topicSlug,
               },
-            }
-          : undefined,
-      },
+            },
+          }
+        : undefined,
+    };
+
+    const totalItems = await this.prisma.action.count({ where });
+
+    const items = await this.prisma.action.findMany({
+      where,
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: (req.page - 1) * req.pageSize,
+      take: req.pageSize,
     });
 
-    // TODO: move total-count and page slicing into the query layer for real pagination.
     return {
       items: items.map(toActionSummary),
       page: req.page,
       pageSize: req.pageSize,
-      totalItems: items.length,
-      totalPages: items.length === 0 ? 0 : Math.ceil(items.length / req.pageSize),
+      totalItems: totalItems,
+      totalPages: Math.ceil(totalItems / req.pageSize),
     };
   }
 
