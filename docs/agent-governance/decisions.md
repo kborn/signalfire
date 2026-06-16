@@ -1082,3 +1082,75 @@ validation rules.
   and `postalCode` as required normalization fields.
 - Learning guides may discuss nullable persistence internals, but they must not
   represent these fields as optional in Release 1 behavior.
+
+---
+
+---
+
+### ► Phase 12.4 public discovery uses explicit page-number pagination
+
+###### 2026-06-15
+
+---
+
+###### Decision
+
+Phase 12.4 public discovery should use explicit page-number pagination across
+public collection surfaces rather than infinite scroll.
+
+###### Rationale
+
+- Public discovery in SignalFire is a browse-and-return flow: users will often
+  open an article, action, or event from a collection page and then come back
+  to continue browsing.
+- Infinite scroll makes that return path brittle because the browser back flow
+  commonly drops the user at the top of the list or loses the previously loaded
+  depth, forcing them to rebuild context.
+- Explicit pages create a stable URL and stable position for each slice of the
+  collection, which is easier to share, revisit, test, and reason about in a
+  content-discovery product.
+
+###### Implications
+
+- Public collection query params should use `page` and `pageSize` rather than a
+  cursor contract.
+- Public collection responses should return page-oriented metadata sufficient
+  for previous/next and numbered-page behavior.
+- Phase 12 docs and learning materials should teach URL-driven pagination
+  rather than client-side append behavior.
+
+---
+
+---
+
+### ► Public Event city filter uses debounced URL commits
+
+###### 2026-06-16
+
+---
+
+###### Decision
+
+The public Events finder should keep `region`, `startDate`, `endDate`, topic,
+pagination, and page-size state URL-driven, while the `city` input uses a
+small local draft state with debounced commits back into the URL.
+
+###### Rationale
+
+- The project is intentionally serving as a learning vehicle, and this
+  component is an appropriate place to learn `useEffect` cleanup and debounced
+  state synchronization in a bounded way.
+- The debounced city field feels smoother than `blur`-only commits while
+  avoiding an unnecessary Apply/Reset workflow for a relatively lightweight
+  civic browsing surface.
+- URL state remains the committed source of truth for shareability, refresh
+  behavior, and server-rendered data fetching.
+
+###### Implications
+
+- The `city` field may keep a short-lived local draft value while typing.
+- Debounced city commits must preserve the rest of the active Event query state
+  and reset `page` when the filter changes.
+- `region`, `startDate`, and `endDate` may continue to commit immediately.
+- This is an intentional product and learning tradeoff, not an accidental
+  inconsistency in filter implementation.

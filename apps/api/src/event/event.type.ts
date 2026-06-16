@@ -4,4 +4,6 @@ export type ValidatedEventListQuery = {
   endDate: Date;
   city?: string;
   region?: string;
+  page: number;
+  pageSize: number;
 };

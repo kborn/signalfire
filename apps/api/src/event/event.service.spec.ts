@@ -62,8 +62,7 @@ describe('EventService', () => {
   });
 
   it('getPublishedEventList', async () => {
-    const event = buildEventEntity();
-    repoMock.findPublished.mockResolvedValue([event]);
+    repoMock.findPublished.mockResolvedValue(buildEventListResponse());
 
     const startDate = new Date('2025-12-17T00:00:00.000Z');
     const endDate = new Date('2025-12-18T00:00:00.000Z');
@@ -72,6 +71,8 @@ describe('EventService', () => {
       startDate,
       endDate,
       topicSlug: 'democracy',
+      page: 1,
+      pageSize: 10,
     });
 
     expect(ret).toEqual(buildEventListResponse());
@@ -79,6 +80,8 @@ describe('EventService', () => {
       startDate: new Date('2025-12-17T00:00:00.000Z'),
       endDate: new Date('2025-12-18T00:00:00.000Z'),
       topicSlug: 'democracy',
+      page: 1,
+      pageSize: 10,
     });
   });
 

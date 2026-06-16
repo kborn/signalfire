@@ -1,8 +1,21 @@
 import { makeRequest } from '@/lib/api/base';
 import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contracts';
 
-export async function getActionsList(topicSlug?: string): Promise<ActionListResponse> {
-  const params = topicSlug ? { topicSlug } : undefined;
+type ActionListQuery = {
+  topicSlug?: string;
+  page?: string;
+  pageSize?: string;
+};
+
+export async function getActionsList(query: ActionListQuery): Promise<ActionListResponse> {
+  const params =
+    query.topicSlug || query.page || query.pageSize
+      ? {
+          topicSlug: query.topicSlug,
+          page: query.page,
+          pageSize: query.pageSize,
+        }
+      : undefined;
   return await makeRequest<ActionListResponse>('actions', params);
 }
 

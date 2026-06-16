@@ -40,6 +40,10 @@ export function buildArticleListResponse(
         publishedAt: new Date('2025-12-18T03:24:00.000Z').toISOString(),
       },
     ],
+    page: 1,
+    pageSize: 10,
+    totalItems: 2,
+    totalPages: 1,
     ...overrides,
   };
 }

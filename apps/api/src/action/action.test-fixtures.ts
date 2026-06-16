@@ -47,6 +47,10 @@ export function buildActionListResponse(
         publishedAt: ACTION_TEST_DATE.toISOString(),
       },
     ],
+    page: 1,
+    pageSize: 10,
+    totalItems: 2,
+    totalPages: 1,
     ...overrides,
   };
 }

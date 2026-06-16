@@ -8,6 +8,7 @@ describe('ActionRepository', () => {
   let repository: ActionRepository;
   const prismaMock = {
     action: {
+      count: jest.fn(),
       findUnique: jest.fn(),
       findFirst: jest.fn(),
       findMany: jest.fn(),
@@ -40,27 +41,41 @@ describe('ActionRepository', () => {
       actionType: ActionType.VOLUNTEER,
       publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
+    prismaMock.action.count.mockResolvedValue(2);
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
-    const ret = await repository.findPublished();
-
-    expect(ret).toEqual([action1, action2]);
+    const ret = await repository.findPublished({ page: 1, pageSize: 10, topicSlug: undefined });
+    expect(ret.page).toBe(1);
+    expect(ret.pageSize).toBe(10);
+    expect(ret.totalItems).toBe(2);
+    expect(ret.totalPages).toBe(1);
+    expect(ret.items).toHaveLength(2);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
         topicActions: undefined,
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 
   it('findPublished filters by topic slug', async () => {
     const action = buildActionEntity();
+    prismaMock.action.count.mockResolvedValue(1);
     prismaMock.action.findMany.mockResolvedValue([action]);
 
-    const ret = await repository.findPublished('democracy');
-
-    expect(ret).toEqual([action]);
+    const ret = await repository.findPublished({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
+    expect(ret.page).toBe(1);
+    expect(ret.pageSize).toBe(10);
+    expect(ret.totalItems).toBe(1);
+    expect(ret.totalPages).toBe(1);
+    expect(ret.items).toHaveLength(1);
     expect(prismaMock.action.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
@@ -73,6 +88,8 @@ describe('ActionRepository', () => {
         },
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 

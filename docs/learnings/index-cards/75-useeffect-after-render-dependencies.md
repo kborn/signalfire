@@ -1,6 +1,6 @@
 # useEffect Runs After Render
 
-`useEffect` tells React to run code after a component has rendered.
+`useEffect` lets React run follow-up code after a render has committed.
 
 Tiny shape:
 
@@ -10,21 +10,24 @@ useEffect(() => {
 }, [valueA, valueB]);
 ```
 
-The first argument is the function React will run. The second argument is the
-dependency array.
-
 How to read it:
 
 - render the component
-- after render, run the effect
+- after render, run the effect body
 - on later renders, run it again only when one listed dependency changed
+
+The dependency array answers:
+
+> "Which state or props changes should cause this follow-up work to run again?"
 
 Why it matters here:
 
-An Article or Event normalization form owns its field state, but the parent
-review component owns the approval buttons. The form can use `useEffect` to
-send the latest normalized payload back to the parent after any tracked field
-changes.
+An editor form or filter component often has:
+
+- direct user events handled in `onChange` / `onClick`
+- derived follow-up work that should happen after React has rendered new state
+
+Example:
 
 ```tsx
 useEffect(() => {
@@ -40,12 +43,12 @@ useEffect(() => {
 
 In plain English:
 
-When `title`, `summary`, `content`, `author`, `topicSlugs`, or `onChange`
-changes, call `onChange(...)` with the latest payload after React finishes
-rendering.
+When those tracked values change, tell the parent about the latest normalized
+payload after React finishes rendering.
 
 Rule of thumb:
 
-- use event handlers for direct user events like typing or clicking
+- use event handlers for direct user actions like typing or clicking
 - use `useEffect` when some state change should trigger follow-up work after
-  render, such as notifying a parent about a derived form value
+  render
+- `useEffect` is not "async magic"; it is a lifecycle hook tied to render

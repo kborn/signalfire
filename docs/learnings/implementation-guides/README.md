@@ -52,3 +52,4 @@ Available Phase 11 guides:
 Available Phase 12 guides:
 
 - `phase-12-url-state-and-pagination-guide.md`
+- `phase-12-4-public-pagination-implementation-guide.md`

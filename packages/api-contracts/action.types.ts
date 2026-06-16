@@ -1,8 +1,17 @@
-import { ActionSummary, ActionType, ArticleSummary, TopicSummary } from './common.types.js';
+import {
+  ActionSummary,
+  ActionType,
+  ArticleSummary,
+  PaginatedListResponse,
+  PaginationParams,
+  TopicSummary,
+} from './common.types.js';
 
-export type ActionListResponse = {
-  items: ActionSummary[];
+export type ActionListRequest = PaginationParams & {
+  topicSlug?: string;
 };
+
+export type ActionListResponse = PaginatedListResponse<ActionSummary>;
 
 export type ActionDetailResponse = {
   id: number;

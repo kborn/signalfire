@@ -40,3 +40,16 @@ export type EventSummary = {
   postalCode: string | null;
   country: string | null;
 };
+
+export type PaginationParams = {
+  page?: number;
+  pageSize?: number;
+};
+
+export type PaginatedListResponse<T> = {
+  items: T[];
+  page: number;
+  pageSize: number;
+  totalItems: number;
+  totalPages: number;
+};

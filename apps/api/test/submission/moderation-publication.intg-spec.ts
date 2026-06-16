@@ -191,6 +191,8 @@ describe('Moderation publication integration', () => {
       startDate: new Date('2026-07-04T00:00:00.000Z'),
       endDate: new Date('2026-07-05T00:00:00.000Z'),
       topicSlug: 'democracy',
+      page: 1,
+      pageSize: 10,
     });
     expect(events.items).toEqual(
       expect.arrayContaining([expect.objectContaining({ id: event.id })]),

@@ -10,6 +10,7 @@ describe('EventRepository', () => {
   let repository: EventRepository;
   const prismaMock = {
     event: {
+      count: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
     },
@@ -46,6 +47,7 @@ describe('EventRepository', () => {
   });
 
   it('findPublished', async () => {
+    prismaMock.event.count.mockResolvedValue(1);
     prismaMock.event.findMany.mockResolvedValue([event]);
 
     const startOfDay = new Date('2025-12-17T00:00:00.000Z');
@@ -57,9 +59,15 @@ describe('EventRepository', () => {
       startDate: startOfDay,
       endDate: startOfNextDay,
       city,
+      page: 1,
+      pageSize: 10,
     });
 
-    expect(ret).toEqual([event]);
+    expect(ret.page).toBe(1);
+    expect(ret.pageSize).toBe(10);
+    expect(ret.totalItems).toBe(1);
+    expect(ret.totalPages).toBe(1);
+    expect(ret.items).toHaveLength(1);
     expect(prismaMock.event.findMany).toHaveBeenCalledWith({
       where: {
         status: EntityStatus.PUBLISHED,
@@ -80,6 +88,8 @@ describe('EventRepository', () => {
         },
       },
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 

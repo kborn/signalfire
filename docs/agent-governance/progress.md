@@ -5,27 +5,27 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                                 | Name                                | Status        |
-| ----------------------------------------------------- | ----------------------------------- | ------------- |
-| [0](#-phase-0--repo-bootstrap-)                       | Repo Bootstrap                      | ✅            |
-| [1](#-phase-1--platform-skeleton-)                    | Repository & Platform Skeleton      | ✅            |
-| [2](#-phase-2--backend-foundations-)                  | Backend Foundations                 | ✅            |
-| [3](#-phase-3--core-domain-model-)                    | Core Domain Model                   | ✅            |
-| [4](#-phase-4--test-infrastructure-)                  | Test Infrastructure                 | ✅            |
-| [5](#-phase-5--topic--content-apis-)                  | Topic & Content APIs                | ✅            |
-| [6](#-phase-6--content-discovery-ui-)                 | Content Discovery UI                | ✅            |
-| [7](#-phase-7--event-domain--apis-)                   | Event Domain & APIs                 | ✅            |
-| [8](#-phase-8--event-ui-)                             | Event UI                            | ✅            |
-| [9](#-phase-9--ui-polish-)                            | UI Polish                           | ✅            |
-| [10](#-phase-10--submission-system-)                  | Submission System                   | ✅            |
-| [11](#-phase-11--moderation--admin-interface-)        | Moderation & Admin Interface        | ✅            |
-| **[12](#-phase-12--search--discovery-improvements-)** | **Search & Discovery Improvements** | **🚧 ACTIVE** |
-| [13](#-phase-13--deployment-infrastructure-)          | Deployment Infrastructure           | ⏳            |
-| [14](#-phase-14--analytics-)                          | Analytics                           | ⏳            |
-| [15](#-phase-15--release-stabilization-)              | Release Stabilization               | ⏳            |
-| [15.5](#-phase-155--final-public-ui-polish-)          | Final Public UI Polish              | ⏳            |
-| [16](#-phase-16--final-repo--product-prep-)           | Final Repo & Product Prep           | ⏳            |
-| [17](#-phase-17--public-launch-)                      | Public Launch                       | ⏳            |
+| Phase                                             | Name                            | Status        |
+| ------------------------------------------------- | ------------------------------- | ------------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅            |
+| [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
+| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
+| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
+| **[13](#-phase-13--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
+| [14](#-phase-14--analytics-)                      | Analytics                       | ⏳            |
+| [15](#-phase-15--release-stabilization-)          | Release Stabilization           | ⏳            |
+| [15.5](#-phase-155--final-public-ui-polish-)      | Final Public UI Polish          | ⏳            |
+| [16](#-phase-16--final-repo--product-prep-)       | Final Repo & Product Prep       | ⏳            |
+| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -1472,7 +1472,7 @@ repository and before continuing into broader admin content-management work.
 
 ---
 
-### ► Phase 12 — Search & Discovery Improvements ⏳
+### ► Phase 12 — Search & Discovery Improvements ✅
 
 ###### Goal
 
@@ -1480,10 +1480,10 @@ Improve browsing and filtering across topics, actions, and events.
 
 ###### Definition of Done
 
-- [ ] Scope boundary is documented and implementation-ready
-- [ ] Public collection filtering is expanded within approved Release 1 limits
-- [ ] Public collection pagination is implemented with a stable contract
-- [ ] Tests and documentation cover filtering, pagination, empty states, and
+- [x] Scope boundary is documented and implementation-ready
+- [x] Public collection filtering is expanded within approved Release 1 limits
+- [x] Public collection pagination is implemented with a stable contract
+- [x] Tests and documentation cover filtering, pagination, empty states, and
       published-only visibility behavior
 
 ---
@@ -1534,15 +1534,15 @@ Improve browsing and filtering across topics, actions, and events.
 
 ---
 
-#### ▸ Phase 12.4 - Pagination & Hardening ⏳
+#### ▸ Phase 12.4 - Pagination & Hardening ✅
 
 ###### Phase Tasks:
 
-- [ ] Add pagination to public collection APIs and UIs in a way that avoids a
+- [x] Add pagination to public collection APIs and UIs in a way that avoids a
       later breaking contract change when content volume grows
-- [ ] Verify pagination composes correctly with approved filters across public
+- [x] Verify pagination composes correctly with approved filters across public
       collection surfaces
-- [ ] Add tests and documentation covering filter query behavior, pagination
+- [x] Add tests and documentation covering filter query behavior, pagination
       behavior, empty states, and interaction with published-only visibility
 
 ###### Notes:
@@ -1552,6 +1552,10 @@ Improve browsing and filtering across topics, actions, and events.
 - Public Event discovery in Phase 12 is filter-led rather than default-list-led;
   `/events` should render a pre-results state until the URL contains a
   meaningful filter set.
+- Public Event city commits intentionally use a small debounced local draft
+  state while preserving URL state as the committed source of truth; see
+  `docs/agent-governance/decisions.md` entry `Public Event city filter uses
+debounced URL commits`.
 - Full-text search may be revisited later, but it is not required to complete
   the current phase.
 
@@ -1655,6 +1659,9 @@ stabilization and before the final release-prep and public-launch phases.
 - [ ] Refine the public Events finder, empty states, and Event list/detail
       presentation so the filter surface, result cards, and detail pages read
       as one coherent public UI system rather than visually distinct subflows
+- [ ] Replace ad hoc inline public-site SVG icon markup, including the Events
+      date-picker calendar glyph, with the final shared icon-library treatment
+      chosen for launch polish
 - [ ] Verify the final public polish pass does not introduce admin UI regressions
       or conflict with the established Phase 11.5 visual identity
 

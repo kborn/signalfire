@@ -9,9 +9,13 @@ type TopicSelectorProps = {
 
 type EntityParams =
   | {
+      page?: string;
+      pageSize?: string;
       topicSlug?: string;
     }
   | {
+      page?: string;
+      pageSize?: string;
       topicSlug?: string;
       startDate?: string;
       endDate?: string;
@@ -42,7 +46,7 @@ export function TopicSelector({ topics, basePath, params }: TopicSelectorProps) 
       <ul className="topicSelectorList">
         <li className="topicSelectorItem">
           <Link
-            href={buildTopicHref(basePath, { ...params, topicSlug: undefined })}
+            href={buildTopicHref(basePath, { ...params, page: undefined, topicSlug: undefined })}
             aria-current={!topicSlug ? 'page' : undefined}
           >
             All
@@ -51,7 +55,11 @@ export function TopicSelector({ topics, basePath, params }: TopicSelectorProps) 
         {topics.items.map((topic) => (
           <li className="topicSelectorItem" key={topic.id}>
             <Link
-              href={buildTopicHref(basePath, { ...params, topicSlug: topic.slug })}
+              href={buildTopicHref(basePath, {
+                ...params,
+                page: undefined,
+                topicSlug: topic.slug,
+              })}
               aria-current={topicSlug === topic.slug ? 'page' : undefined}
             >
               {topic.name}

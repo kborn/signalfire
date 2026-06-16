@@ -57,6 +57,10 @@ export function buildEventListResponse(
         country: 'USA',
       },
     ],
+    page: 1,
+    pageSize: 10,
+    totalItems: 1,
+    totalPages: 1,
     ...overrides,
   };
 }

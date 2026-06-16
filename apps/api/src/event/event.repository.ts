@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { EntityStatus, Event, Prisma } from '@prisma/client';
+import { EventListResponse } from '@signal-fire/api-contracts';
 import {
   CreateAdminEventRepositoryInput,
   UpdateAdminEventRepositoryInput,
 } from '../admin-api/event/admin-event.repository.type';
 import type { ValidatedEventListQuery } from './event.type';
+import { toEventSummary } from '../common/public-content.mapper';
 
 const eventWithTopicsInclude = {
   topicEvents: {
@@ -45,33 +47,46 @@ export class EventRepository {
     });
   }
 
-  findPublished(reqBody: ValidatedEventListQuery): Promise<Event[]> {
-    return this.prisma.event.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-        startTime: {
-          gte: reqBody['startDate'],
-          lt: reqBody['endDate'],
-        },
-        city: reqBody['city']
-          ? {
-              equals: reqBody['city'],
-              mode: 'insensitive',
-            }
-          : undefined,
-        region: reqBody['region'],
-        topicEvents: reqBody['topicSlug']
-          ? {
-              some: {
-                topic: {
-                  slug: reqBody['topicSlug'],
-                },
-              },
-            }
-          : undefined,
+  async findPublished(req: ValidatedEventListQuery): Promise<EventListResponse> {
+    const where: Prisma.EventWhereInput = {
+      status: EntityStatus.PUBLISHED,
+      startTime: {
+        gte: req['startDate'],
+        lt: req['endDate'],
       },
+      city: req['city']
+        ? {
+            equals: req['city'],
+            mode: 'insensitive',
+          }
+        : undefined,
+      region: req['region'],
+      topicEvents: req['topicSlug']
+        ? {
+            some: {
+              topic: {
+                slug: req['topicSlug'],
+              },
+            },
+          }
+        : undefined,
+    };
+    const totalItems = await this.prisma.event.count({ where });
+
+    const items = await this.prisma.event.findMany({
+      where,
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+      skip: (req.page - 1) * req.pageSize,
+      take: req.pageSize,
     });
+
+    return {
+      items: items.map(toEventSummary),
+      page: req.page,
+      pageSize: req.pageSize,
+      totalItems: totalItems,
+      totalPages: Math.ceil(totalItems / req.pageSize),
+    };
   }
 
   findByArticleId(articleId: number): Promise<Event[]> {

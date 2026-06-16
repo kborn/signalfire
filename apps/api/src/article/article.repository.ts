@@ -1,10 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Article, EntityStatus, Prisma } from '@prisma/client';
+import { ArticleListResponse } from '@signal-fire/api-contracts';
 import {
   CreateAdminArticleRepositoryInput,
   UpdateAdminArticleRepositoryInput,
 } from '../admin-api/article/admin-article.repository.type';
+import { toArticleSummary } from '../common/public-content.mapper';
+import type { ValidatedArticleListQuery } from './article.type';
 
 const articleWithTopicsInclude = {
   topicArticles: {
@@ -74,22 +77,36 @@ export class ArticleRepository {
     });
   }
 
-  findPublished(topicSlug?: string): Promise<Article[]> {
-    return this.prisma.article.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-        topicArticles: topicSlug
-          ? {
-              some: {
-                topic: {
-                  slug: topicSlug,
-                },
+  async findPublished(req: ValidatedArticleListQuery): Promise<ArticleListResponse> {
+    const where: Prisma.ArticleWhereInput = {
+      status: EntityStatus.PUBLISHED,
+      topicArticles: req.topicSlug
+        ? {
+            some: {
+              topic: {
+                slug: req.topicSlug,
               },
-            }
-          : undefined,
-      },
+            },
+          }
+        : undefined,
+    };
+
+    const totalItems = await this.prisma.article.count({ where });
+
+    const items = await this.prisma.article.findMany({
+      where,
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: (req.page - 1) * req.pageSize,
+      take: req.pageSize,
     });
+
+    return {
+      items: items.map(toArticleSummary),
+      page: req.page,
+      pageSize: req.pageSize,
+      totalItems: totalItems,
+      totalPages: Math.ceil(totalItems / req.pageSize),
+    };
   }
 
   findPublishedBySlug(slug: string): Promise<Article | null> {

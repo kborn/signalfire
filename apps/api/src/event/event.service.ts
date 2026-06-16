@@ -9,7 +9,6 @@ import {
   requirePublishedAt,
   toActionSummary,
   toArticleSummary,
-  toEventSummary,
   toTopicSummary,
 } from '../common/public-content.mapper';
 import type { ValidatedEventListQuery } from './event.type';
@@ -24,10 +23,7 @@ export class EventService {
   ) {}
 
   async getPublishedEventList(reqBody: ValidatedEventListQuery): Promise<EventListResponse> {
-    const events = await this.eventRepository.findPublished(reqBody);
-    return {
-      items: events.map(toEventSummary),
-    };
+    return this.eventRepository.findPublished(reqBody);
   }
 
   getEventDetail(id: number): Promise<Event | null> {

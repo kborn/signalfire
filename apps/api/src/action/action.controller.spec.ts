@@ -36,18 +36,34 @@ describe('ActionController', () => {
     const actionListResponse = buildActionListResponse();
     serviceMock.getActionList.mockResolvedValue(actionListResponse);
 
-    const ret = await actionController.findActions();
+    const ret = await actionController.findActions({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
     expect(ret).toEqual(actionListResponse);
-    expect(serviceMock.getActionList).toHaveBeenCalledWith(undefined);
+    expect(serviceMock.getActionList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: undefined,
+    });
   });
 
   it('findActions with topicSlug', async () => {
     const actionListResponse = buildActionListResponse();
     serviceMock.getActionList.mockResolvedValue(actionListResponse);
 
-    const ret = await actionController.findActions('democracy');
+    const ret = await actionController.findActions({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
     expect(ret).toEqual(actionListResponse);
-    expect(serviceMock.getActionList).toHaveBeenCalledWith('democracy');
+    expect(serviceMock.getActionList).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('findActionNotFound', async () => {

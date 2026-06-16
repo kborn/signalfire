@@ -43,18 +43,30 @@ describe('ActionService', () => {
   });
 
   it('getPublishedActionList', async () => {
-    const action1 = buildActionEntity();
-    const action2 = buildActionEntity({
-      id: 2,
-      slug: 'join-neighborhood-climate-coalition',
-      title: 'Join A Neighborhood Climate Coalition',
-      summary: 'Work with local residents on recurring climate pressure campaigns.',
-      actionType: ActionType.VOLUNTEER,
-      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
-    });
-    repoMock.findPublished.mockResolvedValue([action1, action2]);
+    repoMock.findPublished.mockResolvedValue(
+      buildActionListResponse({
+        items: [
+          {
+            id: 1,
+            slug: 'call-your-representative',
+            title: 'Call Your Representative',
+            summary: 'A short action summary.',
+            actionType: ActionType.CONTACT,
+            publishedAt: ACTION_TEST_DATE.toISOString(),
+          },
+          {
+            id: 2,
+            slug: 'join-neighborhood-climate-coalition',
+            title: 'Join A Neighborhood Climate Coalition',
+            summary: 'Work with local residents on recurring climate pressure campaigns.',
+            actionType: ActionType.VOLUNTEER,
+            publishedAt: new Date('2025-12-18T03:24:00.000Z').toISOString(),
+          },
+        ],
+      }),
+    );
 
-    const ret = await service.getActionList();
+    const ret = await service.getActionList({ page: 1, pageSize: 10 });
 
     expect(ret).toEqual(
       buildActionListResponse({
@@ -78,14 +90,27 @@ describe('ActionService', () => {
         ],
       }),
     );
-    expect(repoMock.findPublished).toHaveBeenCalledWith(undefined);
+    expect(repoMock.findPublished).toHaveBeenCalledWith({ page: 1, pageSize: 10 });
   });
 
   it('getPublishedActionList filters by topic slug when provided', async () => {
     const action = buildActionEntity();
-    repoMock.findPublished.mockResolvedValue([action]);
+    repoMock.findPublished.mockResolvedValue(
+      buildActionListResponse({
+        items: [
+          {
+            id: action.id,
+            slug: action.slug,
+            title: action.title,
+            summary: action.summary,
+            actionType: action.actionType,
+            publishedAt: ACTION_TEST_DATE.toISOString(),
+          },
+        ],
+      }),
+    );
 
-    const ret = await service.getActionList('democracy');
+    const ret = await service.getActionList({ page: 1, pageSize: 10, topicSlug: 'democracy' });
 
     expect(ret).toEqual(
       buildActionListResponse({
@@ -101,7 +126,11 @@ describe('ActionService', () => {
         ],
       }),
     );
-    expect(repoMock.findPublished).toHaveBeenCalledWith('democracy');
+    expect(repoMock.findPublished).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('getActionDetail', async () => {

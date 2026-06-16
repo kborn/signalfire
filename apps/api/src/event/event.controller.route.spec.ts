@@ -51,6 +51,8 @@ describe('EventController HTTP', () => {
         startDate: new Date('2025-03-15T00:00:00.000Z'),
         endDate: new Date('2025-06-15T00:00:00.000Z'),
         topicSlug: 'democracy',
+        page: 1,
+        pageSize: 10,
       });
     });
   });

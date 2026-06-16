@@ -41,6 +41,10 @@ describe('EventListPage', () => {
   it('renders the events list and detail links without a topic filter', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 2,
+      pageSize: 25,
+      totalItems: 60,
+      totalPages: 3,
       items: [
         {
           id: 1,
@@ -71,16 +75,23 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ region: 'IL' }),
+        searchParams: Promise.resolve({ region: 'IL', page: '2', pageSize: '25' }),
       }),
     );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith({ region: 'IL' });
+    expect(getEventsList).toHaveBeenCalledWith({ region: 'IL', page: '2', pageSize: '25' });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('event-end-date');
+    expect(markup).toContain('Results per page');
+    expect(markup).toContain('href="/events?region=IL&amp;pageSize=10"');
+    expect(markup).toContain('href="/events?region=IL&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=IL&amp;pageSize=50"');
+    expect(markup).toContain('href="/events?region=IL&amp;page=1&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=IL&amp;page=2&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=IL&amp;page=3&amp;pageSize=25"');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -92,6 +103,10 @@ describe('EventListPage', () => {
   it('renders the events list with a topic filter banner when events are found', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 1,
+      totalPages: 1,
       items: [
         {
           id: 10,
@@ -129,6 +144,10 @@ describe('EventListPage', () => {
   it('renders the pre-results state when no region filter is present', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
 
@@ -142,6 +161,10 @@ describe('EventListPage', () => {
   it('renders the empty state when a filtered query returns no events', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
       items: [],
     });
 
@@ -157,6 +180,34 @@ describe('EventListPage', () => {
       region: 'PA',
     });
     expect(markup).toContain('Events');
-    expect(markup).toContain('No upcoming events found for Consumer Activism');
+    expect(markup).toContain('No events found for this topic yet.');
+  });
+
+  it('renders a recoverable empty page state when the requested page has no items', async () => {
+    mockTopics();
+    vi.mocked(getEventsList).mockResolvedValue({
+      page: 9,
+      pageSize: 25,
+      totalItems: 12,
+      totalPages: 2,
+      items: [],
+    });
+
+    const markup = renderToStaticMarkup(
+      await EventListPage({
+        searchParams: Promise.resolve({
+          topicSlug: 'consumer-activism',
+          region: 'PA',
+          page: '9',
+          pageSize: '25',
+        }),
+      }),
+    );
+
+    expect(markup).toContain('No events on this page. Try a previous page or change the filters.');
+    expect(markup).toContain(
+      'href="/events?topicSlug=consumer-activism&amp;region=PA&amp;page=8&amp;pageSize=25',
+    );
+    expect(markup).toContain('Results per page');
   });
 });

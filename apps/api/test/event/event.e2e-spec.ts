@@ -138,7 +138,13 @@ describe('EventController (e2e)', () => {
       .expect(200);
     const body = response.body as EventListResponse;
 
-    expect(body).toEqual({ items: [] });
+    expect(body).toEqual({
+      items: [],
+      page: 1,
+      pageSize: 10,
+      totalItems: 0,
+      totalPages: 0,
+    });
   });
 
   it('/events/:id (GET) returns the published event detail payload', async () => {
