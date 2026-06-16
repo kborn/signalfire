@@ -8,6 +8,7 @@ describe('ArticleRepository', () => {
   let repository: ArticleRepository;
   const prismaMock = {
     article: {
+      count: jest.fn(),
       findUnique: jest.fn(),
       findMany: jest.fn(),
     },
@@ -31,6 +32,7 @@ describe('ArticleRepository', () => {
       summary: 'A guide to city-level climate policy.',
       publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
+    prismaMock.article.count.mockResolvedValue(2);
     prismaMock.article.findMany.mockResolvedValue([article1, article2]);
 
     const ret = await repository.findPublished({ page: 1, pageSize: 10, topicSlug: undefined });
@@ -45,11 +47,14 @@ describe('ArticleRepository', () => {
         topicArticles: undefined,
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 
   it('findPublished filters by topic slug', async () => {
     const article = buildArticleEntity();
+    prismaMock.article.count.mockResolvedValue(1);
     prismaMock.article.findMany.mockResolvedValue([article]);
 
     const ret = await repository.findPublished({
@@ -74,6 +79,8 @@ describe('ArticleRepository', () => {
         },
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 

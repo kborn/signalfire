@@ -43,15 +43,26 @@ describe('ArticleService', () => {
   });
 
   it('getPublishedArticleList', async () => {
-    const article1 = buildArticleEntity();
-    const article2 = buildArticleEntity({
-      id: 2,
-      slug: 'how-local-climate-policy-works',
-      title: 'How Local Climate Policy Works',
-      summary: 'A guide to city-level climate policy.',
-      publishedAt: new Date('2025-12-18T03:24:00.000Z'),
-    });
-    repoMock.findPublished.mockResolvedValue([article1, article2]);
+    repoMock.findPublished.mockResolvedValue(
+      buildArticleListResponse({
+        items: [
+          {
+            id: 1,
+            slug: 'protect-voting-rights',
+            title: 'Protect Voting Rights',
+            summary: 'A short article summary.',
+            publishedAt: ARTICLE_TEST_DATE.toISOString(),
+          },
+          {
+            id: 2,
+            slug: 'how-local-climate-policy-works',
+            title: 'How Local Climate Policy Works',
+            summary: 'A guide to city-level climate policy.',
+            publishedAt: new Date('2025-12-18T03:24:00.000Z').toISOString(),
+          },
+        ],
+      }),
+    );
 
     const ret = await service.getArticleList({ page: 1, pageSize: 10 });
 
@@ -75,12 +86,24 @@ describe('ArticleService', () => {
         ],
       }),
     );
-    expect(repoMock.findPublished).toHaveBeenCalledWith(undefined);
+    expect(repoMock.findPublished).toHaveBeenCalledWith({ page: 1, pageSize: 10 });
   });
 
   it('getPublishedArticleList filters by topic slug when provided', async () => {
     const article = buildArticleEntity();
-    repoMock.findPublished.mockResolvedValue([article]);
+    repoMock.findPublished.mockResolvedValue(
+      buildArticleListResponse({
+        items: [
+          {
+            id: article.id,
+            slug: article.slug,
+            title: article.title,
+            summary: article.summary,
+            publishedAt: ARTICLE_TEST_DATE.toISOString(),
+          },
+        ],
+      }),
+    );
 
     const ret = await service.getArticleList({ page: 1, pageSize: 10, topicSlug: 'democracy' });
 
@@ -97,7 +120,11 @@ describe('ArticleService', () => {
         ],
       }),
     );
-    expect(repoMock.findPublished).toHaveBeenCalledWith('democracy');
+    expect(repoMock.findPublished).toHaveBeenCalledWith({
+      page: 1,
+      pageSize: 10,
+      topicSlug: 'democracy',
+    });
   });
 
   it('getArticleDetail', async () => {

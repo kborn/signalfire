@@ -8,6 +8,7 @@ describe('ActionRepository', () => {
   let repository: ActionRepository;
   const prismaMock = {
     action: {
+      count: jest.fn(),
       findUnique: jest.fn(),
       findFirst: jest.fn(),
       findMany: jest.fn(),
@@ -40,6 +41,7 @@ describe('ActionRepository', () => {
       actionType: ActionType.VOLUNTEER,
       publishedAt: new Date('2025-12-18T03:24:00.000Z'),
     });
+    prismaMock.action.count.mockResolvedValue(2);
     prismaMock.action.findMany.mockResolvedValue([action1, action2]);
 
     const ret = await repository.findPublished({ page: 1, pageSize: 10, topicSlug: undefined });
@@ -54,11 +56,14 @@ describe('ActionRepository', () => {
         topicActions: undefined,
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 
   it('findPublished filters by topic slug', async () => {
     const action = buildActionEntity();
+    prismaMock.action.count.mockResolvedValue(1);
     prismaMock.action.findMany.mockResolvedValue([action]);
 
     const ret = await repository.findPublished({
@@ -83,6 +88,8 @@ describe('ActionRepository', () => {
         },
       },
       orderBy: [{ publishedAt: 'desc' }, { id: 'asc' }],
+      skip: 0,
+      take: 10,
     });
   });
 
