@@ -92,6 +92,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
 - [107-useeffect-cleanup-and-reruns.md](./107-useeffect-cleanup-and-reruns.md) - How React stores cleanup from the previous effect run and executes it before the next one
 - [108-useeffect-return-value.md](./108-useeffect-return-value.md) - What an effect is allowed to return and what "cleanup" literally is
+- [109-component-mount-vs-rerender.md](./109-component-mount-vs-rerender.md) - When state initializers run and why re-renders do not reinitialize them
+- [110-setstate-triggers-rerender.md](./110-setstate-triggers-rerender.md) - How state updates cause React to run the component again
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 - [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - A zero-delay timer runs later but does not guarantee React committed new DOM
 - [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper
