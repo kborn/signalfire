@@ -7,7 +7,17 @@ import {
   EventListResponse,
 } from '@signal-fire/api-contracts';
 
-export async function getEventsList(req: EventListRequest): Promise<EventListResponse> {
+type EventListQuery = {
+  topicSlug?: string;
+  startDate?: string;
+  endDate?: string;
+  city?: string;
+  region?: string;
+  page?: string;
+  pageSize?: string;
+};
+
+export async function getEventsList(req: EventListQuery): Promise<EventListResponse> {
   const endpoint = 'events';
   const params: QueryParams = {
     topicSlug: req.topicSlug,

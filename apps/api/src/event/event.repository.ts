@@ -47,41 +47,45 @@ export class EventRepository {
     });
   }
 
-  async findPublished(reqBody: ValidatedEventListQuery): Promise<EventListResponse> {
-    const items = await this.prisma.event.findMany({
-      where: {
-        status: EntityStatus.PUBLISHED,
-        startTime: {
-          gte: reqBody['startDate'],
-          lt: reqBody['endDate'],
-        },
-        city: reqBody['city']
-          ? {
-              equals: reqBody['city'],
-              mode: 'insensitive',
-            }
-          : undefined,
-        region: reqBody['region'],
-        topicEvents: reqBody['topicSlug']
-          ? {
-              some: {
-                topic: {
-                  slug: reqBody['topicSlug'],
-                },
-              },
-            }
-          : undefined,
+  async findPublished(req: ValidatedEventListQuery): Promise<EventListResponse> {
+    const where: Prisma.EventWhereInput = {
+      status: EntityStatus.PUBLISHED,
+      startTime: {
+        gte: req['startDate'],
+        lt: req['endDate'],
       },
+      city: req['city']
+        ? {
+            equals: req['city'],
+            mode: 'insensitive',
+          }
+        : undefined,
+      region: req['region'],
+      topicEvents: req['topicSlug']
+        ? {
+            some: {
+              topic: {
+                slug: req['topicSlug'],
+              },
+            },
+          }
+        : undefined,
+    };
+    const totalItems = await this.prisma.event.count({ where });
+
+    const items = await this.prisma.event.findMany({
+      where,
       orderBy: [{ startTime: 'asc' }, { id: 'asc' }],
+      skip: (req.page - 1) * req.pageSize,
+      take: req.pageSize,
     });
 
-    // TODO: move total-count and page slicing into the query layer for real pagination.
     return {
       items: items.map(toEventSummary),
-      page: reqBody.page,
-      pageSize: reqBody.pageSize,
-      totalItems: items.length,
-      totalPages: items.length === 0 ? 0 : Math.ceil(items.length / reqBody.pageSize),
+      page: req.page,
+      pageSize: req.pageSize,
+      totalItems: totalItems,
+      totalPages: Math.ceil(totalItems / req.pageSize),
     };
   }
 

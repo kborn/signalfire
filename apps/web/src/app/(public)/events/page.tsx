@@ -1,34 +1,26 @@
 import { EventSummary } from '@/components/event-summary';
 import { getEventsList } from '@/lib/api/events';
-import { titleCase } from '@/lib/common/utils';
 import { TopicSelector } from '@/components/topic-selector';
 import { getTopicsList } from '@/lib/api/topics';
 import { parseDate } from '@/lib/common/time';
 export const dynamic = 'force-dynamic';
 import EventFilters from '@/app/(public)/events/_components/event-filters';
+import { PageSizeSelector } from '@/components/page-size-selector';
+import { Pagination } from '@/components/pagination';
 
-function getNoResultsResponse() {
+function getNoResultsResponse(topicSlug?: string) {
   return (
     <section className="discoveryEmptyState">
-      <p className="section-label">No results</p>
-      <h2>No upcoming events found</h2>
-      <p className="metaText">
+      <p>{topicSlug ? 'No events found for this topic yet.' : 'No events available yet.'}</p>
+      <p>
         Try a nearby city, broaden the date window, or browse a different topic within this state.
       </p>
     </section>
   );
 }
 
-function getNoTopicResultsResponse(topic: string) {
-  return (
-    <section className="discoveryEmptyState">
-      <p className="section-label">No results</p>
-      <h2>No upcoming events found for {topic}</h2>
-      <p className="metaText">
-        Keep the current location and date range, or switch topics to widen the search.
-      </p>
-    </section>
-  );
+function getEmptyPageResponse() {
+  return <p>No events on this page. Try a previous page or change the filters.</p>;
 }
 
 function canRequest(props: EventListPageProps): boolean {
@@ -41,6 +33,8 @@ type EventListPageProps = {
   endDate?: string;
   city?: string;
   region?: string;
+  page?: string;
+  pageSize?: string;
 };
 
 type EventListPagePropsWrapper = {
@@ -83,21 +77,27 @@ async function getContents(params: EventListPageProps) {
   }
 
   const { topicSlug } = params;
-  const topic = titleCase(topicSlug);
+  const resp = await getEventsList(params);
 
-  const data = await getEventsList(params);
-  if (data.items.length === 0) {
-    if (topicSlug) {
-      return getNoTopicResultsResponse(topic);
-    }
-    return getNoResultsResponse();
-  }
   return (
-    <section className="collectionList">
-      {data.items.map((event) => (
-        <EventSummary key={event.id} event={event} />
-      ))}
-    </section>
+    <div>
+      <section className="collectionList">
+        {resp.items.length === 0
+          ? resp.totalItems === 0
+            ? getNoResultsResponse(topicSlug)
+            : getEmptyPageResponse()
+          : resp.items.map((event) => <EventSummary key={event.id} event={event} />)}
+      </section>
+      <div className="paginationToolbar">
+        <PageSizeSelector basePath="/events" params={params} />
+        <Pagination
+          basePath="/events"
+          page={resp.page}
+          totalPages={resp.totalPages}
+          params={params}
+        />
+      </div>
+    </div>
   );
 }
 
