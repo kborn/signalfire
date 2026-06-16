@@ -1,6 +1,6 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { login } from '@/lib/api/auth';
 import { ApiError } from '@/lib/api/error';
@@ -20,9 +20,14 @@ vi.mock('@/lib/api/auth', () => ({
 }));
 
 describe('LoginForm', () => {
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE = 'true';
+  });
+
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
+    delete process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE;
   });
 
   it('routes to the requested admin page after successful login', async () => {
@@ -75,5 +80,14 @@ describe('LoginForm', () => {
       screen.getByText('Invalid admin credentials. Check your email and password and try again.'),
     ).toBeInTheDocument();
     expect(routerMock.push).not.toHaveBeenCalled();
+  });
+
+  it('shows the demo credentials guidance link on the default login view', () => {
+    render(<LoginForm next={null} />);
+
+    expect(screen.getByText('demo review and admin access section')).toHaveAttribute(
+      'href',
+      'https://github.com/kborn/signalfire#demo-review-and-admin-access',
+    );
   });
 });

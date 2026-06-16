@@ -1587,10 +1587,18 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ##### 13.2 Demo Positioning
 
-- [ ] Implement the explicit public-demo posture: add the homepage demo banner, persistent demo indicator, concise `/demo` page, and the final header-level path to admin demo access instructions
-- [ ] Add a stable README section or anchor for demo/admin access guidance, then link the in-product `/demo` page and admin-access messaging to that specific repository location instead of the repo root
+- [x] Implement the explicit public-demo posture: add the shared demo banner, persistent demo indicator, and the final header-level path to admin demo access instructions
+- [x] Add a stable README section or anchor for demo/admin access guidance, then link the in-product admin-access messaging to that specific repository location instead of the repo root
 - [ ] Run a full dependency risk review and resolve or explicitly defer remaining high-severity findings with documented rationale
-- [ ] Define the intended reviewer journey for the public demo, including the first-30-seconds impression, the expected path from homepage into content, and how a reviewer discovers the admin/demo surface
+- [x] Define the intended reviewer journey for the public demo, including the first-30-seconds impression, the expected path from homepage into content, and how a reviewer discovers the admin/demo surface
+
+###### Notes:
+
+- Public demo posture is now explicit in-product: shared public chrome retains a persistent `Demo` indicator, public pages carry a dismissible demo banner in demo mode, and the header exposes a single `Admin Demo` entry point.
+- Reviewer journey for the current demo:
+  1. First 30 seconds: the public header and demo banner establish that this is a demo site with sample data.
+  2. Expected content path: homepage -> Issues/Articles/Actions/Events -> inspect sample public content and Event filtering.
+  3. Admin discovery path: public header `Admin Demo` link -> admin login page / README anchor for credentials and local-review instructions.
 
 ##### 13.3 Public Polish
 
@@ -1599,6 +1607,7 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [ ] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
 - [ ] Complete a final public copy review across homepage, About, navigation, collection pages, detail pages, submit flows, empty states, and error states
 - [ ] Make minor color, spacing, typography, CTA, and visual hierarchy adjustments needed after reviewing the full public flow in realistic browser viewports
+- [ ] Eliminate sticky-surface scroll bleed and overlap artifacts, including text, borders, or highlighted rows visibly sliding through the public header, demo banner, topic bars, or similar pinned UI layers during scroll
 - [ ] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
 - [ ] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
 - [ ] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
