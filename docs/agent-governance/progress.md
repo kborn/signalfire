@@ -1655,6 +1655,9 @@ stabilization and before the final release-prep and public-launch phases.
 - [ ] Refine the public Events finder, empty states, and Event list/detail
       presentation so the filter surface, result cards, and detail pages read
       as one coherent public UI system rather than visually distinct subflows
+- [ ] Replace ad hoc inline public-site SVG icon markup, including the Events
+      date-picker calendar glyph, with the final shared icon-library treatment
+      chosen for launch polish
 - [ ] Verify the final public polish pass does not introduce admin UI regressions
       or conflict with the established Phase 11.5 visual identity
 
