@@ -1,8 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
+import { useDebounce } from '@/components/debounce';
 
 type EventListPageProps = {
   topicSlug?: string;
@@ -86,22 +87,39 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
       ? 'End date must be on or after the start date'
       : null;
 
-  function commitFilters(nextValues?: Partial<EventListPageProps>) {
-    const queryParams = {
-      ...params,
-      ...nextValues,
-      page: undefined,
-    };
+  // See decisions.md: "Public Event city filter uses debounced URL commits" (2026-06-16).
+  const debouncedCity = useDebounce<string>(city, 700);
 
-    const nextStartDate = parseDateValue(queryParams.startDate);
-    const nextEndDate = parseDateValue(queryParams.endDate);
+  const commitFilters = useCallback(
+    (nextValues?: Partial<EventListPageProps>) => {
+      const queryParams = {
+        ...params,
+        ...nextValues,
+        page: undefined,
+      };
 
-    if (nextStartDate && nextEndDate && nextEndDate < nextStartDate) {
+      const nextStartDate = parseDateValue(queryParams.startDate);
+      const nextEndDate = parseDateValue(queryParams.endDate);
+
+      if (nextStartDate && nextEndDate && nextEndDate < nextStartDate) {
+        return;
+      }
+
+      route(router, queryParams);
+    },
+    [params, router],
+  );
+
+  useEffect(() => {
+    const normalizedCity = debouncedCity.trim();
+    const normalizedParamCity = (params.city ?? '').trim();
+
+    if (normalizedCity === normalizedParamCity) {
       return;
     }
 
-    route(router, queryParams);
-  }
+    commitFilters({ city: normalizedCity || undefined });
+  }, [debouncedCity, params.city, commitFilters]);
 
   function openDatePicker(input: DateInputWithPicker | null) {
     if (!input) {
@@ -146,7 +164,6 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
             value={city}
             placeholder="City"
             onChange={(event) => setCity(event.target.value)}
-            onBlur={() => commitFilters({ city })}
           />
         </label>
         <label className="submissionLabel eventFilterField" htmlFor="event-start-date">

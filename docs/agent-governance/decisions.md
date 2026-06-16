@@ -1118,3 +1118,39 @@ public collection surfaces rather than infinite scroll.
   for previous/next and numbered-page behavior.
 - Phase 12 docs and learning materials should teach URL-driven pagination
   rather than client-side append behavior.
+
+---
+
+---
+
+### ► Public Event city filter uses debounced URL commits
+
+###### 2026-06-16
+
+---
+
+###### Decision
+
+The public Events finder should keep `region`, `startDate`, `endDate`, topic,
+pagination, and page-size state URL-driven, while the `city` input uses a
+small local draft state with debounced commits back into the URL.
+
+###### Rationale
+
+- The project is intentionally serving as a learning vehicle, and this
+  component is an appropriate place to learn `useEffect` cleanup and debounced
+  state synchronization in a bounded way.
+- The debounced city field feels smoother than `blur`-only commits while
+  avoiding an unnecessary Apply/Reset workflow for a relatively lightweight
+  civic browsing surface.
+- URL state remains the committed source of truth for shareability, refresh
+  behavior, and server-rendered data fetching.
+
+###### Implications
+
+- The `city` field may keep a short-lived local draft value while typing.
+- Debounced city commits must preserve the rest of the active Event query state
+  and reset `page` when the filter changes.
+- `region`, `startDate`, and `endDate` may continue to commit immediately.
+- This is an intentional product and learning tradeoff, not an accidental
+  inconsistency in filter implementation.

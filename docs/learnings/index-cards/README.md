@@ -90,6 +90,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [73-nullish-checks-vs-truthy-checks.md](./73-nullish-checks-vs-truthy-checks.md) - When to use `== null`, `??`, `?.`, and truthy checks
 - [74-client-wrapper-owns-decision-state.md](./74-client-wrapper-owns-decision-state.md) - Use a client wrapper and callbacks to collect child form state for moderation decisions
 - [75-useeffect-after-render-dependencies.md](./75-useeffect-after-render-dependencies.md) - Run follow-up code after render when tracked state or props change
+- [107-useeffect-cleanup-and-reruns.md](./107-useeffect-cleanup-and-reruns.md) - How React stores cleanup from the previous effect run and executes it before the next one
+- [108-useeffect-return-value.md](./108-useeffect-return-value.md) - What an effect is allowed to return and what "cleanup" literally is
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 - [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - A zero-delay timer runs later but does not guarantee React committed new DOM
 - [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper
@@ -106,6 +108,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [89-pnpm-vs-npx-and-why-types-sometimes-install-separately.md](./89-pnpm-vs-npx-and-why-types-sometimes-install-separately.md) - When to use `pnpm`, what `-D` means, and why some packages need separate `@types`
 - [90-prisma-migrate-vs-generate.md](./90-prisma-migrate-vs-generate.md) - What `migrate` changes, what `generate` changes, and when both are needed
 - [100-next-middleware-can-bridge-set-cookie-to-the-browser.md](./100-next-middleware-can-bridge-set-cookie-to-the-browser.md) - Why Next must explicitly mirror backend `Set-Cookie` headers during server-side auth checks
+- [104-debounce-for-url-driven-inputs.md](./104-debounce-for-url-driven-inputs.md) - How to debounce a text filter while keeping the URL as the committed source of truth
+- [105-immediate-vs-debounced-values.md](./105-immediate-vs-debounced-values.md) - Which value should drive the input and which should trigger the side effect
+- [106-what-a-debounce-hook-does.md](./106-what-a-debounce-hook-does.md) - What the debounce hook itself is responsible for and what it is not
 
 Rule of thumb:
 
