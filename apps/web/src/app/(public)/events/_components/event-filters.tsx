@@ -6,32 +6,32 @@ import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 
 type EventListPageProps = {
   topicSlug?: string;
-  startDate?: string;
-  endDate?: string;
+  startDate: string;
+  endDate: string;
   city?: string;
   region?: string;
+  page?: string;
+  pageSize?: string;
 };
 
 type EventListPagePropsWrapper = {
   params: EventListPageProps;
-  initialStartDate: string;
-  initialEndDate: string;
 };
 
-function buildUrl(queryParams: EventListPageProps) {
-  const params = new URLSearchParams();
+function buildUrl(params: EventListPageProps) {
+  const searchParams = new URLSearchParams();
 
-  if (queryParams) {
-    Object.entries(queryParams).forEach(([key, value]) => {
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
       const normalizedValue = value?.trim();
 
       if (normalizedValue) {
-        params.set(key, normalizedValue);
+        searchParams.set(key, normalizedValue);
       }
     });
   }
 
-  return params.toString();
+  return searchParams.toString();
 }
 
 function parseDateValue(value: string): Date | null {
@@ -74,20 +74,13 @@ function CalendarGlyph({ onClick }: { onClick: () => void }) {
   );
 }
 
-export default function EventFilters({
-  params,
-  initialStartDate,
-  initialEndDate,
-}: EventListPagePropsWrapper) {
+export default function EventFilters({ params }: EventListPagePropsWrapper) {
   const router = useRouter();
   const [city, setCity] = useState(params['city'] ?? '');
-  const [region, setRegion] = useState(params['region'] ?? '');
-  const [startDate, setStartDate] = useState(params['startDate'] ?? initialStartDate);
-  const [endDate, setEndDate] = useState(params['endDate'] ?? initialEndDate);
   const startDateInputRef = useRef<DateInputWithPicker | null>(null);
   const endDateInputRef = useRef<DateInputWithPicker | null>(null);
-  const startDateValue = parseDateValue(startDate);
-  const endDateValue = parseDateValue(endDate);
+  const startDateValue = parseDateValue(params.startDate);
+  const endDateValue = parseDateValue(params.endDate);
   const dateRangeError =
     startDateValue && endDateValue && endDateValue < startDateValue
       ? 'End date must be on or after the start date'
@@ -95,16 +88,13 @@ export default function EventFilters({
 
   function commitFilters(nextValues?: Partial<EventListPageProps>) {
     const queryParams = {
-      topicSlug: params.topicSlug,
-      city,
-      region,
-      startDate,
-      endDate,
+      ...params,
       ...nextValues,
+      page: undefined,
     };
 
-    const nextStartDate = parseDateValue(queryParams.startDate ?? '');
-    const nextEndDate = parseDateValue(queryParams.endDate ?? '');
+    const nextStartDate = parseDateValue(queryParams.startDate);
+    const nextEndDate = parseDateValue(queryParams.endDate);
 
     if (nextStartDate && nextEndDate && nextEndDate < nextStartDate) {
       return;
@@ -135,11 +125,9 @@ export default function EventFilters({
           <select
             id="event-region"
             className="submissionControl"
-            value={region}
+            value={params.region}
             onChange={(event) => {
-              const nextRegion = event.target.value;
-              setRegion(nextRegion);
-              commitFilters({ region: nextRegion });
+              commitFilters({ region: event.target.value });
             }}
           >
             <option value="">Select a state</option>
@@ -167,13 +155,11 @@ export default function EventFilters({
             <input
               id="event-start-date"
               className="submissionControl"
-              value={startDate}
+              value={params.startDate}
               type="date"
               ref={startDateInputRef}
               onChange={(event) => {
-                const nextStartDate = event.target.value;
-                setStartDate(nextStartDate);
-                commitFilters({ startDate: nextStartDate });
+                commitFilters({ startDate: event.target.value });
               }}
             />
             <CalendarGlyph onClick={() => openDatePicker(startDateInputRef.current)} />
@@ -185,13 +171,11 @@ export default function EventFilters({
             <input
               id="event-end-date"
               className="submissionControl"
-              value={endDate}
+              value={params.endDate}
               type="date"
               ref={endDateInputRef}
               onChange={(event) => {
-                const nextEndDate = event.target.value;
-                setEndDate(nextEndDate);
-                commitFilters({ endDate: nextEndDate });
+                commitFilters({ endDate: event.target.value });
               }}
             />
             <CalendarGlyph onClick={() => openDatePicker(endDateInputRef.current)} />

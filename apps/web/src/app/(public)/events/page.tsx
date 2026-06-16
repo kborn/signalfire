@@ -37,6 +37,16 @@ type EventListPageProps = {
   pageSize?: string;
 };
 
+type ResolvedEventListPageProps = {
+  topicSlug?: string;
+  startDate: string;
+  endDate: string;
+  city?: string;
+  region?: string;
+  page?: string;
+  pageSize?: string;
+};
+
 type EventListPagePropsWrapper = {
   searchParams?: Promise<EventListPageProps>;
 };
@@ -52,7 +62,10 @@ function resolveDateWindow(params: EventListPageProps) {
       return date;
     })();
 
-  return { startDate, endDate };
+  return {
+    startDate: toDateInputValue(startDate),
+    endDate: toDateInputValue(endDate),
+  };
 }
 
 function toDateInputValue(date: Date): string {
@@ -104,17 +117,12 @@ async function getContents(params: EventListPageProps) {
 export default async function EventListPage({ searchParams }: EventListPagePropsWrapper) {
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
-  const { startDate, endDate } = resolveDateWindow(params);
-
+  const resolvedParams: ResolvedEventListPageProps = { ...params, ...resolveDateWindow(params) };
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
       <p className="page-intro">Browse upcoming events and find ways to participate in person</p>
-      <EventFilters
-        params={params}
-        initialStartDate={toDateInputValue(startDate)}
-        initialEndDate={toDateInputValue(endDate)}
-      />
+      <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(params)}</div>
     </section>
