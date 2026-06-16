@@ -234,7 +234,7 @@ ALTER TABLE "action_event" ADD CONSTRAINT "action_event_action_id_fkey" FOREIGN 
 ALTER TABLE "action_event" ADD CONSTRAINT "action_event_event_id_fkey" FOREIGN KEY ("event_id") REFERENCES "event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 ALTER TABLE "submission"
-ADD CONSTRAINT submission_one_of_target_check
+ADD CONSTRAINT submission_one_of_target_chk
 CHECK (
   -- never both
   NOT ("article_id" IS NOT NULL AND "event_id" IS NOT NULL)
