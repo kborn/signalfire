@@ -167,7 +167,7 @@ Phase 11 adds internal create/edit paths, not a new content model.
 
 **Objective**
 
-Implement the internal interface locally without dragging Phase 13 security work
+Implement the internal interface locally without dragging Phase 14 security work
 into the current phase.
 
 **Why it matters**

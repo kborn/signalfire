@@ -205,7 +205,7 @@ Release 1 backend persistence will use Prisma ORM with PostgreSQL.
 
 ###### Decision
 
-Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 13 unless a low-complexity path is available earlier.
+Phase 2 requires local end-to-end Prisma migration validation, but CI migration execution that depends on database orchestration is deferred to Phase 14 unless a low-complexity path is available earlier.
 
 ###### Rationale
 
@@ -216,7 +216,7 @@ Phase 2 requires local end-to-end Prisma migration validation, but CI migration 
 ###### Implications
 
 - Phase 2 completion does not require CI database migration execution.
-- Phase 13 must define deployment-time and CI migration strategy as part of infrastructure hardening.
+- Phase 14 must define deployment-time and CI migration strategy as part of infrastructure hardening.
 - Teams may still add CI migration smoke checks earlier if implementation complexity remains low.
 - Phase 2 should avoid implicit Prisma execution hooks in generic workflows (for example `prebuild`/`predev`) and use explicit Prisma commands instead.
 
@@ -1154,3 +1154,89 @@ small local draft state with debounced commits back into the URL.
 - `region`, `startDate`, and `endDate` may continue to commit immediately.
 - This is an intentional product and learning tradeoff, not an accidental
   inconsistency in filter implementation.
+
+---
+
+---
+
+### ► Milestone 1 public demo is explicit, self-contained, and reviewer-oriented
+
+###### 2026-06-16
+
+---
+
+###### Decision
+
+The Milestone 1 public experience should explicitly present itself as a demo.
+The homepage will carry a dismissible demo banner, the site chrome will retain
+a subtle persistent demo indicator, and the product will expose a dedicated
+public `/demo` page that explains the portfolio/demo posture and links reviewers
+to admin demo access instructions. The global `Admin Demo` entry point should
+live in the header only.
+
+###### Rationale
+
+- Reviewers should not have to infer whether the site is a live public product,
+  a mockup, or a portfolio demonstration.
+- Demo/admin access should be discoverable from within the product rather than
+  assuming the reviewer arrived through the repository first.
+- A dedicated `/demo` page keeps the homepage clear of operational detail while
+  still making the product self-contained for first-time visitors.
+- A single header-level `Admin Demo` affordance is enough to make the admin
+  surface discoverable without turning the public site chrome into a demo
+  directory.
+
+###### Implications
+
+- The homepage banner should frame the experience briefly without turning the
+  homepage into an explanatory wall.
+- The header, footer, or equivalent shared chrome should retain a small demo
+  affordance after the homepage banner is dismissed.
+- `Admin Demo` should be visible in the product, with the `/demo` page serving
+  as the canonical path to credentials or access instructions.
+- Demo messaging must be honest about the portfolio nature of the site and
+  should not imply a currently active live community if that is not true.
+- The `/demo` page should stay concise: short demo framing, limited-data note,
+  admin-demo access instructions, and links to the repository and key product
+  surfaces are sufficient.
+
+---
+
+---
+
+### ► Milestone 1 Event demo data favors discoverability over full geographic coverage
+
+###### 2026-06-16
+
+---
+
+###### Decision
+
+The public Events demo should prefer reliable discoverability over exhaustive
+state coverage. Demo data should guarantee meaningful Event results for a
+bounded set of prominently available regions, rather than attempting to seed a
+thin nationwide distribution. Unsupported regions may remain visible in the
+selector, but they should be disabled.
+
+###### Rationale
+
+- Reviewers should be able to find Event results quickly without trying many
+  states or assuming the filter is broken.
+- Seeding broad but shallow nationwide Event coverage would add substantial
+  content overhead without materially improving Milestone 1 evaluation.
+- A bounded state set allows stronger topic spread, date spread, and denser
+  examples in the places reviewers are most likely to explore.
+- Keeping at least one territory in the supported set proves the selector and
+  data model are not implicitly “states only.”
+
+###### Implications
+
+- The Event region selector may intentionally expose unsupported regions in a
+  disabled state while keeping only the seeded regions selectable.
+- Demo seed planning should ensure each visible state has a credible spread of
+  upcoming and past events across multiple topics.
+- Articles and Actions may remain broader, but the Event finder should rarely
+  dead-end for normal reviewer exploration.
+- The initial supported Event demo region set should include a small bounded
+  mix such as California, New York, Pennsylvania, Texas, and Puerto Rico,
+  unless implementation or content-review needs justify a nearby substitute.

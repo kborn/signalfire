@@ -173,7 +173,7 @@ Why ninth:
 
 Events are still the densest content form in the phase.
 
-### 10. Finish with targeted tests and Phase 13 handoff notes
+### 10. Finish with targeted tests and Phase 14 handoff notes
 
 Add tests for:
 

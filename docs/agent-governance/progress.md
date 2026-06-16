@@ -20,12 +20,9 @@ It is the canonical answer to: “Where are we in the plan?”
 | [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| **[13](#-phase-13--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
-| [14](#-phase-14--analytics-)                      | Analytics                       | ⏳            |
-| [15](#-phase-15--release-stabilization-)          | Release Stabilization           | ⏳            |
-| [15.5](#-phase-155--final-public-ui-polish-)      | Final Public UI Polish          | ⏳            |
-| [16](#-phase-16--final-repo--product-prep-)       | Final Repo & Product Prep       | ⏳            |
-| [17](#-phase-17--public-launch-)                  | Public Launch                   | ⏳            |
+| **[13](#-phase-13--release-prep--final-polish-)** | **Release Prep & Final Polish** | **🚧 ACTIVE** |
+| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
+| [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -1567,155 +1564,101 @@ debounced URL commits`.
 
 ---
 
-### ► Phase 13 — Deployment Infrastructure ⏳
+### ► Phase 13 — Release Prep & Final Polish ⏳
 
 ###### Goal
 
-Configure hosting, environment management, and CI/CD.
+Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that would otherwise spread into release infrastructure, and complete the final product/repo polish pass before the public demo goes live.
 
 ###### Phase Tasks:
 
-- [ ] Add repository security automation before public launch hardening, including Dependabot update PRs and dependency vulnerability validation in CI
-- [ ] Define branch protection/status-check requirements for `main` and apply them across primary public-facing repositories
-- [ ] Configure deployment environment variables, secret handling, and runtime wiring needed to support the chosen admin-auth implementation
+##### 13.1 Schema & Seed Hygiene
 
----
+- [ ] Normalize mixed-case database identifiers to `snake_case` before release infrastructure assumptions spread further, using Prisma field/table mapping where needed to preserve ergonomic TypeScript names
+- [ ] Keep the demo dataset broad enough to demonstrate pagination, but make Event seed dates relative to seed time so the public Events surface does not quietly decay into an all-past dataset
+- [ ] Revisit seed data for the public demo so homepage, collection pages, and admin flows reflect the intended narrative, topical mix, and content quality bar rather than purely development-oriented fixtures
+- [ ] Align the bounded Event demo geography, disabled-region selector behavior, and seed coverage so reviewers can reliably find Event results without requiring nationwide demo data
 
----
+##### 13.2 Demo Positioning
 
-### ► Phase 14 — Analytics ⏳
+- [ ] Implement the explicit public-demo posture: add the homepage demo banner, persistent demo indicator, concise `/demo` page, and the final header-level path to admin demo access instructions
+- [ ] Add a stable README section or anchor for demo/admin access guidance, then link the in-product `/demo` page and admin-access messaging to that specific repository location instead of the repo root
+- [ ] Run a full dependency risk review and resolve or explicitly defer remaining high-severity findings with documented rationale
+- [ ] Define the intended reviewer journey for the public demo, including the first-30-seconds impression, the expected path from homepage into content, and how a reviewer discovers the admin/demo surface
 
-###### Goal
+##### 13.3 Public Polish
 
-Implement basic product analytics so the team can measure visitor volume, acquisition sources, and core discovery-to-action traffic patterns.
+- [ ] Clean up remaining obvious formatting-quality issues that undercut launch readiness, including raw or UTC-only timestamp presentation where human-readable date/time formatting should exist
+- [ ] Fix obvious public demo defects that read as bugs rather than product tradeoffs, including duplicate event-summary rendering and similar screenshot-visible data/presentation issues
+- [ ] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
+- [ ] Complete a final public copy review across homepage, About, navigation, collection pages, detail pages, submit flows, empty states, and error states
+- [ ] Make minor color, spacing, typography, CTA, and visual hierarchy adjustments needed after reviewing the full public flow in realistic browser viewports
+- [ ] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
+- [ ] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
+- [ ] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
+- [ ] Align public-facing naming and brand presentation consistently across the live product, including product name usage, admin entry-point labeling, nav terminology, and any abbreviated wordmark treatment
+- [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
+- [ ] Refine the public Events finder, empty states, and Event list/detail presentation so the filter surface, result cards, and detail pages read as one coherent public UI system
+- [ ] Replace ad hoc inline public-site SVG icon markup, including the Events date-picker calendar glyph, with the final shared icon-library treatment chosen for launch polish
 
-Capabilities:
+##### 13.4 Repo & Launch Readiness
 
-- visitor traffic measurement
-- traffic source attribution
-- basic page and flow analytics across the public site
-- baseline reporting to support launch decisions
-
----
-
----
-
-### ► Phase 15 — Release Stabilization ⏳
-
-###### Goal
-
-Bug fixes, polish, and observability improvements.
-
-###### Phase Tasks:
-
-- [ ] Run a full dependency risk review (direct and transitive) and resolve or explicitly defer remaining high-severity findings with documented rationale
 - [ ] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
-- [ ] Clean up remaining obvious formatting-quality issues that undercut launch
-      readiness, including raw or UTC-only timestamp presentation where
-      human-readable date/time formatting should exist
-- [ ] Fix obvious public demo defects that read as bugs rather than product
-      tradeoffs, including duplicate event-summary rendering and similar
-      screenshot-visible data/presentation issues
-
----
-
-### ► Phase 15.5 — Final Public UI Polish ⏳
-
-###### Goal
-
-Perform one final launch-adjacent public UI polish pass after core release
-stabilization and before the final release-prep and public-launch phases.
-
-###### Phase Tasks:
-
-- [ ] Decide whether public collection cards should be fully clickable or keep
-      title-only links, then align hover/focus affordances and accessibility
-      behavior with that decision
-- [ ] Complete a final public copy review across homepage, About, navigation,
-      collection pages, detail pages, submit flows, empty states, and error
-      states
-- [ ] Make minor color, spacing, typography, and CTA adjustments needed after
-      reviewing the full public flow in realistic browser viewports
-- [ ] Resolve the known sticky topic-filter edge case where animated collection
-      card hover/focus treatment can visually bleed under the pinned filter
-      block on public Articles/Actions pages
-- [ ] Resolve the known public-site polish issues from the Milestone 1 review,
-      including stronger card definition, clearer primary CTA hierarchy, hero
-      background containment, article metadata/body separation, event time
-      formatting, topic-card differentiation, and improved home-page section
-      rhythm
-- [ ] Simplify the homepage so it does not repeat the same premise across too
-      many equal-weight sections, and ensure the core journey reads as a clear
-      progression rather than a flat scroll
-- [ ] Decide and implement the final demo-site affordance for recruiter-style
-      visitors, such as a banner or similar visible entry point that explains
-      the portfolio-demo posture and directs them into the admin experience
-      intentionally
-- [ ] Align public-facing naming and brand presentation consistently across the
-      live product, including product name usage, admin entry-point labeling,
-      nav terminology, and any abbreviated wordmark treatment
-- [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and
-      does not over-claim community behavior or hide key formatting guidance
-- [ ] Refine the public Events finder, empty states, and Event list/detail
-      presentation so the filter surface, result cards, and detail pages read
-      as one coherent public UI system rather than visually distinct subflows
-- [ ] Replace ad hoc inline public-site SVG icon markup, including the Events
-      date-picker calendar glyph, with the final shared icon-library treatment
-      chosen for launch polish
-- [ ] Verify the final public polish pass does not introduce admin UI regressions
-      or conflict with the established Phase 11.5 visual identity
-
-###### Notes:
-
-- This phase is intentionally small. It should handle last-mile presentation
-  polish before launch, not reopen product identity, route architecture, or
-  core feature scope.
-- The demo-site affordance should help live-site reviewers discover the admin
-  workflow without depending on repository documentation, while still keeping
-  the public experience coherent for ordinary visitors.
-- Public copy should not lean harder on "community-powered" messaging than the
-  actual Release 1 contributor experience can support.
-
----
-
----
-
-### ► Phase 16 — Final Repo & Product Prep ⏳
-
-###### Goal
-
-Run the final cross-cutting verification and readiness pass before public launch.
-
-###### Phase Tasks:
-
 - [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows that still lack confidence after Phase 11.9 auth implementation
 - [ ] Run a final focused regression pass across public and admin flows, including auth, moderation, and essential content-management paths
-- [ ] Review Nest module boundaries for duplicated provider registration across feature modules and replace provider re-registration with cleaner module import/export relationships where appropriate
+- [ ] Write a Milestone 1 release checklist covering seed/reset steps, required test commands, final smoke paths, screenshot refresh, docs verification, and deployment handoff prerequisites
+- [ ] Explicitly record the intentional Milestone 1 non-goals or deferred items so release polish does not expand into open-ended post-demo cleanup
 - [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
-- [ ] Confirm repository documentation, setup instructions, and deployment caveats match the actual shipped product state
-- [ ] Refresh README screenshots and any reviewer-facing visual references so
-      the repository matches the final public/admin experience being shipped
-
-###### Notes:
-
-- This phase is the final product/repository readiness gate, not a place to introduce new product scope.
-- Public UI polish should remain in Phase 15.5; this phase is for confidence and readiness validation.
-- Broader logging architecture should be decided before this phase, but any final backfill or verification of important operational logs should happen here as part of launch-readiness validation.
+- [ ] Confirm repository documentation, setup instructions, deployment caveats, and reviewer-facing screenshots match the actual shipped product state
+- [ ] Complete a repo hygiene pass: update runbooks, verify local setup instructions, make deploy steps easy to find, remove stale guidance, and replace outdated screenshots with current product/admin captures
 
 ---
 
 ---
 
-### ► Phase 17 — Public Launch ⏳
+### ► Phase 14 — Deployment Infrastructure ⏳
 
 ###### Goal
 
-Deployment verification, documentation completion, and launch readiness.
+Configure hosting, environment management, and CI/CD once the product and schema shape are stable enough to justify release planning.
+
+###### Phase Tasks:
+
+- [ ] Confirm the target hosting/runtime shape for the public site, API, database, and admin-auth deployment boundary
+- [ ] Define how schema migrations run in deployed environments and validate that the chosen deployment workflow supports that path safely
+- [ ] Configure deployment environment variables, secret handling, and runtime wiring needed to support the chosen admin-auth implementation
+- [ ] Ensure CI remains a credible merge gate by confirming the required lint, typecheck, unit, integration, and e2e suites for `main`
+- [ ] Add repository security automation appropriate for post-Milestone 1 maintenance, including Dependabot update PRs and dependency vulnerability validation in CI
+- [ ] Define branch protection/status-check requirements for `main` and apply them across the primary public repository
+- [ ] Decide whether lightweight repository ownership rules such as `CODEOWNERS` are necessary for post-Milestone 1 maintenance and add them if they improve review clarity
+- [ ] Enable minimal launch-stage traffic visibility through deployment/platform logs or lightweight request logging for public routes without introducing a paid analytics stack
+
+---
+
+###### Notes:
+
+- Phase order was intentionally adjusted after Phase 12 so code-facing Milestone 1 work, including DB identifier normalization, lands before release infrastructure hardens those assumptions.
+
+- This phase intentionally combines late bug fixing, public UI polish, regression work, and repo-readiness cleanup into one pre-launch pass.
+- Release 1 only needs lightweight public traffic visibility, not a paid analytics stack or full product analytics program.
+- Public copy should not lean harder on "community-powered" messaging than the actual Release 1 contributor experience can support.
+
+---
+
+---
+
+### ► Phase 15 — Public Launch ⏳
+
+###### Goal
+
+Deploy the public demo and verify the live release behaves the way Milestone 1 intends.
 
 ###### Phase Tasks:
 
 - [ ] Launch a public demo instance that is appropriate for portfolio and
       recruiter review at the end of Milestone 1
+- [ ] Verify deployment health, runtime configuration, and migration state in
+      the live environment after launch
 - [ ] Verify the deployed public site and the repository provide distinct but
       complementary entry points for their audiences: live-site demo discovery
       for recruiters and repository/docs depth for engineering reviewers
