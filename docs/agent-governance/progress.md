@@ -1574,10 +1574,16 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ##### 13.1 Schema & Seed Hygiene
 
-- [ ] Normalize mixed-case database identifiers to `snake_case` before release infrastructure assumptions spread further, using Prisma field/table mapping where needed to preserve ergonomic TypeScript names
-- [ ] Keep the demo dataset broad enough to demonstrate pagination, but make Event seed dates relative to seed time so the public Events surface does not quietly decay into an all-past dataset
-- [ ] Revisit seed data for the public demo so homepage, collection pages, and admin flows reflect the intended narrative, topical mix, and content quality bar rather than purely development-oriented fixtures
-- [ ] Align the bounded Event demo geography, disabled-region selector behavior, and seed coverage so reviewers can reliably find Event results without requiring nationwide demo data
+- [x] Normalize mixed-case database identifiers to `snake_case` before release infrastructure assumptions spread further, using Prisma field/table mapping where needed to preserve ergonomic TypeScript names
+- [x] Keep the demo dataset broad enough to demonstrate pagination, but make Event seed dates relative to seed time so the public Events surface does not quietly decay into an all-past dataset
+- [x] Revisit seed data for the public demo so homepage, collection pages, and admin flows reflect the intended narrative, topical mix, and content quality bar rather than purely development-oriented fixtures
+- [x] Align the bounded Event demo geography, disabled-region selector behavior, and seed coverage so reviewers can reliably find Event results without requiring nationwide demo data
+
+###### Notes:
+
+- Database migration history was rewritten before deployment so the local baseline now creates normalized `snake_case` physical identifiers directly instead of carrying a follow-up rename migration.
+- Public demo Event geography is currently bounded to `NY`, `PA`, `CA`, `TX`, and `PR`, and the public Events finder now exposes only that supported demo region set.
+- Generated demo Articles, Actions, and Events now use topic-specific editorial copy instead of lorem placeholder text, and the seeded admin ordering keeps curated records visible at the top of list views while preserving enough depth for pagination demos.
 
 ##### 13.2 Demo Positioning
 

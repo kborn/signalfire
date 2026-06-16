@@ -77,4 +77,26 @@ describe('EventFilters', () => {
       '/events?region=PA&pageSize=25&startDate=2026-06-16&endDate=2026-09-16',
     );
   });
+
+  it('limits region options to the supported demo geography', () => {
+    render(
+      <EventFilters
+        params={{
+          startDate: '2026-06-16',
+          endDate: '2026-09-16',
+        }}
+      />,
+    );
+
+    const options = screen.getAllByRole('option').map((option) => option.textContent);
+
+    expect(options).toEqual([
+      'Select a region',
+      'New York',
+      'Pennsylvania',
+      'California',
+      'Texas',
+      'Puerto Rico',
+    ]);
+  });
 });

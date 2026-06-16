@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { US_STATE_OPTIONS } from '@/lib/us-state-options';
+import { DEMO_EVENT_REGION_OPTIONS } from '@/lib/demo-event-region-options';
 import { useDebounce } from '@/components/debounce';
 
 type EventListPageProps = {
@@ -139,7 +139,7 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
     <section className="eventFilterPanel" aria-label="Event filters">
       <div className="eventFilterGrid">
         <label className="submissionLabel eventFilterField" htmlFor="event-region">
-          <span>State</span>
+          <span>State or territory</span>
           <select
             id="event-region"
             className="submissionControl"
@@ -148,8 +148,8 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
               commitFilters({ region: event.target.value });
             }}
           >
-            <option value="">Select a state</option>
-            {US_STATE_OPTIONS.map(([value, label]) => (
+            <option value="">Select a region</option>
+            {DEMO_EVENT_REGION_OPTIONS.map(([value, label]) => (
               <option key={value} value={value}>
                 {label}
               </option>

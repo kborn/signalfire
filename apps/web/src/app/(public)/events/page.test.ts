@@ -75,23 +75,23 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ region: 'IL', page: '2', pageSize: '25' }),
+        searchParams: Promise.resolve({ region: 'PA', page: '2', pageSize: '25' }),
       }),
     );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith({ region: 'IL', page: '2', pageSize: '25' });
+    expect(getEventsList).toHaveBeenCalledWith({ region: 'PA', page: '2', pageSize: '25' });
     expect(markup).toContain('Events');
     expect(markup).toContain('Browse upcoming events and find ways to participate in person');
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('event-end-date');
     expect(markup).toContain('Results per page');
-    expect(markup).toContain('href="/events?region=IL&amp;pageSize=10"');
-    expect(markup).toContain('href="/events?region=IL&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=IL&amp;pageSize=50"');
-    expect(markup).toContain('href="/events?region=IL&amp;page=1&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=IL&amp;page=2&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=IL&amp;page=3&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=PA&amp;pageSize=10"');
+    expect(markup).toContain('href="/events?region=PA&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=PA&amp;pageSize=50"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=1&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=2&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=3&amp;pageSize=25"');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -155,7 +155,7 @@ describe('EventListPage', () => {
 
     expect(getEventsList).not.toHaveBeenCalled();
     expect(markup).toContain('Events');
-    expect(markup).toContain('Select a state to start browsing events.');
+    expect(markup).toContain('Select a region to start browsing events.');
   });
 
   it('renders the empty state when a filtered query returns no events', async () => {

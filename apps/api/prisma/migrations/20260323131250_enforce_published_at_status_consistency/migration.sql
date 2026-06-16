@@ -1,28 +1,27 @@
-ALTER TABLE "_article"
+ALTER TABLE "article"
 ADD CONSTRAINT article_published_status_published_at_required
 CHECK (
-  -- publishedAt needs to be set when status is PUBLISHED but null otherwise
-  ("status" != 'PUBLISHED' AND "publishedAt" IS  NULL)
+  -- published_at needs to be set when status is PUBLISHED but null otherwise
+  ("status" != 'PUBLISHED' AND "published_at" IS  NULL)
   OR
-  ("status" = 'PUBLISHED' AND "publishedAt" IS NOT NULL)
+  ("status" = 'PUBLISHED' AND "published_at" IS NOT NULL)
 );
 
-ALTER TABLE "_action"
+ALTER TABLE "action"
 ADD CONSTRAINT action_published_status_published_at_required
 CHECK (
-
-  -- publishedAt needs to be set when status is PUBLISHED but null otherwise
-  ("status" != 'PUBLISHED' AND "publishedAt" IS  NULL)
+  -- published_at needs to be set when status is PUBLISHED but null otherwise
+  ("status" != 'PUBLISHED' AND "published_at" IS  NULL)
   OR
-  ("status" = 'PUBLISHED' AND "publishedAt" IS NOT NULL)
+  ("status" = 'PUBLISHED' AND "published_at" IS NOT NULL)
 );
 
 
-ALTER TABLE "_event"
+ALTER TABLE "event"
 ADD CONSTRAINT event_published_status_published_at_required
 CHECK (
-  -- publishedAt needs to be set when status is PUBLISHED but null otherwise
-  ("status" != 'PUBLISHED' AND "publishedAt" IS  NULL)
+  -- published_at needs to be set when status is PUBLISHED but null otherwise
+  ("status" != 'PUBLISHED' AND "published_at" IS  NULL)
   OR
-  ("status" = 'PUBLISHED' AND "publishedAt" IS NOT NULL)
+  ("status" = 'PUBLISHED' AND "published_at" IS NOT NULL)
 );
