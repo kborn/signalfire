@@ -83,7 +83,7 @@ async function getContents(params: EventListPageProps) {
         <p className="section-label">Start here</p>
         <h2>Find upcoming events near you</h2>
         <p className="metaText">
-          Select a state to start browsing events. Topic, city, and dates can narrow the results.
+          Select a region to start browsing events. Topic, city, and dates can narrow the results.
         </p>
       </section>
     );

@@ -15,17 +15,23 @@ datasource db {
 enum SubmissionType {
   EVENT
   ARTICLE
+
+  @@map("submission_type")
 }
 
 enum SubmissionStatus {
   PENDING
   APPROVED
   REJECTED
+
+  @@map("submission_status")
 }
 
 enum EntityStatus {
   DRAFT
   PUBLISHED
+
+  @@map("entity_status")
 }
 
 enum ActionType {
@@ -34,6 +40,8 @@ enum ActionType {
   CONTACT
   DONATE
   VOLUNTEER
+
+  @@map("action_type")
 }
 
 enum EventType {
@@ -43,6 +51,8 @@ enum EventType {
   TOWN_HALL
   WORKSHOP
   MEETING
+
+  @@map("event_type")
 }
 
 model Topic {
@@ -50,14 +60,14 @@ model Topic {
   slug String @unique
   name String
 
-  description   String
-  createdAt     DateTime       @default(now())
-  topicArticles TopicArticle[]
-  topicActions  TopicAction[]
-  topicEvents        TopicEvent[]
-  submissionTopics   SubmissionTopic[]
+  description      String
+  createdAt        DateTime          @default(now()) @map("created_at")
+  topicArticles    TopicArticle[]
+  topicActions     TopicAction[]
+  topicEvents      TopicEvent[]
+  submissionTopics SubmissionTopic[]
 
-  @@map("_topic")
+  @@map("topic")
 }
 
 model Article {
@@ -68,15 +78,15 @@ model Article {
   content        String
   status         EntityStatus
   author         String
-  createdAt      DateTime        @default(now())
-  publishedAt    DateTime?
-  updatedAt      DateTime        @updatedAt
+  createdAt      DateTime        @default(now()) @map("created_at")
+  publishedAt    DateTime?       @map("published_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
   submission     Submission?
   topicArticles  TopicArticle[]
   articleActions ArticleAction[]
   articleEvents  ArticleEvent[]
 
-  @@map("_article")
+  @@map("article")
 }
 
 model Action {
@@ -85,211 +95,209 @@ model Action {
   title          String
   summary        String
   description    String
-  actionType     ActionType
+  actionType     ActionType      @map("action_type")
   status         EntityStatus
-  createdAt      DateTime        @default(now())
-  publishedAt    DateTime?
-  updatedAt      DateTime        @updatedAt
+  createdAt      DateTime        @default(now()) @map("created_at")
+  publishedAt    DateTime?       @map("published_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
   topicActions   TopicAction[]
   articleActions ArticleAction[]
   actionEvents   ActionEvent[]
 
-  @@map("_action")
+  @@map("action")
 }
 
 model Event {
-  id            Int            @id @default(autoincrement())
-  title         String
-  summary       String
-  description   String
-  website       String?
-  contactEmail  String?
-  eventType     EventType
-  status        EntityStatus
-  startTime     DateTime
-  endTime       DateTime?
-  locationName  String
-  publicLocationDescription String?
-  addressLine1       String?
-  addressLine2       String?
-  city          String?
-  region        String?
-  postalCode    String?
-  country       String?
-  latitude      Decimal?
-  longitude     Decimal?
-  submission    Submission?
-  createdAt     DateTime       @default(now())
-  publishedAt   DateTime?
-  updatedAt     DateTime       @updatedAt
-  topicEvents   TopicEvent[]
-  articleEvents ArticleEvent[]
-  actionEvents  ActionEvent[]
+  id                        Int            @id @default(autoincrement())
+  title                     String
+  summary                   String
+  description               String
+  website                   String?
+  contactEmail              String?        @map("contact_email")
+  eventType                 EventType      @map("event_type")
+  status                    EntityStatus
+  startTime                 DateTime       @map("start_time")
+  endTime                   DateTime?      @map("end_time")
+  locationName              String         @map("location_name")
+  publicLocationDescription String?        @map("public_location_description")
+  addressLine1              String?        @map("address_line1")
+  addressLine2              String?        @map("address_line2")
+  city                      String?
+  region                    String?
+  postalCode                String?        @map("postal_code")
+  country                   String?
+  latitude                  Decimal?
+  longitude                 Decimal?
+  submission                Submission?
+  createdAt                 DateTime       @default(now()) @map("created_at")
+  publishedAt               DateTime?      @map("published_at")
+  updatedAt                 DateTime       @updatedAt @map("updated_at")
+  topicEvents               TopicEvent[]
+  articleEvents             ArticleEvent[]
+  actionEvents              ActionEvent[]
 
-  @@map("_event")
+  @@map("event")
 }
 
 model Submission {
-  id                 Int              @id @default(autoincrement())
-  submissionType     SubmissionType
-  status             SubmissionStatus
-  title              String
-  summary            String
-  submittedContent   String
-  author             String?
-  submitterName      String?
-  submitterEmail     String?
-  eventType          EventType?
-  startTime          DateTime?
-  endTime            DateTime?
-  locationName       String?
-  publicLocationDescription String?
-  addressLine1       String?
-  addressLine2       String?
-  city               String?
-  region             String?
-  postalCode         String?
-  country            String?
-  website            String?
-  contactEmail       String?
-  reviewNotes        String?
-  article            Article?         @relation(fields: [articleId], references: [id])
-  articleId          Int?             @unique
-  event              Event?           @relation(fields: [eventId], references: [id])
-  eventId            Int?             @unique
-  submissionResourceLinks      SubmissionResourceLink[]
-  submissionTopics   SubmissionTopic[]
-  submittedAt        DateTime         @default(now())
-  reviewedAt         DateTime?
+  id                        Int                      @id @default(autoincrement())
+  submissionType            SubmissionType           @map("submission_type")
+  status                    SubmissionStatus
+  title                     String
+  summary                   String
+  submittedContent          String                   @map("submitted_content")
+  author                    String?
+  submitterName             String?                  @map("submitter_name")
+  submitterEmail            String?                  @map("submitter_email")
+  eventType                 EventType?               @map("event_type")
+  startTime                 DateTime?                @map("start_time")
+  endTime                   DateTime?                @map("end_time")
+  locationName              String?                  @map("location_name")
+  publicLocationDescription String?                  @map("public_location_description")
+  addressLine1              String?                  @map("address_line1")
+  addressLine2              String?                  @map("address_line2")
+  city                      String?
+  region                    String?
+  postalCode                String?                  @map("postal_code")
+  country                   String?
+  website                   String?
+  contactEmail              String?                  @map("contact_email")
+  reviewNotes               String?                  @map("review_notes")
+  article                   Article?                 @relation(fields: [articleId], references: [id])
+  articleId                 Int?                     @unique @map("article_id")
+  event                     Event?                   @relation(fields: [eventId], references: [id])
+  eventId                   Int?                     @unique @map("event_id")
+  submissionResourceLinks   SubmissionResourceLink[]
+  submissionTopics          SubmissionTopic[]
+  submittedAt               DateTime                 @default(now()) @map("submitted_at")
+  reviewedAt                DateTime?                @map("reviewed_at")
 
-  @@map("_submission")
+  @@map("submission")
 }
 
 model ResourceLink {
-  id      Int       @id @default(autoincrement())
-  url     String    @unique
-  submissionResourceLinks      SubmissionResourceLink[]
-  created DateTime  @default(now())
+  id                      Int                      @id @default(autoincrement())
+  url                     String                   @unique
+  submissionResourceLinks SubmissionResourceLink[]
+  created                 DateTime                 @default(now()) @map("created_at")
 
-  @@map("_resource_link")
+  @@map("resource_link")
 }
-
 
 model TopicArticle {
   topic      Topic    @relation(fields: [topicId], references: [id])
-  topicId    Int
+  topicId    Int      @map("topic_id")
   article    Article  @relation(fields: [articleId], references: [id])
-  articleId  Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  articleId  Int      @map("article_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([topicId, articleId])
-  @@map("_topic_article")
+  @@map("topic_article")
 }
 
 model TopicAction {
   topic      Topic    @relation(fields: [topicId], references: [id])
-  topicId    Int
+  topicId    Int      @map("topic_id")
   action     Action   @relation(fields: [actionId], references: [id])
-  actionId   Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  actionId   Int      @map("action_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([topicId, actionId])
-  @@map("_topic_action")
+  @@map("topic_action")
 }
 
 model TopicEvent {
   topic      Topic    @relation(fields: [topicId], references: [id])
-  topicId    Int
+  topicId    Int      @map("topic_id")
   event      Event    @relation(fields: [eventId], references: [id])
-  eventId    Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  eventId    Int      @map("event_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([topicId, eventId])
-  @@map("_topic_event")
+  @@map("topic_event")
 }
 
 model ArticleAction {
   article    Article  @relation(fields: [articleId], references: [id])
-  articleId  Int
+  articleId  Int      @map("article_id")
   action     Action   @relation(fields: [actionId], references: [id])
-  actionId   Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  actionId   Int      @map("action_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([articleId, actionId])
-  @@map("_article_action")
+  @@map("article_action")
 }
 
 model ArticleEvent {
   article    Article  @relation(fields: [articleId], references: [id])
-  articleId  Int
+  articleId  Int      @map("article_id")
   event      Event    @relation(fields: [eventId], references: [id])
-  eventId    Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  eventId    Int      @map("event_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([articleId, eventId])
-  @@map("_article_event")
+  @@map("article_event")
 }
 
 model ActionEvent {
   action     Action   @relation(fields: [actionId], references: [id])
-  actionId   Int
+  actionId   Int      @map("action_id")
   event      Event    @relation(fields: [eventId], references: [id])
-  eventId    Int
-  assignedAt DateTime @default(now())
-  assignedBy String
+  eventId    Int      @map("event_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  assignedBy String   @map("assigned_by")
 
   @@id([actionId, eventId])
-  @@map("_action_event")
+  @@map("action_event")
 }
 
-
 model SubmissionTopic {
-  submission     Submission   @relation(fields: [submissionId], references: [id])
-  submissionId   Int
-  topic   Topic    @relation(fields: [topicId], references: [id])
-  topicId    Int
-  assignedAt DateTime @default(now())
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  submissionId Int        @map("submission_id")
+  topic        Topic      @relation(fields: [topicId], references: [id])
+  topicId      Int        @map("topic_id")
+  assignedAt   DateTime   @default(now()) @map("assigned_at")
 
   @@id([submissionId, topicId])
-  @@map("_submission_topic")
+  @@map("submission_topic")
 }
 
 model SubmissionResourceLink {
   submission     Submission   @relation(fields: [submissionId], references: [id])
-  submissionId   Int
-  resourceLink   ResourceLink    @relation(fields: [resourceLinkId], references: [id])
-  resourceLinkId    Int
-  assignedAt DateTime @default(now())
+  submissionId   Int          @map("submission_id")
+  resourceLink   ResourceLink @relation(fields: [resourceLinkId], references: [id])
+  resourceLinkId Int          @map("resource_link_id")
+  assignedAt     DateTime     @default(now()) @map("assigned_at")
 
   @@id([submissionId, resourceLinkId])
-  @@map("_submission_resource_link")
+  @@map("submission_resource_link")
 }
 
 model AdminUser {
-  id             Int             @id @default(autoincrement())
-  email           String          @unique
-  passwordHash String
-  isActive Boolean @default(true)
-  sessions AdminSession[]
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  passwordHash String         @map("password_hash")
+  isActive     Boolean        @default(true) @map("is_active")
+  sessions     AdminSession[]
+  createdAt    DateTime       @default(now()) @map("created_at")
+  updatedAt    DateTime       @updatedAt @map("updated_at")
 
-  @@map("_admin_user")
+  @@map("admin_user")
 }
 
 model AdminSession {
-  id             Int             @id @default(autoincrement())
-  sessionToken String @unique
-  adminUser  AdminUser @relation(fields: [adminUserId], references: [id])
-  adminUserId Int
-  expiresAt DateTime
-  createdAt      DateTime        @default(now())
-  lastUsedAt      DateTime        @default(now())
+  id           Int       @id @default(autoincrement())
+  sessionToken String    @unique @map("session_token")
+  adminUser    AdminUser @relation(fields: [adminUserId], references: [id])
+  adminUserId  Int       @map("admin_user_id")
+  expiresAt    DateTime  @map("expires_at")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  lastUsedAt   DateTime  @default(now()) @map("last_used_at")
 
-  @@map("_admin_session")
+  @@map("admin_session")
 }

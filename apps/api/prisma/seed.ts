@@ -39,25 +39,140 @@ const TARGET_PUBLISHED_ARTICLE_COUNT = 120;
 const TARGET_PUBLISHED_ACTION_COUNT = 120;
 const TARGET_PUBLISHED_EVENT_COUNT = 120;
 
-const LOREM_SENTENCE =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-const LOREM_PARAGRAPH = `${LOREM_SENTENCE} Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.`;
-const LOREM_LONG_FORM = `${LOREM_PARAGRAPH}
-
-${LOREM_PARAGRAPH}
-
-${LOREM_PARAGRAPH}`;
-
-function titleCaseWords(value: string): string {
-  return value
-    .split('-')
-    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ');
-}
-
 function publishedDateFromIndex(index: number): Date {
   return new Date(Date.UTC(2026, 0, 1 + index, 0, 0, 0, 0));
 }
+
+const topicNarratives = {
+  democracy: {
+    articleSummary:
+      'A briefing on a local democratic process and where public pressure can matter.',
+    articleTitle: 'Democracy Briefing',
+    articleBody: `This demo briefing explains one concrete democratic process, names the institution involved, and points readers toward a practical next step.
+
+It is written to feel like a real issue explainer rather than placeholder copy. Readers should understand what decision is being made, who can influence it, and what action fits the moment.
+
+The goal of this seeded content is to make the public collections and admin tools look intentionally curated even when the dataset is broad enough to demonstrate pagination.`,
+    actionTitle: 'Democracy Action',
+    actionSummary: 'A practical public-pressure step tied to a democratic decision point.',
+    actionDescription:
+      'Use this action to show a concrete civic step such as attending a board meeting, preparing testimony, or following a rule change that affects public participation.',
+    eventTitle: 'Democracy Community Event',
+    eventSummary:
+      'A public event focused on turnout, accountability, and local civic participation.',
+    eventDescription:
+      'This seeded event represents a real-world gathering where people prepare for a meeting, coordinate turnout, or learn how to influence a public decision.',
+  },
+  'consumer-activism': {
+    articleSummary:
+      'A briefing on corporate pressure, campaign targets, and how consumer action fits in.',
+    articleTitle: 'Consumer Activism Briefing',
+    articleBody: `This demo article frames consumer activism as one tactic inside a larger pressure campaign.
+
+It highlights clear demands, a target institution, and the difference between symbolic disapproval and organized leverage.
+
+The seeded copy is intentionally plausible so later collection pages still feel like a product demo instead of a scaffolded dataset.`,
+    actionTitle: 'Consumer Activism Action',
+    actionSummary: 'A targeted action that shows how public pressure can shift consumer behavior.',
+    actionDescription:
+      'Use this action to model a concrete pressure tactic such as sharing a target list, moving spending, or supporting workers connected to the campaign.',
+    eventTitle: 'Consumer Activism Community Event',
+    eventSummary:
+      'A public event where organizers explain a campaign target and coordinate follow-through.',
+    eventDescription:
+      'This seeded event models a practical organizing session tied to a consumer pressure campaign and gives the Events surface broader topical coverage.',
+  },
+  climate: {
+    articleSummary:
+      'A briefing on local climate pressure points and the decisions communities can influence.',
+    articleTitle: 'Climate Briefing',
+    articleBody: `This seeded climate article connects local policy to everyday civic participation.
+
+Instead of generic filler, it emphasizes the sort of choices that shape transit, housing, resilience, and public investment at the municipal level.
+
+That keeps the demo credible when reviewers move from the homepage into collection pages and admin records.`,
+    actionTitle: 'Climate Action',
+    actionSummary: 'A concrete local climate action with a public target and a clear next step.',
+    actionDescription:
+      'Use this action to represent a realistic local climate step such as contacting officials, joining a coalition, or preparing for a hearing tied to public infrastructure.',
+    eventTitle: 'Climate Community Event',
+    eventSummary: 'A public event focused on local climate resilience and community pressure.',
+    eventDescription:
+      'This seeded event models a credible climate-facing gathering where residents organize around transit, heat safety, resilience, or public investment.',
+  },
+  'civil-rights': {
+    articleSummary:
+      'A briefing on a civil-rights conflict and the public processes surrounding it.',
+    articleTitle: 'Civil Rights Briefing',
+    articleBody: `This demo article is designed to read like a real civil-rights explainer.
+
+It names a conflict, identifies the institution involved, and shows how readers can connect principle to public participation.
+
+That keeps the seeded demo aligned with the project’s core Learn → Decide → Act loop.`,
+    actionTitle: 'Civil Rights Action',
+    actionSummary: 'A civic step tied to a civil-rights issue and a specific decision-maker.',
+    actionDescription:
+      'Use this action to model a realistic public step such as contacting a board, showing up for a hearing, or supporting a local rights-defense effort.',
+    eventTitle: 'Civil Rights Community Event',
+    eventSummary: 'A public gathering focused on rights, turnout, and coordinated local response.',
+    eventDescription:
+      'This seeded event helps the demo show civil-rights participation opportunities without relying on repetitive placeholder content.',
+  },
+  'economic-justice': {
+    articleSummary: 'A briefing on wages, housing, cost burden, or labor pressure in public life.',
+    articleTitle: 'Economic Justice Briefing',
+    articleBody: `This seeded economic-justice article is meant to feel like a usable primer, not lorem filler.
+
+It links material conditions to specific institutions and shows how people can move from understanding a problem to joining a concrete campaign.
+
+That makes the article index and admin experience read as editorially intentional.`,
+    actionTitle: 'Economic Justice Action',
+    actionSummary: 'A practical step tied to housing, labor, or cost-of-living pressure.',
+    actionDescription:
+      'Use this action to represent a realistic step such as joining a tenant network, supporting worker-led pressure, or documenting a public affordability issue.',
+    eventTitle: 'Economic Justice Community Event',
+    eventSummary: 'A public gathering focused on labor, housing, or affordability organizing.',
+    eventDescription:
+      'This seeded event broadens the Events dataset while keeping the copy anchored in realistic economic-justice participation.',
+  },
+  education: {
+    articleSummary:
+      'A briefing on school governance, policy process, and public participation points.',
+    articleTitle: 'Education Briefing',
+    articleBody: `This seeded education article explains a school or district-level issue in practical terms.
+
+It focuses on how families, educators, and neighbors can understand the process before a conflict becomes a last-minute scramble.
+
+That helps the demo support both public learning flows and admin review flows convincingly.`,
+    actionTitle: 'Education Action',
+    actionSummary: 'A concrete school-governance step tied to a public meeting or policy decision.',
+    actionDescription:
+      'Use this action to model a realistic local education step such as agenda review, outreach, testimony, or support for a library-access effort.',
+    eventTitle: 'Education Community Event',
+    eventSummary: 'A public gathering focused on school policy, turnout, and local coordination.',
+    eventDescription:
+      'This seeded event gives the demo visible education participation opportunities without falling back to synthetic filler language.',
+  },
+  'local-community': {
+    articleSummary:
+      'A briefing on neighborhood-level civic participation and recurring local coordination.',
+    articleTitle: 'Local Community Briefing',
+    articleBody: `This seeded article is meant to show how neighborhood-level civic work can connect immediate needs to longer-term public pressure.
+
+It is intentionally written in product-quality prose so the seeded dataset feels believable even when it is large.
+
+The emphasis stays on repeated local participation, mutual support, and practical next steps.`,
+    actionTitle: 'Local Community Action',
+    actionSummary: 'A concrete neighborhood step that helps people join work already underway.',
+    actionDescription:
+      'Use this action to model a practical local step such as joining a coalition, helping with turnout, or supporting a recurring neighborhood response effort.',
+    eventTitle: 'Local Community Event',
+    eventSummary:
+      'A neighborhood-focused event where people organize, learn, and plan follow-through.',
+    eventDescription:
+      'This seeded event is designed to keep later Event pages credible by representing realistic neighborhood-level participation rather than generic placeholder copy.',
+  },
+} as const;
 
 const topics = [
   {
@@ -926,15 +1041,16 @@ const generatedDemoArticles = Array.from(
   { length: Math.max(0, TARGET_PUBLISHED_ARTICLE_COUNT - publishedDemoArticles.length) },
   (_, index) => {
     const topic = topics[index % topics.length];
+    const narrative = topicNarratives[topic.slug];
 
     return {
       slug: `lorem-article-${String(index + 1).padStart(3, '0')}`,
-      title: `${titleCaseWords(topic.slug)} Briefing ${index + 1}`,
-      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} article ${index + 1}.`,
-      content: `# ${topic.name} Briefing ${index + 1}
+      title: `${narrative.articleTitle} ${index + 1}`,
+      summary: `${narrative.articleSummary} ${index + 1}.`,
+      content: `# ${narrative.articleTitle} ${index + 1}
 
-${LOREM_LONG_FORM}`,
-      author: 'SignalFire Demo Seed',
+${narrative.articleBody}`,
+      author: 'SignalFire Editorial',
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
       topicSlugs: [topic.slug],
@@ -947,6 +1063,7 @@ const generatedDemoActions = Array.from(
   { length: Math.max(0, TARGET_PUBLISHED_ACTION_COUNT - publishedDemoActions.length) },
   (_, index) => {
     const topic = topics[index % topics.length];
+    const narrative = topicNarratives[topic.slug];
     const actionTypes = [
       ActionType.CONTACT,
       ActionType.VOLUNTEER,
@@ -956,9 +1073,9 @@ const generatedDemoActions = Array.from(
 
     return {
       slug: `lorem-action-${String(index + 1).padStart(3, '0')}`,
-      title: `${topic.name} Action ${index + 1}`,
-      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} action ${index + 1}.`,
-      description: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+      title: `${narrative.actionTitle} ${index + 1}`,
+      summary: `${narrative.actionSummary} ${index + 1}.`,
+      description: `${narrative.actionDescription} Seeded example ${index + 1} keeps the public and admin lists broad enough to demonstrate realistic browsing and moderation flows.`,
       actionType: actionTypes[index % actionTypes.length],
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -969,13 +1086,11 @@ const generatedDemoActions = Array.from(
 );
 
 const eventRegions = [
+  { region: 'NY', city: 'New York', postalCode: '10007' },
   { region: 'PA', city: 'Philadelphia', postalCode: '19107' },
-  { region: 'PA', city: 'Pittsburgh', postalCode: '15222' },
-  { region: 'NY', city: 'Albany', postalCode: '12207' },
-  { region: 'NY', city: 'Buffalo', postalCode: '14202' },
-  { region: 'NJ', city: 'Newark', postalCode: '07102' },
-  { region: 'MA', city: 'Boston', postalCode: '02108' },
-  { region: 'MD', city: 'Baltimore', postalCode: '21202' },
+  { region: 'CA', city: 'Los Angeles', postalCode: '90012' },
+  { region: 'TX', city: 'Houston', postalCode: '77002' },
+  { region: 'PR', city: 'San Juan', postalCode: '00901' },
 ];
 
 const eventTypes = [
@@ -991,16 +1106,17 @@ const generatedDemoEvents = Array.from(
   { length: Math.max(0, TARGET_PUBLISHED_EVENT_COUNT - publishedDemoEvents.length) },
   (_, index) => {
     const topic = topics[index % topics.length];
+    const narrative = topicNarratives[topic.slug];
     const regionData = eventRegions[index % eventRegions.length];
     const startTime = relativeDate({ daysFromNow: 30 + index, hours: 18 });
     const endTime = relativeDate({ daysFromNow: 30 + index, hours: 20 });
-    const title = `${topic.name} Community Event ${index + 1}`;
+    const title = `${narrative.eventTitle} ${index + 1}`;
     const locationName = `${regionData.city} Civic Space ${index + 1}`;
 
     return {
       title,
-      summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} event ${index + 1}.`,
-      description: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+      summary: `${narrative.eventSummary} ${index + 1}.`,
+      description: `${narrative.eventDescription} Seeded example ${index + 1} ensures the Events surface has enough depth for realistic filtering and pagination.`,
       website: `https://example.org/events/lorem-${index + 1}`,
       eventType: eventTypes[index % eventTypes.length],
       status: EntityStatus.PUBLISHED,
@@ -1022,8 +1138,8 @@ const generatedDemoEvents = Array.from(
         submissionType: SubmissionType.EVENT,
         status: SubmissionStatus.APPROVED,
         title,
-        summary: `Lorem ipsum summary for ${topic.name.toLowerCase()} event ${index + 1}.`,
-        submittedContent: `${LOREM_PARAGRAPH} ${LOREM_SENTENCE}`,
+        summary: `${narrative.eventSummary} ${index + 1}.`,
+        submittedContent: `${narrative.eventDescription} Seeded organizer notes for event ${index + 1} preserve a believable moderation path in the admin demo.`,
         eventType: eventTypes[index % eventTypes.length],
         startTime,
         endTime,
@@ -1037,7 +1153,7 @@ const generatedDemoEvents = Array.from(
         country: 'USA',
         website: `https://example.org/events/lorem-${index + 1}`,
         contactEmail: 'events@example.org',
-        submitterName: 'Demo Organizer',
+        submitterName: 'SignalFire Demo Organizer',
         submitterEmail: 'organizer@example.org',
         reviewNotes: 'Approved for demo data.',
         reviewedAt: publishedDateFromIndex(index),
@@ -1046,9 +1162,9 @@ const generatedDemoEvents = Array.from(
   },
 );
 
-const allDemoArticles = [...demoArticles, ...generatedDemoArticles];
-const allDemoActions = [...demoActions, ...generatedDemoActions];
-const allDemoEvents = [...demoEvents, ...generatedDemoEvents];
+const allDemoArticles = [...generatedDemoArticles, ...demoArticles];
+const allDemoActions = [...generatedDemoActions, ...demoActions];
+const allDemoEvents = [...generatedDemoEvents, ...demoEvents];
 
 const demoPendingSubmissions = [
   {
@@ -1161,72 +1277,59 @@ async function seedDemoActions() {
 }
 
 async function seedDemoEvents() {
-  for (const event of allDemoEvents) {
-    const existingEvent = await prisma.event.findFirst({
-      where: {
-        title: event.title,
-        locationName: event.locationName,
-        startTime: event.startTime,
+  const demoEventWebsites = allDemoEvents.map((event) => event.website);
+  const existingDemoEvents = await prisma.event.findMany({
+    where: {
+      website: {
+        in: demoEventWebsites,
       },
-      select: { id: true },
-    });
+    },
+    select: { id: true },
+  });
 
-    if (existingEvent) {
-      await prisma.event.update({
-        where: { id: existingEvent.id },
-        data: {
-          summary: event.summary,
-          description: event.description,
-          eventType: event.eventType,
-          website: event.website,
-          status: event.status,
-          publishedAt: event.publishedAt,
-          endTime: event.endTime,
-          addressLine1: event.addressLine1,
-          addressLine2: event.addressLine2,
-          publicLocationDescription: event.publicLocationDescription,
-          city: event.city,
-          region: event.region,
-          postalCode: event.postalCode,
-          country: event.country,
-          latitude: null,
-          longitude: null,
+  if (existingDemoEvents.length > 0) {
+    const existingDemoEventIds = existingDemoEvents.map((record) => record.id);
+
+    await prisma.$transaction([
+      prisma.topicEvent.deleteMany({
+        where: {
+          eventId: {
+            in: existingDemoEventIds,
+          },
         },
-      });
-
-      await prisma.submission.upsert({
-        where: { eventId: existingEvent.id },
-        update: {
-          status: event.submission.status,
-          title: event.submission.title,
-          summary: event.submission.summary,
-          submittedContent: event.submission.submittedContent,
-          eventType: event.submission.eventType,
-          startTime: event.submission.startTime,
-          endTime: event.submission.endTime,
-          locationName: event.submission.locationName,
-          addressLine1: event.submission.addressLine1,
-          addressLine2: event.submission.addressLine2,
-          publicLocationDescription: event.submission.publicLocationDescription,
-          city: event.submission.city,
-          region: event.submission.region,
-          postalCode: event.submission.postalCode,
-          country: event.submission.country,
-          contactEmail: event.submission.contactEmail,
-          submitterName: event.submission.submitterName,
-          submitterEmail: event.submission.submitterEmail,
-          reviewNotes: event.submission.reviewNotes,
-          reviewedAt: event.submission.reviewNotes ? event.submission.reviewedAt : null,
+      }),
+      prisma.articleEvent.deleteMany({
+        where: {
+          eventId: {
+            in: existingDemoEventIds,
+          },
         },
-        create: {
-          ...event.submission,
-          eventId: existingEvent.id,
+      }),
+      prisma.actionEvent.deleteMany({
+        where: {
+          eventId: {
+            in: existingDemoEventIds,
+          },
         },
-      });
+      }),
+      prisma.submission.deleteMany({
+        where: {
+          eventId: {
+            in: existingDemoEventIds,
+          },
+        },
+      }),
+      prisma.event.deleteMany({
+        where: {
+          id: {
+            in: existingDemoEventIds,
+          },
+        },
+      }),
+    ]);
+  }
 
-      continue;
-    }
-
+  for (const event of allDemoEvents) {
     await prisma.event.create({
       data: {
         title: event.title,
@@ -1280,15 +1383,10 @@ async function getActionIds() {
 
 async function getEventIds() {
   const records = await prisma.event.findMany({
-    select: { id: true, title: true, locationName: true, startTime: true },
+    select: { id: true, website: true },
   });
 
-  return new Map(
-    records.map((record) => [
-      `${record.title}::${record.locationName}::${record.startTime.toISOString()}`,
-      record.id,
-    ]),
-  );
+  return new Map(records.map((record) => [record.website ?? '', record.id]));
 }
 
 function requireId<T>(map: Map<string, T>, key: string, label: string): T {
@@ -1450,11 +1548,7 @@ async function connectArticleActions(
 
 async function connectTopicEvents(topicIds: Map<string, number>, eventIds: Map<string, number>) {
   for (const event of allDemoEvents) {
-    const eventId = requireId(
-      eventIds,
-      `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
-      'event',
-    );
+    const eventId = requireId(eventIds, event.website, 'event');
 
     for (const topicSlug of event.topicSlugs) {
       await prisma.topicEvent.upsert({
@@ -1482,11 +1576,7 @@ async function connectArticleEvents(
   eventIds: Map<string, number>,
 ) {
   for (const event of allDemoEvents) {
-    const eventId = requireId(
-      eventIds,
-      `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
-      'event',
-    );
+    const eventId = requireId(eventIds, event.website, 'event');
 
     for (const articleSlug of event.articleSlugs) {
       await prisma.articleEvent.upsert({
@@ -1511,11 +1601,7 @@ async function connectArticleEvents(
 
 async function connectActionEvents(actionIds: Map<string, number>, eventIds: Map<string, number>) {
   for (const event of allDemoEvents) {
-    const eventId = requireId(
-      eventIds,
-      `${event.title}::${event.locationName}::${event.startTime.toISOString()}`,
-      'event',
-    );
+    const eventId = requireId(eventIds, event.website, 'event');
 
     for (const actionSlug of event.actionSlugs) {
       await prisma.actionEvent.upsert({
