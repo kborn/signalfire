@@ -17,11 +17,14 @@ export default async function TopicListPage() {
     return getNoResultsResponse();
   }
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Issues</h1>
-      <p className="page-intro">
-        Explore the issues that matter to you and find ways to learn or act.
-      </p>
+    <section className="page-section discoveryPage">
+      <div className="discoveryPageHeader">
+        <p className="section-label">Browse</p>
+        <h1 className="pageTitle">Issues</h1>
+        <p className="page-intro">
+          Explore the issues that matter to you and find ways to learn or act.
+        </p>
+      </div>
       <section className="collectionList">
         {data.items.map((topic) => (
           <TopicSummary key={topic.id} topic={topic} />

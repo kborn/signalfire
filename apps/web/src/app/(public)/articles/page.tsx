@@ -53,11 +53,14 @@ export default async function ArticleListPage({ searchParams }: ArticleListPageP
   ]);
 
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Articles</h1>
-      <p className="page-intro">
-        Read reporting, explainers, and field guides about the issues that matter
-      </p>
+    <section className="page-section discoveryPage">
+      <div className="discoveryPageHeader">
+        <p className="section-label">Browse</p>
+        <h1 className="pageTitle">Articles</h1>
+        <p className="page-intro">
+          Read reporting, explainers, and field guides about the issues that matter
+        </p>
+      </div>
       <TopicSelector topics={topics} basePath="/articles" params={params} />
       <section className="collectionList">
         {resp.items.length === 0

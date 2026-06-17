@@ -26,20 +26,20 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
       <section className="detailContent">
-        <p>{topic.description}</p>
+        <p className="detailLead">{topic.description}</p>
         {topic.articles.length > 0 && (
           <section className="relatedSection" aria-labelledby="topic-articles-label">
             <div className="relatedSectionHeader">
               <p id="topic-articles-label" className="section-label">
-                Articles
+                Step 2 - Read enough to act
               </p>
               <p className="relatedSectionTagline">
                 Read background and explainers for this issue.
               </p>
             </div>
-            <div className="relatedList">
+            <div className="collectionList">
               {topic.articles.map((article) => (
-                <ArticleSummary key={article.id} article={article} variant="related" />
+                <ArticleSummary key={article.id} article={article} />
               ))}
             </div>
           </section>
@@ -48,13 +48,13 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <section className="relatedSection" aria-labelledby="topic-actions-label">
             <div className="relatedSectionHeader">
               <p id="topic-actions-label" className="section-label">
-                Actions
+                Step 3 - Choose a next step
               </p>
               <p className="relatedSectionTagline">Take practical next steps you can do now.</p>
             </div>
-            <div className="relatedList">
+            <div className="collectionList">
               {topic.actions.map((action) => (
-                <ActionSummary key={action.id} action={action} variant="related" />
+                <ActionSummary key={action.id} action={action} />
               ))}
             </div>
           </section>

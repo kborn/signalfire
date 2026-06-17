@@ -53,9 +53,12 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
   ]);
 
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Actions</h1>
-      <p className="page-intro">Find practical ways to take meaningful action</p>
+    <section className="page-section discoveryPage">
+      <div className="discoveryPageHeader">
+        <p className="section-label">Browse</p>
+        <h1 className="pageTitle">Actions</h1>
+        <p className="page-intro">Find practical ways to take meaningful action</p>
+      </div>
       <TopicSelector topics={topics} basePath="/actions" params={params} />
 
       <section className="collectionList">

@@ -29,6 +29,9 @@ describe('HomePage', () => {
     expect(markup).toContain('Search Events');
     expect(markup).toContain('href="/actions"');
     expect(markup).toContain('Take a concrete step');
+    expect(markup).toContain(
+      'A civic action site for people who want to do something about what is happening and need a clear place to start.',
+    );
     expect(markup).toContain('Submit Content');
     expect(markup).toContain('Who This Is For');
   });
@@ -41,5 +44,8 @@ describe('HomePage', () => {
     expect(markup).toContain('Get enough context');
     expect(markup).toContain('Take a concrete step');
     expect(markup).toContain('Submissions are moderated before they go live.');
+    expect(markup).toContain(
+      'Submit an article or event and it enters moderation review before publication.',
+    );
   });
 });

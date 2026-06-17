@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default async function AboutPage() {
   return (
-    <section className="page-section">
+    <section className="page-section aboutPage motifPage centeredPublicPage">
       <section className="page-section about-hero">
         <p className="section-label">About Find Your Fight</p>
         <h1 className="pageTitle">Why This Site Exists</h1>
@@ -36,8 +36,8 @@ export default async function AboutPage() {
           reviewed before publication so the public experience stays useful, practical, and clear.
         </p>
         <p>
-          The public site combines curated publishing with moderated submissions so new content can
-          stay useful, practical, and clear.
+          The public site combines curated publishing with moderated submissions so new material
+          stays grounded, credible, and worth acting on.
         </p>
         <Link href="/submit" className="primaryCTA">
           Submit Content
@@ -67,13 +67,15 @@ export default async function AboutPage() {
           </Link>
 
           <section className="about-step collectionItem">
-            <p className="section-label">Step 3</p>
-            <h3>Take one concrete action.</h3>
-            <p>
-              You do not need to have the whole answer. Contact someone, volunteer, join an event,
-              or support work already in motion. The first action does not have to be perfect. It
-              has to be real.
-            </p>
+            <Link href="/actions" className="about-step-mainLink">
+              <p className="section-label">Step 3</p>
+              <h3>Take one concrete action.</h3>
+              <p>
+                You do not need to have the whole answer. Contact someone, volunteer, join an event,
+                or support work already in motion. The first action does not have to be perfect. It
+                has to be real.
+              </p>
+            </Link>
             <div className="ctaRow">
               <Link href="/actions" className="secondaryCTA">
                 Find Actions

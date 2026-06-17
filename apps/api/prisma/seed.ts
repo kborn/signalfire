@@ -35,9 +35,9 @@ function relativeDate(params: { daysFromNow?: number; hours?: number; minutes?: 
   return date;
 }
 
-const TARGET_PUBLISHED_ARTICLE_COUNT = 120;
-const TARGET_PUBLISHED_ACTION_COUNT = 120;
-const TARGET_PUBLISHED_EVENT_COUNT = 120;
+const TARGET_PUBLISHED_ARTICLE_COUNT = 42;
+const TARGET_PUBLISHED_ACTION_COUNT = 42;
+const TARGET_PUBLISHED_EVENT_COUNT = 42;
 
 function publishedDateFromIndex(index: number): Date {
   return new Date(Date.UTC(2026, 0, 1 + index, 0, 0, 0, 0));
@@ -218,6 +218,516 @@ const topics = [
       'Community-level civic engagement including local organizing, mutual aid, neighborhood initiatives, and grassroots participation.',
   },
 ] as const;
+
+const topicArticlePool: Record<string, Array<{ title: string; summary: string }>> = {
+  democracy: [
+    {
+      title: 'Your County Election Board Has More Power Than You Think',
+      summary:
+        'How county boards shape polling access, early voting locations, and language support.',
+    },
+    {
+      title: 'How Redistricting Decisions Get Made',
+      summary:
+        'A plain-language explainer on when district lines are drawn and who controls the process.',
+    },
+    {
+      title: 'Reading a Ballot Measure Before You Vote',
+      summary:
+        'What the full text of a measure usually contains and where to find independent analysis.',
+    },
+    {
+      title: 'When Local Officials Restrict Public Comment',
+      summary:
+        'How shortened speaking time and tighter sign-up rules happen, and what to do about them.',
+    },
+  ],
+  'consumer-activism': [
+    {
+      title: 'What Makes a Boycott Actually Work',
+      summary:
+        'Three conditions that separate boycotts with measurable outcomes from symbolic disapproval.',
+    },
+    {
+      title: "How to Research a Company's Labor Record",
+      summary:
+        'Where to find worker reports, NLRB filings, and supply-chain disclosures before joining a campaign.',
+    },
+    {
+      title: 'Worker-Led Campaigns vs. Consumer Campaigns',
+      summary:
+        'When to follow worker demands directly, when consumer pressure helps, and when they point in different directions.',
+    },
+    {
+      title: 'Reading a Corporate Sustainability Report',
+      summary:
+        'How to separate genuine commitments from PR language in annual environmental disclosures.',
+    },
+  ],
+  climate: [
+    {
+      title: "What Your City's Climate Plan Actually Commits To",
+      summary:
+        'How to read a municipal climate goal, find the accountability mechanisms, and track follow-through.',
+    },
+    {
+      title: 'Transit and Climate Are the Same Fight',
+      summary:
+        'Why public transit funding is the most actionable local climate lever most residents overlook.',
+    },
+    {
+      title: 'How Utility Rates Get Set',
+      summary:
+        'The public rate-review process, who participates, and where residents can submit comments that matter.',
+    },
+    {
+      title: 'Zoning Law and Local Emissions',
+      summary:
+        'How residential zoning rules shape heat islands, transit access, and building efficiency in your neighborhood.',
+    },
+  ],
+  'civil-rights': [
+    {
+      title: 'When Police Accountability Decisions Are Made Locally',
+      summary:
+        'Which civilian oversight bodies have real authority versus advisory-only roles, and how they differ.',
+    },
+    {
+      title: 'Disability Access in Public Meetings',
+      summary:
+        'What agencies are legally required to provide and how to make a formal request when they fall short.',
+    },
+    {
+      title: 'How Title IX Complaints Work in Practice',
+      summary:
+        'What the formal process looks like for students, what timelines apply, and how schools must respond.',
+    },
+    {
+      title: 'Documenting Discrimination for a Public Record',
+      summary:
+        'How incident documentation supports policy demands rather than only individual cases.',
+    },
+  ],
+  'economic-justice': [
+    {
+      title: 'How Minimum Wage Campaigns Win at the City Level',
+      summary:
+        'What the local legislative path looks like and what kinds of organizing consistently move it forward.',
+    },
+    {
+      title: 'Reading a Housing Authority Budget',
+      summary:
+        'How to track public housing investment, deferred maintenance, and the early signs of tenant displacement.',
+    },
+    {
+      title: 'Rent Stabilization vs. Rent Control',
+      summary:
+        'What each policy actually does, where they currently exist, and how residents advocate for either.',
+    },
+    {
+      title: 'How Wage Theft Complaints Work',
+      summary:
+        'Where to file, what the enforcement process looks like, and which agencies have jurisdiction over your situation.',
+    },
+  ],
+  education: [
+    {
+      title: 'How School Board Policies Get Changed',
+      summary:
+        'The amendment process, public comment windows, and what organized parent pressure actually looks like.',
+    },
+    {
+      title: 'Special Education Rights and How Schools Avoid Them',
+      summary:
+        'What IDEA legally requires, what schools commonly fail to provide, and where families can escalate.',
+    },
+    {
+      title: 'Understanding Per-Pupil Funding Disparities',
+      summary:
+        'How state funding formulas distribute money unequally across districts and what communities can do.',
+    },
+    {
+      title: 'What a Library Reconsideration Policy Should Include',
+      summary:
+        'How book-review committees work, what due process requires, and what families can demand when it is missing.',
+    },
+  ],
+  'local-community': [
+    {
+      title: 'How Neighborhood Councils Actually Work',
+      summary:
+        'Which cities have them, what authority they carry, and how to use them as a civic pressure tool.',
+    },
+    {
+      title: 'What a Mutual Aid Network Needs to Stay Durable',
+      summary:
+        'Organizational lessons from groups that outlasted a single crisis and kept showing up.',
+    },
+    {
+      title: 'Zoning Appeals and the People Who Use Them',
+      summary:
+        'How neighbors can formally challenge development decisions and what they realistically win.',
+    },
+    {
+      title: 'Community Land Trusts as a Long-Term Strategy',
+      summary:
+        'What they are, where they work, and how resident campaigns have successfully started them.',
+    },
+  ],
+};
+
+const topicActionPool: Record<
+  string,
+  Array<{ title: string; summary: string; actionType: ActionType }>
+> = {
+  democracy: [
+    {
+      title: "Find Your County's Next Election Board Meeting",
+      summary:
+        'Locate the public calendar and attend the next session where election procedures are discussed.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Submit Public Comment on a Proposed Election Rule Change',
+      summary:
+        'Write and submit formal comment before the deadline on a rule change affecting voting access.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Volunteer for Voter Registration Outreach',
+      summary:
+        'Join a local drive that helps residents navigate registration, deadlines, and ID requirements.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Nonpartisan Voting-Rights Fund',
+      summary:
+        'Support organizations providing legal defense and access support for voters facing barriers.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  'consumer-activism': [
+    {
+      title: 'Share a Worker-Verified Target List With Your Network',
+      summary:
+        'Distribute a campaign-reviewed list of products and purchases to redirect away from a pressure target.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Contact a Corporate Investor About Labor Conditions',
+      summary:
+        'Write to an institutional investor with a specific ask tied to a labor accountability campaign.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Volunteer With a Consumer Accountability Campaign',
+      summary:
+        'Help with outreach, research, or public education for an ongoing corporate accountability effort.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Worker Strike Fund',
+      summary:
+        'Contribute directly to workers sustaining a strike or walkout during an active pressure campaign.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  climate: [
+    {
+      title: 'Submit Comment on a Local Utility Rate Review',
+      summary:
+        "File written comment during the public rate-review window before your utility's next rate increase takes effect.",
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Find Out Who Represents You on Climate at the City Level',
+      summary:
+        'Identify the council member, commission, and staff lead responsible for climate-related budget decisions.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Join a Climate Accountability Monitoring Group',
+      summary:
+        "Participate in ongoing tracking of your city's climate commitments through public records and meeting attendance.",
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Local Environmental Justice Organization',
+      summary:
+        'Support frontline organizations working on pollution, infrastructure, and climate investment in your region.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  'civil-rights': [
+    {
+      title: "Contact Your City's Civilian Oversight Board",
+      summary:
+        'Send a message to your local oversight body about a specific complaint or policy concern.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Find a Local Rights-Defense Organization',
+      summary:
+        'Identify the legal and advocacy groups in your area working on civil rights enforcement.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Volunteer for a Know-Your-Rights Workshop',
+      summary:
+        'Help organize or staff a community session that explains rights in housing, employment, or public space.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Civil Rights Legal Defense Fund',
+      summary:
+        'Support litigation and legal representation for individuals and communities facing rights violations.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  'economic-justice': [
+    {
+      title: 'File a Wage Theft Complaint',
+      summary:
+        'Submit a formal complaint with the appropriate state or federal agency if wages have been withheld or underpaid.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Find Out if Your City Has a Tenant Protection Ordinance',
+      summary:
+        'Look up your local tenant rights, rent stabilization status, and who enforces housing protections.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Join a Tenant Union Organizing Drive',
+      summary: 'Connect with existing tenant organizing efforts in your building or neighborhood.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Housing Justice Fund',
+      summary:
+        'Support organizations providing emergency housing assistance and long-term tenant defense.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  education: [
+    {
+      title: 'Attend the Next School Board Public Comment Session',
+      summary:
+        'Show up and speak during the public comment period on an open policy or budget item.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: "Review Your District's Library Reconsideration Policy",
+      summary:
+        'Find and read the formal policy governing book reviews, then share what you find with other families.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Volunteer With a Parent Advocacy Group',
+      summary:
+        'Join a local parent group working on school policy, library access, or curriculum transparency.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Student Rights Organization',
+      summary:
+        'Support groups defending student press freedom, disability rights, and due process in discipline cases.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+  'local-community': [
+    {
+      title: "Find Your Neighborhood's City Council Representative",
+      summary:
+        'Look up who represents your address and identify their public schedule and contact channels.',
+      actionType: ActionType.GUIDE,
+    },
+    {
+      title: 'Submit Public Comment on a Development Proposal',
+      summary:
+        'Write and deliver comment on a zoning application, variance request, or land-use decision in your area.',
+      actionType: ActionType.CONTACT,
+    },
+    {
+      title: 'Volunteer With a Local Mutual Aid Network',
+      summary:
+        'Join a neighborhood mutual aid group to help with supply runs, check-ins, or coordination work.',
+      actionType: ActionType.VOLUNTEER,
+    },
+    {
+      title: 'Donate to a Community Land Trust',
+      summary:
+        'Support a local CLT working to remove housing from the speculative market and preserve long-term affordability.',
+      actionType: ActionType.DONATE,
+    },
+  ],
+};
+
+const topicEventPool: Record<string, Array<{ title: string; summary: string }>> = {
+  democracy: [
+    {
+      title: 'Election Board Public Session',
+      summary:
+        'Residents attend a county election board meeting to observe decisions on polling procedures.',
+    },
+    {
+      title: 'Voter Registration Canvass',
+      summary:
+        'Organizers help neighbors register, check status, and navigate ID and deadline requirements.',
+    },
+    {
+      title: 'Redistricting Community Forum',
+      summary:
+        'A public session explaining the upcoming redistricting process and how residents can participate.',
+    },
+    {
+      title: 'Town Hall on Ballot Access',
+      summary:
+        'Advocates gather to discuss recent changes to early voting, drop boxes, and registration windows.',
+    },
+  ],
+  'consumer-activism': [
+    {
+      title: 'Boycott Campaign Kickoff Meeting',
+      summary:
+        'Organizers explain the target, the demands, and how participants can join the pressure campaign.',
+    },
+    {
+      title: 'Labor Solidarity Information Night',
+      summary:
+        'Workers and supporters meet to share campaign updates and coordinate follow-through.',
+    },
+    {
+      title: 'Corporate Accountability Workshop',
+      summary:
+        'A session on how to research company records, file complaints, and amplify worker demands.',
+    },
+    {
+      title: 'Worker Support Rally',
+      summary:
+        'Public show of support for workers involved in an active labor action or corporate campaign.',
+    },
+  ],
+  climate: [
+    {
+      title: 'Climate Budget Hearing Watch',
+      summary:
+        'Community members attend a public budget session to track climate funding allocations.',
+    },
+    {
+      title: 'Transit Equity Rally',
+      summary:
+        'Residents rally in support of expanded bus service and dedicated transit infrastructure.',
+    },
+    {
+      title: 'Heat Safety Canvass Training',
+      summary:
+        'Volunteers learn to share cooling resources, check on neighbors, and document heat-related hazards.',
+    },
+    {
+      title: 'Utility Rate Review Comment Night',
+      summary:
+        'Neighbors prepare and submit public comment on a pending rate increase before the deadline.',
+    },
+  ],
+  'civil-rights': [
+    {
+      title: 'Community Know-Your-Rights Session',
+      summary:
+        'Legal advocates explain rights in housing, public space, and encounters with law enforcement.',
+    },
+    {
+      title: 'Accountability Rally',
+      summary:
+        'Residents gather to demand follow-through on a civil rights commitment from a local institution.',
+    },
+    {
+      title: 'Oversight Board Public Meeting',
+      summary:
+        'A public session of the civilian oversight body reviewing complaints and policy recommendations.',
+    },
+    {
+      title: 'Rights Defense Volunteer Training',
+      summary:
+        'New volunteers learn documentation practices, complaint filing, and outreach for a rights campaign.',
+    },
+  ],
+  'economic-justice': [
+    {
+      title: 'Tenant Organizing Meeting',
+      summary:
+        'Building residents meet to coordinate around lease terms, maintenance demands, and rent pressure.',
+    },
+    {
+      title: 'Wage Theft Clinic',
+      summary:
+        'Legal advocates help workers understand their options when wages have been withheld or underpaid.',
+    },
+    {
+      title: 'Labor Rights Workshop',
+      summary:
+        'A session on organizing rights, collective bargaining basics, and what the NLRA does and does not cover.',
+    },
+    {
+      title: 'Housing Justice Rally',
+      summary:
+        'Residents rally in support of stronger tenant protections and affordable housing investment.',
+    },
+  ],
+  education: [
+    {
+      title: 'School Board Agenda Watch Session',
+      summary:
+        'Families review the next board agenda together and identify items that need organized turnout.',
+    },
+    {
+      title: 'Library Access Organizing Meeting',
+      summary:
+        'Parents and educators coordinate in defense of school library access and reconsideration policy.',
+    },
+    {
+      title: 'Special Education Rights Workshop',
+      summary: 'Advocates explain what IDEA requires, common school failures, and how to escalate.',
+    },
+    {
+      title: 'Parent Advocacy Training',
+      summary:
+        'A session for families on how to prepare testimony, read agendas, and build durable school-board coalitions.',
+    },
+  ],
+  'local-community': [
+    {
+      title: 'Neighborhood Council Open Session',
+      summary:
+        'Residents attend a neighborhood council meeting to raise issues and participate in local governance.',
+    },
+    {
+      title: 'Zoning Appeal Prep Workshop',
+      summary:
+        'Community members learn how to file a zoning appeal and organize neighbors around a development decision.',
+    },
+    {
+      title: 'Mutual Aid Network Volunteer Day',
+      summary:
+        'Volunteers gather for supply runs, check-ins, and coordination for neighbors in need.',
+    },
+    {
+      title: 'Community Land Trust Information Night',
+      summary:
+        'Organizers explain how CLTs work and how residents can start one to preserve affordable housing.',
+    },
+  ],
+};
+
+function pickTopicEntry<T>(pool: Record<string, T[]>, slug: string, index: number): T {
+  const entries = pool[slug];
+
+  if (!entries?.length) {
+    throw new Error(`Missing seeded content pool for topic: ${slug}`);
+  }
+
+  return entries[index % entries.length];
+}
 
 const demoArticles = [
   {
@@ -1042,15 +1552,18 @@ const generatedDemoArticles = Array.from(
   (_, index) => {
     const topic = topics[index % topics.length];
     const narrative = topicNarratives[topic.slug];
+    const article = pickTopicEntry(topicArticlePool, topic.slug, index);
 
     return {
       slug: `lorem-article-${String(index + 1).padStart(3, '0')}`,
-      title: `${narrative.articleTitle} ${index + 1}`,
-      summary: `${narrative.articleSummary} ${index + 1}.`,
-      content: `# ${narrative.articleTitle} ${index + 1}
+      title: article.title,
+      summary: article.summary,
+      content: `# ${article.title}
+
+${article.summary}
 
 ${narrative.articleBody}`,
-      author: 'SignalFire Editorial',
+      author: 'Find Your Fight Editorial',
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
       topicSlugs: [topic.slug],
@@ -1063,20 +1576,14 @@ const generatedDemoActions = Array.from(
   { length: Math.max(0, TARGET_PUBLISHED_ACTION_COUNT - publishedDemoActions.length) },
   (_, index) => {
     const topic = topics[index % topics.length];
-    const narrative = topicNarratives[topic.slug];
-    const actionTypes = [
-      ActionType.CONTACT,
-      ActionType.VOLUNTEER,
-      ActionType.GUIDE,
-      ActionType.DONATE,
-    ] as const;
+    const action = pickTopicEntry(topicActionPool, topic.slug, index);
 
     return {
       slug: `lorem-action-${String(index + 1).padStart(3, '0')}`,
-      title: `${narrative.actionTitle} ${index + 1}`,
-      summary: `${narrative.actionSummary} ${index + 1}.`,
-      description: `${narrative.actionDescription} Seeded example ${index + 1} keeps the public and admin lists broad enough to demonstrate realistic browsing and moderation flows.`,
-      actionType: actionTypes[index % actionTypes.length],
+      title: action.title,
+      summary: action.summary,
+      description: action.summary,
+      actionType: action.actionType,
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
       topicSlugs: [topic.slug],
@@ -1106,17 +1613,16 @@ const generatedDemoEvents = Array.from(
   { length: Math.max(0, TARGET_PUBLISHED_EVENT_COUNT - publishedDemoEvents.length) },
   (_, index) => {
     const topic = topics[index % topics.length];
-    const narrative = topicNarratives[topic.slug];
     const regionData = eventRegions[index % eventRegions.length];
+    const event = pickTopicEntry(topicEventPool, topic.slug, index);
     const startTime = relativeDate({ daysFromNow: 30 + index, hours: 18 });
     const endTime = relativeDate({ daysFromNow: 30 + index, hours: 20 });
-    const title = `${narrative.eventTitle} ${index + 1}`;
-    const locationName = `${regionData.city} Civic Space ${index + 1}`;
+    const locationName = `${regionData.city} Civic Center`;
 
     return {
-      title,
-      summary: `${narrative.eventSummary} ${index + 1}.`,
-      description: `${narrative.eventDescription} Seeded example ${index + 1} ensures the Events surface has enough depth for realistic filtering and pagination.`,
+      title: event.title,
+      summary: event.summary,
+      description: event.summary,
       website: `https://example.org/events/lorem-${index + 1}`,
       eventType: eventTypes[index % eventTypes.length],
       status: EntityStatus.PUBLISHED,
@@ -1137,9 +1643,9 @@ const generatedDemoEvents = Array.from(
       submission: {
         submissionType: SubmissionType.EVENT,
         status: SubmissionStatus.APPROVED,
-        title,
-        summary: `${narrative.eventSummary} ${index + 1}.`,
-        submittedContent: `${narrative.eventDescription} Seeded organizer notes for event ${index + 1} preserve a believable moderation path in the admin demo.`,
+        title: event.title,
+        summary: event.summary,
+        submittedContent: event.summary,
         eventType: eventTypes[index % eventTypes.length],
         startTime,
         endTime,
@@ -1153,7 +1659,7 @@ const generatedDemoEvents = Array.from(
         country: 'USA',
         website: `https://example.org/events/lorem-${index + 1}`,
         contactEmail: 'events@example.org',
-        submitterName: 'SignalFire Demo Organizer',
+        submitterName: 'Find Your Fight Demo Organizer',
         submitterEmail: 'organizer@example.org',
         reviewNotes: 'Approved for demo data.',
         reviewedAt: publishedDateFromIndex(index),
@@ -1227,6 +1733,51 @@ async function seedTopics() {
 }
 
 async function seedDemoArticles() {
+  const generatedArticleSlugs = generatedDemoArticles.map((article) => article.slug);
+  const staleGeneratedArticles = await prisma.article.findMany({
+    where: {
+      slug: {
+        startsWith: 'lorem-article-',
+        notIn: generatedArticleSlugs,
+      },
+    },
+    select: { id: true },
+  });
+  const staleGeneratedArticleIds = staleGeneratedArticles.map((article) => article.id);
+
+  if (staleGeneratedArticleIds.length > 0) {
+    await prisma.$transaction([
+      prisma.topicArticle.deleteMany({
+        where: {
+          articleId: {
+            in: staleGeneratedArticleIds,
+          },
+        },
+      }),
+      prisma.articleAction.deleteMany({
+        where: {
+          articleId: {
+            in: staleGeneratedArticleIds,
+          },
+        },
+      }),
+      prisma.articleEvent.deleteMany({
+        where: {
+          articleId: {
+            in: staleGeneratedArticleIds,
+          },
+        },
+      }),
+      prisma.article.deleteMany({
+        where: {
+          id: {
+            in: staleGeneratedArticleIds,
+          },
+        },
+      }),
+    ]);
+  }
+
   for (const article of allDemoArticles) {
     await prisma.article.upsert({
       where: { slug: article.slug },
@@ -1252,6 +1803,51 @@ async function seedDemoArticles() {
 }
 
 async function seedDemoActions() {
+  const generatedActionSlugs = generatedDemoActions.map((action) => action.slug);
+  const staleGeneratedActions = await prisma.action.findMany({
+    where: {
+      slug: {
+        startsWith: 'lorem-action-',
+        notIn: generatedActionSlugs,
+      },
+    },
+    select: { id: true },
+  });
+  const staleGeneratedActionIds = staleGeneratedActions.map((action) => action.id);
+
+  if (staleGeneratedActionIds.length > 0) {
+    await prisma.$transaction([
+      prisma.topicAction.deleteMany({
+        where: {
+          actionId: {
+            in: staleGeneratedActionIds,
+          },
+        },
+      }),
+      prisma.articleAction.deleteMany({
+        where: {
+          actionId: {
+            in: staleGeneratedActionIds,
+          },
+        },
+      }),
+      prisma.actionEvent.deleteMany({
+        where: {
+          actionId: {
+            in: staleGeneratedActionIds,
+          },
+        },
+      }),
+      prisma.action.deleteMany({
+        where: {
+          id: {
+            in: staleGeneratedActionIds,
+          },
+        },
+      }),
+    ]);
+  }
+
   for (const action of allDemoActions) {
     await prisma.action.upsert({
       where: { slug: action.slug },
@@ -1277,6 +1873,58 @@ async function seedDemoActions() {
 }
 
 async function seedDemoEvents() {
+  const generatedEventWebsites = generatedDemoEvents.map((event) => event.website);
+  const staleGeneratedEvents = await prisma.event.findMany({
+    where: {
+      website: {
+        startsWith: 'https://example.org/events/lorem-',
+        notIn: generatedEventWebsites,
+      },
+    },
+    select: { id: true },
+  });
+  const staleGeneratedEventIds = staleGeneratedEvents.map((record) => record.id);
+
+  if (staleGeneratedEventIds.length > 0) {
+    await prisma.$transaction([
+      prisma.topicEvent.deleteMany({
+        where: {
+          eventId: {
+            in: staleGeneratedEventIds,
+          },
+        },
+      }),
+      prisma.articleEvent.deleteMany({
+        where: {
+          eventId: {
+            in: staleGeneratedEventIds,
+          },
+        },
+      }),
+      prisma.actionEvent.deleteMany({
+        where: {
+          eventId: {
+            in: staleGeneratedEventIds,
+          },
+        },
+      }),
+      prisma.submission.deleteMany({
+        where: {
+          eventId: {
+            in: staleGeneratedEventIds,
+          },
+        },
+      }),
+      prisma.event.deleteMany({
+        where: {
+          id: {
+            in: staleGeneratedEventIds,
+          },
+        },
+      }),
+    ]);
+  }
+
   const demoEventWebsites = allDemoEvents.map((event) => event.website);
   const existingDemoEvents = await prisma.event.findMany({
     where: {

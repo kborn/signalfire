@@ -1616,6 +1616,15 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [x] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
 - [x] Refine the public Events finder, empty states, and Event list/detail presentation so the filter surface, result cards, and detail pages read as one coherent public UI system
 - [x] Replace ad hoc inline public-site SVG icon markup, including the Events date-picker calendar glyph, with the final shared icon-library treatment chosen for launch polish
+- [x] Rework remaining public-facing copy and IA details from the external Milestone 1 polish review, including the homepage contribution copy, public nav action labeling, About-page repetition cleanup, and carrying the strongest site-purpose language into the public journey where appropriate
+- [x] Restore journey continuity on issue detail and About-page navigation patterns, including Step 3 interaction consistency and explicit issue-detail framing that helps users move from issue discovery into reading and action
+- [x] Finish the remaining article and issue-detail reading-experience polish from the Milestone 1 review, including article-body typography/hierarchy and making issue-detail article lists feel fully intentional rather than minimally rendered
+- [x] Complete the remaining public visual polish from the Milestone 1 review, including submit-entry spacing and a final decision on whether the shared background motif should stay consistent across routes or be reduced to hero-only usage
+- [x] Revisit the remaining external-review visual findings that were reopened after the first 13.3 pass, including homepage hero framing/alignment, list-page warmth, and any residual sticky-layer hover bleed visible in current screenshots
+- [x] Run and resolve a focused mobile-responsiveness audit across the public homepage, discovery cards, Events filters, and submission flows
+- [x] Add clear next-step affordances to public submission success states so the user is not stranded after article or event submission
+- [x] Finish remaining admin-facing polish items that are visible in the demo workflow, including human-readable submission-review datetime rendering and making the admin shell/background treatment read as intentional rather than incidental
+- [ ] Replace visibly generated numbered demo-content filler with a smaller, more editorially intentional seed pool so public lists and detail pages do not read like scaffolding
 
 ##### 13.4 Repo & Launch Readiness
 
@@ -1627,8 +1636,15 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
 - [ ] Confirm repository documentation, setup instructions, deployment caveats, and reviewer-facing screenshots match the actual shipped product state
 - [ ] Complete a repo hygiene pass: update runbooks, verify local setup instructions, make deploy steps easy to find, remove stale guidance, and replace outdated screenshots with current product/admin captures
+- [ ] Address Milestone 1 source-review follow-ups that affect release credibility, including secure admin-cookie behavior, URL-validation hardening for resource links, empty-body API response handling, and the remaining strict-equality/stable-key/access-modifier cleanup
+- [ ] Reduce the highest-signal source duplication called out by the Milestone 1 polish review, including repeated topic-id lookup helpers, title-to-slug helpers, and topic-create repository mapping logic
+- [ ] Replace runtime-only moderation fallbacks with compile-time exhaustiveness where discriminated unions define review decision handling
 
 ---
+
+###### Links:
+
+- External review follow-up: `docs/specs/015-phase-13-milestone-1-polish-review.md`
 
 ---
 

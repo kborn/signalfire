@@ -6,7 +6,7 @@ export default function HomePage() {
   const isDemoMode = isDemoModeEnabled();
 
   return (
-    <div className="container home-page">
+    <div className="container home-page motifPage centeredPublicPage">
       <section className="page-section home-hero">
         <div className="hero-logo">
           <Image
@@ -22,6 +22,10 @@ export default function HomePage() {
         <p className="page-intro">
           Choose one issue, learn what is at stake, and take one concrete step.
         </p>
+        <p className="home-hook">
+          A civic action site for people who want to do something about what is happening and need a
+          clear place to start.
+        </p>
 
         <div className="ctaRow">
           <Link href="/topics" className="primaryCTA">
@@ -30,10 +34,12 @@ export default function HomePage() {
           <Link href="/events" className="secondaryCTA">
             Search Events
           </Link>
+        </div>
+        <p className="homeHeroContext">
           <Link href="/about" className="textCTA">
             Why This Site Exists
           </Link>
-        </div>
+        </p>
       </section>
 
       <section className="page-section home-journey">
@@ -72,8 +78,8 @@ export default function HomePage() {
         <p className="section-label">Contribute</p>
         <h2>Submissions are moderated before they go live.</h2>
         <p>
-          You can submit an article or event for moderation. The contribution flow shows how new
-          public content enters the system.
+          Submit an article or event and it enters moderation review before publication.
+          Contributions help keep the platform growing.
         </p>
         <div className="ctaRow">
           <Link href="/submit" className="primaryCTA">

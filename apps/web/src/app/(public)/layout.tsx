@@ -26,18 +26,20 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <nav className="site-nav" aria-label="Public">
               <NavLink href="/topics">Issues</NavLink>
               <NavLink href="/articles">Articles</NavLink>
-              <NavLink href="/actions">Actions</NavLink>
+              <NavLink href="/actions">Ways to Act</NavLink>
               <NavLink href="/events">Events</NavLink>
               <NavLink href="/about">About</NavLink>
             </nav>
-            {isDemoMode ? (
-              <NavLink href="/admin" className="site-admin-demo-link">
-                Admin Demo
+            <div className="site-header-actions">
+              {isDemoMode ? (
+                <NavLink href="/admin" className="site-admin-demo-link">
+                  Admin Demo
+                </NavLink>
+              ) : null}
+              <NavLink href="/submit" className="site-submit-link">
+                Submit Content
               </NavLink>
-            ) : null}
-            <NavLink href="/submit" className="site-submit-link">
-              Submit Content
-            </NavLink>
+            </div>
           </div>
         </header>
         {isDemoMode ? <DemoBanner /> : null}

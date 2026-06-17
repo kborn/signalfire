@@ -260,6 +260,8 @@ describe('SubmissionReviewPageContent', () => {
     expect(
       within(getReviewOutcomePanel()).getByText('City Hall Transit Accountability Rally'),
     ).toBeInTheDocument();
+    expect(screen.getByText('Thu, Jun 11, 2026 at 9:00 PM UTC')).toBeInTheDocument();
+    expect(screen.getByText('Thu, Jun 11, 2026 at 11:00 PM UTC')).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: 'Approve as Draft' })).toBeDisabled();
 

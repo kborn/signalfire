@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function ChooseSubmitTypePage() {
   return (
-    <section className="page-section">
+    <section className="page-section submitEntryPage motifPage centeredPublicPage">
       <h1 className="pageTitle">Contribute to Find Your Fight</h1>
       <p className="page-intro">
         Submit an article or event for moderation. Nothing is published automatically.
@@ -26,7 +26,17 @@ export default function ChooseSubmitTypePage() {
           </div>
         </Link>
       </div>
-      <p className="metaText">Include enough context for moderation and publication preparation.</p>
+      <div className="submitEntrySupport">
+        <p className="metaText">
+          Every submission is reviewed by a person before it appears on the site.
+        </p>
+        <p className="metaText">
+          Include enough context for moderation and publication preparation.
+        </p>
+        <Link href="/about" className="textCTA">
+          Read more about the project
+        </Link>
+      </div>
     </section>
   );
 }

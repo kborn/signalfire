@@ -149,6 +149,8 @@ describe('EventSubmissionForm', () => {
       },
     });
     expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Browse Events' })).toHaveAttribute('href', '/events');
+    expect(screen.getByRole('link', { name: 'Ways to Act' })).toHaveAttribute('href', '/actions');
   });
 
   it('maps API validation errors to inline event field errors', async () => {
