@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default async function AboutPage() {
   return (
-    <section className="page-section">
+    <section className="page-section aboutPage motifPage centeredPublicPage">
       <section className="page-section about-hero">
         <p className="section-label">About Find Your Fight</p>
         <h1 className="pageTitle">Why This Site Exists</h1>
@@ -29,15 +29,15 @@ export default async function AboutPage() {
       </section>
 
       <section className="page-section about-community">
-        <p className="section-label">Community-powered by design</p>
-        <h2>Visitors are the primary source of new content.</h2>
+        <p className="section-label">Moderated contributions</p>
+        <h2>Visitors can propose new public content.</h2>
         <p>
-          Find Your Fight is designed to run on community submissions. Articles, resources, guides,
-          and events from visitors are expected to drive the majority of new publishing over time.
+          Find Your Fight accepts article and event submissions from visitors. Each submission is
+          reviewed before publication so the public experience stays useful, practical, and clear.
         </p>
         <p>
-          Every submission is moderated before publication so the site can stay useful, practical,
-          and grounded.
+          The public site combines curated publishing with moderated submissions so new material
+          stays grounded, credible, and worth acting on.
         </p>
         <Link href="/submit" className="primaryCTA">
           Submit Content
@@ -67,13 +67,15 @@ export default async function AboutPage() {
           </Link>
 
           <section className="about-step collectionItem">
-            <p className="section-label">Step 3</p>
-            <h3>Take one concrete action.</h3>
-            <p>
-              You do not need to have the whole answer. Contact someone, volunteer, join an event,
-              or support work already in motion. The first action does not have to be perfect. It
-              has to be real.
-            </p>
+            <Link href="/actions" className="about-step-mainLink">
+              <p className="section-label">Step 3</p>
+              <h3>Take one concrete action.</h3>
+              <p>
+                You do not need to have the whole answer. Contact someone, volunteer, join an event,
+                or support work already in motion. The first action does not have to be perfect. It
+                has to be real.
+              </p>
+            </Link>
             <div className="ctaRow">
               <Link href="/actions" className="secondaryCTA">
                 Find Actions

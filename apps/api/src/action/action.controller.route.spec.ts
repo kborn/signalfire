@@ -1,18 +1,19 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
 import { buildActionDetailResponse, buildActionListResponse } from './action.test-fixtures';
 
-function getHttpServer(app: INestApplication): Server {
-  return app.getHttpServer() as Server;
+type RequestTarget = Parameters<typeof request>[0];
+
+function getHttpApp(app: INestApplication) {
+  return app.getHttpAdapter().getInstance() as RequestTarget;
 }
 
 describe('ActionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const actionServiceMock: jest.Mocked<Pick<ActionService, 'getActionDetail' | 'getActionList'>> = {
     getActionDetail: jest.fn(),
@@ -29,7 +30,7 @@ describe('ActionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -40,7 +41,7 @@ describe('ActionController HTTP', () => {
     const actionListResponse = buildActionListResponse();
     actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
 
-    await request(httpServer).get('/actions').expect(200).expect(actionListResponse);
+    await request(httpApp).get('/actions').expect(200).expect(actionListResponse);
     expect(actionServiceMock.getActionList).toHaveBeenCalledWith({
       page: 1,
       pageSize: 10,
@@ -52,7 +53,7 @@ describe('ActionController HTTP', () => {
     const actionListResponse = buildActionListResponse();
     actionServiceMock.getActionList.mockResolvedValue(actionListResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get('/actions')
       .query({ topicSlug: 'democracy' })
       .expect(200)
@@ -69,7 +70,7 @@ describe('ActionController HTTP', () => {
     const actionDetailResponse = buildActionDetailResponse();
     actionServiceMock.getActionDetail.mockResolvedValue(actionDetailResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get(`/actions/${actionDetailResponse.slug}`)
       .expect(200)
       .expect(actionDetailResponse);
@@ -80,7 +81,7 @@ describe('ActionController HTTP', () => {
       new NotFoundException('No action found with slug missing'),
     );
 
-    await request(httpServer).get('/actions/missing').expect(404);
+    await request(httpApp).get('/actions/missing').expect(404);
   });
 
   it('GET /actions/:slug returns 404 when the action is unpublished', async () => {
@@ -88,6 +89,6 @@ describe('ActionController HTTP', () => {
       new NotFoundException('No published action found with slug draft-action'),
     );
 
-    await request(httpServer).get('/actions/draft-action').expect(404);
+    await request(httpApp).get('/actions/draft-action').expect(404);
   });
 });

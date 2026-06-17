@@ -4,7 +4,7 @@ export default function PublicNotFoundPage() {
   return (
     <section className="page-section notFoundPanel">
       <p className="section-label">Page not found</p>
-      <h1 className="pageTitle">This path does not have a fight attached.</h1>
+      <h1 className="pageTitle">We could not find that page.</h1>
       <p className="page-intro">
         The page may have moved, or the resource may not be published yet. Start with the current
         issue areas or browse practical ways to act.

@@ -1,6 +1,7 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
 import type { ComponentProps } from 'react';
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { postEventSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
@@ -456,6 +457,14 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
         <p className="metaText">
           If you included an email address, we may contact you if we need clarification.
         </p>
+        <div className="ctaRow submissionSuccessActions">
+          <Link href="/events" className="primaryCTA">
+            Browse Events
+          </Link>
+          <Link href="/actions" className="secondaryCTA">
+            Ways to Act
+          </Link>
+        </div>
       </div>
     );
   } else {

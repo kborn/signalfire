@@ -7,20 +7,33 @@ export const dynamic = 'force-dynamic';
 import EventFilters from '@/app/(public)/events/_components/event-filters';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
+import Link from 'next/link';
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
     <section className="discoveryEmptyState">
-      <p>{topicSlug ? 'No events found for this topic yet.' : 'No events available yet.'}</p>
-      <p>
-        Try a nearby city, broaden the date window, or browse a different topic within this state.
+      <p className="section-label">No events yet</p>
+      <h2>{topicSlug ? 'No events match this issue right now.' : 'No events available yet.'}</h2>
+      <p className="metaText">
+        Try a nearby city, broaden the date window, or look for an action you can take right away.
       </p>
+      <div className="ctaRow">
+        <Link href="/actions" className="secondaryCTA">
+          Browse Actions
+        </Link>
+      </div>
     </section>
   );
 }
 
 function getEmptyPageResponse() {
-  return <p>No events on this page. Try a previous page or change the filters.</p>;
+  return (
+    <section className="discoveryEmptyState">
+      <p className="section-label">No results on this page</p>
+      <h2>There are matching events, just not on this page.</h2>
+      <p className="metaText">Try a previous page or widen the city and date filters.</p>
+    </section>
+  );
 }
 
 function canRequest(props: EventListPageProps): boolean {
@@ -83,7 +96,8 @@ async function getContents(params: EventListPageProps) {
         <p className="section-label">Start here</p>
         <h2>Find upcoming events near you</h2>
         <p className="metaText">
-          Select a region to start browsing events. Topic, city, and dates can narrow the results.
+          Select a state or territory to start browsing events. Issue, city, and dates can narrow
+          the results.
         </p>
       </section>
     );
@@ -121,7 +135,9 @@ export default async function EventListPage({ searchParams }: EventListPageProps
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
-      <p className="page-intro">Browse upcoming events and find ways to participate in person</p>
+      <p className="page-intro">
+        Browse upcoming events by issue, location, and date to find ways to participate in person.
+      </p>
       <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(params)}</div>

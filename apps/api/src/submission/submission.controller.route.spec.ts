@@ -1,6 +1,5 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { SubmissionController } from './submission.controller';
 import { SubmissionService } from './submission.service';
@@ -12,13 +11,15 @@ import {
 } from './submission.test-fixtures';
 import { UnknownSubmissionTopicsError } from './submission.error';
 
-function getHttpServer(app: INestApplication): Server {
-  return app.getHttpServer() as Server;
+type RequestTarget = Parameters<typeof request>[0];
+
+function getHttpApp(app: INestApplication) {
+  return app.getHttpAdapter().getInstance() as RequestTarget;
 }
 
 describe('SubmissionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const submissionServiceMock = {
     create: jest.fn(),
@@ -34,7 +35,7 @@ describe('SubmissionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -46,7 +47,7 @@ describe('SubmissionController HTTP', () => {
     submissionServiceMock.create.mockResolvedValue(submissionSuccessResponse);
 
     const req = buildEventSubmissionRequest();
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions')
       .send(req)
       .expect(201)
@@ -60,7 +61,7 @@ describe('SubmissionController HTTP', () => {
     submissionServiceMock.create.mockResolvedValue(submissionSuccessResponse);
 
     const req = buildArticleSubmissionRequest();
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions')
       .send(req)
       .expect(201)
@@ -75,7 +76,7 @@ describe('SubmissionController HTTP', () => {
     );
     const req = buildEventSubmissionRequest();
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions/')
       .send(req)
       .expect(400)
@@ -90,7 +91,7 @@ describe('SubmissionController HTTP', () => {
       },
     });
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions')
       .send(req)
       .expect(400)
@@ -112,7 +113,7 @@ describe('SubmissionController HTTP', () => {
       submitterEmail: 'not-an-email',
     });
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions')
       .send(req)
       .expect(400)
@@ -136,7 +137,7 @@ describe('SubmissionController HTTP', () => {
       },
     });
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/submissions')
       .send(req)
       .expect(400)
@@ -157,7 +158,7 @@ describe('SubmissionController HTTP', () => {
     submissionServiceMock.create.mockRejectedValue(new Error('some error'));
     const req = buildEventSubmissionRequest();
 
-    await request(httpServer).post('/submissions/').send(req).expect(500);
+    await request(httpApp).post('/submissions/').send(req).expect(500);
     expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
   });
 });

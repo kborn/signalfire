@@ -42,7 +42,7 @@ describe('EventListPage', () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       page: 2,
-      pageSize: 25,
+      pageSize: 20,
       totalItems: 60,
       totalPages: 3,
       items: [
@@ -75,23 +75,25 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(
       await EventListPage({
-        searchParams: Promise.resolve({ region: 'PA', page: '2', pageSize: '25' }),
+        searchParams: Promise.resolve({ region: 'PA', page: '2', pageSize: '20' }),
       }),
     );
 
     expect(getEventsList).toHaveBeenCalledTimes(1);
-    expect(getEventsList).toHaveBeenCalledWith({ region: 'PA', page: '2', pageSize: '25' });
+    expect(getEventsList).toHaveBeenCalledWith({ region: 'PA', page: '2', pageSize: '20' });
     expect(markup).toContain('Events');
-    expect(markup).toContain('Browse upcoming events and find ways to participate in person');
+    expect(markup).toContain(
+      'Browse upcoming events by issue, location, and date to find ways to participate in person.',
+    );
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('event-end-date');
     expect(markup).toContain('Results per page');
+    expect(markup).toContain('href="/events?region=PA&amp;pageSize=5"');
     expect(markup).toContain('href="/events?region=PA&amp;pageSize=10"');
-    expect(markup).toContain('href="/events?region=PA&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=PA&amp;pageSize=50"');
-    expect(markup).toContain('href="/events?region=PA&amp;page=1&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=PA&amp;page=2&amp;pageSize=25"');
-    expect(markup).toContain('href="/events?region=PA&amp;page=3&amp;pageSize=25"');
+    expect(markup).toContain('href="/events?region=PA&amp;pageSize=20"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=1&amp;pageSize=20"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=2&amp;pageSize=20"');
+    expect(markup).toContain('href="/events?region=PA&amp;page=3&amp;pageSize=20"');
     expect(markup).toContain('href="/events/1"');
     expect(markup).toContain('Town Hall Meeting');
     expect(markup).toContain('A short event summary.');
@@ -135,7 +137,9 @@ describe('EventListPage', () => {
       region: 'PA',
     });
     expect(markup).toContain('Events');
-    expect(markup).toContain('Browse upcoming events and find ways to participate in person');
+    expect(markup).toContain(
+      'Browse upcoming events by issue, location, and date to find ways to participate in person.',
+    );
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');
@@ -155,7 +159,7 @@ describe('EventListPage', () => {
 
     expect(getEventsList).not.toHaveBeenCalled();
     expect(markup).toContain('Events');
-    expect(markup).toContain('Select a region to start browsing events.');
+    expect(markup).toContain('Select a state or territory to start browsing events.');
   });
 
   it('renders the empty state when a filtered query returns no events', async () => {
@@ -180,14 +184,14 @@ describe('EventListPage', () => {
       region: 'PA',
     });
     expect(markup).toContain('Events');
-    expect(markup).toContain('No events found for this topic yet.');
+    expect(markup).toContain('No events match this issue right now.');
   });
 
   it('renders a recoverable empty page state when the requested page has no items', async () => {
     mockTopics();
     vi.mocked(getEventsList).mockResolvedValue({
       page: 9,
-      pageSize: 25,
+      pageSize: 20,
       totalItems: 12,
       totalPages: 2,
       items: [],
@@ -199,14 +203,14 @@ describe('EventListPage', () => {
           topicSlug: 'consumer-activism',
           region: 'PA',
           page: '9',
-          pageSize: '25',
+          pageSize: '20',
         }),
       }),
     );
 
-    expect(markup).toContain('No events on this page. Try a previous page or change the filters.');
+    expect(markup).toContain('There are matching events, just not on this page.');
     expect(markup).toContain(
-      'href="/events?topicSlug=consumer-activism&amp;region=PA&amp;page=8&amp;pageSize=25',
+      'href="/events?topicSlug=consumer-activism&amp;region=PA&amp;page=8&amp;pageSize=20',
     );
     expect(markup).toContain('Results per page');
   });

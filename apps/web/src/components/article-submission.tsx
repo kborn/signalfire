@@ -1,6 +1,7 @@
 'use client';
 import { TopicSummary } from '@signal-fire/api-contracts';
 import type { ComponentProps } from 'react';
+import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import { postArticleSubmission } from '@/lib/api/submit';
 import { SubmissionError } from '@/lib/api/error';
@@ -300,6 +301,14 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
         <p className="metaText">
           If you included an email address, we may contact you if we need clarification.
         </p>
+        <div className="ctaRow submissionSuccessActions">
+          <Link href="/topics" className="primaryCTA">
+            Explore Issues
+          </Link>
+          <Link href="/articles" className="secondaryCTA">
+            Browse Articles
+          </Link>
+        </div>
       </div>
     );
   } else {

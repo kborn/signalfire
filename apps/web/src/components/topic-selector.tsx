@@ -42,7 +42,7 @@ export function TopicSelector({ topics, basePath, params }: TopicSelectorProps) 
   const { topicSlug } = params;
   return (
     <nav className="topicSelector" aria-label="Filter by topic">
-      <span className="topicSelectorLabel">Topic</span>
+      <span className="topicSelectorLabel">Issue</span>
       <ul className="topicSelectorList">
         <li className="topicSelectorItem">
           <Link

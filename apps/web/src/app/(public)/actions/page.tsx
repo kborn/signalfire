@@ -5,14 +5,35 @@ import { getTopicsList } from '@/lib/api/topics';
 import { TopicSelector } from '@/components/topic-selector';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
+import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 function getNoResultsResponse(topicSlug?: string) {
-  return <p>{topicSlug ? 'No actions found for this topic yet.' : 'No actions available yet.'}</p>;
+  return (
+    <section className="discoveryEmptyState">
+      <p className="section-label">No actions yet</p>
+      <h2>{topicSlug ? 'No actions match this issue yet.' : 'No actions available yet.'}</h2>
+      <p className="metaText">
+        Try another issue, read related articles first, or check back after more action guides are
+        published.
+      </p>
+      <div className="ctaRow">
+        <Link href="/articles" className="secondaryCTA">
+          Browse Articles
+        </Link>
+      </div>
+    </section>
+  );
 }
 
 function getEmptyPageResponse() {
-  return <p>No actions on this page. Try a previous page or change the filters.</p>;
+  return (
+    <section className="discoveryEmptyState">
+      <p className="section-label">No results on this page</p>
+      <h2>These filters still have actions available.</h2>
+      <p className="metaText">Try a previous page or change the issue filter.</p>
+    </section>
+  );
 }
 
 type ActionListPageProps = {
@@ -32,9 +53,12 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
   ]);
 
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Actions</h1>
-      <p className="page-intro">Find practical ways to take meaningful action</p>
+    <section className="page-section discoveryPage">
+      <div className="discoveryPageHeader">
+        <p className="section-label">Browse</p>
+        <h1 className="pageTitle">Actions</h1>
+        <p className="page-intro">Find practical ways to take meaningful action</p>
+      </div>
       <TopicSelector topics={topics} basePath="/actions" params={params} />
 
       <section className="collectionList">

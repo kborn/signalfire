@@ -1603,19 +1603,28 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ##### 13.3 Public Polish
 
-- [ ] Clean up remaining obvious formatting-quality issues that undercut launch readiness, including raw or UTC-only timestamp presentation where human-readable date/time formatting should exist
-- [ ] Fix obvious public demo defects that read as bugs rather than product tradeoffs, including duplicate event-summary rendering and similar screenshot-visible data/presentation issues
-- [ ] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
-- [ ] Complete a final public copy review across homepage, About, navigation, collection pages, detail pages, submit flows, empty states, and error states
-- [ ] Make minor color, spacing, typography, CTA, and visual hierarchy adjustments needed after reviewing the full public flow in realistic browser viewports
-- [ ] Eliminate sticky-surface scroll bleed and overlap artifacts, including text, borders, or highlighted rows visibly sliding through the public header, demo banner, topic bars, or similar pinned UI layers during scroll
-- [ ] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
-- [ ] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
-- [ ] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
-- [ ] Align public-facing naming and brand presentation consistently across the live product, including product name usage, admin entry-point labeling, nav terminology, and any abbreviated wordmark treatment
-- [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
-- [ ] Refine the public Events finder, empty states, and Event list/detail presentation so the filter surface, result cards, and detail pages read as one coherent public UI system
-- [ ] Replace ad hoc inline public-site SVG icon markup, including the Events date-picker calendar glyph, with the final shared icon-library treatment chosen for launch polish
+- [x] Clean up remaining obvious formatting-quality issues that undercut launch readiness, including raw or UTC-only timestamp presentation where human-readable date/time formatting should exist
+- [x] Fix obvious public demo defects that read as bugs rather than product tradeoffs, including duplicate event-summary rendering and similar screenshot-visible data/presentation issues
+- [x] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
+- [x] Complete a final public copy review across homepage, About, navigation, collection pages, detail pages, submit flows, empty states, and error states
+- [x] Make minor color, spacing, typography, CTA, and visual hierarchy adjustments needed after reviewing the full public flow in realistic browser viewports
+- [x] Eliminate sticky-surface scroll bleed and overlap artifacts, including text, borders, or highlighted rows visibly sliding through the public header, demo banner, topic bars, or similar pinned UI layers during scroll
+- [x] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
+- [x] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
+- [x] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
+- [x] Align public-facing naming and brand presentation consistently across the live product, including product name usage, admin entry-point labeling, nav terminology, and any abbreviated wordmark treatment
+- [x] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
+- [x] Refine the public Events finder, empty states, and Event list/detail presentation so the filter surface, result cards, and detail pages read as one coherent public UI system
+- [x] Replace ad hoc inline public-site SVG icon markup, including the Events date-picker calendar glyph, with the final shared icon-library treatment chosen for launch polish
+- [x] Rework remaining public-facing copy and IA details from the external Milestone 1 polish review, including the homepage contribution copy, public nav action labeling, About-page repetition cleanup, and carrying the strongest site-purpose language into the public journey where appropriate
+- [x] Restore journey continuity on issue detail and About-page navigation patterns, including Step 3 interaction consistency and explicit issue-detail framing that helps users move from issue discovery into reading and action
+- [x] Finish the remaining article and issue-detail reading-experience polish from the Milestone 1 review, including article-body typography/hierarchy and making issue-detail article lists feel fully intentional rather than minimally rendered
+- [x] Complete the remaining public visual polish from the Milestone 1 review, including submit-entry spacing and a final decision on whether the shared background motif should stay consistent across routes or be reduced to hero-only usage
+- [x] Revisit the remaining external-review visual findings that were reopened after the first 13.3 pass, including homepage hero framing/alignment, list-page warmth, and any residual sticky-layer hover bleed visible in current screenshots
+- [x] Run and resolve a focused mobile-responsiveness audit across the public homepage, discovery cards, Events filters, and submission flows
+- [x] Add clear next-step affordances to public submission success states so the user is not stranded after article or event submission
+- [x] Finish remaining admin-facing polish items that are visible in the demo workflow, including human-readable submission-review datetime rendering and making the admin shell/background treatment read as intentional rather than incidental
+- [x] Replace visibly generated numbered demo-content filler with a smaller, more editorially intentional seed pool so public lists and detail pages do not read like scaffolding
 
 ##### 13.4 Repo & Launch Readiness
 
@@ -1627,8 +1636,15 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
 - [ ] Confirm repository documentation, setup instructions, deployment caveats, and reviewer-facing screenshots match the actual shipped product state
 - [ ] Complete a repo hygiene pass: update runbooks, verify local setup instructions, make deploy steps easy to find, remove stale guidance, and replace outdated screenshots with current product/admin captures
+- [ ] Address Milestone 1 source-review follow-ups that affect release credibility, including secure admin-cookie behavior, URL-validation hardening for resource links, empty-body API response handling, and the remaining strict-equality/stable-key/access-modifier cleanup
+- [ ] Reduce the highest-signal source duplication called out by the Milestone 1 polish review, including repeated topic-id lookup helpers, title-to-slug helpers, and topic-create repository mapping logic
+- [ ] Replace runtime-only moderation fallbacks with compile-time exhaustiveness where discriminated unions define review decision handling
 
 ---
+
+###### Links:
+
+- External review follow-up: `docs/specs/015-phase-13-milestone-1-polish-review.md`
 
 ---
 

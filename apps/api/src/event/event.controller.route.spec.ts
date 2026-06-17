@@ -1,19 +1,20 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
 import { buildEntityDetailResponse, buildEventListResponse } from './event.test-fixtures';
 import { withFrozenTime } from '../../common/test/time';
 
-function getHttpServer(app: INestApplication): Server {
-  return app.getHttpServer() as Server;
+type RequestTarget = Parameters<typeof request>[0];
+
+function getHttpApp(app: INestApplication) {
+  return app.getHttpAdapter().getInstance() as RequestTarget;
 }
 
 describe('EventController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const eventServiceMock: jest.Mocked<
     Pick<EventService, 'getPublishedEventDetail' | 'getPublishedEventList'>
@@ -32,7 +33,7 @@ describe('EventController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -44,7 +45,7 @@ describe('EventController HTTP', () => {
       const eventListResponse = buildEventListResponse();
       eventServiceMock.getPublishedEventList.mockResolvedValue(eventListResponse);
 
-      await request(httpServer)
+      await request(httpApp)
         .get('/events')
         .query({ topicSlug: 'democracy' })
         .expect(200)
@@ -64,7 +65,7 @@ describe('EventController HTTP', () => {
     const eventDetailResponse = buildEntityDetailResponse();
     eventServiceMock.getPublishedEventDetail.mockResolvedValue(eventDetailResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get(`/events/${eventDetailResponse.id}`)
       .expect(200)
       .expect(eventDetailResponse);
@@ -73,7 +74,7 @@ describe('EventController HTTP', () => {
   });
 
   it('GET /events/:id returns 400 when id is not numeric', async () => {
-    await request(httpServer).get('/events/not-a-number').expect(400);
+    await request(httpApp).get('/events/not-a-number').expect(400);
   });
 
   it('GET /events/:id returns 404 when the event is missing', async () => {
@@ -81,6 +82,6 @@ describe('EventController HTTP', () => {
       new NotFoundException('No published event found with id 999'),
     );
 
-    await request(httpServer).get('/events/999').expect(404);
+    await request(httpApp).get('/events/999').expect(404);
   });
 });

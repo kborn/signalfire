@@ -1,4 +1,5 @@
 import { ModerationSubmissionDetail } from '@signal-fire/api-contracts';
+import { formatEventTime } from '@/lib/common/time';
 
 type ArticleModerationSubmission = Extract<
   ModerationSubmissionDetail,
@@ -43,6 +44,11 @@ function ArticleSubmittedContent({ submission }: { submission: ArticleModeration
 }
 
 function EventSubmittedContent({ submission }: { submission: EventModerationSubmission }) {
+  const startTimeLabel = formatEventTime(submission.submittedContent.startTime, null);
+  const endTimeLabel = submission.submittedContent.endTime
+    ? formatEventTime(submission.submittedContent.endTime, null)
+    : '--';
+
   return (
     <dl className="adminDefinitionList">
       <dt>Title</dt>
@@ -54,9 +60,9 @@ function EventSubmittedContent({ submission }: { submission: EventModerationSubm
       <dt>Event Type</dt>
       <dd>{submission.submittedContent.eventType}</dd>
       <dt>Start date and time</dt>
-      <dd>{submission.submittedContent.startTime}</dd>
+      <dd>{startTimeLabel}</dd>
       <dt>End date and time</dt>
-      <dd>{submission.submittedContent.endTime ?? '--'}</dd>
+      <dd>{endTimeLabel}</dd>
       <dt>Location Name</dt>
       <dd>{submission.submittedContent.locationName}</dd>
       <dt>Location Description</dt>
