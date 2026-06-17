@@ -8,7 +8,7 @@ describe('PublicNotFoundPage', () => {
     const markup = renderToStaticMarkup(<PublicNotFoundPage />);
 
     expect(markup).toContain('Page not found');
-    expect(markup).toContain('This path does not have a fight attached.');
+    expect(markup).toContain('We could not find that page.');
     expect(markup).toContain('href="/topics"');
     expect(markup).toContain('href="/actions"');
   });

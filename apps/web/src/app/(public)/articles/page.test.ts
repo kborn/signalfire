@@ -70,7 +70,7 @@ describe('ArticleListPage', () => {
     expect(markup).toContain(
       'Read reporting, explainers, and field guides about the issues that matter',
     );
-    expect(markup).toContain('Topic');
+    expect(markup).toContain('Issue');
     expect(markup).toContain('href="/articles?topicSlug=democracy&amp;pageSize=12"');
     expect(markup).toContain('Results per page');
     expect(markup).toContain('href="/articles?topicSlug=democracy&amp;pageSize=10"');
@@ -131,11 +131,11 @@ describe('ArticleListPage', () => {
     });
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Articles');
-    expect(markup).toContain('No articles found for this topic yet.');
+    expect(markup).toContain('No published articles match this issue yet.');
     expect(markup).toContain(
       'Read reporting, explainers, and field guides about the issues that matter',
     );
-    expect(markup).toContain('Topic');
+    expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');
   });
 
@@ -165,10 +165,8 @@ describe('ArticleListPage', () => {
     );
 
     expect(markup).toContain('Articles');
-    expect(markup).toContain(
-      'No articles on this page. Try a previous page or change the filters.',
-    );
-    expect(markup).toContain('Topic');
+    expect(markup).toContain('These filters have results, just not here.');
+    expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');
     expect(markup).toContain('href="/articles?topicSlug=democracy&amp;page=8&amp;pageSize=10"');
   });

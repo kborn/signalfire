@@ -70,7 +70,7 @@ describe('ActionListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('Find practical ways to take meaningful action');
-    expect(markup).toContain('Topic');
+    expect(markup).toContain('Issue');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=12"');
     expect(markup).toContain('Results per page');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
@@ -131,9 +131,9 @@ describe('ActionListPage', () => {
     });
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
-    expect(markup).toContain('No actions found for this topic yet.');
+    expect(markup).toContain('No actions match this issue yet.');
     expect(markup).toContain('Find practical ways to take meaningful action');
-    expect(markup).toContain('Topic');
+    expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');
   });
 
@@ -162,7 +162,7 @@ describe('ActionListPage', () => {
       }),
     );
 
-    expect(markup).toContain('No actions on this page. Try a previous page or change the filters.');
+    expect(markup).toContain('These filters still have actions available.');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=8&amp;pageSize=10"');
     expect(markup).toContain('Results per page');
   });

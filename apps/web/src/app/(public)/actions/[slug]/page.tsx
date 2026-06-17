@@ -32,7 +32,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       </section>
       <section className="detailContent">
         <section className="detailMetaGroup">
-          <p>{action.summary}</p>
+          <p className="detailLead">{action.summary}</p>
           <div className="metaBlock">
             <p className="metaLabel">Action Type</p>
             <p className="metaValue">{actionType}</p>
