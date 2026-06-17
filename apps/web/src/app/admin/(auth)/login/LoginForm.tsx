@@ -1,9 +1,13 @@
 'use client';
 
 import { type ComponentProps, useMemo, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api/auth';
 import { ApiError } from '@/lib/api/error';
+import { isDemoModeEnabled } from '@/lib/demo-mode';
+
+const README_DEMO_ACCESS_URL = 'https://github.com/kborn/signalfire#demo-review-and-admin-access';
 
 type LoginFormProps = {
   next: string | null;
@@ -39,6 +43,7 @@ function getRequestedDestinationLabel(next: string | null): string | null {
 
 export default function LoginForm({ next }: LoginFormProps) {
   const router = useRouter();
+  const isDemoMode = isDemoModeEnabled();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -90,6 +95,15 @@ export default function LoginForm({ next }: LoginFormProps) {
                 ? 'You will be returned to where you left off after successful login.'
                 : 'Use an admin account to enter the moderation and publishing workspace.'}
             </p>
+            {!isSessionReturn && isDemoMode ? (
+              <p className="adminLoginFormDek">
+                Demo credentials and local setup live in the repository&apos;s{' '}
+                <Link href={README_DEMO_ACCESS_URL} className="textCTA">
+                  demo review and admin access section
+                </Link>
+                .
+              </p>
+            ) : null}
           </div>
 
           <form className="submissionForm adminLoginForm" onSubmit={submit} noValidate>

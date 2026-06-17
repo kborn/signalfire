@@ -1,11 +1,7 @@
 import { makeRequest } from '@/lib/api/base';
 import type { QueryParams } from '@/lib/api/base.shared';
 
-import {
-  EventListRequest,
-  EventDetailResponse,
-  EventListResponse,
-} from '@signal-fire/api-contracts';
+import { EventDetailResponse, EventListResponse } from '@signal-fire/api-contracts';
 
 type EventListQuery = {
   topicSlug?: string;

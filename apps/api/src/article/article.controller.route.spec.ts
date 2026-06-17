@@ -1,15 +1,18 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Server } from 'http';
 import request from 'supertest';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { buildArticleDetailResponse, buildArticleListResponse } from './article.test-fixtures';
 
-type RequestTarget = Parameters<typeof request>[0];
+function getHttpServer(app: INestApplication): Server {
+  return app.getHttpServer() as Server;
+}
 
 describe('ArticleController HTTP', () => {
   let app: INestApplication;
-  let httpServer: RequestTarget;
+  let httpServer: Server;
 
   const articleServiceMock: jest.Mocked<
     Pick<ArticleService, 'getArticleDetail' | 'getArticleList'>
@@ -28,7 +31,7 @@ describe('ArticleController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
+    httpServer = getHttpServer(app);
   });
 
   afterEach(async () => {

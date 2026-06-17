@@ -1,5 +1,6 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Server } from 'http';
 import request from 'supertest';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
@@ -17,11 +18,13 @@ import {
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
 
-type RequestTarget = Parameters<typeof request>[0];
-
 describe('ModerationSubmissionController HTTP', () => {
+  function getHttpServer(app: INestApplication): Server {
+    return app.getHttpServer() as Server;
+  }
+
   let app: INestApplication;
-  let httpServer: RequestTarget;
+  let httpServer: Server;
 
   const moderationSubmissionServiceMock = {
     reviewSubmission: jest.fn(),
@@ -42,7 +45,7 @@ describe('ModerationSubmissionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
+    httpServer = getHttpServer(app);
   });
 
   afterEach(async () => {

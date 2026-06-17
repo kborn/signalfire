@@ -92,11 +92,7 @@ describe('AdminAuthService', () => {
     >;
     const reauthorizeInput = updateSessionMock.mock.calls[0][0];
     expect(reauthorizeInput).toBeDefined();
-    const typedReauthorizeInput = reauthorizeInput as {
-      sessionToken: string;
-      expiresAt: Date;
-      lastUsedAt?: Date;
-    };
+    const typedReauthorizeInput = reauthorizeInput;
     expect(typedReauthorizeInput.sessionToken).toBe('session-token');
     expect(typedReauthorizeInput.expiresAt).toBeInstanceOf(Date);
     expect(typedReauthorizeInput.lastUsedAt).toBeInstanceOf(Date);
@@ -122,12 +118,7 @@ describe('AdminAuthService', () => {
     >;
     const createSessionInput = createSessionMock.mock.calls[0][0];
     expect(createSessionInput).toBeDefined();
-    const typedCreateSessionInput = createSessionInput as {
-      adminUserId: number;
-      sessionToken: string;
-      expiresAt: Date;
-      createdAt: Date;
-    };
+    const typedCreateSessionInput = createSessionInput;
     expect(typedCreateSessionInput.adminUserId).toBe(7);
     expect(typedCreateSessionInput.sessionToken).toEqual(expect.any(String));
     expect(typedCreateSessionInput.expiresAt).toBeInstanceOf(Date);
@@ -163,10 +154,7 @@ describe('AdminAuthService', () => {
     >;
     const logoutInput = logoutAllSessionsMock.mock.calls[0][0];
     expect(logoutInput).toBeDefined();
-    const typedLogoutInput = logoutInput as {
-      sessionToken: string;
-      expiresAt: Date;
-    };
+    const typedLogoutInput = logoutInput;
     expect(typedLogoutInput.sessionToken).toBe('session-token');
     expect(typedLogoutInput.expiresAt).toBeInstanceOf(Date);
   });

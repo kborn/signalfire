@@ -36,5 +36,5 @@ export function validateActionRequest(value: unknown): ValidatedActionListQuery 
     throw new BadRequestException(buildValidationError(parsed.error));
   }
 
-  return parsed.data as ValidatedActionListQuery;
+  return parsed.data;
 }

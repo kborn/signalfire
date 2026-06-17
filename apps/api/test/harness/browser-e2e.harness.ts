@@ -70,7 +70,7 @@ export async function startApiServer(): Promise<RunningApiServer> {
     imports: [AppModule],
   })
     .overrideProvider(PrismaService)
-    .useValue(jestPrisma.originalClient as PrismaService)
+    .useValue(jestPrisma.originalClient)
     .compile();
 
   const app = moduleFixture.createNestApplication<INestApplication<App>>();

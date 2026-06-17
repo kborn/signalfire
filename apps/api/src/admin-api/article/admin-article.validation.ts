@@ -39,5 +39,5 @@ export function validateAdminArticleRequest(value: unknown): AdminArticleRequest
     throw new BadRequestException(buildValidationError(parsed.error));
   }
 
-  return parsed.data as AdminArticleRequest;
+  return parsed.data;
 }

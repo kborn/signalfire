@@ -36,5 +36,5 @@ export function validateArticleRequest(value: unknown): ValidatedArticleListQuer
     throw new BadRequestException(buildValidationError(parsed.error));
   }
 
-  return parsed.data as ValidatedArticleListQuery;
+  return parsed.data;
 }

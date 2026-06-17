@@ -39,5 +39,5 @@ export function validateAdminEventRequest(value: unknown): AdminEventRequest {
     throw new BadRequestException(buildValidationError(parsed.error));
   }
 
-  return parsed.data as AdminEventRequest;
+  return parsed.data;
 }

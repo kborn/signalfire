@@ -163,7 +163,7 @@ Featured screenshots:
 
 </details>
 
-## Demo Review
+## Demo Review and Admin Access
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
 submissions suitable for local portfolio review and screenshots. It also creates
@@ -178,6 +178,22 @@ Override during the demo seed run if needed:
 ADMIN_EMAIL=reviewer@example.com ADMIN_PASSWORD=change-me pnpm api:prisma:migrate:seed:demo
 ```
 
+Enable the public demo treatment in `apps/web/.env.local`:
+
+```bash
+NEXT_PUBLIC_ENABLE_DEMO_MODE=true
+```
+
+Without that flag, the public demo badge, banner, and header `Admin Demo` entry
+do not render.
+
+Suggested reviewer path:
+
+1. Start on the homepage to understand the public demo posture
+2. Browse Issues, Articles, Actions, or the Event finder
+3. Open `Admin Demo` from the public header
+4. Use the seeded admin credentials to review moderation and content-management flows
+
 ## Planning Docs
 
 Canonical planning and decision docs:
@@ -186,8 +202,7 @@ Canonical planning and decision docs:
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current active implementation phase is Phase 12: Search & Discovery
-Improvements.
+Current active implementation phase is Phase 13: Release Prep & Final Polish.
 
 ## Admin Deployment Caveat
 

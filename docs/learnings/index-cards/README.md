@@ -94,6 +94,8 @@ These cards may be created or updated alongside task-linked syllabi in
 - [108-useeffect-return-value.md](./108-useeffect-return-value.md) - What an effect is allowed to return and what "cleanup" literally is
 - [109-component-mount-vs-rerender.md](./109-component-mount-vs-rerender.md) - When state initializers run and why re-renders do not reinitialize them
 - [110-setstate-triggers-rerender.md](./110-setstate-triggers-rerender.md) - How state updates cause React to run the component again
+- [111-pnpm-update-first-research-second.md](./111-pnpm-update-first-research-second.md) - Refresh parent packages first and only research deeply when the package-manager path stops helping
+- [112-when-to-use-pnpm-overrides.md](./112-when-to-use-pnpm-overrides.md) - Use overrides for stubborn transitive packages after normal updates stop moving the graph
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 - [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - A zero-delay timer runs later but does not guarantee React committed new DOM
 - [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper

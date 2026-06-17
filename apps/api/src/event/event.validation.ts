@@ -35,5 +35,5 @@ export function validateEventRequest(value: unknown): ValidatedEventListQuery {
     throw new BadRequestException(buildEventValidationError(parsed.error));
   }
 
-  return parsed.data as ValidatedEventListQuery;
+  return parsed.data;
 }

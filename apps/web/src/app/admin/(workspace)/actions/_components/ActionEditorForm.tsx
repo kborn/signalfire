@@ -174,25 +174,37 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       return;
     }
 
-    const rawDraft = window.sessionStorage.getItem(draftKey);
-    if (!rawDraft) {
-      setDraftReady(true);
-      return;
-    }
+    let cancelled = false;
 
-    try {
-      const draft = JSON.parse(rawDraft) as Partial<ActionDraft>;
-      setTitle(draft.title ?? initialValues.title);
-      setSummary(draft.summary ?? initialValues.summary);
-      setDescription(draft.description ?? initialValues.description);
-      setActionType(draft.actionType ?? initialValues.actionType);
-      setSelectedTopics(draft.selectedTopics ?? initialValues.topicSlugs);
-      setDraftRestored(true);
-    } catch {
-      window.sessionStorage.removeItem(draftKey);
-    } finally {
-      setDraftReady(true);
-    }
+    queueMicrotask(() => {
+      if (cancelled) {
+        return;
+      }
+
+      const rawDraft = window.sessionStorage.getItem(draftKey);
+      if (!rawDraft) {
+        setDraftReady(true);
+        return;
+      }
+
+      try {
+        const draft = JSON.parse(rawDraft) as Partial<ActionDraft>;
+        setTitle(draft.title ?? initialValues.title);
+        setSummary(draft.summary ?? initialValues.summary);
+        setDescription(draft.description ?? initialValues.description);
+        setActionType(draft.actionType ?? initialValues.actionType);
+        setSelectedTopics(draft.selectedTopics ?? initialValues.topicSlugs);
+        setDraftRestored(true);
+      } catch {
+        window.sessionStorage.removeItem(draftKey);
+      } finally {
+        setDraftReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [draftKey, initialValues]);
 
   useEffect(() => {

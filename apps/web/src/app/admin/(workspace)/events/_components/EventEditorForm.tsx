@@ -266,35 +266,47 @@ export default function EventEditorForm({ mode, initialValues, topics }: EventEd
       return;
     }
 
-    const rawDraft = window.sessionStorage.getItem(draftKey);
-    if (!rawDraft) {
-      setDraftReady(true);
-      return;
-    }
+    let cancelled = false;
 
-    try {
-      const draft = JSON.parse(rawDraft) as Partial<EventDraft>;
-      setTitle(draft.title ?? initialValues.title);
-      setSummary(draft.summary ?? initialValues.summary);
-      setContent(draft.content ?? initialValues.content);
-      setEventType(draft.eventType ?? initialValues.eventType);
-      setStartTime(draft.startTime ?? toDateTimeLocalValue(initialValues.startTime));
-      setEndTime(draft.endTime ?? toDateTimeLocalValue(initialValues.endTime));
-      setLocationName(draft.locationName ?? initialValues.locationName);
-      setAddressLine1(draft.addressLine1 ?? initialValues.addressLine1 ?? '');
-      setAddressLine2(draft.addressLine2 ?? initialValues.addressLine2 ?? '');
-      setCity(draft.city ?? initialValues.city);
-      setRegion(draft.region ?? initialValues.region);
-      setCountry(draft.country ?? initialValues.country);
-      setPostalCode(draft.postalCode ?? initialValues.postalCode);
-      setWebsite(draft.website ?? initialValues.website ?? '');
-      setTopicSlugs(draft.topicSlugs ?? initialValues.topicSlugs);
-      setDraftRestored(true);
-    } catch {
-      window.sessionStorage.removeItem(draftKey);
-    } finally {
-      setDraftReady(true);
-    }
+    queueMicrotask(() => {
+      if (cancelled) {
+        return;
+      }
+
+      const rawDraft = window.sessionStorage.getItem(draftKey);
+      if (!rawDraft) {
+        setDraftReady(true);
+        return;
+      }
+
+      try {
+        const draft = JSON.parse(rawDraft) as Partial<EventDraft>;
+        setTitle(draft.title ?? initialValues.title);
+        setSummary(draft.summary ?? initialValues.summary);
+        setContent(draft.content ?? initialValues.content);
+        setEventType(draft.eventType ?? initialValues.eventType);
+        setStartTime(draft.startTime ?? toDateTimeLocalValue(initialValues.startTime));
+        setEndTime(draft.endTime ?? toDateTimeLocalValue(initialValues.endTime));
+        setLocationName(draft.locationName ?? initialValues.locationName);
+        setAddressLine1(draft.addressLine1 ?? initialValues.addressLine1 ?? '');
+        setAddressLine2(draft.addressLine2 ?? initialValues.addressLine2 ?? '');
+        setCity(draft.city ?? initialValues.city);
+        setRegion(draft.region ?? initialValues.region);
+        setCountry(draft.country ?? initialValues.country);
+        setPostalCode(draft.postalCode ?? initialValues.postalCode);
+        setWebsite(draft.website ?? initialValues.website ?? '');
+        setTopicSlugs(draft.topicSlugs ?? initialValues.topicSlugs);
+        setDraftRestored(true);
+      } catch {
+        window.sessionStorage.removeItem(draftKey);
+      } finally {
+        setDraftReady(true);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [draftKey, initialValues]);
 
   useEffect(() => {
