@@ -1624,7 +1624,7 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [x] Run and resolve a focused mobile-responsiveness audit across the public homepage, discovery cards, Events filters, and submission flows
 - [x] Add clear next-step affordances to public submission success states so the user is not stranded after article or event submission
 - [x] Finish remaining admin-facing polish items that are visible in the demo workflow, including human-readable submission-review datetime rendering and making the admin shell/background treatment read as intentional rather than incidental
-- [ ] Replace visibly generated numbered demo-content filler with a smaller, more editorially intentional seed pool so public lists and detail pages do not read like scaffolding
+- [x] Replace visibly generated numbered demo-content filler with a smaller, more editorially intentional seed pool so public lists and detail pages do not read like scaffolding
 
 ##### 13.4 Repo & Launch Readiness
 

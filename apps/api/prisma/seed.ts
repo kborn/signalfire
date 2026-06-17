@@ -35,9 +35,9 @@ function relativeDate(params: { daysFromNow?: number; hours?: number; minutes?: 
   return date;
 }
 
-const TARGET_PUBLISHED_ARTICLE_COUNT = 42;
-const TARGET_PUBLISHED_ACTION_COUNT = 42;
-const TARGET_PUBLISHED_EVENT_COUNT = 42;
+const TARGET_PUBLISHED_ARTICLE_COUNT = 31;
+const TARGET_PUBLISHED_ACTION_COUNT = 31;
+const TARGET_PUBLISHED_EVENT_COUNT = 31;
 
 function publishedDateFromIndex(index: number): Date {
   return new Date(Date.UTC(2026, 0, 1 + index, 0, 0, 0, 0));

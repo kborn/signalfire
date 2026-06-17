@@ -90,6 +90,11 @@ The findings cluster into five buckets:
     editorial content.
 24. The current demo pagination targets are larger than necessary for
     portfolio/demo purposes and force too much generated filler to exist.
+    Follow-up project discussion overrode the liaison doc's first recommendation
+    and landed on a cleaner public-facing setup: default page size `10`, page
+    size options `5 / 10 / 20`, and published demo targets of `31` per content
+    type so the lists still feel full enough while avoiding an always-complete
+    final page.
 
 ### P3 Code Quality And Source Review
 
