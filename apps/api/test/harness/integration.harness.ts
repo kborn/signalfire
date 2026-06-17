@@ -18,7 +18,7 @@ export function setupIntegrationTest(setup: IntegrationSetup = []): IntegrationH
       providers: metadata.providers ?? [],
     })
       .overrideProvider(PrismaService)
-      .useValue(jestPrisma.client as PrismaService)
+      .useValue(jestPrisma.client)
       .compile();
   });
 

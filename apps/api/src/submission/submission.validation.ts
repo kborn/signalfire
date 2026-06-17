@@ -42,7 +42,7 @@ export function validateSubmissionRequest(value: unknown): SubmissionRequest {
     throw new BadRequestException(buildSubmissionValidationError(parsed.error));
   }
 
-  return parsed.data as SubmissionRequest;
+  return parsed.data;
 }
 
 export function validateSubmissionModerationRequest(value: unknown): ModerationReviewRequest {
@@ -52,5 +52,5 @@ export function validateSubmissionModerationRequest(value: unknown): ModerationR
     throw new BadRequestException(buildSubmissionValidationError(parsed.error));
   }
 
-  return parsed.data as ModerationReviewRequest;
+  return parsed.data;
 }

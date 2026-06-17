@@ -17,7 +17,7 @@ export function setupE2ETest(): E2EHarness {
       imports: [AppModule],
     })
       .overrideProvider(PrismaService)
-      .useValue(jestPrisma.client as PrismaService)
+      .useValue(jestPrisma.client)
       .compile();
 
     app = moduleFixture.createNestApplication();

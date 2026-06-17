@@ -1589,12 +1589,13 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 - [x] Implement the explicit public-demo posture: add the shared demo banner, persistent demo indicator, and the final header-level path to admin demo access instructions
 - [x] Add a stable README section or anchor for demo/admin access guidance, then link the in-product admin-access messaging to that specific repository location instead of the repo root
-- [ ] Run a full dependency risk review and resolve or explicitly defer remaining high-severity findings with documented rationale
+- [x] Run a full dependency risk review and resolve or explicitly defer remaining high-severity findings with documented rationale
 - [x] Define the intended reviewer journey for the public demo, including the first-30-seconds impression, the expected path from homepage into content, and how a reviewer discovers the admin/demo surface
 
 ###### Notes:
 
 - Public demo posture is now explicit in-product: shared public chrome retains a persistent `Demo` indicator, public pages carry a dismissible demo banner in demo mode, and the header exposes a single `Admin Demo` entry point.
+- Dependency risk review completed with targeted package refreshes across web, API, and root tooling plus a small set of `pnpm.overrides` for remaining transitive advisories that were not cleared by parent-package updates. Both `pnpm audit --prod` and the full `pnpm audit` now return clean.
 - Reviewer journey for the current demo:
   1. First 30 seconds: the public header and demo banner establish that this is a demo site with sample data.
   2. Expected content path: homepage -> Issues/Articles/Actions/Events -> inspect sample public content and Event filtering.

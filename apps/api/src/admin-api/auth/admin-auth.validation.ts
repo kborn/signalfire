@@ -39,5 +39,5 @@ export function validateAdminLoginRequest(value: unknown): AdminLoginRequest {
     throw new BadRequestException(buildValidationError(parsed.error));
   }
 
-  return parsed.data as AdminLoginRequest;
+  return parsed.data;
 }

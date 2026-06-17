@@ -1,16 +1,19 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Server } from 'http';
 import request from 'supertest';
 import { EventController } from './event.controller';
 import { EventService } from './event.service';
 import { buildEntityDetailResponse, buildEventListResponse } from './event.test-fixtures';
 import { withFrozenTime } from '../../common/test/time';
 
-type RequestTarget = Parameters<typeof request>[0];
+function getHttpServer(app: INestApplication): Server {
+  return app.getHttpServer() as Server;
+}
 
 describe('EventController HTTP', () => {
   let app: INestApplication;
-  let httpServer: RequestTarget;
+  let httpServer: Server;
 
   const eventServiceMock: jest.Mocked<
     Pick<EventService, 'getPublishedEventDetail' | 'getPublishedEventList'>
@@ -29,7 +32,7 @@ describe('EventController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
+    httpServer = getHttpServer(app);
   });
 
   afterEach(async () => {

@@ -1,15 +1,18 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import type { Server } from 'http';
 import request from 'supertest';
 import { ActionController } from './action.controller';
 import { ActionService } from './action.service';
 import { buildActionDetailResponse, buildActionListResponse } from './action.test-fixtures';
 
-type RequestTarget = Parameters<typeof request>[0];
+function getHttpServer(app: INestApplication): Server {
+  return app.getHttpServer() as Server;
+}
 
 describe('ActionController HTTP', () => {
   let app: INestApplication;
-  let httpServer: RequestTarget;
+  let httpServer: Server;
 
   const actionServiceMock: jest.Mocked<Pick<ActionService, 'getActionDetail' | 'getActionList'>> = {
     getActionDetail: jest.fn(),
@@ -26,7 +29,7 @@ describe('ActionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = app.getHttpAdapter().getInstance() as unknown as RequestTarget;
+    httpServer = getHttpServer(app);
   });
 
   afterEach(async () => {

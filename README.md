@@ -178,6 +178,15 @@ Override during the demo seed run if needed:
 ADMIN_EMAIL=reviewer@example.com ADMIN_PASSWORD=change-me pnpm api:prisma:migrate:seed:demo
 ```
 
+Enable the public demo treatment in `apps/web/.env.local`:
+
+```bash
+NEXT_PUBLIC_ENABLE_DEMO_MODE=true
+```
+
+Without that flag, the public demo badge, banner, and header `Admin Demo` entry
+do not render.
+
 Suggested reviewer path:
 
 1. Start on the homepage to understand the public demo posture
