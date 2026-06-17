@@ -43,6 +43,38 @@ function publishedDateFromIndex(index: number): Date {
   return new Date(Date.UTC(2026, 0, 1 + index, 0, 0, 0, 0));
 }
 
+function isGeneratedDemoPublishedAt(date: Date | null | undefined): boolean {
+  if (!date) {
+    return false;
+  }
+
+  return (
+    date.getUTCFullYear() === 2026 &&
+    date.getUTCMonth() === 0 &&
+    date.getUTCDate() >= 1 &&
+    date.getUTCDate() <= 31
+  );
+}
+
+function titleToSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
+function buildGeneratedSlug(topicSlug: string, title: string) {
+  return `${topicSlug}-${titleToSlug(title)}`;
+}
+
+function buildGeneratedArticleContent(summary: string, body: string) {
+  return `## What this fight is really about
+
+${summary}
+
+${body}`;
+}
+
 const topicNarratives = {
   democracy: {
     articleSummary:
@@ -882,9 +914,7 @@ Treat heat response as both immediate care and long-term civic pressure. Neighbo
     title: 'Building A Local Campaign From First Meeting To Public Pressure',
     summary:
       'A long-form field guide to turning scattered concern into a durable local civic campaign.',
-    content: `# Building a local campaign from first meeting to public pressure
-
-Local campaigns rarely start with a polished strategy. They usually begin with a small number of people who can name a problem clearly, gather concrete examples, and commit to showing up more than once.
+    content: `Local campaigns rarely start with a polished strategy. They usually begin with a small number of people who can name a problem clearly, gather concrete examples, and commit to showing up more than once.
 
 The point of this guide is not to make local work feel grander than it is. The point is to show that durable public pressure usually grows out of repeated, ordinary work: research, outreach, meeting prep, follow-up, and visible public action.
 
@@ -1553,16 +1583,13 @@ const generatedDemoArticles = Array.from(
     const topic = topics[index % topics.length];
     const narrative = topicNarratives[topic.slug];
     const article = pickTopicEntry(topicArticlePool, topic.slug, index);
+    const slug = buildGeneratedSlug(topic.slug, article.title);
 
     return {
-      slug: `lorem-article-${String(index + 1).padStart(3, '0')}`,
+      slug,
       title: article.title,
       summary: article.summary,
-      content: `# ${article.title}
-
-${article.summary}
-
-${narrative.articleBody}`,
+      content: buildGeneratedArticleContent(article.summary, narrative.articleBody),
       author: 'Find Your Fight Editorial',
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -1579,10 +1606,12 @@ const generatedDemoActions = Array.from(
     const action = pickTopicEntry(topicActionPool, topic.slug, index);
 
     return {
-      slug: `lorem-action-${String(index + 1).padStart(3, '0')}`,
+      slug: buildGeneratedSlug(topic.slug, action.title),
       title: action.title,
       summary: action.summary,
-      description: action.summary,
+      description: `${action.summary}
+
+Use this action if you want one concrete next step that connects personal participation to an ongoing public campaign rather than a one-off gesture.`,
       actionType: action.actionType,
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -1618,12 +1647,15 @@ const generatedDemoEvents = Array.from(
     const startTime = relativeDate({ daysFromNow: 30 + index, hours: 18 });
     const endTime = relativeDate({ daysFromNow: 30 + index, hours: 20 });
     const locationName = `${regionData.city} Civic Center`;
+    const eventSlug = buildGeneratedSlug(topic.slug, event.title);
 
     return {
       title: event.title,
       summary: event.summary,
-      description: event.summary,
-      website: `https://example.org/events/lorem-${index + 1}`,
+      description: `${event.summary}
+
+This demo event is written to read like a real organizing opportunity with a clear turnout purpose, a credible venue, and an implied next step after the meeting.`,
+      website: `https://example.org/events/${eventSlug}`,
       eventType: eventTypes[index % eventTypes.length],
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -1657,7 +1689,7 @@ const generatedDemoEvents = Array.from(
         region: regionData.region,
         postalCode: regionData.postalCode,
         country: 'USA',
-        website: `https://example.org/events/lorem-${index + 1}`,
+        website: `https://example.org/events/${eventSlug}`,
         contactEmail: 'events@example.org',
         submitterName: 'Find Your Fight Demo Organizer',
         submitterEmail: 'organizer@example.org',
@@ -1733,17 +1765,23 @@ async function seedTopics() {
 }
 
 async function seedDemoArticles() {
-  const generatedArticleSlugs = generatedDemoArticles.map((article) => article.slug);
+  const demoArticleSlugs = allDemoArticles.map((article) => article.slug);
   const staleGeneratedArticles = await prisma.article.findMany({
     where: {
+      author: 'Find Your Fight Editorial',
+      publishedAt: {
+        gte: new Date('2026-01-01T00:00:00.000Z'),
+        lt: new Date('2026-02-01T00:00:00.000Z'),
+      },
       slug: {
-        startsWith: 'lorem-article-',
-        notIn: generatedArticleSlugs,
+        notIn: demoArticleSlugs,
       },
     },
-    select: { id: true },
+    select: { id: true, publishedAt: true },
   });
-  const staleGeneratedArticleIds = staleGeneratedArticles.map((article) => article.id);
+  const staleGeneratedArticleIds = staleGeneratedArticles
+    .filter((article) => isGeneratedDemoPublishedAt(article.publishedAt))
+    .map((article) => article.id);
 
   if (staleGeneratedArticleIds.length > 0) {
     await prisma.$transaction([
@@ -1803,17 +1841,22 @@ async function seedDemoArticles() {
 }
 
 async function seedDemoActions() {
-  const generatedActionSlugs = generatedDemoActions.map((action) => action.slug);
+  const demoActionSlugs = allDemoActions.map((action) => action.slug);
   const staleGeneratedActions = await prisma.action.findMany({
     where: {
+      publishedAt: {
+        gte: new Date('2026-01-01T00:00:00.000Z'),
+        lt: new Date('2026-02-01T00:00:00.000Z'),
+      },
       slug: {
-        startsWith: 'lorem-action-',
-        notIn: generatedActionSlugs,
+        notIn: demoActionSlugs,
       },
     },
-    select: { id: true },
+    select: { id: true, publishedAt: true },
   });
-  const staleGeneratedActionIds = staleGeneratedActions.map((action) => action.id);
+  const staleGeneratedActionIds = staleGeneratedActions
+    .filter((action) => isGeneratedDemoPublishedAt(action.publishedAt))
+    .map((action) => action.id);
 
   if (staleGeneratedActionIds.length > 0) {
     await prisma.$transaction([
@@ -1873,17 +1916,22 @@ async function seedDemoActions() {
 }
 
 async function seedDemoEvents() {
-  const generatedEventWebsites = generatedDemoEvents.map((event) => event.website);
+  const demoEventWebsites = allDemoEvents.map((event) => event.website);
   const staleGeneratedEvents = await prisma.event.findMany({
     where: {
+      publishedAt: {
+        gte: new Date('2026-01-01T00:00:00.000Z'),
+        lt: new Date('2026-02-01T00:00:00.000Z'),
+      },
       website: {
-        startsWith: 'https://example.org/events/lorem-',
-        notIn: generatedEventWebsites,
+        notIn: demoEventWebsites,
       },
     },
-    select: { id: true },
+    select: { id: true, publishedAt: true },
   });
-  const staleGeneratedEventIds = staleGeneratedEvents.map((record) => record.id);
+  const staleGeneratedEventIds = staleGeneratedEvents
+    .filter((record) => isGeneratedDemoPublishedAt(record.publishedAt))
+    .map((record) => record.id);
 
   if (staleGeneratedEventIds.length > 0) {
     await prisma.$transaction([
@@ -1925,7 +1973,6 @@ async function seedDemoEvents() {
     ]);
   }
 
-  const demoEventWebsites = allDemoEvents.map((event) => event.website);
   const existingDemoEvents = await prisma.event.findMany({
     where: {
       website: {
