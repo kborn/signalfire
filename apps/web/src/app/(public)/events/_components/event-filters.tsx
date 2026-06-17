@@ -3,7 +3,10 @@ import { useRouter } from 'next/navigation';
 import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DEMO_EVENT_REGION_OPTIONS } from '@/lib/demo-event-region-options';
+import { isDemoModeEnabled } from '@/lib/demo-mode';
+import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 import { useDebounce } from '@/components/debounce';
+import { CalendarIcon } from '@/components/icons';
 
 type EventListPageProps = {
   topicSlug?: string;
@@ -61,22 +64,14 @@ type DateInputWithPicker = HTMLInputElement & {
 function CalendarGlyph({ onClick }: { onClick: () => void }) {
   return (
     <button type="button" className="eventDateIcon" aria-label="Open date picker" onClick={onClick}>
-      <svg viewBox="0 0 24 24" focusable="false">
-        <path
-          d="M7 2v3M17 2v3M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"
-          fill="none"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-        />
-      </svg>
+      <CalendarIcon />
     </button>
   );
 }
 
 export default function EventFilters({ params }: EventListPagePropsWrapper) {
   const router = useRouter();
+  const regionOptions = isDemoModeEnabled() ? DEMO_EVENT_REGION_OPTIONS : US_STATE_OPTIONS;
   const [city, setCity] = useState(params['city'] ?? '');
   const startDateInputRef = useRef<DateInputWithPicker | null>(null);
   const endDateInputRef = useRef<DateInputWithPicker | null>(null);
@@ -149,7 +144,7 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
             }}
           >
             <option value="">Select a region</option>
-            {DEMO_EVENT_REGION_OPTIONS.map(([value, label]) => (
+            {regionOptions.map(([value, label]: readonly [string, string]) => (
               <option key={value} value={value}>
                 {label}
               </option>

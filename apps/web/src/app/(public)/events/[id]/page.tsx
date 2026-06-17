@@ -10,6 +10,15 @@ import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 export const dynamic = 'force-dynamic';
 
+function normalizePlainText(value: string): string {
+  return value
+    .replace(/[`*_>#-]/g, ' ')
+    .replace(/\[(.*?)\]\((.*?)\)/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+}
+
 async function fetchEventDetails(params: Promise<{ id: string }>): Promise<EventDetailResponse> {
   const { id } = await params;
   const eventId = Number(id);
@@ -51,16 +60,18 @@ function formatEventArea({
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const event = await fetchEventDetails(params);
   const eventArea = formatEventArea(event);
+  const normalizedSummary = normalizePlainText(event.summary);
+  const normalizedDescription = normalizePlainText(event.description);
+  const shouldRenderSummaryLead =
+    normalizedSummary.length > 0 && !normalizedDescription.startsWith(normalizedSummary);
 
   return (
     <div className="detailPage">
       <section className="detailHeader">
         <h1 className="pageTitle">{event.title}</h1>
       </section>
-      <section className="detailMetaGroup">
-        <p>{event.summary}</p>
-      </section>
       <section className="detailContent">
+        {shouldRenderSummaryLead ? <p className="detailLead">{event.summary}</p> : null}
         <section className="eventInfoBlock">
           <div className="metaBlock">
             <p className="metaLabel">Event Type</p>

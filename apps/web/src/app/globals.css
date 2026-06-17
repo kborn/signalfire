@@ -447,23 +447,38 @@ p {
 }
 
 .home-journey,
-.home-participation,
-.home-philosophy {
+.home-contribute,
+.home-demo-path {
   padding: var(--space-4) 0 0;
   border-top: 1px solid var(--color-border-subtle);
 }
 
 .home-journey h2,
-.home-participation h2,
-.home-philosophy h2 {
+.home-contribute h2,
+.home-demo-path h2 {
   font-size: 1.5rem;
 }
 
 .home-journey p,
-.home-participation p,
-.home-philosophy p {
+.home-contribute p,
+.home-demo-path p {
   max-width: 60ch;
   line-height: 1.6;
+}
+
+.home-sectionHeading {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.homeJourneyGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.homeJourneyCard {
+  min-height: 100%;
 }
 
 .about-hero,
@@ -549,11 +564,22 @@ p {
   margin-bottom: var(--space-4);
   position: relative;
   z-index: 2;
+  overflow: hidden;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-surface-soft) 80%, transparent),
+      transparent
+    ),
+    color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-border-subtle) 58%, transparent);
 }
 
 .hero-logo img {
   width: min(80vw, 900px);
   height: auto;
+  display: block;
 }
 
 .home-hero {
@@ -740,6 +766,15 @@ h3 {
   gap: 12px;
 }
 
+.collectionItemEyebrow {
+  color: var(--color-brand-accent);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
 .collectionItemTitle {
   font-size: clamp(1.25rem, 1.8vw, 1.65rem);
   line-height: 1.2;
@@ -763,14 +798,16 @@ h3 {
   box-shadow: 0 10px 20px -18px rgb(0 0 0 / 78%);
   transition:
     border-color 0.2s ease,
+    background-color 0.2s ease,
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .publicShell .collectionItem:hover {
   border-left-color: var(--color-brand-accent);
+  background: color-mix(in srgb, var(--color-surface-soft) 96%, white 4%);
   transform: translate(-3px, -3px);
-  box-shadow: 0 14px 26px -18px rgb(0 0 0 / 82%);
+  box-shadow: 0 18px 30px -18px rgb(0 0 0 / 82%);
 }
 
 .publicShell .collectionItem:focus-visible {
@@ -858,6 +895,21 @@ h3 {
   font-size: 0.98rem;
 }
 
+.topicCollectionItem {
+  border-left-color: color-mix(in srgb, var(--color-brand-primary) 78%, transparent);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-brand-primary) 10%, transparent) 0%,
+      transparent 44%
+    ),
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+}
+
+.publicShell .topicCollectionItem:hover {
+  border-left-color: var(--color-brand-primary);
+}
+
 /* Detail pages */
 
 .detailPage {
@@ -930,6 +982,15 @@ h3 {
   color: #555555;
   font-size: 1rem;
   line-height: 1.4;
+}
+
+.detailLead {
+  max-width: 62ch;
+  padding: 0 0 var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  line-height: 1.65;
 }
 
 .publicShell .detailMetaGroup {

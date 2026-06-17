@@ -1604,16 +1604,16 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 ##### 13.3 Public Polish
 
 - [ ] Clean up remaining obvious formatting-quality issues that undercut launch readiness, including raw or UTC-only timestamp presentation where human-readable date/time formatting should exist
-- [ ] Fix obvious public demo defects that read as bugs rather than product tradeoffs, including duplicate event-summary rendering and similar screenshot-visible data/presentation issues
-- [ ] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
+- [x] Fix obvious public demo defects that read as bugs rather than product tradeoffs, including duplicate event-summary rendering and similar screenshot-visible data/presentation issues
+- [x] Decide whether public collection cards should be fully clickable or keep title-only links, then align hover, focus, and accessibility behavior with that decision
 - [ ] Complete a final public copy review across homepage, About, navigation, collection pages, detail pages, submit flows, empty states, and error states
 - [ ] Make minor color, spacing, typography, CTA, and visual hierarchy adjustments needed after reviewing the full public flow in realistic browser viewports
 - [ ] Eliminate sticky-surface scroll bleed and overlap artifacts, including text, borders, or highlighted rows visibly sliding through the public header, demo banner, topic bars, or similar pinned UI layers during scroll
-- [ ] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
-- [ ] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
-- [ ] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
+- [x] Resolve the known public-site polish issues from the Milestone 1 review, including stronger card definition, clearer primary CTA hierarchy, hero background containment, article metadata/body separation, event time formatting, topic-card differentiation, and improved home-page section rhythm
+- [x] Simplify the homepage so the core journey reads as a clear progression rather than a flat scroll with repeated premise sections
+- [x] Make the reviewer/demo affordance path obvious enough that a first-time visitor can discover the admin/demo surface without depending on repository docs
 - [ ] Align public-facing naming and brand presentation consistently across the live product, including product name usage, admin entry-point labeling, nav terminology, and any abbreviated wordmark treatment
-- [ ] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
+- [x] Rework submit-flow copy so it is inviting, accurate about moderation, and does not over-claim community behavior or hide key formatting guidance
 - [ ] Refine the public Events finder, empty states, and Event list/detail presentation so the filter surface, result cards, and detail pages read as one coherent public UI system
 - [ ] Replace ad hoc inline public-site SVG icon markup, including the Events date-picker calendar glyph, with the final shared icon-library treatment chosen for launch polish
 

@@ -36,7 +36,7 @@ export default async function ArticleDetailsPage({
       </section>
       <section className="detailContent">
         <section className="detailMetaGroup">
-          <p>{article.summary}</p>
+          <p className="detailLead">{article.summary}</p>
           <div className="metaBlock">
             <p className="metaLabel">Author</p>
             <p className="metaValue">{article.author}</p>

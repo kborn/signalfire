@@ -10,6 +10,7 @@ export function parseDate(dateString: string): Date | null {
 
 function formatUtcDate(date: Date): string {
   return new Intl.DateTimeFormat('en-US', {
+    weekday: 'short',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
@@ -74,7 +75,7 @@ export function formatEventTime(startDateString: string, endDateString: string |
   const startTimeLabel = formatUtcTime(startDate);
 
   if (!endDateString) {
-    return `${startDateLabel}, ${startTimeLabel} UTC`;
+    return `${startDateLabel} at ${startTimeLabel} UTC`;
   }
 
   const endDate = parseDate(endDateString);
@@ -86,12 +87,12 @@ export function formatEventTime(startDateString: string, endDateString: string |
   const endTimeLabel = formatUtcTime(endDate);
 
   if (isSameUtcDay(startDate, endDate)) {
-    return `${startDateLabel}, ${startTimeLabel} - ${endTimeLabel} UTC`;
+    return `${startDateLabel} from ${startTimeLabel} to ${endTimeLabel} UTC`;
   }
 
   const endDateLabel = formatUtcDate(endDate);
 
-  return `${startDateLabel}, ${startTimeLabel} UTC - ${endDateLabel}, ${endTimeLabel} UTC`;
+  return `${startDateLabel} at ${startTimeLabel} UTC to ${endDateLabel} at ${endTimeLabel} UTC`;
 }
 
 export function formatAdminDateTime(dateString: string): string {

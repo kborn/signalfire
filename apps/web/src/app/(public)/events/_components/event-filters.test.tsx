@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import EventFilters from './event-filters';
 
 const replace = vi.fn();
+const originalDemoMode = process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE;
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -21,6 +22,7 @@ describe('EventFilters', () => {
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
     vi.clearAllMocks();
+    process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE = originalDemoMode;
   });
 
   it('debounces city changes before routing and preserves page size while clearing page', async () => {
@@ -78,7 +80,30 @@ describe('EventFilters', () => {
     );
   });
 
-  it('limits region options to the supported demo geography', () => {
+  it('shows the full state and territory list when demo mode is disabled', () => {
+    process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE = 'false';
+
+    render(
+      <EventFilters
+        params={{
+          startDate: '2026-06-16',
+          endDate: '2026-09-16',
+        }}
+      />,
+    );
+
+    const options = screen.getAllByRole('option').map((option) => option.textContent);
+
+    expect(options).toContain('Alabama');
+    expect(options).toContain('Washington');
+    expect(options).toContain('Puerto Rico');
+    expect(options).toContain('District of Columbia');
+    expect(options).toHaveLength(57);
+  });
+
+  it('limits region options to the supported demo geography when demo mode is enabled', () => {
+    process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE = 'true';
+
     render(
       <EventFilters
         params={{

@@ -14,9 +14,7 @@ describe('HomePage', () => {
 
     expect(markup).toContain('Find Your Fight');
     expect(markup).toContain(
-      'The world keeps throwing more at you: another crisis, another headline, ' +
-        'another fight that matters. If everything feels urgent and you are not sure where to begin, ' +
-        'start by choosing one issue and one concrete step.',
+      'Choose one issue, learn what is at stake, and take one concrete step.',
     );
   });
 
@@ -27,24 +25,21 @@ describe('HomePage', () => {
     expect(markup).toContain('Explore Issues');
     expect(markup).toContain('href="/about"');
     expect(markup).toContain('Why This Site Exists');
-    expect(markup).toContain('Who This Is For');
-    expect(markup).toContain('href="/actions"');
-    expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/events"');
     expect(markup).toContain('Search Events');
-    expect(markup).toContain('Built to run on community contributions.');
-    expect(markup).toContain('Submit an Article or Event');
+    expect(markup).toContain('href="/actions"');
+    expect(markup).toContain('Take a concrete step');
+    expect(markup).toContain('Submit Content');
+    expect(markup).toContain('Who This Is For');
   });
 
   it('renders the issue-first journey and participation sections', () => {
     const markup = renderHomePage();
 
+    expect(markup).toContain('The path is simple.');
     expect(markup).toContain('Choose an issue');
-    expect(markup).toContain('Start with what matters to you.');
-    expect(markup).toContain(
-      'Explore an issue, understand what is at stake, and choose how to participate.',
-    );
-    expect(markup).toContain('Take the next step');
-    expect(markup).toContain('Turn focus into action.');
+    expect(markup).toContain('Get enough context');
+    expect(markup).toContain('Take a concrete step');
+    expect(markup).toContain('Submissions are moderated before they go live.');
   });
 });
