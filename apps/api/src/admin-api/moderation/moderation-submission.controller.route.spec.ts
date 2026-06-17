@@ -1,6 +1,5 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { ModerationSubmissionController } from './moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation-submission.service';
@@ -18,13 +17,15 @@ import {
   UnknownSubmissionTopicsError,
 } from '../../submission/submission.error';
 
+type RequestTarget = Parameters<typeof request>[0];
+
 describe('ModerationSubmissionController HTTP', () => {
-  function getHttpServer(app: INestApplication): Server {
-    return app.getHttpServer() as Server;
+  function getHttpApp(app: INestApplication) {
+    return app.getHttpAdapter().getInstance() as RequestTarget;
   }
 
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const moderationSubmissionServiceMock = {
     reviewSubmission: jest.fn(),
@@ -45,7 +46,7 @@ describe('ModerationSubmissionController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -62,7 +63,7 @@ describe('ModerationSubmissionController HTTP', () => {
       moderationSubmissionSuccessResponse,
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(200)
@@ -79,7 +80,7 @@ describe('ModerationSubmissionController HTTP', () => {
       moderationSubmissionSuccessResponse,
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(200)
@@ -95,7 +96,7 @@ describe('ModerationSubmissionController HTTP', () => {
       moderationSubmissionSuccessResponse,
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(200)
@@ -104,12 +105,12 @@ describe('ModerationSubmissionController HTTP', () => {
   });
 
   it('POST review returns 400 for invalid decision before calling service', async () => {
-    await request(httpServer).post('/admin/submissions/1/review').send({}).expect(400);
+    await request(httpApp).post('/admin/submissions/1/review').send({}).expect(400);
     expect(moderationSubmissionServiceMock.reviewSubmission).not.toHaveBeenCalled();
   });
 
   it('POST event approval returns appropriate response', async () => {
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send({ decision: 'APPROVE_ACTION' })
       .expect(400);
@@ -125,7 +126,7 @@ describe('ModerationSubmissionController HTTP', () => {
       moderationSubmissionSuccessResponse,
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(200)
@@ -143,7 +144,7 @@ describe('ModerationSubmissionController HTTP', () => {
       new NotFoundException(`No submission found with id 1`),
     );
 
-    await request(httpServer).post('/admin/submissions/1/review').send(req).expect(404);
+    await request(httpApp).post('/admin/submissions/1/review').send(req).expect(404);
     expect(moderationSubmissionServiceMock.reviewSubmission).toHaveBeenCalledWith(1, req);
   });
 
@@ -154,7 +155,7 @@ describe('ModerationSubmissionController HTTP', () => {
       new ReviewSubmissionTypeError('ARTICLE', 'EVENT'),
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(409)
@@ -175,7 +176,7 @@ describe('ModerationSubmissionController HTTP', () => {
       new UnknownSubmissionTopicsError(['unknown-topic']),
     );
 
-    await request(httpServer)
+    await request(httpApp)
       .post('/admin/submissions/1/review')
       .send(req)
       .expect(400)

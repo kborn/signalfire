@@ -1,18 +1,19 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { ArticleController } from './article.controller';
 import { ArticleService } from './article.service';
 import { buildArticleDetailResponse, buildArticleListResponse } from './article.test-fixtures';
 
-function getHttpServer(app: INestApplication): Server {
-  return app.getHttpServer() as Server;
+type RequestTarget = Parameters<typeof request>[0];
+
+function getHttpApp(app: INestApplication) {
+  return app.getHttpAdapter().getInstance() as RequestTarget;
 }
 
 describe('ArticleController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const articleServiceMock: jest.Mocked<
     Pick<ArticleService, 'getArticleDetail' | 'getArticleList'>
@@ -31,7 +32,7 @@ describe('ArticleController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -42,7 +43,7 @@ describe('ArticleController HTTP', () => {
     const articleListResponse = buildArticleListResponse();
     articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
 
-    await request(httpServer).get('/articles').expect(200).expect(articleListResponse);
+    await request(httpApp).get('/articles').expect(200).expect(articleListResponse);
     expect(articleServiceMock.getArticleList).toHaveBeenCalledWith({
       page: 1,
       pageSize: 10,
@@ -54,7 +55,7 @@ describe('ArticleController HTTP', () => {
     const articleListResponse = buildArticleListResponse();
     articleServiceMock.getArticleList.mockResolvedValue(articleListResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get('/articles')
       .query({ topicSlug: 'democracy' })
       .expect(200)
@@ -71,7 +72,7 @@ describe('ArticleController HTTP', () => {
     const articleDetailResponse = buildArticleDetailResponse();
     articleServiceMock.getArticleDetail.mockResolvedValue(articleDetailResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get(`/articles/${articleDetailResponse.slug}`)
       .expect(200)
       .expect(articleDetailResponse);
@@ -82,7 +83,7 @@ describe('ArticleController HTTP', () => {
       new NotFoundException('No article found with slug missing'),
     );
 
-    await request(httpServer).get('/articles/missing').expect(404);
+    await request(httpApp).get('/articles/missing').expect(404);
   });
 
   it('GET /articles/:slug returns 404 when the article is unpublished', async () => {
@@ -90,6 +91,6 @@ describe('ArticleController HTTP', () => {
       new NotFoundException('No published article found with slug draft-article'),
     );
 
-    await request(httpServer).get('/articles/draft-article').expect(404);
+    await request(httpApp).get('/articles/draft-article').expect(404);
   });
 });

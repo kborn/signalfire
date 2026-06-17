@@ -1,18 +1,19 @@
 import { INestApplication, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import type { Server } from 'http';
 import request from 'supertest';
 import { TopicController } from './topic.controller';
 import { TopicService } from './topic.service';
 import { buildTopicDetailResponse, buildTopicListResponse } from './topic.test-fixtures';
 
-function getHttpServer(app: INestApplication): Server {
-  return app.getHttpServer() as Server;
+type RequestTarget = Parameters<typeof request>[0];
+
+function getHttpApp(app: INestApplication) {
+  return app.getHttpAdapter().getInstance() as RequestTarget;
 }
 
 describe('TopicController HTTP', () => {
   let app: INestApplication;
-  let httpServer: Server;
+  let httpApp: RequestTarget;
 
   const topicServiceMock: jest.Mocked<Pick<TopicService, 'getTopics' | 'getTopicDetail'>> = {
     getTopics: jest.fn(),
@@ -29,7 +30,7 @@ describe('TopicController HTTP', () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    httpServer = getHttpServer(app);
+    httpApp = getHttpApp(app);
   });
 
   afterEach(async () => {
@@ -40,14 +41,14 @@ describe('TopicController HTTP', () => {
     const topicListResponse = buildTopicListResponse();
     topicServiceMock.getTopics.mockResolvedValue(topicListResponse);
 
-    await request(httpServer).get('/topics').expect(200).expect(topicListResponse);
+    await request(httpApp).get('/topics').expect(200).expect(topicListResponse);
   });
 
   it('GET /topics/:slug returns the topic detail payload', async () => {
     const topicDetailResponse = buildTopicDetailResponse();
     topicServiceMock.getTopicDetail.mockResolvedValue(topicDetailResponse);
 
-    await request(httpServer)
+    await request(httpApp)
       .get(`/topics/${topicDetailResponse.slug}`)
       .expect(200)
       .expect(topicDetailResponse);
@@ -58,6 +59,6 @@ describe('TopicController HTTP', () => {
       new NotFoundException('No topic found with slug missing'),
     );
 
-    await request(httpServer).get('/topics/missing').expect(404);
+    await request(httpApp).get('/topics/missing').expect(404);
   });
 });

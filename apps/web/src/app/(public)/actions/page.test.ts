@@ -22,7 +22,7 @@ describe('ActionListPage', () => {
   it('renders the actions list and action detail links', async () => {
     vi.mocked(getActionsList).mockResolvedValue({
       page: 9,
-      pageSize: 12,
+      pageSize: 10,
       totalItems: 180,
       totalPages: 15,
       items: [
@@ -57,7 +57,7 @@ describe('ActionListPage', () => {
 
     const markup = renderToStaticMarkup(
       await ActionListPage({
-        searchParams: Promise.resolve({ topicSlug: 'democracy', page: '9', pageSize: '12' }),
+        searchParams: Promise.resolve({ topicSlug: 'democracy', page: '9', pageSize: '10' }),
       }),
     );
 
@@ -65,17 +65,17 @@ describe('ActionListPage', () => {
     expect(getActionsList).toHaveBeenCalledWith({
       topicSlug: 'democracy',
       page: '9',
-      pageSize: '12',
+      pageSize: '10',
     });
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('Find practical ways to take meaningful action');
     expect(markup).toContain('Issue');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=12"');
-    expect(markup).toContain('Results per page');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=25"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=50"');
+    expect(markup).toContain('Results per page');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=5"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=20"');
     expect(markup).toContain('aria-current="page"');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
@@ -89,13 +89,13 @@ describe('ActionListPage', () => {
     expect(markup).toContain('March 22, 2026');
     expect(markup).not.toContain('CONTACT');
     expect(markup).not.toContain('DONATE');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=1&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=7&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=8&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=9&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=10&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=11&amp;pageSize=12"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=15&amp;pageSize=12"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=1&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=7&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=8&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=9&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=10&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=11&amp;pageSize=10"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;page=15&amp;pageSize=10"');
     expect(markup).toContain('Previous');
     expect(markup).toContain('Next');
   });
@@ -170,7 +170,7 @@ describe('ActionListPage', () => {
   it('resets the page query when changing topics and page size', async () => {
     vi.mocked(getActionsList).mockResolvedValue({
       page: 4,
-      pageSize: 25,
+      pageSize: 20,
       totalItems: 100,
       totalPages: 4,
       items: [
@@ -203,15 +203,15 @@ describe('ActionListPage', () => {
 
     const markup = renderToStaticMarkup(
       await ActionListPage({
-        searchParams: Promise.resolve({ topicSlug: 'democracy', page: '4', pageSize: '25' }),
+        searchParams: Promise.resolve({ topicSlug: 'democracy', page: '4', pageSize: '20' }),
       }),
     );
 
-    expect(markup).toContain('href="/actions?pageSize=25"');
-    expect(markup).toContain('href="/actions?topicSlug=climate&amp;pageSize=25"');
+    expect(markup).toContain('href="/actions?pageSize=20"');
+    expect(markup).toContain('href="/actions?topicSlug=climate&amp;pageSize=20"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=5"');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=25"');
-    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=50"');
+    expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=20"');
     expect(markup).not.toContain('href="/actions?topicSlug=democracy&amp;page=4&amp;pageSize=10"');
   });
 });
