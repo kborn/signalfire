@@ -136,7 +136,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   }
 
   function hasResourceLink() {
-    return resourceLinks.length > 1 || resourceLinks[0].trim() != '';
+    return resourceLinks.length > 1 || resourceLinks[0].trim() !== '';
   }
 
   function removeResourceLink(index: number) {
@@ -248,7 +248,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
     setErrors(errors);
 
-    if (Object.keys(errors).length == 0) {
+    if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
       try {
         await postArticleSubmission({
@@ -261,7 +261,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             summary: normalizedSummary,
             content: normalizedContent,
             topicSlugs: topicSlugs,
-            resourceLinks: normalizedResourceLinks.length == 0 ? null : normalizedResourceLinks,
+            resourceLinks: normalizedResourceLinks.length === 0 ? null : normalizedResourceLinks,
           },
         });
         setIsSuccess(true);
@@ -380,7 +380,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   <label
                     className="submissionCheckboxOption"
                     htmlFor={`article-topic-${topic.slug}`}
-                    key={topic.name}
+                    key={topic.id}
                   >
                     <input
                       id={`article-topic-${topic.slug}`}

@@ -12,7 +12,7 @@ import {
 } from './submission.repository.types';
 import { SubmissionType } from '@prisma/client';
 import { TopicRepository } from '../topic/topic.repository';
-import { UnknownSubmissionTopicsError } from './submission.error';
+import { getTopicIdsBySlug } from '../common/topic-ids';
 
 @Injectable()
 export class SubmissionService {
@@ -22,15 +22,7 @@ export class SubmissionService {
   ) {}
 
   async getTopicIds(slugs: string[]): Promise<number[]> {
-    const recs: { id: number; slug: string }[] = await this.topicRepository.findIdsBySlugs(slugs);
-    const foundSlugs = new Set(recs.map((rec) => rec.slug));
-    const unknownSlugs = slugs.filter((slug) => !foundSlugs.has(slug));
-
-    if (unknownSlugs.length) {
-      throw new UnknownSubmissionTopicsError(unknownSlugs);
-    }
-
-    return recs.map((rec) => rec.id);
+    return getTopicIdsBySlug(this.topicRepository, slugs);
   }
 
   async mapCommonRequestFields(

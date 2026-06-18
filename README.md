@@ -126,6 +126,11 @@ pnpm --filter api test:e2e
 ```
 
 API e2e tests use Testcontainers and require a working local container runtime.
+Screenshot refresh uses:
+
+```bash
+node scripts/regenerate-doc-screenshots.mjs
+```
 
 ## Visual Review Assets
 
@@ -193,6 +198,11 @@ Suggested reviewer path:
 2. Browse Issues, Articles, Actions, or the Event finder
 3. Open `Admin Demo` from the public header
 4. Use the seeded admin credentials to review moderation and content-management flows
+
+Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
+history live in:
+
+- `docs/specs/016-phase-13-milestone-1-release-readiness.md`
 
 ## Planning Docs
 

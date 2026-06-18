@@ -154,6 +154,30 @@ describe('SubmissionController HTTP', () => {
     expect(submissionServiceMock.create).not.toHaveBeenCalled();
   });
 
+  it('POST /submissions returns 400 for invalid website URLs before calling the service', async () => {
+    const req = buildEventSubmissionRequest({
+      payload: {
+        websiteUrl: 'example.org/event',
+      },
+    });
+
+    await request(httpApp)
+      .post('/submissions')
+      .send(req)
+      .expect(400)
+      .expect({
+        errors: [
+          {
+            type: 'field',
+            field: 'payload.websiteUrl',
+            message: 'Website URL must be a valid URL',
+          },
+        ],
+      });
+
+    expect(submissionServiceMock.create).not.toHaveBeenCalled();
+  });
+
   it('POST /submissions returns 500 when the service raises non HTTP exception', async () => {
     submissionServiceMock.create.mockRejectedValue(new Error('some error'));
     const req = buildEventSubmissionRequest();

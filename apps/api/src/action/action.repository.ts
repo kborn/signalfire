@@ -7,6 +7,7 @@ import {
   UpdateAdminActionRepositoryInput,
 } from '../admin-api/action/admin-action.repository.type';
 import { toActionSummary } from '../common/public-content.mapper';
+import { buildTopicAssignmentCreates } from '../common/topic-assignment';
 import type { ValidatedActionListQuery } from './action.type';
 
 const actionWithTopicsInclude = {
@@ -162,15 +163,6 @@ export class ActionRepository {
     });
   }
 
-  private buildTopicCreates(topicIds: number[]) {
-    const assignedAt = new Date();
-    return topicIds.map((topicId) => ({
-      topic: { connect: { id: topicId } },
-      assignedAt: assignedAt,
-      assignedBy: 'admin',
-    }));
-  }
-
   async create(input: CreateAdminActionRepositoryInput): Promise<ActionWithTopics> {
     return await this.prisma.$transaction(async (tx) => {
       const { topicIds, ...actionData } = input;
@@ -187,7 +179,7 @@ export class ActionRepository {
           ...actionData,
           slug: finalSlug,
           topicActions: {
-            create: this.buildTopicCreates(topicIds),
+            create: buildTopicAssignmentCreates(topicIds, 'admin'),
           },
         },
         include: actionWithTopicsInclude,
@@ -228,7 +220,7 @@ export class ActionRepository {
           publishedAt: getPublishedAt(existing, input),
           topicActions: {
             deleteMany: {},
-            create: this.buildTopicCreates(topicIds),
+            create: buildTopicAssignmentCreates(topicIds, 'admin'),
           },
         },
         include: actionWithTopicsInclude,

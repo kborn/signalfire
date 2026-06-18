@@ -25,6 +25,57 @@ const optionalNullableTrimmedString = (max: number) =>
     z.string().trim().max(max, `Must be ${max} characters or fewer`).nullable(),
   );
 
+function validateHttpUrl(value: string, fieldLabel: string, ctx: z.RefinementCtx) {
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `${fieldLabel} must start with http:// or https://`,
+      });
+    }
+  } catch {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `${fieldLabel} must be a valid URL`,
+    });
+  }
+}
+
+const optionalNullableUrl = (fieldLabel: string, max: number) =>
+  z.preprocess(
+    (value) => {
+      if (value === undefined || value === null) {
+        return null;
+      }
+
+      if (typeof value === 'string') {
+        const trimmed = value.trim();
+        return trimmed.length === 0 ? null : trimmed;
+      }
+
+      return value;
+    },
+    z
+      .string()
+      .trim()
+      .max(max, `${fieldLabel} must be ${max} characters or fewer`)
+      .superRefine((value, ctx) => {
+        validateHttpUrl(value, fieldLabel, ctx);
+      })
+      .nullable(),
+  );
+
+const requiredUrl = (fieldLabel: string, max: number) =>
+  z
+    .string()
+    .trim()
+    .min(1, `${fieldLabel} is required`)
+    .max(max, `${fieldLabel} must be ${max} characters or fewer`)
+    .superRefine((value, ctx) => {
+      validateHttpUrl(value, fieldLabel, ctx);
+    });
+
 const optionalNullableEmail = () =>
   z.preprocess((value) => {
     if (value === undefined || value === null) {
@@ -52,12 +103,12 @@ const resourceLinksSchema = z.preprocess(
     return value;
   },
   z
-    .array(requiredTrimmedString('Resource link', 2000))
+    .array(requiredUrl('Resource link', 2000))
     .min(1, 'Resource links must be omitted, null, or a non-empty array')
     .nullable(),
 );
 
-const websiteUrlSchema = optionalNullableTrimmedString(2000);
+const websiteUrlSchema = optionalNullableUrl('Website URL', 2000);
 
 const optionalNullableDatetime = (fieldLabel: string) =>
   z.preprocess(

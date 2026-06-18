@@ -1628,23 +1628,24 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ##### 13.4 Repo & Launch Readiness
 
-- [ ] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
+- [x] Define the Release 1 application logging approach, including what auth, admin, API error, and deployment-relevant events should be logged without expanding into a full observability platform
 - [ ] Add smoke or integration coverage for the highest-risk moderation/admin workflows that still lack confidence after Phase 11.9 auth implementation
 - [ ] Run a final focused regression pass across public and admin flows, including auth, moderation, and essential content-management paths
-- [ ] Write a Milestone 1 release checklist covering seed/reset steps, required test commands, final smoke paths, screenshot refresh, docs verification, and deployment handoff prerequisites
-- [ ] Explicitly record the intentional Milestone 1 non-goals or deferred items so release polish does not expand into open-ended post-demo cleanup
-- [ ] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
-- [ ] Confirm repository documentation, setup instructions, deployment caveats, and reviewer-facing screenshots match the actual shipped product state
-- [ ] Complete a repo hygiene pass: update runbooks, verify local setup instructions, make deploy steps easy to find, remove stale guidance, and replace outdated screenshots with current product/admin captures
-- [ ] Address Milestone 1 source-review follow-ups that affect release credibility, including secure admin-cookie behavior, URL-validation hardening for resource links, empty-body API response handling, and the remaining strict-equality/stable-key/access-modifier cleanup
-- [ ] Reduce the highest-signal source duplication called out by the Milestone 1 polish review, including repeated topic-id lookup helpers, title-to-slug helpers, and topic-create repository mapping logic
-- [ ] Replace runtime-only moderation fallbacks with compile-time exhaustiveness where discriminated unions define review decision handling
+- [x] Write a Milestone 1 release checklist covering seed/reset steps, required test commands, final smoke paths, screenshot refresh, docs verification, and deployment handoff prerequisites
+- [x] Explicitly record the intentional Milestone 1 non-goals or deferred items so release polish does not expand into open-ended post-demo cleanup
+- [x] Document the local-only access assumption history, current deployed admin-access boundary, and any remaining deferred concerns that materially affect launch readiness
+- [x] Confirm repository documentation, setup instructions, deployment caveats, and reviewer-facing screenshots match the actual shipped product state
+- [x] Complete a repo hygiene pass: update runbooks, verify local setup instructions, make deploy steps easy to find, remove stale guidance, and replace outdated screenshots with current product/admin captures
+- [x] Address Milestone 1 source-review follow-ups that affect release credibility, including secure admin-cookie behavior, URL-validation hardening for resource links, empty-body API response handling, and the remaining strict-equality/stable-key/access-modifier cleanup
+- [x] Reduce the highest-signal source duplication called out by the Milestone 1 polish review, including repeated topic-id lookup helpers, title-to-slug helpers, and topic-create repository mapping logic
+- [x] Replace runtime-only moderation fallbacks with compile-time exhaustiveness where discriminated unions define review decision handling
 
 ---
 
 ###### Links:
 
 - External review follow-up: `docs/specs/015-phase-13-milestone-1-polish-review.md`
+- Release readiness: `docs/specs/016-phase-13-milestone-1-release-readiness.md`
 
 ---
 

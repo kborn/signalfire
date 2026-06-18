@@ -8,6 +8,7 @@ import {
 } from '../admin-api/event/admin-event.repository.type';
 import type { ValidatedEventListQuery } from './event.type';
 import { toEventSummary } from '../common/public-content.mapper';
+import { buildTopicAssignmentCreates } from '../common/topic-assignment';
 
 const eventWithTopicsInclude = {
   topicEvents: {
@@ -172,15 +173,6 @@ export class EventRepository {
     });
   }
 
-  private buildTopicCreates(topicIds: number[]) {
-    const assignedAt = new Date();
-    return topicIds.map((topicId) => ({
-      topic: { connect: { id: topicId } },
-      assignedAt: assignedAt,
-      assignedBy: 'admin',
-    }));
-  }
-
   async create(input: CreateAdminEventRepositoryInput): Promise<EventWithTopics> {
     return await this.prisma.$transaction(async (tx) => {
       const { topicIds, ...eventData } = input;
@@ -198,7 +190,7 @@ export class EventRepository {
           endTime: eventData.endTime ?? null,
           publishedAt: eventData.publishedAt,
           topicEvents: {
-            create: this.buildTopicCreates(topicIds),
+            create: buildTopicAssignmentCreates(topicIds, 'admin'),
           },
         },
         include: eventWithTopicsInclude,
@@ -249,7 +241,7 @@ export class EventRepository {
           publishedAt: getPublishedAt(existing, input),
           topicEvents: {
             deleteMany: {},
-            create: this.buildTopicCreates(topicIds),
+            create: buildTopicAssignmentCreates(topicIds, 'admin'),
           },
         },
         include: eventWithTopicsInclude,

@@ -1,4 +1,4 @@
-import { buildUrl, getApiBase, type QueryParams } from '@/lib/api/base.shared';
+import { buildUrl, type QueryParams } from '@/lib/api/base.shared';
 import { ApiError, AuthenticationError, SubmissionError } from '@/lib/api/error';
 import { type ValidationError } from '@signal-fire/api-contracts';
 
@@ -56,7 +56,7 @@ async function parseJsonResponse<T>(response: Response, endpoint: string): Promi
     throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
   }
 
-  return response.json() as Promise<T>;
+  return (await readJsonBody(response)) as T;
 }
 
 function isValidationError(item: unknown): item is ValidationError {
@@ -114,7 +114,7 @@ async function sendJsonRequest<T>(
   errorEndpoint: string,
   authenticated: boolean,
 ): Promise<T> {
-  const response = await fetch(`${getApiBase()}/${endpoint}`, {
+  const response = await fetch(buildUrl(endpoint), {
     method,
     headers: { 'Content-Type': 'application/json' },
     ...(authenticated ? { credentials: 'include' as const } : {}),

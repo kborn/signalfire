@@ -8,21 +8,13 @@ import {
   FindModerationSubmissionsInput,
   RejectSubmissionRepositoryInput,
 } from './submission.repository.types';
+import { buildTopicAssignmentCreates } from '../common/topic-assignment';
 
 class SubmissionApprovalClaimError extends Error {}
 
 @Injectable()
 export class SubmissionRepository {
   constructor(private prisma: PrismaService) {}
-
-  private buildTopicCreates(topicIds: number[]) {
-    const assignedAt = new Date();
-    return topicIds.map((topicId) => ({
-      topic: { connect: { id: topicId } },
-      assignedAt: assignedAt,
-      assignedBy: 'moderation',
-    }));
-  }
 
   findModerationSubmissions(filters: FindModerationSubmissionsInput = {}): Promise<Submission[]> {
     return this.prisma.submission.findMany({
@@ -153,7 +145,7 @@ export class SubmissionRepository {
             ...articleData,
             slug: finalSlug,
             topicArticles: {
-              create: this.buildTopicCreates(topicIds),
+              create: buildTopicAssignmentCreates(topicIds, 'moderation'),
             },
           },
         });
@@ -202,7 +194,7 @@ export class SubmissionRepository {
           data: {
             ...eventData,
             topicEvents: {
-              create: this.buildTopicCreates(topicIds),
+              create: buildTopicAssignmentCreates(topicIds, 'moderation'),
             },
           },
         });

@@ -76,16 +76,39 @@ export function validateOptionalEmail(value: string | null, max: number): string
   return undefined;
 }
 
+export function validateOptionalUrl(
+  value: string | null,
+  fieldLabel: string,
+  max: number,
+): string | undefined {
+  if (value === null) {
+    return undefined;
+  }
+
+  if (value.length > max) {
+    return `${fieldLabel} must be ${max} characters or fewer`;
+  }
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+      return `${fieldLabel} must start with http:// or https://`;
+    }
+  } catch {
+    return `${fieldLabel} must be a valid URL`;
+  }
+
+  return undefined;
+}
+
 export function validateResourceLinks(links: string[]): string | undefined {
   for (const link of links) {
-    const lengthError = validateRequiredString(
-      link,
-      'Resource link',
-      SUBMISSION_FIELD_LIMITS.resourceLink,
-    );
+    const linkError =
+      validateRequiredString(link, 'Resource link', SUBMISSION_FIELD_LIMITS.resourceLink) ??
+      validateOptionalUrl(link, 'Resource link', SUBMISSION_FIELD_LIMITS.resourceLink);
 
-    if (lengthError) {
-      return lengthError;
+    if (linkError) {
+      return linkError;
     }
   }
 

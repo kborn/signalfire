@@ -11,8 +11,8 @@ import {
   UpdateAdminEventRepositoryInput,
 } from './admin-event.repository.type';
 import { EventRepository, type EventWithTopics } from '../../event/event.repository';
-import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
 import { TopicRepository } from '../../topic/topic.repository';
+import { getTopicIdsBySlug } from '../../common/topic-ids';
 
 @Injectable()
 export class AdminEventService {
@@ -57,15 +57,7 @@ export class AdminEventService {
   }
 
   private async getTopicIds(slugs: string[]): Promise<number[]> {
-    const recs = await this.topicRepository.findIdsBySlugs(slugs);
-    const foundSlugs = new Set(recs.map((rec) => rec.slug));
-    const unknownSlugs = slugs.filter((slug) => !foundSlugs.has(slug));
-
-    if (unknownSlugs.length > 0) {
-      throw new UnknownSubmissionTopicsError(unknownSlugs);
-    }
-
-    return recs.map((rec) => rec.id);
+    return getTopicIdsBySlug(this.topicRepository, slugs);
   }
 
   private async mapCreateEventRequest(

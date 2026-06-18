@@ -13,6 +13,7 @@ import {
   parseLocalDateTime,
   SUBMISSION_FIELD_LIMITS,
   validateOptionalEmail,
+  validateOptionalUrl,
   validateOptionalStringMax,
   validateRequiredString,
 } from '@/lib/submission-form-validation';
@@ -369,10 +370,9 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
       errors.contactEmail = contactEmailError;
     }
 
-    const websiteUrlError = validateOptionalStringMax(
-      normalizedWebsiteUrl,
-      SUBMISSION_FIELD_LIMITS.websiteUrl,
-    );
+    const websiteUrlError =
+      validateOptionalStringMax(normalizedWebsiteUrl, SUBMISSION_FIELD_LIMITS.websiteUrl) ??
+      validateOptionalUrl(normalizedWebsiteUrl, 'Website URL', SUBMISSION_FIELD_LIMITS.websiteUrl);
     if (websiteUrlError) {
       errors.websiteUrl = websiteUrlError;
     }
@@ -394,7 +394,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     }
 
     setErrors(errors);
-    if (Object.keys(errors).length == 0) {
+    if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
       try {
         await postEventSubmission({
@@ -787,7 +787,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   <label
                     className="submissionCheckboxOption"
                     htmlFor={`event-topic-${topic.slug}`}
-                    key={topic.name}
+                    key={topic.id}
                   >
                     <input
                       id={`event-topic-${topic.slug}`}

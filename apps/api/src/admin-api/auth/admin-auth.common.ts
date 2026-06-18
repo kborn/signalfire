@@ -10,8 +10,7 @@ export function getNextExpiration(): Date {
 }
 
 function shouldUseSecureCookie(): boolean {
-  // TODO: replace with a more explicit environment/config check
-  return false;
+  return process.env.NODE_ENV === 'production';
 }
 
 function buildAdminAuthCookieOptions(expires: Date) {

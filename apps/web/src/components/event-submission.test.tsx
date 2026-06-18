@@ -222,6 +222,18 @@ describe('EventSubmissionForm', () => {
     ).toBeInTheDocument();
   });
 
+  it('validates website URLs on the client before submit', async () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredEventFields();
+    setInputValue('Website URL (optional)', 'example.org/event');
+
+    await user.click(screen.getByRole('button', { name: 'Submit Event' }));
+
+    expect(postEventSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Website URL must be a valid URL')).toBeInTheDocument();
+  });
+
   it('shows the canonical global error for non-validation failures', async () => {
     mockPostEventSubmission().mockRejectedValue(new Error('Request failed for submissions'));
 
