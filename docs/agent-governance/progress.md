@@ -1654,7 +1654,13 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [ ] Close the remaining external-review repo hygiene defects, including removing checked-in build artifacts, normalizing the `submission-type` contract filename, and stripping dead font-loading leftovers from abandoned typography experiments; build artifacts and contract naming are fixed, but dead font-loading cleanup still needs a final decision
 - [x] Add public submission rate limiting and verify the moderation queue cannot be trivially flooded through the anonymous submission endpoints
 - [ ] Replace the current public content-page `force-dynamic` strategy with the Milestone 1 caching/revalidation approach appropriate for moderated content and validate that the chosen approach still reflects admin edits reliably
-- [ ] Decide which external-review findings are required Milestone 1 finish work versus explicit Milestone 2 deferrals, then record those deferrals canonically instead of carrying them implicitly into Deployment Infrastructure
+- [x] Decide which external-review findings are required Milestone 1 finish work versus explicit Milestone 2 deferrals, then record those deferrals canonically instead of carrying them implicitly into Deployment Infrastructure
+- [ ] Strengthen the article reading experience so body typography, hierarchy, and metadata/content separation feel professional rather than merely functional
+- [ ] Finish the remaining high-signal public visual polish across topic, article, action, and event discovery/detail surfaces so cards, list rhythm, and detail layouts read as intentional and mature
+- [ ] Finish the remaining homepage and motif art-direction work so the public experience feels cohesive and credible rather than prototype-polished
+- [ ] Close the remaining submit-surface layout and spacing defects that still read as unfinished in first-use review
+- [ ] Run an explicit mobile/responsive finish pass across the core public routes and fix the issues it exposes
+- [ ] Improve demo-seed/editorial quality where generated filler still weakens the product fiction or makes the site read as scaffolding
 - [ ] Refresh screenshots and reviewer-facing docs after the closure pass so recorded artifacts match the actual Milestone 1 product state
 - [ ] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
 
@@ -1662,7 +1668,7 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 - The 2026-06-17 external review functioned as an additional Milestone 1 quality gate and exposed a broader remaining gap in UX finish, visual consistency, and a small number of engineering credibility issues than the earlier Phase 13 closure work suggested.
 - Phase 13 therefore remains the active boundary. Deployment Infrastructure should not begin until this follow-up pass either resolves or explicitly defers the remaining external-review findings.
-- Current closure progress: public copy/IA cleanup, Events default-state rework, admin shell visual pass, public-page revalidation replacement, TypeScript strictness restoration, anonymous submission rate limiting, and the `submission-type` contract/build-artifact cleanup are complete; screenshot/doc refresh, explicit deferral recording, and final release-candidate validation remain open.
+- Current closure progress: public copy/IA cleanup, Events default-state rework, admin shell visual pass, public-page revalidation replacement, TypeScript strictness restoration, anonymous submission rate limiting, the `submission-type` contract/build-artifact cleanup, and the explicit Milestone 1 versus Milestone 2 deferral split are complete; remaining closure work still includes substantial public polish, mobile finish, demo-seed quality cleanup, screenshot/doc refresh, and final release-candidate validation.
 
 ---
 
