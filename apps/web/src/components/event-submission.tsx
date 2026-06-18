@@ -17,6 +17,7 @@ import {
   validateOptionalStringMax,
   validateRequiredString,
 } from '@/lib/submission-form-validation';
+import { focusAndScrollTo, getFieldA11y } from '@/lib/form-ui';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 
@@ -69,27 +70,6 @@ const eventErrorFieldOrder: Array<keyof EventSubmissionFormErrors> = [
   'submitterName',
   'submitterEmail',
 ];
-
-function getScrollBehavior(): ScrollBehavior {
-  if (typeof window.matchMedia !== 'function') {
-    return 'smooth';
-  }
-
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-}
-
-function focusAndScrollTo(id: string) {
-  const element = document.getElementById(id);
-  if (!(element instanceof HTMLElement)) {
-    return;
-  }
-
-  element.focus({ preventScroll: true });
-  element.scrollIntoView({
-    behavior: getScrollBehavior(),
-    block: 'center',
-  });
-}
 
 export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
   // ------ form fields --------
@@ -145,17 +125,6 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
       focusAndScrollTo('event-submit-error');
     }
   }, [errors, getEventControlId, submitError]);
-
-  function getFieldA11y(field: keyof EventSubmissionFormErrors, helperId?: string) {
-    const describedBy = [helperId, errors[field] ? `event-${field}-error` : null]
-      .filter(Boolean)
-      .join(' ');
-
-    return {
-      'aria-describedby': describedBy || undefined,
-      'aria-invalid': errors[field] ? true : undefined,
-    };
-  }
 
   const handleToggle = (topic: string) => {
     setTopicSlugs(
@@ -487,7 +456,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={title}
                   placeholder="Title"
                   onChange={(event) => setTitle(event.target.value)}
-                  {...getFieldA11y('title')}
+                  {...getFieldA11y('title', errors, 'event')}
                 />
               </label>
               {errors.title ? (
@@ -507,7 +476,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   placeholder="Briefly describe the event"
                   rows={4}
                   onChange={(event) => setSummary(event.target.value)}
-                  {...getFieldA11y('summary')}
+                  {...getFieldA11y('summary', errors, 'event')}
                 />
               </label>
               {errors.summary ? (
@@ -527,7 +496,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   placeholder="Provide additional details about the event"
                   rows={12}
                   onChange={(event) => setDescription(event.target.value)}
-                  {...getFieldA11y('description')}
+                  {...getFieldA11y('description', errors, 'event')}
                 />
               </label>
               {errors.description ? (
@@ -545,7 +514,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   className="submissionControl"
                   value={eventType}
                   onChange={(event) => setEventType(event.target.value)}
-                  {...getFieldA11y('eventType')}
+                  {...getFieldA11y('eventType', errors, 'event')}
                 >
                   <option value="">Select an event type</option>
                   {EVENT_TYPES.map((eventType) => (
@@ -576,7 +545,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                     className="submissionControl"
                     value={startAt}
                     onChange={(event) => setStartAt(event.target.value)}
-                    {...getFieldA11y('startAt')}
+                    {...getFieldA11y('startAt', errors, 'event')}
                   />
                 </label>
                 {errors.startAt ? (
@@ -595,7 +564,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                     value={endAt}
                     type="datetime-local"
                     onChange={(event) => setEndAt(event.target.value)}
-                    {...getFieldA11y('endAt')}
+                    {...getFieldA11y('endAt', errors, 'event')}
                   />
                 </label>
                 {errors.endAt ? (
@@ -618,7 +587,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={locationName}
                   placeholder="Community Center"
                   onChange={(event) => setLocationName(event.target.value)}
-                  {...getFieldA11y('locationName')}
+                  {...getFieldA11y('locationName', errors, 'event')}
                 />
               </label>
               {errors.locationName ? (
@@ -637,7 +606,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={city}
                   placeholder="City"
                   onChange={(event) => setCity(event.target.value)}
-                  {...getFieldA11y('city')}
+                  {...getFieldA11y('city', errors, 'event')}
                 />
               </label>
               {errors.city ? (
@@ -655,7 +624,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   className="submissionControl"
                   value={region}
                   onChange={(event) => setRegion(event.target.value)}
-                  {...getFieldA11y('region')}
+                  {...getFieldA11y('region', errors, 'event')}
                 >
                   <option value="">Select a state</option>
                   {US_STATE_OPTIONS.map(([value, label]) => (
@@ -681,7 +650,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={country}
                   disabled
                   readOnly
-                  {...getFieldA11y('country')}
+                  {...getFieldA11y('country', errors, 'event')}
                 />
               </label>
               {errors.country ? (
@@ -700,7 +669,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={publicLocationDescription}
                   placeholder="Meet organizers near the fountain"
                   onChange={(event) => setPublicLocationDescription(event.target.value)}
-                  {...getFieldA11y('publicLocationDescription')}
+                  {...getFieldA11y('publicLocationDescription', errors, 'event')}
                 />
               </label>
               {errors.publicLocationDescription ? (
@@ -719,7 +688,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={addressLine1}
                   placeholder="123 Main St"
                   onChange={(event) => setAddressLine1(event.target.value)}
-                  {...getFieldA11y('addressLine1')}
+                  {...getFieldA11y('addressLine1', errors, 'event')}
                 />
               </label>
               {errors.addressLine1 ? (
@@ -738,7 +707,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={addressLine2}
                   placeholder="Suite A"
                   onChange={(event) => setAddressLine2(event.target.value)}
-                  {...getFieldA11y('addressLine2')}
+                  {...getFieldA11y('addressLine2', errors, 'event')}
                 />
               </label>
               {errors.addressLine2 ? (
@@ -757,7 +726,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={postalCode}
                   placeholder="19107"
                   onChange={(event) => setPostalCode(event.target.value)}
-                  {...getFieldA11y('postalCode')}
+                  {...getFieldA11y('postalCode', errors, 'event')}
                 />
               </label>
               {errors.postalCode ? (
@@ -781,7 +750,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 className="submissionCheckboxGroup"
                 role="group"
                 aria-labelledby="event-topic-group"
-                {...getFieldA11y('topicSlugs', 'event-topic-helper')}
+                {...getFieldA11y('topicSlugs', errors, 'event', 'event-topic-helper')}
               >
                 {topics.map((topic) => (
                   <label
@@ -823,7 +792,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 placeholder="https://example.org/event"
                 value={websiteUrl}
                 onChange={(event) => setWebsiteUrl(event.target.value)}
-                {...getFieldA11y('websiteUrl', 'event-website-helper')}
+                {...getFieldA11y('websiteUrl', errors, 'event', 'event-website-helper')}
               />
               {errors.websiteUrl ? (
                 <p id="event-websiteUrl-error" className="submissionError">
@@ -849,7 +818,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 placeholder="organizer@example.com"
                 type={'email'}
                 onChange={(event) => setContactEmail(event.target.value)}
-                {...getFieldA11y('contactEmail', 'event-contact-email-helper')}
+                {...getFieldA11y('contactEmail', errors, 'event', 'event-contact-email-helper')}
               />
               {errors.contactEmail ? (
                 <p id="event-contactEmail-error" className="submissionError">
@@ -867,7 +836,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   value={submitterName}
                   placeholder="Your name"
                   onChange={(event) => setSubmitterName(event.target.value)}
-                  {...getFieldA11y('submitterName')}
+                  {...getFieldA11y('submitterName', errors, 'event')}
                 />
               </label>
 
@@ -892,7 +861,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 placeholder="name@example.com"
                 type={'email'}
                 onChange={(event) => setSubmitterEmail(event.target.value)}
-                {...getFieldA11y('submitterEmail', 'event-submitter-email-helper')}
+                {...getFieldA11y('submitterEmail', errors, 'event', 'event-submitter-email-helper')}
               />
               {errors.submitterEmail ? (
                 <p id="event-submitterEmail-error" className="submissionError">
