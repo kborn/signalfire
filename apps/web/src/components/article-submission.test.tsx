@@ -209,6 +209,18 @@ describe('ArticleSubmissionForm', () => {
     expect(screen.getByText('Email must be valid')).toBeInTheDocument();
   });
 
+  it('validates supporting-link URLs on the client before submit', async () => {
+    render(<ArticleSubmissionForm topics={topics} />);
+
+    const user = await fillRequiredArticleFields();
+    await user.type(screen.getByLabelText('Resource link 1'), 'example.org/source');
+
+    await user.click(screen.getByRole('button', { name: 'Submit Article' }));
+
+    expect(postArticleSubmission).not.toHaveBeenCalled();
+    expect(screen.getByText('Resource link must be a valid URL')).toBeInTheDocument();
+  });
+
   it('removes resource link rows before submit', async () => {
     mockPostArticleSubmission().mockResolvedValue({ id: 42 });
 

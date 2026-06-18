@@ -49,6 +49,7 @@ Behavior:
 
 - baseline seed inserts seeded Topics only
 - demo seed inserts Topics plus local demo Articles, Actions, Events, relationships, and a local admin user
+- `apps/api/.env.example` defaults `SEED_MODE=baseline`; the demo script overrides it explicitly
 - production should use baseline seed only
 - integration tests should use baseline seed unless a test suite explicitly needs demo content
 

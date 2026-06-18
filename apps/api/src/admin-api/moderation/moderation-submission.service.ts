@@ -25,12 +25,12 @@ import {
 } from '../../submission/submission.repository.types';
 import { Submission, SubmissionStatus, SubmissionType, Topic } from '@prisma/client';
 import { TopicRepository } from '../../topic/topic.repository';
-import {
-  ReviewSubmissionTypeError,
-  UnknownSubmissionTopicsError,
-} from '../../submission/submission.error';
+import { ReviewSubmissionTypeError } from '../../submission/submission.error';
 import { ArticleRepository } from '../../article/article.repository';
 import { EventRepository } from '../../event/event.repository';
+import { getTopicIdsBySlug } from '../../common/topic-ids';
+import { titleToSlug } from '../../common/title-to-slug';
+import { assertNever } from '../../common/assert-never';
 
 function requireSubmissionField<T>(
   value: T | null | undefined,
@@ -134,7 +134,9 @@ export class ModerationSubmissionService {
     return null;
   }
 
-  async mapCommonSubmissionParts(submission: Submission): Promise<ModerationSubmissionCommonParts> {
+  private async mapCommonSubmissionParts(
+    submission: Submission,
+  ): Promise<ModerationSubmissionCommonParts> {
     const topics: Topic[] = await this.topicRepository.findBySubmissionId(submission.id);
 
     return {
@@ -252,22 +254,7 @@ export class ModerationSubmissionService {
   }
 
   async getTopicIds(slugs: string[]): Promise<number[]> {
-    const recs: { id: number; slug: string }[] = await this.topicRepository.findIdsBySlugs(slugs);
-    const foundSlugs = new Set(recs.map((rec) => rec.slug));
-    const unknownSlugs = slugs.filter((slug) => !foundSlugs.has(slug));
-
-    if (unknownSlugs.length) {
-      throw new UnknownSubmissionTopicsError(unknownSlugs);
-    }
-
-    return recs.map((rec) => rec.id);
-  }
-
-  private titleToSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
+    return getTopicIdsBySlug(this.topicRepository, slugs);
   }
 
   async rejectSubmission(
@@ -331,7 +318,7 @@ export class ModerationSubmissionService {
   ): Promise<ArticleSubmissionApprovedRepositoryInput['articleData']> {
     return {
       title: result.normalized.title,
-      slug: this.titleToSlug(result.normalized.title),
+      slug: titleToSlug(result.normalized.title),
       summary: result.normalized.summary,
       content: result.normalized.content,
       status: result.publishStatus,
@@ -405,13 +392,15 @@ export class ModerationSubmissionService {
     result: ModerationReviewRequest,
   ): Promise<ModerationReviewResponse> {
     const reviewedAt = new Date();
-    if (result.decision === 'REJECT') {
-      return this.rejectSubmission(submissionId, result, reviewedAt);
-    } else if (result.decision === 'APPROVE_ARTICLE') {
-      return this.approveArticleSubmission(submissionId, result, reviewedAt);
-    } else if (result.decision === 'APPROVE_EVENT') {
-      return this.approveEventSubmission(submissionId, result, reviewedAt);
+    switch (result.decision) {
+      case 'REJECT':
+        return this.rejectSubmission(submissionId, result, reviewedAt);
+      case 'APPROVE_ARTICLE':
+        return this.approveArticleSubmission(submissionId, result, reviewedAt);
+      case 'APPROVE_EVENT':
+        return this.approveEventSubmission(submissionId, result, reviewedAt);
+      default:
+        return assertNever(result, 'Unexpected moderation review decision');
     }
-    throw new Error('Unexpected moderation review decision');
   }
 }

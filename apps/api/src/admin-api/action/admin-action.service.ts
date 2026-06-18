@@ -11,8 +11,9 @@ import {
   CreateAdminActionRepositoryInput,
   UpdateAdminActionRepositoryInput,
 } from './admin-action.repository.type';
-import { UnknownSubmissionTopicsError } from '../../submission/submission.error';
 import { TopicRepository } from '../../topic/topic.repository';
+import { titleToSlug } from '../../common/title-to-slug';
+import { getTopicIdsBySlug } from '../../common/topic-ids';
 
 @Injectable()
 export class AdminActionService {
@@ -73,29 +74,14 @@ export class AdminActionService {
     return { ...this.toAdminActionSummary(action), description: action.description };
   }
 
-  private titleToSlug(title: string): string {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9-]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
-
   private async getTopicIds(slugs: string[]): Promise<number[]> {
-    const recs = await this.topicRepository.findIdsBySlugs(slugs);
-    const foundSlugs = new Set(recs.map((rec) => rec.slug));
-    const unknownSlugs = slugs.filter((slug) => !foundSlugs.has(slug));
-
-    if (unknownSlugs.length > 0) {
-      throw new UnknownSubmissionTopicsError(unknownSlugs);
-    }
-
-    return recs.map((rec) => rec.id);
+    return getTopicIdsBySlug(this.topicRepository, slugs);
   }
 
   private async mapCreateActionRequest(
     reqBody: AdminActionRequest,
   ): Promise<CreateAdminActionRepositoryInput> {
-    const slug = this.titleToSlug(reqBody.title);
+    const slug = titleToSlug(reqBody.title);
     if (!slug) {
       throw new BadRequestException('Title must produce a valid slug');
     }

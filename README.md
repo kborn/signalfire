@@ -85,7 +85,7 @@ calls handle post-load actions such as submissions and moderation actions.
 
 ## Requirements
 
-- Node.js compatible with the repo toolchain
+- Node.js `24.4.0` (matches `.nvmrc`)
 - pnpm `10.30.3`
 - Docker or another local PostgreSQL option for database-backed development
 
@@ -101,6 +101,13 @@ pnpm api:prisma:migrate:seed
 pnpm api:prisma:migrate:seed:demo
 pnpm dev
 ```
+
+Notes:
+
+- `apps/api/.env.example` defaults to baseline seeding; the demo seed command
+  overrides that explicitly for local portfolio/demo review.
+- `apps/web/.env.local.example` enables public demo mode by default so the
+  banner, badge, and `Admin Demo` entry point are visible in review builds.
 
 Run only baseline seed (without demo content):
 
@@ -122,10 +129,16 @@ pnpm typecheck
 pnpm test
 pnpm --filter web test
 pnpm --filter api test:unit
+pnpm --filter api test:integration
 pnpm --filter api test:e2e
 ```
 
 API e2e tests use Testcontainers and require a working local container runtime.
+Screenshot refresh uses:
+
+```bash
+node scripts/regenerate-doc-screenshots.mjs
+```
 
 ## Visual Review Assets
 
@@ -194,6 +207,11 @@ Suggested reviewer path:
 3. Open `Admin Demo` from the public header
 4. Use the seeded admin credentials to review moderation and content-management flows
 
+Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
+history live in:
+
+- `docs/specs/016-phase-13-milestone-1-release-readiness.md`
+
 ## Planning Docs
 
 Canonical planning and decision docs:
@@ -203,6 +221,18 @@ Canonical planning and decision docs:
 - `docs/agent-governance/decisions.md`
 
 Current active implementation phase is Phase 13: Release Prep & Final Polish.
+
+## Key Repo Entry Points
+
+If you are reviewing the repository rather than running the app first, start
+here:
+
+- `README.md` - setup, scope, demo access, and review flow
+- `docs/specs/001-release1-scope.md` - current product scope
+- `docs/specs/002-roadmap.md` - milestone framing beyond Release 1
+- `docs/specs/016-phase-13-milestone-1-release-readiness.md` - release checklist, deferreds, and launch-readiness notes
+- `docs/architecture/001-system-architecture.md` - system structure
+- `docs/agent-governance/progress.md` - current implementation phase and completion status
 
 ## Admin Deployment Caveat
 

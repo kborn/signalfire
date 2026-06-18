@@ -3,6 +3,10 @@
 Use this checklist when preparing portfolio screenshots or reviewing whether the
 local demo dataset presents the public product credibly.
 
+For the canonical Milestone 1 release checklist and screenshot-verification
+requirements, also see
+`docs/specs/016-phase-13-milestone-1-release-readiness.md`.
+
 ## Seed Mode
 
 Use the demo seed locally:
@@ -16,6 +20,12 @@ mode adds local Articles, Actions, Events, relationships, and moderation
 submissions.
 
 ## Public Screenshot Flow
+
+Generate the standard screenshot set with:
+
+```bash
+node scripts/regenerate-doc-screenshots.mjs
+```
 
 Recommended public routes:
 

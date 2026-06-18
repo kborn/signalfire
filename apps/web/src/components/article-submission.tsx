@@ -15,6 +15,7 @@ import {
   validateRequiredString,
   validateResourceLinks,
 } from '@/lib/submission-form-validation';
+import { focusAndScrollTo, getFieldA11y } from '@/lib/form-ui';
 
 type ArticleSubmissionFormProps = {
   topics: TopicSummary[];
@@ -43,27 +44,6 @@ const articleErrorFieldOrder: Array<keyof ArticleSubmissionFormErrors> = [
   'submitterName',
   'submitterEmail',
 ];
-
-function getScrollBehavior(): ScrollBehavior {
-  if (typeof window.matchMedia !== 'function') {
-    return 'smooth';
-  }
-
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-}
-
-function focusAndScrollTo(id: string) {
-  const element = document.getElementById(id);
-  if (!(element instanceof HTMLElement)) {
-    return;
-  }
-
-  element.focus({ preventScroll: true });
-  element.scrollIntoView({
-    behavior: getScrollBehavior(),
-    block: 'center',
-  });
-}
 
 export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   const [title, setTitle] = useState('');
@@ -105,17 +85,6 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     }
   }, [errors, getArticleControlId, submitError]);
 
-  function getFieldA11y(field: keyof ArticleSubmissionFormErrors, helperId?: string) {
-    const describedBy = [helperId, errors[field] ? `article-${field}-error` : null]
-      .filter(Boolean)
-      .join(' ');
-
-    return {
-      'aria-describedby': describedBy || undefined,
-      'aria-invalid': errors[field] ? true : undefined,
-    };
-  }
-
   const handleToggle = (topic: string) => {
     setTopicSlugs(
       (prev) =>
@@ -136,7 +105,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
   }
 
   function hasResourceLink() {
-    return resourceLinks.length > 1 || resourceLinks[0].trim() != '';
+    return resourceLinks.length > 1 || resourceLinks[0].trim() !== '';
   }
 
   function removeResourceLink(index: number) {
@@ -248,7 +217,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
 
     setErrors(errors);
 
-    if (Object.keys(errors).length == 0) {
+    if (Object.keys(errors).length === 0) {
       setIsSubmitting(true);
       try {
         await postArticleSubmission({
@@ -261,7 +230,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
             summary: normalizedSummary,
             content: normalizedContent,
             topicSlugs: topicSlugs,
-            resourceLinks: normalizedResourceLinks.length == 0 ? null : normalizedResourceLinks,
+            resourceLinks: normalizedResourceLinks.length === 0 ? null : normalizedResourceLinks,
           },
         });
         setIsSuccess(true);
@@ -333,7 +302,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   value={title}
                   placeholder="Title"
                   onChange={(event) => setTitle(event.target.value)}
-                  {...getFieldA11y('title')}
+                  {...getFieldA11y('title', errors, 'article')}
                 />
               </label>
               {errors.title ? (
@@ -353,7 +322,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   placeholder="A brief overview of the article"
                   rows={4}
                   onChange={(event) => setSummary(event.target.value)}
-                  {...getFieldA11y('summary')}
+                  {...getFieldA11y('summary', errors, 'article')}
                 />
               </label>
               {errors.summary ? (
@@ -374,13 +343,13 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 className="submissionCheckboxGroup"
                 role="group"
                 aria-labelledby="article-topic-group"
-                {...getFieldA11y('topicSlugs', 'article-topic-helper')}
+                {...getFieldA11y('topicSlugs', errors, 'article', 'article-topic-helper')}
               >
                 {topics.map((topic) => (
                   <label
                     className="submissionCheckboxOption"
                     htmlFor={`article-topic-${topic.slug}`}
-                    key={topic.name}
+                    key={topic.id}
                   >
                     <input
                       id={`article-topic-${topic.slug}`}
@@ -412,7 +381,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   placeholder="Paste or write the full article content"
                   rows={12}
                   onChange={(event) => setContent(event.target.value)}
-                  {...getFieldA11y('content')}
+                  {...getFieldA11y('content', errors, 'article')}
                 />
               </label>
               {errors.content ? (
@@ -443,7 +412,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                       placeholder="https://example.org/source"
                       value={link}
                       onChange={(event) => handleResourceLinkChange(index, event.target.value)}
-                      {...getFieldA11y('resourceLinks')}
+                      {...getFieldA11y('resourceLinks', errors, 'article')}
                     />
                     {hasResourceLink() ? (
                       <button
@@ -483,7 +452,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   value={author}
                   placeholder="Author"
                   onChange={(event) => setAuthor(event.target.value)}
-                  {...getFieldA11y('author')}
+                  {...getFieldA11y('author', errors, 'article')}
                 />
               </label>
               {errors.author ? (
@@ -502,7 +471,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                   value={submitterName}
                   placeholder="Your name"
                   onChange={(event) => setSubmitterName(event.target.value)}
-                  {...getFieldA11y('submitterName')}
+                  {...getFieldA11y('submitterName', errors, 'article')}
                 />
               </label>
 
@@ -527,7 +496,12 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 placeholder="name@example.com"
                 type={'email'}
                 onChange={(event) => setSubmitterEmail(event.target.value)}
-                {...getFieldA11y('submitterEmail', 'article-submitter-email-helper')}
+                {...getFieldA11y(
+                  'submitterEmail',
+                  errors,
+                  'article',
+                  'article-submitter-email-helper',
+                )}
               />
               {errors.submitterEmail ? (
                 <p id="article-submitterEmail-error" className="submissionError">

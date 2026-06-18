@@ -8,7 +8,7 @@ status:
 - `../../README.md`
 
 The web app expects the NestJS API to be available through the configured
-`API_BASE_URL`.
+`NEXT_PUBLIC_API_BASE_URL`.
 
 Public routes live under the `(public)` route group in source while preserving
 the visitor-facing URLs such as `/topics`, `/articles`, `/actions`, `/events`,
