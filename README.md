@@ -137,7 +137,7 @@ API e2e tests use Testcontainers and require a working local container runtime.
 Screenshot refresh uses:
 
 ```bash
-node scripts/regenerate-doc-screenshots.mjs
+pnpm docs:screenshots
 ```
 
 ## Visual Review Assets
@@ -154,11 +154,11 @@ Featured screenshots:
 **Issue Detail**
 ![Issue Detail](docs/screenshots/03-topic-detail.png)
 
-**Submit Entry**
-![Submit Entry](docs/screenshots/06-submit-entry.png)
+**Action Detail**
+![Action Detail](docs/screenshots/04b-action-detail.png)
 
 **Submission Review (Decision)**
-![Submission Review Decision](docs/screenshots/08-submission-review-decision.png)
+![Submission Review Decision](docs/screenshots/09-submission-review-decision.png)
 
 <details>
   <summary>All screenshots</summary>
@@ -168,11 +168,12 @@ Featured screenshots:
 - [Issues Index](docs/screenshots/02-topics-index.png)
 - [Issue Detail](docs/screenshots/03-topic-detail.png)
 - [Article Detail](docs/screenshots/04-article-detail.png)
+- [Action Detail](docs/screenshots/04b-action-detail.png)
 - [Events Index](docs/screenshots/05-events-index.png)
 - [Submit Entry](docs/screenshots/06-submit-entry.png)
 - [Admin Submissions Queue](docs/screenshots/07-admin-submissions-queue.png)
 - [Submission Review](docs/screenshots/08-submission-review.png)
-- [Submission Review (Decision)](docs/screenshots/08-submission-review-decision.png)
+- [Submission Review (Decision)](docs/screenshots/09-submission-review-decision.png)
 
 </details>
 

@@ -16,11 +16,13 @@ export type SubmissionRateLimitResult = {
 @Injectable()
 export class SubmissionRateLimitService {
   private readonly attempts = new Map<string, RateLimitRecord>();
+  private readonly windowMs: number;
+  private readonly maxAttempts: number;
 
-  constructor(
-    private readonly windowMs: number = DEFAULT_WINDOW_MS,
-    private readonly maxAttempts: number = DEFAULT_MAX_ATTEMPTS,
-  ) {}
+  constructor() {
+    this.windowMs = DEFAULT_WINDOW_MS;
+    this.maxAttempts = DEFAULT_MAX_ATTEMPTS;
+  }
 
   consume(subject: string, nowMs: number = Date.now()): SubmissionRateLimitResult {
     this.pruneExpired(nowMs);

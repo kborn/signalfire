@@ -474,13 +474,13 @@ p {
 .motifPage::before {
   content: '';
   position: fixed;
-  top: 52vh;
+  top: 48vh;
   left: max(8px, calc(50vw - 776px));
   width: 374px;
   height: 374px;
   transform: translateY(-50%);
   background: url('/bg-motif.png') no-repeat center / contain;
-  opacity: 0.09;
+  opacity: 0.07;
   pointer-events: none;
   z-index: 0;
 }
@@ -488,14 +488,14 @@ p {
 .motifPage::after {
   content: '';
   position: fixed;
-  top: 52vh;
+  top: 48vh;
   right: max(8px, calc(50vw - 776px));
   width: 374px;
   height: 374px;
   transform: translateY(-50%) scaleX(-1);
   transform-origin: center;
   background: url('/bg-motif.png') no-repeat center / contain;
-  opacity: 0.09;
+  opacity: 0.07;
   pointer-events: none;
   z-index: 0;
 }
@@ -523,6 +523,18 @@ p {
   border-top: 1px solid var(--color-border-subtle);
 }
 
+.home-hero,
+.home-journey,
+.home-contribute,
+.home-demo-path,
+.about-hero,
+.about-body,
+.about-community,
+.about-journey {
+  position: relative;
+  z-index: 1;
+}
+
 .home-journey h2,
 .home-contribute h2,
 .home-demo-path h2 {
@@ -536,9 +548,15 @@ p {
   line-height: 1.6;
 }
 
+.homeSupportCopy {
+  color: var(--color-text-muted);
+  max-width: 58ch;
+}
+
 .home-sectionHeading {
   display: grid;
   gap: var(--space-1);
+  max-width: 44rem;
 }
 
 .homeJourneyGrid {
@@ -557,6 +575,12 @@ p {
 .about-journey {
   max-width: 760px;
   margin-inline: auto;
+}
+
+.about-hero,
+.about-community {
+  display: grid;
+  gap: var(--space-2);
 }
 
 .about-body,
@@ -648,11 +672,13 @@ p {
   background:
     linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-surface-soft) 80%, transparent),
-      transparent
+      color-mix(in srgb, var(--color-surface-soft) 88%, white 12%),
+      color-mix(in srgb, var(--color-surface-soft) 72%, transparent)
     ),
     color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-border-subtle) 58%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--color-border-subtle) 58%, transparent),
+    0 18px 36px -30px rgb(0 0 0 / 82%);
 }
 
 .hero-logo img {
@@ -664,6 +690,14 @@ p {
 .home-hero {
   padding: 8px 0 0;
   gap: var(--space-2);
+  max-width: 58rem;
+}
+
+.homeHeroTitle {
+  max-width: 11ch;
+  font-size: clamp(3.25rem, 8vw, 5.25rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
 }
 
 .home-hero h1 {
@@ -687,11 +721,29 @@ p {
 }
 
 .home-hook {
-  max-width: 52ch;
+  max-width: 58ch;
 }
 
 .homeHeroContext {
   display: block;
+  margin-top: 0.2rem;
+}
+
+.homeJourneyGrid,
+.home-contribute,
+.home-demo-path {
+  max-width: 58rem;
+}
+
+.home-contribute {
+  gap: var(--space-2);
+}
+
+.aboutHeroSupport {
+  max-width: 42rem;
+  color: var(--color-text-muted);
+  font-size: 1.04rem;
+  line-height: 1.65;
 }
 
 /* Submit landing */
@@ -709,7 +761,7 @@ p {
 
 .submitEntrySupport {
   display: grid;
-  gap: var(--space-1);
+  gap: var(--space-2);
   max-width: 46rem;
   margin-inline: auto;
 }
@@ -718,6 +770,19 @@ p {
 .submitEntryPage > .page-intro {
   width: min(100%, 820px);
   margin-inline: auto;
+}
+
+.submitOptionCard {
+  min-height: 100%;
+}
+
+.submitEntrySupportCard {
+  display: grid;
+  gap: 6px;
+  padding: var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 86%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
 }
 
 .discoveryPage {
@@ -921,7 +986,11 @@ h3 {
   border-left-width: 4px;
   border-left-color: var(--color-brand-primary);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 94%, white 6%) 0%,
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent) 100%
+  );
   box-shadow: 0 10px 20px -18px rgb(0 0 0 / 78%);
   transition:
     border-color 0.2s ease,
@@ -932,7 +1001,11 @@ h3 {
 
 .publicShell .collectionItem:hover {
   border-left-color: var(--color-brand-accent);
-  background: color-mix(in srgb, var(--color-surface-soft) 90%, transparent);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 98%, white 2%) 0%,
+    color-mix(in srgb, var(--color-surface-soft) 92%, transparent) 100%
+  );
   transform: translate(-3px, -3px);
   box-shadow: 0 16px 26px -20px rgb(0 0 0 / 76%);
   z-index: 1;
@@ -954,6 +1027,15 @@ h3 {
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.3;
+}
+
+.publicShell .summaryMeta {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.16rem 0.52rem;
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-page-bg) 32%, transparent);
 }
 
 .publicShell .collectionItem .collectionItemTitle,
@@ -1045,6 +1127,11 @@ h3 {
   gap: var(--space-3);
 }
 
+.detailHero {
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 72%, transparent);
+}
+
 .discoveryEmptyState {
   display: grid;
   gap: var(--space-1);
@@ -1115,6 +1202,16 @@ h3 {
   gap: var(--space-4);
 }
 
+.detailContent--article,
+.detailContent--event {
+  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  align-items: start;
+}
+
+.detailContent--topic {
+  gap: calc(var(--space-3) + 4px);
+}
+
 .topicEventCTA {
   margin-top: var(--space-1);
 }
@@ -1127,13 +1224,35 @@ h3 {
   line-height: 1.4;
 }
 
+.detailMetaPanel,
+.detailNarrativePanel {
+  min-width: 0;
+}
+
+.publicShell .detailMetaPanel {
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 94%, white 6%) 0%,
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent) 100%
+  );
+  box-shadow: 0 14px 24px -22px rgb(0 0 0 / 68%);
+}
+
+.detailMetaRow {
+  display: grid;
+  gap: var(--space-2);
+}
+
 .detailLead {
   max-width: 62ch;
   padding: 0 0 var(--space-2);
   border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
   color: var(--color-text-muted);
-  font-size: 1.1rem;
-  line-height: 1.65;
+  font-size: 1.12rem;
+  line-height: 1.72;
 }
 
 .publicShell .detailMetaGroup {
@@ -1167,12 +1286,12 @@ h3 {
 
 .markdownContent {
   display: grid;
-  gap: 18px;
-  max-width: 72ch;
+  gap: 20px;
+  max-width: 70ch;
 }
 
 .markdownContent h2 {
-  margin-top: var(--space-2);
+  margin-top: calc(var(--space-2) + 4px);
   padding-left: 0.85rem;
   border-left: 3px solid var(--color-brand-primary);
   font-size: 1.6rem;
@@ -1213,7 +1332,8 @@ h3 {
 .publicShell .markdownContent p,
 .publicShell .markdownContent ul,
 .publicShell .markdownContent ol {
-  line-height: 1.7;
+  line-height: 1.82;
+  font-size: 1.04rem;
 }
 
 .publicShell .markdownContent ul,
@@ -1233,6 +1353,46 @@ h3 {
   min-width: 0;
   margin-left: 0;
   margin-right: auto;
+}
+
+.submissionIntroPanel {
+  display: grid;
+  gap: 0.55rem;
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 82%, transparent);
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 92%, white 8%) 0%,
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent) 100%
+  );
+  box-shadow: 0 14px 24px -22px rgb(0 0 0 / 68%);
+}
+
+.submissionIntroTitle {
+  margin: 0;
+  color: var(--color-brand-accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.submissionIntroBody,
+.submissionIntroMeta {
+  margin: 0;
+}
+
+.submissionIntroBody {
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.submissionIntroMeta {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 .submissionSection {
@@ -1333,11 +1493,17 @@ h3 {
 .submissionRepeatableRow {
   display: flex;
   gap: var(--space-1);
-  align-items: center;
+  align-items: end;
 }
 
 .submissionRepeatableRow .submissionControl {
   flex: 1 1 auto;
+}
+
+.submissionRepeatableField {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 8px;
 }
 
 .submissionHelper {
@@ -1470,6 +1636,7 @@ h3 {
   border: 1px solid var(--color-border-subtle);
   border-radius: 12px;
   background: var(--color-surface-soft);
+  box-shadow: 0 14px 24px -22px rgb(0 0 0 / 68%);
 }
 
 .publicShell .submissionSection h2 {
@@ -3256,6 +3423,11 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .detailContent--article,
+  .detailContent--event {
+    grid-template-columns: 1fr;
+  }
+
   .articleEditorTextareaContent {
     min-height: 300px;
   }
@@ -3335,7 +3507,7 @@ h3 {
 
   .site-header-actions {
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0.75rem;
   }
 
@@ -3357,6 +3529,42 @@ h3 {
     white-space: nowrap;
     overflow-wrap: normal;
     word-break: keep-all;
+  }
+
+  .home-page {
+    gap: calc(var(--space-4) + 8px);
+  }
+
+  .home-hero,
+  .home-journey,
+  .home-contribute,
+  .home-demo-path,
+  .about-hero,
+  .about-body,
+  .about-community,
+  .about-journey,
+  .submitEntryPage {
+    gap: var(--space-2);
+  }
+
+  .home-hero {
+    padding-top: 16px;
+  }
+
+  .hero-logo {
+    margin-bottom: var(--space-2);
+    border-radius: 16px;
+  }
+
+  .hero-logo img {
+    width: 100%;
+  }
+
+  .homeHeroTitle {
+    max-width: none;
+    font-size: 2.45rem;
+    line-height: 1;
+    letter-spacing: -0.03em;
   }
 
   .topicSelector {
@@ -3442,11 +3650,11 @@ h3 {
   }
 
   .collectionList {
-    gap: 24px;
+    gap: 20px;
   }
 
   .collectionItemTitle {
-    font-size: 1.55rem;
+    font-size: 1.35rem;
   }
 
   .collectionItemSummary,
@@ -3454,19 +3662,17 @@ h3 {
     padding-left: 0;
   }
 
-  .home-hero {
-    padding-top: 20px;
-  }
-
-  .home-hero h1 {
-    max-width: none;
-    font-size: 2.25rem;
-    letter-spacing: -0.03em;
-  }
-
   .ctaRow {
     display: grid;
     justify-items: start;
+    width: 100%;
+  }
+
+  .ctaRow > .primaryCTA,
+  .ctaRow > .secondaryCTA,
+  .publicErrorActions > .primaryCTA,
+  .publicErrorActions > .secondaryCTA {
+    width: 100%;
   }
 
   .publicErrorActions {
@@ -3481,6 +3687,54 @@ h3 {
   .submissionRepeatableRow {
     display: grid;
     align-items: stretch;
+  }
+
+  .submissionRepeatableRow .submissionSecondaryAction {
+    width: 100%;
+  }
+
+  .submitOptionList {
+    gap: var(--space-2);
+  }
+
+  .submitOptionList .collectionItem {
+    padding: var(--space-2);
+  }
+
+  .submitEntrySupport {
+    gap: 0.75rem;
+  }
+
+  .submitEntrySupportCard {
+    padding: var(--space-2);
+  }
+
+  .eventFilterPanel,
+  .discoveryEmptyState,
+  .detailMetaPanel {
+    padding: var(--space-2);
+  }
+
+  .paginationToolbar,
+  .pageSizeSelector,
+  .paginationList {
+    justify-content: flex-start;
+  }
+
+  .paginationToolbar {
+    align-items: flex-start;
+  }
+
+  .detailLead {
+    font-size: 1.04rem;
+    line-height: 1.68;
+  }
+
+  .publicShell .markdownContent p,
+  .publicShell .markdownContent ul,
+  .publicShell .markdownContent ol {
+    font-size: 1rem;
+    line-height: 1.74;
   }
 
   .adminSegmentedControl,

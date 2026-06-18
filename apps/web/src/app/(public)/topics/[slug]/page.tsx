@@ -23,11 +23,13 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage">
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
-      <section className="detailContent">
-        <p className="detailLead">{topic.description}</p>
+      <section className="detailContent detailContent--topic">
+        <section className="detailMetaPanel">
+          <p className="detailLead">{topic.description}</p>
+        </section>
         {topic.articles.length > 0 && (
           <section className="relatedSection" aria-labelledby="topic-articles-label">
             <div className="relatedSectionHeader">

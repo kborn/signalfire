@@ -136,7 +136,7 @@ Reviewer-facing screenshots live in `docs/screenshots/`.
 Refresh them with:
 
 ```bash
-node scripts/regenerate-doc-screenshots.mjs
+pnpm docs:screenshots
 ```
 
 Expected prerequisites:

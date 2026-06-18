@@ -12,6 +12,7 @@
     "format:write": "prettier --write .",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
+    "docs:screenshots": "pnpm --filter api exec node ../../scripts/regenerate-doc-screenshots.mjs",
     "prepare": "husky",
     "api:dev": "pnpm --filter api dev",
     "api:prisma:generate": "pnpm --filter api prisma:generate",

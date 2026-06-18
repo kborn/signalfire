@@ -31,31 +31,33 @@ export default async function ArticleDetailsPage({
 
   return (
     <div className="detailPage">
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{article.title}</h1>
       </section>
-      <section className="detailContent">
-        <section className="detailMetaGroup">
+      <section className="detailContent detailContent--article">
+        <section className="detailMetaGroup detailMetaPanel">
           <p className="detailLead">{article.summary}</p>
-          <div className="metaBlock">
-            <p className="metaLabel">Author</p>
-            <p className="metaValue">{article.author}</p>
+          <div className="detailMetaRow">
+            <div className="metaBlock">
+              <p className="metaLabel">Author</p>
+              <p className="metaValue">{article.author}</p>
+            </div>
+            {publishedAt && (
+              <div className="metaBlock">
+                <p className="metaLabel">Published</p>
+                <p className="metaValue">{publishedAt}</p>
+              </div>
+            )}
+            {updatedAt && (
+              <div className="metaBlock">
+                <p className="metaLabel">Updated</p>
+                <p className="metaValue">{updatedAt}</p>
+              </div>
+            )}
           </div>
-          {publishedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Published</p>
-              <p className="metaValue">{publishedAt}</p>
-            </div>
-          )}
-          {updatedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Updated</p>
-              <p className="metaValue">{updatedAt}</p>
-            </div>
-          )}
         </section>
 
-        <section>
+        <section className="detailNarrativePanel">
           <MarkdownContent content={article.content} />
         </section>
         {article.topics.length > 0 && (
