@@ -1,10 +1,11 @@
 import { getTopicDetails } from '@/lib/api/topics';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
-export const dynamic = 'force-dynamic';
 import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import Link from 'next/link';
+
+export const revalidate = 60;
 
 async function fetchTopicDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -34,7 +35,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 Step 2 - Read enough to act
               </p>
               <p className="relatedSectionTagline">
-                Read background and explainers for this issue.
+                Read explainers and field guides that make the issue easier to follow.
               </p>
             </div>
             <div className="collectionList">
@@ -67,7 +68,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
             </p>
           </div>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-            Browse Events
+            Browse Events For This Issue
           </Link>
         </section>
       </section>

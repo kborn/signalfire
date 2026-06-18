@@ -8,7 +8,8 @@ import { formatEventTime } from '@/lib/common/time';
 import { TopicSummary } from '@/components/topic-summary';
 import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function normalizePlainText(value: string): string {
   return value

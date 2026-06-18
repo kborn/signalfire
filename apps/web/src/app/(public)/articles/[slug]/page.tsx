@@ -6,7 +6,7 @@ import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -60,7 +60,12 @@ export default async function ArticleDetailsPage({
         </section>
         {article.topics.length > 0 && (
           <section className="relatedSection">
-            <h3>Related Topics</h3>
+            <div className="relatedSectionHeader">
+              <h3>Explore This Issue</h3>
+              <p className="relatedSectionTagline">
+                Jump back to the issue page for more background, actions, and events.
+              </p>
+            </div>
             <div className="relatedList">
               {article.topics.map((topic) => (
                 <TopicSummary key={topic.id} topic={topic} variant="related" />

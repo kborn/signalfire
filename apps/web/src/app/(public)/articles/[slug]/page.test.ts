@@ -67,7 +67,7 @@ describe('ArticleDetailsPage', () => {
     expect(markup).toContain('March 22, 2026');
     expect(markup).toContain('Why it matters');
     expect(markup).toContain('Strong policy changes daily life.');
-    expect(markup).toContain('Topics');
+    expect(markup).toContain('Explore This Issue');
     expect(markup).toContain('href="/topics/climate"');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Take Action');

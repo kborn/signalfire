@@ -1495,6 +1495,22 @@ h3 {
   color-scheme: dark;
 }
 
+.publicShell select.submissionControl {
+  color-scheme: dark;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-text-muted) 50%),
+    linear-gradient(135deg, var(--color-text-muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(50% - 3px),
+    calc(100% - 14px) calc(50% - 3px);
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.8rem;
+}
+
 .publicShell input[type='date']::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
@@ -1554,10 +1570,15 @@ h3 {
   display: grid;
   gap: var(--space-4);
   padding: clamp(20px, 3vw, 32px);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 72%, transparent);
   border-radius: 24px;
-  background: #eef2f5;
-  color: #17212b;
-  box-shadow: 0 24px 60px rgba(8, 15, 24, 0.08);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 82%, var(--color-page-bg) 18%),
+    #13202f 100%
+  );
+  color: var(--color-text-primary);
+  box-shadow: 0 24px 60px rgba(8, 15, 24, 0.24);
 }
 
 .adminHeader {
@@ -1617,7 +1638,7 @@ h3 {
 .submissionFilterActionLabel,
 .adminFilterActionLabel,
 .adminFilterArticleLabel {
-  color: #7f8ea1;
+  color: color-mix(in srgb, var(--color-text-primary) 56%, var(--color-text-muted) 44%);
   font-size: 0.75rem;
   font-weight: 700;
   padding: var(--space-3) 0 0;
@@ -1633,12 +1654,12 @@ h3 {
 }
 
 .adminNav a {
-  color: #5b6b7c;
+  color: color-mix(in srgb, var(--color-text-primary) 72%, var(--color-text-muted) 28%);
   font-weight: 500;
 }
 
 .adminNav a[aria-current='page'] {
-  color: var(--color-text-primary);
+  color: var(--color-brand-primary);
   font-weight: 700;
 }
 
@@ -1653,10 +1674,10 @@ h3 {
   justify-content: center;
   min-height: 36px;
   padding: 0.55rem 0.95rem;
-  border: 1px solid rgba(174, 184, 197, 0.3);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 78%, transparent);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.03);
-  color: #d7dee8;
+  background: color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
+  color: var(--color-text-primary);
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1;
@@ -1667,12 +1688,12 @@ h3 {
 }
 
 .logoutButton:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(174, 184, 197, 0.5);
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+  border-color: color-mix(in srgb, var(--color-brand-primary) 36%, var(--color-border-subtle));
 }
 
 .logoutButton:focus-visible {
-  outline: 2px solid #d7dee8;
+  outline: 2px solid var(--color-brand-primary);
   outline-offset: 2px;
 }
 
@@ -3102,6 +3123,11 @@ h3 {
   border-radius: 12px;
   background: var(--color-surface-soft);
   box-shadow: 0 12px 24px -24px rgb(0 0 0 / 80%);
+}
+
+.discoveryGuideState {
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-2);
 }
 
 .eventFilterGrid {

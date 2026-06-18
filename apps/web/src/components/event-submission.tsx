@@ -431,7 +431,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             Browse Events
           </Link>
           <Link href="/actions" className="secondaryCTA">
-            Ways to Act
+            Take Action
           </Link>
         </div>
       </div>

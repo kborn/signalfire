@@ -3,11 +3,12 @@ import { getEventsList } from '@/lib/api/events';
 import { TopicSelector } from '@/components/topic-selector';
 import { getTopicsList } from '@/lib/api/topics';
 import { parseDate } from '@/lib/common/time';
-export const dynamic = 'force-dynamic';
 import EventFilters from '@/app/(public)/events/_components/event-filters';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
+
+export const revalidate = 60;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -34,10 +35,6 @@ function getEmptyPageResponse() {
       <p className="metaText">Try a previous page or widen the city and date filters.</p>
     </section>
   );
-}
-
-function canRequest(props: EventListPageProps): boolean {
-  return Boolean(props.region?.trim());
 }
 
 type EventListPageProps = {
@@ -90,19 +87,6 @@ function toDateInputValue(date: Date): string {
 }
 
 async function getContents(params: EventListPageProps) {
-  if (!canRequest(params)) {
-    return (
-      <section className="discoveryEmptyState">
-        <p className="section-label">Start here</p>
-        <h2>Find upcoming events near you</h2>
-        <p className="metaText">
-          Select a state or territory to start browsing events. Issue, city, and dates can narrow
-          the results.
-        </p>
-      </section>
-    );
-  }
-
   const { topicSlug } = params;
   const resp = await getEventsList(params);
 
@@ -132,6 +116,8 @@ export default async function EventListPage({ searchParams }: EventListPageProps
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventListPageProps = { ...params, ...resolveDateWindow(params) };
+  const hasLocationFilter = Boolean(params.region?.trim() || params.city?.trim());
+
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
@@ -140,6 +126,15 @@ export default async function EventListPage({ searchParams }: EventListPageProps
       </p>
       <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
+      {!hasLocationFilter ? (
+        <section className="discoveryEmptyState discoveryGuideState">
+          <p className="section-label">Start here</p>
+          <h2>Upcoming events are already on the page.</h2>
+          <p className="metaText">
+            Add a state, city, or issue filter when you want to narrow the list to something local.
+          </p>
+        </section>
+      ) : null}
       <div>{await getContents(params)}</div>
     </section>
   );

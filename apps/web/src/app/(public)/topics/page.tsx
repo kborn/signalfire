@@ -1,6 +1,7 @@
 import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function getNoResultsResponse() {
   return (

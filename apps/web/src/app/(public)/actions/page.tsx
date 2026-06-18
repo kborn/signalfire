@@ -6,7 +6,8 @@ import { TopicSelector } from '@/components/topic-selector';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
