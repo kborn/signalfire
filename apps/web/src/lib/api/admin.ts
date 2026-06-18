@@ -15,7 +15,7 @@ export async function postSubmissionReviewReq(
   id: number,
 ): Promise<ModerationReviewSuccess> {
   return await postAuthenticatedJson<ModerationReviewSuccess>(
-    `admin/submissions/${id}/review`,
+    `/api/admin/submissions/${id}/review`,
     req,
   );
 }
@@ -23,20 +23,23 @@ export async function postSubmissionReviewReq(
 export async function createAdminAction(
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await postAuthenticatedJson<AdminActionDetailResponse>('admin/actions', payload);
+  return await postAuthenticatedJson<AdminActionDetailResponse>('/api/admin/actions', payload);
 }
 
 export async function updateAdminAction(
   slug: string,
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await patchAuthenticatedJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
+  return await patchAuthenticatedJson<AdminActionDetailResponse>(
+    `/api/admin/actions/${slug}`,
+    payload,
+  );
 }
 
 export async function createAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
-  return await postAuthenticatedJson<AdminArticleDetailResponse>('admin/articles', payload);
+  return await postAuthenticatedJson<AdminArticleDetailResponse>('/api/admin/articles', payload);
 }
 
 export async function updateAdminArticle(
@@ -44,7 +47,7 @@ export async function updateAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
   return await patchAuthenticatedJson<AdminArticleDetailResponse>(
-    `admin/articles/${slug}`,
+    `/api/admin/articles/${slug}`,
     payload,
   );
 }
@@ -52,12 +55,12 @@ export async function updateAdminArticle(
 export async function createAdminEvent(
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await postAuthenticatedJson<AdminEventDetailResponse>('admin/events', payload);
+  return await postAuthenticatedJson<AdminEventDetailResponse>('/api/admin/events', payload);
 }
 
 export async function updateAdminEvent(
   id: number,
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await patchAuthenticatedJson<AdminEventDetailResponse>(`admin/events/${id}`, payload);
+  return await patchAuthenticatedJson<AdminEventDetailResponse>(`/api/admin/events/${id}`, payload);
 }
