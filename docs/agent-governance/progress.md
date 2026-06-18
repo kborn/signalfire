@@ -1662,14 +1662,14 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [x] Run an explicit mobile/responsive finish pass across the core public routes and fix the issues it exposes
 - [x] Improve demo-seed/editorial quality where generated filler still weakens the product fiction or makes the site read as scaffolding
 - [x] Refresh screenshots and reviewer-facing docs after the closure pass so recorded artifacts match the actual Milestone 1 product state
-- [ ] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
+- [x] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
 
 ###### Notes:
 
 - The 2026-06-17 external review functioned as an additional Milestone 1 quality gate and exposed a broader remaining gap in UX finish, visual consistency, and a small number of engineering credibility issues than the earlier Phase 13 closure work suggested.
 - Phase 13 therefore remains the active boundary. Deployment Infrastructure should not begin until this follow-up pass either resolves or explicitly defers the remaining external-review findings.
-- Current closure progress: public copy/IA cleanup, Events default-state rework, admin shell visual pass, public-page revalidation replacement, TypeScript strictness restoration, anonymous submission rate limiting, the `submission-type` contract/build-artifact cleanup, the explicit Milestone 1 versus Milestone 2 deferral split, the submit-surface polish pass, the demo-seed/editorial cleanup pass, and the screenshot/doc refresh are complete; remaining closure work now centers on final release-candidate validation.
-- The current public polish pass has already improved detail-page structure, article readability, public card/list presentation, homepage/art-direction, core public-route responsiveness, the public submission landing/form hierarchy, the generated demo editorial tone, and the reviewer-facing screenshot/doc set; the remaining open work is now concentrated in final release-candidate validation.
+- Current closure progress: public copy/IA cleanup, Events default-state rework, admin shell visual pass, public-page revalidation replacement, TypeScript strictness restoration, anonymous submission rate limiting, the `submission-type` contract/build-artifact cleanup, the explicit Milestone 1 versus Milestone 2 deferral split, the submit-surface polish pass, the demo-seed/editorial cleanup pass, the screenshot/doc refresh, and the targeted RC validation pass are complete.
+- The targeted RC validation pass now has a repeatable local smoke check in `scripts/rc-smoke.mjs`, covering public browse routes, admin auth, moderation review routes, and the essential article/action/event admin editor paths. Full route-spec execution remains sandbox-sensitive because local `supertest` suites still hit `listen EPERM` in this environment, so the practical release proof here is lint, typecheck, focused unit coverage, and the live smoke run.
 
 ---
 
