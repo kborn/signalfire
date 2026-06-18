@@ -49,7 +49,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Author (optional)').fill('Jordan Lee');
     await page!.getByLabel('Submitter Name (optional)').fill('Sam Writer');
     await page!.getByLabel('Submitter Email (optional)').fill('sam.writer@example.org');
-    await page!.getByLabel('Resource link 1').fill('example.org/source');
+    await page!.getByLabel('Resource link 1').fill('https://example.org/source');
     await page!.getByRole('button', { name: 'Submit Article' }).click();
 
     await pwExpect(page!.getByText('Thanks for submitting')).toBeVisible();
@@ -88,7 +88,7 @@ describe('Submission flows (browser e2e)', () => {
     ]);
     expect(
       persistedSubmission.submissionResourceLinks.map((record) => record.resourceLink.url),
-    ).toEqual(['example.org/source']);
+    ).toEqual(['https://example.org/source']);
   });
 
   it('submits an event through the public UI and persists the expected pending submission', async () => {
@@ -115,7 +115,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Contact Email (optional)').fill('press@example.org');
     await page!.getByLabel('Name (optional)').fill('Alex Rivera');
     await page!.locator('#event-submitterEmail').fill('organizer@example.org');
-    await page!.getByLabel('Website URL (optional)').fill('example.org/event');
+    await page!.getByLabel('Website URL (optional)').fill('https://example.org/event');
     await page!.getByRole('button', { name: 'Submit Event' }).click();
 
     await pwExpect(page!.getByText('Thanks for submitting')).toBeVisible();
@@ -155,7 +155,7 @@ describe('Submission flows (browser e2e)', () => {
         region: 'PA',
         postalCode: '19107',
         country: 'US',
-        website: 'example.org/event',
+        website: 'https://example.org/event',
         contactEmail: 'press@example.org',
       }),
     );

@@ -5,6 +5,10 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
+  "moduleNameMapper": {
+    "^@signal-fire/admin-auth-shared$": "<rootDir>/../../packages/admin-auth-shared/index.ts",
+    "^@signal-fire/api-contracts$": "<rootDir>/../../packages/api-contracts/index.ts"
+  },
   "collectCoverageFrom": ["**/*.(t|j)s"],
   "coverageDirectory": "../coverage",
   "testEnvironment": "<rootDir>/intg-config/prisma-pg.environment.js",
