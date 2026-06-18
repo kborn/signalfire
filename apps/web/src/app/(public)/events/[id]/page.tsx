@@ -81,7 +81,13 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
             </div>
             <div className="metaBlock">
               <p className="metaLabel">Date & Time</p>
-              <p className="metaValue">{formatEventTime(event.startTime, event.endTime)}</p>
+              <p className="metaValue">
+                {formatEventTime(event.startTime, event.endTime, {
+                  city: event.city,
+                  region: event.region,
+                  country: event.country,
+                })}
+              </p>
             </div>
             <div className="metaBlock">
               <p className="metaLabel">Location</p>

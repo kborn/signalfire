@@ -187,7 +187,7 @@ Infrastructure.
 
 ### Milestone 1 must-finish items
 
-These remain required before Phase 13 can close. The bar for Milestone 1 is not
+These were required before Phase 13 could close. The bar for Milestone 1 is not
 "functional enough"; it is "credible enough to stand beside established civic
 information products without reading as student work or a rough prototype."
 
@@ -211,6 +211,14 @@ information products without reading as student work or a rough prototype."
   routes, not just a bug check
 - improve demo-seed/editorial quality where generated filler still materially undercuts
   the fiction of the product
+
+As of **June 18, 2026**, those Phase 13.5 must-finish items are considered
+closed. The duplicate article-title report did not reproduce after the seed and
+UI updates, the public content pages already use the intended revalidation
+model with admin-triggered invalidation, and the remaining `next/font` usage in
+the root layout is intentional product typography rather than abandoned
+experiment residue. Screenshot regeneration remains a final artifact-refresh
+step when subsequent UI changes materially affect the recorded review surface.
 
 ### Deferred to Milestone 2
 

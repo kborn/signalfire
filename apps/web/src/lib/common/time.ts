@@ -1,3 +1,5 @@
+import { resolveEventTimeZone } from './event-timezone';
+
 export function parseDate(dateString: string): Date | null {
   const date = new Date(dateString);
 
@@ -8,13 +10,13 @@ export function parseDate(dateString: string): Date | null {
   return date;
 }
 
-function formatUtcDate(date: Date): string {
+function formatDateInTimeZone(date: Date, timeZone: string): string {
   return new Intl.DateTimeFormat('en-US', {
     weekday: 'short',
     month: 'short',
     day: 'numeric',
     year: 'numeric',
-    timeZone: 'UTC',
+    timeZone,
   }).format(date);
 }
 
@@ -27,13 +29,22 @@ function formatLongUtcDate(date: Date): string {
   }).format(date);
 }
 
-function formatUtcTime(date: Date): string {
+function formatTimeInTimeZone(date: Date, timeZone: string): string {
   return new Intl.DateTimeFormat('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
-    timeZone: 'UTC',
+    timeZone,
   }).format(date);
+}
+
+function formatTimeZoneLabel(date: Date, timeZone: string): string {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone,
+    timeZoneName: 'short',
+  }).formatToParts(date);
+
+  return parts.find((part) => part.type === 'timeZoneName')?.value ?? 'UTC';
 }
 
 function formatShortLocalDateTime(date: Date): string {
@@ -46,12 +57,15 @@ function formatShortLocalDateTime(date: Date): string {
   }).format(date);
 }
 
-function isSameUtcDay(left: Date, right: Date): boolean {
-  return (
-    left.getUTCFullYear() === right.getUTCFullYear() &&
-    left.getUTCMonth() === right.getUTCMonth() &&
-    left.getUTCDate() === right.getUTCDate()
-  );
+function isSameDayInTimeZone(left: Date, right: Date, timeZone: string): boolean {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+
+  return formatter.format(left) === formatter.format(right);
 }
 
 export function formatContentDate(dateString: string): string | null {
@@ -64,18 +78,30 @@ export function formatContentDate(dateString: string): string | null {
   return formatLongUtcDate(date);
 }
 
-export function formatEventTime(startDateString: string, endDateString: string | null): string {
+type EventTimeLocation = {
+  city?: string | null;
+  region?: string | null;
+  country?: string | null;
+};
+
+export function formatEventTime(
+  startDateString: string,
+  endDateString: string | null,
+  location?: EventTimeLocation,
+): string {
   const startDate = parseDate(startDateString);
 
   if (!startDate) {
     return 'Unable to determine event time';
   }
 
-  const startDateLabel = formatUtcDate(startDate);
-  const startTimeLabel = formatUtcTime(startDate);
+  const timeZone = resolveEventTimeZone(location ?? {}) ?? 'UTC';
+  const timeZoneLabel = formatTimeZoneLabel(startDate, timeZone);
+  const startDateLabel = formatDateInTimeZone(startDate, timeZone);
+  const startTimeLabel = formatTimeInTimeZone(startDate, timeZone);
 
   if (!endDateString) {
-    return `${startDateLabel} at ${startTimeLabel} UTC`;
+    return `${startDateLabel} at ${startTimeLabel} ${timeZoneLabel}`;
   }
 
   const endDate = parseDate(endDateString);
@@ -84,15 +110,15 @@ export function formatEventTime(startDateString: string, endDateString: string |
     return 'Unable to determine event time';
   }
 
-  const endTimeLabel = formatUtcTime(endDate);
+  const endTimeLabel = formatTimeInTimeZone(endDate, timeZone);
 
-  if (isSameUtcDay(startDate, endDate)) {
-    return `${startDateLabel} from ${startTimeLabel} to ${endTimeLabel} UTC`;
+  if (isSameDayInTimeZone(startDate, endDate, timeZone)) {
+    return `${startDateLabel} from ${startTimeLabel} to ${endTimeLabel} ${timeZoneLabel}`;
   }
 
-  const endDateLabel = formatUtcDate(endDate);
+  const endDateLabel = formatDateInTimeZone(endDate, timeZone);
 
-  return `${startDateLabel} at ${startTimeLabel} UTC to ${endDateLabel} at ${endTimeLabel} UTC`;
+  return `${startDateLabel} at ${startTimeLabel} ${timeZoneLabel} to ${endDateLabel} at ${endTimeLabel} ${timeZoneLabel}`;
 }
 
 export function formatAdminDateTime(dateString: string): string {

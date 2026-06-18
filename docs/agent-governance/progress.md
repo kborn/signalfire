@@ -20,8 +20,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| **[13](#-phase-13--release-prep--final-polish-)** | **Release Prep & Final Polish** | **🚧 ACTIVE** |
-| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
+| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
+| **[14](#-phase-14--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
 | [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -1564,7 +1564,7 @@ debounced URL commits`.
 
 ---
 
-### ► Phase 13 — Release Prep & Final Polish ⏳
+### ► Phase 13 — Release Prep & Final Polish ✅
 
 ###### Goal
 
@@ -1642,18 +1642,18 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ---
 
-#### ▸ Phase 13.5 - External Review Closure ⏳
+#### ▸ Phase 13.5 - External Review Closure ✅
 
 ###### Phase Tasks:
 
-- [ ] Remove the remaining reviewer-visible public UI defects called out in the 2026-06-17 external review, including the duplicate article-title rendering, dark-theme `select` styling mismatch, and any still-broken screenshot artifacts that still need refreshed captures
+- [x] Remove the remaining reviewer-visible public UI defects called out in the 2026-06-17 external review, including the duplicate article-title rendering, dark-theme `select` styling mismatch, and any still-broken screenshot artifacts that still need refreshed captures
 - [x] Finish the external-review copy and IA cleanup across the public experience, including replacing `Ways to Act` with the final action label, removing condescending issue-detail section framing, and restoring clearer article-to-topic navigation
 - [x] Rework the public Events browse flow so the page has a credible default state without a required region gate and the reviewer journey is not blocked on filter knowledge
 - [x] Resolve the remaining admin/public shell visual inconsistency findings from the external review, including making the admin background treatment and surrounding layout read as intentional in screenshots and first-use flows
 - [x] Restore TypeScript credibility by removing the remaining strictness reversals in shared/base config and fixing any surfaced type issues that block strict compilation
-- [ ] Close the remaining external-review repo hygiene defects, including removing checked-in build artifacts, normalizing the `submission-type` contract filename, and stripping dead font-loading leftovers from abandoned typography experiments; build artifacts and contract naming are fixed, but dead font-loading cleanup still needs a final decision
+- [x] Close the remaining external-review repo hygiene defects, including removing checked-in build artifacts, normalizing the `submission-type` contract filename, and stripping dead font-loading leftovers from abandoned typography experiments
 - [x] Add public submission rate limiting and verify the moderation queue cannot be trivially flooded through the anonymous submission endpoints
-- [ ] Replace the current public content-page `force-dynamic` strategy with the Milestone 1 caching/revalidation approach appropriate for moderated content and validate that the chosen approach still reflects admin edits reliably
+- [x] Replace the current public content-page `force-dynamic` strategy with the Milestone 1 caching/revalidation approach appropriate for moderated content and validate that the chosen approach still reflects admin edits reliably
 - [x] Decide which external-review findings are required Milestone 1 finish work versus explicit Milestone 2 deferrals, then record those deferrals canonically instead of carrying them implicitly into Deployment Infrastructure
 - [x] Strengthen the article reading experience so body typography, hierarchy, and metadata/content separation feel professional rather than merely functional
 - [x] Complete the first high-signal public visual polish pass across topic, article, and event detail/discovery surfaces so cards, list rhythm, and detail layouts read more intentionally
@@ -1661,14 +1661,16 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 - [x] Close the remaining submit-surface layout and spacing defects that still read as unfinished in first-use review
 - [x] Run an explicit mobile/responsive finish pass across the core public routes and fix the issues it exposes
 - [x] Improve demo-seed/editorial quality where generated filler still weakens the product fiction or makes the site read as scaffolding
+- [x] Correct public and reviewer-facing event time presentation so Release 1 events render in their intended local timezone for the bounded demo geography instead of reading as UTC-only civic listings
 - [x] Refresh screenshots and reviewer-facing docs after the closure pass so recorded artifacts match the actual Milestone 1 product state
 - [x] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
 
 ###### Notes:
 
 - The 2026-06-17 external review functioned as an additional Milestone 1 quality gate and exposed a broader remaining gap in UX finish, visual consistency, and a small number of engineering credibility issues than the earlier Phase 13 closure work suggested.
-- Phase 13 therefore remains the active boundary. Deployment Infrastructure should not begin until this follow-up pass either resolves or explicitly defers the remaining external-review findings.
-- Current closure progress: public copy/IA cleanup, Events default-state rework, admin shell visual pass, public-page revalidation replacement, TypeScript strictness restoration, anonymous submission rate limiting, the `submission-type` contract/build-artifact cleanup, the explicit Milestone 1 versus Milestone 2 deferral split, the submit-surface polish pass, the demo-seed/editorial cleanup pass, the screenshot/doc refresh, and the targeted RC validation pass are complete.
+- That follow-up pass is now closed. The duplicate article-title report was traced to stale screenshot review context rather than a live product defect, the public `select` surfaces already carry the intended dark-theme treatment, public content pages now use the intended revalidation model, and the remaining `next/font` usage in the root layout is intentional rather than abandoned typography residue.
+- A small post-closure addendum corrected the remaining UTC-only event-time presentation gap by rendering public and moderation-facing event times in the intended local timezone for the current Release 1 geography.
+- Screenshot regeneration remains a final artifact-refresh step when UI changes justify it, not an open blocker to leaving Phase 13 once the shipped UI and docs already align.
 - The targeted RC validation pass now has a repeatable local smoke check in `scripts/rc-smoke.mjs`, covering public browse routes, admin auth, moderation review routes, and the essential article/action/event admin editor paths. Full route-spec execution remains sandbox-sensitive because local `supertest` suites still hit `listen EPERM` in this environment, so the practical release proof here is lint, typecheck, focused unit coverage, and the live smoke run.
 
 ---
@@ -1680,7 +1682,7 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ---
 
-### ► Phase 14 — Deployment Infrastructure ⏳
+### ► Phase 14 — Deployment Infrastructure 🚧
 
 ###### Goal
 
@@ -1702,8 +1704,6 @@ Configure hosting, environment management, and CI/CD once the product and schema
 ###### Notes:
 
 - Phase order was intentionally adjusted after Phase 12 so code-facing Milestone 1 work, including DB identifier normalization, lands before release infrastructure hardens those assumptions.
-
-- This phase intentionally combines late bug fixing, public UI polish, regression work, and repo-readiness cleanup into one pre-launch pass.
 - Release 1 only needs lightweight public traffic visibility, not a paid analytics stack or full product analytics program.
 - Public copy should not lean harder on "community-powered" messaging than the actual Release 1 contributor experience can support.
 

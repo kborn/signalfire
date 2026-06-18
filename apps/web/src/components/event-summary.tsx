@@ -13,7 +13,13 @@ export function EventSummary({ event }: { event: EventSummaryData }) {
       <h2 className="collectionItemTitle">{event.title}</h2>
       <p className="eventMeta">{formatEventTypeLabel(event.eventType)}</p>
       <p className="collectionItemSummary">{event.summary}</p>
-      <p className="eventMeta">{formatEventTime(event.startTime, event.endTime)}</p>
+      <p className="eventMeta">
+        {formatEventTime(event.startTime, event.endTime, {
+          city: event.city,
+          region: event.region,
+          country: event.country,
+        })}
+      </p>
       {locationParts.length > 0 && <p className="eventMeta">{locationParts.join(', ')}</p>}
     </Link>
   );

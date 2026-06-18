@@ -27,6 +27,7 @@ describe('EventSummary', () => {
     expect(markup).toContain('Public discussion with local officials.');
     expect(markup).toContain('Town Hall');
     expect(markup).not.toContain('TOWN_HALL');
+    expect(markup).toContain('Mon, Apr 20, 2026 from 6:30 PM to 7:30 PM EDT');
     expect(markup).toContain('Boston, MA, USA');
   });
 
