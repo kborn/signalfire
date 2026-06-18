@@ -96,6 +96,9 @@ These cards may be created or updated alongside task-linked syllabi in
 - [110-setstate-triggers-rerender.md](./110-setstate-triggers-rerender.md) - How state updates cause React to run the component again
 - [111-pnpm-update-first-research-second.md](./111-pnpm-update-first-research-second.md) - Refresh parent packages first and only research deeply when the package-manager path stops helping
 - [112-when-to-use-pnpm-overrides.md](./112-when-to-use-pnpm-overrides.md) - Use overrides for stubborn transitive packages after normal updates stop moving the graph
+- [113-stale-while-revalidate-serves-stale-first.md](./113-stale-while-revalidate-serves-stale-first.md) - Why the first request after cache expiry can still serve stale content
+- [114-next-route-handlers-are-http-endpoints-not-imported-functions.md](./114-next-route-handlers-are-http-endpoints-not-imported-functions.md) - How `route.ts` files become HTTP endpoints through Next file-system routing
+- [115-server-side-invalidation-needs-a-server-side-write-boundary.md](./115-server-side-invalidation-needs-a-server-side-write-boundary.md) - Why admin writes needed a Next server hop before they could invalidate cached public pages
 - [76-computed-property-names.md](./76-computed-property-names.md) - Use bracket syntax when an object key comes from a variable
 - [77-settimeout-zero-after-render.md](./77-settimeout-zero-after-render.md) - A zero-delay timer runs later but does not guarantee React committed new DOM
 - [78-react-fragments-without-wrapper-elements.md](./78-react-fragments-without-wrapper-elements.md) - Group conditional JSX siblings without adding an HTML wrapper
