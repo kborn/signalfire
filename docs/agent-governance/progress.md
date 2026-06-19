@@ -20,9 +20,10 @@ It is the canonical answer to: “Where are we in the plan?”
 | [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| **[13](#-phase-13--release-prep--final-polish-)** | **Release Prep & Final Polish** | **🚧 ACTIVE** |
-| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
-| [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
+| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
+| **[14](#-phase-14--portfolio-credibility-pass-)** | **Portfolio Credibility Pass**  | **🚧 ACTIVE** |
+| [15](#-phase-15--release-infrastructure-)         | Release Infrastructure          | ⏳            |
+| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
 
@@ -1564,7 +1565,16 @@ debounced URL commits`.
 
 ---
 
-### ► Phase 13 — Release Prep & Final Polish ⏳
+### ► Phase 13 — Release Prep & Final Polish ✅
+
+> **Note — 2026-06-19:** All branch stacks from Phase 13.7 onward (9 branches, ~21 commits
+> covering the CSS architecture split, UI swing, typography, keyword search, topic admin,
+> loading states, and three review-closure passes) were squashed into a single commit and
+> merged as PR #71. The individual branch names referenced in subphases 13.7–13.9 no longer
+> exist. Main was subsequently rebased to consolidate Phase 13.5, 13.6, and the new 13.7
+> squash into one "Phase 13.5 — Feature completion, UI identity, and mobile polish" commit.
+> The subphase entries below are preserved as a record of what was built, not as active
+> branch references.
 
 ###### Goal
 
@@ -1642,26 +1652,36 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ---
 
-#### ▸ Phase 13.5 - External Review Closure ⏳
+#### ▸ Phase 13.5 - External Review Closure ✅
 
 ###### Phase Tasks:
 
-- [ ] Remove the remaining reviewer-visible public UI defects called out in the 2026-06-17 external review, including the duplicate article-title rendering, dark-theme `select` styling mismatch, and any still-broken screenshot artifacts
-- [ ] Finish the external-review copy and IA cleanup across the public experience, including replacing `Ways to Act` with the final action label, removing condescending issue-detail section framing, and restoring clearer article-to-topic navigation
-- [ ] Rework the public Events browse flow so the page has a credible default state without a required region gate and the reviewer journey is not blocked on filter knowledge
-- [ ] Resolve the remaining admin/public shell visual inconsistency findings from the external review, including making the admin background treatment and surrounding layout read as intentional in screenshots and first-use flows
-- [ ] Restore TypeScript credibility by removing the remaining strictness reversals in shared/base config and fixing any surfaced type issues that block strict compilation
-- [ ] Close the remaining external-review repo hygiene defects, including removing checked-in build artifacts, normalizing the `submission-type` contract filename, and stripping dead font-loading leftovers from abandoned typography experiments
-- [ ] Add public submission rate limiting and verify the moderation queue cannot be trivially flooded through the anonymous submission endpoints
-- [ ] Replace the current public content-page `force-dynamic` strategy with the Milestone 1 caching/revalidation approach appropriate for moderated content and validate that the chosen approach still reflects admin edits reliably
-- [ ] Decide which external-review findings are required Milestone 1 finish work versus explicit Milestone 2 deferrals, then record those deferrals canonically instead of carrying them implicitly into Deployment Infrastructure
-- [ ] Refresh screenshots and reviewer-facing docs after the closure pass so recorded artifacts match the actual Milestone 1 product state
-- [ ] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
+- [x] Remove the remaining reviewer-visible public UI defects called out in the 2026-06-17 external review, including the duplicate article-title rendering, dark-theme `select` styling mismatch, and any still-broken screenshot artifacts that still need refreshed captures
+- [x] Finish the external-review copy and IA cleanup across the public experience, including replacing `Ways to Act` with the final action label, removing condescending issue-detail section framing, and restoring clearer article-to-topic navigation
+- [x] Rework the public Events browse flow so the page has a credible default state without a required region gate and the reviewer journey is not blocked on filter knowledge
+- [x] Resolve the remaining admin/public shell visual inconsistency findings from the external review, including making the admin background treatment and surrounding layout read as intentional in screenshots and first-use flows
+- [x] Restore TypeScript credibility by removing the remaining strictness reversals in shared/base config and fixing any surfaced type issues that block strict compilation
+- [x] Close the remaining external-review repo hygiene defects, including removing checked-in build artifacts, normalizing the `submission-type` contract filename, and stripping dead font-loading leftovers from abandoned typography experiments
+- [x] Add public submission rate limiting and verify the moderation queue cannot be trivially flooded through the anonymous submission endpoints
+- [x] Replace the current public content-page `force-dynamic` strategy with the Milestone 1 caching/revalidation approach appropriate for moderated content and validate that the chosen approach still reflects admin edits reliably
+- [x] Decide which external-review findings are required Milestone 1 finish work versus explicit Milestone 2 deferrals, then record those deferrals canonically instead of carrying them implicitly into Deployment Infrastructure
+- [x] Strengthen the article reading experience so body typography, hierarchy, and metadata/content separation feel professional rather than merely functional
+- [x] Complete the first high-signal public visual polish pass across topic, article, and event detail/discovery surfaces so cards, list rhythm, and detail layouts read more intentionally
+- [x] Finish the remaining homepage and motif art-direction work so the public experience feels cohesive and credible rather than prototype-polished
+- [x] Close the remaining submit-surface layout and spacing defects that still read as unfinished in first-use review
+- [x] Run an explicit mobile/responsive finish pass across the core public routes and fix the issues it exposes
+- [x] Improve demo-seed/editorial quality where generated filler still weakens the product fiction or makes the site read as scaffolding
+- [x] Correct public and reviewer-facing event time presentation so Release 1 events render in their intended local timezone for the bounded demo geography instead of reading as UTC-only civic listings
+- [x] Refresh screenshots and reviewer-facing docs after the closure pass so recorded artifacts match the actual Milestone 1 product state
+- [x] Run a targeted release-candidate validation pass after the external-review fixes across public browse flows, admin auth, moderation, and essential content-management paths
 
 ###### Notes:
 
 - The 2026-06-17 external review functioned as an additional Milestone 1 quality gate and exposed a broader remaining gap in UX finish, visual consistency, and a small number of engineering credibility issues than the earlier Phase 13 closure work suggested.
-- Phase 13 therefore remains the active boundary. Deployment Infrastructure should not begin until this follow-up pass either resolves or explicitly defers the remaining external-review findings.
+- That follow-up pass is now closed. The duplicate article-title report was traced to stale screenshot review context rather than a live product defect, the public `select` surfaces already carry the intended dark-theme treatment, public content pages now use the intended revalidation model, and the remaining `next/font` usage in the root layout is intentional rather than abandoned typography residue.
+- A small post-closure addendum corrected the remaining UTC-only event-time presentation gap by rendering public and moderation-facing event times in the intended local timezone for the current Release 1 geography.
+- Screenshot regeneration remains a final artifact-refresh step when UI changes justify it, not an open blocker to leaving Phase 13 once the shipped UI and docs already align.
+- The targeted RC validation pass now has a repeatable local smoke check in `scripts/rc-smoke.mjs`, covering public browse routes, admin auth, moderation review routes, and the essential article/action/event admin editor paths. Full route-spec execution remains sandbox-sensitive because local `supertest` suites still hit `listen EPERM` in this environment, so the practical release proof here is lint, typecheck, focused unit coverage, and the live smoke run.
 
 ---
 
@@ -1672,7 +1692,201 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ---
 
-### ► Phase 14 — Deployment Infrastructure ⏳
+#### ▸ Phase 13.6 - External Review 2 Closure ✅
+
+###### Goal
+
+Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site reviews before advancing to deployment infrastructure.
+
+###### Phase Tasks:
+
+**Public UX & navigation:**
+
+- [x] Create the public `/demo` page — demo framing, limited-data disclosure, admin credentials, repo link; header "Admin Demo" now routes here instead of directly to `/admin`
+- [x] Add breadcrumb + "browse more" nav to all four detail page types (article, action, event, topic) — eliminates dead ends after reading
+- [x] Add minimal public footer — secondary nav links and tagline in `(public)/layout.tsx`
+- [x] Resolve events page UX contradiction — removed guidance card; events show by default, filters narrow from there
+
+**Visual design:**
+
+- [x] Add per-topic accent colors via CSS `data-topic` attribute — seven distinct left-border colors on the Issues index
+- [x] Fix admin shell void — `min-height: calc(100vh - 48px)` eliminates dark empty space below the admin card
+- [x] Fix related section layout in article and event detail grids — `grid-column: 1 / -1` so related topics/actions span full width
+- [x] Clean up topic detail section labels — "Step 2 - Read enough to act" → "Step 2 — Read"; "Step 3 — Act"
+- [x] Confirm event timezone display — live screenshots confirm EDT rendering; UTC fallback code is correct
+
+**Engineering & CSS:**
+
+- [x] Merge duplicate editor form CSS — shared block for `actionEditorForm`, `eventEditorForm`, `articleEditorForm`; ~120 lines of duplicated overrides removed
+- [x] Scope `p { max-width: 70ch }` to `.publicShell p` — admin paragraphs no longer artificially constrained
+- [x] Replace `force-dynamic` with `connection()` on submit pages — `await connection()` prevents build-time pre-rendering without disabling caching; consistent with the pattern applied to other public pages on this branch
+- [x] Replace hardcoded hex values in public CSS — `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup`, `collectionItemSummary` now use `var(--color-text-muted)`
+- [x] Remove `margin-right: 10px` from `.secondaryCTA`
+- [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"`
+- [x] Fix API default port — fallback changed from 3000 to 3001 in `apps/api/src/main.ts`
+- [x] Remove `packages/api-contracts/dist/` from version control — added `.gitignore`
+- [x] Fix `ReviewOutcomePanel` reviewed-at rendering — `toLocaleString()` replaced with `formatAdminDateTime`
+
+**Closeout:**
+
+- [x] Reduce `docs/screenshots/` to 5 focused portfolio captures; update `scripts/regenerate-doc-screenshots.mjs` accordingly
+- [x] Update README — 5-screenshot inline gallery, corrected repo URL, updated reviewer path and phase reference
+- [x] Update `scripts/rc-smoke.mjs` assertions to match new copy; confirm 35/35 pass
+- [x] Record periodic review doc convention in `decisions.md`; review artifacts live in `docs/reviews/`
+
+###### Notes:
+
+- Findings sourced from `docs/reviews/review-2026-06-17.md` and `docs/reviews/review-2026-06-18.md`.
+- Scope was quality closure only — no new features, no search, no topics admin, no scope expansion.
+- Per-topic color differentiation used CSS `data-slug` attribute; no backend changes required.
+
+---
+
+#### ▸ Phase 13.7 - Round 3 Review Closure ✅
+
+###### Goal
+
+Close quality gaps identified in `docs/reviews/review-2026-06-18-round2.md` — the third external review pass conducted after Phase 13.6 closed.
+
+###### Phase Tasks:
+
+**Implemented:**
+
+- [x] Add `externalUrl` optional field to Action — schema, API, admin editor, public CTA (full stack)
+- [x] Nav: rename "Take Action" → "Actions" in header and footer
+- [x] Remove redundant "Issue" eyebrow label from Issues index page cards
+- [x] CSS: delete duplicate `actionEditorForm` rule block that survived the Phase 13.6 deduplication pass (~60 lines removed)
+- [x] Fix UTC month math in `events/page.tsx resolveDateWindow` (end-of-month overflow)
+- [x] Seed: pass `externalUrl` through action upsert; add demo URLs to two curated actions so the CTA is visible in the live demo
+
+**Overnight expansion (2026-06-19) — stacked branches off `round3_review_closure`:**
+
+- [x] **Typography** (`feat/phase_13/typography`) — Replace Zilla Slab with Playfair Display (700/800/900) as display font; update `:root` fallbacks to reflect actual loaded fonts; tighten letter-spacing for Playfair's optical range
+- [x] **Seed URLs** (`feat/phase_13/seed-urls`) — Add `externalUrl` to all 13 published demo actions (was only 2); every action page now shows the "Take Action →" CTA
+- [x] **Loading states** (`feat/phase_13/loading-states`) — Add `loading.tsx` skeleton files to all 8 public collection and detail routes; skeleton shimmer CSS added to `globals.css`
+- [x] **Keyword search** (`feat/phase_13/keyword-search`) — Dedicated `/search` route searching Articles and Actions simultaneously via ILIKE; Search link added to nav and footer; `?search=` param wired into `/articles` and `/actions` collection pages; Events explicitly excluded (time/location-specific, keyword search not useful)
+- [x] **Topic admin** (`feat/phase_13/topic-admin`) — Full CRUD for Issues in admin workspace at `/admin/topics`; GET/POST/PATCH/DELETE endpoints in NestJS; Next.js proxy routes at `/api/admin/topics`; `deleteAuthenticated` helper added to base.ts; delete blocked when content is linked; "Issues" nav link added to admin shell
+- [x] **Proxy routes fix** — Missing Next.js proxy routes for topic admin were added (topic create/update/delete were silently 404ing without them)
+- [x] **rc-smoke.mjs** — Updated stale assertions ("Take Action" → "Actions"), added `/search` check, added admin topics API + page checks
+- [x] **Demo banner** — Reduced enter animation from 2.5s → 0.45s; reduced pulse from 3x to 1x
+- [x] **Nav density** — Reduced gap from 24px → 20px and font-size from 1rem → 0.95rem to accommodate 6 nav items
+
+**Deferred to Milestone 2:**
+
+- [x] Issues vs `/topics` URL normalization — `/issues` routes live, `/topics` redirects; implemented in `feat/phase_13/topic-admin`
+- [x] Nav search icon treatment — SearchIcon SVG replaces text in header nav; implemented in `feat/phase_13/topic-admin`
+- [x] Homepage journey cards — copy sharpened, Step 3 mentions events; implemented in `feat/phase_13/topic-admin`
+
+**Non-issues confirmed:**
+
+- `aria-current="true"` on topic selector pills — semantically correct for link-based filter bars; `aria-pressed` is only valid on button elements. No change.
+- Remaining hardcoded hex in admin CSS — intentional light-mode values; tokenizing with dark-theme variables would break admin UI. No change.
+
+###### Notes:
+
+- The `externalUrl` migration was applied by modifying the existing init migration (`20260312131932`) and running `prisma migrate reset`, consistent with pre-deployment clean-history policy.
+- After pulling these branches, run `cd apps/api && pnpm exec prisma db seed` to populate the new externalUrl values on demo actions.
+- Each branch has a `CONTEXT-*.md` at the repo root with decisions, review guidance, and files changed.
+
+###### Links:
+
+- Review: `docs/reviews/review-2026-06-18-round2.md`
+- Branch context files: `CONTEXT-typography.md`, `CONTEXT-search.md`, `CONTEXT-topic-admin.md`
+
+---
+
+#### ▸ Phase 13.8 - Review 3 Closure ✅
+
+###### Goal
+
+Close the quality gaps identified in `docs/reviews/review-2026-06-19.md` — the fourth external review, conducted after the Phase 13.7 overnight async work (CSS split, UI swing, keyword search, topic admin).
+
+**Branch:** `feat/phase_13/review-3-polish`, stacked on `feat/phase_13/review-closure-3`
+
+###### Completed
+
+- [x] **Homepage ISSUES array hardcoded** — replaced with `getTopicsList()` API call; homepage now renders dynamically from API, same pattern as `issues/page.tsx`
+- [x] **Homepage restructured** — context/explanation now comes first; "Which one is yours?" issue browser moved below the hero; "Find Your Fight" is now the large display text
+- [x] **`a[aria-label='Search']` CSS selector** — added `site-search-link` class to NavLink JSX; CSS now targets `.site-search-link`
+- [x] **Topic icon fallback** — added `GenericIssueIcon` to `icons.tsx`; `topic-summary.tsx` now uses `TOPIC_ICON_MAP[slug] ?? GenericIssueIcon`
+- [x] **Dual demo indicator** — removed `site-demo-indicator` pill from header; demo banner is the sole demo signal
+- [x] **`secondaryCTA` hardcoded `#171717`** — replaced with `var(--color-text-primary)` / `var(--color-page-bg)` tokens
+- [x] **Grain opacity** — raised from 0.035 to 0.08
+- [x] **bg-motif opacity** — raised from 0.11 to 0.20 in hero; added as persistent fixed watermark across all public pages via `.publicShell::after` at 0.07 opacity
+- [x] **Card tilt rotation** — removed `rotate(0.6deg)` from `.topicCollectionItemTilt:hover`; translate-only consistent with all other cards
+- [x] **Submit page width** — `.submitEntrySupport` max-width raised from 46rem to 820px to match option cards above
+- [x] **Footer centering** — `justify-content: center` on footer nav; tagline centered
+- [x] **Footer link clarity** — footer links now have visible underline at rest (subtle), full underline on hover
+- [x] **Admin 404 page** — created `apps/web/src/app/admin/(workspace)/not-found.tsx` with admin shell layout
+- [x] **Login page branding** — updated eyebrow from "Signal Fire Admin" to "Find Your Fight — Admin"; brand panel always shown (not hidden on redirect); "Session expired" copy replaced with neutral "Sign in to continue"
+- [x] **Submission nudge** — contextual "Know something we missed?" block added to article and action detail page bottoms
+- [x] **Copy pass** — homepage, about page, and journey cards updated; dual meaning of "Find Your Fight" woven into about page hero and homepage supporting copy
+- [x] **Issue link color threading** — home issue links now show topic accent color at rest (subtle left border), not only on hover
+
+###### Deferred to Phase 13.9 (open items for user review)
+
+- Screenshots 04 and 05 still need regeneration with live server — requires `pnpm dev` + seeded DB + `node scripts/regenerate-doc-screenshots.mjs`
+- FYF logo glyph: user asked "what is the glyph?" and misses the FYF treatment — **needs user decision** on whether to replace the flame SVG with a proper FYF mark or keep current
+- Hero image: user wants an image for the homepage hero rather than text-only — **needs user asset/direction**
+- Color threading across site: topic accent colors appear on homepage issue links and issues index, but not on article/action cards belonging to that topic — **needs user decision** on scope
+- Events default UX: user questioned value of random-city events as default — **needs user decision** on default state vs messaging
+- Animation styles: issue link hover (color+border+padding) remains different from card hover (translate) — considered acceptable distinction since they are different element types, but flagged if user wants full normalization
+- ILIKE search improvement (replace with tags/structured search) — explicitly deferred to Milestone 2
+
+###### Notes
+
+- Branch `feat/phase_13/review-3-polish` stacked on `feat/phase_13/review-closure-3`
+- Typecheck passes clean
+- Screenshots not regenerated on this branch — requires running server
+
+###### Links
+
+- Review: `docs/reviews/review-2026-06-19.md`
+
+---
+
+#### ▸ Phase 13.9 - Post-Review Design Decisions ✅
+
+###### Goal
+
+Resolve open design direction items from Phase 13.8 that require user input before implementation.
+
+###### Outcome
+
+Superseded by the 2026-06-19 session. All branch stacks (13.7 through 13.9, including the
+UI swing, CSS architecture split, typography, and review-closure branches) were squashed into
+a single clean commit and merged to main as PR #71. The open design items from 13.9 — hero
+image, FYF logo, color threading, events default, and screenshots — are deferred to Phase 14
+where they will be addressed alongside the full fix list from the 2026-06-19 autonomous review.
+
+Main history was rebased: Phase 13.5, 13.6, and the new 13.7 squash were consolidated into
+a single "Phase 13.5 — Feature completion, UI identity, and mobile polish" commit.
+
+---
+
+### ► Phase 14 — Portfolio Credibility Pass 🚧
+
+###### Goal
+
+Raise the product to a credible 8.0+ across Visual Design, UX/Product, and Engineering for
+portfolio review. Fix product logic problems before visual polish — structure first, surface second.
+
+Review baseline: 2026-06-19 autonomous review — `docs/reviews/review-2026-06-19-round2.md`
+
+###### Collaboration model
+
+Small scoped subphases. User reviews output between each. No scope expansion mid-subphase.
+See `CONTEXT-next-session.md` for the current fix list and rationale.
+
+---
+
+#### ▸ Phases TBD
+
+---
+
+---
+
+### ► Phase 15 — Deployment Infrastructure ⏳
 
 ###### Goal
 
@@ -1703,13 +1917,13 @@ Configure hosting, environment management, and CI/CD once the product and schema
 
 ---
 
-### ► Phase 15 — Public Launch ⏳
+### ► Phase 16 — Public Launch ⏳
 
 ###### Goal
 
 Deploy the public demo and verify the live release behaves the way Milestone 1 intends.
 
-###### Phase Tasks:
+###### Definition of Done
 
 - [ ] Launch a public demo instance that is appropriate for portfolio and
       recruiter review at the end of Milestone 1

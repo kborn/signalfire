@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getArticlesList } from '@/lib/api/articles';
 import { ArticleSummary } from '@/components/article-summary';
 import { getTopicsList } from '@/lib/api/topics';
@@ -5,7 +6,8 @@ import { TopicSelector } from '@/components/topic-selector';
 import { Pagination } from '@/components/pagination';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import Link from 'next/link';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -39,16 +41,18 @@ function getEmptyPageResponse() {
 type ArticleListPageProps = {
   searchParams: Promise<{
     topicSlug?: string;
+    search?: string;
     page?: string;
     pageSize?: string;
   }>;
 };
 
 export default async function ArticleListPage({ searchParams }: ArticleListPageProps) {
+  await connection();
   const params = await searchParams;
-  const { topicSlug, page, pageSize } = params;
+  const { topicSlug, search, page, pageSize } = params;
   const [resp, topics] = await Promise.all([
-    getArticlesList({ topicSlug, page, pageSize }),
+    getArticlesList({ topicSlug, search, page, pageSize }),
     getTopicsList(),
   ]);
 

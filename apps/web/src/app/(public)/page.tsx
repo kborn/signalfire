@@ -1,85 +1,116 @@
-import Image from 'next/image';
 import Link from 'next/link';
+import { connection } from 'next/server';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
+import { getTopicsList } from '@/lib/api/topics';
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  await connection();
   const isDemoMode = isDemoModeEnabled();
+  const topicsData = await getTopicsList().catch(() => null);
+  const issues = topicsData?.items ?? [];
 
   return (
-    <div className="container home-page motifPage centeredPublicPage">
-      <section className="page-section home-hero">
-        <div className="hero-logo">
-          <Image
-            src="/hero.png"
-            alt="Find Your Fight visual identity"
-            width={1774}
-            height={887}
-            priority
-          />
-        </div>
-
-        <p className="section-label">Find Your Fight</p>
-        <p className="page-intro">
-          Choose one issue, learn what is at stake, and take one concrete step.
+    <div className="container home-page motifPage">
+      {/* ── Hero ── */}
+      <section className="page-section heroPoster">
+        <h1 className="heroPosterBrand">Find Your Fight</h1>
+        <p className="heroPosterTagline">
+          For people who care, want to do something real, and need a clear place to start.
         </p>
-        <p className="home-hook">
-          A civic action site for people who want to do something about what is happening and need a
-          clear place to start.
+        <p className="heroPosterSub">
+          You don&apos;t have to carry every issue. Pick the one that already has your attention —
+          and find your way in.
         </p>
-
-        <div className="ctaRow">
-          <Link href="/topics" className="primaryCTA">
-            Explore Issues
+        <div className="ctaRow heroPosterCTA">
+          <Link href="/issues" className="primaryCTA">
+            Browse Issues
           </Link>
-          <Link href="/events" className="secondaryCTA">
-            Search Events
+          <Link href="/about" className="secondaryCTA">
+            How it works
           </Link>
         </div>
-        <p className="homeHeroContext">
-          <Link href="/about" className="textCTA">
-            Why This Site Exists
-          </Link>
-        </p>
       </section>
 
+      {/* ── Issue browser ── */}
+      <section className="page-section home-issues">
+        <div className="home-sectionHeading">
+          <p className="section-label">The issues</p>
+          <h2 className="homeIssueQuestion">Which one is yours?</h2>
+          <p>
+            Start with the one you already can&apos;t stop thinking about. You don&apos;t need to
+            solve all of them.
+          </p>
+        </div>
+        {issues.length > 0 ? (
+          <>
+            <nav className="heroPosterRoll" aria-label="Browse issues">
+              {issues.map((issue) => (
+                <Link
+                  key={issue.slug}
+                  href={`/issues/${issue.slug}`}
+                  className="heroPosterIssueLink"
+                  data-topic={issue.slug}
+                >
+                  {issue.name}
+                </Link>
+              ))}
+            </nav>
+            <p className="heroPosterFooter">
+              <Link href="/issues" className="textCTA">
+                Browse all issues
+              </Link>
+            </p>
+          </>
+        ) : null}
+      </section>
+
+      {/* ── How it works ── */}
       <section className="page-section home-journey">
         <div className="home-sectionHeading">
-          <p className="section-label">Start here</p>
-          <h2>The path is simple.</h2>
-          <p>Start with an issue, build enough context, and move toward action.</p>
+          <p className="section-label">The path</p>
+          <h2>Three steps. One concrete result.</h2>
+          <p>
+            Every issue page connects you to explainers, actions, and events. Start where you are —
+            not where you think you should be.
+          </p>
         </div>
         <div className="homeJourneyGrid">
-          <Link href="/topics" className="collectionItem homeJourneyCard">
+          <Link href="/issues" className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 1</p>
-            <h3 className="collectionItemTitle">Choose an issue</h3>
+            <h3 className="collectionItemTitle">Pick an issue</h3>
             <p className="collectionItemSummary">
-              Start with the issue that already has your attention. Issue pages anchor the rest of
-              the experience.
+              One issue. The one that already bothers you. You don&apos;t need to care about all of
+              them — just start with one.
             </p>
           </Link>
           <Link href="/articles" className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 2</p>
-            <h3 className="collectionItemTitle">Get enough context</h3>
+            <h3 className="collectionItemTitle">Read what matters</h3>
             <p className="collectionItemSummary">
-              Read explainers and background pieces before deciding where your effort belongs.
+              Explainers and field guides give you enough background to stop feeling stuck and start
+              seeing where your effort belongs.
             </p>
           </Link>
           <Link href="/actions" className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 3</p>
-            <h3 className="collectionItemTitle">Take a concrete step</h3>
+            <h3 className="collectionItemTitle">Do one concrete thing</h3>
             <p className="collectionItemSummary">
-              Move from context into action with practical next steps and nearby event discovery.
+              A contact. A donation. A volunteer slot. An event nearby. One step is enough to begin
+              — and beginning changes everything.
             </p>
           </Link>
         </div>
       </section>
 
+      {/* ── Contribute ── */}
       <section className="page-section home-contribute">
         <p className="section-label">Contribute</p>
-        <h2>Submissions are moderated before they go live.</h2>
+        <h2>Help more people find a way in.</h2>
         <p>
-          Submit an article or event and it enters moderation review before publication.
-          Contributions help keep the platform growing.
+          Know of an event, a resource, or an issue worth covering? Submissions are reviewed before
+          publication so the experience stays clear and worth returning to.
         </p>
         <div className="ctaRow">
           <Link href="/submit" className="primaryCTA">
@@ -96,8 +127,8 @@ export default function HomePage() {
           <p className="section-label">Admin access</p>
           <h2>Looking for the admin workspace?</h2>
           <p>
-            Use the public <strong>Admin Demo</strong> entry point in the header to inspect the
-            moderation and editorial workspace.
+            Use the <strong>Admin Demo</strong> link in the header to inspect the moderation and
+            editorial workspace.
           </p>
         </section>
       ) : null}

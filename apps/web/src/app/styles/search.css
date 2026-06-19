@@ -1,0 +1,90 @@
+/* Search */
+
+.searchPage {
+  gap: var(--space-4);
+}
+
+.searchHeader {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.searchForm {
+  max-width: 680px;
+}
+
+.searchInputRow {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.searchControl {
+  flex: 1 1 auto;
+  min-height: 52px;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--color-border-subtle);
+  border-radius: 12px;
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.searchControl::placeholder {
+  color: var(--color-text-muted);
+}
+
+.searchControl:focus {
+  border-color: var(--color-brand-primary);
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+.searchControl::-webkit-search-cancel-button {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.searchSubmitBtn {
+  flex: 0 0 auto;
+  min-height: 52px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+}
+
+.searchResults {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.searchResultsMeta {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.searchResultSection {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.searchResultSectionTitle {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: 1.5rem;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.searchResultCount {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.searchMoreLink {
+  margin-top: var(--space-1);
+}

@@ -11,6 +11,8 @@ import {
   AdminEventDetailResponse,
   AdminEventListFilters,
   AdminEventListResponse,
+  AdminTopicDetailResponse,
+  AdminTopicListResponse,
   ModerationSubmissionDetail,
   ModerationSubmissionList,
   ModerationSubmissionListFilters,
@@ -54,4 +56,12 @@ export async function getAdminEventsList(
 
 export async function getAdminEventDetails(id: number): Promise<AdminEventDetailResponse> {
   return await makeServerAdminRequest<AdminEventDetailResponse>(`admin/events/${id}`);
+}
+
+export async function getAdminTopicsList(): Promise<AdminTopicListResponse> {
+  return await makeServerAdminRequest<AdminTopicListResponse>('admin/topics');
+}
+
+export async function getAdminTopicDetail(slug: string): Promise<AdminTopicDetailResponse> {
+  return await makeServerAdminRequest<AdminTopicDetailResponse>(`admin/topics/${slug}`);
 }

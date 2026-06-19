@@ -147,6 +147,7 @@ describe('ActionController (e2e)', () => {
       title: action.title,
       summary: action.summary,
       description: action.description,
+      externalUrl: null,
       actionType: action.actionType,
       updatedAt: action.updatedAt.toISOString(),
       publishedAt: action.publishedAt?.toISOString(),

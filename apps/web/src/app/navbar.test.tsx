@@ -23,7 +23,7 @@ describe('NavLink', () => {
   });
 
   it('does not mark the home link current on non-root routes', () => {
-    usePathnameMock.mockReturnValue('/topics');
+    usePathnameMock.mockReturnValue('/issues');
 
     const markup = renderToStaticMarkup(<NavLink href="/">Home</NavLink>);
 
@@ -31,17 +31,17 @@ describe('NavLink', () => {
   });
 
   it('marks a section link current on its collection and detail routes', () => {
-    usePathnameMock.mockReturnValue('/topics/climate');
+    usePathnameMock.mockReturnValue('/issues/climate');
 
-    const markup = renderToStaticMarkup(<NavLink href="/topics">Topics</NavLink>);
+    const markup = renderToStaticMarkup(<NavLink href="/issues">Topics</NavLink>);
 
     expect(markup).toContain('aria-current="page"');
   });
 
   it('does not mark a section link current for a plain prefix collision', () => {
-    usePathnameMock.mockReturnValue('/topicship');
+    usePathnameMock.mockReturnValue('/issueship');
 
-    const markup = renderToStaticMarkup(<NavLink href="/topics">Topics</NavLink>);
+    const markup = renderToStaticMarkup(<NavLink href="/issues">Topics</NavLink>);
 
     expect(markup).not.toContain('aria-current="page"');
   });

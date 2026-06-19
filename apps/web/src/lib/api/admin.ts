@@ -1,4 +1,4 @@
-import { patchAuthenticatedJson, postAuthenticatedJson } from '@/lib/api/base';
+import { deleteAuthenticated, patchAuthenticatedJson, postAuthenticatedJson } from '@/lib/api/base';
 import {
   AdminActionDetailResponse,
   AdminActionRequest,
@@ -6,6 +6,8 @@ import {
   AdminArticleRequest,
   AdminEventDetailResponse,
   AdminEventRequest,
+  AdminTopicDetailResponse,
+  AdminTopicRequest,
   ModerationReviewRequest,
   type ModerationReviewSuccess,
 } from '@signal-fire/api-contracts';
@@ -15,7 +17,7 @@ export async function postSubmissionReviewReq(
   id: number,
 ): Promise<ModerationReviewSuccess> {
   return await postAuthenticatedJson<ModerationReviewSuccess>(
-    `admin/submissions/${id}/review`,
+    `/api/admin/submissions/${id}/review`,
     req,
   );
 }
@@ -23,20 +25,23 @@ export async function postSubmissionReviewReq(
 export async function createAdminAction(
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await postAuthenticatedJson<AdminActionDetailResponse>('admin/actions', payload);
+  return await postAuthenticatedJson<AdminActionDetailResponse>('/api/admin/actions', payload);
 }
 
 export async function updateAdminAction(
   slug: string,
   payload: AdminActionRequest,
 ): Promise<AdminActionDetailResponse> {
-  return await patchAuthenticatedJson<AdminActionDetailResponse>(`admin/actions/${slug}`, payload);
+  return await patchAuthenticatedJson<AdminActionDetailResponse>(
+    `/api/admin/actions/${slug}`,
+    payload,
+  );
 }
 
 export async function createAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
-  return await postAuthenticatedJson<AdminArticleDetailResponse>('admin/articles', payload);
+  return await postAuthenticatedJson<AdminArticleDetailResponse>('/api/admin/articles', payload);
 }
 
 export async function updateAdminArticle(
@@ -44,7 +49,7 @@ export async function updateAdminArticle(
   payload: AdminArticleRequest,
 ): Promise<AdminArticleDetailResponse> {
   return await patchAuthenticatedJson<AdminArticleDetailResponse>(
-    `admin/articles/${slug}`,
+    `/api/admin/articles/${slug}`,
     payload,
   );
 }
@@ -52,12 +57,32 @@ export async function updateAdminArticle(
 export async function createAdminEvent(
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await postAuthenticatedJson<AdminEventDetailResponse>('admin/events', payload);
+  return await postAuthenticatedJson<AdminEventDetailResponse>('/api/admin/events', payload);
 }
 
 export async function updateAdminEvent(
   id: number,
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
-  return await patchAuthenticatedJson<AdminEventDetailResponse>(`admin/events/${id}`, payload);
+  return await patchAuthenticatedJson<AdminEventDetailResponse>(`/api/admin/events/${id}`, payload);
+}
+
+export async function createAdminTopic(
+  payload: AdminTopicRequest,
+): Promise<AdminTopicDetailResponse> {
+  return await postAuthenticatedJson<AdminTopicDetailResponse>('/api/admin/topics', payload);
+}
+
+export async function updateAdminTopic(
+  slug: string,
+  payload: AdminTopicRequest,
+): Promise<AdminTopicDetailResponse> {
+  return await patchAuthenticatedJson<AdminTopicDetailResponse>(
+    `/api/admin/topics/${slug}`,
+    payload,
+  );
+}
+
+export async function deleteAdminTopic(slug: string): Promise<void> {
+  return await deleteAuthenticated(`/api/admin/topics/${slug}`);
 }

@@ -17,17 +17,21 @@ type NavLinkProps = {
   href: string;
   children: React.ReactNode;
   className?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
+  'aria-label'?: string;
+  style?: React.CSSProperties;
 };
 
-export default function NavLink({ href, children, className }: NavLinkProps) {
+export default function NavLink({ href, children, className, onClick, ...rest }: NavLinkProps) {
   const pathname = usePathname();
   const isActive = isActivePath(href, pathname);
   return (
     <Link
       href={href}
       className={className}
-      // Dynamically set the aria-current attribute
+      onClick={onClick}
       aria-current={isActive ? 'page' : undefined}
+      {...rest}
     >
       {children}
     </Link>

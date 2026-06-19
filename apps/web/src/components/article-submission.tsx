@@ -271,7 +271,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           If you included an email address, we may contact you if we need clarification.
         </p>
         <div className="ctaRow submissionSuccessActions">
-          <Link href="/topics" className="primaryCTA">
+          <Link href="/issues" className="primaryCTA">
             Explore Issues
           </Link>
           <Link href="/articles" className="secondaryCTA">
@@ -285,13 +285,20 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
       <form className={'submissionForm'} onSubmit={submit} noValidate>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Article</h1>
-          <p className="page-intro">
-            Share an article that helps others understand an issue or take action
-          </p>
-          <p className="metaText">Submissions are reviewed before publication.</p>
-          <p className="metaText">Fields marked with * are required.</p>
+          <p className="page-intro">Share writing that gives someone a clearer way in.</p>
+          <div className="submissionIntroPanel">
+            <p className="submissionIntroTitle">Before you send it</p>
+            <p className="submissionIntroBody">
+              We are looking for grounded, useful writing: explainers, guides, and resource-backed
+              articles that help someone understand an issue and take a next step.
+            </p>
+            <p className="submissionIntroMeta">
+              Nothing is published automatically. Fields marked with * are required.
+            </p>
+          </div>
           <SubmissionGuidance />
           <section className="submissionSection">
+            <p className="section-label">Basics</p>
             <h2>Basic Information</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="article-title">
@@ -370,6 +377,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Draft</p>
             <h2>Article Content</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="article-content">
@@ -393,27 +401,29 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Verification</p>
             <h2>Supporting Links (optional)</h2>
             <section className="submissionField">
-              <div className="submissionLabel">Supporting links (optional)</div>
               <p className="submissionHelper">
                 Add links that help verify claims or provide context
               </p>
               <div className="submissionRepeatableList">
                 {resourceLinks.map((link, index) => (
                   <div className="submissionRepeatableRow" key={index}>
-                    <label className="submissionLabel" htmlFor={`article-resource-link-${index}`}>
-                      Resource link {index + 1}
-                    </label>
-                    <input
-                      id={`article-resource-link-${index}`}
-                      className="submissionControl"
-                      type="text"
-                      placeholder="https://example.org/source"
-                      value={link}
-                      onChange={(event) => handleResourceLinkChange(index, event.target.value)}
-                      {...getFieldA11y('resourceLinks', errors, 'article')}
-                    />
+                    <div className="submissionRepeatableField">
+                      <label className="submissionLabel" htmlFor={`article-resource-link-${index}`}>
+                        Resource link {index + 1}
+                      </label>
+                      <input
+                        id={`article-resource-link-${index}`}
+                        className="submissionControl"
+                        type="text"
+                        placeholder="https://example.org/source"
+                        value={link}
+                        onChange={(event) => handleResourceLinkChange(index, event.target.value)}
+                        {...getFieldA11y('resourceLinks', errors, 'article')}
+                      />
+                    </div>
                     {hasResourceLink() ? (
                       <button
                         className="submissionSecondaryAction"
@@ -442,6 +452,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Attribution</p>
             <h2>Contact Information</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="article-author">

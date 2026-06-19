@@ -9,7 +9,7 @@ describe('ChooseSubmitTypePage', () => {
 
     expect(markup).toContain('Contribute to Find Your Fight');
     expect(markup).toContain(
-      'Submit an article or event for moderation. Nothing is published automatically.',
+      'Help other people get involved. Share what belongs here, and we will review it before it goes live.',
     );
     expect(markup).toContain('href="/submit/article"');
     expect(markup).toContain('Submit an Article or Guide');
@@ -18,13 +18,15 @@ describe('ChooseSubmitTypePage', () => {
     );
     expect(markup).toContain('Share an Event');
     expect(markup).toContain(
-      'Share an upcoming event, rally, meeting, workshop, or volunteer opportunity',
+      'Share an upcoming event, rally, meeting, workshop, or volunteer opportunity.',
     );
     expect(markup).toContain('href="/submit/event"');
     expect(markup).toContain(
-      'Every submission is reviewed by a person before it appears on the site.',
+      'Every submission is checked for clarity, fit, and basic verification before it appears on the site.',
     );
-    expect(markup).toContain('Include enough context for moderation and publication preparation.');
+    expect(markup).toContain(
+      'Strong summaries, accurate links, and enough context for someone else to trust what they are reading.',
+    );
     expect(markup).toContain('Read more about the project');
   });
 });

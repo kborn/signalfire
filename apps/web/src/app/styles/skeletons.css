@@ -1,0 +1,90 @@
+/* Loading skeletons */
+
+@keyframes skeletonPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.skeleton {
+  border-radius: 6px;
+  background: var(--color-border-subtle);
+  animation: skeletonPulse 1.6s ease-in-out infinite;
+}
+
+.skeletonPage {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  padding-bottom: 80px;
+}
+
+.skeletonTitle {
+  height: 3rem;
+  width: min(14ch, 60%);
+}
+
+.skeletonSubtitle {
+  height: 1.1rem;
+  width: min(40ch, 80%);
+  margin-top: var(--space-1);
+}
+
+.skeletonList {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.skeletonCard {
+  display: grid;
+  gap: 10px;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-left-width: 4px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+}
+
+.skeletonCardTitle {
+  height: 1.5rem;
+  width: min(28ch, 70%);
+}
+
+.skeletonCardBody {
+  height: 1rem;
+  width: 90%;
+}
+
+.skeletonCardBodyShort {
+  height: 1rem;
+  width: 60%;
+}
+
+.skeletonDetailHero {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+}
+
+.skeletonDetailTitle {
+  height: 2.5rem;
+  width: min(22ch, 80%);
+}
+
+.skeletonDetailLead {
+  height: 1.1rem;
+  width: min(48ch, 90%);
+  margin-top: var(--space-1);
+}
+
+.skeletonParagraph {
+  display: grid;
+  gap: 8px;
+}

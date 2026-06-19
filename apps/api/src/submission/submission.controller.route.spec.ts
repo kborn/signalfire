@@ -10,6 +10,7 @@ import {
   buildArticleSubmissionRequest,
 } from './submission.test-fixtures';
 import { UnknownSubmissionTopicsError } from './submission.error';
+import { SubmissionRateLimitService } from './submission-rate-limit.service';
 
 type RequestTarget = Parameters<typeof request>[0];
 
@@ -24,13 +25,20 @@ describe('SubmissionController HTTP', () => {
   const submissionServiceMock = {
     create: jest.fn(),
   };
+  const submissionRateLimitServiceMock = {
+    consume: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
+    submissionRateLimitServiceMock.consume.mockReturnValue({ allowed: true, retryAfterSeconds: 0 });
 
     const moduleRef: TestingModule = await Test.createTestingModule({
       controllers: [SubmissionController],
-      providers: [{ provide: SubmissionService, useValue: submissionServiceMock }],
+      providers: [
+        { provide: SubmissionService, useValue: submissionServiceMock },
+        { provide: SubmissionRateLimitService, useValue: submissionRateLimitServiceMock },
+      ],
     }).compile();
 
     app = moduleRef.createNestApplication();
@@ -49,11 +57,13 @@ describe('SubmissionController HTTP', () => {
     const req = buildEventSubmissionRequest();
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.10')
       .send(req)
       .expect(201)
       .expect(submissionSuccessResponse);
 
     expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
+    expect(submissionRateLimitServiceMock.consume).toHaveBeenCalledWith('203.0.113.10');
   });
 
   it('POST /submissions for article request returns submission success response', async () => {
@@ -63,6 +73,7 @@ describe('SubmissionController HTTP', () => {
     const req = buildArticleSubmissionRequest();
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.11')
       .send(req)
       .expect(201)
       .expect(submissionSuccessResponse);
@@ -78,6 +89,7 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp)
       .post('/submissions/')
+      .set('x-forwarded-for', '203.0.113.12')
       .send(req)
       .expect(400)
       .expect(buildSubmissionErrorResponse());
@@ -93,6 +105,7 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.13')
       .send(req)
       .expect(400)
       .expect({
@@ -115,6 +128,7 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.14')
       .send(req)
       .expect(400)
       .expect({
@@ -139,6 +153,7 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.15')
       .send(req)
       .expect(400)
       .expect({
@@ -163,6 +178,7 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp)
       .post('/submissions')
+      .set('x-forwarded-for', '203.0.113.16')
       .send(req)
       .expect(400)
       .expect({
@@ -184,5 +200,30 @@ describe('SubmissionController HTTP', () => {
 
     await request(httpApp).post('/submissions/').send(req).expect(500);
     expect(submissionServiceMock.create).toHaveBeenCalledWith(req);
+  });
+
+  it('POST /submissions returns 429 when the anonymous rate limit is exceeded', async () => {
+    submissionRateLimitServiceMock.consume.mockReturnValue({
+      allowed: false,
+      retryAfterSeconds: 120,
+    });
+
+    await request(httpApp)
+      .post('/submissions')
+      .set('x-forwarded-for', '198.51.100.20')
+      .send(buildArticleSubmissionRequest())
+      .expect(429)
+      .expect('Retry-After', '120')
+      .expect({
+        errors: [
+          {
+            type: 'form',
+            message:
+              'Too many submissions were sent from this connection. Please wait a few minutes and try again.',
+          },
+        ],
+      });
+
+    expect(submissionServiceMock.create).not.toHaveBeenCalled();
   });
 });

@@ -24,13 +24,12 @@ submissions.
 Generate the standard screenshot set with:
 
 ```bash
-node scripts/regenerate-doc-screenshots.mjs
+pnpm docs:screenshots
 ```
 
 Recommended public routes:
 
 - `/` - product purpose and primary journey
-- `/about` - focus-to-action philosophy
 - `/topics` - issue discovery
 - `/topics/climate` - issue detail with related Articles, Actions, and Events
 - `/articles/building-a-local-campaign-from-first-meeting-to-public-pressure` -
@@ -44,7 +43,6 @@ Recommended public routes:
 
 Recommended admin routes:
 
-- `/admin` - operational admin landing
 - `/admin/submissions` - moderation queue with filters
 - `/admin/submissions?status=PENDING` - pending review queue
 - a pending submission detail route - editable normalization and review actions

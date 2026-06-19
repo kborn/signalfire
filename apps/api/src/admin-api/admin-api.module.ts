@@ -15,6 +15,8 @@ import { AdminEventController } from './event/admin-event.controller';
 import { AdminEventService } from './event/admin-event.service';
 import { ModerationSubmissionController } from './moderation/moderation-submission.controller';
 import { ModerationSubmissionService } from './moderation/moderation-submission.service';
+import { AdminTopicController } from './topic/admin-topic.controller';
+import { AdminTopicService } from './topic/admin-topic.service';
 
 @Module({
   imports: [PrismaModule, AdminAuthModule],
@@ -22,6 +24,7 @@ import { ModerationSubmissionService } from './moderation/moderation-submission.
     AdminActionService,
     AdminArticleService,
     AdminEventService,
+    AdminTopicService,
     ModerationSubmissionService,
     SubmissionValidationPipe,
     ActionRepository,
@@ -34,6 +37,7 @@ import { ModerationSubmissionService } from './moderation/moderation-submission.
     AdminActionController,
     AdminArticleController,
     AdminEventController,
+    AdminTopicController,
     ModerationSubmissionController,
   ],
   exports: [ModerationSubmissionService],

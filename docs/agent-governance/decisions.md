@@ -4,6 +4,43 @@ Record irreversible or high-impact decisions here.
 
 ---
 
+### ► Development Approach: Shift from Learning-Oriented to Autonomous Completion
+
+###### 2026-06-19
+
+---
+
+###### Decision
+
+The development model for this project changed from learning-oriented (human implements, AI coaches)
+to autonomous-completion (AI implements, human reviews). The agent now writes code, commits, creates
+branches, and makes implementation decisions without requiring per-step human approval. The human's
+role is to review completed work and extract learnings after the fact rather than during implementation.
+
+###### Rationale
+
+- The original learning-oriented approach was appropriate for Phases 0–12, where building comprehension
+  of the stack was an explicit goal alongside building the product.
+- By Phase 13, the core stack (Next.js, NestJS, Prisma, Turborepo) is understood and the remaining
+  work is completion-oriented — fixing quality gaps, closing deferrals, and getting to a deployable state.
+- Agentic coding is a professional skill in its own right. Practicing autonomous agent operation
+  (reviewing agent output, correcting regressions, directing scope) is itself the learning artifact.
+- The governance overhead (7-file bootstrap, BOOTSTRAP_COMPLETE ceremony, "no autonomous code"
+  constraint) was slowing sessions and producing no benefit at this stage of the project.
+
+###### Implications
+
+- `CLAUDE.md` now describes autonomous-completion mode with minimal ceremony.
+- Agents write code, commit, and branch without asking. Pushes still require explicit user confirmation.
+- `CONTEXT-next-session.md` (repo root) is the primary handoff document between sessions.
+- The STAFF_ENGINEER role file and ai-usage.md are superseded for implementation work; they remain
+  as historical reference but agents should not apply their constraints.
+- Learnings are extracted in a dedicated review at the end of a work block, not inline during
+  implementation.
+- The user may shift back to learning-oriented mode at any time by updating CLAUDE.md.
+
+---
+
 ### Decision Entry Template
 
 ---
@@ -1240,3 +1277,53 @@ selector, but they should be disabled.
 - The initial supported Event demo region set should include a small bounded
   mix such as California, New York, Pennsylvania, Texas, and Puerto Rico,
   unless implementation or content-review needs justify a nearby substitute.
+
+---
+
+---
+
+### ► Periodic site reviews live in `docs/reviews/` and are non-canonical
+
+###### 2026-06-18
+
+---
+
+###### Decision
+
+The project maintains a series of dated site review documents in `docs/reviews/`. Each review scores the product across Visual Design, UX/Product, and Engineering dimensions and produces a prioritized fix list. Review findings inform phase task creation but do not override canonical governance, architecture, or spec documents.
+
+###### Rationale
+
+- Periodic external-perspective reviews catch gaps that canonical docs and active implementation work tend to miss.
+- Keeping reviews in a dedicated directory prevents them from being mistaken for canonical authority and prevents bootstrap read chains from accidentally loading them as project state.
+- Dating each file by review date makes the series chronologically navigable and prevents stale findings from being acted on as current observations.
+
+###### Implications
+
+- `docs/reviews/` is non-canonical. Agents must not cite review documents in architecture decisions, spec documents, or governance docs.
+- Findings from a review should be promoted into a canonical phase subphase (e.g. Phase 13.6) before implementation begins. The review document itself is the source record; the phase entry is the implementation authority.
+- `docs/reviews/REVIEW_TEMPLATE.md` defines the standard format for future reviews.
+
+---
+
+### ► Events page: show geographically random events by default
+
+###### 2026-06-19
+
+---
+
+###### Decision
+
+The `/events` page shows publicly available upcoming events without any location filtering by default. Events shown may not be geographically relevant to the visitor.
+
+###### Rationale
+
+- Showing an empty state on landing (before any location is selected) is a poor first impression for a portfolio reviewer who may not invest time in configuring a preference.
+- A live civic action platform would use IP geolocation, a saved preference, or a region picker to surface locally relevant events on first load. This is the correct production approach.
+- For Milestone 1 (portfolio deployment), the tradeoff favors visible content over geographically accurate content.
+
+###### Implications
+
+- Do not "fix" the events default experience without replacing it with a proper geo-aware implementation.
+- A production release should implement IP geolocation lookup or a user-saved region preference before showing regional events as default content.
+- A review document represents the state of the product at a single point in time. Before acting on a specific finding, verify it still applies to the current codebase.

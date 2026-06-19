@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import NavLink from '@/app/navbar';
 import DemoBanner from '@/app/(public)/_components/demo-banner';
+import { SiteNav } from '@/app/(public)/_components/site-nav';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
+import { FYFLogo } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Find Your Fight',
@@ -18,32 +19,25 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         <header className="site-header">
           <div className="site-brand-group">
             <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
-              FYF
+              <FYFLogo className="site-brand-logo" width={56} height={20} />
             </Link>
-            {isDemoMode ? <span className="site-demo-indicator">Demo</span> : null}
           </div>
-          <div className="site-nav-group">
-            <nav className="site-nav" aria-label="Public">
-              <NavLink href="/topics">Issues</NavLink>
-              <NavLink href="/articles">Articles</NavLink>
-              <NavLink href="/actions">Ways to Act</NavLink>
-              <NavLink href="/events">Events</NavLink>
-              <NavLink href="/about">About</NavLink>
-            </nav>
-            <div className="site-header-actions">
-              {isDemoMode ? (
-                <NavLink href="/admin" className="site-admin-demo-link">
-                  Admin Demo
-                </NavLink>
-              ) : null}
-              <NavLink href="/submit" className="site-submit-link">
-                Submit Content
-              </NavLink>
-            </div>
-          </div>
+          <SiteNav isDemoMode={isDemoMode} />
         </header>
         {isDemoMode ? <DemoBanner /> : null}
         <main>{children}</main>
+        <footer className="site-footer">
+          <nav className="site-footer-nav" aria-label="Footer">
+            <Link href="/issues">Issues</Link>
+            <Link href="/articles">Articles</Link>
+            <Link href="/actions">Actions</Link>
+            <Link href="/events">Events</Link>
+            <Link href="/search">Search</Link>
+            <Link href="/about">About</Link>
+            <Link href="/submit">Submit Content</Link>
+          </nav>
+          <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
+        </footer>
       </div>
     </div>
   );

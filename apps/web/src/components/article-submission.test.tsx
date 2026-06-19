@@ -110,11 +110,23 @@ describe('ArticleSubmissionForm', () => {
     expect(
       screen.getByText('Thanks — your submission has been received and is now pending review.'),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Explore Issues' })).toHaveAttribute('href', '/topics');
+    expect(screen.getByRole('link', { name: 'Explore Issues' })).toHaveAttribute('href', '/issues');
     expect(screen.getByRole('link', { name: 'Browse Articles' })).toHaveAttribute(
       'href',
       '/articles',
     );
+  });
+
+  it('renders the article submission intro guidance', () => {
+    render(<ArticleSubmissionForm topics={topics} />);
+
+    expect(
+      screen.getByText('Share writing that gives someone a clearer way in.'),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Before you send it')).toBeInTheDocument();
+    expect(
+      screen.getByText('Nothing is published automatically. Fields marked with * are required.'),
+    ).toBeInTheDocument();
   });
 
   it('maps API validation errors to inline field errors', async () => {

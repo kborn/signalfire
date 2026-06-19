@@ -431,7 +431,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
             Browse Events
           </Link>
           <Link href="/actions" className="secondaryCTA">
-            Ways to Act
+            Take Action
           </Link>
         </div>
       </div>
@@ -441,11 +441,20 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
       <form className={'submissionForm'} onSubmit={submit} noValidate>
         <section className="page-section">
           <h1 className="pageTitle">Submit an Event</h1>
-          <p className="page-intro">Share an event others can attend and participate in</p>
-          <p className="metaText">Submissions are reviewed before publication.</p>
-          <p className="metaText">Fields marked with * are required.</p>
+          <p className="page-intro">Share an event people can actually show up for.</p>
+          <div className="submissionIntroPanel">
+            <p className="submissionIntroTitle">What makes an event useful here</p>
+            <p className="submissionIntroBody">
+              Give people the essentials: what the event is, when it starts, where it is, and why it
+              matters. Clear logistics and a trustworthy source make moderation faster.
+            </p>
+            <p className="submissionIntroMeta">
+              Nothing is published automatically. Fields marked with * are required.
+            </p>
+          </div>
           <SubmissionGuidance />
           <section className="submissionSection">
+            <p className="section-label">Basics</p>
             <h2>Basic Information</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-title">
@@ -533,6 +542,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Schedule</p>
             <h2>Date and Time</h2>
 
             <div className="submissionFieldRow">
@@ -577,6 +587,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Location</p>
             <h2>Location</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-locationName">
@@ -738,6 +749,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Context</p>
             <h2>Topics</h2>
             <section className="submissionField">
               <div id="event-topic-group" className="submissionLabel">
@@ -777,6 +789,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Verification</p>
             <h2>Website</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-websiteUrl">
@@ -803,6 +816,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           </section>
 
           <section className="submissionSection">
+            <p className="section-label">Follow-up</p>
             <h2>Contact Information</h2>
             <section className="submissionField">
               <label className="submissionLabel" htmlFor="event-contactEmail">

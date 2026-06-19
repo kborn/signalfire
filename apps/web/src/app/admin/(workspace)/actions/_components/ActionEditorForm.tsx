@@ -25,6 +25,7 @@ type ActionEditorInitialValues = {
   title: string;
   summary: string;
   description: string;
+  externalUrl: string | null;
   actionType: ActionType;
   topicSlugs: string[];
 };
@@ -39,6 +40,7 @@ type ActionEditorFormErrors = {
   title?: string;
   summary?: string;
   description?: string;
+  externalUrl?: string;
   actionType?: string;
   topicSlugs?: string;
 };
@@ -47,6 +49,7 @@ type ActionDraft = {
   title: string;
   summary: string;
   description: string;
+  externalUrl: string;
   actionType: ActionType;
   selectedTopics: string[];
 };
@@ -62,6 +65,7 @@ const actionEditorErrorFieldOrder: Array<keyof ActionEditorFormErrors> = [
   'title',
   'summary',
   'description',
+  'externalUrl',
   'actionType',
   'topicSlugs',
 ];
@@ -98,6 +102,7 @@ function mapAdminApiFieldToUiField(field: string): keyof ActionEditorFormErrors 
     case 'title':
     case 'summary':
     case 'description':
+    case 'externalUrl':
     case 'actionType':
     case 'topicSlugs':
       return normalizedField;
@@ -157,6 +162,7 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
   const [title, setTitle] = useState(initialValues.title);
   const [summary, setSummary] = useState(initialValues.summary);
   const [description, setDescription] = useState(initialValues.description);
+  const [externalUrl, setExternalUrl] = useState(initialValues.externalUrl ?? '');
   const [actionType, setActionType] = useState<ActionType>(initialValues.actionType);
   const [selectedTopics, setSelectedTopics] = useState<string[]>(initialValues.topicSlugs);
   const [isSaving, setIsSaving] = useState(false);
@@ -192,6 +198,7 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
         setTitle(draft.title ?? initialValues.title);
         setSummary(draft.summary ?? initialValues.summary);
         setDescription(draft.description ?? initialValues.description);
+        setExternalUrl(draft.externalUrl ?? initialValues.externalUrl ?? '');
         setActionType(draft.actionType ?? initialValues.actionType);
         setSelectedTopics(draft.selectedTopics ?? initialValues.topicSlugs);
         setDraftRestored(true);
@@ -216,12 +223,13 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       title,
       summary,
       description,
+      externalUrl,
       actionType,
       selectedTopics,
     };
 
     window.sessionStorage.setItem(draftKey, JSON.stringify(draft));
-  }, [actionType, description, draftKey, draftReady, selectedTopics, summary, title]);
+  }, [actionType, description, draftKey, draftReady, externalUrl, selectedTopics, summary, title]);
 
   useEffect(() => {
     const firstErrorField = actionEditorErrorFieldOrder.find((field) => errors[field]);
@@ -296,10 +304,12 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
       return;
     }
 
+    const normalizedExternalUrl = externalUrl.trim();
     const payload = {
       title: normalizedTitle,
       summary: normalizedSummary,
       description: normalizedDescription,
+      externalUrl: normalizedExternalUrl.length > 0 ? normalizedExternalUrl : null,
       actionType,
       status: nextStatus,
       topicSlugs: selectedTopics,
@@ -444,6 +454,31 @@ export default function ActionEditorForm({ mode, initialValues, topics }: Action
                 {errors.actionType ? (
                   <p id="action-actionType-error" className="submissionError">
                     {errors.actionType}
+                  </p>
+                ) : null}
+              </section>
+
+              <section className="submissionField">
+                <label className="submissionLabel" htmlFor="action-external-url">
+                  External URL <span style={{ fontWeight: 400 }}>(optional)</span>
+                </label>
+                <input
+                  id="action-external-url"
+                  type="url"
+                  className="submissionControl"
+                  value={externalUrl}
+                  placeholder="https://..."
+                  onChange={(event) => setExternalUrl(event.target.value)}
+                  aria-describedby={errors.externalUrl ? 'action-externalUrl-error' : undefined}
+                  aria-invalid={errors.externalUrl ? true : undefined}
+                />
+                <span className="submissionHelper">
+                  Link users directly to a petition, donation page, contact form, or similar
+                  resource.
+                </span>
+                {errors.externalUrl ? (
+                  <p id="action-externalUrl-error" className="submissionError">
+                    {errors.externalUrl}
                   </p>
                 ) : null}
               </section>

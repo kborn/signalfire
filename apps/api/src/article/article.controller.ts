@@ -17,6 +17,7 @@ export class ArticleController {
 
   @Get('/:slug')
   async findArticle(@Param('slug') slug: string): Promise<ArticleDetailResponse> {
+    console.log('here');
     return this.articleService.getArticleDetail(slug);
   }
 }

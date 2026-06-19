@@ -47,7 +47,7 @@ export function TopicSelector({ topics, basePath, params }: TopicSelectorProps) 
         <li className="topicSelectorItem">
           <Link
             href={buildTopicHref(basePath, { ...params, page: undefined, topicSlug: undefined })}
-            aria-current={!topicSlug ? 'page' : undefined}
+            aria-current={!topicSlug ? 'true' : undefined}
           >
             All
           </Link>
@@ -60,7 +60,7 @@ export function TopicSelector({ topics, basePath, params }: TopicSelectorProps) 
                 page: undefined,
                 topicSlug: topic.slug,
               })}
-              aria-current={topicSlug === topic.slug ? 'page' : undefined}
+              aria-current={topicSlug === topic.slug ? 'true' : undefined}
             >
               {topic.name}
             </Link>

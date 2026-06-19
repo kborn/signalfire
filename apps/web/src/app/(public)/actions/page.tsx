@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getActionsList } from '@/lib/api/actions';
 import { ActionSummary } from '@/components/action-summary';
 
@@ -6,7 +7,8 @@ import { TopicSelector } from '@/components/topic-selector';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -39,16 +41,18 @@ function getEmptyPageResponse() {
 type ActionListPageProps = {
   searchParams: Promise<{
     topicSlug?: string;
+    search?: string;
     page?: string;
     pageSize?: string;
   }>;
 };
 
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
+  await connection();
   const params = await searchParams;
-  const { topicSlug, page, pageSize } = params;
+  const { topicSlug, search, page, pageSize } = params;
   const [resp, topics] = await Promise.all([
-    getActionsList({ topicSlug, page, pageSize }),
+    getActionsList({ topicSlug, search, page, pageSize }),
     getTopicsList(),
   ]);
 

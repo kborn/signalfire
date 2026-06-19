@@ -8,6 +8,7 @@ import {
 
 export type ArticleListRequest = PaginationParams & {
   topicSlug?: string;
+  search?: string;
 };
 
 export type ArticleListResponse = PaginatedListResponse<ArticleSummary>;

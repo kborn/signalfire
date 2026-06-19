@@ -1,11 +1,11 @@
-import { Inter, Zilla_Slab } from 'next/font/google';
+import { Inter, Playfair_Display } from 'next/font/google';
 import type { Metadata } from 'next';
 import './globals.css';
 
-const zillaSlab = Zilla_Slab({
+const playfairDisplay = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: ['600', '700'],
+  weight: ['700', '800', '900'],
 });
 
 const inter = Inter({
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${zillaSlab.variable} ${inter.variable}`}>{children}</body>
+      <body className={`${playfairDisplay.variable} ${inter.variable}`}>{children}</body>
     </html>
   );
 }

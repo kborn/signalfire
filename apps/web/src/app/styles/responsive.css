@@ -1,0 +1,546 @@
+/* Responsive */
+
+@media (max-width: 960px) {
+  .actionEditorTopRow {
+    grid-template-columns: 1fr;
+  }
+
+  .actionEditorDescriptionField {
+    grid-column: 1 / -1;
+  }
+
+  .actionEditorTextareaSummary {
+    min-height: 180px;
+  }
+
+  .actionEditorTextareaDescription {
+    min-height: 300px;
+  }
+
+  .articleEditorLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .articleEditorTopRow,
+  .articleEditorContentField,
+  .articleEditorSidebar,
+  .articleEditorAuthorField,
+  .articleEditorFooter {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .topicSelector {
+    gap: 0.5rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.85rem;
+    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + var(--demo-banner-gap));
+  }
+
+  .topicSelectorList {
+    gap: 0.5rem;
+  }
+
+  .topicSelector a {
+    min-height: 2.1rem;
+    padding: 0.4rem 0.72rem;
+    font-size: 0.92rem;
+  }
+
+  .eventFilterGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .detailContent--article,
+  .detailContent--event {
+    grid-template-columns: 1fr;
+  }
+
+  .articleEditorTextareaContent {
+    min-height: 300px;
+  }
+
+  .eventEditorLayout {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .eventEditorMainColumn,
+  .eventEditorScheduleRow,
+  .eventEditorTitleField,
+  .eventEditorSummaryField,
+  .eventEditorLocationCard,
+  .eventEditorTopicsPanel,
+  .eventEditorContentField {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .eventEditorScheduleRow,
+  .eventEditorLocationCard {
+    grid-template-columns: 1fr;
+  }
+
+  .eventEditorLocationCard,
+  .eventEditorTopicsPanel {
+    padding: var(--space-2);
+  }
+
+  .eventEditorTextareaSummary {
+    min-height: 160px;
+  }
+
+  .eventEditorTextareaContent {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroPosterIssueLink {
+    padding-top: 0.12em;
+    padding-bottom: 0.12em;
+  }
+
+  .container {
+    padding: 0 24px;
+  }
+
+  .site-header {
+    align-items: center;
+    padding: 16px 0 10px;
+  }
+
+  .site-nav-group {
+    display: none;
+  }
+
+  .site-nav-toggle {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-submit-link {
+    flex: 0 0 auto;
+    display: inline-flex;
+    width: auto;
+    max-width: none;
+    min-width: max-content;
+    inline-size: max-content;
+    max-inline-size: none;
+    padding: 0.5rem 0.78rem;
+    justify-content: center;
+    white-space: nowrap;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .home-page {
+    gap: calc(var(--space-4) + 8px);
+  }
+
+  .home-journey,
+  .home-contribute,
+  .home-demo-path,
+  .about-hero,
+  .about-body,
+  .about-community,
+  .about-journey,
+  .submitEntryPage {
+    gap: var(--space-2);
+  }
+
+  .topicSelector {
+    align-items: flex-start;
+  }
+
+  .topicSelectorList {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 0.35rem;
+    padding-right: 2.5rem;
+    scrollbar-width: auto;
+  }
+
+  .topicSelectorList::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .topicSelectorList::-webkit-scrollbar-track {
+    background: color-mix(in srgb, var(--color-surface-soft) 82%, black 18%);
+    border-radius: 999px;
+  }
+
+  .topicSelectorList::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-brand-accent) 48%, var(--color-border-subtle));
+    border-radius: 999px;
+  }
+
+  .topicSelectorItem {
+    flex: 0 0 auto;
+  }
+
+  .demoBanner {
+    align-items: flex-start;
+    top: calc(var(--public-sticky-offset) + 8px);
+  }
+
+  .topicSelector {
+    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + 8px);
+  }
+
+  .demoBannerActions {
+    width: 100%;
+  }
+
+  .adminMetadataBar {
+    width: 100%;
+    padding: 0;
+  }
+
+  .adminMetadataItem {
+    width: 100%;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .adminMetadataItem + .adminMetadataItem {
+    border-inline-start: 0;
+    border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  }
+
+  .eventMetadataItem {
+    flex-basis: 100%;
+    width: 100%;
+    padding: 0.8rem 0.9rem;
+  }
+
+  .site-main {
+    padding-top: 20px;
+    padding-bottom: 64px;
+  }
+
+  .publicContent.site-main {
+    padding-bottom: calc(64px + var(--space-4));
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    letter-spacing: -0.035em;
+  }
+
+  .adminHeader h1 {
+    font-size: 2.35rem;
+    letter-spacing: 0;
+  }
+
+  .collectionList {
+    gap: 20px;
+  }
+
+  .collectionItemTitle {
+    font-size: 1.35rem;
+  }
+
+  .collectionItemSummary,
+  .relatedListItemSummary {
+    padding-left: 0;
+  }
+
+  .ctaRow {
+    display: grid;
+    justify-items: start;
+    width: 100%;
+  }
+
+  .ctaRow > .primaryCTA,
+  .ctaRow > .secondaryCTA,
+  .publicErrorActions > .primaryCTA,
+  .publicErrorActions > .secondaryCTA {
+    width: 100%;
+  }
+
+  .publicErrorActions {
+    display: grid;
+    justify-items: start;
+  }
+
+  .submissionFieldRow {
+    display: grid;
+  }
+
+  .submissionRepeatableRow {
+    display: grid;
+    align-items: stretch;
+  }
+
+  .submissionRepeatableRow .submissionSecondaryAction {
+    width: 100%;
+  }
+
+  .submitOptionList {
+    gap: var(--space-2);
+  }
+
+  .submitOptionList .collectionItem {
+    padding: var(--space-2);
+  }
+
+  .submitEntrySupport {
+    gap: 0.75rem;
+  }
+
+  .submitEntrySupportCard {
+    padding: var(--space-2);
+  }
+
+  .eventFilterPanel,
+  .discoveryEmptyState,
+  .detailMetaPanel {
+    padding: var(--space-2);
+  }
+
+  .paginationToolbar,
+  .pageSizeSelector,
+  .paginationList {
+    justify-content: flex-start;
+  }
+
+  .paginationToolbar {
+    align-items: flex-start;
+  }
+
+  .detailLead {
+    font-size: 1.04rem;
+    line-height: 1.68;
+  }
+
+  .publicShell .markdownContent p,
+  .publicShell .markdownContent ul,
+  .publicShell .markdownContent ol {
+    font-size: 1rem;
+    line-height: 1.74;
+  }
+
+  .adminSegmentedControl,
+  .adminFilterGroup {
+    display: grid;
+    justify-items: start;
+  }
+
+  .adminPanel {
+    padding: var(--space-2);
+  }
+
+  .adminTable {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .adminDefinitionList {
+    grid-template-columns: 1fr;
+  }
+
+  .adminCreatedRecordDetails {
+    grid-template-columns: 1fr;
+  }
+}
+
+.adminLoginPage {
+  display: grid;
+  align-items: start;
+  min-height: calc(100vh - 8rem);
+  padding: clamp(2rem, 7vw, 5rem) clamp(2rem, 4vw, 3.5rem) 0;
+}
+
+.adminLoginShell {
+  display: grid;
+  grid-template-columns: minmax(25rem, 32rem) minmax(0, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  align-items: start;
+  width: min(100%, 90rem);
+  margin: 0 auto;
+}
+
+.adminLoginBrandPanel,
+.adminLoginFormPanel {
+  border: 1px solid rgba(174, 184, 197, 0.16);
+  border-radius: 28px;
+  box-shadow: 0 28px 60px rgba(5, 10, 18, 0.24);
+}
+
+.adminLoginFormPanel {
+  display: grid;
+  align-content: start;
+  gap: clamp(1.1rem, 2vw, 1.6rem);
+  padding: clamp(2rem, 3vw, 2.75rem);
+  align-self: start;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02)),
+    rgba(14, 24, 36, 0.96);
+}
+
+.adminLoginBrandPanel {
+  display: grid;
+  align-content: space-between;
+  align-self: stretch;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  min-height: 40rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  background:
+    linear-gradient(135deg, rgba(8, 15, 24, 0.74), rgba(20, 31, 46, 0.56)),
+    radial-gradient(circle at top left, rgba(212, 177, 88, 0.18), transparent 34%),
+    url('/bg-motif.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.adminLoginBrandCopy {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid rgba(174, 184, 197, 0.14);
+  border-radius: 20px;
+  background: rgba(8, 15, 24, 0.48);
+  backdrop-filter: blur(10px);
+}
+
+.adminLoginIntro {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
+.adminLoginEyebrow {
+  margin: 0;
+  color: #97a4b8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginTitle {
+  max-width: 10ch;
+  margin: 0;
+}
+
+.adminLoginDek {
+  max-width: 42ch;
+  color: #d4dbe5;
+}
+
+.adminLoginFeatureList {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 34rem;
+}
+
+.adminLoginFeatureItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid rgba(174, 184, 197, 0.18);
+  border-radius: 16px;
+  background: rgba(10, 18, 29, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.adminLoginFeatureItem p {
+  margin: 0;
+  color: #d7dee8;
+  line-height: 1.5;
+}
+
+.adminLoginFeatureKicker {
+  color: #f0d084;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.adminLoginStatusPill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 2.5rem;
+  padding: 0.55rem 0.95rem;
+  border: 1px solid rgba(240, 208, 132, 0.24);
+  border-radius: 999px;
+  background: rgba(240, 208, 132, 0.08);
+  color: #f3db9c;
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.adminLoginFormTitle {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(2.8rem, 4vw, 4rem);
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+.adminLoginFormDek {
+  margin: 0;
+  max-width: 30ch;
+  color: #aeb8c5;
+  line-height: 1.5;
+}
+
+.adminLoginForm {
+  max-width: none;
+  margin-right: 0;
+  gap: 1.1rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+}
+
+.adminLoginControl {
+  border-color: rgba(174, 184, 197, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+}
+
+.adminLoginControl::placeholder {
+  color: #94a3b8;
+}
+
+.adminLoginControl:focus {
+  border-color: #f8fafc;
+  outline-color: #f8fafc;
+}
+
+.adminLoginActions {
+  margin-top: 0.35rem;
+}
+
+.adminLoginButton {
+  min-width: 11rem;
+}
+
+.adminLoginForm .submissionField {
+  gap: 0.5rem;
+}
+
+.adminLoginForm .submissionLabel {
+  color: #eef2f7;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 960px) {
+  .adminLoginShell {
+    grid-template-columns: 1fr;
+  }
+
+  .adminLoginBrandPanel,
+  .adminLoginFormPanel {
+    min-height: auto;
+  }
+}

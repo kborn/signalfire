@@ -137,44 +137,20 @@ API e2e tests use Testcontainers and require a working local container runtime.
 Screenshot refresh uses:
 
 ```bash
-node scripts/regenerate-doc-screenshots.mjs
+pnpm docs:screenshots
 ```
 
-## Visual Review Assets
+## Screenshots
 
-Architecture diagram:
+![Home](docs/screenshots/01-home.png)
 
-![SignalFire High-Level System Diagram](docs/architecture/diagrams/high-level-system-diagram.png)
+![Issues](docs/screenshots/02-topics.png)
 
-Featured screenshots:
+![Events](docs/screenshots/03-events.png)
 
-**Home (Hero)**
-![Home Hero](docs/screenshots/01-home.png)
+![Action Detail](docs/screenshots/04-action-detail.png)
 
-**Issue Detail**
-![Issue Detail](docs/screenshots/03-topic-detail.png)
-
-**Submit Entry**
-![Submit Entry](docs/screenshots/06-submit-entry.png)
-
-**Submission Review (Decision)**
-![Submission Review Decision](docs/screenshots/08-submission-review-decision.png)
-
-<details>
-  <summary>All screenshots</summary>
-
-- [Home (Hero)](docs/screenshots/01-home.png)
-- [Home (Lower Sections)](docs/screenshots/01b-home-lower.png)
-- [Issues Index](docs/screenshots/02-topics-index.png)
-- [Issue Detail](docs/screenshots/03-topic-detail.png)
-- [Article Detail](docs/screenshots/04-article-detail.png)
-- [Events Index](docs/screenshots/05-events-index.png)
-- [Submit Entry](docs/screenshots/06-submit-entry.png)
-- [Admin Submissions Queue](docs/screenshots/07-admin-submissions-queue.png)
-- [Submission Review](docs/screenshots/08-submission-review.png)
-- [Submission Review (Decision)](docs/screenshots/08-submission-review-decision.png)
-
-</details>
+![Submission Review](docs/screenshots/05-submission-review.png)
 
 ## Demo Review and Admin Access
 
@@ -204,8 +180,8 @@ Suggested reviewer path:
 
 1. Start on the homepage to understand the public demo posture
 2. Browse Issues, Articles, Actions, or the Event finder
-3. Open `Admin Demo` from the public header
-4. Use the seeded admin credentials to review moderation and content-management flows
+3. Click **Admin Demo** in the header — this opens the `/demo` page with admin access instructions and credentials
+4. Log into the admin workspace to review moderation queue, submission review, and content-management flows
 
 Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
 history live in:
@@ -220,7 +196,7 @@ Canonical planning and decision docs:
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current active implementation phase is Phase 13: Release Prep & Final Polish.
+Current active implementation phase is Phase 13.6: Review Response & Quality Closure.
 
 ## Key Repo Entry Points
 

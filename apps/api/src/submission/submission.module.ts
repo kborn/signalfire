@@ -7,10 +7,16 @@ import { ArticleModule } from '../article/article.module';
 import { SubmissionValidationPipe } from './submission-validation.pipe';
 import { SubmissionController } from './submission.controller';
 import { EventModule } from '../event/event.module';
+import { SubmissionRateLimitService } from './submission-rate-limit.service';
 
 @Module({
   imports: [PrismaModule, TopicModule, ArticleModule, EventModule],
-  providers: [SubmissionService, SubmissionRepository, SubmissionValidationPipe],
+  providers: [
+    SubmissionService,
+    SubmissionRepository,
+    SubmissionValidationPipe,
+    SubmissionRateLimitService,
+  ],
   exports: [SubmissionService],
   controllers: [SubmissionController],
 })

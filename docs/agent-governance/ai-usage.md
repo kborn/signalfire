@@ -1,6 +1,11 @@
 # AI Usage
 
-This document explains **how AI tools are used intentionally**.
+> **Note (2026-06-19):** The development approach shifted to autonomous-completion mode.
+> See `docs/agent-governance/decisions.md` → "Development Approach: Shift from Learning-Oriented
+> to Autonomous Completion" for the full rationale. The constraints in this document are
+> **superseded for implementation work**. `CLAUDE.md` is now the active operating guide.
+
+This document explains **how AI tools were used during the learning-oriented phase (0–12)**.
 
 ---
 

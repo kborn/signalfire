@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Topic } from '@prisma/client';
+import { Topic, Prisma } from '@prisma/client';
 
 @Injectable()
 export class TopicRepository {
@@ -92,5 +92,78 @@ export class TopicRepository {
         id: 'asc',
       },
     });
+  }
+
+  async findAllWithCounts(): Promise<
+    (Topic & { _count: { topicArticles: number; topicActions: number; topicEvents: number } })[]
+  > {
+    return this.prisma.topic.findMany({
+      orderBy: { id: 'asc' },
+      include: {
+        _count: {
+          select: {
+            topicArticles: true,
+            topicActions: true,
+            topicEvents: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findBySlugWithCounts(
+    slug: string,
+  ): Promise<
+    | (Topic & { _count: { topicArticles: number; topicActions: number; topicEvents: number } })
+    | null
+  > {
+    return this.prisma.topic.findUnique({
+      where: { slug },
+      include: {
+        _count: {
+          select: {
+            topicArticles: true,
+            topicActions: true,
+            topicEvents: true,
+          },
+        },
+      },
+    });
+  }
+
+  create(input: Prisma.TopicCreateInput): Promise<Topic> {
+    return this.prisma.topic.create({ data: input });
+  }
+
+  update(slug: string, input: Prisma.TopicUpdateInput): Promise<Topic> {
+    return this.prisma.topic.update({ where: { slug }, data: input });
+  }
+
+  async delete(slug: string): Promise<Topic> {
+    return this.prisma.topic.delete({ where: { slug } });
+  }
+
+  async countLinkedContent(slug: string): Promise<{
+    articles: number;
+    actions: number;
+    events: number;
+  }> {
+    const topic = await this.prisma.topic.findUnique({
+      where: { slug },
+      include: {
+        _count: {
+          select: {
+            topicArticles: true,
+            topicActions: true,
+            topicEvents: true,
+          },
+        },
+      },
+    });
+    return {
+      articles: topic?._count.topicArticles ?? 0,
+      actions: topic?._count.topicActions ?? 0,
+      events: topic?._count.topicEvents ?? 0,
+    };
   }
 }

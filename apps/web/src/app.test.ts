@@ -1,51 +1,48 @@
-import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('next/server', () => ({
+  connection: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock('@/lib/api/topics', () => ({
+  getTopicsList: vi.fn().mockResolvedValue({ items: [] }),
+}));
+
+vi.mock('@/lib/demo-mode', () => ({
+  isDemoModeEnabled: vi.fn().mockReturnValue(false),
+}));
 
 import HomePage from './app/(public)/page';
 
 describe('HomePage', () => {
-  function renderHomePage() {
-    return renderToStaticMarkup(createElement(HomePage));
-  }
-
-  it('renders the homepage heading and supporting description', () => {
-    const markup = renderHomePage();
+  it('renders the homepage heading and supporting description', async () => {
+    const markup = renderToStaticMarkup(await HomePage());
 
     expect(markup).toContain('Find Your Fight');
     expect(markup).toContain(
-      'Choose one issue, learn what is at stake, and take one concrete step.',
+      'For people who care, want to do something real, and need a clear place to start.',
     );
   });
 
-  it('renders the primary and secondary discovery links', () => {
-    const markup = renderToStaticMarkup(HomePage());
+  it('renders the primary navigation CTAs', async () => {
+    const markup = renderToStaticMarkup(await HomePage());
 
-    expect(markup).toContain('href="/topics"');
-    expect(markup).toContain('Explore Issues');
+    expect(markup).toContain('href="/issues"');
+    expect(markup).toContain('Browse Issues');
     expect(markup).toContain('href="/about"');
-    expect(markup).toContain('Why This Site Exists');
-    expect(markup).toContain('href="/events"');
-    expect(markup).toContain('Search Events');
-    expect(markup).toContain('href="/actions"');
-    expect(markup).toContain('Take a concrete step');
-    expect(markup).toContain(
-      'A civic action site for people who want to do something about what is happening and need a clear place to start.',
-    );
+    expect(markup).toContain('How it works');
+    expect(markup).toContain('href="/submit"');
     expect(markup).toContain('Submit Content');
-    expect(markup).toContain('Who This Is For');
   });
 
-  it('renders the issue-first journey and participation sections', () => {
-    const markup = renderHomePage();
+  it('renders the three-step journey and contribute sections', async () => {
+    const markup = renderToStaticMarkup(await HomePage());
 
-    expect(markup).toContain('The path is simple.');
-    expect(markup).toContain('Choose an issue');
-    expect(markup).toContain('Get enough context');
-    expect(markup).toContain('Take a concrete step');
-    expect(markup).toContain('Submissions are moderated before they go live.');
-    expect(markup).toContain(
-      'Submit an article or event and it enters moderation review before publication.',
-    );
+    expect(markup).toContain('Three steps. One concrete result.');
+    expect(markup).toContain('Pick an issue');
+    expect(markup).toContain('Read what matters');
+    expect(markup).toContain('Do one concrete thing');
+    expect(markup).toContain('Help more people find a way in.');
   });
 });

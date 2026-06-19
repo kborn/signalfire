@@ -71,7 +71,11 @@ export class AdminActionService {
   }
 
   private toAdminActionDetailResponse(action: ActionWithTopics): AdminActionDetailResponse {
-    return { ...this.toAdminActionSummary(action), description: action.description };
+    return {
+      ...this.toAdminActionSummary(action),
+      description: action.description,
+      externalUrl: action.externalUrl ?? null,
+    };
   }
 
   private async getTopicIds(slugs: string[]): Promise<number[]> {
@@ -91,6 +95,7 @@ export class AdminActionService {
       slug,
       summary: reqBody.summary,
       description: reqBody.description,
+      externalUrl: reqBody.externalUrl ?? null,
       actionType: reqBody.actionType,
       status: reqBody.status,
       publishedAt: reqBody.status === EntityStatus.PUBLISHED ? new Date() : null,
@@ -105,6 +110,7 @@ export class AdminActionService {
       title: reqBody.title,
       summary: reqBody.summary,
       description: reqBody.description,
+      externalUrl: reqBody.externalUrl ?? null,
       actionType: reqBody.actionType,
       status: reqBody.status,
       topicIds: await this.getTopicIds(reqBody.topicSlugs),

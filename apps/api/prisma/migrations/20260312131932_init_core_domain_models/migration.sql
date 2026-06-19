@@ -47,6 +47,7 @@ CREATE TABLE "action" (
     "title" TEXT NOT NULL,
     "summary" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "external_url" TEXT,
     "action_type" action_type NOT NULL,
     "status" entity_status NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
