@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
 import { MarkdownContent } from '@/components/markdown-content';
@@ -25,6 +26,7 @@ export default async function ArticleDetailsPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await connection();
   const article = await fetchArticleDetails(params);
   const publishedAt = formatContentDate(article.publishedAt);
   const updatedAt = formatContentDate(article.updatedAt);

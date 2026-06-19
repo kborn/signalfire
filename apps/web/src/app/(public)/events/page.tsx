@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { EventSummary } from '@/components/event-summary';
 import { getEventsList } from '@/lib/api/events';
 import { TopicSelector } from '@/components/topic-selector';
@@ -113,6 +114,7 @@ async function getContents(params: EventListPageProps) {
 }
 
 export default async function EventListPage({ searchParams }: EventListPagePropsWrapper) {
+  await connection();
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventListPageProps = { ...params, ...resolveDateWindow(params) };

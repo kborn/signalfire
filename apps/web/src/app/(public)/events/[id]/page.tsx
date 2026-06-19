@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { EventDetailResponse } from '@signal-fire/api-contracts';
 import { getEventDetails } from '@/lib/api/events';
 import { notFound } from 'next/navigation';
@@ -59,6 +60,7 @@ function formatEventArea({
 }
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const event = await fetchEventDetails(params);
   const eventArea = formatEventArea(event);
   const normalizedSummary = normalizePlainText(event.summary);

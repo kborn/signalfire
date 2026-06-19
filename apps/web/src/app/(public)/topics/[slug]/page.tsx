@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getTopicDetails } from '@/lib/api/topics';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
@@ -20,6 +21,7 @@ async function fetchTopicDetails(params: Promise<{ slug: string }>) {
 }
 
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  await connection();
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage">

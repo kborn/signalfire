@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getActionsList } from '@/lib/api/actions';
 import { ActionSummary } from '@/components/action-summary';
 
@@ -46,6 +47,7 @@ type ActionListPageProps = {
 };
 
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
+  await connection();
   const params = await searchParams;
   const { topicSlug, page, pageSize } = params;
   const [resp, topics] = await Promise.all([

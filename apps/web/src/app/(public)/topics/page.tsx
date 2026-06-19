@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
 
@@ -13,6 +14,7 @@ function getNoResultsResponse() {
 }
 
 export default async function TopicListPage() {
+  await connection();
   const data = await getTopicsList();
   if (data.items.length === 0) {
     return getNoResultsResponse();

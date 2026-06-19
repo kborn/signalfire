@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getArticlesList } from '@/lib/api/articles';
 import { ArticleSummary } from '@/components/article-summary';
 import { getTopicsList } from '@/lib/api/topics';
@@ -46,6 +47,7 @@ type ArticleListPageProps = {
 };
 
 export default async function ArticleListPage({ searchParams }: ArticleListPageProps) {
+  await connection();
   const params = await searchParams;
   const { topicSlug, page, pageSize } = params;
   const [resp, topics] = await Promise.all([
