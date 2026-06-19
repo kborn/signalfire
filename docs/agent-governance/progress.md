@@ -1709,7 +1709,7 @@ Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site
 
 - [x] Merge duplicate editor form CSS — shared block for `actionEditorForm`, `eventEditorForm`, `articleEditorForm`; ~120 lines of duplicated overrides removed
 - [x] Scope `p { max-width: 70ch }` to `.publicShell p` — admin paragraphs no longer artificially constrained
-- [x] Replace `force-dynamic` with `revalidate = 3600` on submit pages — topics are seeded and immutable in Release 1
+- [x] Replace `force-dynamic` with `connection()` on submit pages — `await connection()` prevents build-time pre-rendering without disabling caching; consistent with the pattern applied to other public pages on this branch
 - [x] Replace hardcoded hex values in public CSS — `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup`, `collectionItemSummary` now use `var(--color-text-muted)`
 - [x] Remove `margin-right: 10px` from `.secondaryCTA`
 - [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"`

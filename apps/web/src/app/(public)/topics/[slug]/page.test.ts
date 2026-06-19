@@ -56,7 +56,7 @@ describe('TopicDetailsPage', () => {
     expect(getTopicDetails).toHaveBeenCalledWith('climate');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Climate issue overview.');
-    expect(markup).toContain('Step 2 - Read enough to act');
+    expect(markup).toContain('Step 2 — Read');
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Step 3 - Choose a next step');

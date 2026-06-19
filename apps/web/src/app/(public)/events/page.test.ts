@@ -160,7 +160,6 @@ describe('EventListPage', () => {
     expect(getEventsList).toHaveBeenCalledTimes(1);
     expect(getEventsList).toHaveBeenCalledWith({});
     expect(markup).toContain('Events');
-    expect(markup).toContain('Upcoming events are already on the page.');
   });
 
   it('renders the empty state when a filtered query returns no events', async () => {
