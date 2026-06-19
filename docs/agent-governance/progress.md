@@ -1682,7 +1682,7 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 ---
 
-#### ▸ Phase 13.6 - External Review 2 Closure 🚧
+#### ▸ Phase 13.6 - External Review 2 Closure ✅
 
 ###### Goal
 
@@ -1690,49 +1690,45 @@ Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site
 
 ###### Phase Tasks:
 
-**Critical — blocks portfolio readiness:**
+**Public UX & navigation:**
 
-- [x] Create the public `/demo` page with demo framing, limited-data disclosure, admin access path, and links to the repository and key public routes — currently missing from disk despite being listed in `decisions.md` and referenced from the header nav
-- [x] Resolve the events page UX contradiction — removed the guidance card; events now show by default, filters narrow from there
-- [ ] Fix event time display — timezone code is correct; UTC display may be intermittent or already resolved; verify against live app after seed reset
+- [x] Create the public `/demo` page — demo framing, limited-data disclosure, admin credentials, repo link; header "Admin Demo" now routes here instead of directly to `/admin`
+- [x] Add breadcrumb + "browse more" nav to all four detail page types (article, action, event, topic) — eliminates dead ends after reading
+- [x] Add minimal public footer — secondary nav links and tagline in `(public)/layout.tsx`
+- [x] Resolve events page UX contradiction — removed guidance card; events show by default, filters narrow from there
 
-**Additional fixes (from review-2026-06-17 and review-2026-06-18):**
+**Visual design:**
 
-- [x] Add back-to-topic breadcrumb and "Browse more" footer nav to article and action detail pages — eliminates the dead-end after reading
-- [x] Fix admin shell floating on dark void — added `min-height: calc(100vh - 48px)` so the card fills the viewport
-- [x] Replace hardcoded hex in public CSS — `#444444`, `#2d2d2d`, `#555555` on `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup` now use `var(--color-text-muted)`
-- [x] Clean up topic detail section labels — "Step 2 - Read enough to act" → "Step 2 — Read"; "Step 3 - Choose a next step" → "Step 3 — Act"; removed redundant taglines
-- [x] Remove `packages/api-contracts/dist/` from version control — added `.gitignore`
-- [x] Add breadcrumb + "browse more" footer nav to event and topic detail pages — all four detail page types now have navigation context
+- [x] Add per-topic accent colors via CSS `data-topic` attribute — seven distinct left-border colors on the Issues index
 - [x] Fix admin shell void — `min-height: calc(100vh - 48px)` eliminates dark empty space below the admin card
+- [x] Fix related section layout in article and event detail grids — `grid-column: 1 / -1` so related topics/actions span full width
+- [x] Clean up topic detail section labels — "Step 2 - Read enough to act" → "Step 2 — Read"; "Step 3 — Act"
+- [x] Confirm event timezone display — live screenshots confirm EDT rendering; UTC fallback code is correct
+
+**Engineering & CSS:**
+
+- [x] Merge duplicate editor form CSS — shared block for `actionEditorForm`, `eventEditorForm`, `articleEditorForm`; ~120 lines of duplicated overrides removed
 - [x] Scope `p { max-width: 70ch }` to `.publicShell p` — admin paragraphs no longer artificially constrained
-- [x] Replace hardcoded hex in `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup` — all now use `var(--color-text-muted)`
-- [x] Remove redundant `eventEditorForm` and `articleEditorForm` individual override blocks — ~80 lines of duplicated CSS removed; shared block is now the single source of truth
-- [x] Replace `force-dynamic` on submit pages with `revalidate = 3600` — topics are seeded and immutable in Release 1
-
-**High — visible to any reviewer:**
-
-- [x] Fix related section layout in article and event detail pages — added `grid-column: 1 / -1` to `relatedSection` inside `detailContent--article` and `detailContent--event`
-- [x] Add a minimal public footer — added to `(public)/layout.tsx` with secondary nav and tagline
-- [x] Fix API default port — changed fallback from 3000 to 3001 in `apps/api/src/main.ts`
-
-**Engineering quality:**
-
-- [x] Merge duplicate editor form CSS — added shared block in `globals.css`; individual per-form overrides remain as redundant but harmless fallbacks
-- [x] Replace hardcoded hex values — `collectionItemSummary` `#2d2d2d` → `var(--color-text-muted)`
+- [x] Replace `force-dynamic` with `revalidate = 3600` on submit pages — topics are seeded and immutable in Release 1
+- [x] Replace hardcoded hex values in public CSS — `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup`, `collectionItemSummary` now use `var(--color-text-muted)`
 - [x] Remove `margin-right: 10px` from `.secondaryCTA`
-- [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"` in `topic-selector.tsx` and CSS selector updated to match
+- [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"`
+- [x] Fix API default port — fallback changed from 3000 to 3001 in `apps/api/src/main.ts`
+- [x] Remove `packages/api-contracts/dist/` from version control — added `.gitignore`
+- [x] Fix `ReviewOutcomePanel` reviewed-at rendering — `toLocaleString()` replaced with `formatAdminDateTime`
 
 **Closeout:**
 
-- [ ] Refresh `docs/screenshots/` after all fixes are applied
-- [ ] Run `scripts/rc-smoke.mjs` and confirm clean
+- [x] Reduce `docs/screenshots/` to 5 focused portfolio captures; update `scripts/regenerate-doc-screenshots.mjs` accordingly
+- [x] Update README — 5-screenshot inline gallery, corrected repo URL, updated reviewer path and phase reference
+- [x] Update `scripts/rc-smoke.mjs` assertions to match new copy; confirm 35/35 pass
+- [x] Record periodic review doc convention in `decisions.md`; review artifacts live in `docs/reviews/`
 
 ###### Notes:
 
 - Findings sourced from `docs/reviews/review-2026-06-17.md` and `docs/reviews/review-2026-06-18.md`.
-- Scope is quality closure only — no new features, no search, no topics admin, no scope expansion.
-- Vision check: every fix must make the focus-to-action journey cleaner or more credible, not more complex.
+- Scope was quality closure only — no new features, no search, no topics admin, no scope expansion.
+- Per-topic color differentiation used CSS `data-slug` attribute; no backend changes required.
 
 ---
 
