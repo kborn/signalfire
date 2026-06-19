@@ -25,6 +25,11 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage">
+      <nav className="detailBreadcrumb" aria-label="Back">
+        <Link href="/topics" className="detailBreadcrumbLink">
+          ← All Issues
+        </Link>
+      </nav>
       <section className="detailHeader detailHero">
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
@@ -36,10 +41,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <section className="relatedSection" aria-labelledby="topic-articles-label">
             <div className="relatedSectionHeader">
               <p id="topic-articles-label" className="section-label">
-                Step 2 - Read enough to act
-              </p>
-              <p className="relatedSectionTagline">
-                Read explainers and field guides that make the issue easier to follow.
+                Step 2 — Read
               </p>
             </div>
             <div className="collectionList">
@@ -53,9 +55,8 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <section className="relatedSection" aria-labelledby="topic-actions-label">
             <div className="relatedSectionHeader">
               <p id="topic-actions-label" className="section-label">
-                Step 3 - Choose a next step
+                Step 3 — Act
               </p>
-              <p className="relatedSectionTagline">Take practical next steps you can do now.</p>
             </div>
             <div className="collectionList">
               {topic.actions.map((action) => (

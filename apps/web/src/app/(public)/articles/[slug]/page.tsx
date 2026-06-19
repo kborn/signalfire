@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
+import Link from 'next/link';
 
 export const revalidate = 60;
 
@@ -33,6 +34,17 @@ export default async function ArticleDetailsPage({
 
   return (
     <div className="detailPage">
+      <nav className="detailBreadcrumb" aria-label="Back">
+        {article.topics.length > 0 ? (
+          <Link href={`/topics/${article.topics[0].slug}`} className="detailBreadcrumbLink">
+            ← {article.topics[0].name}
+          </Link>
+        ) : (
+          <Link href="/articles" className="detailBreadcrumbLink">
+            ← Articles
+          </Link>
+        )}
+      </nav>
       <section className="detailHeader detailHero">
         <h1 className="pageTitle">{article.title}</h1>
       </section>
@@ -88,6 +100,11 @@ export default async function ArticleDetailsPage({
           </section>
         )}
       </section>
+      <div className="detailPageNav">
+        <Link href="/articles" className="textCTA">
+          Browse more articles
+        </Link>
+      </div>
     </div>
   );
 }

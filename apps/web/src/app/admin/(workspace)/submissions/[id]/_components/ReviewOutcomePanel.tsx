@@ -4,6 +4,7 @@ import {
   SubmissionType,
 } from '@signal-fire/api-contracts';
 import Link from 'next/link';
+import { formatAdminDateTime } from '@/lib/common/time';
 
 export default function ReviewOutcomePanel({
   submission,
@@ -34,7 +35,7 @@ export default function ReviewOutcomePanel({
         <dd>{submission.status === 'APPROVED' ? 'Approved' : 'Rejected'}</dd>
 
         <dt>Reviewed</dt>
-        <dd>{submission.reviewedAt ? new Date(submission.reviewedAt).toLocaleString() : '--'}</dd>
+        <dd>{submission.reviewedAt ? formatAdminDateTime(submission.reviewedAt) : '--'}</dd>
 
         <dt>Review notes</dt>
         <dd>{submission.reviewNotes || '--'}</dd>

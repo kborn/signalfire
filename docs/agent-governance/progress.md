@@ -20,8 +20,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| **[14](#-phase-14--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
+| **[13](#-phase-13--release-prep--final-polish-)** | **Release Prep & Final Polish** | **🚧 ACTIVE** |
+| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
 | [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -1679,6 +1679,56 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 - External review follow-up: `docs/specs/015-phase-13-milestone-1-polish-review.md`
 - Release readiness: `docs/specs/016-phase-13-milestone-1-release-readiness.md`
+
+---
+
+#### ▸ Phase 13.6 - External Review 2 Closure ✅
+
+###### Goal
+
+Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site reviews before advancing to deployment infrastructure.
+
+###### Phase Tasks:
+
+**Public UX & navigation:**
+
+- [x] Create the public `/demo` page — demo framing, limited-data disclosure, admin credentials, repo link; header "Admin Demo" now routes here instead of directly to `/admin`
+- [x] Add breadcrumb + "browse more" nav to all four detail page types (article, action, event, topic) — eliminates dead ends after reading
+- [x] Add minimal public footer — secondary nav links and tagline in `(public)/layout.tsx`
+- [x] Resolve events page UX contradiction — removed guidance card; events show by default, filters narrow from there
+
+**Visual design:**
+
+- [x] Add per-topic accent colors via CSS `data-topic` attribute — seven distinct left-border colors on the Issues index
+- [x] Fix admin shell void — `min-height: calc(100vh - 48px)` eliminates dark empty space below the admin card
+- [x] Fix related section layout in article and event detail grids — `grid-column: 1 / -1` so related topics/actions span full width
+- [x] Clean up topic detail section labels — "Step 2 - Read enough to act" → "Step 2 — Read"; "Step 3 — Act"
+- [x] Confirm event timezone display — live screenshots confirm EDT rendering; UTC fallback code is correct
+
+**Engineering & CSS:**
+
+- [x] Merge duplicate editor form CSS — shared block for `actionEditorForm`, `eventEditorForm`, `articleEditorForm`; ~120 lines of duplicated overrides removed
+- [x] Scope `p { max-width: 70ch }` to `.publicShell p` — admin paragraphs no longer artificially constrained
+- [x] Replace `force-dynamic` with `connection()` on submit pages — `await connection()` prevents build-time pre-rendering without disabling caching; consistent with the pattern applied to other public pages on this branch
+- [x] Replace hardcoded hex values in public CSS — `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup`, `collectionItemSummary` now use `var(--color-text-muted)`
+- [x] Remove `margin-right: 10px` from `.secondaryCTA`
+- [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"`
+- [x] Fix API default port — fallback changed from 3000 to 3001 in `apps/api/src/main.ts`
+- [x] Remove `packages/api-contracts/dist/` from version control — added `.gitignore`
+- [x] Fix `ReviewOutcomePanel` reviewed-at rendering — `toLocaleString()` replaced with `formatAdminDateTime`
+
+**Closeout:**
+
+- [x] Reduce `docs/screenshots/` to 5 focused portfolio captures; update `scripts/regenerate-doc-screenshots.mjs` accordingly
+- [x] Update README — 5-screenshot inline gallery, corrected repo URL, updated reviewer path and phase reference
+- [x] Update `scripts/rc-smoke.mjs` assertions to match new copy; confirm 35/35 pass
+- [x] Record periodic review doc convention in `decisions.md`; review artifacts live in `docs/reviews/`
+
+###### Notes:
+
+- Findings sourced from `docs/reviews/review-2026-06-17.md` and `docs/reviews/review-2026-06-18.md`.
+- Scope was quality closure only — no new features, no search, no topics admin, no scope expansion.
+- Per-topic color differentiation used CSS `data-slug` attribute; no backend changes required.
 
 ---
 

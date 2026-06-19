@@ -9,6 +9,7 @@ import { formatEventTime } from '@/lib/common/time';
 import { TopicSummary } from '@/components/topic-summary';
 import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
+import Link from 'next/link';
 
 export const revalidate = 60;
 
@@ -70,6 +71,17 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
 
   return (
     <div className="detailPage">
+      <nav className="detailBreadcrumb" aria-label="Back">
+        {event.topics.length > 0 ? (
+          <Link href={`/topics/${event.topics[0].slug}`} className="detailBreadcrumbLink">
+            ← {event.topics[0].name}
+          </Link>
+        ) : (
+          <Link href="/events" className="detailBreadcrumbLink">
+            ← Events
+          </Link>
+        )}
+      </nav>
       <section className="detailHeader detailHero">
         <h1 className="pageTitle">{event.title}</h1>
       </section>
@@ -171,6 +183,11 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           </section>
         )}
       </section>
+      <div className="detailPageNav">
+        <Link href="/events" className="textCTA">
+          Browse more events
+        </Link>
+      </div>
     </div>
   );
 }

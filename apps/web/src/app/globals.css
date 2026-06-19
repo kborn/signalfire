@@ -63,8 +63,13 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
-p {
+.publicShell p {
   max-width: 70ch;
+}
+
+.adminShell p,
+.adminShell p.metaText {
+  max-width: none;
 }
 
 /* Shared layout */
@@ -445,7 +450,7 @@ p {
 .metaText {
   font-size: 1rem;
   line-height: 1.45;
-  color: #444444;
+  color: var(--color-text-muted);
 }
 
 .publicShell .metaText {
@@ -882,7 +887,6 @@ button.secondaryCTA {
   background: transparent;
   color: #171717;
   font-weight: 600;
-  margin-right: 10px;
   line-height: 1;
   transition:
     background-color 0.2s ease,
@@ -996,7 +1000,7 @@ h3 {
 .collectionItemSummary {
   font-size: 1rem;
   line-height: 1.45;
-  color: #2d2d2d;
+  color: var(--color-text-muted);
   max-width: 72ch;
 }
 
@@ -1100,14 +1104,14 @@ h3 {
 
 .relatedListItemSummary {
   padding-left: 1rem;
-  color: #2d2d2d;
+  color: var(--color-text-muted);
   max-width: 68ch;
 }
 
 .eventMeta {
   font-size: 0.95rem;
   line-height: 1.35;
-  color: #444444;
+  color: var(--color-text-muted);
 }
 
 .publicShell .eventMeta {
@@ -1141,7 +1145,74 @@ h3 {
   border-left-color: var(--color-brand-accent);
 }
 
+/* Per-topic accent colors (left border + subtle background tint) */
+.topicCollectionItem[data-topic='democracy'] {
+  --topic-accent: #5b88c7;
+}
+.topicCollectionItem[data-topic='consumer-activism'] {
+  --topic-accent: #c9894a;
+}
+.topicCollectionItem[data-topic='climate'] {
+  --topic-accent: #4a9e7c;
+}
+.topicCollectionItem[data-topic='civil-rights'] {
+  --topic-accent: #c76b5b;
+}
+.topicCollectionItem[data-topic='economic-justice'] {
+  --topic-accent: #c4a23e;
+}
+.topicCollectionItem[data-topic='education'] {
+  --topic-accent: #7a84c7;
+}
+.topicCollectionItem[data-topic='local-community'] {
+  --topic-accent: #5da870;
+}
+
+.publicShell .topicCollectionItem[data-topic] {
+  border-left-color: color-mix(
+    in srgb,
+    var(--topic-accent, var(--color-brand-accent)) 80%,
+    var(--color-border-subtle)
+  );
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--topic-accent, var(--color-brand-accent)) 8%, transparent) 0%,
+      transparent 44%
+    ),
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+}
+
+.publicShell .topicCollectionItem[data-topic]:hover {
+  border-left-color: var(--topic-accent, var(--color-brand-accent));
+}
+
 /* Detail pages */
+
+.detailBreadcrumb {
+  margin-bottom: var(--space-2);
+}
+
+.detailBreadcrumbLink {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.detailBreadcrumbLink:hover {
+  color: var(--color-brand-primary);
+  text-decoration: none;
+}
+
+.detailPageNav {
+  padding-top: var(--space-4);
+  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
+  margin-top: var(--space-2);
+}
 
 .detailPage {
   display: grid;
@@ -1229,6 +1300,12 @@ h3 {
   align-items: start;
 }
 
+.detailContent--article > .relatedSection,
+.detailContent--event > .relatedSection,
+.detailContent--article > .ctaGroup {
+  grid-column: 1 / -1;
+}
+
 .detailContent--topic {
   gap: calc(var(--space-3) + 4px);
 }
@@ -1240,7 +1317,7 @@ h3 {
 .detailMetaGroup {
   display: grid;
   gap: var(--space-1);
-  color: #555555;
+  color: var(--color-text-muted);
   font-size: 1rem;
   line-height: 1.4;
 }
@@ -1753,10 +1830,46 @@ h3 {
   padding: 0.85rem 1.35rem;
 }
 
+/* Footer */
+
+.site-footer {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4) 0 var(--space-3);
+  margin-top: var(--space-5);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.site-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-3);
+  font-size: 0.95rem;
+}
+
+.site-footer-nav a {
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.site-footer-nav a:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.site-footer-tagline {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  max-width: none;
+}
+
 /* Admin */
 .adminShell {
   display: grid;
   gap: var(--space-4);
+  min-height: calc(100vh - 48px);
+  align-content: start;
   padding: clamp(20px, 3vw, 32px);
   border: 1px solid color-mix(in srgb, var(--color-border-subtle) 72%, transparent);
   border-radius: 24px;
@@ -2218,13 +2331,19 @@ h3 {
   border: 0;
 }
 
-.actionEditorForm {
+/* Shared dark-theme editor form overrides (action / event / article editors) */
+
+.actionEditorForm,
+.eventEditorForm,
+.articleEditorForm {
   width: 100%;
   max-width: none;
   color-scheme: dark;
 }
 
-.actionEditorForm .adminPanel {
+.actionEditorForm .adminPanel,
+.eventEditorForm .adminPanel,
+.articleEditorForm .adminPanel {
   display: grid;
   gap: var(--space-2);
   border-color: var(--color-border-subtle);
@@ -2233,9 +2352,92 @@ h3 {
 }
 
 .actionEditorForm .adminPanelHeader h2,
-.actionEditorForm .adminPanelHeader h3 {
+.actionEditorForm .adminPanelHeader h3,
+.eventEditorForm .adminPanelHeader h2,
+.eventEditorForm .adminPanelHeader h3,
+.articleEditorForm .adminPanelHeader h2,
+.articleEditorForm .adminPanelHeader h3 {
   color: var(--color-text-primary);
 }
+
+.actionEditorForm .submissionLabel,
+.eventEditorForm .submissionLabel,
+.articleEditorForm .submissionLabel {
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionControl,
+.actionEditorForm .submissionTextarea,
+.eventEditorForm .submissionControl,
+.eventEditorForm .submissionTextarea,
+.articleEditorForm .submissionControl,
+.articleEditorForm .submissionTextarea {
+  border-color: color-mix(in srgb, var(--color-border-subtle) 82%, #ffffff 18%);
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionControl::placeholder,
+.actionEditorForm .submissionTextarea::placeholder,
+.eventEditorForm .submissionControl::placeholder,
+.eventEditorForm .submissionTextarea::placeholder,
+.articleEditorForm .submissionControl::placeholder,
+.articleEditorForm .submissionTextarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.actionEditorForm .submissionControl:focus,
+.actionEditorForm .submissionTextarea:focus,
+.eventEditorForm .submissionControl:focus,
+.eventEditorForm .submissionTextarea:focus,
+.articleEditorForm .submissionControl:focus,
+.articleEditorForm .submissionTextarea:focus {
+  border-color: var(--color-brand-primary);
+  outline-color: var(--color-brand-primary);
+}
+
+.actionEditorForm .submissionCheckboxGroup,
+.eventEditorForm .submissionCheckboxGroup,
+.articleEditorForm .submissionCheckboxGroup {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.actionEditorForm .adminTopicGrid,
+.eventEditorForm .adminTopicGrid,
+.articleEditorForm .adminTopicGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+}
+
+.actionEditorForm .submissionCheckboxOption,
+.eventEditorForm .submissionCheckboxOption,
+.articleEditorForm .submissionCheckboxOption {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  width: fit-content;
+  color: var(--color-text-primary);
+}
+
+.actionEditorForm .submissionCheckboxOption input,
+.eventEditorForm .submissionCheckboxOption input,
+.articleEditorForm .submissionCheckboxOption input {
+  margin-top: 0.2rem;
+  accent-color: var(--color-brand-primary);
+}
+
+.actionEditorForm .adminError,
+.eventEditorForm .adminError,
+.articleEditorForm .adminError {
+  color: var(--color-status-error);
+}
+
+/* End shared editor overrides */
 
 .actionEditorLayout {
   display: grid;
@@ -2385,25 +2587,6 @@ h3 {
   color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
 }
 
-.eventEditorForm {
-  width: 100%;
-  max-width: none;
-  color-scheme: dark;
-}
-
-.eventEditorForm .adminPanel {
-  display: grid;
-  gap: var(--space-2);
-  border-color: var(--color-border-subtle);
-  background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
-  box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
-}
-
-.eventEditorForm .adminPanelHeader h2,
-.eventEditorForm .adminPanelHeader h3 {
-  color: var(--color-text-primary);
-}
-
 .eventEditorLayout {
   display: grid;
   grid-template-columns: minmax(0, 3fr) minmax(320px, 0.95fr);
@@ -2491,55 +2674,6 @@ h3 {
   gap: var(--space-1);
 }
 
-.eventEditorForm .submissionLabel {
-  color: var(--color-text-primary);
-}
-
-.eventEditorForm .submissionControl,
-.eventEditorForm .submissionTextarea {
-  border-color: color-mix(in srgb, var(--color-border-subtle) 82%, #ffffff 18%);
-  background: var(--color-field-bg);
-  color: var(--color-text-primary);
-}
-
-.eventEditorForm .submissionControl::placeholder,
-.eventEditorForm .submissionTextarea::placeholder {
-  color: var(--color-text-muted);
-}
-
-.eventEditorForm .submissionControl:focus,
-.eventEditorForm .submissionTextarea:focus {
-  border-color: var(--color-brand-primary);
-  outline-color: var(--color-brand-primary);
-}
-
-.eventEditorForm .submissionCheckboxGroup {
-  display: grid;
-  gap: var(--space-1);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.eventEditorForm .adminTopicGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-1);
-}
-
-.eventEditorForm .submissionCheckboxOption {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  width: fit-content;
-  color: var(--color-text-primary);
-}
-
-.eventEditorForm .submissionCheckboxOption input {
-  margin-top: 0.2rem;
-  accent-color: var(--color-brand-primary);
-}
-
 .eventEditorFooter {
   display: flex;
   flex-wrap: wrap;
@@ -2566,10 +2700,6 @@ h3 {
   font-size: 0.95rem;
 }
 
-.eventEditorForm .adminError {
-  color: var(--color-status-error);
-}
-
 .eventEditorForm .actionEditorSuccessBanner {
   margin: 0;
   border-color: color-mix(in srgb, var(--color-brand-primary) 28%, var(--color-border-subtle) 72%);
@@ -2579,25 +2709,6 @@ h3 {
 
 .eventEditorForm .actionEditorSuccessBanner .adminReviewBannerText {
   color: color-mix(in srgb, var(--color-text-primary) 86%, var(--color-text-muted) 14%);
-}
-
-.articleEditorForm {
-  width: 100%;
-  max-width: none;
-  color-scheme: dark;
-}
-
-.articleEditorForm .adminPanel {
-  display: grid;
-  gap: var(--space-2);
-  border-color: var(--color-border-subtle);
-  background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
-  box-shadow: 0 14px 28px -24px rgb(0 0 0 / 72%);
-}
-
-.articleEditorForm .adminPanelHeader h2,
-.articleEditorForm .adminPanelHeader h3 {
-  color: var(--color-text-primary);
 }
 
 .articleEditorLayout {
@@ -2654,28 +2765,6 @@ h3 {
   background: color-mix(in srgb, var(--color-surface-soft) 72%, transparent);
 }
 
-.articleEditorForm .submissionLabel {
-  color: var(--color-text-primary);
-}
-
-.articleEditorForm .submissionControl,
-.articleEditorForm .submissionTextarea {
-  border-color: color-mix(in srgb, var(--color-border-subtle) 82%, #ffffff 18%);
-  background: var(--color-field-bg);
-  color: var(--color-text-primary);
-}
-
-.articleEditorForm .submissionControl::placeholder,
-.articleEditorForm .submissionTextarea::placeholder {
-  color: var(--color-text-muted);
-}
-
-.articleEditorForm .submissionControl:focus,
-.articleEditorForm .submissionTextarea:focus {
-  border-color: var(--color-brand-primary);
-  outline-color: var(--color-brand-primary);
-}
-
 .articleEditorTextareaSummary {
   min-height: 180px;
 }
@@ -2686,33 +2775,6 @@ h3 {
 
 .articleEditorTextareaAuthor {
   min-height: 44px;
-}
-
-.articleEditorForm .submissionCheckboxGroup {
-  display: grid;
-  gap: var(--space-1);
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-.articleEditorForm .adminTopicGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-1);
-}
-
-.articleEditorForm .submissionCheckboxOption {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.7rem;
-  width: fit-content;
-  color: var(--color-text-primary);
-}
-
-.articleEditorForm .submissionCheckboxOption input {
-  margin-top: 0.2rem;
-  accent-color: var(--color-brand-primary);
 }
 
 .articleEditorFooter {
@@ -2739,10 +2801,6 @@ h3 {
   padding: 0.75rem 1.15rem;
   border-radius: 12px;
   font-size: 0.95rem;
-}
-
-.articleEditorForm .adminError {
-  color: var(--color-status-error);
 }
 
 .articleEditorForm .articleEditorSuccessBanner {
@@ -3146,7 +3204,7 @@ h3 {
   border-color: var(--color-brand-primary);
 }
 
-.topicSelector a[aria-current='page'] {
+.topicSelector a[aria-current='true'] {
   border-color: var(--color-brand-accent);
   background: color-mix(in srgb, var(--color-brand-accent) 10%, white 90%);
   color: var(--color-brand-accent);

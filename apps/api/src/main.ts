@@ -25,7 +25,7 @@ async function bootstrap() {
   app.use(cookieParser());
   const prisma = app.get(PrismaService);
   prisma.enableShutdownHooks(app);
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 3001);
 }
 bootstrap().catch((err) => {
   console.error(err);
