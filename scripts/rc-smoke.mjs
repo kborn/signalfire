@@ -158,12 +158,7 @@ async function main() {
     await expectPage(page, 'Public home', '/', 'Choose an issue.');
     await expectPage(page, 'Public about', '/about', 'Why This Site Exists');
     await expectPage(page, 'Public topics index', '/topics', 'Issues');
-    await expectPage(
-      page,
-      'Public topic detail',
-      `/topics/${topicSlug}`,
-      'Step 2 - Read enough to act',
-    );
+    await expectPage(page, 'Public topic detail', `/topics/${topicSlug}`, 'Step 2 — Read');
     await expectPage(page, 'Public articles index', '/articles', 'Articles');
     await expectPage(page, 'Public article detail', `/articles/${articleSlug}`, 'Author');
     await expectPage(page, 'Public actions index', '/actions', 'Take Action');
@@ -172,7 +167,7 @@ async function main() {
       page,
       'Public events index',
       '/events',
-      'Upcoming events are already on the page.',
+      'Browse upcoming events by issue, location, and date',
     );
     await expectPage(page, 'Public event detail', `/events/${eventId}`, 'Location');
     await expectPage(page, 'Public submit entry', '/submit', 'Contribute to Find Your Fight');

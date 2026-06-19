@@ -32,7 +32,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             </nav>
             <div className="site-header-actions">
               {isDemoMode ? (
-                <NavLink href="/admin" className="site-admin-demo-link">
+                <NavLink href="/demo" className="site-admin-demo-link">
                   Admin Demo
                 </NavLink>
               ) : null}
@@ -44,6 +44,17 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         </header>
         {isDemoMode ? <DemoBanner /> : null}
         <main>{children}</main>
+        <footer className="site-footer">
+          <nav className="site-footer-nav" aria-label="Footer">
+            <Link href="/topics">Issues</Link>
+            <Link href="/articles">Articles</Link>
+            <Link href="/actions">Take Action</Link>
+            <Link href="/events">Events</Link>
+            <Link href="/about">About</Link>
+            <Link href="/submit">Submit Content</Link>
+          </nav>
+          <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
+        </footer>
       </div>
     </div>
   );

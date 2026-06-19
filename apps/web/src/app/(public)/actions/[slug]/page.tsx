@@ -7,6 +7,7 @@ import { TopicSummary } from '@/components/topic-summary';
 import { ArticleSummary } from '@/components/article-summary';
 import { formatContentDate } from '@/lib/common/time';
 import { formatActionTypeLabel } from '@/lib/common/utils';
+import Link from 'next/link';
 
 export const revalidate = 60;
 
@@ -30,6 +31,17 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
   const actionType = formatActionTypeLabel(action.actionType);
   return (
     <div className="detailPage">
+      <nav className="detailBreadcrumb" aria-label="Back">
+        {action.topics.length > 0 ? (
+          <Link href={`/topics/${action.topics[0].slug}`} className="detailBreadcrumbLink">
+            ← {action.topics[0].name}
+          </Link>
+        ) : (
+          <Link href="/actions" className="detailBreadcrumbLink">
+            ← Actions
+          </Link>
+        )}
+      </nav>
       <section className="detailHeader">
         <h1 className="pageTitle">{action.title}</h1>
       </section>
@@ -78,6 +90,11 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           </section>
         )}
       </section>
+      <div className="detailPageNav">
+        <Link href="/actions" className="textCTA">
+          Browse more actions
+        </Link>
+      </div>
     </div>
   );
 }

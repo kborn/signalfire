@@ -1240,3 +1240,30 @@ selector, but they should be disabled.
 - The initial supported Event demo region set should include a small bounded
   mix such as California, New York, Pennsylvania, Texas, and Puerto Rico,
   unless implementation or content-review needs justify a nearby substitute.
+
+---
+
+---
+
+### ► Periodic site reviews live in `docs/reviews/` and are non-canonical
+
+###### 2026-06-18
+
+---
+
+###### Decision
+
+The project maintains a series of dated site review documents in `docs/reviews/`. Each review scores the product across Visual Design, UX/Product, and Engineering dimensions and produces a prioritized fix list. Review findings inform phase task creation but do not override canonical governance, architecture, or spec documents.
+
+###### Rationale
+
+- Periodic external-perspective reviews catch gaps that canonical docs and active implementation work tend to miss.
+- Keeping reviews in a dedicated directory prevents them from being mistaken for canonical authority and prevents bootstrap read chains from accidentally loading them as project state.
+- Dating each file by review date makes the series chronologically navigable and prevents stale findings from being acted on as current observations.
+
+###### Implications
+
+- `docs/reviews/` is non-canonical. Agents must not cite review documents in architecture decisions, spec documents, or governance docs.
+- Findings from a review should be promoted into a canonical phase subphase (e.g. Phase 13.6) before implementation begins. The review document itself is the source record; the phase entry is the implementation authority.
+- `docs/reviews/REVIEW_TEMPLATE.md` defines the standard format for future reviews.
+- A review document represents the state of the product at a single point in time. Before acting on a specific finding, verify it still applies to the current codebase.

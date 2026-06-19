@@ -20,8 +20,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| **[14](#-phase-14--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
+| **[13](#-phase-13--release-prep--final-polish-)** | **Release Prep & Final Polish** | **🚧 ACTIVE** |
+| [14](#-phase-14--deployment-infrastructure-)      | Deployment Infrastructure       | ⏳            |
 | [15](#-phase-15--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -1679,6 +1679,60 @@ Finish code-facing Milestone 1 work, resolve remaining schema ergonomics that wo
 
 - External review follow-up: `docs/specs/015-phase-13-milestone-1-polish-review.md`
 - Release readiness: `docs/specs/016-phase-13-milestone-1-release-readiness.md`
+
+---
+
+#### ▸ Phase 13.6 - External Review 2 Closure 🚧
+
+###### Goal
+
+Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site reviews before advancing to deployment infrastructure.
+
+###### Phase Tasks:
+
+**Critical — blocks portfolio readiness:**
+
+- [x] Create the public `/demo` page with demo framing, limited-data disclosure, admin access path, and links to the repository and key public routes — currently missing from disk despite being listed in `decisions.md` and referenced from the header nav
+- [x] Resolve the events page UX contradiction — removed the guidance card; events now show by default, filters narrow from there
+- [ ] Fix event time display — timezone code is correct; UTC display may be intermittent or already resolved; verify against live app after seed reset
+
+**Additional fixes (from review-2026-06-17 and review-2026-06-18):**
+
+- [x] Add back-to-topic breadcrumb and "Browse more" footer nav to article and action detail pages — eliminates the dead-end after reading
+- [x] Fix admin shell floating on dark void — added `min-height: calc(100vh - 48px)` so the card fills the viewport
+- [x] Replace hardcoded hex in public CSS — `#444444`, `#2d2d2d`, `#555555` on `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup` now use `var(--color-text-muted)`
+- [x] Clean up topic detail section labels — "Step 2 - Read enough to act" → "Step 2 — Read"; "Step 3 - Choose a next step" → "Step 3 — Act"; removed redundant taglines
+- [x] Remove `packages/api-contracts/dist/` from version control — added `.gitignore`
+- [x] Add breadcrumb + "browse more" footer nav to event and topic detail pages — all four detail page types now have navigation context
+- [x] Fix admin shell void — `min-height: calc(100vh - 48px)` eliminates dark empty space below the admin card
+- [x] Scope `p { max-width: 70ch }` to `.publicShell p` — admin paragraphs no longer artificially constrained
+- [x] Replace hardcoded hex in `metaText`, `eventMeta`, `relatedListItemSummary`, `detailMetaGroup` — all now use `var(--color-text-muted)`
+- [x] Remove redundant `eventEditorForm` and `articleEditorForm` individual override blocks — ~80 lines of duplicated CSS removed; shared block is now the single source of truth
+- [x] Replace `force-dynamic` on submit pages with `revalidate = 3600` — topics are seeded and immutable in Release 1
+
+**High — visible to any reviewer:**
+
+- [x] Fix related section layout in article and event detail pages — added `grid-column: 1 / -1` to `relatedSection` inside `detailContent--article` and `detailContent--event`
+- [x] Add a minimal public footer — added to `(public)/layout.tsx` with secondary nav and tagline
+- [x] Fix API default port — changed fallback from 3000 to 3001 in `apps/api/src/main.ts`
+
+**Engineering quality:**
+
+- [x] Merge duplicate editor form CSS — added shared block in `globals.css`; individual per-form overrides remain as redundant but harmless fallbacks
+- [x] Replace hardcoded hex values — `collectionItemSummary` `#2d2d2d` → `var(--color-text-muted)`
+- [x] Remove `margin-right: 10px` from `.secondaryCTA`
+- [x] Fix `aria-current="page"` on topic selector filter pills — changed to `aria-current="true"` in `topic-selector.tsx` and CSS selector updated to match
+
+**Closeout:**
+
+- [ ] Refresh `docs/screenshots/` after all fixes are applied
+- [ ] Run `scripts/rc-smoke.mjs` and confirm clean
+
+###### Notes:
+
+- Findings sourced from `docs/reviews/review-2026-06-17.md` and `docs/reviews/review-2026-06-18.md`.
+- Scope is quality closure only — no new features, no search, no topics admin, no scope expansion.
+- Vision check: every fix must make the focus-to-action journey cleaner or more credible, not more complex.
 
 ---
 

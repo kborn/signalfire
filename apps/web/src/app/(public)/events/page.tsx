@@ -118,8 +118,6 @@ export default async function EventListPage({ searchParams }: EventListPageProps
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventListPageProps = { ...params, ...resolveDateWindow(params) };
-  const hasLocationFilter = Boolean(params.region?.trim() || params.city?.trim());
-
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>
@@ -128,15 +126,6 @@ export default async function EventListPage({ searchParams }: EventListPageProps
       </p>
       <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
-      {!hasLocationFilter ? (
-        <section className="discoveryEmptyState discoveryGuideState">
-          <p className="section-label">Start here</p>
-          <h2>Upcoming events are already on the page.</h2>
-          <p className="metaText">
-            Add a state, city, or issue filter when you want to narrow the list to something local.
-          </p>
-        </section>
-      ) : null}
       <div>{await getContents(params)}</div>
     </section>
   );
