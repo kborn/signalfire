@@ -80,129 +80,129 @@ const topicNarratives = {
     articleSummary:
       'A briefing on a local democratic process and where public pressure can matter.',
     articleTitle: 'Democracy Briefing',
-    articleBody: `This demo briefing explains one concrete democratic process, names the institution involved, and points readers toward a practical next step.
+    articleBody: `This briefing explains one concrete democratic process, names the institution involved, and points readers toward a practical next step.
 
-It is written to feel like a real issue explainer rather than placeholder copy. Readers should understand what decision is being made, who can influence it, and what action fits the moment.
+Readers should understand what decision is being made, who can influence it, and what action fits the moment.
 
-The goal of this seeded content is to make the public collections and admin tools look intentionally curated even when the dataset is broad enough to demonstrate pagination.`,
+The point is to make the process legible enough that someone can move from concern to participation without already knowing the local power map.`,
     actionTitle: 'Democracy Action',
     actionSummary: 'A practical public-pressure step tied to a democratic decision point.',
     actionDescription:
-      'Use this action to show a concrete civic step such as attending a board meeting, preparing testimony, or following a rule change that affects public participation.',
+      'Track the next public decision point, prepare one specific ask, and show up in a way that makes the issue harder to ignore.',
     eventTitle: 'Democracy Community Event',
     eventSummary:
       'A public event focused on turnout, accountability, and local civic participation.',
     eventDescription:
-      'This seeded event represents a real-world gathering where people prepare for a meeting, coordinate turnout, or learn how to influence a public decision.',
+      'People come to coordinate turnout, compare notes before a meeting, and leave with a clearer role in the next public step.',
   },
   'consumer-activism': {
     articleSummary:
       'A briefing on corporate pressure, campaign targets, and how consumer action fits in.',
     articleTitle: 'Consumer Activism Briefing',
-    articleBody: `This demo article frames consumer activism as one tactic inside a larger pressure campaign.
+    articleBody: `This article frames consumer activism as one tactic inside a larger pressure campaign.
 
 It highlights clear demands, a target institution, and the difference between symbolic disapproval and organized leverage.
 
-The seeded copy is intentionally plausible so later collection pages still feel like a product demo instead of a scaffolded dataset.`,
+It keeps the focus on leverage, not vibes, so readers can tell when consumer pressure is helping a campaign and when it is just branding the frustration.`,
     actionTitle: 'Consumer Activism Action',
     actionSummary: 'A targeted action that shows how public pressure can shift consumer behavior.',
     actionDescription:
-      'Use this action to model a concrete pressure tactic such as sharing a target list, moving spending, or supporting workers connected to the campaign.',
+      'Share a target list, move spending, or back workers directly in ways that reinforce a live campaign rather than a vague complaint.',
     eventTitle: 'Consumer Activism Community Event',
     eventSummary:
       'A public event where organizers explain a campaign target and coordinate follow-through.',
     eventDescription:
-      'This seeded event models a practical organizing session tied to a consumer pressure campaign and gives the Events surface broader topical coverage.',
+      'Expect a practical organizing session focused on the target, the demand, and the follow-through needed after the first burst of attention.',
   },
   climate: {
     articleSummary:
       'A briefing on local climate pressure points and the decisions communities can influence.',
     articleTitle: 'Climate Briefing',
-    articleBody: `This seeded climate article connects local policy to everyday civic participation.
+    articleBody: `This climate article connects local policy to everyday civic participation.
 
-Instead of generic filler, it emphasizes the sort of choices that shape transit, housing, resilience, and public investment at the municipal level.
+It emphasizes the choices that shape transit, housing, resilience, and public investment at the municipal level.
 
-That keeps the demo credible when reviewers move from the homepage into collection pages and admin records.`,
+The through-line is simple: local climate politics matter most when residents know where the actual decision point lives.`,
     actionTitle: 'Climate Action',
     actionSummary: 'A concrete local climate action with a public target and a clear next step.',
     actionDescription:
-      'Use this action to represent a realistic local climate step such as contacting officials, joining a coalition, or preparing for a hearing tied to public infrastructure.',
+      'Use it to contact officials, join a coalition, or prepare for a hearing tied to transit, infrastructure, or neighborhood resilience.',
     eventTitle: 'Climate Community Event',
     eventSummary: 'A public event focused on local climate resilience and community pressure.',
     eventDescription:
-      'This seeded event models a credible climate-facing gathering where residents organize around transit, heat safety, resilience, or public investment.',
+      'Residents use this gathering to organize around transit, heat safety, resilience, or public investment with a concrete public target in view.',
   },
   'civil-rights': {
     articleSummary:
       'A briefing on a civil-rights conflict and the public processes surrounding it.',
     articleTitle: 'Civil Rights Briefing',
-    articleBody: `This demo article is designed to read like a real civil-rights explainer.
+    articleBody: `This article is designed to work like a real civil-rights explainer.
 
 It names a conflict, identifies the institution involved, and shows how readers can connect principle to public participation.
 
-That keeps the seeded demo aligned with the project’s core Learn → Decide → Act loop.`,
+The goal is to help readers move from outrage to an actual decision point they can influence.`,
     actionTitle: 'Civil Rights Action',
     actionSummary: 'A civic step tied to a civil-rights issue and a specific decision-maker.',
     actionDescription:
-      'Use this action to model a realistic public step such as contacting a board, showing up for a hearing, or supporting a local rights-defense effort.',
+      'Contact a board, show up for a hearing, or support a local rights-defense effort tied to a real institutional fight.',
     eventTitle: 'Civil Rights Community Event',
     eventSummary: 'A public gathering focused on rights, turnout, and coordinated local response.',
     eventDescription:
-      'This seeded event helps the demo show civil-rights participation opportunities without relying on repetitive placeholder content.',
+      'The event gives people a place to coordinate turnout, share updates, and connect rights language to local follow-through.',
   },
   'economic-justice': {
     articleSummary: 'A briefing on wages, housing, cost burden, or labor pressure in public life.',
     articleTitle: 'Economic Justice Briefing',
-    articleBody: `This seeded economic-justice article is meant to feel like a usable primer, not lorem filler.
+    articleBody: `This economic-justice article is meant to work like a usable primer.
 
 It links material conditions to specific institutions and shows how people can move from understanding a problem to joining a concrete campaign.
 
-That makes the article index and admin experience read as editorially intentional.`,
+It stays grounded in the public bodies, employers, and housing systems that people can actually pressure.`,
     actionTitle: 'Economic Justice Action',
     actionSummary: 'A practical step tied to housing, labor, or cost-of-living pressure.',
     actionDescription:
-      'Use this action to represent a realistic step such as joining a tenant network, supporting worker-led pressure, or documenting a public affordability issue.',
+      'Join a tenant network, support worker-led pressure, or document a public affordability issue in a way that can feed a broader campaign.',
     eventTitle: 'Economic Justice Community Event',
     eventSummary: 'A public gathering focused on labor, housing, or affordability organizing.',
     eventDescription:
-      'This seeded event broadens the Events dataset while keeping the copy anchored in realistic economic-justice participation.',
+      'People gather here to trade concrete information, align demands, and prepare the next visible step around housing, labor, or affordability.',
   },
   education: {
     articleSummary:
       'A briefing on school governance, policy process, and public participation points.',
     articleTitle: 'Education Briefing',
-    articleBody: `This seeded education article explains a school or district-level issue in practical terms.
+    articleBody: `This education article explains a school or district-level issue in practical terms.
 
 It focuses on how families, educators, and neighbors can understand the process before a conflict becomes a last-minute scramble.
 
-That helps the demo support both public learning flows and admin review flows convincingly.`,
+The emphasis stays on preparation: knowing the process early enough to organize before a vote hardens.`,
     actionTitle: 'Education Action',
     actionSummary: 'A concrete school-governance step tied to a public meeting or policy decision.',
     actionDescription:
-      'Use this action to model a realistic local education step such as agenda review, outreach, testimony, or support for a library-access effort.',
+      'Review the agenda, organize outreach, prepare testimony, or support a library-access effort before the decision is already made.',
     eventTitle: 'Education Community Event',
     eventSummary: 'A public gathering focused on school policy, turnout, and local coordination.',
     eventDescription:
-      'This seeded event gives the demo visible education participation opportunities without falling back to synthetic filler language.',
+      'Families and educators use the session to compare notes, prepare turnout, and stay ahead of a policy fight that could otherwise move quietly.',
   },
   'local-community': {
     articleSummary:
       'A briefing on neighborhood-level civic participation and recurring local coordination.',
     articleTitle: 'Local Community Briefing',
-    articleBody: `This seeded article is meant to show how neighborhood-level civic work can connect immediate needs to longer-term public pressure.
+    articleBody: `This article shows how neighborhood-level civic work can connect immediate needs to longer-term public pressure.
 
-It is intentionally written in product-quality prose so the seeded dataset feels believable even when it is large.
+It stays close to the pace and texture of actual neighborhood civic work.
 
 The emphasis stays on repeated local participation, mutual support, and practical next steps.`,
     actionTitle: 'Local Community Action',
     actionSummary: 'A concrete neighborhood step that helps people join work already underway.',
     actionDescription:
-      'Use this action to model a practical local step such as joining a coalition, helping with turnout, or supporting a recurring neighborhood response effort.',
+      'Join a coalition, help with turnout, or support a recurring neighborhood response effort that already has a public rhythm.',
     eventTitle: 'Local Community Event',
     eventSummary:
       'A neighborhood-focused event where people organize, learn, and plan follow-through.',
     eventDescription:
-      'This seeded event is designed to keep later Event pages credible by representing realistic neighborhood-level participation rather than generic placeholder copy.',
+      'The event centers realistic neighborhood-level participation: people meeting, planning, and committing to the next round of follow-through.',
   },
 } as const;
 
@@ -1611,7 +1611,7 @@ const generatedDemoActions = Array.from(
       summary: action.summary,
       description: `${action.summary}
 
-Use this action if you want one concrete next step that connects personal participation to an ongoing public campaign rather than a one-off gesture.`,
+Use this action to plug into an ongoing campaign with a clear public target, not just a one-time expression of support.`,
       actionType: action.actionType,
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -1654,7 +1654,7 @@ const generatedDemoEvents = Array.from(
       summary: event.summary,
       description: `${event.summary}
 
-This demo event is written to read like a real organizing opportunity with a clear turnout purpose, a credible venue, and an implied next step after the meeting.`,
+Come prepared to meet people working on the issue, understand the immediate ask, and leave knowing what follow-through matters after the event.`,
       website: `https://example.org/events/${eventSlug}`,
       eventType: eventTypes[index % eventTypes.length],
       status: EntityStatus.PUBLISHED,

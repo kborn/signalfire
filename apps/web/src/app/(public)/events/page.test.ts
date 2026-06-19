@@ -157,9 +157,10 @@ describe('EventListPage', () => {
 
     const markup = renderToStaticMarkup(await EventListPage({}));
 
-    expect(getEventsList).not.toHaveBeenCalled();
+    expect(getEventsList).toHaveBeenCalledTimes(1);
+    expect(getEventsList).toHaveBeenCalledWith({});
     expect(markup).toContain('Events');
-    expect(markup).toContain('Select a state or territory to start browsing events.');
+    expect(markup).toContain('Upcoming events are already on the page.');
   });
 
   it('renders the empty state when a filtered query returns no events', async () => {

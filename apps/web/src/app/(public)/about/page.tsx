@@ -10,6 +10,10 @@ export default async function AboutPage() {
           Find Your Fight is for people who care, want to do something meaningful, and need a clear
           place to start.
         </p>
+        <p className="aboutHeroSupport">
+          It is built to make civic participation feel more concrete, more navigable, and more worth
+          returning to.
+        </p>
       </section>
 
       <section className="page-section about-body">

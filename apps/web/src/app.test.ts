@@ -13,9 +13,7 @@ describe('HomePage', () => {
     const markup = renderHomePage();
 
     expect(markup).toContain('Find Your Fight');
-    expect(markup).toContain(
-      'Choose one issue, learn what is at stake, and take one concrete step.',
-    );
+    expect(markup).toContain('Choose an issue. Learn what is at stake. Take one real step.');
   });
 
   it('renders the primary and secondary discovery links', () => {
@@ -30,7 +28,7 @@ describe('HomePage', () => {
     expect(markup).toContain('href="/actions"');
     expect(markup).toContain('Take a concrete step');
     expect(markup).toContain(
-      'A civic action site for people who want to do something about what is happening and need a clear place to start.',
+      'A civic action guide for people who want a clearer place to start and a more useful way to keep going.',
     );
     expect(markup).toContain('Submit Content');
     expect(markup).toContain('Who This Is For');
@@ -43,9 +41,9 @@ describe('HomePage', () => {
     expect(markup).toContain('Choose an issue');
     expect(markup).toContain('Get enough context');
     expect(markup).toContain('Take a concrete step');
-    expect(markup).toContain('Submissions are moderated before they go live.');
+    expect(markup).toContain('Articles and events are reviewed before publication');
     expect(markup).toContain(
-      'Submit an article or event and it enters moderation review before publication.',
+      'Help other people get involved. Share upcoming events and write articles that inspire someone else to take their first step.',
     );
   });
 });

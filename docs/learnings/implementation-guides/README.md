@@ -53,3 +53,7 @@ Available Phase 12 guides:
 
 - `phase-12-url-state-and-pagination-guide.md`
 - `phase-12-4-public-pagination-implementation-guide.md`
+
+Available Phase 13 guides:
+
+- `phase-13-5-public-cache-invalidation-guide.md`

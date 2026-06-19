@@ -44,9 +44,18 @@ function ArticleSubmittedContent({ submission }: { submission: ArticleModeration
 }
 
 function EventSubmittedContent({ submission }: { submission: EventModerationSubmission }) {
-  const startTimeLabel = formatEventTime(submission.submittedContent.startTime, null);
+  const eventLocation = {
+    city: submission.submittedContent.city,
+    region: submission.submittedContent.region,
+    country: submission.submittedContent.country,
+  };
+  const startTimeLabel = formatEventTime(
+    submission.submittedContent.startTime,
+    null,
+    eventLocation,
+  );
   const endTimeLabel = submission.submittedContent.endTime
-    ? formatEventTime(submission.submittedContent.endTime, null)
+    ? formatEventTime(submission.submittedContent.endTime, null, eventLocation)
     : '--';
 
   return (

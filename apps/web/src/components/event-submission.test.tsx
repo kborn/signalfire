@@ -150,7 +150,17 @@ describe('EventSubmissionForm', () => {
     });
     expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Browse Events' })).toHaveAttribute('href', '/events');
-    expect(screen.getByRole('link', { name: 'Ways to Act' })).toHaveAttribute('href', '/actions');
+    expect(screen.getByRole('link', { name: 'Take Action' })).toHaveAttribute('href', '/actions');
+  });
+
+  it('renders the event submission intro guidance', () => {
+    render(<EventSubmissionForm topics={topics} />);
+
+    expect(screen.getByText('Share an event people can actually show up for.')).toBeInTheDocument();
+    expect(screen.getByText('What makes an event useful here')).toBeInTheDocument();
+    expect(
+      screen.getByText('Nothing is published automatically. Fields marked with * are required.'),
+    ).toBeInTheDocument();
   });
 
   it('maps API validation errors to inline event field errors', async () => {

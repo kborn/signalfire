@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { EventDetailResponse } from '@signal-fire/api-contracts';
 import { getEventDetails } from '@/lib/api/events';
 import { notFound } from 'next/navigation';
@@ -8,7 +9,8 @@ import { formatEventTime } from '@/lib/common/time';
 import { TopicSummary } from '@/components/topic-summary';
 import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
-export const dynamic = 'force-dynamic';
+
+export const revalidate = 60;
 
 function normalizePlainText(value: string): string {
   return value
@@ -58,6 +60,7 @@ function formatEventArea({
 }
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  await connection();
   const event = await fetchEventDetails(params);
   const eventArea = formatEventArea(event);
   const normalizedSummary = normalizePlainText(event.summary);
@@ -67,66 +70,74 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
 
   return (
     <div className="detailPage">
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{event.title}</h1>
       </section>
-      <section className="detailContent">
-        {shouldRenderSummaryLead ? <p className="detailLead">{event.summary}</p> : null}
-        <section className="eventInfoBlock">
-          <div className="metaBlock">
-            <p className="metaLabel">Event Type</p>
-            <p className="metaValue eventType">{formatEventTypeLabel(event.eventType)}</p>
-          </div>
-          <div className="metaBlock">
-            <p className="metaLabel">Date & Time</p>
-            <p className="metaValue">{formatEventTime(event.startTime, event.endTime)}</p>
-          </div>
-          <div className="metaBlock">
-            <p className="metaLabel">Location</p>
-            <p className="metaValue">{event.locationName}</p>
-          </div>
-          {event.publicLocationDescription && (
+      <section className="detailContent detailContent--event">
+        <section className="detailMetaPanel">
+          {shouldRenderSummaryLead ? <p className="detailLead">{event.summary}</p> : null}
+          <section className="eventInfoBlock">
             <div className="metaBlock">
-              <p className="metaLabel">Location Description</p>
-              <p className="metaValue">{event.publicLocationDescription}</p>
+              <p className="metaLabel">Event Type</p>
+              <p className="metaValue eventType">{formatEventTypeLabel(event.eventType)}</p>
             </div>
-          )}
-          {event.addressLine1 && (
             <div className="metaBlock">
-              <p className="metaLabel">Address Line 1</p>
-              <p className="metaValue">{event.addressLine1}</p>
-            </div>
-          )}
-          {event.addressLine2 && (
-            <div className="metaBlock">
-              <p className="metaLabel">Address Line 2</p>
-              <p className="metaValue">{event.addressLine2}</p>
-            </div>
-          )}
-          {eventArea && (
-            <div className="metaBlock">
-              <p className="metaLabel">City, State &amp; ZIP</p>
-              <p className="metaValue">{eventArea}</p>
-            </div>
-          )}
-          {event.website && (
-            <div className="metaBlock">
-              <p className="metaLabel">Website</p>
+              <p className="metaLabel">Date & Time</p>
               <p className="metaValue">
-                <a href={event.website} target="_blank" rel="noreferrer">
-                  {event.website}
-                </a>
+                {formatEventTime(event.startTime, event.endTime, {
+                  city: event.city,
+                  region: event.region,
+                  country: event.country,
+                })}
               </p>
             </div>
-          )}
-          {event.contactEmail && (
             <div className="metaBlock">
-              <p className="metaLabel">Contact</p>
-              <p className="metaValue">{event.contactEmail}</p>
+              <p className="metaLabel">Location</p>
+              <p className="metaValue">{event.locationName}</p>
             </div>
-          )}
+            {event.publicLocationDescription && (
+              <div className="metaBlock">
+                <p className="metaLabel">Location Description</p>
+                <p className="metaValue">{event.publicLocationDescription}</p>
+              </div>
+            )}
+            {event.addressLine1 && (
+              <div className="metaBlock">
+                <p className="metaLabel">Address Line 1</p>
+                <p className="metaValue">{event.addressLine1}</p>
+              </div>
+            )}
+            {event.addressLine2 && (
+              <div className="metaBlock">
+                <p className="metaLabel">Address Line 2</p>
+                <p className="metaValue">{event.addressLine2}</p>
+              </div>
+            )}
+            {eventArea && (
+              <div className="metaBlock">
+                <p className="metaLabel">City, State &amp; ZIP</p>
+                <p className="metaValue">{eventArea}</p>
+              </div>
+            )}
+            {event.website && (
+              <div className="metaBlock">
+                <p className="metaLabel">Website</p>
+                <p className="metaValue">
+                  <a href={event.website} target="_blank" rel="noreferrer">
+                    {event.website}
+                  </a>
+                </p>
+              </div>
+            )}
+            {event.contactEmail && (
+              <div className="metaBlock">
+                <p className="metaLabel">Contact</p>
+                <p className="metaValue">{event.contactEmail}</p>
+              </div>
+            )}
+          </section>
         </section>
-        <section>
+        <section className="detailNarrativePanel">
           <MarkdownContent content={event.description} />
         </section>
         {event.topics.length > 0 && (

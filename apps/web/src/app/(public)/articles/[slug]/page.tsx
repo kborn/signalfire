@@ -1,3 +1,4 @@
+import { connection } from 'next/server';
 import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
 import { MarkdownContent } from '@/components/markdown-content';
@@ -6,7 +7,7 @@ import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -25,42 +26,50 @@ export default async function ArticleDetailsPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
+  await connection();
   const article = await fetchArticleDetails(params);
   const publishedAt = formatContentDate(article.publishedAt);
   const updatedAt = formatContentDate(article.updatedAt);
 
   return (
     <div className="detailPage">
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{article.title}</h1>
       </section>
-      <section className="detailContent">
-        <section className="detailMetaGroup">
+      <section className="detailContent detailContent--article">
+        <section className="detailMetaGroup detailMetaPanel">
           <p className="detailLead">{article.summary}</p>
-          <div className="metaBlock">
-            <p className="metaLabel">Author</p>
-            <p className="metaValue">{article.author}</p>
+          <div className="detailMetaRow">
+            <div className="metaBlock">
+              <p className="metaLabel">Author</p>
+              <p className="metaValue">{article.author}</p>
+            </div>
+            {publishedAt && (
+              <div className="metaBlock">
+                <p className="metaLabel">Published</p>
+                <p className="metaValue">{publishedAt}</p>
+              </div>
+            )}
+            {updatedAt && (
+              <div className="metaBlock">
+                <p className="metaLabel">Updated</p>
+                <p className="metaValue">{updatedAt}</p>
+              </div>
+            )}
           </div>
-          {publishedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Published</p>
-              <p className="metaValue">{publishedAt}</p>
-            </div>
-          )}
-          {updatedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Updated</p>
-              <p className="metaValue">{updatedAt}</p>
-            </div>
-          )}
         </section>
 
-        <section>
+        <section className="detailNarrativePanel">
           <MarkdownContent content={article.content} />
         </section>
         {article.topics.length > 0 && (
           <section className="relatedSection">
-            <h3>Related Topics</h3>
+            <div className="relatedSectionHeader">
+              <h3>Explore This Issue</h3>
+              <p className="relatedSectionTagline">
+                Jump back to the issue page for more background, actions, and events.
+              </p>
+            </div>
             <div className="relatedList">
               {article.topics.map((topic) => (
                 <TopicSummary key={topic.id} topic={topic} variant="related" />

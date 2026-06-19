@@ -136,7 +136,7 @@ Reviewer-facing screenshots live in `docs/screenshots/`.
 Refresh them with:
 
 ```bash
-node scripts/regenerate-doc-screenshots.mjs
+pnpm docs:screenshots
 ```
 
 Expected prerequisites:
@@ -177,6 +177,66 @@ polish unless a blocker appears:
 - event-ingestion automation or crawlers
 - geo-intelligence beyond the bounded demo finder
 - production-grade deployment automation and repository protection rules
+
+## External Review Deferral Decision
+
+As of **June 18, 2026**, the remaining external-review findings are split into
+two groups: Milestone 1 must-finish items that still belong to Phase 13.5, and
+explicit Milestone 2 deferrals that should not silently spill into Deployment
+Infrastructure.
+
+### Milestone 1 must-finish items
+
+These were required before Phase 13 could close. The bar for Milestone 1 is not
+"functional enough"; it is "credible enough to stand beside established civic
+information products without reading as student work or a rough prototype."
+
+- refresh reviewer-facing screenshots so captured artifacts match the shipped UI
+- refresh reviewer-facing docs so copy, screenshots, and current behavior stay aligned
+- run the final targeted release-candidate validation pass across public browse flows,
+  admin auth, moderation, and essential content management
+- confirm the current public-page revalidation strategy reflects admin edits reliably
+- finish any small residual cleanup directly tied to already-landed 13.5 work,
+  such as removing dead font-loading leftovers if they still exist in source
+- strengthen article-body typography and article-content hierarchy where the reading
+  experience still feels under-designed
+- finish the remaining high-signal public visual polish across discovery and detail
+  surfaces, including list warmth/definition, topic-detail presentation weight,
+  and any sticky-header bleed or interaction leaks that still read as unfinished
+- finish the remaining homepage and motif art-direction work necessary for the site
+  to feel deliberate and mature rather than merely functional
+- close the remaining submit-surface spacing and layout polish issues that still
+  read as obviously unfinished in first-use review
+- complete an explicit public mobile/responsive polish pass across the major public
+  routes, not just a bug check
+- improve demo-seed/editorial quality where generated filler still materially undercuts
+  the fiction of the product
+
+As of **June 18, 2026**, those Phase 13.5 must-finish items are considered
+closed. The duplicate article-title report did not reproduce after the seed and
+UI updates, the public content pages already use the intended revalidation
+model with admin-triggered invalidation, and the remaining `next/font` usage in
+the root layout is intentional product typography rather than abandoned
+experiment residue. Screenshot regeneration remains a final artifact-refresh
+step when subsequent UI changes materially affect the recorded review surface.
+
+### Deferred to Milestone 2
+
+These remain intentionally deferred because they are future product expansion or
+deeper post-release strengthening work rather than required Milestone 1 finish:
+
+- broader editorial-system work or formal content-style governance beyond the current
+  moderation/admin workflow
+- further expansion of demo or seed coverage beyond what is needed for a strong
+  reviewer journey
+- new discovery modes, personalization, or richer topic intelligence beyond the
+  current Release 1 product boundary
+
+### Why these are deferred
+
+- They do not block the current goal of delivering a polished, professional Milestone 1.
+- They move the product into new capability areas rather than completing the current one.
+- They belong to future product shaping, not to finishing the present release standard.
 
 ## Admin Access Boundary History
 

@@ -2,6 +2,8 @@ import { buildUrl, type QueryParams } from '@/lib/api/base.shared';
 import { ApiError, AuthenticationError, SubmissionError } from '@/lib/api/error';
 import { type ValidationError } from '@signal-fire/api-contracts';
 
+const PUBLIC_REVALIDATE_SECONDS = 60;
+
 async function readJsonBody(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -37,7 +39,9 @@ async function makePublicBrowserRequest<T>(
   endpoint: string,
   queryParams?: QueryParams,
 ): Promise<T> {
-  const response = await fetch(buildUrl(endpoint, queryParams));
+  const response = await fetch(buildRequestUrl(endpoint, queryParams), {
+    next: { revalidate: PUBLIC_REVALIDATE_SECONDS },
+  });
   return parseJsonResponse<T>(response, endpoint);
 }
 
@@ -45,10 +49,31 @@ async function makeAuthenticatedBrowserRequest<T>(
   endpoint: string,
   queryParams?: QueryParams,
 ): Promise<T> {
-  const response = await fetch(buildUrl(endpoint, queryParams), {
+  const response = await fetch(buildRequestUrl(endpoint, queryParams), {
     credentials: 'include',
   });
   return parseJsonResponse<T>(response, endpoint);
+}
+
+function buildRequestUrl(endpoint: string, queryParams?: QueryParams): string {
+  if (!endpoint.startsWith('/')) {
+    return buildUrl(endpoint, queryParams);
+  }
+
+  if (!queryParams) {
+    return endpoint;
+  }
+
+  const params = new URLSearchParams();
+
+  Object.entries(queryParams).forEach(([key, value]) => {
+    if (value !== undefined) {
+      params.set(key, value);
+    }
+  });
+
+  const query = params.toString();
+  return query ? `${endpoint}?${query}` : endpoint;
 }
 
 async function parseJsonResponse<T>(response: Response, endpoint: string): Promise<T> {
@@ -114,7 +139,7 @@ async function sendJsonRequest<T>(
   errorEndpoint: string,
   authenticated: boolean,
 ): Promise<T> {
-  const response = await fetch(buildUrl(endpoint), {
+  const response = await fetch(buildRequestUrl(endpoint), {
     method,
     headers: { 'Content-Type': 'application/json' },
     ...(authenticated ? { credentials: 'include' as const } : {}),

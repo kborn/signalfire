@@ -1,10 +1,12 @@
+import { connection } from 'next/server';
 import { getTopicDetails } from '@/lib/api/topics';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
-export const dynamic = 'force-dynamic';
 import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import Link from 'next/link';
+
+export const revalidate = 60;
 
 async function fetchTopicDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -19,14 +21,17 @@ async function fetchTopicDetails(params: Promise<{ slug: string }>) {
 }
 
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  await connection();
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage">
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
-      <section className="detailContent">
-        <p className="detailLead">{topic.description}</p>
+      <section className="detailContent detailContent--topic">
+        <section className="detailMetaPanel">
+          <p className="detailLead">{topic.description}</p>
+        </section>
         {topic.articles.length > 0 && (
           <section className="relatedSection" aria-labelledby="topic-articles-label">
             <div className="relatedSectionHeader">
@@ -34,7 +39,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 Step 2 - Read enough to act
               </p>
               <p className="relatedSectionTagline">
-                Read background and explainers for this issue.
+                Read explainers and field guides that make the issue easier to follow.
               </p>
             </div>
             <div className="collectionList">
@@ -67,7 +72,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
             </p>
           </div>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-            Browse Events
+            Browse Events For This Issue
           </Link>
         </section>
       </section>

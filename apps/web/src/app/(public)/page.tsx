@@ -19,12 +19,16 @@ export default function HomePage() {
         </div>
 
         <p className="section-label">Find Your Fight</p>
+        <h1 className="homeHeroTitle">
+          Choose an issue. Learn what is at stake. Take one real step.
+        </h1>
         <p className="page-intro">
-          Choose one issue, learn what is at stake, and take one concrete step.
+          A civic action guide for people who want a clearer place to start and a more useful way to
+          keep going.
         </p>
         <p className="home-hook">
-          A civic action site for people who want to do something about what is happening and need a
-          clear place to start.
+          Find Your Fight connects issues, explainers, actions, and events so people can move from
+          concern into participation without getting lost in noise or generalities.
         </p>
 
         <div className="ctaRow">
@@ -46,7 +50,10 @@ export default function HomePage() {
         <div className="home-sectionHeading">
           <p className="section-label">Start here</p>
           <h2>The path is simple.</h2>
-          <p>Start with an issue, build enough context, and move toward action.</p>
+          <p>
+            Start with an issue, build enough context to understand the stakes, and move toward
+            action.
+          </p>
         </div>
         <div className="homeJourneyGrid">
           <Link href="/topics" className="collectionItem homeJourneyCard">
@@ -76,10 +83,14 @@ export default function HomePage() {
 
       <section className="page-section home-contribute">
         <p className="section-label">Contribute</p>
-        <h2>Submissions are moderated before they go live.</h2>
+        <h2>Help more people find a way in.</h2>
         <p>
-          Submit an article or event and it enters moderation review before publication.
-          Contributions help keep the platform growing.
+          Articles and events are reviewed before publication so the public experience stays clear,
+          credible, and useful.
+        </p>
+        <p className="homeSupportCopy">
+          Help other people get involved. Share upcoming events and write articles that inspire
+          someone else to take their first step.
         </p>
         <div className="ctaRow">
           <Link href="/submit" className="primaryCTA">

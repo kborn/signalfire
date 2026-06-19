@@ -1,4 +1,4 @@
-import type { EntityStatus } from './submission_type.js';
+import type { EntityStatus } from './submission-type.js';
 
 export type AdminArticleRequest = {
   title: string;
