@@ -27,6 +27,7 @@ describe('ActionDetailsPage', () => {
       title: 'Call Your State Representative',
       summary: 'Ask for support on climate legislation.',
       description: '## Steps\n\nCall and ask for support on the bill.',
+      externalUrl: null,
       actionType: 'CONTACT',
       updatedAt: '2026-03-22T12:00:00.000Z',
       publishedAt: '2026-03-21T12:00:00.000Z',
@@ -68,7 +69,7 @@ describe('ActionDetailsPage', () => {
     expect(markup).toContain('Steps');
     expect(markup).toContain('Call and ask for support on the bill.');
     expect(markup).toContain('Related Topics');
-    expect(markup).toContain('href="/topics/climate"');
+    expect(markup).toContain('href="/issues/climate"');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Learn More');
     expect(markup).toContain('href="/articles/climate-policy-basics"');

@@ -34,3 +34,22 @@ export async function proxyAdminJson(
 export function respondWithUpstreamJson(upstream: Response, data: unknown): NextResponse {
   return NextResponse.json(data, { status: upstream.status });
 }
+
+export async function proxyAdminDelete(
+  request: NextRequest,
+  endpoint: string,
+): Promise<{ upstream: Response }> {
+  const cookieHeader = request.headers.get('cookie');
+
+  const upstream = await fetch(buildUrl(endpoint), {
+    method: 'DELETE',
+    headers: cookieHeader ? { Cookie: cookieHeader } : undefined,
+    cache: 'no-store',
+  });
+
+  return { upstream };
+}
+
+export function respondWithUpstreamStatus(upstream: Response): NextResponse {
+  return new NextResponse(null, { status: upstream.status });
+}

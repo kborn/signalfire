@@ -3,15 +3,17 @@ import { ActionDetailResponse, ActionListResponse } from '@signal-fire/api-contr
 
 type ActionListQuery = {
   topicSlug?: string;
+  search?: string;
   page?: string;
   pageSize?: string;
 };
 
 export async function getActionsList(query: ActionListQuery): Promise<ActionListResponse> {
   const params =
-    query.topicSlug || query.page || query.pageSize
+    query.topicSlug || query.search || query.page || query.pageSize
       ? {
           topicSlug: query.topicSlug,
+          search: query.search,
           page: query.page,
           pageSize: query.pageSize,
         }

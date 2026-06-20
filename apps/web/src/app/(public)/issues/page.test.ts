@@ -39,10 +39,10 @@ describe('TopicListPage', () => {
     expect(markup).toContain(
       'Explore the issues that matter to you and find ways to learn or act.',
     );
-    expect(markup).toContain('href="/topics/climate"');
+    expect(markup).toContain('href="/issues/climate"');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Climate issue overview.');
-    expect(markup).toContain('href="/topics/education"');
+    expect(markup).toContain('href="/issues/education"');
     expect(markup).toContain('Education');
     expect(markup).toContain('Education policy and advocacy.');
   });

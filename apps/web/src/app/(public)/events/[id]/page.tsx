@@ -73,7 +73,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
     <div className="detailPage">
       <nav className="detailBreadcrumb" aria-label="Back">
         {event.topics.length > 0 ? (
-          <Link href={`/topics/${event.topics[0].slug}`} className="detailBreadcrumbLink">
+          <Link href={`/issues/${event.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {event.topics[0].name}
           </Link>
         ) : (

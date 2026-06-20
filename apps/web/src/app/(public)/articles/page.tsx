@@ -41,6 +41,7 @@ function getEmptyPageResponse() {
 type ArticleListPageProps = {
   searchParams: Promise<{
     topicSlug?: string;
+    search?: string;
     page?: string;
     pageSize?: string;
   }>;
@@ -49,9 +50,9 @@ type ArticleListPageProps = {
 export default async function ArticleListPage({ searchParams }: ArticleListPageProps) {
   await connection();
   const params = await searchParams;
-  const { topicSlug, page, pageSize } = params;
+  const { topicSlug, search, page, pageSize } = params;
   const [resp, topics] = await Promise.all([
-    getArticlesList({ topicSlug, page, pageSize }),
+    getArticlesList({ topicSlug, search, page, pageSize }),
     getTopicsList(),
   ]);
 

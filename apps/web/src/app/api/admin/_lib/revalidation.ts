@@ -7,6 +7,13 @@ function revalidateTopicPages(topicSlugs: string[]) {
   }
 }
 
+export function revalidateTopicAdminPages(slug: string) {
+  revalidatePath('/topics');
+  revalidatePath(`/topics/${slug}`);
+  revalidatePath('/admin/topics');
+  revalidatePath(`/admin/topics/${slug}`);
+}
+
 export function revalidateArticlePages(slug: string, topicSlugs: string[]) {
   revalidatePath('/articles');
   revalidatePath(`/articles/${slug}`);

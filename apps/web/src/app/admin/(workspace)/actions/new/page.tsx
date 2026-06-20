@@ -33,6 +33,7 @@ export default async function NewAdminActionPage() {
           title: '',
           summary: '',
           description: '',
+          externalUrl: null,
           actionType: 'GUIDE',
           topicSlugs: [],
         }}

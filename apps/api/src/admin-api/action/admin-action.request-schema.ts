@@ -16,6 +16,13 @@ export const adminActionRequestSchema = z.object({
   title: requiredTrimmedString('Title', 200),
   summary: requiredTrimmedString('Summary', 300),
   description: requiredTrimmedString('Description', 50000),
+  externalUrl: z
+    .string()
+    .trim()
+    .url('External URL must be a valid URL')
+    .max(2048, 'External URL must be 2048 characters or fewer')
+    .nullable()
+    .optional(),
   actionType: z.nativeEnum(ActionType),
   topicSlugs: topicSlugsSchema,
   status: z.nativeEnum(EntityStatus),

@@ -10,7 +10,7 @@ export default function PublicNotFoundPage() {
         issue areas or browse practical ways to act.
       </p>
       <div className="ctaRow">
-        <Link href="/topics" className="primaryCTA">
+        <Link href="/issues" className="primaryCTA">
           Explore Issues
         </Link>
         <Link href="/actions" className="secondaryCTA">

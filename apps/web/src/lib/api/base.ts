@@ -35,6 +35,34 @@ export async function patchAuthenticatedJson<T>(endpoint: string, payload: unkno
   return sendAuthenticatedJsonRequest<T>(endpoint, 'PATCH', payload);
 }
 
+export async function deleteAuthenticated(endpoint: string): Promise<void> {
+  const response = await fetch(buildRequestUrl(endpoint), {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    if (response.status === 401) {
+      throw new AuthenticationError(
+        `Authentication failed for ${endpoint}`,
+        response.status,
+        endpoint,
+      );
+    }
+    const body = await readJsonBody(response);
+    const validationErrors = getValidationErrors(body);
+    if (validationErrors) {
+      throw new SubmissionError(
+        `Request failed for ${endpoint}`,
+        response.status,
+        endpoint,
+        validationErrors,
+      );
+    }
+    throw new ApiError(`Request failed for ${endpoint}`, response.status, endpoint);
+  }
+}
+
 async function makePublicBrowserRequest<T>(
   endpoint: string,
   queryParams?: QueryParams,

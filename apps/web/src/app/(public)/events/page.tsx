@@ -62,16 +62,21 @@ type EventListPagePropsWrapper = {
   searchParams?: Promise<EventListPageProps>;
 };
 
+function addUTCMonths(date: Date, months: number): Date {
+  const result = new Date(date);
+  const targetMonth = result.getUTCMonth() + months;
+  result.setUTCMonth(targetMonth);
+  // Roll back to last day of intended month if day overflowed (e.g. Jan 31 + 3 → May 2)
+  if (result.getUTCMonth() !== ((targetMonth % 12) + 12) % 12) {
+    result.setUTCDate(0);
+  }
+  return result;
+}
+
 function resolveDateWindow(params: EventListPageProps) {
   const startDate = parseDate(params.startDate ?? '') ?? new Date();
   startDate.setUTCHours(0, 0, 0, 0);
-  const endDate =
-    parseDate(params.endDate ?? '') ??
-    (() => {
-      const date = new Date(startDate);
-      date.setUTCMonth(date.getUTCMonth() + 3);
-      return date;
-    })();
+  const endDate = parseDate(params.endDate ?? '') ?? addUTCMonths(startDate, 3);
 
   return {
     startDate: toDateInputValue(startDate),

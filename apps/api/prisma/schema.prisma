@@ -95,6 +95,7 @@ model Action {
   title          String
   summary        String
   description    String
+  externalUrl    String?         @map("external_url")
   actionType     ActionType      @map("action_type")
   status         EntityStatus
   createdAt      DateTime        @default(now()) @map("created_at")

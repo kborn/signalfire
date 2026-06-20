@@ -54,6 +54,7 @@ export class ActionService {
       title: action.title,
       summary: action.summary,
       description: action.description,
+      externalUrl: action.externalUrl ?? null,
       actionType: action.actionType,
       updatedAt: action.updatedAt.toISOString(),
       publishedAt: requirePublishedAt(action.publishedAt).toISOString(),

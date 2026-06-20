@@ -110,7 +110,7 @@ describe('ArticleSubmissionForm', () => {
     expect(
       screen.getByText('Thanks — your submission has been received and is now pending review.'),
     ).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Explore Issues' })).toHaveAttribute('href', '/topics');
+    expect(screen.getByRole('link', { name: 'Explore Issues' })).toHaveAttribute('href', '/issues');
     expect(screen.getByRole('link', { name: 'Browse Articles' })).toHaveAttribute(
       'href',
       '/articles',

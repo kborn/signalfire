@@ -57,6 +57,6 @@ await page.getByRole('button', { name: 'Log in' }).click();
 await page.waitForURL('**/admin');
 await waitForPage();
 
-await capture('05-submission-review.png', '/admin/submissions/371');
+await capture('05-submission-review.png', '/admin/submissions/34');
 
 await browser.close();

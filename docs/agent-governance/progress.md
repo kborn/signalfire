@@ -1732,6 +1732,125 @@ Close the quality gaps identified in the 2026-06-17 and 2026-06-18 internal site
 
 ---
 
+#### ▸ Phase 13.7 - Round 3 Review Closure 🚧
+
+###### Goal
+
+Close quality gaps identified in `docs/reviews/review-2026-06-18-round2.md` — the third external review pass conducted after Phase 13.6 closed.
+
+###### Phase Tasks:
+
+**Implemented:**
+
+- [x] Add `externalUrl` optional field to Action — schema, API, admin editor, public CTA (full stack)
+- [x] Nav: rename "Take Action" → "Actions" in header and footer
+- [x] Remove redundant "Issue" eyebrow label from Issues index page cards
+- [x] CSS: delete duplicate `actionEditorForm` rule block that survived the Phase 13.6 deduplication pass (~60 lines removed)
+- [x] Fix UTC month math in `events/page.tsx resolveDateWindow` (end-of-month overflow)
+- [x] Seed: pass `externalUrl` through action upsert; add demo URLs to two curated actions so the CTA is visible in the live demo
+
+**Overnight expansion (2026-06-19) — stacked branches off `round3_review_closure`:**
+
+- [x] **Typography** (`feat/phase_13/typography`) — Replace Zilla Slab with Playfair Display (700/800/900) as display font; update `:root` fallbacks to reflect actual loaded fonts; tighten letter-spacing for Playfair's optical range
+- [x] **Seed URLs** (`feat/phase_13/seed-urls`) — Add `externalUrl` to all 13 published demo actions (was only 2); every action page now shows the "Take Action →" CTA
+- [x] **Loading states** (`feat/phase_13/loading-states`) — Add `loading.tsx` skeleton files to all 8 public collection and detail routes; skeleton shimmer CSS added to `globals.css`
+- [x] **Keyword search** (`feat/phase_13/keyword-search`) — Dedicated `/search` route searching Articles and Actions simultaneously via ILIKE; Search link added to nav and footer; `?search=` param wired into `/articles` and `/actions` collection pages; Events explicitly excluded (time/location-specific, keyword search not useful)
+- [x] **Topic admin** (`feat/phase_13/topic-admin`) — Full CRUD for Issues in admin workspace at `/admin/topics`; GET/POST/PATCH/DELETE endpoints in NestJS; Next.js proxy routes at `/api/admin/topics`; `deleteAuthenticated` helper added to base.ts; delete blocked when content is linked; "Issues" nav link added to admin shell
+- [x] **Proxy routes fix** — Missing Next.js proxy routes for topic admin were added (topic create/update/delete were silently 404ing without them)
+- [x] **rc-smoke.mjs** — Updated stale assertions ("Take Action" → "Actions"), added `/search` check, added admin topics API + page checks
+- [x] **Demo banner** — Reduced enter animation from 2.5s → 0.45s; reduced pulse from 3x to 1x
+- [x] **Nav density** — Reduced gap from 24px → 20px and font-size from 1rem → 0.95rem to accommodate 6 nav items
+
+**Deferred to Milestone 2:**
+
+- [x] Issues vs `/topics` URL normalization — `/issues` routes live, `/topics` redirects; implemented in `feat/phase_13/topic-admin`
+- [x] Nav search icon treatment — SearchIcon SVG replaces text in header nav; implemented in `feat/phase_13/topic-admin`
+- [x] Homepage journey cards — copy sharpened, Step 3 mentions events; implemented in `feat/phase_13/topic-admin`
+
+**Non-issues confirmed:**
+
+- `aria-current="true"` on topic selector pills — semantically correct for link-based filter bars; `aria-pressed` is only valid on button elements. No change.
+- Remaining hardcoded hex in admin CSS — intentional light-mode values; tokenizing with dark-theme variables would break admin UI. No change.
+
+###### Notes:
+
+- The `externalUrl` migration was applied by modifying the existing init migration (`20260312131932`) and running `prisma migrate reset`, consistent with pre-deployment clean-history policy.
+- After pulling these branches, run `cd apps/api && pnpm exec prisma db seed` to populate the new externalUrl values on demo actions.
+- Each branch has a `CONTEXT-*.md` at the repo root with decisions, review guidance, and files changed.
+
+###### Links:
+
+- Review: `docs/reviews/review-2026-06-18-round2.md`
+- Branch context files: `CONTEXT-typography.md`, `CONTEXT-search.md`, `CONTEXT-topic-admin.md`
+
+---
+
+#### ▸ Phase 13.8 - Review 3 Closure ✅
+
+###### Goal
+
+Close the quality gaps identified in `docs/reviews/review-2026-06-19.md` — the fourth external review, conducted after the Phase 13.7 overnight async work (CSS split, UI swing, keyword search, topic admin).
+
+**Branch:** `feat/phase_13/review-3-polish`, stacked on `feat/phase_13/review-closure-3`
+
+###### Completed
+
+- [x] **Homepage ISSUES array hardcoded** — replaced with `getTopicsList()` API call; homepage now renders dynamically from API, same pattern as `issues/page.tsx`
+- [x] **Homepage restructured** — context/explanation now comes first; "Which one is yours?" issue browser moved below the hero; "Find Your Fight" is now the large display text
+- [x] **`a[aria-label='Search']` CSS selector** — added `site-search-link` class to NavLink JSX; CSS now targets `.site-search-link`
+- [x] **Topic icon fallback** — added `GenericIssueIcon` to `icons.tsx`; `topic-summary.tsx` now uses `TOPIC_ICON_MAP[slug] ?? GenericIssueIcon`
+- [x] **Dual demo indicator** — removed `site-demo-indicator` pill from header; demo banner is the sole demo signal
+- [x] **`secondaryCTA` hardcoded `#171717`** — replaced with `var(--color-text-primary)` / `var(--color-page-bg)` tokens
+- [x] **Grain opacity** — raised from 0.035 to 0.08
+- [x] **bg-motif opacity** — raised from 0.11 to 0.20 in hero; added as persistent fixed watermark across all public pages via `.publicShell::after` at 0.07 opacity
+- [x] **Card tilt rotation** — removed `rotate(0.6deg)` from `.topicCollectionItemTilt:hover`; translate-only consistent with all other cards
+- [x] **Submit page width** — `.submitEntrySupport` max-width raised from 46rem to 820px to match option cards above
+- [x] **Footer centering** — `justify-content: center` on footer nav; tagline centered
+- [x] **Footer link clarity** — footer links now have visible underline at rest (subtle), full underline on hover
+- [x] **Admin 404 page** — created `apps/web/src/app/admin/(workspace)/not-found.tsx` with admin shell layout
+- [x] **Login page branding** — updated eyebrow from "Signal Fire Admin" to "Find Your Fight — Admin"; brand panel always shown (not hidden on redirect); "Session expired" copy replaced with neutral "Sign in to continue"
+- [x] **Submission nudge** — contextual "Know something we missed?" block added to article and action detail page bottoms
+- [x] **Copy pass** — homepage, about page, and journey cards updated; dual meaning of "Find Your Fight" woven into about page hero and homepage supporting copy
+- [x] **Issue link color threading** — home issue links now show topic accent color at rest (subtle left border), not only on hover
+
+###### Deferred to Phase 13.9 (open items for user review)
+
+- Screenshots 04 and 05 still need regeneration with live server — requires `pnpm dev` + seeded DB + `node scripts/regenerate-doc-screenshots.mjs`
+- FYF logo glyph: user asked "what is the glyph?" and misses the FYF treatment — **needs user decision** on whether to replace the flame SVG with a proper FYF mark or keep current
+- Hero image: user wants an image for the homepage hero rather than text-only — **needs user asset/direction**
+- Color threading across site: topic accent colors appear on homepage issue links and issues index, but not on article/action cards belonging to that topic — **needs user decision** on scope
+- Events default UX: user questioned value of random-city events as default — **needs user decision** on default state vs messaging
+- Animation styles: issue link hover (color+border+padding) remains different from card hover (translate) — considered acceptable distinction since they are different element types, but flagged if user wants full normalization
+- ILIKE search improvement (replace with tags/structured search) — explicitly deferred to Milestone 2
+
+###### Notes
+
+- Branch `feat/phase_13/review-3-polish` stacked on `feat/phase_13/review-closure-3`
+- Typecheck passes clean
+- Screenshots not regenerated on this branch — requires running server
+
+###### Links
+
+- Review: `docs/reviews/review-2026-06-19.md`
+
+---
+
+#### ▸ Phase 13.9 - Post-Review Design Decisions ⏳
+
+###### Goal
+
+Resolve open design direction items from Phase 13.8 that require user input before implementation.
+
+###### Open items (needs user decision before work begins)
+
+- [ ] **FYF logo/glyph** — user asked about the current flame SVG and misses a proper "FYF" mark. Decide: keep flame icon, create a proper FYF SVG mark, or use a different brand symbol. If FYF mark: needs SVG design asset.
+- [ ] **Homepage hero image** — user prefers an image for the hero rather than text-only. Decide: what image, what style, what placement. Requires sourcing an asset.
+- [ ] **Topic color threading** — topic accent colors appear on homepage issue links and the issues index, but not on article/action collection cards belonging to that topic. Decide: thread colors through (add `data-topic` to article/action cards) or keep colors scoped to issue surfaces only.
+- [ ] **Events default UX** — user questioned the value of showing events from random cities by default. Options: (a) keep current default with better empty-state messaging, (b) hide events until a region is selected, (c) show only events near a stored preference. Decide which.
+- [ ] **Screenshots 04 and 05** — retake with live server: screenshot 04 needs action with externalUrl; screenshot 05 needs valid approved submission detail page.
+
+---
+
 ### ► Phase 14 — Deployment Infrastructure 🚧
 
 ###### Goal

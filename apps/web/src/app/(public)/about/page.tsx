@@ -5,30 +5,31 @@ export default async function AboutPage() {
     <section className="page-section aboutPage motifPage centeredPublicPage">
       <section className="page-section about-hero">
         <p className="section-label">About Find Your Fight</p>
-        <h1 className="pageTitle">Why This Site Exists</h1>
+        <h1 className="pageTitle">Find your issue. Find your way in.</h1>
         <p className="page-intro">
-          Find Your Fight is for people who care, want to do something meaningful, and need a clear
-          place to start.
+          Find Your Fight is for people who care, want to do something real, and feel stuck about
+          where to start.
         </p>
         <p className="aboutHeroSupport">
-          It is built to make civic participation feel more concrete, more navigable, and more worth
-          returning to.
+          The name means two things: find the issue that already has your attention, and find the
+          determination within yourself to actually do something about it. This site is here to help
+          with both.
         </p>
       </section>
 
       <section className="page-section about-body">
-        <h2>The question is not whether you care.</h2>
+        <h2>You&apos;re not stuck because you don&apos;t care.</h2>
         <p>
           People are angry, scared, and frustrated for good reason. It is easy to look at the scale
-          of what is happening and ask who with enough power will step in and stop it.
+          of what is happening and feel like nothing you do will matter.
         </p>
         <p>
-          But power is not only something held somewhere else. It is also built when people choose
-          where to focus, learn what is at stake, and take action together.
+          But power is not only held somewhere else. It is also built when people choose where to
+          focus, learn what is actually at stake, and take action together — one person at a time.
         </p>
         <p>
           Find Your Fight exists for the person saying: I want to do something, but I do not know
-          what to do.
+          where to start. That is where this comes in.
         </p>
       </section>
 
@@ -52,32 +53,32 @@ export default async function AboutPage() {
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 
         <div className="about-steps">
-          <Link href="/topics" className="about-step collectionItem">
-            <p className="section-label">Step 1</p>
+          <Link href="/issues" className="about-step collectionItem">
+            <div className="aboutStepNum">01</div>
             <h3>Choose an issue.</h3>
             <p>
-              Start with one area that you cannot stop thinking about. You do not need to solve
-              everything. You need a place to focus.
+              Start with the one that already has your attention. You do not need to carry all of
+              them. You just need a place to focus.
             </p>
           </Link>
 
           <Link href="/articles" className="about-step collectionItem">
-            <p className="section-label">Step 2</p>
+            <div className="aboutStepNum">02</div>
             <h3>Understand what is happening.</h3>
             <p>
-              Read enough context to move from outrage or confusion into a clearer sense of what is
-              at stake and where pressure can matter.
+              Read enough to move from outrage or confusion into a clearer sense of what is at stake
+              and where pressure can actually make a difference.
             </p>
           </Link>
 
           <section className="about-step collectionItem">
             <Link href="/actions" className="about-step-mainLink">
-              <p className="section-label">Step 3</p>
+              <div className="aboutStepNum">03</div>
               <h3>Take one concrete action.</h3>
               <p>
-                You do not need to have the whole answer. Contact someone, volunteer, join an event,
-                or support work already in motion. The first action does not have to be perfect. It
-                has to be real.
+                You do not need the whole answer. Contact someone, volunteer, join an event, or
+                support work already in motion. The first action does not have to be perfect. It
+                just has to be real.
               </p>
             </Link>
             <div className="ctaRow">

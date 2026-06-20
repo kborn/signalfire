@@ -45,6 +45,7 @@ export default async function AdminActionDetailPage({
             title: action.title,
             summary: action.summary,
             description: action.description,
+            externalUrl: action.externalUrl,
             actionType: action.actionType,
             topicSlugs: action.topicSlugs,
           }}

@@ -78,17 +78,16 @@ export default function LoginForm({ next }: LoginFormProps) {
 
   return (
     <section className="adminLoginPage page-section">
-      <div className={`adminLoginShell${isSessionReturn ? ' adminLoginShellCompact' : ''}`}>
+      <div className="adminLoginShell">
         <div className="adminLoginFormPanel">
           {isSessionReturn ? (
             <div className="adminLoginStatusPill" role="status">
-              Session expired. Sign in again to continue to{' '}
-              {destinationLabel ?? 'the admin workspace'}.
+              Sign in to continue to {destinationLabel ?? 'the admin workspace'}.
             </div>
           ) : null}
 
           <div className="adminLoginIntro">
-            <p className="adminLoginEyebrow">Signal Fire Admin</p>
+            <p className="adminLoginEyebrow">Find Your Fight — Admin</p>
             <h1 className="adminLoginFormTitle">Sign in</h1>
             <p className="adminLoginFormDek">
               {isSessionReturn
@@ -154,32 +153,30 @@ export default function LoginForm({ next }: LoginFormProps) {
           </form>
         </div>
 
-        {!isSessionReturn ? (
-          <aside className="adminLoginBrandPanel" aria-label="Signal Fire admin overview">
-            <div className="adminLoginBrandCopy">
-              <h2 className="pageTitle adminLoginTitle">Moderate. Curate. Publish.</h2>
-              <p className="adminDek adminLoginDek">
-                Access the internal workspace for community submissions, curated actions, published
-                articles, and event operations.
-              </p>
-            </div>
+        <aside className="adminLoginBrandPanel" aria-label="Find Your Fight admin overview">
+          <div className="adminLoginBrandCopy">
+            <h2 className="pageTitle adminLoginTitle">Moderate. Curate. Publish.</h2>
+            <p className="adminDek adminLoginDek">
+              The internal workspace for community submissions, curated actions, published articles,
+              and event operations.
+            </p>
+          </div>
 
-            <div className="adminLoginFeatureList" aria-label="Admin workspace areas">
-              <div className="adminLoginFeatureItem">
-                <span className="adminLoginFeatureKicker">Moderation</span>
-                <p>Review pending submissions and move the right civic updates forward.</p>
-              </div>
-              <div className="adminLoginFeatureItem">
-                <span className="adminLoginFeatureKicker">Curation</span>
-                <p>Maintain the public-facing toolkit of actions, articles, and events.</p>
-              </div>
-              <div className="adminLoginFeatureItem">
-                <span className="adminLoginFeatureKicker">Publishing</span>
-                <p>Keep approved civic information structured, current, and ready to use.</p>
-              </div>
+          <div className="adminLoginFeatureList" aria-label="Admin workspace areas">
+            <div className="adminLoginFeatureItem">
+              <span className="adminLoginFeatureKicker">Moderation</span>
+              <p>Review pending submissions and move the right civic updates forward.</p>
             </div>
-          </aside>
-        ) : null}
+            <div className="adminLoginFeatureItem">
+              <span className="adminLoginFeatureKicker">Curation</span>
+              <p>Maintain the public-facing toolkit of actions, articles, and events.</p>
+            </div>
+            <div className="adminLoginFeatureItem">
+              <span className="adminLoginFeatureKicker">Publishing</span>
+              <p>Keep approved civic information structured, current, and ready to use.</p>
+            </div>
+          </div>
+        </aside>
       </div>
     </section>
   );

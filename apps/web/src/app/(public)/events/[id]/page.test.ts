@@ -93,7 +93,7 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('What to expect');
     expect(markup).toContain('Bring signs and water.');
     expect(markup).toContain('Related Topics');
-    expect(markup).toContain('href="/topics/local-community"');
+    expect(markup).toContain('href="/issues/local-community"');
     expect(markup).toContain('Learn More');
     expect(markup).toContain('href="/articles/housing-policy-basics"');
     expect(markup).toContain('Take Action');

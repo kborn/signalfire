@@ -13,6 +13,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <NavLink href="/admin/articles">Articles</NavLink>
             <NavLink href="/admin/actions">Actions</NavLink>
             <NavLink href="/admin/events">Events</NavLink>
+            <NavLink href="/admin/topics">Issues</NavLink>
           </nav>
         </section>
         <section className="adminHeaderActions">

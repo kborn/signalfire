@@ -157,11 +157,11 @@ async function main() {
 
     await expectPage(page, 'Public home', '/', 'Choose an issue.');
     await expectPage(page, 'Public about', '/about', 'Why This Site Exists');
-    await expectPage(page, 'Public topics index', '/topics', 'Issues');
-    await expectPage(page, 'Public topic detail', `/topics/${topicSlug}`, 'Step 2 — Read');
+    await expectPage(page, 'Public issues index', '/issues', 'Issues');
+    await expectPage(page, 'Public issue detail', `/issues/${topicSlug}`, 'Step 2 — Read');
     await expectPage(page, 'Public articles index', '/articles', 'Articles');
     await expectPage(page, 'Public article detail', `/articles/${articleSlug}`, 'Author');
-    await expectPage(page, 'Public actions index', '/actions', 'Take Action');
+    await expectPage(page, 'Public actions index', '/actions', 'Actions');
     await expectPage(page, 'Public action detail', `/actions/${actionSlug}`, 'Action Type');
     await expectPage(
       page,
@@ -170,6 +170,7 @@ async function main() {
       'Browse upcoming events by issue, location, and date',
     );
     await expectPage(page, 'Public event detail', `/events/${eventId}`, 'Location');
+    await expectPage(page, 'Public search', '/search', 'Find articles and actions');
     await expectPage(page, 'Public submit entry', '/submit', 'Contribute to Find Your Fight');
     await expectPage(page, 'Public submit article', '/submit/article', 'Submit an Article');
     await expectPage(page, 'Public submit event', '/submit/event', 'Submit an Event');
@@ -216,6 +217,12 @@ async function main() {
       '/admin/events',
       adminCookie,
       (json) => (Array.isArray(json.items) && json.items.length > 0 ? true : 'no admin events'),
+    );
+    const adminTopics = await expectAdminJson(
+      'Admin topics API',
+      '/admin/topics',
+      adminCookie,
+      (json) => (Array.isArray(json.items) && json.items.length > 0 ? true : 'no admin topics'),
     );
 
     await page.goto(`${baseUrl}/admin/login`, { waitUntil: 'networkidle' });
@@ -298,6 +305,16 @@ async function main() {
       `/admin/events/${adminEventId}`,
       'Edit Event',
     );
+    await expectAuthedPage(page, 'Admin topics index', '/admin/topics', 'Issues');
+    const adminTopicSlug = adminTopics?.items?.[0]?.slug;
+    if (adminTopicSlug) {
+      await expectAuthedPage(
+        page,
+        'Admin topic editor',
+        `/admin/topics/${adminTopicSlug}`,
+        'Edit Issue',
+      );
+    }
 
     if (session?.adminUser?.email !== adminEmail) {
       record(

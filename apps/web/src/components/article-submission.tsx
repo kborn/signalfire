@@ -271,7 +271,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           If you included an email address, we may contact you if we need clarification.
         </p>
         <div className="ctaRow submissionSuccessActions">
-          <Link href="/topics" className="primaryCTA">
+          <Link href="/issues" className="primaryCTA">
             Explore Issues
           </Link>
           <Link href="/articles" className="secondaryCTA">

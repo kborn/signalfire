@@ -19,7 +19,7 @@ describe('HomePage', () => {
   it('renders the primary and secondary discovery links', () => {
     const markup = renderToStaticMarkup(HomePage());
 
-    expect(markup).toContain('href="/topics"');
+    expect(markup).toContain('href="/issues"');
     expect(markup).toContain('Explore Issues');
     expect(markup).toContain('href="/about"');
     expect(markup).toContain('Why This Site Exists');

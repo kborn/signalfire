@@ -1,0 +1,496 @@
+/* Home */
+
+.home-page {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.motifPage {
+  position: relative;
+  isolation: isolate;
+}
+
+.centeredPublicPage {
+  justify-items: center;
+}
+
+.centeredPublicPage > * {
+  width: 100%;
+}
+
+.ctaGroup {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+}
+
+.ctaGroup > * {
+  margin: 0;
+}
+
+.ctaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.home-issues,
+.home-journey,
+.home-contribute,
+.home-demo-path {
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.home-issues,
+.home-journey,
+.home-contribute,
+.home-demo-path,
+.about-hero,
+.about-body,
+.about-community,
+.about-journey {
+  position: relative;
+  z-index: 1;
+}
+
+.home-issues h2:not(.homeIssueQuestion),
+.home-journey h2,
+.home-contribute h2,
+.home-demo-path h2 {
+  font-size: 1.5rem;
+}
+
+.home-issues p,
+.home-journey p,
+.home-contribute p,
+.home-demo-path p {
+  max-width: 60ch;
+  line-height: 1.6;
+}
+
+.homeSupportCopy {
+  color: var(--color-text-muted);
+  max-width: 58ch;
+}
+
+.home-sectionHeading {
+  display: grid;
+  gap: var(--space-1);
+  max-width: 44rem;
+}
+
+.homeJourneyGrid {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.homeJourneyCard {
+  min-height: 100%;
+}
+
+.about-hero,
+.about-community,
+.about-body,
+.about-journey {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.about-hero,
+.about-community {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.about-body,
+.about-journey {
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.about-body,
+.about-journey {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.about-body p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 68ch;
+}
+
+.about-steps {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.about-step {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-3);
+  border: 1px solid;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--color-surface-soft) 82%, transparent);
+  border-color: var(--color-border-subtle);
+}
+
+.about-step-mainLink {
+  display: grid;
+  gap: var(--space-2);
+  color: inherit;
+  text-decoration: none;
+}
+
+.demoPageGrid {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.demoInfoBlock {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.about-step .primaryCTA,
+.about-step .secondaryCTA {
+  margin-top: var(--space-1);
+}
+
+.about-step:hover .secondaryCTA,
+.about-step:focus-within .secondaryCTA {
+  background: var(--color-brand-primary);
+  color: var(--color-page-bg);
+}
+
+.about-closing-panel {
+  max-width: 760px;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.about-closing-panel h2 {
+  max-width: 14ch;
+}
+
+.about-step h3 {
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.2;
+}
+
+/* ── Poster hero ─────────────────────────────────────────────────────────── */
+
+.heroPoster {
+  position: relative;
+  padding: var(--space-5) 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: grid;
+  gap: var(--space-3);
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.heroPoster > * {
+  position: relative;
+  z-index: 1;
+}
+
+.heroPosterBrand {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(4rem, 10vw, 7.5rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  max-width: 14ch;
+  color: var(--color-text-primary);
+}
+
+.heroPosterTagline {
+  font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  max-width: 52ch;
+  font-weight: 500;
+}
+
+.heroPosterQuestion {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(4.5rem, 12vw, 8.5rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  max-width: 9ch;
+  color: var(--color-text-primary);
+}
+
+.heroPosterSub {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  max-width: 52ch;
+}
+
+.heroPosterCTA {
+  margin-top: var(--space-1);
+}
+
+.homeIssueQuestion {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.heroPosterRoll {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: var(--space-2);
+}
+
+.heroPosterIssueLink {
+  display: block;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-decoration: none;
+  padding: 0.15em 0 0.15em 0.6em;
+  border-left: 3px solid transparent;
+  color: var(--color-text-primary);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease,
+    padding-left 0.15s ease;
+}
+
+.heroPosterIssueLink[data-topic] {
+  border-left-color: color-mix(in srgb, var(--color-brand-primary) 30%, transparent);
+}
+
+.heroPosterIssueLink:hover {
+  color: var(--color-brand-primary);
+  border-left-color: var(--color-brand-primary);
+  border-left-width: 4px;
+  padding-left: 0.9em;
+  background: color-mix(in srgb, var(--color-brand-primary) 6%, transparent);
+  text-decoration: none;
+}
+
+.heroPosterFooter {
+  margin-top: var(--space-1);
+}
+
+.homeJourneyGrid,
+.home-issues,
+.home-contribute,
+.home-demo-path {
+  max-width: 58rem;
+}
+
+.home-contribute {
+  gap: var(--space-2);
+}
+
+.aboutHeroSupport {
+  max-width: 42rem;
+  color: var(--color-text-muted);
+  font-size: 1.04rem;
+  line-height: 1.65;
+}
+
+/* Submit landing */
+
+.submitOptionList {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+.submitEntryPage {
+  gap: var(--space-2);
+}
+
+.submitEntrySupport {
+  display: grid;
+  gap: var(--space-2);
+  max-width: 820px;
+  margin-inline: auto;
+}
+
+.submitEntryPage > .pageTitle,
+.submitEntryPage > .page-intro {
+  width: min(100%, 820px);
+  margin-inline: auto;
+}
+
+.submitOptionCard {
+  min-height: 100%;
+}
+
+.submitEntrySupportCard {
+  display: grid;
+  gap: 6px;
+  padding: var(--space-2);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 86%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, transparent);
+}
+
+.discoveryPage {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.discoveryPageHeader {
+  display: grid;
+  gap: var(--space-1);
+  max-width: 60rem;
+  padding: 0 0 var(--space-3);
+  border-bottom: 1px solid var(--color-brand-accent);
+}
+
+/* CTA */
+
+.primaryCTA,
+.secondaryCTA {
+  min-height: 52px;
+  padding: 0.95rem 1.5rem;
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.primaryCTA {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 1rem 1.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--color-brand-primary);
+  color: var(--color-page-bg);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+button.primaryCTA {
+  cursor: pointer;
+}
+
+button.secondaryCTA {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.primaryCTA:hover {
+  background: var(--color-brand-primary-hover);
+}
+
+.primaryCTA:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.primaryCTA:active {
+  transform: translateY(1px);
+}
+
+.secondaryCTA {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 0.875rem 1.5rem;
+  border: 1px solid var(--color-text-primary);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-primary);
+  font-weight: 600;
+  line-height: 1;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.publicShell .secondaryCTA {
+  border-color: var(--color-brand-primary);
+  background: transparent;
+  color: var(--color-brand-primary);
+}
+
+.publicShell .secondaryCTA:hover {
+  background: var(--color-brand-primary);
+  color: var(--color-page-bg);
+}
+
+.secondaryCTA:hover {
+  background: var(--color-text-primary);
+  color: var(--color-page-bg);
+}
+
+.secondaryCTA:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.secondaryCTA:active {
+  transform: translateY(1px);
+}
+
+.textCTA {
+  width: fit-content;
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+}
+
+.textCTA::after {
+  content: ' \2192';
+}
+
+.publicError {
+  max-width: 720px;
+  padding: var(--space-5) 0;
+}
+
+.publicErrorActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.textCTA:hover {
+  color: var(--color-brand-primary-hover);
+}
+
+/* ── About page numbered steps ───────────────────────────────────────────── */
+
+.aboutStepNum {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--color-brand-primary);
+  opacity: 0.7;
+  margin-bottom: var(--space-0);
+}

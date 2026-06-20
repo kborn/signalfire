@@ -73,3 +73,9 @@ export type {
   ValidationError,
 } from './submission-type.js';
 export type { AdminLoginRequest, AdminSessionResponse } from './admin-auth.js';
+export type {
+  AdminTopicRequest,
+  AdminTopicSummary,
+  AdminTopicDetailResponse,
+  AdminTopicListResponse,
+} from './admin-topic.types.js';

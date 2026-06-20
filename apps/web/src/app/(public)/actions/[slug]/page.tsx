@@ -30,10 +30,10 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
   const updatedAt = formatContentDate(action.updatedAt);
   const actionType = formatActionTypeLabel(action.actionType);
   return (
-    <div className="detailPage">
+    <div className="detailPage motifPage">
       <nav className="detailBreadcrumb" aria-label="Back">
         {action.topics.length > 0 ? (
-          <Link href={`/topics/${action.topics[0].slug}`} className="detailBreadcrumbLink">
+          <Link href={`/issues/${action.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {action.topics[0].name}
           </Link>
         ) : (
@@ -66,6 +66,19 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           )}
         </section>
 
+        {action.externalUrl ? (
+          <div className="ctaGroup">
+            <a
+              href={action.externalUrl}
+              className="primaryCTA"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Take Action →
+            </a>
+          </div>
+        ) : null}
+
         <section>
           <MarkdownContent content={action.description} />
         </section>
@@ -95,6 +108,16 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           Browse more actions
         </Link>
       </div>
+      <section className="page-section detailContributeNudge">
+        <p className="section-label">Know of another way to act?</p>
+        <p className="metaText">
+          If you know of an event, resource, or opportunity that should be listed here, submit it
+          for review.
+        </p>
+        <Link href="/submit" className="textCTA">
+          Submit content
+        </Link>
+      </section>
     </div>
   );
 }

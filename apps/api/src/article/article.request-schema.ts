@@ -41,11 +41,13 @@ const optionalPositiveInteger = (fieldLabel: string, max?: number) =>
 export const articleRequestSchema = z
   .object({
     topicSlug: optionalNullableTrimmedString(120),
+    search: optionalNullableTrimmedString(200),
     page: optionalPositiveInteger('Page'),
     pageSize: optionalPositiveInteger('Page size', MAX_PAGE_SIZE),
   })
   .transform((value) => ({
     topicSlug: value.topicSlug ?? undefined,
+    search: value.search ?? undefined,
     page: value.page ?? DEFAULT_PAGE,
     pageSize: value.pageSize ?? DEFAULT_PAGE_SIZE,
   }));

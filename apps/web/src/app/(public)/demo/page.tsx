@@ -68,7 +68,7 @@ export default function DemoPage() {
         <p className="section-label">Explore the public site</p>
         <h2>Start with the public experience</h2>
         <div className="ctaRow">
-          <Link href="/topics" className="secondaryCTA">
+          <Link href="/issues" className="secondaryCTA">
             Browse Issues
           </Link>
           <Link href="/articles" className="secondaryCTA">

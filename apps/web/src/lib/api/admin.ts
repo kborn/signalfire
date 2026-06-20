@@ -1,4 +1,4 @@
-import { patchAuthenticatedJson, postAuthenticatedJson } from '@/lib/api/base';
+import { deleteAuthenticated, patchAuthenticatedJson, postAuthenticatedJson } from '@/lib/api/base';
 import {
   AdminActionDetailResponse,
   AdminActionRequest,
@@ -6,6 +6,8 @@ import {
   AdminArticleRequest,
   AdminEventDetailResponse,
   AdminEventRequest,
+  AdminTopicDetailResponse,
+  AdminTopicRequest,
   ModerationReviewRequest,
   type ModerationReviewSuccess,
 } from '@signal-fire/api-contracts';
@@ -63,4 +65,24 @@ export async function updateAdminEvent(
   payload: AdminEventRequest,
 ): Promise<AdminEventDetailResponse> {
   return await patchAuthenticatedJson<AdminEventDetailResponse>(`/api/admin/events/${id}`, payload);
+}
+
+export async function createAdminTopic(
+  payload: AdminTopicRequest,
+): Promise<AdminTopicDetailResponse> {
+  return await postAuthenticatedJson<AdminTopicDetailResponse>('/api/admin/topics', payload);
+}
+
+export async function updateAdminTopic(
+  slug: string,
+  payload: AdminTopicRequest,
+): Promise<AdminTopicDetailResponse> {
+  return await patchAuthenticatedJson<AdminTopicDetailResponse>(
+    `/api/admin/topics/${slug}`,
+    payload,
+  );
+}
+
+export async function deleteAdminTopic(slug: string): Promise<void> {
+  return await deleteAuthenticated(`/api/admin/topics/${slug}`);
 }

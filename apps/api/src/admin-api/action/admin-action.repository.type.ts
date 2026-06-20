@@ -6,6 +6,7 @@ export type CreateAdminActionRepositoryInput = {
   summary: string;
   slug: string;
   description: string;
+  externalUrl: string | null;
   actionType: ActionType;
   status: EntityStatus;
   publishedAt: Date | null;
@@ -16,6 +17,7 @@ export type UpdateAdminActionRepositoryInput = {
   title: string;
   summary: string;
   description: string;
+  externalUrl: string | null;
   actionType: ActionType;
   status: EntityStatus;
   topicIds: number[];

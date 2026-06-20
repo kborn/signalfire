@@ -34,6 +34,16 @@ export class ActionRepository {
   constructor(private prisma: PrismaService) {}
 
   async findPublished(req: ValidatedActionListQuery): Promise<ActionListResponse> {
+    const searchFilter: Prisma.ActionWhereInput | undefined = req.search
+      ? {
+          OR: [
+            { title: { contains: req.search, mode: 'insensitive' } },
+            { summary: { contains: req.search, mode: 'insensitive' } },
+            { description: { contains: req.search, mode: 'insensitive' } },
+          ],
+        }
+      : undefined;
+
     const where: Prisma.ActionWhereInput = {
       status: EntityStatus.PUBLISHED,
       topicActions: req.topicSlug
@@ -45,6 +55,7 @@ export class ActionRepository {
             },
           }
         : undefined,
+      ...searchFilter,
     };
 
     const totalItems = await this.prisma.action.count({ where });

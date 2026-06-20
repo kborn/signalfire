@@ -9,6 +9,7 @@ import {
 
 export type ActionListRequest = PaginationParams & {
   topicSlug?: string;
+  search?: string;
 };
 
 export type ActionListResponse = PaginatedListResponse<ActionSummary>;
@@ -19,6 +20,7 @@ export type ActionDetailResponse = {
   title: string;
   summary: string;
   description: string;
+  externalUrl: string | null;
   actionType: ActionType;
   updatedAt: string;
   publishedAt: string;

@@ -33,10 +33,10 @@ export default async function ArticleDetailsPage({
   const updatedAt = formatContentDate(article.updatedAt);
 
   return (
-    <div className="detailPage">
+    <div className="detailPage motifPage">
       <nav className="detailBreadcrumb" aria-label="Back">
         {article.topics.length > 0 ? (
-          <Link href={`/topics/${article.topics[0].slug}`} className="detailBreadcrumbLink">
+          <Link href={`/issues/${article.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {article.topics[0].name}
           </Link>
         ) : (
@@ -49,8 +49,12 @@ export default async function ArticleDetailsPage({
         <h1 className="pageTitle">{article.title}</h1>
       </section>
       <section className="detailContent detailContent--article">
-        <section className="detailMetaGroup detailMetaPanel">
-          <p className="detailLead">{article.summary}</p>
+        <section className="detailNarrativePanel">
+          <p className="articleLead">{article.summary}</p>
+          <MarkdownContent content={article.content} />
+        </section>
+
+        <aside className="detailMetaGroup detailMetaPanel articleMetaPanel">
           <div className="detailMetaRow">
             <div className="metaBlock">
               <p className="metaLabel">Author</p>
@@ -69,11 +73,7 @@ export default async function ArticleDetailsPage({
               </div>
             )}
           </div>
-        </section>
-
-        <section className="detailNarrativePanel">
-          <MarkdownContent content={article.content} />
-        </section>
+        </aside>
         {article.topics.length > 0 && (
           <section className="relatedSection">
             <div className="relatedSectionHeader">
@@ -105,6 +105,15 @@ export default async function ArticleDetailsPage({
           Browse more articles
         </Link>
       </div>
+      <section className="page-section detailContributeNudge">
+        <p className="section-label">Know something we missed?</p>
+        <p className="metaText">
+          If you have an article, guide, or event that belongs here, you can submit it for review.
+        </p>
+        <Link href="/submit" className="textCTA">
+          Submit content
+        </Link>
+      </section>
     </div>
   );
 }

@@ -410,7 +410,7 @@ const topicArticlePool: Record<string, Array<{ title: string; summary: string }>
 
 const topicActionPool: Record<
   string,
-  Array<{ title: string; summary: string; actionType: ActionType }>
+  Array<{ title: string; summary: string; actionType: ActionType; externalUrl?: string }>
 > = {
   democracy: [
     {
@@ -1202,6 +1202,7 @@ const demoActions = [
     summary: 'Ask local officials to expand public transit funding.',
     description:
       'Call or email your local council member and ask for dedicated bus-lane funding and improved weekend service.',
+    externalUrl: 'https://example.org/find-your-council-member',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-03T00:00:00.000Z'),
@@ -1214,6 +1215,7 @@ const demoActions = [
     summary: 'Work with local residents on recurring climate pressure campaigns.',
     description:
       'Join an existing local coalition or start a recurring organizing group focused on transit, housing, and emissions policy.',
+    externalUrl: 'https://example.org/local-climate-coalition-finder',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-04T00:00:00.000Z'),
@@ -1230,6 +1232,7 @@ const demoActions = [
     summary: 'Show up to local election administration meetings and document decisions.',
     description:
       'Attend the next public election board meeting, take notes, and follow up on procedural changes that affect voting access.',
+    externalUrl: 'https://example.org/county-election-board-calendar',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-05T00:00:00.000Z'),
@@ -1242,6 +1245,7 @@ const demoActions = [
     summary: 'Shift spending away from a retailer tied to anti-worker retaliation.',
     description:
       "Move purchases away from the company's private-label products, share the campaign demand publicly, and invite others to follow the same target list.",
+    externalUrl: 'https://example.org/boycott-target-list',
     actionType: ActionType.GUIDE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-06T00:00:00.000Z'),
@@ -1254,6 +1258,7 @@ const demoActions = [
     summary: 'Support workers who need material backing during a pressure campaign.',
     description:
       'Contribute to a vetted worker solidarity fund so workers can sustain public pressure while facing retaliation, reduced hours, or strike-related costs.',
+    externalUrl: 'https://example.org/worker-solidarity-fund',
     actionType: ActionType.DONATE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-07T00:00:00.000Z'),
@@ -1266,6 +1271,7 @@ const demoActions = [
     summary: 'Send a specific message defending access to books and librarians.',
     description:
       'Email board members before the next meeting with one concrete ask: preserve library access, oppose removals without due process, and keep review rules public.',
+    externalUrl: 'https://example.org/find-school-board-contact',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-08T00:00:00.000Z'),
@@ -1281,6 +1287,7 @@ const demoActions = [
     summary: 'Build durable local support around access, programming, and public visibility.',
     description:
       'Join a local library-support group to help with turnout, outreach, and public education around why free access to books and staff matters.',
+    externalUrl: 'https://example.org/friends-of-libraries-volunteer',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-09T00:00:00.000Z'),
@@ -1293,6 +1300,7 @@ const demoActions = [
     summary: 'Use public comment to put a clear demand into the record.',
     description:
       'Prepare a short statement, sign up early, and connect your testimony to a specific vote, funding choice, or public rule change that officials cannot ignore.',
+    externalUrl: 'https://example.org/city-council-public-comment-signup',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-10T00:00:00.000Z'),
@@ -1308,6 +1316,7 @@ const demoActions = [
     summary: 'Document access problems and connect voters to rapid support.',
     description:
       'Join a local election-protection effort, learn the reporting process, and help track barriers such as long lines, polling-place confusion, or disability access failures.',
+    externalUrl: 'https://example.org/election-protection-volunteer-signup',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-11T00:00:00.000Z'),
@@ -1323,6 +1332,7 @@ const demoActions = [
     summary: 'Coordinate building-level outreach around heat, housing, and emergency response.',
     description:
       'Plug into a tenant network that can check on vulnerable neighbors, document unsafe conditions, and push for neighborhood-level heat and housing protections.',
+    externalUrl: 'https://example.org/tenant-solidarity-network',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-12T00:00:00.000Z'),
@@ -1335,6 +1345,7 @@ const demoActions = [
     summary: 'Coordinate a concrete supply run for neighbors during a local pressure campaign.',
     description:
       'Join a scheduled supply run that supports neighbors directly while organizers document unmet needs and connect them to public demands.',
+    externalUrl: 'https://example.org/mutual-aid-network-locator',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-13T00:00:00.000Z'),
@@ -1347,6 +1358,7 @@ const demoActions = [
     summary: 'Read the agenda early and flag decisions that deserve public attention.',
     description:
       'Scan the next school board agenda, compare it to the prior meeting, and share any policy, library, or curriculum items that need organized turnout.',
+    externalUrl: 'https://example.org/school-board-meeting-finder',
     actionType: ActionType.GUIDE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-14T00:00:00.000Z'),
@@ -1359,6 +1371,7 @@ const demoActions = [
     summary: 'Help move supporters from RSVP to real turnout and follow-up.',
     description:
       'Support phonebanks, texts, and follow-up coordination so a statewide mobilization leads to sustained local participation afterward.',
+    externalUrl: 'https://example.org/day-of-action-volunteer-registration',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-15T00:00:00.000Z'),
@@ -1892,12 +1905,14 @@ async function seedDemoActions() {
   }
 
   for (const action of allDemoActions) {
+    const externalUrl = 'externalUrl' in action ? (action.externalUrl ?? null) : null;
     await prisma.action.upsert({
       where: { slug: action.slug },
       update: {
         title: action.title,
         summary: action.summary,
         description: action.description,
+        externalUrl,
         actionType: action.actionType,
         status: action.status,
         publishedAt: action.publishedAt,
@@ -1907,6 +1922,7 @@ async function seedDemoActions() {
         title: action.title,
         summary: action.summary,
         description: action.description,
+        externalUrl,
         actionType: action.actionType,
         status: action.status,
         publishedAt: action.publishedAt,

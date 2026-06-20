@@ -79,6 +79,16 @@ export class ArticleRepository {
   }
 
   async findPublished(req: ValidatedArticleListQuery): Promise<ArticleListResponse> {
+    const searchFilter: Prisma.ArticleWhereInput | undefined = req.search
+      ? {
+          OR: [
+            { title: { contains: req.search, mode: 'insensitive' } },
+            { summary: { contains: req.search, mode: 'insensitive' } },
+            { content: { contains: req.search, mode: 'insensitive' } },
+          ],
+        }
+      : undefined;
+
     const where: Prisma.ArticleWhereInput = {
       status: EntityStatus.PUBLISHED,
       topicArticles: req.topicSlug
@@ -90,6 +100,7 @@ export class ArticleRepository {
             },
           }
         : undefined,
+      ...searchFilter,
     };
 
     const totalItems = await this.prisma.article.count({ where });

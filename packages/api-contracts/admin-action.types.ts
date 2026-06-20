@@ -5,6 +5,7 @@ export type AdminActionRequest = {
   title: string;
   summary: string;
   description: string;
+  externalUrl?: string | null;
   actionType: ActionType;
   topicSlugs: string[];
   status: EntityStatus;
@@ -24,6 +25,7 @@ export type AdminActionSummary = {
 
 export type AdminActionDetailResponse = AdminActionSummary & {
   description: string;
+  externalUrl: string | null;
 };
 
 export type AdminActionListResponse = {
