@@ -4,21 +4,8 @@ import type { SVGProps } from 'react';
 
 export function FYFLogo(props: SVGProps<SVGSVGElement>) {
   return (
-    <svg viewBox="0 0 56 20" focusable="false" aria-hidden="true" {...props}>
-      <circle cx="5" cy="10" r="2.5" fill="#cfac5a" />
-      <text
-        x="28"
-        y="15"
-        fontFamily="Inter, Arial, sans-serif"
-        fontWeight="700"
-        fontSize="14"
-        fill="currentColor"
-        textAnchor="middle"
-        letterSpacing="2"
-      >
-        FYF
-      </text>
-      <circle cx="51" cy="10" r="2.5" fill="#cfac5a" />
+    <svg viewBox="0 0 20 28" focusable="false" aria-hidden="true" {...props}>
+      <path d="M 15 1 L 3 16 L 10 16 L 5 27 L 17 12 L 10 12 Z" fill="var(--color-brand-accent)" />
     </svg>
   );
 }

@@ -4,11 +4,7 @@ import NavLink from '@/app/navbar';
 import { SubmitNavLink } from './submit-nav-link';
 import { SearchIcon, MenuIcon, XIcon } from '@/components/icons';
 
-type SiteNavProps = {
-  isDemoMode: boolean;
-};
-
-export function SiteNav({ isDemoMode }: SiteNavProps) {
+export function SiteNav() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -26,11 +22,6 @@ export function SiteNav({ isDemoMode }: SiteNavProps) {
           <NavLink href="/about">About</NavLink>
         </nav>
         <div className="site-header-actions">
-          {isDemoMode && (
-            <NavLink href="/demo" className="site-admin-demo-link">
-              Admin Demo
-            </NavLink>
-          )}
           <SubmitNavLink />
         </div>
       </div>
@@ -64,11 +55,6 @@ export function SiteNav({ isDemoMode }: SiteNavProps) {
           <NavLink href="/about" onClick={close}>
             About
           </NavLink>
-          {isDemoMode && (
-            <NavLink href="/demo" className="site-admin-demo-link" onClick={close}>
-              Admin Demo
-            </NavLink>
-          )}
           <SubmitNavLink />
         </nav>
       )}

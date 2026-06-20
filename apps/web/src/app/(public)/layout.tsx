@@ -19,10 +19,13 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         <header className="site-header">
           <div className="site-brand-group">
             <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
-              <FYFLogo className="site-brand-logo" width={56} height={20} />
+              <FYFLogo className="site-brand-logo" />
+              <span className="site-wordmark-text" aria-hidden="true">
+                FYF
+              </span>
             </Link>
           </div>
-          <SiteNav isDemoMode={isDemoMode} />
+          <SiteNav />
         </header>
         {isDemoMode ? <DemoBanner /> : null}
         <main>{children}</main>

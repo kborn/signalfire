@@ -16,8 +16,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   icons: {
-    icon: '/fyf-favicon.png',
-    shortcut: '/fyf-favicon.png',
+    icon: [
+      { url: '/fyf-mark.svg', type: 'image/svg+xml' },
+      { url: '/fyf-favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+    shortcut: '/fyf-mark.svg',
     apple: '/fyf-favicon.png',
   },
 };
