@@ -1880,14 +1880,14 @@ See `CONTEXT-next-session.md` for the current fix list and rationale.
 
 ---
 
-#### ▸ Phase 14.1 - Action Detail Page ⏳
+#### ▸ Phase 14.1 - Action Detail Page ✅
 
 ###### Phase Tasks:
 
-- [ ] Move CTA above metadata — new order: headline → summary → CTA → metadata → description
-- [ ] Add trust scaffolding: extract domain from `externalUrl` and render as "Take Action on [domain] →"
-- [ ] Replace Related Topics section with a short linked list — topic name links to `/issues/[slug]`, no description text
-- [ ] Confirm CTA renders nothing when `externalUrl` is null (existing behavior — verify not broken)
+- [x] Move CTA above metadata — new order: headline → summary → CTA → metadata → description
+- [x] Add trust scaffolding: extract domain from `externalUrl` and render as "Take Action on [domain] →"
+- [x] Replace Related Topics section with a short linked list — topic name links to `/issues/[slug]`, no description text
+- [x] Confirm CTA renders nothing when `externalUrl` is null (existing behavior — verify not broken)
 
 ###### Done condition:
 
