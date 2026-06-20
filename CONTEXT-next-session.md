@@ -1,70 +1,77 @@
-# Context for Next Agent Session — Phase 14.4
+# Context for Next Agent Session — Phase 14.5
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/nav-identity` — Phase 14.3 complete, all tests pass, build clean.
-**Merge this branch to main, then start a new branch for 14.4.**
+**Branch:** `feat/phase_14/issues_entity_pages` — Phase 14.4 complete, all checks pass, build clean.
+**Merge this branch to main, then start a new branch for 14.5.**
 
-**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅
+**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅
 
-**Start with Phase 14.4 — Issues and Entity Pages.**
+**Start with Phase 14.5 — Admin Visual Alignment.**
 
 ---
 
 ## Process — read this first
 
-**Spec-first.** Every UI subphase writes and aligns on a spec before any implementation begins.
-
-For 14.4, the first task is: write `docs/specs/ui/entity-pages.md` and present it to the user
-for sign-off. Do not touch any code until the spec is approved.
+**Spec-first.** Write `docs/specs/ui/admin.md` and present it to the user for sign-off before
+touching any admin CSS or components. Do not implement until approved.
 
 Reference files:
 
 - `docs/specs/ui/global.md` — shared patterns (typography, color, cards, CTAs, section structure)
 - `docs/specs/ui/navbar.md` — example of a completed spec (status: IMPLEMENTED)
+- `docs/specs/ui/entity-pages.md` — most recent completed spec (status: IMPLEMENTED)
 
 ---
 
-## What changed in Phase 14.3 (for context)
+## What changed in Phase 14.4 (for context)
 
-- **Wordmark restructured.** The `· FYF ·` self-contained SVG is replaced with a two-part
-  layout: `FYFLogo` SVG icon (left) + `<span class="site-wordmark-text">FYF</span>` (right).
-  The icon is currently an **amber circle placeholder** — final artwork deferred to Phase 14.10.
-  Swap point: replace paths in `FYFLogo` in `apps/web/src/components/icons.tsx`.
+- **Breadcrumb topic threading.** `data-topic` attribute added to the `<nav>` breadcrumb on
+  article, action, and event detail pages. Per-topic `--topic-accent` variable assignments
+  promoted from `.topicCollectionItem[data-topic]` to bare `[data-topic]` selectors — the
+  variable now cascades to any element carrying the attribute (breadcrumbs, issue roll links,
+  issue step headers).
 
-- **Favicon.** `apps/web/public/fyf-mark.svg` added as SVG favicon (primary); `fyf-favicon.png`
-  stays as PNG fallback. `fyf-mark.svg` is also a placeholder amber circle — swap point for 14.10.
+- **Issue roll per-topic colors.** Homepage issue roll links (`heroPosterIssueLink`) now use
+  `var(--topic-accent)` for at-rest border and hover state, not flat amber.
 
-- **Admin Demo removed from primary nav.** No longer in `SiteNav` or the mobile drawer.
-  Now lives in two places (both demo-mode only):
-  1. `DemoBanner` — "Admin →" link in the actions area, with copy explaining it
-  2. Public footer — plain "Admin" link after "Submit Content"
+- **Palette changes.** `metaLabel` → amber (`--color-brand-primary`); collection item left
+  borders dim at rest (40% opacity), full amber on hover; issue step numbers `02`/`03` render
+  at display scale (`clamp(2.5rem, 5vw, 3.5rem)`) in Playfair Display.
 
-- **Phase 14.10 added** to `progress.md` — artwork decision for nav mark and favicon.
+- **Footer motif ornament.** `bg-motif.png` added as `site-footer::before` — centered, 18%
+  opacity, `background-position: center top` so the fist is the focal point and bottom swirls
+  are clipped. Replaces earlier fixed-position watermark approach (abandoned — documented in
+  progress.md Phase 14.7).
 
-- **Color token note:** `--color-brand-primary` = `#cfac5a` (amber/gold — the main accent color).
-  `--color-brand-accent` = `#98503b` (rust/brown — secondary). Don't confuse them; use
-  `--color-brand-primary` for amber accents.
+- **Key decision documented in progress.md 14.7:** Interior page visual gap — the homepage
+  hero vocabulary (display-scale type, motif at meaningful opacity, amber structure) does not
+  carry into interior pages. Continuity pass (14.7) should bring that vocabulary into
+  `detailHero` and `discoveryPageHeader` sections. The motif-as-watermark approach was the
+  wrong vehicle for this.
+
+- **Color token reminder:** `--color-brand-primary` = `#cfac5a` (amber/gold — main accent).
+  `--color-brand-accent` = `#98503b` (rust/brown — secondary). Don't confuse them.
 
 ---
 
-## Phase 14.4 scope
+## Phase 14.5 scope
 
-**Branch:** `feat/phase_14/entity-pages` (start from main after merging 14.3)
+**Branch:** `feat/phase_14/admin-visual-alignment` (start from main after merging 14.4)
 
 **Tasks (from `progress.md`):**
 
-1. Write and align on UI spec (`docs/specs/ui/entity-pages.md`) — implementation blocked until approved
-2. Thread breadcrumb accent color: pass `data-topic={topics[0]?.slug}` to breadcrumb on article,
-   action, and event detail pages; style via existing topic CSS selectors
-3. Replace database description copy on `/issues` index cards with motivating, human-facing language
-4. Bold palette — three specific CSS changes only:
-   - `metaLabel` text color → amber (`var(--color-brand-primary)`)
-   - Collection item left borders visible at rest at reduced opacity, full on hover (currently hover-only)
-   - Issue detail step numbers (`02`, `03`) rendered at display scale in Playfair Display
+1. Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation blocked until approved
+2. Apply dark navy background to admin workspace — remove `#eef2f5` light background
+3. Replace Playfair Display with Inter bold for admin headings throughout workspace
+4. Remove decorative elements from admin (no motif watermark, no hero textures) — functional
+   register only
+5. Retain amber for admin CTAs and status signals
+6. Login page right panel: darken overlay to 60–70% opacity; apply grain CSS treatment over
+   the motif image
 
-**Done condition:** Breadcrumb on entity pages carries topic accent color; issue index cards have
-copy that invites rather than describes; three named palette changes applied and no further.
+**Done condition:** Admin workspace reads as the same product as the public site, different
+mode not different company; login page right panel text is clearly readable over the motif.
 
 ---
 
@@ -72,9 +79,8 @@ copy that invites rather than describes; three named palette changes applied and
 
 | Subphase | Scope                      | Status      |
 | -------- | -------------------------- | ----------- |
-| 14.3     | Navbar and nav identity    | ✅ complete |
-| 14.4     | Issues and entity pages    | ⏳ next     |
-| 14.5     | Admin visual alignment     | ⏳          |
+| 14.4     | Issues and entity pages    | ✅ complete |
+| 14.5     | Admin visual alignment     | ⏳ next     |
 | 14.6     | Engineering                | ⏳          |
 | 14.7     | Continuity pass            | ⏳          |
 | 14.8     | Events UX                  | ⏳          |
