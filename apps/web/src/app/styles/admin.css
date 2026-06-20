@@ -25,20 +25,22 @@
 
 .adminHeader h1 {
   max-width: 18ch;
+  font-family: var(--font-body);
   font-size: 3rem;
+  font-weight: 700;
   line-height: 1.05;
-  letter-spacing: 0;
+  letter-spacing: -0.01em;
 }
 
 .adminDek {
   max-width: 48rem;
-  color: #425466;
+  color: var(--color-text-muted);
   font-size: 1rem;
   line-height: 1.55;
 }
 
 .adminStat {
-  color: #171717;
+  color: var(--color-text-primary);
   font-size: 2.25rem;
   font-weight: 700;
   line-height: 1;
@@ -159,10 +161,10 @@
   display: grid;
   gap: var(--space-2);
   padding: var(--space-3);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: #ffffff;
-  color: #171717;
+  background: color-mix(in srgb, var(--color-surface-soft) 88%, var(--color-page-bg) 12%);
+  color: var(--color-text-primary);
 }
 
 .adminPanelHeader {
@@ -172,8 +174,9 @@
 
 .adminPanelHeader h2,
 .adminPanelHeader h3 {
-  color: #171717;
+  font-family: var(--font-body);
   font-size: 1.25rem;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -195,9 +198,9 @@
   justify-content: center;
   min-height: 36px;
   padding: 0.45rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: color-mix(in srgb, var(--color-surface-soft) 55%, #ffffff 45%);
+  background: color-mix(in srgb, var(--color-surface-soft) 55%, var(--color-page-bg) 45%);
   color: var(--color-text-primary);
   font: inherit;
   font-size: 0.95rem;
@@ -231,7 +234,7 @@
 .adminTable th,
 .adminTable td {
   padding: 0.85rem 0.75rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid var(--color-border-subtle);
   text-align: left;
   vertical-align: top;
 }
@@ -265,19 +268,19 @@
 }
 
 .adminTable tbody tr:not(.adminTableSummaryRow) td {
-  border-bottom-color: #edf1f6;
+  border-bottom-color: color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
 }
 
 .adminTable tbody tr:hover td {
-  background: #fafafa;
+  background: color-mix(in srgb, var(--color-surface-soft) 55%, var(--color-page-bg) 45%);
 }
 
 .adminTable tbody tr.adminTableSummaryRow:hover td {
-  background: #fcfcfd;
+  background: color-mix(in srgb, var(--color-surface-soft) 45%, var(--color-page-bg) 55%);
 }
 
 .adminTable th {
-  color: #444444;
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -294,10 +297,10 @@
   width: fit-content;
   min-height: 24px;
   padding: 0.2rem 0.5rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: #f3f4f6;
-  color: #444444;
+  background: color-mix(in srgb, var(--color-surface-soft) 72%, var(--color-page-bg) 28%);
+  color: color-mix(in srgb, var(--color-text-primary) 72%, var(--color-text-muted) 28%);
   font-size: 0.8rem;
   font-weight: 700;
   line-height: 1;
@@ -325,7 +328,9 @@
 
 .adminSection h2,
 .adminSection h3 {
+  font-family: var(--font-body);
   font-size: 1.35rem;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
 }
@@ -345,13 +350,13 @@
 }
 
 .adminDefinitionList dt {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-weight: 700;
 }
 
 .adminDefinitionListStacked dt {
   margin-top: var(--space-2);
-  color: #7f8ea1;
+  color: var(--color-text-muted);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -364,11 +369,11 @@
 .submissionLabel,
 .adminDefinitionList dd {
   margin: 0;
-  color: #171717;
+  color: var(--color-text-primary);
 }
 
 .adminTableLink {
-  color: #171717;
+  color: var(--color-text-primary);
   font-weight: 700;
   text-underline-offset: 0.18em;
 }
@@ -394,7 +399,7 @@
 }
 
 .adminTableLink:hover {
-  color: #444444;
+  color: var(--color-text-muted);
   text-decoration: underline;
 }
 
@@ -406,7 +411,7 @@
 .adminTableRecordLink {
   display: inline-flex;
   width: 100%;
-  color: #171717;
+  color: var(--color-text-primary);
   text-decoration: none;
 }
 
@@ -429,13 +434,13 @@
 
 .adminTableSummaryRow td {
   padding-top: 0.15rem;
-  border-bottom-color: #d9e2ec;
+  border-bottom-color: var(--color-border-subtle);
 }
 
 .adminTableCellMeta {
   margin: 0;
   max-width: none;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 0.9rem;
   line-height: 1.35;
 }
@@ -444,7 +449,7 @@
   width: 100%;
   padding-top: 0.15rem;
   padding-bottom: 0.9rem;
-  background: linear-gradient(to bottom, rgba(248, 250, 252, 0.9), rgba(255, 255, 255, 0.96));
+  background: color-mix(in srgb, var(--color-surface-soft) 45%, var(--color-page-bg) 55%);
 }
 
 .adminTableSummaryRow + tr td {
@@ -1052,9 +1057,9 @@
   overflow: auto;
   white-space: pre-wrap;
   padding: var(--space-2);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: #f9fafb;
+  background: color-mix(in srgb, var(--color-surface-soft) 55%, var(--color-page-bg) 45%);
 }
 
 .adminLongTextEditor {
@@ -1068,10 +1073,10 @@
   width: 100%;
   min-height: 40px;
   padding: 0.65rem 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: #ffffff;
-  color: #171717;
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
   font: inherit;
   line-height: 1.35;
 }
@@ -1083,19 +1088,19 @@
   overflow: auto;
   resize: vertical;
   padding: 0.75rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 8px;
-  background: #ffffff;
-  color: #171717;
+  background: var(--color-field-bg);
+  color: var(--color-text-primary);
   font: inherit;
   line-height: 1.45;
 }
 
 .adminReviewBanner {
-  border: 1px solid #9cc9a7;
+  border: 1px solid color-mix(in srgb, #4ade80 28%, var(--color-border-subtle));
   border-radius: 8px;
-  background: #edf8f0;
-  color: #173b22;
+  background: color-mix(in srgb, #4ade80 8%, var(--color-surface-soft));
+  color: var(--color-text-primary);
   padding: 1rem 1.25rem;
   margin: 1rem 0;
 }
@@ -1107,39 +1112,39 @@
 
 .adminReviewBannerText {
   margin: 0.35rem 0 0;
-  color: #275235;
+  color: var(--color-text-muted);
 }
 
 .adminReviewBannerError {
-  border-color: #e2a2a2;
-  background: #fff0f0;
-  color: #5c1d1d;
+  border-color: color-mix(in srgb, var(--color-status-error) 38%, var(--color-border-subtle));
+  background: color-mix(in srgb, var(--color-status-error) 8%, var(--color-surface-soft));
+  color: var(--color-text-primary);
 }
 
 .adminReviewBannerError .adminReviewBannerText {
-  color: #7a2b2b;
+  color: color-mix(in srgb, var(--color-status-error) 72%, var(--color-text-muted));
 }
 
 .adminCreatedRecordLink {
-  color: #171717;
+  color: var(--color-text-primary);
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
 
 .adminCreatedRecordLink:hover {
-  color: #444444;
+  color: var(--color-text-muted);
 }
 
 .adminCreatedRecord {
   display: grid;
   gap: var(--space-1);
   padding-top: var(--space-2);
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid var(--color-border-subtle);
 }
 
 .adminCreatedRecordLabel {
   margin: 0;
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -1147,7 +1152,7 @@
 
 .adminCreatedRecordTitle {
   margin: 0 0 var(--space-1);
-  color: #171717;
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
@@ -1160,19 +1165,19 @@
 }
 
 .adminCreatedRecordDetails dt {
-  color: #6b7280;
+  color: var(--color-text-muted);
   font-weight: 700;
 }
 
 .adminCreatedRecordDetails dd {
   margin: 0;
-  color: #171717;
+  color: var(--color-text-primary);
 }
 
 .adminCreatedRecordLink {
   width: fit-content;
   margin-top: var(--space-1);
-  color: #171717;
+  color: var(--color-text-primary);
   font-weight: 500;
   text-underline-offset: 0.18em;
 }
@@ -1186,7 +1191,7 @@
 }
 
 .adminEmptyStateTitle {
-  color: #171717;
+  color: var(--color-text-primary);
   font-weight: 700;
 }
 
