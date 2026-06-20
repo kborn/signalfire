@@ -1,6 +1,6 @@
 # UI Spec — Admin Visual Alignment
 
-**Status:** DRAFT — awaiting user sign-off before implementation
+**Status:** IMPLEMENTED
 **Last updated:** 2026-06-20
 **Phase:** 14.5
 

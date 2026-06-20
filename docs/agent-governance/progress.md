@@ -1964,20 +1964,27 @@ Breadcrumb on entity pages carries topic accent color; three named palette chang
 
 ---
 
-#### ▸ Phase 14.5 - Admin Visual Alignment ⏳
+#### ▸ Phase 14.5 - Admin Visual Alignment ✅
 
 ###### Phase Tasks:
 
-- [ ] Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation does not begin until spec is approved
-- [ ] Apply dark navy background to admin workspace — remove `#eef2f5` light background
-- [ ] Replace Playfair Display with Inter bold for admin headings throughout workspace
-- [ ] Remove decorative elements from admin (no motif watermark, no hero textures) — functional register only
-- [ ] Retain amber for admin CTAs and status signals
-- [ ] Login page right panel: darken overlay to 60–70% opacity; apply grain CSS treatment over the motif image
+- [x] Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation does not begin until spec is approved
+- [x] Apply dark navy background to admin workspace — remove all hardcoded light-mode hex values (`#ffffff`, `#171717`, `#e5e7eb`, etc.) from admin panels, tables, badges, review banners, and text elements; replace with dark token equivalents
+- [x] Replace Playfair Display with Inter bold for admin headings throughout workspace — `adminHeader h1`, `adminSection h2/h3`, `adminPanelHeader h2/h3`, login form title
+- [x] Remove decorative elements from admin (no motif watermark, no hero textures) — verified already clean; `adminShell` scoping confirmed
+- [x] Retain amber for admin CTAs and status signals — amber token usages untouched; only hardcoded light-mode values replaced
+- [x] Login page right panel: darken overlay to flat 65% coverage; CSS SVG grain texture via `::after` pseudo-element at 3.5% opacity
+- [x] Login page left panel: amber radial glow at top center + amber-tinted border — addresses left/right panel visual cohesion gap (flat left vs. rich right)
+- [x] Fix `adminSegmentedControl`/`adminFilterGroup` default button background — `#ffffff` mix → `var(--color-page-bg)` to prevent light buttons on dark surface
 
 ###### Done condition:
 
 Admin workspace reads as the same product as the public site, different mode not different company; login page right panel text is clearly readable over the motif.
+
+###### Notes:
+
+- Login page left panel flatness was not in the original scope but was identified during spec review as a cohesion gap — addressed in the same pass.
+- Pagination and topic selector components in `admin.css` are used on public collection pages; their light active-state treatment was intentionally left unchanged.
 
 ---
 
