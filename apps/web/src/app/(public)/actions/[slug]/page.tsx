@@ -3,7 +3,6 @@ import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
 import { MarkdownContent } from '@/components/markdown-content';
-import { TopicSummary } from '@/components/topic-summary';
 import { ArticleSummary } from '@/components/article-summary';
 import { formatContentDate } from '@/lib/common/time';
 import { formatActionTypeLabel } from '@/lib/common/utils';
@@ -29,6 +28,10 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
   const publishedAt = formatContentDate(action.publishedAt);
   const updatedAt = formatContentDate(action.updatedAt);
   const actionType = formatActionTypeLabel(action.actionType);
+  const actionDomain = action.externalUrl
+    ? new URL(action.externalUrl).hostname.replace(/^www\./, '')
+    : null;
+
   return (
     <div className="detailPage motifPage">
       <nav className="detailBreadcrumb" aria-label="Back">
@@ -46,8 +49,22 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         <h1 className="pageTitle">{action.title}</h1>
       </section>
       <section className="detailContent">
+        <p className="detailLead">{action.summary}</p>
+
+        {actionDomain ? (
+          <div className="ctaGroup">
+            <a
+              href={action.externalUrl!}
+              className="primaryCTA"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Take Action on {actionDomain} →
+            </a>
+          </div>
+        ) : null}
+
         <section className="detailMetaGroup">
-          <p className="detailLead">{action.summary}</p>
           <div className="metaBlock">
             <p className="metaLabel">Action Type</p>
             <p className="metaValue">{actionType}</p>
@@ -66,30 +83,21 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           )}
         </section>
 
-        {action.externalUrl ? (
-          <div className="ctaGroup">
-            <a
-              href={action.externalUrl}
-              className="primaryCTA"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Take Action →
-            </a>
-          </div>
-        ) : null}
-
         <section>
           <MarkdownContent content={action.description} />
         </section>
         {action.topics.length > 0 && (
           <section className="relatedSection">
             <h3>Related Topics</h3>
-            <div className="relatedList">
+            <ul className="relatedList">
               {action.topics.map((topic) => (
-                <TopicSummary key={topic.id} topic={topic} variant="related" />
+                <li key={topic.id} className="relatedListItem">
+                  <Link href={`/issues/${topic.slug}`} className="relatedListItemTitle">
+                    {topic.name}
+                  </Link>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         )}
         {action.articles.length > 0 && (
