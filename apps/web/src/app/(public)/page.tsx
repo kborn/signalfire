@@ -25,27 +25,11 @@ export default async function HomePage() {
           found the one fight that was theirs and refused to let go. That fire already exists in
           you. This is where you find it.
         </p>
-        {issues.length > 0 && (
-          <>
-            <nav className="heroPosterRoll" aria-label="Browse issues">
-              {issues.map((issue) => (
-                <Link
-                  key={issue.slug}
-                  href={`/issues/${issue.slug}`}
-                  className="heroPosterIssueLink"
-                  data-topic={issue.slug}
-                >
-                  {issue.name}
-                </Link>
-              ))}
-            </nav>
-            <p className="heroPosterFooter">
-              <Link href="/issues" className="textCTA">
-                Browse all issues
-              </Link>
-            </p>
-          </>
-        )}
+        <div className="heroPosterCTA">
+          <Link href="#issue-roll" className="primaryCTA">
+            Find yours →
+          </Link>
+        </div>
       </section>
 
       {/* ── How it works ── */}
@@ -86,22 +70,42 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Issue roll ── */}
+      <section className="page-section home-issues" id="issue-roll">
+        <p className="section-label">The issues</p>
+        <h2 className="homeIssueQuestion">Choose your fight.</h2>
+        {issues.length > 0 && (
+          <nav className="heroPosterRoll" aria-label="Browse issues">
+            {issues.map((issue) => (
+              <Link
+                key={issue.slug}
+                href={`/issues/${issue.slug}`}
+                className="heroPosterIssueLink"
+                data-topic={issue.slug}
+              >
+                {issue.name}
+              </Link>
+            ))}
+          </nav>
+        )}
+        <p>
+          <Link href="/issues" className="textCTA">
+            Browse all issues →
+          </Link>
+        </p>
+      </section>
+
       {/* ── Contribute ── */}
       <section className="page-section home-contribute">
         <p className="section-label">Contribute</p>
         <h2>Help more people find a way in.</h2>
         <p>
-          Know of an event, a resource, or an issue worth covering? Submissions are reviewed before
-          publication so the experience stays clear and worth returning to.
+          Know of an event, a resource, or an issue worth covering? Submissions are reviewed
+          editorially before publication.
         </p>
-        <div className="ctaRow">
-          <Link href="/submit" className="primaryCTA">
-            Submit Content
-          </Link>
-          <Link href="/about" className="secondaryCTA">
-            Who This Is For
-          </Link>
-        </div>
+        <Link href="/submit" className="primaryCTA">
+          Help someone find theirs.
+        </Link>
       </section>
 
       {isDemoMode ? (
