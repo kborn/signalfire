@@ -1,4 +1,5 @@
+<!-- Placeholder favicon — replaced in Phase 14.10 with final artwork -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="6" fill="#0f1923"/>
-  <path d="M 20 6 L 10 18 L 16 18 L 12 26 L 21 14 L 16 14 Z" fill="#cfac5a"/>
+  <circle cx="16" cy="16" r="11" fill="#cfac5a"/>
 </svg>

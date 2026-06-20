@@ -38,6 +38,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <Link href="/search">Search</Link>
             <Link href="/about">About</Link>
             <Link href="/submit">Submit Content</Link>
+            {isDemoMode && <Link href="/demo">Admin</Link>}
           </nav>
           <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
         </footer>

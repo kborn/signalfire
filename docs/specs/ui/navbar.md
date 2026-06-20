@@ -1,6 +1,6 @@
 # UI Spec — Navbar & Nav Identity
 
-**Status:** DRAFT — awaiting user sign-off before implementation
+**Status:** IMPLEMENTED — mark/favicon artwork deferred to Phase 14.10
 **Last updated:** 2026-06-20
 **Phase:** 14.3
 

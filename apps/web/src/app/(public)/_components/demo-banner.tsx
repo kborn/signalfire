@@ -82,11 +82,14 @@ export default function DemoBanner() {
     >
       <div className="demoBannerBody">
         <p className="demoBannerEyebrow">Demo Site</p>
-        <p className="demoBannerCopy">This is a demo site with sample content.</p>
+        <p className="demoBannerCopy">
+          This is a demo site with sample data. Use the Admin link to explore the moderation and
+          content management workflow.
+        </p>
       </div>
       <div className="demoBannerActions">
         <Link href="/demo" className="demoBannerAdminLink">
-          Admin
+          Admin →
         </Link>
         <button
           type="button"
