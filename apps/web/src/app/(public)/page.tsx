@@ -17,33 +17,15 @@ export default async function HomePage() {
       <section className="page-section heroPoster">
         <h1 className="heroPosterBrand">Find Your Fight</h1>
         <p className="heroPosterTagline">
-          For people who care, want to do something real, and need a clear place to start.
+          The news doesn&apos;t stop. The problems feel enormous. And most days, it&apos;s easy to
+          believe there&apos;s nothing one person can do.
         </p>
         <p className="heroPosterSub">
-          You don&apos;t have to carry every issue. Pick the one that already has your attention —
-          and find your way in.
+          But every movement that ever changed anything started the same way — with someone who
+          found the one fight that was theirs and refused to let go. That fire already exists in
+          you. This is where you find it.
         </p>
-        <div className="ctaRow heroPosterCTA">
-          <Link href="/issues" className="primaryCTA">
-            Browse Issues
-          </Link>
-          <Link href="/about" className="secondaryCTA">
-            How it works
-          </Link>
-        </div>
-      </section>
-
-      {/* ── Issue browser ── */}
-      <section className="page-section home-issues">
-        <div className="home-sectionHeading">
-          <p className="section-label">The issues</p>
-          <h2 className="homeIssueQuestion">Which one is yours?</h2>
-          <p>
-            Start with the one you already can&apos;t stop thinking about. You don&apos;t need to
-            solve all of them.
-          </p>
-        </div>
-        {issues.length > 0 ? (
+        {issues.length > 0 && (
           <>
             <nav className="heroPosterRoll" aria-label="Browse issues">
               {issues.map((issue) => (
@@ -63,7 +45,7 @@ export default async function HomePage() {
               </Link>
             </p>
           </>
-        ) : null}
+        )}
       </section>
 
       {/* ── How it works ── */}
@@ -79,10 +61,10 @@ export default async function HomePage() {
         <div className="homeJourneyGrid">
           <Link href="/issues" className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 1</p>
-            <h3 className="collectionItemTitle">Pick an issue</h3>
+            <h3 className="collectionItemTitle">Go deep on one issue</h3>
             <p className="collectionItemSummary">
-              One issue. The one that already bothers you. You don&apos;t need to care about all of
-              them — just start with one.
+              Your issue page pulls together context, explainers, and organizing opportunities —
+              everything you need to move from knowing to doing.
             </p>
           </Link>
           <Link href="/articles" className="collectionItem homeJourneyCard">
