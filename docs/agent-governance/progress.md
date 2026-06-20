@@ -1895,19 +1895,25 @@ CTA appears before metadata; "Take Action on [domain] →" is visible; Related T
 
 ---
 
-#### ▸ Phase 14.2 - Homepage + Hero ⏳
+#### ▸ Phase 14.2 - Homepage + Hero ✅
 
 ###### Phase Tasks:
 
-- [ ] Collapse three "pick an issue" moments (hero, issue roll, journey steps) into a single coherent arc with forward momentum
-- [ ] Replace hero.png with bg-motif.png scaled up as hero backdrop at 30–40% opacity behind live text; retire hero.png
-- [ ] Write manifesto-style hero supporting copy: acknowledges overwhelm and powerlessness, pivots to collective responsibility and the fire within, lands on "Find Your Fight" as both literal and figurative call to action
-- [ ] Skip sitewide motif watermark on homepage or fade from hero-opacity to watermark-opacity as one continuous element — avoid the same image at two opacities side by side
-- [ ] Ensure the issue roll reads as the primary navigation signal with visual weight appropriate to its importance
+- [x] Collapse three "pick an issue" moments (hero, issue roll, journey steps) into a single coherent arc with forward momentum
+- [x] Replace hero.png with bg-motif.png scaled up as hero backdrop at 30–40% opacity behind live text; retire hero.png
+- [x] Write manifesto-style hero supporting copy: acknowledges overwhelm and powerlessness, pivots to collective responsibility and the fire within, lands on "Find Your Fight" as both literal and figurative call to action
+- [x] Skip sitewide motif watermark on homepage or fade from hero-opacity to watermark-opacity as one continuous element — avoid the same image at two opacities side by side
+- [x] Ensure the issue roll reads as the primary navigation signal with visual weight appropriate to its importance
 
 ###### Done condition:
 
 Homepage reads as a single arc not a repeated premise; hero has visual mass behind the display type; copy feels like a manifesto not a feature list.
+
+###### Notes:
+
+- home-issues section removed; issue roll merged into heroPoster so the arc is: manifesto → issue roll → journey → contribute
+- hero.png was already unreferenced in code; deleted
+- sitewide watermark suppression on homepage is naturally handled: heroPoster::before owns the hero motif; when Phase 14.7 adds the sitewide watermark to .motifPage::before it will be overridden for .home-page.motifPage
 
 ---
 
