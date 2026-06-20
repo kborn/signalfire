@@ -34,7 +34,7 @@ export default async function ArticleDetailsPage({
 
   return (
     <div className="detailPage motifPage">
-      <nav className="detailBreadcrumb" aria-label="Back">
+      <nav className="detailBreadcrumb" aria-label="Back" data-topic={article.topics[0]?.slug}>
         {article.topics.length > 0 ? (
           <Link href={`/issues/${article.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {article.topics[0].name}
