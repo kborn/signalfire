@@ -1,141 +1,90 @@
-# Context for Next Agent Session — Phase 14 Implementation
+# Context for Next Agent Session — Phase 14.3
 
 ## State of the repo
 
-**Branch:** `main`
-**Phase 14 is planned and ready to implement.** All subphases (14.1–14.9) are written in
-`docs/agent-governance/progress.md` with specific tasks and done conditions.
+**Branch:** `main` (start a new branch for 14.3)
+**Phase 14.1 ✅ and 14.2 ✅ are complete and merged.**
 
-**Start with Phase 14.1 — Action Detail Page.**
+**Start with Phase 14.3 — Navbar and Nav Identity.**
 
 ---
 
-## Design decisions locked in this session
+## Process — read this first
 
-Read these before touching any UI. They are not up for re-evaluation.
+**Spec-first.** Every UI subphase writes and aligns on a spec before any implementation begins.
 
-### Visual identity
+For 14.3, the first task is: write `docs/specs/ui/navbar.md` and present it to the user for
+sign-off. Do not touch any code until the spec is approved.
 
-- **Dark navy + amber stays.** Applied more boldly — less timid, more force.
-- **Motif (`bg-motif.png`):** one asset, two uses. Homepage hero: scaled up, 30–40% opacity behind
-  live text. All other pages: watermark at 8–10% opacity. Skip or fade the watermark on the
-  homepage itself to avoid the same image at two opacities on one page.
-- **Hero:** retire `hero.png`. Use `bg-motif.png` scaled up as the hero backdrop. The current
-  hero.png is typography treated as an image — it does not function as a background.
+Reference files:
+
+- `docs/specs/ui/global.md` — shared patterns (typography, color, cards, CTAs, section structure)
+- `docs/specs/ui/homepage.md` — example of a completed, approved spec
+
+---
+
+## Design decisions locked — do not re-open
+
+Read `docs/specs/ui/global.md` for the full set. Key ones for 14.3:
+
+- **Dark navy + amber.** Applied boldly — amber is a structural signal, not decoration.
 - **Nav mark:** replace `· FYF ·` with a simplified SVG fist mark derived from `bg-motif.png`.
-  CSS dots are a placeholder, not a logotype.
-- **Admin Demo link:** remove amber styling. Treat as a secondary nav item, not a featured CTA.
-
-### Admin design
-
-- Same dark navy palette as the public site — not the same decorative language.
-- Inter bold for admin headings (not Playfair Display).
-- No motif watermark, no hero textures in admin — functional register only.
-- Amber retained for CTAs and status signals.
-- Login page right panel: darken overlay to 60–70%; apply grain CSS treatment. Structure is correct,
-  do not change it.
-
-### Topic accent colors
-
-- Keep on `/issues` index cards and issue detail step headers — they serve navigation.
-- Thread to entity pages via **breadcrumb only** (start minimal, iterate if it feels incomplete).
-  Pass `data-topic={topics[0]?.slug}` to the breadcrumb element; style via existing CSS.
-- Do NOT thread colors across the full page or into body content — not a rainbow.
-
-### Bold palette (three specific changes, no more)
-
-- `metaLabel` text color → amber
-- Collection item left borders visible at rest (reduced opacity), full on hover (currently hover-only)
-- Issue detail step numbers (`02`, `03`) → display scale Playfair Display
-
-### Copy voice
-
-The register is punk rock and sincere. An emotional plea, not a product description. Sentences
-that build, not bullet points that summarize.
-
-The dual meaning of "Find Your Fight" is the emotional underpinning:
-
-1. Find the issue that is yours to fight for
-2. Find the fighter that lives within you
-
-The arc: acknowledge the overwhelm → acknowledge the feeling that one person can't change anything
-→ pivot to collective power and individual responsibility → summon the fire within → Find Your Fight.
-
-**Avoid:** trendy fragment copy, passive hedging, self-explanation, defensive moderation language,
-copy that justifies the product to the user.
+  CSS-generated dots are a placeholder, not a logotype.
+- **Admin Demo:** move out of primary nav entirely — relocate to footer or a utility/secondary
+  header position. A first-time visitor should not encounter it alongside Issues, Articles,
+  Actions, Events. Removing the amber styling alone is not sufficient.
+- **Copy voice:** punk rock and sincere. Emotional plea, not product description. See
+  `CONTEXT-next-session.md` design decisions from the 2026-06-20 planning session for the full
+  copy brief.
 
 ---
 
-## Subphase summary
+## Phase 14.3 scope
 
-| Subphase | Scope                 | Key work                                                                |
-| -------- | --------------------- | ----------------------------------------------------------------------- |
-| 14.1     | Action detail         | CTA order, trust scaffolding, Related Topics copy                       |
-| 14.2     | Homepage + hero       | Arc, motif-as-hero, manifesto copy                                      |
-| 14.3     | Navbar                | SVG fist mark, Admin Demo prominence                                    |
-| 14.4     | Issues + entity pages | Breadcrumb threading, issue card copy, bold palette                     |
-| 14.5     | Admin alignment       | Dark navy admin, Inter headings, login panel                            |
-| 14.6     | Engineering           | `revalidatePath()`, type consolidation, TopicService, topic color model |
-| 14.7     | Continuity pass       | Visual + copy coherence across all pages                                |
-| 14.8     | Events UX             | Default city behavior decision                                          |
-| 14.9     | Copy pass             | Full copy audit against voice direction above                           |
+**Branch:** `feat/phase_14/nav-identity`
 
-Full task lists and done conditions are in `progress.md` Phase 14.
+**Tasks (from `progress.md`):**
+
+1. Write and align on UI spec (`docs/specs/ui/navbar.md`) — implementation blocked until approved
+2. Design and implement a simplified SVG fist mark for the nav wordmark slot
+3. Move Admin Demo out of primary nav to footer or utility header position
+
+**Done condition:** Nav has a real mark not CSS placeholder dots; Admin Demo is not a primary
+nav item and does not compete with content navigation.
 
 ---
 
-## Starting with 14.1 — Action Detail Page
+## What changed in Phase 14.2 (for context)
 
-**Branch:** `feat/phase_14/action-detail`
-
-**Files to change:**
-
-- `apps/web/src/app/(public)/actions/[slug]/page.tsx` — reorder sections, add domain extraction,
-  replace TopicSummary with a simple linked list
-
-**Specific changes:**
-
-1. **CTA order** — move `ctaGroup` div above `detailMetaGroup`. New order:
-   headline → summary (detailLead) → CTA → metadata → description → related articles
-
-2. **Trust scaffolding** — when `externalUrl` exists, extract the hostname and render:
-   `Take Action on [domain] →` (e.g. "Take Action on moveon.org →"). Use `new URL(action.externalUrl).hostname`.
-   Strip `www.` prefix. When `externalUrl` is null, render nothing (existing behavior, verify it holds).
-
-3. **Related Topics** — replace the `TopicSummary` component usage with a plain linked list:
-   topic name as a link to `/issues/[slug]`. No description text. No component — just an `<ul>`
-   with `<li><Link>` items.
-
-**Done condition:** CTA appears before metadata; domain is visible in the CTA label;
-Related Topics shows names only as links.
+- Homepage arc corrected: hero → how it works → issue roll → contribute
+- Issue roll moved to its own section (`home-issues`, id="issue-roll") with heading "Choose your fight."
+- Hero has single anchor CTA ("Find yours →") scrolling to issue roll
+- Manifesto copy in hero: acknowledges overwhelm → collective momentum → fire within
+- hero.png retired; bg-motif.png used as hero backdrop at 35% opacity
+- Card hover underline fixed globally: title only, not all text
+- UI spec process introduced: `docs/specs/ui/` folder with `global.md` and `homepage.md`
 
 ---
 
-## Branch strategy
+## Remaining Phase 14 subphases
 
-Each subphase gets its own branch off main:
+| Subphase | Scope                   | Status  |
+| -------- | ----------------------- | ------- |
+| 14.3     | Navbar and nav identity | ⏳ next |
+| 14.4     | Issues and entity pages | ⏳      |
+| 14.5     | Admin visual alignment  | ⏳      |
+| 14.6     | Engineering             | ⏳      |
+| 14.7     | Continuity pass         | ⏳      |
+| 14.8     | Events UX               | ⏳      |
+| 14.9     | Copy pass               | ⏳      |
 
-```
-main
-  └── feat/phase_14/action-detail     (14.1)
-  └── feat/phase_14/homepage          (14.2)
-  └── feat/phase_14/nav-identity      (14.3)
-  └── feat/phase_14/entity-pages      (14.4)
-  └── feat/phase_14/admin-alignment   (14.5)
-  └── feat/phase_14/engineering       (14.6)
-  └── feat/phase_14/continuity        (14.7)
-  └── feat/phase_14/events-ux         (14.8)
-  └── feat/phase_14/copy-pass         (14.9)
-```
-
-User reviews each subphase before the next begins. Do not stack branches.
+Full task lists and done conditions for all subphases are in `progress.md` Phase 14.
 
 ---
 
-## Guardrails for Phase 14
+## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not expand scope mid-subphase — if you find something related, document it in progress.md
-  and continue
-- Do not re-open design decisions listed above — they are settled
-- The copy voice direction above is the brief for any copy written in any subphase
+- Do not expand scope mid-subphase — document discoveries in progress.md and continue
+- Do not re-open design decisions listed above or in `docs/specs/ui/global.md`
+- Spec must be approved by the user before implementation begins

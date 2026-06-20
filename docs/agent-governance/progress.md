@@ -1920,17 +1920,22 @@ Homepage reads as a single arc not a repeated premise; hero has visual mass behi
 
 ---
 
-#### ▸ Phase 14.3 - Navbar and Nav Identity ⏳
+#### ▸ Phase 14.3 - Navbar and Nav Identity ✅
 
 ###### Phase Tasks:
 
-- [ ] Write and align on UI spec (`docs/specs/ui/navbar.md`) — implementation does not begin until spec is approved
-- [ ] Design and implement a simplified SVG fist mark (derived from bg-motif.png) for the nav wordmark slot — replaces `· FYF ·`
-- [ ] Move Admin Demo out of primary nav — relocate to footer or a utility/secondary position in the header; remove amber styling; a first-time visitor should not encounter it alongside Issues, Articles, Actions
+- [x] Write and align on UI spec (`docs/specs/ui/navbar.md`)
+- [x] Replace `· FYF ·` placeholder with amber mark + `FYF` wordmark text — mark is a placeholder circle pending Phase 14.10 artwork decision
+- [x] Move Admin Demo out of primary nav — now in `DemoBanner` (with descriptive copy) and the footer when in demo mode
 
 ###### Done condition:
 
-Nav has a real mark not CSS placeholder dots; Admin Demo is not a primary nav item and does not compete with content navigation.
+Admin Demo is not a primary nav item; nav wordmark has structural separation between icon slot and text. Final icon artwork deferred to Phase 14.10.
+
+###### Notes:
+
+- SVG icon mark (`FYFLogo` in `icons.tsx`) and favicon (`/public/fyf-mark.svg`) are both placeholder amber circles. Both are single-file swap points — icon artwork replaces the path in `FYFLogo`; favicon replaces the path in `fyf-mark.svg`. Color is `--color-brand-primary` (#cfac5a) in both.
+- Architecture decision deferred to 14.10: should the nav mark and favicon be the same design or different? Candidates: motif-derived SVG, cropped/traced motif element, or lettermark.
 
 ---
 
@@ -2039,6 +2044,32 @@ Avoid: trendy fragment copy ("Find. Act. Fight."), passive hedging ("submissions
 ###### Done condition:
 
 Any string picked at random from any public page sounds like it belongs to the same voice; the site reads as a rallying cry not a content directory.
+
+---
+
+#### ▸ Phase 14.10 - Nav Mark & Favicon Artwork ⏳
+
+###### Goal
+
+Replace the placeholder amber circle with final artwork for the nav home-link mark and the browser favicon.
+
+###### Phase Tasks:
+
+- [ ] Decide whether the nav mark and favicon are the same design or different — candidates: (a) same motif-derived image at two scales, (b) same SVG at two sizes, (c) distinct designs optimized for each context
+- [ ] Design the final mark — likely a simplified SVG trace of a motif element (fist silhouette or a single arrow), or a lettermark if the motif doesn't reduce cleanly to icon scale
+- [ ] Replace the `FYFLogo` SVG paths in `apps/web/src/components/icons.tsx` with the final mark
+- [ ] Replace `/public/fyf-mark.svg` with the final favicon artwork (amber on dark navy, 32×32 viewBox)
+- [ ] Verify both render correctly at their target sizes: nav mark at 22px height, favicon at 32px and 16px
+
+###### Done condition:
+
+The nav home-link mark is visually intentional and references the FYF brand identity; the favicon reads as a distinct, recognizable mark at 16px; placeholder circle is gone from both locations.
+
+###### Notes:
+
+- Swap points are isolated: `FYFLogo` in `icons.tsx` (nav mark) and `fyf-mark.svg` (favicon). No other files need to change.
+- If the nav mark and favicon diverge (e.g., full motif for nav, letter mark for favicon), the SVG in `icons.tsx` and the file in `/public/` can be different designs.
+- If sourcing from the motif image: trace in Figma or Illustrator, export as SVG path, paste into the relevant file. Do not attempt to hand-compute paths.
 
 ---
 

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 const DISMISS_KEY = 'fyf-demo-banner-dismissed';
@@ -81,9 +82,15 @@ export default function DemoBanner() {
     >
       <div className="demoBannerBody">
         <p className="demoBannerEyebrow">Demo Site</p>
-        <p className="demoBannerCopy">This is a demo site with sample content.</p>
+        <p className="demoBannerCopy">
+          This is a demo site with sample data. Use the Admin link to explore the moderation and
+          content management workflow.
+        </p>
       </div>
       <div className="demoBannerActions">
+        <Link href="/demo" className="demoBannerAdminLink">
+          Admin →
+        </Link>
         <button
           type="button"
           className="demoBannerDismiss"

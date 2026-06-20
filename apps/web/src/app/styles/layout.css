@@ -64,6 +64,7 @@
 .site-wordmark {
   display: inline-flex;
   align-items: center;
+  gap: 8px;
   color: var(--color-text-primary);
   text-decoration: none;
   line-height: 1;
@@ -76,6 +77,15 @@
 .site-brand-logo {
   display: block;
   flex-shrink: 0;
+  height: 22px;
+  width: auto;
+}
+
+.site-wordmark-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1;
 }
 
 .site-demo-indicator {
@@ -154,17 +164,6 @@
   text-decoration-color: var(--color-brand-accent);
   text-decoration-thickness: 2px;
   text-underline-offset: 0.28em;
-}
-
-.site-admin-demo-link {
-  color: var(--color-brand-primary);
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.site-admin-demo-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
 }
 
 .site-submit-link {
@@ -288,6 +287,19 @@
 
 .demoBannerDismiss:hover {
   color: var(--color-text-primary);
+}
+
+.demoBannerAdminLink {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.demoBannerAdminLink:hover {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .demoBanner::before {

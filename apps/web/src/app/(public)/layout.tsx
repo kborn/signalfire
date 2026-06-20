@@ -19,10 +19,13 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         <header className="site-header">
           <div className="site-brand-group">
             <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
-              <FYFLogo className="site-brand-logo" width={56} height={20} />
+              <FYFLogo className="site-brand-logo" />
+              <span className="site-wordmark-text" aria-hidden="true">
+                FYF
+              </span>
             </Link>
           </div>
-          <SiteNav isDemoMode={isDemoMode} />
+          <SiteNav />
         </header>
         {isDemoMode ? <DemoBanner /> : null}
         <main>{children}</main>
@@ -35,6 +38,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <Link href="/search">Search</Link>
             <Link href="/about">About</Link>
             <Link href="/submit">Submit Content</Link>
+            {isDemoMode && <Link href="/demo">Admin</Link>}
           </nav>
           <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
         </footer>
