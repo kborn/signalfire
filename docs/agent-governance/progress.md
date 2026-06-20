@@ -1895,19 +1895,28 @@ CTA appears before metadata; "Take Action on [domain] →" is visible; Related T
 
 ---
 
-#### ▸ Phase 14.2 - Homepage + Hero ⏳
+#### ▸ Phase 14.2 - Homepage + Hero ✅
 
 ###### Phase Tasks:
 
-- [ ] Collapse three "pick an issue" moments (hero, issue roll, journey steps) into a single coherent arc with forward momentum
-- [ ] Replace hero.png with bg-motif.png scaled up as hero backdrop at 30–40% opacity behind live text; retire hero.png
-- [ ] Write manifesto-style hero supporting copy: acknowledges overwhelm and powerlessness, pivots to collective responsibility and the fire within, lands on "Find Your Fight" as both literal and figurative call to action
-- [ ] Skip sitewide motif watermark on homepage or fade from hero-opacity to watermark-opacity as one continuous element — avoid the same image at two opacities side by side
-- [ ] Ensure the issue roll reads as the primary navigation signal with visual weight appropriate to its importance
+- [x] Collapse three "pick an issue" moments (hero, issue roll, journey steps) into a single coherent arc with forward momentum
+- [x] Replace hero.png with bg-motif.png scaled up as hero backdrop at 30–40% opacity behind live text; retire hero.png
+- [x] Write manifesto-style hero supporting copy: acknowledges overwhelm and powerlessness, pivots to collective responsibility and the fire within, lands on "Find Your Fight" as both literal and figurative call to action
+- [x] Skip sitewide motif watermark on homepage or fade from hero-opacity to watermark-opacity as one continuous element — avoid the same image at two opacities side by side
+- [x] Ensure the issue roll reads as the primary navigation signal with visual weight appropriate to its importance
 
 ###### Done condition:
 
 Homepage reads as a single arc not a repeated premise; hero has visual mass behind the display type; copy feels like a manifesto not a feature list.
+
+###### Notes:
+
+- Final page arc: hero (manifesto copy + single "Find yours →" anchor CTA) → how it works → issue roll ("Choose your fight." as separate `home-issues` section) → contribute
+- Issue roll moved out of the hero into its own section — visitors see the manifesto and journey explanation before being asked to choose
+- hero.png deleted; bg-motif.png used as `::before` backdrop on heroPoster at 35% opacity, `border-bottom` removed from heroPoster to eliminate double-border artifact with subsequent sections
+- Card hover underline fixed globally: `text-decoration: none` added to `.publicShell .collectionItem` so only the title underlines on hover
+- Contribute section reduced to single CTA ("Help someone find theirs.") — secondary "Who This Is For" button removed per spec
+- UI specs introduced: `docs/specs/ui/global.md` (shared patterns) and `docs/specs/ui/homepage.md` (locked homepage spec)
 
 ---
 
@@ -1915,6 +1924,7 @@ Homepage reads as a single arc not a repeated premise; hero has visual mass behi
 
 ###### Phase Tasks:
 
+- [ ] Write and align on UI spec (`docs/specs/ui/navbar.md`) — implementation does not begin until spec is approved
 - [ ] Design and implement a simplified SVG fist mark (derived from bg-motif.png) for the nav wordmark slot — replaces `· FYF ·`
 - [ ] Move Admin Demo out of primary nav — relocate to footer or a utility/secondary position in the header; remove amber styling; a first-time visitor should not encounter it alongside Issues, Articles, Actions
 
@@ -1928,6 +1938,7 @@ Nav has a real mark not CSS placeholder dots; Admin Demo is not a primary nav it
 
 ###### Phase Tasks:
 
+- [ ] Write and align on UI spec (`docs/specs/ui/entity-pages.md`) — implementation does not begin until spec is approved
 - [ ] Thread breadcrumb accent color: pass `data-topic={topics[0]?.slug}` to the breadcrumb on article, action, and event detail pages; style via existing topic CSS selectors
 - [ ] Replace database description copy on `/issues` index cards with motivating, human-facing language per topic
 - [ ] Bold palette — three specific CSS changes only:
@@ -1945,6 +1956,7 @@ Breadcrumb on entity pages carries topic accent color; issue index cards have co
 
 ###### Phase Tasks:
 
+- [ ] Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation does not begin until spec is approved
 - [ ] Apply dark navy background to admin workspace — remove `#eef2f5` light background
 - [ ] Replace Playfair Display with Inter bold for admin headings throughout workspace
 - [ ] Remove decorative elements from admin (no motif watermark, no hero textures) — functional register only
@@ -1978,6 +1990,7 @@ Admin mutations trigger immediate cache revalidation; `EventListPageProps` defin
 
 ###### Phase Tasks:
 
+- [ ] Write and align on continuity checklist (`docs/specs/ui/continuity.md`) before reviewing any page — documents what to look for, not just that a review happened
 - [ ] Review all public pages against the settled visual direction — motif opacity, palette boldness, typography scale — and correct any outliers
 - [ ] Thread "Find Your Fight" dual meaning through copy on: homepage hero, About page (explicit one-time statement), action detail CTA area, issue detail section headers
 - [ ] Confirm sitewide motif watermark reads as intentional (8–10% opacity) on all non-homepage public pages

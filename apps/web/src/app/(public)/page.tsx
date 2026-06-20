@@ -17,53 +17,19 @@ export default async function HomePage() {
       <section className="page-section heroPoster">
         <h1 className="heroPosterBrand">Find Your Fight</h1>
         <p className="heroPosterTagline">
-          For people who care, want to do something real, and need a clear place to start.
+          The news doesn&apos;t stop. The problems feel enormous. And most days, it&apos;s easy to
+          believe there&apos;s nothing one person can do.
         </p>
         <p className="heroPosterSub">
-          You don&apos;t have to carry every issue. Pick the one that already has your attention —
-          and find your way in.
+          But every movement that ever changed anything started the same way — with someone who
+          found the one fight that was theirs and refused to let go. That fire already exists in
+          you. This is where you find it.
         </p>
-        <div className="ctaRow heroPosterCTA">
-          <Link href="/issues" className="primaryCTA">
-            Browse Issues
-          </Link>
-          <Link href="/about" className="secondaryCTA">
-            How it works
+        <div className="heroPosterCTA">
+          <Link href="#issue-roll" className="primaryCTA">
+            Find yours →
           </Link>
         </div>
-      </section>
-
-      {/* ── Issue browser ── */}
-      <section className="page-section home-issues">
-        <div className="home-sectionHeading">
-          <p className="section-label">The issues</p>
-          <h2 className="homeIssueQuestion">Which one is yours?</h2>
-          <p>
-            Start with the one you already can&apos;t stop thinking about. You don&apos;t need to
-            solve all of them.
-          </p>
-        </div>
-        {issues.length > 0 ? (
-          <>
-            <nav className="heroPosterRoll" aria-label="Browse issues">
-              {issues.map((issue) => (
-                <Link
-                  key={issue.slug}
-                  href={`/issues/${issue.slug}`}
-                  className="heroPosterIssueLink"
-                  data-topic={issue.slug}
-                >
-                  {issue.name}
-                </Link>
-              ))}
-            </nav>
-            <p className="heroPosterFooter">
-              <Link href="/issues" className="textCTA">
-                Browse all issues
-              </Link>
-            </p>
-          </>
-        ) : null}
       </section>
 
       {/* ── How it works ── */}
@@ -79,10 +45,10 @@ export default async function HomePage() {
         <div className="homeJourneyGrid">
           <Link href="/issues" className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 1</p>
-            <h3 className="collectionItemTitle">Pick an issue</h3>
+            <h3 className="collectionItemTitle">Go deep on one issue</h3>
             <p className="collectionItemSummary">
-              One issue. The one that already bothers you. You don&apos;t need to care about all of
-              them — just start with one.
+              Your issue page pulls together context, explainers, and organizing opportunities —
+              everything you need to move from knowing to doing.
             </p>
           </Link>
           <Link href="/articles" className="collectionItem homeJourneyCard">
@@ -104,22 +70,42 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Issue roll ── */}
+      <section className="page-section home-issues" id="issue-roll">
+        <p className="section-label">The issues</p>
+        <h2 className="homeIssueQuestion">Choose your fight.</h2>
+        {issues.length > 0 && (
+          <nav className="heroPosterRoll" aria-label="Browse issues">
+            {issues.map((issue) => (
+              <Link
+                key={issue.slug}
+                href={`/issues/${issue.slug}`}
+                className="heroPosterIssueLink"
+                data-topic={issue.slug}
+              >
+                {issue.name}
+              </Link>
+            ))}
+          </nav>
+        )}
+        <p>
+          <Link href="/issues" className="textCTA">
+            Browse all issues →
+          </Link>
+        </p>
+      </section>
+
       {/* ── Contribute ── */}
       <section className="page-section home-contribute">
         <p className="section-label">Contribute</p>
         <h2>Help more people find a way in.</h2>
         <p>
-          Know of an event, a resource, or an issue worth covering? Submissions are reviewed before
-          publication so the experience stays clear and worth returning to.
+          Know of an event, a resource, or an issue worth covering? Submissions are reviewed
+          editorially before publication.
         </p>
-        <div className="ctaRow">
-          <Link href="/submit" className="primaryCTA">
-            Submit Content
-          </Link>
-          <Link href="/about" className="secondaryCTA">
-            Who This Is For
-          </Link>
-        </div>
+        <Link href="/submit" className="primaryCTA">
+          Help someone find theirs.
+        </Link>
       </section>
 
       {isDemoMode ? (
