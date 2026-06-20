@@ -56,10 +56,10 @@ describe('TopicDetailsPage', () => {
     expect(getTopicDetails).toHaveBeenCalledWith('climate');
     expect(markup).toContain('Climate');
     expect(markup).toContain('Climate issue overview.');
-    expect(markup).toContain('Step 2 — Read');
+    expect(markup).toContain('Explainers and field guides for this issue');
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
-    expect(markup).toContain('Step 3 — Act');
+    expect(markup).toContain('Concrete next steps you can take right now');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('href="/events?topicSlug=climate"');
