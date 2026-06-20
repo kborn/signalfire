@@ -198,19 +198,6 @@
   position: absolute;
   inset: 0;
   background-image: url('/bg-motif.png');
-  background-size: 110% auto;
-  background-position: 65% center;
-  background-repeat: no-repeat;
-  opacity: 0.35;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.heroPoster::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('/bg-motif.png');
   background-size: 140% auto;
   background-position: center right;
   background-repeat: no-repeat;
