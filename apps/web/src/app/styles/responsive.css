@@ -378,7 +378,7 @@
   padding: clamp(2rem, 3vw, 2.75rem);
   align-self: start;
   background:
-    radial-gradient(ellipse at top center, rgba(207, 172, 90, 0.07), transparent 55%),
+    radial-gradient(ellipse at top center, rgba(207, 172, 90, 0.16), transparent 55%),
     linear-gradient(
       180deg,
       color-mix(in srgb, var(--color-surface-soft) 72%, var(--color-page-bg) 28%),
@@ -444,6 +444,9 @@
 .adminLoginTitle {
   max-width: 10ch;
   margin: 0;
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .adminLoginDek {
