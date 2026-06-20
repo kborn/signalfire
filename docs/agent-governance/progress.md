@@ -22,7 +22,7 @@ It is the canonical answer to: “Where are we in the plan?”
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
 | **[14](#-phase-14--portfolio-credibility-pass-)** | **Portfolio Credibility Pass**  | **🚧 ACTIVE** |
-| [15](#-phase-15--release-infrastructure-)         | Release Infrastructure          | ⏳            |
+| [15](#-phase-15--deployment-infrastructure-)      | Release Infrastructure          | ⏳            |
 | [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -1880,7 +1880,152 @@ See `CONTEXT-next-session.md` for the current fix list and rationale.
 
 ---
 
-#### ▸ Phases TBD
+#### ▸ Phase 14.1 - Action Detail Page ⏳
+
+###### Phase Tasks:
+
+- [ ] Move CTA above metadata — new order: headline → summary → CTA → metadata → description
+- [ ] Add trust scaffolding: extract domain from `externalUrl` and render as "Take Action on [domain] →"
+- [ ] Replace Related Topics section with a short linked list — topic name links to `/issues/[slug]`, no description text
+- [ ] Confirm CTA renders nothing when `externalUrl` is null (existing behavior — verify not broken)
+
+###### Done condition:
+
+CTA appears before metadata; "Take Action on [domain] →" is visible; Related Topics shows names only as links.
+
+---
+
+#### ▸ Phase 14.2 - Homepage + Hero ⏳
+
+###### Phase Tasks:
+
+- [ ] Collapse three "pick an issue" moments (hero, issue roll, journey steps) into a single coherent arc with forward momentum
+- [ ] Replace hero.png with bg-motif.png scaled up as hero backdrop at 30–40% opacity behind live text; retire hero.png
+- [ ] Write manifesto-style hero supporting copy: acknowledges overwhelm and powerlessness, pivots to collective responsibility and the fire within, lands on "Find Your Fight" as both literal and figurative call to action
+- [ ] Skip sitewide motif watermark on homepage or fade from hero-opacity to watermark-opacity as one continuous element — avoid the same image at two opacities side by side
+- [ ] Ensure the issue roll reads as the primary navigation signal with visual weight appropriate to its importance
+
+###### Done condition:
+
+Homepage reads as a single arc not a repeated premise; hero has visual mass behind the display type; copy feels like a manifesto not a feature list.
+
+---
+
+#### ▸ Phase 14.3 - Navbar and Nav Identity ⏳
+
+###### Phase Tasks:
+
+- [ ] Design and implement a simplified SVG fist mark (derived from bg-motif.png) for the nav wordmark slot — replaces `· FYF ·`
+- [ ] Move Admin Demo out of primary nav — relocate to footer or a utility/secondary position in the header; remove amber styling; a first-time visitor should not encounter it alongside Issues, Articles, Actions
+
+###### Done condition:
+
+Nav has a real mark not CSS placeholder dots; Admin Demo is not a primary nav item and does not compete with content navigation.
+
+---
+
+#### ▸ Phase 14.4 - Issues and Entity Pages ⏳
+
+###### Phase Tasks:
+
+- [ ] Thread breadcrumb accent color: pass `data-topic={topics[0]?.slug}` to the breadcrumb on article, action, and event detail pages; style via existing topic CSS selectors
+- [ ] Replace database description copy on `/issues` index cards with motivating, human-facing language per topic
+- [ ] Bold palette — three specific CSS changes only:
+  - `metaLabel` text color changed to amber
+  - Collection item left borders visible at rest at reduced opacity, full on hover (currently hover-only)
+  - Issue detail step numbers (`02`, `03`) rendered at display scale in Playfair Display
+
+###### Done condition:
+
+Breadcrumb on entity pages carries topic accent color; issue index cards have copy that invites rather than describes; three named palette changes applied and no further.
+
+---
+
+#### ▸ Phase 14.5 - Admin Visual Alignment ⏳
+
+###### Phase Tasks:
+
+- [ ] Apply dark navy background to admin workspace — remove `#eef2f5` light background
+- [ ] Replace Playfair Display with Inter bold for admin headings throughout workspace
+- [ ] Remove decorative elements from admin (no motif watermark, no hero textures) — functional register only
+- [ ] Retain amber for admin CTAs and status signals
+- [ ] Login page right panel: darken overlay to 60–70% opacity; apply grain CSS treatment over the motif image
+
+###### Done condition:
+
+Admin workspace reads as the same product as the public site, different mode not different company; login page right panel text is clearly readable over the motif.
+
+---
+
+#### ▸ Phase 14.6 - Engineering ⏳
+
+###### Phase Tasks:
+
+- [ ] Add `revalidatePath()` calls after all admin mutations: article create/update/publish, action create/update, event create/update/publish, topic create/update/delete
+- [ ] Consolidate `EventListPageProps` — replace three separate definitions across `events/page.tsx`, `events/_components/event-filters.tsx`, and `admin/events/page.tsx` with one shared type
+- [ ] Move `TopicService.getTopicDetail` cross-service fan-out to the repository layer — single Prisma query with includes instead of calling `ArticleService` and `ActionService`
+- [ ] Add `color` field to Topic Prisma model; seed existing topics with color values; replace hardcoded `[data-topic='slug']` CSS selectors with inline `--topic-color` CSS variable applied from the model
+- [ ] Document CSRF posture for admin mutation routes — either implement mitigation or write a short explanation of why the existing CORS configuration makes it a non-issue in this architecture; add to auth runbook
+- [ ] Verify session expiration behavior: let an admin cookie expire mid-workflow and confirm the result is a clean redirect to login with an informative message, not a silent 401 or broken state; document the behavior
+
+###### Done condition:
+
+Admin mutations trigger immediate cache revalidation; `EventListPageProps` defined once; topic detail uses one repository query; topic colors are data-driven and work for any topic created through admin; CSRF posture is documented; session expiration produces a clean, tested recovery path.
+
+---
+
+#### ▸ Phase 14.7 - Continuity Pass ⏳
+
+###### Phase Tasks:
+
+- [ ] Review all public pages against the settled visual direction — motif opacity, palette boldness, typography scale — and correct any outliers
+- [ ] Thread "Find Your Fight" dual meaning through copy on: homepage hero, About page (explicit one-time statement), action detail CTA area, issue detail section headers
+- [ ] Confirm sitewide motif watermark reads as intentional (8–10% opacity) on all non-homepage public pages
+- [ ] Regenerate all 5 portfolio screenshots after Phase 14 changes land — current screenshots are pre-Phase 14 and the README gallery is the first visual impression for anyone reading before running locally
+- [ ] Update README active phase reference — currently points to Phase 13.6
+- [ ] Keyboard accessibility pass: tab through the submission form, events filter, and admin moderation workflow; verify focus rings are visible, tab order is logical, and form validation errors are announced
+- [ ] Document a manual walkthrough of the submission → moderation → publish → public visibility pipeline; `rc-smoke.mjs` confirms routes respond but does not verify the full flow end-to-end
+- [ ] No structural changes, no new features — coherence, verification, and documentation only
+
+###### Done condition:
+
+A reviewer navigating from homepage through an issue into an article and action feels a consistent visual and emotional thread; screenshots match the shipped product; keyboard navigation is verified; the full content pipeline has a documented manual walkthrough.
+
+---
+
+#### ▸ Phase 14.8 - Events UX ⏳
+
+###### Phase Tasks:
+
+- [ ] Decide and implement default Events page behavior — current random city default is confidence-destroying; options: show-all upcoming, filter-first with no default city, or explicit demo-framing of the bounded geography
+- [ ] Add demo geography framing to the Events page — a brief note explaining the demo includes events from NY, PA, CA, TX, and PR; prevents out-of-region reviewers from concluding the platform is regional or data-thin
+
+###### Done condition:
+
+A first-time visitor landing on `/events` sees something relevant or a clear invitation to filter — not results for a city they didn't choose; the bounded demo geography is explained rather than silent.
+
+---
+
+#### ▸ Phase 14.9 - Copy Pass ⏳
+
+###### Voice direction:
+
+The copy should feel like an emotional plea, not a product description. The register is punk rock and sincere — sentences that build, not bullet points that summarize. The dual meaning of "Find Your Fight" (find the issue that's yours AND find the fighter within) is the emotional underpinning. Acknowledge the overwhelm. Acknowledge that one person feels powerless. Then turn it. The power and responsibility lives in each of us. Summon it. That is the through-line.
+
+Avoid: trendy fragment copy ("Find. Act. Fight."), passive hedging ("submissions are reviewed before..."), self-explanation ("this page shows you..."), defensive moderation language.
+
+###### Phase Tasks:
+
+- [ ] Audit every user-facing string across all public pages: homepage, about, issues index and detail, articles, actions, events, submit flow, search, error and empty states
+- [ ] Rewrite any copy that is choppy, fragmentary, hedging, or reads as UI chrome rather than a human voice
+- [ ] Ensure the emotional build — overwhelm → collective power → personal fire → action — is present in some form wherever a user might need it most (hero, issue detail, action CTA, empty states)
+- [ ] Add honest framing on the search page about what ILIKE search can and cannot find — silent near-misses hurt credibility more than no search; at minimum a single explanatory line
+- [ ] Submission success state: tell submitters what happens next — "Submissions are reviewed editorially before publication" is sufficient; the current success state ends in a vacuum
+- [ ] Copy should feel like the same person wrote all of it; that person is direct, serious, and believes this matters
+
+###### Done condition:
+
+Any string picked at random from any public page sounds like it belongs to the same voice; the site reads as a rallying cry not a content directory.
 
 ---
 

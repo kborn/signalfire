@@ -1,165 +1,141 @@
-# Context for Next Agent Session — Phase 14 Planning
+# Context for Next Agent Session — Phase 14 Implementation
 
 ## State of the repo
 
 **Branch:** `main`
-**Phase 13 is closed.** All local branch stacks have been squashed and merged. Main is clean:
+**Phase 14 is planned and ready to implement.** All subphases (14.1–14.9) are written in
+`docs/agent-governance/progress.md` with specific tasks and done conditions.
 
-```
-4dedca7  feat: [Phase 13.5] Feature completion, UI identity, and mobile polish
-db805d4  refactor(repo): [Phase 13.4 Repo & Launch Readiness]
-62dcb36  feat(web): [Phase 13.3 Public Polish] Final UI polish
-3c8d2d2  chore(release): [Phase 13.2 Demo Positioning]
-6b30e65  feat(api): [Phase 13.1 Schema & Seed Hygiene]
-```
-
-`progress.md` still shows Phase 13 as ACTIVE — update it to ✅ and open Phase 14 before
-beginning work.
+**Start with Phase 14.1 — Action Detail Page.**
 
 ---
 
-## What Phase 14 is
+## Design decisions locked in this session
 
-Phase 14 is the portfolio credibility pass. The goal is to raise the product from the current
-5.5 overall to a credible 8.0+ across Visual Design, UX/Product, and Engineering. The target
-audience is a technical portfolio reviewer, not end users.
+Read these before touching any UI. They are not up for re-evaluation.
 
-**The single most important constraint:** fix the product logic problems first. The reviewer
-said: "Fix the product logic and the design improvements will compound. Fix only the design and
-the product will still feel confused." Do not start visual polish before fixing UX structure.
+### Visual identity
 
----
+- **Dark navy + amber stays.** Applied more boldly — less timid, more force.
+- **Motif (`bg-motif.png`):** one asset, two uses. Homepage hero: scaled up, 30–40% opacity behind
+  live text. All other pages: watermark at 8–10% opacity. Skip or fade the watermark on the
+  homepage itself to avoid the same image at two opacities on one page.
+- **Hero:** retire `hero.png`. Use `bg-motif.png` scaled up as the hero backdrop. The current
+  hero.png is typography treated as an image — it does not function as a background.
+- **Nav mark:** replace `· FYF ·` with a simplified SVG fist mark derived from `bg-motif.png`.
+  CSS dots are a placeholder, not a logotype.
+- **Admin Demo link:** remove amber styling. Treat as a secondary nav item, not a featured CTA.
 
-## Fix list from the 2026-06-19 autonomous review
+### Admin design
 
-Scores: Visual Design 5.5 / UX 5.0 / Engineering 7.5 / Overall 5.5
+- Same dark navy palette as the public site — not the same decorative language.
+- Inter bold for admin headings (not Playfair Display).
+- No motif watermark, no hero textures in admin — functional register only.
+- Amber retained for CTAs and status signals.
+- Login page right panel: darken overlay to 60–70%; apply grain CSS treatment. Structure is correct,
+  do not change it.
 
-### Critical (visible to any reviewer)
+### Topic accent colors
 
-- **FIX-01** — Hero needs a visual anchor. The text-only hero with no image or texture
-  undersells the brand. A first-time visitor has no idea what they're looking at for the first
-  3 seconds. _(Visual Design)_
-- **FIX-02** — Events page shows a random city by default. A user in Seattle landing on
-  Philadelphia events will close the tab. Documented in decisions.md as acceptable for
-  portfolio, but the review calls it confidence-destroying. Reconsider. _(UX)_
-- **FIX-03** — "Take Action →" button on action detail has no trust scaffolding. No destination
-  org, no context for what the user will find. For a civic action product this is the pivotal
-  CTA. _(UX)_
-- **FIX-04** — Admin workspace looks like a completely different product. Light background,
-  dense tabular layout, gray badges. If a reviewer clicks "Admin Demo" — and they will — the
-  jarring switch damages credibility. _(Visual Design)_
+- Keep on `/issues` index cards and issue detail step headers — they serve navigation.
+- Thread to entity pages via **breadcrumb only** (start minimal, iterate if it feels incomplete).
+  Pass `data-topic={topics[0]?.slug}` to the breadcrumb element; style via existing CSS.
+- Do NOT thread colors across the full page or into body content — not a rainbow.
 
-### High (engineering or product credibility)
+### Bold palette (three specific changes, no more)
 
-- **FIX-05** — Homepage says "pick an issue" three times (hero, issue roll, journey steps).
-  No arc, no momentum. _(UX)_
-- **FIX-06** — Homepage issue roll is too plain. These are the primary navigation for the
-  entire product and look like an unstyled `<ul>`. _(Visual Design)_
-- **FIX-07** — Related Topics on action detail renders raw database description strings.
-  "Climate: Issues related to climate change, environmental protection..." is schema copy,
-  not UX copy. Replace with a short linked list. _(Engineering)_
-- **FIX-08** — "FYF" with dots in the navbar is not a logotype. Either make it a real mark or
-  use the full "Find Your Fight" name. The reviewer said the full name has force. _(Visual Design)_
-- **FIX-09** — Action detail page buries the CTA. Order is: giant headline → subtitle →
-  metadata (PUBLISHED, UPDATED) → "Take Action →" → description → related topics. The CTA
-  should come before the metadata. _(UX)_
+- `metaLabel` text color → amber
+- Collection item left borders visible at rest (reduced opacity), full on hover (currently hover-only)
+- Issue detail step numbers (`02`, `03`) → display scale Playfair Display
 
-### Medium (polish)
+### Copy voice
 
-- **FIX-10** — Admin Demo link in public nav is high-prominence amber in a product that isn't
-  supposed to be a demo. _(UX)_
-- **FIX-11** — Event type labels (RALLY, WORKSHOP) use an orange that doesn't appear anywhere
-  else in the palette. _(Visual Design)_
-- **FIX-12** — Issue cards on /issues index have database-description copy. _(UX)_
-- **FIX-13** — No on-demand revalidation after admin mutations; content is stale for up to
-  60s. _(Engineering)_
-- **FIX-14** — Confirm /topics routes redirect to /issues or remove them. _(Engineering)_
+The register is punk rock and sincere. An emotional plea, not a product description. Sentences
+that build, not bullet points that summarize.
+
+The dual meaning of "Find Your Fight" is the emotional underpinning:
+
+1. Find the issue that is yours to fight for
+2. Find the fighter that lives within you
+
+The arc: acknowledge the overwhelm → acknowledge the feeling that one person can't change anything
+→ pivot to collective power and individual responsibility → summon the fire within → Find Your Fight.
+
+**Avoid:** trendy fragment copy, passive hedging, self-explanation, defensive moderation language,
+copy that justifies the product to the user.
 
 ---
 
-## What was decided during Phase 13 that affects Phase 14
+## Subphase summary
 
-From `docs/agent-governance/decisions.md`:
+| Subphase | Scope                 | Key work                                                                |
+| -------- | --------------------- | ----------------------------------------------------------------------- |
+| 14.1     | Action detail         | CTA order, trust scaffolding, Related Topics copy                       |
+| 14.2     | Homepage + hero       | Arc, motif-as-hero, manifesto copy                                      |
+| 14.3     | Navbar                | SVG fist mark, Admin Demo prominence                                    |
+| 14.4     | Issues + entity pages | Breadcrumb threading, issue card copy, bold palette                     |
+| 14.5     | Admin alignment       | Dark navy admin, Inter headings, login panel                            |
+| 14.6     | Engineering           | `revalidatePath()`, type consolidation, TopicService, topic color model |
+| 14.7     | Continuity pass       | Visual + copy coherence across all pages                                |
+| 14.8     | Events UX             | Default city behavior decision                                          |
+| 14.9     | Copy pass             | Full copy audit against voice direction above                           |
 
-- **Playfair Display + Inter**: locked. Do not change.
-- **Dark navy (#101820) + amber (#cfac5a)**: locked.
-- **/issues canonical public URL** (not /topics): locked.
-- **Events default UX** (show events by default for portfolio, no geo): documented. May
-  revisit in Phase 14 given review severity rating.
-- **CSS split into 10 modules** in `apps/web/src/app/styles/`: locked architecture.
-- **Demo banner** (not header pill) is the sole demo indicator: locked.
-- **Login page** always shows full two-column layout: locked.
-
----
-
-## How to structure Phase 14
-
-**Collaboration model (important — read before planning):**
-
-The Phase 13 approach of long autonomous sessions against a vague target failed. Phase 14 must
-use small, scoped subphases. Each subphase should:
-
-- Have a specific fix list drawn from the items above
-- Have a clear done condition ("action detail CTA is above metadata")
-- Be reviewable by the user before the next subphase starts
-
-**Do not expand scope mid-subphase.** If you discover related issues, document them for the
-next subphase rather than fixing them now.
-
-**Suggested subphase breakdown:**
-
-| Subphase | Scope                   | Fixes                  |
-| -------- | ----------------------- | ---------------------- |
-| 14.1     | Action detail page      | FIX-03, FIX-07, FIX-09 |
-| 14.2     | Homepage restructure    | FIX-05, FIX-06         |
-| 14.3     | Navbar and nav identity | FIX-08, FIX-10         |
-| 14.4     | Hero visual anchor      | FIX-01                 |
-| 14.5     | Admin visual alignment  | FIX-04                 |
-| 14.6     | Engineering cleanup     | FIX-13, FIX-14         |
-| 14.7     | Medium polish           | FIX-11, FIX-12         |
-| 14.8     | Events UX decision      | FIX-02                 |
-
-**Start with 14.1** — it has the most mechanical fixes (CTA order, DB copy removal) and
-produces the clearest before/after for a reviewer.
+Full task lists and done conditions are in `progress.md` Phase 14.
 
 ---
 
-## What the planning session should produce
+## Starting with 14.1 — Action Detail Page
 
-Before writing any code, the Phase 14 planning session should:
+**Branch:** `feat/phase_14/action-detail`
 
-1. Update `progress.md`: close Phase 13 (✅), open Phase 14 (🚧)
-2. Confirm the subphase breakdown above with the user — adjust if needed
-3. For each subphase, identify exactly which files will change and what the change is
-4. Write the Phase 14 entry in `progress.md` with subphase tasks
-5. Present the plan to the user for sign-off before any implementation begins
+**Files to change:**
 
-Do not start implementing during the planning session.
+- `apps/web/src/app/(public)/actions/[slug]/page.tsx` — reorder sections, add domain extraction,
+  replace TopicSummary with a simple linked list
+
+**Specific changes:**
+
+1. **CTA order** — move `ctaGroup` div above `detailMetaGroup`. New order:
+   headline → summary (detailLead) → CTA → metadata → description → related articles
+
+2. **Trust scaffolding** — when `externalUrl` exists, extract the hostname and render:
+   `Take Action on [domain] →` (e.g. "Take Action on moveon.org →"). Use `new URL(action.externalUrl).hostname`.
+   Strip `www.` prefix. When `externalUrl` is null, render nothing (existing behavior, verify it holds).
+
+3. **Related Topics** — replace the `TopicSummary` component usage with a plain linked list:
+   topic name as a link to `/issues/[slug]`. No description text. No component — just an `<ul>`
+   with `<li><Link>` items.
+
+**Done condition:** CTA appears before metadata; domain is visible in the CTA label;
+Related Topics shows names only as links.
 
 ---
 
-## Branch strategy for Phase 14
+## Branch strategy
 
 Each subphase gets its own branch off main:
 
 ```
 main
-  └── feat/phase_14/action-detail        (14.1)
-  └── feat/phase_14/homepage             (14.2)
-  └── feat/phase_14/nav-identity         (14.3)
-  ...
+  └── feat/phase_14/action-detail     (14.1)
+  └── feat/phase_14/homepage          (14.2)
+  └── feat/phase_14/nav-identity      (14.3)
+  └── feat/phase_14/entity-pages      (14.4)
+  └── feat/phase_14/admin-alignment   (14.5)
+  └── feat/phase_14/engineering       (14.6)
+  └── feat/phase_14/continuity        (14.7)
+  └── feat/phase_14/events-ux         (14.8)
+  └── feat/phase_14/copy-pass         (14.9)
 ```
 
-Merge each subphase to main via PR after user review and CI passes. Do not stack branches
-unless a subphase has a hard dependency on the previous one.
+User reviews each subphase before the next begins. Do not stack branches.
 
 ---
 
-## What this session accomplished (for orientation, not to redo)
+## Guardrails for Phase 14
 
-- Squashed the entire Phase 13 local branch stack (9 branches, 21 commits) into a single
-  clean commit on main
-- Merged as PR #71, then squashed with Phase 13.5 and 13.6 into one "Phase 13.5" commit
-- Force-pushed clean history to main
-- Fixed 3 test failures (homepage async suspense, issue step header assertions, action
-  e2e `externalUrl` missing from expected payload)
+- Run `pnpm typecheck` before every commit
+- Do not expand scope mid-subphase — if you find something related, document it in progress.md
+  and continue
+- Do not re-open design decisions listed above — they are settled
+- The copy voice direction above is the brief for any copy written in any subphase

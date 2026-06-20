@@ -51,7 +51,9 @@ High-confidence V2 themes:
 - event ingestion / crawler planning and review workflow expansion
 - content intelligence review assist
 - Tags as a secondary classification layer
+- Replace ILIKE substring search with tag-based or structured filtering — current behavior matches noise terms like "the" and returns low-signal results
 - expanded content relationships
+- Copy review pass across all public surfaces for tone, consistency, and nit improvements
 
 Possible but not yet committed V2 themes:
 
