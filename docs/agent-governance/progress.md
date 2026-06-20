@@ -1939,21 +1939,28 @@ Admin Demo is not a primary nav item; nav wordmark has structural separation bet
 
 ---
 
-#### ▸ Phase 14.4 - Issues and Entity Pages ⏳
+#### ▸ Phase 14.4 - Issues and Entity Pages ✅
 
 ###### Phase Tasks:
 
-- [ ] Write and align on UI spec (`docs/specs/ui/entity-pages.md`) — implementation does not begin until spec is approved
-- [ ] Thread breadcrumb accent color: pass `data-topic={topics[0]?.slug}` to the breadcrumb on article, action, and event detail pages; style via existing topic CSS selectors
-- [ ] Replace database description copy on `/issues` index cards with motivating, human-facing language per topic
-- [ ] Bold palette — three specific CSS changes only:
-  - `metaLabel` text color changed to amber
-  - Collection item left borders visible at rest at reduced opacity, full on hover (currently hover-only)
-  - Issue detail step numbers (`02`, `03`) rendered at display scale in Playfair Display
+- [x] Write and align on UI spec (`docs/specs/ui/entity-pages.md`)
+- [x] Thread breadcrumb accent color: pass `data-topic={topics[0]?.slug}` to the breadcrumb on article, action, and event detail pages; style via existing topic CSS selectors
+- [ ] ~~Replace database description copy on `/issues` index cards with motivating, human-facing language per topic~~ — deferred to Phase 14.9 copy pass
+- [x] Bold palette — three specific CSS changes:
+  - `metaLabel` text color → amber (`--color-brand-primary`)
+  - Collection item left borders visible at rest at reduced opacity (40%), full on hover
+  - Issue detail step numbers (`02`, `03`) rendered at display scale in Playfair Display (`clamp(2.5rem, 5vw, 3.5rem)`)
+- [x] Sitewide motif presence: footer ornament (`site-footer::before`, centered, opacity 18%) replacing earlier fixed-position watermark attempts
 
 ###### Done condition:
 
-Breadcrumb on entity pages carries topic accent color; issue index cards have copy that invites rather than describes; three named palette changes applied and no further.
+Breadcrumb on entity pages carries topic accent color; three named palette changes applied; footer carries the motif as a centered signature on every public page.
+
+###### Notes:
+
+- `[data-topic='...']` CSS variable assignments promoted from `.topicCollectionItem[data-topic]` to bare `[data-topic]` selectors so `--topic-accent` cascades to any element carrying the attribute (breadcrumbs, issue roll links, step headers)
+- Issue roll on homepage now uses per-topic accent colors at rest and on hover, not flat amber
+- Sitewide motif watermark (fixed position) was attempted and abandoned — a fixed corner-positioned figurative image reads as arbitrary regardless of opacity. Footer ornament is the settled solution: motif centered in `site-footer::before` at 18% opacity, contained within the footer zone, visible on every page without competing with content.
 
 ---
 
@@ -1998,7 +2005,7 @@ Admin mutations trigger immediate cache revalidation; `EventListPageProps` defin
 - [ ] Write and align on continuity checklist (`docs/specs/ui/continuity.md`) before reviewing any page — documents what to look for, not just that a review happened
 - [ ] Review all public pages against the settled visual direction — motif opacity, palette boldness, typography scale — and correct any outliers
 - [ ] Thread "Find Your Fight" dual meaning through copy on: homepage hero, About page (explicit one-time statement), action detail CTA area, issue detail section headers
-- [ ] Confirm sitewide motif watermark reads as intentional (8–10% opacity) on all non-homepage public pages
+- [ ] **Interior page visual gap** — the homepage reads as a distinct, high-impact visual experience (Playfair Display at display scale, motif at 35%, amber arc) while interior pages (detail, collection) feel comparatively flat. The motif-as-watermark approach was attempted and abandoned as a fix for this; the root cause is that the hero visual vocabulary (display-scale type, bounded motif zone, amber structure) does not carry into interior page sections. Continuity pass should bring that vocabulary into interior page headers — specifically the `detailHero` and `discoveryPageHeader` sections — through section-scoped motif backgrounds and/or display-scale typography moments. Goal: a reviewer navigating from homepage to an issue detail page should feel the same brand, not two different products.
 - [ ] Regenerate all 5 portfolio screenshots after Phase 14 changes land — current screenshots are pre-Phase 14 and the README gallery is the first visual impression for anyone reading before running locally
 - [ ] Update README active phase reference — currently points to Phase 13.6
 - [ ] Keyboard accessibility pass: tab through the submission form, events filter, and admin moderation workflow; verify focus rings are visible, tab order is logical, and form validation errors are announced

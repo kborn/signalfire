@@ -19,6 +19,14 @@
   text-decoration: none;
 }
 
+.detailBreadcrumb[data-topic] .detailBreadcrumbLink {
+  color: color-mix(in srgb, var(--topic-accent) 75%, var(--color-text-muted));
+}
+
+.detailBreadcrumb[data-topic] .detailBreadcrumbLink:hover {
+  color: var(--topic-accent);
+}
+
 .detailPageNav {
   padding-top: var(--space-4);
   border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
@@ -192,7 +200,7 @@
 }
 
 .publicShell .metaLabel {
-  color: var(--color-brand-accent);
+  color: var(--color-brand-primary);
 }
 
 .metaValue {
@@ -298,9 +306,10 @@
 
 .issueStepNum {
   font-family: var(--font-display), Georgia, serif;
-  font-size: 0.75rem;
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
-  letter-spacing: 0.12em;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: var(--topic-accent, var(--color-brand-accent));
   opacity: 0.9;
 }

@@ -1,6 +1,6 @@
 # UI Spec — Global Patterns
 
-**Status:** DRAFT — awaiting user sign-off before implementation
+**Status:** ACTIVE — canonical reference for all Phase 14 UI specs
 **Last updated:** 2026-06-20
 
 Individual page specs reference this document for shared patterns. Do not re-document these

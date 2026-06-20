@@ -1,82 +1,91 @@
-# Context for Next Agent Session — Phase 14.3
+# Context for Next Agent Session — Phase 14.5
 
 ## State of the repo
 
-**Branch:** `main` (start a new branch for 14.3)
-**Phase 14.1 ✅ and 14.2 ✅ are complete and merged.**
+**Branch:** `feat/phase_14/issues_entity_pages` — Phase 14.4 complete, all checks pass, build clean.
+**Merge this branch to main, then start a new branch for 14.5.**
 
-**Start with Phase 14.3 — Navbar and Nav Identity.**
+**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅
+
+**Start with Phase 14.5 — Admin Visual Alignment.**
 
 ---
 
 ## Process — read this first
 
-**Spec-first.** Every UI subphase writes and aligns on a spec before any implementation begins.
-
-For 14.3, the first task is: write `docs/specs/ui/navbar.md` and present it to the user for
-sign-off. Do not touch any code until the spec is approved.
+**Spec-first.** Write `docs/specs/ui/admin.md` and present it to the user for sign-off before
+touching any admin CSS or components. Do not implement until approved.
 
 Reference files:
 
 - `docs/specs/ui/global.md` — shared patterns (typography, color, cards, CTAs, section structure)
-- `docs/specs/ui/homepage.md` — example of a completed, approved spec
+- `docs/specs/ui/navbar.md` — example of a completed spec (status: IMPLEMENTED)
+- `docs/specs/ui/entity-pages.md` — most recent completed spec (status: IMPLEMENTED)
 
 ---
 
-## Design decisions locked — do not re-open
+## What changed in Phase 14.4 (for context)
 
-Read `docs/specs/ui/global.md` for the full set. Key ones for 14.3:
+- **Breadcrumb topic threading.** `data-topic` attribute added to the `<nav>` breadcrumb on
+  article, action, and event detail pages. Per-topic `--topic-accent` variable assignments
+  promoted from `.topicCollectionItem[data-topic]` to bare `[data-topic]` selectors — the
+  variable now cascades to any element carrying the attribute (breadcrumbs, issue roll links,
+  issue step headers).
 
-- **Dark navy + amber.** Applied boldly — amber is a structural signal, not decoration.
-- **Nav mark:** replace `· FYF ·` with a simplified SVG fist mark derived from `bg-motif.png`.
-  CSS-generated dots are a placeholder, not a logotype.
-- **Admin Demo:** move out of primary nav entirely — relocate to footer or a utility/secondary
-  header position. A first-time visitor should not encounter it alongside Issues, Articles,
-  Actions, Events. Removing the amber styling alone is not sufficient.
-- **Copy voice:** punk rock and sincere. Emotional plea, not product description. See
-  `CONTEXT-next-session.md` design decisions from the 2026-06-20 planning session for the full
-  copy brief.
+- **Issue roll per-topic colors.** Homepage issue roll links (`heroPosterIssueLink`) now use
+  `var(--topic-accent)` for at-rest border and hover state, not flat amber.
+
+- **Palette changes.** `metaLabel` → amber (`--color-brand-primary`); collection item left
+  borders dim at rest (40% opacity), full amber on hover; issue step numbers `02`/`03` render
+  at display scale (`clamp(2.5rem, 5vw, 3.5rem)`) in Playfair Display.
+
+- **Footer motif ornament.** `bg-motif.png` added as `site-footer::before` — centered, 18%
+  opacity, `background-position: center top` so the fist is the focal point and bottom swirls
+  are clipped. Replaces earlier fixed-position watermark approach (abandoned — documented in
+  progress.md Phase 14.7).
+
+- **Key decision documented in progress.md 14.7:** Interior page visual gap — the homepage
+  hero vocabulary (display-scale type, motif at meaningful opacity, amber structure) does not
+  carry into interior pages. Continuity pass (14.7) should bring that vocabulary into
+  `detailHero` and `discoveryPageHeader` sections. The motif-as-watermark approach was the
+  wrong vehicle for this.
+
+- **Color token reminder:** `--color-brand-primary` = `#cfac5a` (amber/gold — main accent).
+  `--color-brand-accent` = `#98503b` (rust/brown — secondary). Don't confuse them.
 
 ---
 
-## Phase 14.3 scope
+## Phase 14.5 scope
 
-**Branch:** `feat/phase_14/nav-identity`
+**Branch:** `feat/phase_14/admin-visual-alignment` (start from main after merging 14.4)
 
 **Tasks (from `progress.md`):**
 
-1. Write and align on UI spec (`docs/specs/ui/navbar.md`) — implementation blocked until approved
-2. Design and implement a simplified SVG fist mark for the nav wordmark slot
-3. Move Admin Demo out of primary nav to footer or utility header position
+1. Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation blocked until approved
+2. Apply dark navy background to admin workspace — remove `#eef2f5` light background
+3. Replace Playfair Display with Inter bold for admin headings throughout workspace
+4. Remove decorative elements from admin (no motif watermark, no hero textures) — functional
+   register only
+5. Retain amber for admin CTAs and status signals
+6. Login page right panel: darken overlay to 60–70% opacity; apply grain CSS treatment over
+   the motif image
 
-**Done condition:** Nav has a real mark not CSS placeholder dots; Admin Demo is not a primary
-nav item and does not compete with content navigation.
-
----
-
-## What changed in Phase 14.2 (for context)
-
-- Homepage arc corrected: hero → how it works → issue roll → contribute
-- Issue roll moved to its own section (`home-issues`, id="issue-roll") with heading "Choose your fight."
-- Hero has single anchor CTA ("Find yours →") scrolling to issue roll
-- Manifesto copy in hero: acknowledges overwhelm → collective momentum → fire within
-- hero.png retired; bg-motif.png used as hero backdrop at 35% opacity
-- Card hover underline fixed globally: title only, not all text
-- UI spec process introduced: `docs/specs/ui/` folder with `global.md` and `homepage.md`
+**Done condition:** Admin workspace reads as the same product as the public site, different
+mode not different company; login page right panel text is clearly readable over the motif.
 
 ---
 
 ## Remaining Phase 14 subphases
 
-| Subphase | Scope                   | Status  |
-| -------- | ----------------------- | ------- |
-| 14.3     | Navbar and nav identity | ⏳ next |
-| 14.4     | Issues and entity pages | ⏳      |
-| 14.5     | Admin visual alignment  | ⏳      |
-| 14.6     | Engineering             | ⏳      |
-| 14.7     | Continuity pass         | ⏳      |
-| 14.8     | Events UX               | ⏳      |
-| 14.9     | Copy pass               | ⏳      |
+| Subphase | Scope                      | Status      |
+| -------- | -------------------------- | ----------- |
+| 14.4     | Issues and entity pages    | ✅ complete |
+| 14.5     | Admin visual alignment     | ⏳ next     |
+| 14.6     | Engineering                | ⏳          |
+| 14.7     | Continuity pass            | ⏳          |
+| 14.8     | Events UX                  | ⏳          |
+| 14.9     | Copy pass                  | ⏳          |
+| 14.10    | Nav mark & favicon artwork | ⏳          |
 
 Full task lists and done conditions for all subphases are in `progress.md` Phase 14.
 
@@ -86,5 +95,5 @@ Full task lists and done conditions for all subphases are in `progress.md` Phase
 
 - Run `pnpm typecheck` before every commit
 - Do not expand scope mid-subphase — document discoveries in progress.md and continue
-- Do not re-open design decisions listed above or in `docs/specs/ui/global.md`
+- Do not re-open design decisions in `docs/specs/ui/global.md`
 - Spec must be approved by the user before implementation begins

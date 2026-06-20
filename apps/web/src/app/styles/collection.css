@@ -40,7 +40,7 @@
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
   border-left-width: 4px;
-  border-left-color: var(--color-brand-primary);
+  border-left-color: color-mix(in srgb, var(--color-brand-primary) 40%, transparent);
   border-radius: 12px;
   background: linear-gradient(
     180deg,
@@ -56,7 +56,7 @@
 }
 
 .publicShell .collectionItem:hover {
-  border-left-color: var(--color-brand-accent);
+  border-left-color: var(--color-brand-primary);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--color-surface-soft) 98%, white 2%) 0%,
@@ -176,26 +176,27 @@
   border-left-color: var(--color-brand-accent);
 }
 
-/* Per-topic accent colors (left border + subtle background tint) */
-.topicCollectionItem[data-topic='democracy'] {
+/* Per-topic accent colors — bare [data-topic] so any element (cards, breadcrumbs, step
+   headers) that carries the attribute inherits the variable automatically */
+[data-topic='democracy'] {
   --topic-accent: #5b88c7;
 }
-.topicCollectionItem[data-topic='consumer-activism'] {
+[data-topic='consumer-activism'] {
   --topic-accent: #c9894a;
 }
-.topicCollectionItem[data-topic='climate'] {
+[data-topic='climate'] {
   --topic-accent: #4a9e7c;
 }
-.topicCollectionItem[data-topic='civil-rights'] {
+[data-topic='civil-rights'] {
   --topic-accent: #c76b5b;
 }
-.topicCollectionItem[data-topic='economic-justice'] {
+[data-topic='economic-justice'] {
   --topic-accent: #c4a23e;
 }
-.topicCollectionItem[data-topic='education'] {
+[data-topic='education'] {
   --topic-accent: #7a84c7;
 }
-.topicCollectionItem[data-topic='local-community'] {
+[data-topic='local-community'] {
   --topic-accent: #5da870;
 }
 
