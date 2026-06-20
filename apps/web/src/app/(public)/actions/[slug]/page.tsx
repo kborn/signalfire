@@ -34,7 +34,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <div className="detailPage motifPage">
-      <nav className="detailBreadcrumb" aria-label="Back">
+      <nav className="detailBreadcrumb" aria-label="Back" data-topic={action.topics[0]?.slug}>
         {action.topics.length > 0 ? (
           <Link href={`/issues/${action.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {action.topics[0].name}
