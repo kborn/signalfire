@@ -21,7 +21,7 @@ describe('DemoBanner', () => {
     render(<DemoBanner />);
 
     expect(screen.getByText('Demo Site')).toBeInTheDocument();
-    expect(screen.getByText('This is a demo site with sample content.')).toBeInTheDocument();
+    expect(screen.getByText(/This is a demo site with sample data/)).toBeInTheDocument();
   });
 
   it('persists dismissal in sessionStorage', () => {
