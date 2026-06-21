@@ -55,7 +55,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           </Link>
         )}
       </nav>
-      <section className="detailHeader">
+      <section className="detailHeader detailHero">
         <h1 className="pageTitle">{action.title}</h1>
       </section>
       <section className="detailContent">
@@ -63,6 +63,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
         {actionDomain ? (
           <div className="ctaGroup">
+            <p className="section-label">Your next step</p>
             <a
               href={action.externalUrl!}
               className="primaryCTA"

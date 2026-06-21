@@ -49,8 +49,37 @@
 }
 
 .detailHero {
+  position: relative;
   padding-bottom: var(--space-1);
   border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 72%, transparent);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.detailHero::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10% -20% auto;
+  width: 50%;
+  background-image: url('/bg-motif.png');
+  background-size: auto 140%;
+  background-repeat: no-repeat;
+  background-position: center right;
+  opacity: 0.1;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.detailHero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.detailHero h1 {
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .discoveryEmptyState {

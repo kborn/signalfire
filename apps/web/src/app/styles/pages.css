@@ -373,11 +373,40 @@
 }
 
 .discoveryPageHeader {
+  position: relative;
   display: grid;
   gap: var(--space-1);
   max-width: 60rem;
-  padding: 0 0 var(--space-3);
+  padding: var(--space-2) 0 var(--space-3);
   border-bottom: 1px solid var(--color-brand-accent);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.discoveryPageHeader::before {
+  content: '';
+  position: absolute;
+  inset: -20% -10% -20% auto;
+  width: 40%;
+  background-image: url('/bg-motif.png');
+  background-size: auto 160%;
+  background-repeat: no-repeat;
+  background-position: center right;
+  opacity: 0.08;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.discoveryPageHeader > * {
+  position: relative;
+  z-index: 1;
+}
+
+.discoveryPageHeader h1 {
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 /* CTA */
