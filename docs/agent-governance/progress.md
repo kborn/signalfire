@@ -2118,6 +2118,8 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off
 - [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) and note anything that reads as unfinished in the demo workflow
 - [ ] Fix the items that are clearly wrong with no tradeoff — spacing, copy, alignment, missing hover states, inconsistent labels
+- [ ] Review motif placement and usage
+- [ ] Review Search page filer by topic section
 - [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
 
 ###### Done condition
