@@ -1,81 +1,76 @@
-# Context for Next Agent Session — Phase 14.7
+# Context for Next Agent Session — Phase 14.8
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/engineering` — Phase 14.6 complete, all checks pass, tests pass.
-**Merge this branch to main, then start a new branch for 14.7.**
+**Branch:** `feat/phase_14/continuity` — Phase 14.7 complete, all checks pass (lint, typecheck, build).
+**Merge this branch to main, then start a new branch for 14.8.**
 
-**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅
+**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅
 
-**Start with Phase 14.7 — Continuity Pass.**
-
----
-
-## What changed in Phase 14.6 (for context)
-
-- **Revalidation fix.** `revalidateTopicPages` was revalidating `/topics/${slug}` (redirect
-  pages) instead of `/issues/${slug}` (cached pages). Fixed to use `/issues/` paths.
-  `revalidateTopicAdminPages` also corrected from `/topics` to `/issues`.
-
-- **EventListPageProps consolidation.** Three duplicate `EventListPageProps` type definitions
-  replaced with shared types in `apps/web/src/app/(public)/events/event-search-params.ts`:
-  `EventSearchParams` (all optional, for raw URL params) and `ResolvedEventSearchParams`
-  (startDate/endDate required, for resolved params). Admin events page renamed its local type
-  to `AdminEventSearchParams`.
-
-- **TopicService.getTopicDetail refactor.** Cross-service fan-out removed: `TopicService`
-  no longer depends on `ArticleService` or `ActionService`. A single
-  `findBySlugWithPublishedContent` repository method replaces 3 queries (findBySlug +
-  findPublishedByTopicSlug for articles + actions). `TopicModule` no longer imports
-  `ArticleModule` or `ActionModule`. Service spec updated to mock the new repository method.
-
-- **Topic color field.** `color String?` added to Prisma `Topic` model. Migration applied
-  (`20260621005614_add_topic_color`). Seed updated with colors matching the prior CSS values:
-  democracy `#5b88c7`, consumer-activism `#c9894a`, climate `#4a9e7c`, civil-rights `#c76b5b`,
-  economic-justice `#c4a23e`, education `#7a84c7`, local-community `#5da870`. CSS hardcoded
-  `[data-topic='slug']` color blocks removed from `collection.css`. Frontend components
-  (`topic-summary.tsx`, homepage, article/action/event detail breadcrumbs, issues/[slug] step
-  headers) now apply `--topic-accent` as inline `style` from `topic.color`. Admin topic editor
-  (`TopicEditorForm.tsx`) now includes a hex color input field. API contracts updated:
-  `TopicSummary`, `TopicDetailResponse`, `AdminTopicSummary`, `AdminTopicRequest` all have
-  `color?: string`.
-
-- **CSRF and session documentation.** `docs/runbooks/admin-auth-posture.md` created with:
-  CSRF posture explanation (SameSite: lax + CORS is sufficient, no CSRF tokens needed);
-  session expiration flow (middleware detects 401, redirects to login with returnPath,
-  clears cookie, login shows "Sign in to continue").
+**Start with Phase 14.8 — Events UX.**
 
 ---
 
-## Phase 14.7 scope
+## What changed in Phase 14.7 (for context)
 
-**Branch:** `feat/phase_14/continuity` (start from main after merging 14.6)
+- **Continuity checklist.** `docs/specs/ui/continuity.md` written — canonical reference for what
+  to check on every page before approving it. Covers typography, color, motif opacity, cards,
+  CTAs, copy voice, accessibility, and per-page expectations.
+
+- **Interior page visual gap fixed.** `detailHero` and `discoveryPageHeader` now carry:
+  - A section-scoped `::before` motif at 10% / 8% opacity, right-anchored and contained within
+    the section (not the fixed-watermark approach that was abandoned).
+  - Display-scale Playfair Display h1 (`clamp(2rem, 5vw, 3.6rem)` and `clamp(2rem, 4.5vw, 3.2rem)`).
+  - Action detail page header updated from `detailHeader` to `detailHeader detailHero` for parity
+    with article, issue, and event detail pages.
+
+- **FYF copy threading.**
+  - Issue detail step 03 `issueStepSub`: changed from "Concrete next steps you can take right
+    now" → "This is where your fight gets real."
+  - Action detail CTA area: added `<p className="section-label">Your next step</p>` above the
+    primary CTA when `externalUrl` is present.
+  - Homepage hero and About page already carried the dual meaning — no changes needed.
+
+- **Admin list row interaction — decision: fully clickable rows.** CSS stretched-link pattern
+  applied via `.adminRecordTable tbody tr { position: relative }` and
+  `.adminTableRecordLink::after { position: absolute; inset: 0 }`. Row hover state and title
+  underline on hover added. Applies consistently to all admin list pages via the shared
+  `adminRecordTable` class (submissions, articles, actions, events, topics all use it).
+
+- **README.** Active phase reference updated from Phase 13.6 to Phase 14.7.
+
+- **Manual walkthrough.** `docs/runbooks/submission-to-publication-walkthrough.md` created —
+  full submit → moderate → publish → verify pipeline, including rejection flow, draft approval,
+  and edge cases.
+
+- **Keyboard accessibility pass.** Focus rings verified present on all interactive elements
+  (global `a:focus-visible` + per-component patterns). `aria-describedby` + `aria-invalid`
+  confirmed on submission form inputs via `getFieldA11y`. Tab order is semantically correct.
+  Finding: inline error `<p>` elements lack `role="alert"` — queued for Phase 14.9 since that
+  phase touches the same form surfaces anyway.
+
+- **Screenshots deferred.** All 5 portfolio screenshots need regeneration but require
+  `pnpm dev` + seeded DB. Run: `node scripts/regenerate-doc-screenshots.mjs`. Screenshots are
+  still pre-Phase 14; update them before the phase 14 branch stack lands on main.
+
+---
+
+## Phase 14.8 scope
+
+**Branch:** `feat/phase_14/events-ux` (start from main after merging 14.7)
 
 **Tasks (from `progress.md`):**
 
-1. Write and align on continuity checklist (`docs/specs/ui/continuity.md`) before reviewing
-   any page
-2. Review all public pages against the settled visual direction — motif opacity, palette
-   boldness, typography scale — and correct any outliers
-3. Thread "Find Your Fight" dual meaning through copy on: homepage hero, About page, action
-   detail CTA area, issue detail section headers
-4. **Interior page visual gap** — homepage reads as a high-impact visual experience;
-   interior pages feel comparatively flat. Bring the hero visual vocabulary into interior
-   page sections (detailHero, discoveryPageHeader) through section-scoped motif backgrounds
-   and/or display-scale typography moments.
-5. Regenerate all 5 portfolio screenshots after Phase 14 changes land
-6. Update README active phase reference (currently points to Phase 13.6)
-7. Keyboard accessibility pass: tab through submission form, events filter, and admin
-   moderation workflow; verify focus rings, tab order, and error announcements
-8. Document manual walkthrough of submission → moderation → publish → public visibility
-9. **Admin list row interaction** — decide whether admin list rows should be fully clickable;
-   make a call and apply consistently across all admin list pages
-10. No structural changes to public pages, no new features — coherence, verification,
-    and documentation only
+1. Decide and implement default Events page behavior — current random city default is
+   confidence-destroying; options: show-all upcoming, filter-first with no default city, or
+   explicit demo-framing of the bounded geography
+2. Add demo geography framing to the Events page — a brief note explaining the demo includes
+   events from NY, PA, CA, TX, and PR; prevents out-of-region reviewers from concluding the
+   platform is regional or data-thin
 
-**Done condition:** A reviewer navigating from homepage through an issue into an article and
-action feels a consistent visual and emotional thread; screenshots match the shipped product;
-keyboard navigation is verified; the full content pipeline has a documented manual walkthrough.
+**Done condition:** A first-time visitor landing on `/events` sees something relevant or a
+clear invitation to filter — not results for a city they didn't choose; the bounded demo
+geography is explained rather than silent.
 
 ---
 
@@ -83,9 +78,8 @@ keyboard navigation is verified; the full content pipeline has a documented manu
 
 | Subphase | Scope                      | Status      |
 | -------- | -------------------------- | ----------- |
-| 14.6     | Engineering                | ✅ complete |
-| 14.7     | Continuity pass            | ⏳ next     |
-| 14.8     | Events UX                  | ⏳          |
+| 14.7     | Continuity pass            | ✅ complete |
+| 14.8     | Events UX                  | ⏳ next     |
 | 14.9     | Copy pass                  | ⏳          |
 | 14.10    | Nav mark & favicon artwork | ⏳          |
 
