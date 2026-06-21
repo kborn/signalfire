@@ -3,11 +3,13 @@ import Link from 'next/link';
 export default function ChooseSubmitTypePage() {
   return (
     <section className="page-section submitEntryPage motifPage centeredPublicPage">
-      <h1 className="pageTitle">Contribute to Find Your Fight</h1>
-      <p className="page-intro">
-        Help other people get involved. Share what belongs here, and we will review it before it
-        goes live.
-      </p>
+      <div className="submitEntryHeader">
+        <h1 className="pageTitle">Contribute to Find Your Fight</h1>
+        <p className="page-intro">
+          Help other people get involved. Share what belongs here, and we will review it before it
+          goes live.
+        </p>
+      </div>
       <div className="submitOptionList">
         <Link href="/submit/article" className="collectionItem submitOptionCard">
           <div>
