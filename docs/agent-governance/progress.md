@@ -1988,16 +1988,24 @@ Admin workspace reads as the same product as the public site, different mode not
 
 ---
 
-#### ▸ Phase 14.6 - Engineering ⏳
+#### ▸ Phase 14.6 - Engineering ✅
 
 ###### Phase Tasks:
 
-- [ ] Add `revalidatePath()` calls after all admin mutations: article create/update/publish, action create/update, event create/update/publish, topic create/update/delete
-- [ ] Consolidate `EventListPageProps` — replace three separate definitions across `events/page.tsx`, `events/_components/event-filters.tsx`, and `admin/events/page.tsx` with one shared type
-- [ ] Move `TopicService.getTopicDetail` cross-service fan-out to the repository layer — single Prisma query with includes instead of calling `ArticleService` and `ActionService`
-- [ ] Add `color` field to Topic Prisma model; seed existing topics with color values; replace hardcoded `[data-topic='slug']` CSS selectors with inline `--topic-color` CSS variable applied from the model
-- [ ] Document CSRF posture for admin mutation routes — either implement mitigation or write a short explanation of why the existing CORS configuration makes it a non-issue in this architecture; add to auth runbook
-- [ ] Verify session expiration behavior: let an admin cookie expire mid-workflow and confirm the result is a clean redirect to login with an informative message, not a silent 401 or broken state; document the behavior
+- [x] Add `revalidatePath()` calls after all admin mutations: article create/update/publish, action create/update, event create/update/publish, topic create/update/delete
+- [x] Consolidate `EventListPageProps` — replace three separate definitions across `events/page.tsx`, `events/_components/event-filters.tsx`, and `admin/events/page.tsx` with one shared type
+- [x] Move `TopicService.getTopicDetail` cross-service fan-out to the repository layer — single Prisma query with includes instead of calling `ArticleService` and `ActionService`
+- [x] Add `color` field to Topic Prisma model; seed existing topics with color values; replace hardcoded `[data-topic='slug']` CSS selectors with inline `--topic-color` CSS variable applied from the model
+- [x] Document CSRF posture for admin mutation routes — either implement mitigation or write a short explanation of why the existing CORS configuration makes it a non-issue in this architecture; add to auth runbook
+- [x] Verify session expiration behavior: let an admin cookie expire mid-workflow and confirm the result is a clean redirect to login with an informative message, not a silent 401 or broken state; document the behavior
+
+###### Notes:
+
+- Revalidation was already wired to all mutations; fixed the issue where `revalidateTopicPages` was targeting redirect pages (`/topics/`) instead of the canonical cached pages (`/issues/`).
+- `EventListPageProps` was split into `EventSearchParams` and `ResolvedEventSearchParams` in a shared `event-search-params.ts`; admin page renamed its local type to `AdminEventSearchParams`.
+- `TopicService` now has no dependency on `ArticleService` or `ActionService`; `TopicModule` no longer imports `ArticleModule` or `ActionModule`; single `findBySlugWithPublishedContent` query replaces 3-query fan-out.
+- `color` added to `Topic` schema (nullable String); Prisma migration applied; seed colors match existing CSS values; CSS hardcoded `[data-topic='slug']` blocks removed in favor of inline `--topic-accent` style from the model; admin topic editor now includes a color hex input field.
+- CSRF posture and session expiration behavior documented in `docs/runbooks/admin-auth-posture.md`.
 
 ###### Done condition:
 

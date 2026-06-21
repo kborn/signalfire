@@ -1,6 +1,7 @@
 export type AdminTopicRequest = {
   name: string;
   description: string;
+  color?: string;
 };
 
 export type AdminTopicSummary = {
@@ -8,6 +9,7 @@ export type AdminTopicSummary = {
   slug: string;
   name: string;
   description: string;
+  color?: string;
   articleCount: number;
   actionCount: number;
   eventCount: number;

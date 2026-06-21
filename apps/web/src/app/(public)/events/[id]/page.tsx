@@ -1,3 +1,4 @@
+import React from 'react';
 import { connection } from 'next/server';
 import { EventDetailResponse } from '@signal-fire/api-contracts';
 import { getEventDetails } from '@/lib/api/events';
@@ -71,7 +72,16 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
 
   return (
     <div className="detailPage">
-      <nav className="detailBreadcrumb" aria-label="Back" data-topic={event.topics[0]?.slug}>
+      <nav
+        className="detailBreadcrumb"
+        aria-label="Back"
+        data-topic={event.topics[0]?.slug}
+        style={
+          event.topics[0]?.color
+            ? ({ '--topic-accent': event.topics[0].color } as React.CSSProperties)
+            : undefined
+        }
+      >
         {event.topics.length > 0 ? (
           <Link href={`/issues/${event.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {event.topics[0].name}

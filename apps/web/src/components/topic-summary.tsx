@@ -45,7 +45,12 @@ export function TopicSummary({ topic, variant = 'collection' }: TopicSummaryProp
     variant === 'collection' ? (TOPIC_ICON_MAP[topic.slug] ?? GenericIssueIcon) : undefined;
 
   return (
-    <Link href={`/issues/${topic.slug}`} className={itemClassName} data-topic={topic.slug}>
+    <Link
+      href={`/issues/${topic.slug}`}
+      className={itemClassName}
+      data-topic={topic.slug}
+      style={topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined}
+    >
       {Icon ? (
         <span className="topicCardIcon">
           <Icon width={24} height={24} />

@@ -9,11 +9,11 @@ import { withAdminAuthClientRedirect } from '@/lib/admin/auth-redirect.client';
 
 type TopicEditorFormProps = {
   mode: 'create' | 'edit';
-  initialValues: { slug: string; name: string; description: string };
+  initialValues: { slug: string; name: string; description: string; color?: string };
   linkedContent?: { articles: number; actions: number; events: number };
 };
 
-type FormErrors = { name?: string; description?: string };
+type FormErrors = { name?: string; description?: string; color?: string };
 
 export default function TopicEditorForm({
   mode,
@@ -23,6 +23,7 @@ export default function TopicEditorForm({
   const router = useRouter();
   const [name, setName] = useState(initialValues.name);
   const [description, setDescription] = useState(initialValues.description);
+  const [color, setColor] = useState(initialValues.color ?? '');
   const [errors, setErrors] = useState<FormErrors>({});
   const [saveError, setSaveError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -39,6 +40,9 @@ export default function TopicEditorForm({
     if (!description.trim()) next.description = 'Description is required';
     else if (description.trim().length > 500)
       next.description = 'Description must be 500 characters or fewer';
+    const colorTrimmed = color.trim();
+    if (colorTrimmed && !/^#[0-9a-fA-F]{6}$/.test(colorTrimmed))
+      next.color = 'Color must be a valid hex color (e.g. #5b88c7)';
     return next;
   }
 
@@ -64,7 +68,12 @@ export default function TopicEditorForm({
     setIsSaving(true);
 
     try {
-      const payload = { name: name.trim(), description: description.trim() };
+      const colorTrimmed = color.trim();
+      const payload = {
+        name: name.trim(),
+        description: description.trim(),
+        ...(colorTrimmed ? { color: colorTrimmed } : {}),
+      };
       let result: AdminTopicDetailResponse;
       if (mode === 'create') {
         result = await withAdminAuthClientRedirect(router, () => createAdminTopic(payload));
@@ -80,9 +89,10 @@ export default function TopicEditorForm({
     } catch (error) {
       if (error instanceof SubmissionError) {
         const fieldErrors: FormErrors = {};
+        const knownFields = ['name', 'description', 'color'] as const;
         for (const e of error.errors ?? []) {
-          if ('field' in e && (e.field === 'name' || e.field === 'description')) {
-            fieldErrors[e.field] = e.message;
+          if ('field' in e && (knownFields as readonly string[]).includes(e.field as string)) {
+            fieldErrors[e.field as (typeof knownFields)[number]] = e.message;
           }
         }
         if (Object.keys(fieldErrors).length > 0) {
@@ -173,6 +183,27 @@ export default function TopicEditorForm({
           {errors.description && (
             <p id="topic-description-error" className="submissionError">
               {errors.description}
+            </p>
+          )}
+        </section>
+
+        <section className="submissionField">
+          <label className="submissionLabel" htmlFor="topic-color">
+            Accent color{' '}
+            <span style={{ fontWeight: 400, opacity: 0.7 }}>(optional, hex e.g. #5b88c7)</span>
+          </label>
+          <input
+            id="topic-color"
+            className="submissionControl"
+            value={color}
+            placeholder="#5b88c7"
+            onChange={(e) => setColor(e.target.value)}
+            aria-invalid={errors.color ? true : undefined}
+            aria-describedby={errors.color ? 'topic-color-error' : undefined}
+          />
+          {errors.color && (
+            <p id="topic-color-error" className="submissionError">
+              {errors.color}
             </p>
           )}
         </section>

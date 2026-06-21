@@ -1,3 +1,4 @@
+import React from 'react';
 import { connection } from 'next/server';
 import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
@@ -34,7 +35,16 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <div className="detailPage motifPage">
-      <nav className="detailBreadcrumb" aria-label="Back" data-topic={action.topics[0]?.slug}>
+      <nav
+        className="detailBreadcrumb"
+        aria-label="Back"
+        data-topic={action.topics[0]?.slug}
+        style={
+          action.topics[0]?.color
+            ? ({ '--topic-accent': action.topics[0].color } as React.CSSProperties)
+            : undefined
+        }
+      >
         {action.topics.length > 0 ? (
           <Link href={`/issues/${action.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {action.topics[0].name}

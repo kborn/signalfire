@@ -20,6 +20,7 @@ export function toTopicSummary(topic: Topic): TopicSummary {
     slug: topic.slug,
     name: topic.name,
     description: topic.description,
+    color: topic.color ?? undefined,
   };
 }
 

@@ -8,6 +8,7 @@ import EventFilters from '@/app/(public)/events/_components/event-filters';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
+import type { EventSearchParams, ResolvedEventSearchParams } from './event-search-params';
 
 export const revalidate = 60;
 
@@ -38,28 +39,8 @@ function getEmptyPageResponse() {
   );
 }
 
-type EventListPageProps = {
-  topicSlug?: string;
-  startDate?: string;
-  endDate?: string;
-  city?: string;
-  region?: string;
-  page?: string;
-  pageSize?: string;
-};
-
-type ResolvedEventListPageProps = {
-  topicSlug?: string;
-  startDate: string;
-  endDate: string;
-  city?: string;
-  region?: string;
-  page?: string;
-  pageSize?: string;
-};
-
-type EventListPagePropsWrapper = {
-  searchParams?: Promise<EventListPageProps>;
+type EventSearchParamsWrapper = {
+  searchParams?: Promise<EventSearchParams>;
 };
 
 function addUTCMonths(date: Date, months: number): Date {
@@ -73,7 +54,7 @@ function addUTCMonths(date: Date, months: number): Date {
   return result;
 }
 
-function resolveDateWindow(params: EventListPageProps) {
+function resolveDateWindow(params: EventSearchParams) {
   const startDate = parseDate(params.startDate ?? '') ?? new Date();
   startDate.setUTCHours(0, 0, 0, 0);
   const endDate = parseDate(params.endDate ?? '') ?? addUTCMonths(startDate, 3);
@@ -92,7 +73,7 @@ function toDateInputValue(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-async function getContents(params: EventListPageProps) {
+async function getContents(params: EventSearchParams) {
   const { topicSlug } = params;
   const resp = await getEventsList(params);
 
@@ -118,11 +99,11 @@ async function getContents(params: EventListPageProps) {
   );
 }
 
-export default async function EventListPage({ searchParams }: EventListPagePropsWrapper) {
+export default async function EventListPage({ searchParams }: EventSearchParamsWrapper) {
   await connection();
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
-  const resolvedParams: ResolvedEventListPageProps = { ...params, ...resolveDateWindow(params) };
+  const resolvedParams: ResolvedEventSearchParams = { ...params, ...resolveDateWindow(params) };
   return (
     <section className="page-section">
       <h1 className="pageTitle">Events</h1>

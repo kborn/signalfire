@@ -45,6 +45,7 @@ export class AdminTopicService {
       slug,
       name: reqBody.name,
       description: reqBody.description,
+      color: reqBody.color,
     });
 
     return {
@@ -52,6 +53,7 @@ export class AdminTopicService {
       slug: topic.slug,
       name: topic.name,
       description: topic.description,
+      color: topic.color ?? undefined,
       articleCount: 0,
       actionCount: 0,
       eventCount: 0,
@@ -65,6 +67,7 @@ export class AdminTopicService {
     const updated = await this.repository.update(slug, {
       name: reqBody.name,
       description: reqBody.description,
+      color: reqBody.color,
     });
 
     return {
@@ -72,6 +75,7 @@ export class AdminTopicService {
       slug: updated.slug,
       name: updated.name,
       description: updated.description,
+      color: updated.color ?? undefined,
       articleCount: existing._count.topicArticles,
       actionCount: existing._count.topicActions,
       eventCount: existing._count.topicEvents,
@@ -97,6 +101,7 @@ export class AdminTopicService {
       slug: topic.slug,
       name: topic.name,
       description: topic.description,
+      color: topic.color ?? undefined,
       articleCount: topic._count.topicArticles,
       actionCount: topic._count.topicActions,
       eventCount: topic._count.topicEvents,

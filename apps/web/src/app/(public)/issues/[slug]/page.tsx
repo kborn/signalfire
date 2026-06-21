@@ -1,3 +1,4 @@
+import React from 'react';
 import { connection } from 'next/server';
 import { getTopicDetails } from '@/lib/api/topics';
 import { ApiError } from '@/lib/api/error';
@@ -42,7 +43,13 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
             className="relatedSection issueStepSection"
             aria-labelledby="topic-articles-label"
           >
-            <div className="issueStepHeader" data-topic={topic.slug}>
+            <div
+              className="issueStepHeader"
+              data-topic={topic.slug}
+              style={
+                topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
+              }
+            >
               <span className="issueStepNum">02</span>
               <h2 id="topic-articles-label" className="issueStepTitle">
                 Read
@@ -61,7 +68,13 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
             className="relatedSection issueStepSection"
             aria-labelledby="topic-actions-label"
           >
-            <div className="issueStepHeader" data-topic={topic.slug}>
+            <div
+              className="issueStepHeader"
+              data-topic={topic.slug}
+              style={
+                topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
+              }
+            >
               <span className="issueStepNum">03</span>
               <h2 id="topic-actions-label" className="issueStepTitle">
                 Act

@@ -1,3 +1,4 @@
+import React from 'react';
 import { connection } from 'next/server';
 import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
@@ -34,7 +35,16 @@ export default async function ArticleDetailsPage({
 
   return (
     <div className="detailPage motifPage">
-      <nav className="detailBreadcrumb" aria-label="Back" data-topic={article.topics[0]?.slug}>
+      <nav
+        className="detailBreadcrumb"
+        aria-label="Back"
+        data-topic={article.topics[0]?.slug}
+        style={
+          article.topics[0]?.color
+            ? ({ '--topic-accent': article.topics[0].color } as React.CSSProperties)
+            : undefined
+        }
+      >
         {article.topics.length > 0 ? (
           <Link href={`/issues/${article.topics[0].slug}`} className="detailBreadcrumbLink">
             ← {article.topics[0].name}

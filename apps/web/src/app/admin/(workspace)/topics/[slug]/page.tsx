@@ -37,6 +37,7 @@ export default async function AdminTopicDetailPage({
           slug: topic.slug,
           name: topic.name,
           description: topic.description,
+          color: topic.color,
         }}
         linkedContent={{
           articles: topic.articleCount,

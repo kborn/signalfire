@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Topic, Prisma } from '@prisma/client';
+import { Topic, Prisma, EntityStatus } from '@prisma/client';
 
 @Injectable()
 export class TopicRepository {
@@ -17,6 +17,24 @@ export class TopicRepository {
   findBySlug(slug: string): Promise<Topic | null> {
     return this.prisma.topic.findUnique({
       where: { slug: slug },
+    });
+  }
+
+  findBySlugWithPublishedContent(slug: string) {
+    return this.prisma.topic.findUnique({
+      where: { slug },
+      include: {
+        topicArticles: {
+          where: { article: { status: EntityStatus.PUBLISHED } },
+          orderBy: { articleId: 'asc' },
+          include: { article: true },
+        },
+        topicActions: {
+          where: { action: { status: EntityStatus.PUBLISHED } },
+          orderBy: { actionId: 'asc' },
+          include: { action: true },
+        },
+      },
     });
   }
 

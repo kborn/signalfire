@@ -9,6 +9,7 @@ export type TopicDetailResponse = {
   slug: string;
   name: string;
   description: string;
+  color?: string;
   articles: ArticleSummary[];
   actions: ActionSummary[];
 };

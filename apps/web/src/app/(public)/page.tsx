@@ -1,3 +1,4 @@
+import React from 'react';
 import Link from 'next/link';
 import { connection } from 'next/server';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
@@ -82,6 +83,11 @@ export default async function HomePage() {
                 href={`/issues/${issue.slug}`}
                 className="heroPosterIssueLink"
                 data-topic={issue.slug}
+                style={
+                  issue.color
+                    ? ({ '--topic-accent': issue.color } as React.CSSProperties)
+                    : undefined
+                }
               >
                 {issue.name}
               </Link>
