@@ -8,6 +8,7 @@ import EventFilters from '@/app/(public)/events/_components/event-filters';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
+import { isDemoModeEnabled } from '@/lib/demo-mode';
 import type { EventSearchParams, ResolvedEventSearchParams } from './event-search-params';
 
 export const revalidate = 60;
@@ -73,7 +74,7 @@ function toDateInputValue(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-async function getContents(params: EventSearchParams) {
+async function getContents(params: ResolvedEventSearchParams) {
   const { topicSlug } = params;
   const resp = await getEventsList(params);
 
@@ -105,14 +106,24 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventSearchParams = { ...params, ...resolveDateWindow(params) };
   return (
-    <section className="page-section">
-      <h1 className="pageTitle">Events</h1>
-      <p className="page-intro">
-        Browse upcoming events by issue, location, and date to find ways to participate in person.
-      </p>
+    <section className="page-section discoveryPage">
+      <div className="discoveryPageHeader">
+        <p className="section-label">Browse</p>
+        <h1 className="pageTitle">Events</h1>
+        <p className="page-intro">
+          Find upcoming events by issue, location, and date — protests, town halls, volunteer
+          opportunities, and more.
+        </p>
+      </div>
+      {isDemoModeEnabled() && (
+        <p className="metaText eventsDemoNote">
+          Demo events are seeded across NY, PA, CA, TX, and PR — use the region selector to find
+          them.
+        </p>
+      )}
       <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
-      <div>{await getContents(params)}</div>
+      <div>{await getContents(resolvedParams)}</div>
     </section>
   );
 }

@@ -470,6 +470,10 @@
   letter-spacing: -0.02em;
 }
 
+.eventsDemoNote {
+  padding-top: var(--space-1);
+}
+
 /* CTA */
 
 .primaryCTA,

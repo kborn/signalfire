@@ -2040,13 +2040,13 @@ A reviewer navigating from homepage through an issue into an article and action 
 
 ---
 
-#### ▸ Phase 14.8 - Events UX ⏳
+#### ▸ Phase 14.8 - Events UX ✅
 
 ###### Phase Tasks:
 
-- [ ] Decide and implement default Events page behavior — current random city default is confidence-destroying; options: show-all upcoming, filter-first with no default city, or explicit demo-framing of the bounded geography
-- [ ] Add demo geography framing to the Events page — a brief note explaining the demo includes events from NY, PA, CA, TX, and PR; prevents out-of-region reviewers from concluding the platform is regional or data-thin
-- [ ] Add motif header treatment to the events page — the events page is the only public content page missing the `bg-motif.png` header section; once the events page has a stable non-filter-first header zone, apply the same `::before` pattern used on `detailHero` and `discoveryPageHeader` (fixed `clamp(220px, 28vw, 320px)` width, `background-size: 100% auto`, `background-position: top center`, 8% opacity, amber border-bottom)
+- [x] Decide and implement default Events page behavior — show all upcoming events (today + 3 months) without requiring location input; there was no random city default in current code, but `getContents` was using raw `params` while filters showed `resolvedParams` dates — fixed by passing `resolvedParams` to `getContents`
+- [x] Add demo geography framing to the Events page — inline `metaText` paragraph inside `discoveryPageHeader`, rendered only when `isDemoModeEnabled()`; copy: "Demo events are seeded across NY, PA, CA, TX, and PR — use the region selector to find them."
+- [x] Add motif header treatment to the events page — wrapped `h1` + intro in `discoveryPageHeader` (same class as articles/actions pages); `::before` motif at 8% opacity, amber `border-bottom`, and display-scale h1 are applied by existing CSS rules
 
 ###### Done condition:
 
@@ -2100,6 +2100,31 @@ The nav home-link mark is visually intentional and references the FYF brand iden
 - Swap points are isolated: `FYFLogo` in `icons.tsx` (nav mark) and `fyf-mark.svg` (favicon). No other files need to change.
 - If the nav mark and favicon diverge (e.g., full motif for nav, letter mark for favicon), the SVG in `icons.tsx` and the file in `/public/` can be different designs.
 - If sourcing from the motif image: trace in Figma or Illustrator, export as SVG path, paste into the relevant file. Do not attempt to hand-compute paths.
+
+---
+
+#### ▸ Phase 14.11 - Final Nitpick Pass ⏳
+
+###### Goal
+
+One last sweep across the entire public and admin experience to catch anything that still reads as unfinished, inconsistent, or slightly off before the branch stack lands. No new features — observations and fixes only.
+
+###### Scope
+
+Anything visible to a reviewer: spacing, copy, color, interaction, empty states, edge cases. Both public and admin surfaces are in scope. Fix it if it can be fixed in one pass; document it in progress.md if it genuinely requires a decision or future phase work.
+
+###### Phase Tasks
+
+- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off
+- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) and note anything that reads as unfinished in the demo workflow
+- [ ] Fix the items that are clearly wrong with no tradeoff — spacing, copy, alignment, missing hover states, inconsistent labels
+- [ ] Review motif placement and usage
+- [ ] Review Search page filer by topic section
+- [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
+
+###### Done condition
+
+Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; any remaining rough edge is intentionally deferred and documented.
 
 ---
 
