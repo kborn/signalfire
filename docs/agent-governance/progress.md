@@ -2103,6 +2103,29 @@ The nav home-link mark is visually intentional and references the FYF brand iden
 
 ---
 
+#### ▸ Phase 14.11 - Final Nitpick Pass ⏳
+
+###### Goal
+
+One last sweep across the entire public and admin experience to catch anything that still reads as unfinished, inconsistent, or slightly off before the branch stack lands. No new features — observations and fixes only.
+
+###### Scope
+
+Anything visible to a reviewer: spacing, copy, color, interaction, empty states, edge cases. Both public and admin surfaces are in scope. Fix it if it can be fixed in one pass; document it in progress.md if it genuinely requires a decision or future phase work.
+
+###### Phase Tasks
+
+- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off
+- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) and note anything that reads as unfinished in the demo workflow
+- [ ] Fix the items that are clearly wrong with no tradeoff — spacing, copy, alignment, missing hover states, inconsistent labels
+- [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
+
+###### Done condition
+
+Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; any remaining rough edge is intentionally deferred and documented.
+
+---
+
 ---
 
 ### ► Phase 15 — Deployment Infrastructure ⏳
