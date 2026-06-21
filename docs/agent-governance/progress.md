@@ -2135,7 +2135,15 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [ ] Demo banner partially covered when scrolling down
 - [ ] Revisit footer motif. Too large and opaque?
 - [ ] Revisit the 'or browse by page on the search page
-- [ ] double line separators on
+- [ ] double line separators on about page
+- [ ] Revisit motif image -
+  - [ ] Still not bold enough in general. Make darker and center?
+  - [ ] Still awkward on the about page
+  - [ ] Buried on issue details pages (no red separator line on this page)
+  - [ ] Red separator line missing on articles details page
+  - [ ] Overall consistency pass
+  - [ ] Same issue as Articles details page
+  - [ ] Same issue as Articles details page
 
 ###### Done condition
 
