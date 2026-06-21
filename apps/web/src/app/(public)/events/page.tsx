@@ -114,13 +114,13 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
           Find upcoming events by issue, location, and date — protests, town halls, volunteer
           opportunities, and more.
         </p>
-        {isDemoModeEnabled() && (
-          <p className="metaText">
-            Demo events are seeded across NY, PA, CA, TX, and PR — use the region selector to find
-            them.
-          </p>
-        )}
       </div>
+      {isDemoModeEnabled() && (
+        <p className="metaText eventsDemoNote">
+          Demo events are seeded across NY, PA, CA, TX, and PR — use the region selector to find
+          them.
+        </p>
+      )}
       <EventFilters params={resolvedParams} />
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(resolvedParams)}</div>
