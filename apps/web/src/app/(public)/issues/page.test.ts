@@ -37,7 +37,7 @@ describe('TopicListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Issues');
     expect(markup).toContain(
-      'Explore the issues that matter to you and find ways to learn or act.',
+      'Some of these issues have been building for decades. Others are moving fast. All of them need people willing to focus.',
     );
     expect(markup).toContain('href="/issues/climate"');
     expect(markup).toContain('Climate');
@@ -57,8 +57,6 @@ describe('TopicListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Issues');
     expect(markup).toContain('No issues available yet.');
-    expect(markup).not.toContain(
-      'Explore the issues that matter to you and find ways to learn or act.',
-    );
+    expect(markup).not.toContain('Some of these issues have been building for decades.');
   });
 });

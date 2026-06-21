@@ -69,7 +69,9 @@ describe('ActionListPage', () => {
     });
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
-    expect(markup).toContain('Find practical ways to take meaningful action');
+    expect(markup).toContain(
+      'One concrete step, taken seriously, is worth more than ten articles saved to read later.',
+    );
     expect(markup).toContain('Issue');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
     expect(markup).toContain('Results per page');
@@ -132,7 +134,9 @@ describe('ActionListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain('No actions match this issue yet.');
-    expect(markup).toContain('Find practical ways to take meaningful action');
+    expect(markup).toContain(
+      'One concrete step, taken seriously, is worth more than ten articles saved to read later.',
+    );
     expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');
   });

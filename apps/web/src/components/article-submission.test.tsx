@@ -106,9 +106,11 @@ describe('ArticleSubmissionForm', () => {
         resourceLinks: ['https://example.org/source'],
       },
     });
-    expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();
+    expect(screen.getByText("We've got it.")).toBeInTheDocument();
     expect(
-      screen.getByText('Thanks — your submission has been received and is now pending review.'),
+      screen.getByText(
+        'Your submission is in. A real person reviews everything before it goes live.',
+      ),
     ).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Explore Issues' })).toHaveAttribute('href', '/issues');
     expect(screen.getByRole('link', { name: 'Browse Articles' })).toHaveAttribute(
@@ -125,7 +127,9 @@ describe('ArticleSubmissionForm', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('Before you send it')).toBeInTheDocument();
     expect(
-      screen.getByText('Nothing is published automatically. Fields marked with * are required.'),
+      screen.getByText(
+        'Your submission goes to a reviewer before anything goes live. Fields marked with * are required.',
+      ),
     ).toBeInTheDocument();
   });
 

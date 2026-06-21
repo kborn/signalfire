@@ -68,7 +68,7 @@ describe('ArticleListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Articles');
     expect(markup).toContain(
-      'Read reporting, explainers, and field guides about the issues that matter',
+      'Reading changes what you see. These articles give you something to work with.',
     );
     expect(markup).toContain('Issue');
     expect(markup).toContain('href="/articles?topicSlug=democracy&amp;pageSize=10"');
@@ -133,7 +133,7 @@ describe('ArticleListPage', () => {
     expect(markup).toContain('Articles');
     expect(markup).toContain('No published articles match this issue yet.');
     expect(markup).toContain(
-      'Read reporting, explainers, and field guides about the issues that matter',
+      'Reading changes what you see. These articles give you something to work with.',
     );
     expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');
