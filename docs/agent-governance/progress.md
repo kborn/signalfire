@@ -2054,7 +2054,7 @@ A first-time visitor landing on `/events` sees something relevant or a clear inv
 
 ---
 
-#### ▸ Phase 14.9 - Copy Pass ⏳
+#### ▸ Phase 14.9 - Copy Pass ✅
 
 ###### Voice direction:
 
@@ -2064,16 +2064,27 @@ Avoid: trendy fragment copy ("Find. Act. Fight."), passive hedging ("submissions
 
 ###### Phase Tasks:
 
-- [ ] Audit every user-facing string across all public pages: homepage, about, issues index and detail, articles, actions, events, submit flow, search, error and empty states
-- [ ] Rewrite any copy that is choppy, fragmentary, hedging, or reads as UI chrome rather than a human voice
-- [ ] Ensure the emotional build — overwhelm → collective power → personal fire → action — is present in some form wherever a user might need it most (hero, issue detail, action CTA, empty states)
-- [ ] Add honest framing on the search page about what ILIKE search can and cannot find — silent near-misses hurt credibility more than no search; at minimum a single explanatory line
-- [ ] Submission success state: tell submitters what happens next — "Submissions are reviewed editorially before publication" is sufficient; the current success state ends in a vacuum
-- [ ] Copy should feel like the same person wrote all of it; that person is direct, serious, and believes this matters
+- [x] Audit every user-facing string across all public pages: homepage, about, issues index and detail, articles, actions, events, submit flow, search, error and empty states
+- [x] Rewrite any copy that is choppy, fragmentary, hedging, or reads as UI chrome rather than a human voice
+- [x] Ensure the emotional build — overwhelm → collective power → personal fire → action — is present in some form wherever a user might need it most (hero, issue detail, action CTA, empty states)
+- [x] Add honest framing on the search page about what ILIKE search can and cannot find — silent near-misses hurt credibility more than no search; at minimum a single explanatory line
+- [x] Submission success state: tell submitters what happens next — "Submissions are reviewed editorially before publication" is sufficient; the current success state ends in a vacuum
+- [x] Copy should feel like the same person wrote all of it; that person is direct, serious, and believes this matters
 
 ###### Done condition:
 
 Any string picked at random from any public page sounds like it belongs to the same voice; the site reads as a rallying cry not a content directory.
+
+###### Notes:
+
+- Full audit covered: homepage, about, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, article submission form, event submission form, not-found, error page, footer
+- "Related Topics" → "Related Issues" on action and event detail pages for terminology consistency
+- "Learn More" → "Read First" on action and event detail pages — directs before acting
+- Event detail page now has a contribute nudge (was the only detail page missing one)
+- Search h1 → "Search"; adds one-line ILIKE framing ("word matches; browse by issue for broader coverage")
+- Submission success state: "We've got it. Your submission is in. A real person reviews everything before it goes live."
+- `role="alert"` added to all inline form error `<p>` elements (deferred from Phase 14.7)
+- Footer: "Submit Content" → "Contribute"
 
 ---
 
@@ -2121,6 +2132,10 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [ ] Review motif placement and usage
 - [ ] Review Search page filer by topic section
 - [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
+- [ ] Demo banner partially covered when scrolling down
+- [ ] Revisit footer motif. Too large and opaque?
+- [ ] Revisit the 'or browse by page on the search page
+- [ ] double line separators on
 
 ###### Done condition
 
