@@ -31,11 +31,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <div className="page-section searchPage">
       <div className="searchHeader">
         <p className="section-label">Search</p>
-        <h1 className="pageTitle">Find articles and actions</h1>
+        <h1 className="pageTitle">Search</h1>
         {!query && (
           <p className="page-intro">
-            Search across explainers, field guides, and civic actions on the issues that matter to
-            you.
+            Search looks for word matches in article and action titles and content. If you
+            don&apos;t find something, try browsing by issue below — the categories cover more
+            ground.
           </p>
         )}
       </div>
@@ -99,8 +100,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               <p className="section-label">No results</p>
               <h2>Nothing found for &ldquo;{query}&rdquo;</h2>
               <p className="metaText">
-                Try a shorter search, a different keyword, or browse by issue to find related
-                content.
+                No match. This search works on word matches, so try a simpler or broader term — or
+                browse by issue below.
               </p>
               <div className="ctaRow">
                 <Link href="/issues" className="secondaryCTA">

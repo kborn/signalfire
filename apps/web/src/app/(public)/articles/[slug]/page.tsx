@@ -89,7 +89,7 @@ export default async function ArticleDetailsPage({
             <div className="relatedSectionHeader">
               <h3>Explore This Issue</h3>
               <p className="relatedSectionTagline">
-                Jump back to the issue page for more background, actions, and events.
+                More context, more actions, and related events are on that issue page.
               </p>
             </div>
             <div className="relatedList">
@@ -118,7 +118,7 @@ export default async function ArticleDetailsPage({
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know something we missed?</p>
         <p className="metaText">
-          If you have an article, guide, or event that belongs here, you can submit it for review.
+          If you have something that should be here — an article, a guide, a resource — send it in.
         </p>
         <Link href="/submit" className="textCTA">
           Submit content

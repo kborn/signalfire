@@ -419,12 +419,12 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
     return (
       <div className={'submissionSuccess'}>
         <p className="section-label">Submission received</p>
-        <h1 className="pageTitle">Thanks for submitting</h1>
+        <h1 className="pageTitle">We&apos;ve got it.</h1>
         <p className="page-intro">
-          Thanks — your submission has been received and is now pending review.
+          Your submission is in. A real person reviews everything before it goes live.
         </p>
         <p className="metaText">
-          If you included an email address, we may contact you if we need clarification.
+          If you left an email address, we&apos;ll reach out if we have questions.
         </p>
         <div className="ctaRow submissionSuccessActions">
           <Link href="/events" className="primaryCTA">
@@ -449,7 +449,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
               matters. Clear logistics and a trustworthy source make moderation faster.
             </p>
             <p className="submissionIntroMeta">
-              Nothing is published automatically. Fields marked with * are required.
+              Your submission goes to a reviewer before anything goes live. Fields marked with * are
+              required.
             </p>
           </div>
           <SubmissionGuidance />
@@ -469,7 +470,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.title ? (
-                <p id="event-title-error" className="submissionError">
+                <p id="event-title-error" className="submissionError" role="alert">
                   {errors.title}
                 </p>
               ) : null}
@@ -489,7 +490,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.summary ? (
-                <p id="event-summary-error" className="submissionError">
+                <p id="event-summary-error" className="submissionError" role="alert">
                   {errors.summary}
                 </p>
               ) : null}
@@ -509,7 +510,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.description ? (
-                <p id="event-description-error" className="submissionError">
+                <p id="event-description-error" className="submissionError" role="alert">
                   {errors.description}
                 </p>
               ) : null}
@@ -534,7 +535,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 </select>
               </label>
               {errors.eventType ? (
-                <p id="event-eventType-error" className="submissionError">
+                <p id="event-eventType-error" className="submissionError" role="alert">
                   {errors.eventType}
                 </p>
               ) : null}
@@ -559,7 +560,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   />
                 </label>
                 {errors.startAt ? (
-                  <p id="event-startAt-error" className="submissionError">
+                  <p id="event-startAt-error" className="submissionError" role="alert">
                     {errors.startAt}
                   </p>
                 ) : null}
@@ -578,7 +579,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                   />
                 </label>
                 {errors.endAt ? (
-                  <p id="event-endAt-error" className="submissionError">
+                  <p id="event-endAt-error" className="submissionError" role="alert">
                     {errors.endAt}
                   </p>
                 ) : null}
@@ -602,7 +603,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.locationName ? (
-                <p id="event-locationName-error" className="submissionError">
+                <p id="event-locationName-error" className="submissionError" role="alert">
                   {errors.locationName}
                 </p>
               ) : null}
@@ -621,7 +622,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.city ? (
-                <p id="event-city-error" className="submissionError">
+                <p id="event-city-error" className="submissionError" role="alert">
                   {errors.city}
                 </p>
               ) : null}
@@ -646,7 +647,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 </select>
               </label>
               {errors.region ? (
-                <p id="event-region-error" className="submissionError">
+                <p id="event-region-error" className="submissionError" role="alert">
                   {errors.region}
                 </p>
               ) : null}
@@ -665,7 +666,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.country ? (
-                <p id="event-country-error" className="submissionError">
+                <p id="event-country-error" className="submissionError" role="alert">
                   {errors.country}
                 </p>
               ) : null}
@@ -684,7 +685,11 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.publicLocationDescription ? (
-                <p id="event-publicLocationDescription-error" className="submissionError">
+                <p
+                  id="event-publicLocationDescription-error"
+                  className="submissionError"
+                  role="alert"
+                >
                   {errors.publicLocationDescription}
                 </p>
               ) : null}
@@ -703,7 +708,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.addressLine1 ? (
-                <p id="event-addressLine1-error" className="submissionError">
+                <p id="event-addressLine1-error" className="submissionError" role="alert">
                   {errors.addressLine1}
                 </p>
               ) : null}
@@ -722,7 +727,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.addressLine2 ? (
-                <p id="event-addressLine2-error" className="submissionError">
+                <p id="event-addressLine2-error" className="submissionError" role="alert">
                   {errors.addressLine2}
                 </p>
               ) : null}
@@ -741,7 +746,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 />
               </label>
               {errors.postalCode ? (
-                <p id="event-postalCode-error" className="submissionError">
+                <p id="event-postalCode-error" className="submissionError" role="alert">
                   {errors.postalCode}
                 </p>
               ) : null}
@@ -781,7 +786,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 ))}
               </div>
               {errors.topicSlugs ? (
-                <p id="event-topicSlugs-error" className="submissionError">
+                <p id="event-topicSlugs-error" className="submissionError" role="alert">
                   {errors.topicSlugs}
                 </p>
               ) : null}
@@ -808,7 +813,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 {...getFieldA11y('websiteUrl', errors, 'event', 'event-website-helper')}
               />
               {errors.websiteUrl ? (
-                <p id="event-websiteUrl-error" className="submissionError">
+                <p id="event-websiteUrl-error" className="submissionError" role="alert">
                   {errors.websiteUrl}
                 </p>
               ) : null}
@@ -835,7 +840,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 {...getFieldA11y('contactEmail', errors, 'event', 'event-contact-email-helper')}
               />
               {errors.contactEmail ? (
-                <p id="event-contactEmail-error" className="submissionError">
+                <p id="event-contactEmail-error" className="submissionError" role="alert">
                   {errors.contactEmail}
                 </p>
               ) : null}
@@ -855,7 +860,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
               </label>
 
               {errors.submitterName ? (
-                <p id="event-submitterName-error" className="submissionError">
+                <p id="event-submitterName-error" className="submissionError" role="alert">
                   {errors.submitterName}
                 </p>
               ) : null}
@@ -878,7 +883,7 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
                 {...getFieldA11y('submitterEmail', errors, 'event', 'event-submitter-email-helper')}
               />
               {errors.submitterEmail ? (
-                <p id="event-submitterEmail-error" className="submissionError">
+                <p id="event-submitterEmail-error" className="submissionError" role="alert">
                   {errors.submitterEmail}
                 </p>
               ) : null}

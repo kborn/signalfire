@@ -99,7 +99,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         </section>
         {action.topics.length > 0 && (
           <section className="relatedSection">
-            <h3>Related Topics</h3>
+            <h3>Related Issues</h3>
             <ul className="relatedList">
               {action.topics.map((topic) => (
                 <li key={topic.id} className="relatedListItem">
@@ -113,7 +113,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         )}
         {action.articles.length > 0 && (
           <section className="relatedSection">
-            <h3>Learn More</h3>
+            <h3>Read First</h3>
             <div className="relatedList">
               {action.articles.map((article) => (
                 <ArticleSummary key={article.id} article={article} variant="related" />
@@ -130,8 +130,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know of another way to act?</p>
         <p className="metaText">
-          If you know of an event, resource, or opportunity that should be listed here, submit it
-          for review.
+          Know of an action, event, or resource that belongs here? Send it in.
         </p>
         <Link href="/submit" className="textCTA">
           Submit content

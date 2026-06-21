@@ -54,7 +54,9 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
               <h2 id="topic-articles-label" className="issueStepTitle">
                 Read
               </h2>
-              <p className="issueStepSub">Explainers and field guides for this issue</p>
+              <p className="issueStepSub">
+                Read enough to understand what&apos;s actually at stake.
+              </p>
             </div>
             <div className="collectionList">
               {topic.articles.map((article) => (
@@ -92,11 +94,11 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
           <div className="relatedSectionHeader">
             <p className="section-label">Events</p>
             <p className="relatedSectionTagline">
-              Find upcoming in-person opportunities tied to this issue.
+              Find in-person events and organizing opportunities near you.
             </p>
           </div>
           <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-            Browse Events For This Issue
+            Find Events on This Issue
           </Link>
         </section>
       </section>

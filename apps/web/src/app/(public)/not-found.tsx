@@ -6,8 +6,8 @@ export default function PublicNotFoundPage() {
       <p className="section-label">Page not found</p>
       <h1 className="pageTitle">We could not find that page.</h1>
       <p className="page-intro">
-        The page may have moved, or the resource may not be published yet. Start with the current
-        issue areas or browse practical ways to act.
+        That page isn&apos;t here. It may not be published yet, or the link may have changed. Start
+        from an issue and work your way in.
       </p>
       <div className="ctaRow">
         <Link href="/issues" className="primaryCTA">

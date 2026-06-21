@@ -19,7 +19,8 @@ function getNoResultsResponse(topicSlug?: string) {
       <p className="section-label">No events yet</p>
       <h2>{topicSlug ? 'No events match this issue right now.' : 'No events available yet.'}</h2>
       <p className="metaText">
-        Try a nearby city, broaden the date window, or look for an action you can take right away.
+        Nothing nearby? Widen the date window or try a different city — or take an action from home
+        while you look.
       </p>
       <div className="ctaRow">
         <Link href="/actions" className="secondaryCTA">
@@ -111,8 +112,8 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Events</h1>
         <p className="page-intro">
-          Find upcoming events by issue, location, and date — protests, town halls, volunteer
-          opportunities, and more.
+          Protests, town halls, volunteer shifts, community meetings — find what&apos;s happening
+          near you on the issues you care about.
         </p>
       </div>
       {isDemoModeEnabled() && (

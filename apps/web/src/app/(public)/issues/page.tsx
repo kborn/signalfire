@@ -25,7 +25,8 @@ export default async function TopicListPage() {
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Issues</h1>
         <p className="page-intro">
-          Explore the issues that matter to you and find ways to learn or act.
+          Some of these issues have been building for decades. Others are moving fast. All of them
+          need people willing to focus.
         </p>
       </div>
       <section className="topicsGrid">

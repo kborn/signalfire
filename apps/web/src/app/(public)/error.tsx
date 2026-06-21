@@ -21,7 +21,7 @@ export default function PublicError(props: PublicErrorProps) {
       <p className="section-label">Content unavailable</p>
       <h1 className="pageTitle">We could not load this page.</h1>
       <p className="page-intro">
-        The content for this page is temporarily unavailable. Try again in a moment.
+        Something blocked us from loading this page. Try again and it should come back.
       </p>
       <div className="publicErrorActions">
         <button type="button" className="primaryCTA" onClick={tryAgain}>

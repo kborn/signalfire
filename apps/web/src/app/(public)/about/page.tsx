@@ -29,23 +29,20 @@ export default async function AboutPage() {
         </p>
         <p>
           Find Your Fight exists for the person saying: I want to do something, but I do not know
-          where to start. That is where this comes in.
+          where to start. That is who this is for.
         </p>
       </section>
 
       <section className="page-section about-community">
-        <p className="section-label">Moderated contributions</p>
-        <h2>Visitors can propose new public content.</h2>
+        <p className="section-label">Contribute</p>
+        <h2>Have something worth sharing?</h2>
         <p>
-          Find Your Fight accepts article and event submissions from visitors. Each submission is
-          reviewed before publication so the public experience stays useful, practical, and clear.
+          Articles, events, and resources can be submitted by anyone. Every submission goes through
+          an editorial review before it goes live.
         </p>
-        <p>
-          The public site combines curated publishing with moderated submissions so new material
-          stays grounded, credible, and worth acting on.
-        </p>
+        <p>That review keeps what&apos;s here worth acting on.</p>
         <Link href="/submit" className="primaryCTA">
-          Submit Content
+          Send a Submission
         </Link>
       </section>
 
@@ -86,7 +83,7 @@ export default async function AboutPage() {
                 Find Actions
               </Link>
               <Link href="/events" className="secondaryCTA">
-                Search Events
+                Find Events
               </Link>
             </div>
           </section>

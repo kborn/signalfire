@@ -39,8 +39,8 @@ export default async function HomePage() {
           <p className="section-label">The path</p>
           <h2>Three steps. One concrete result.</h2>
           <p>
-            Every issue page connects you to explainers, actions, and events. Start where you are —
-            not where you think you should be.
+            Pick one issue. Everything you need to go from knowing to doing is already there. Start
+            where you are — not where you think you should be.
           </p>
         </div>
         <div className="homeJourneyGrid">
@@ -106,8 +106,8 @@ export default async function HomePage() {
         <p className="section-label">Contribute</p>
         <h2>Help more people find a way in.</h2>
         <p>
-          Know of an event, a resource, or an issue worth covering? Submissions are reviewed
-          editorially before publication.
+          Know of an event, a resource, or a story worth adding? Send it in — every submission gets
+          reviewed before it goes live.
         </p>
         <Link href="/submit" className="primaryCTA">
           Help someone find theirs.

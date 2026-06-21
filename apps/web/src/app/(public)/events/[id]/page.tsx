@@ -164,7 +164,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         </section>
         {event.topics.length > 0 && (
           <section className="relatedSection">
-            <h3>Related Topics</h3>
+            <h3>Related Issues</h3>
             <div className="relatedList">
               {event.topics.map((topic) => (
                 <TopicSummary key={topic.id} topic={topic} variant="related" />
@@ -174,7 +174,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         )}
         {event.articles.length > 0 && (
           <section className="relatedSection">
-            <h3>Learn More</h3>
+            <h3>Read First</h3>
             <div className="relatedList">
               {event.articles.map((article) => (
                 <ArticleSummary key={article.id} article={article} variant="related" />
@@ -198,6 +198,13 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           Browse more events
         </Link>
       </div>
+      <section className="page-section detailContributeNudge">
+        <p className="section-label">Know of another event?</p>
+        <p className="metaText">If you know of an event that belongs here, send it in.</p>
+        <Link href="/submit/event" className="textCTA">
+          Submit an event
+        </Link>
+      </section>
     </div>
   );
 }

@@ -263,12 +263,12 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
     return (
       <div className={'submissionSuccess'}>
         <p className="section-label">Submission received</p>
-        <h1 className="pageTitle">Thanks for submitting</h1>
+        <h1 className="pageTitle">We&apos;ve got it.</h1>
         <p className="page-intro">
-          Thanks — your submission has been received and is now pending review.
+          Your submission is in. A real person reviews everything before it goes live.
         </p>
         <p className="metaText">
-          If you included an email address, we may contact you if we need clarification.
+          If you left an email address, we&apos;ll reach out if we have questions.
         </p>
         <div className="ctaRow submissionSuccessActions">
           <Link href="/issues" className="primaryCTA">
@@ -293,7 +293,8 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
               articles that help someone understand an issue and take a next step.
             </p>
             <p className="submissionIntroMeta">
-              Nothing is published automatically. Fields marked with * are required.
+              Your submission goes to a reviewer before anything goes live. Fields marked with * are
+              required.
             </p>
           </div>
           <SubmissionGuidance />
@@ -313,7 +314,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 />
               </label>
               {errors.title ? (
-                <p id="article-title-error" className="submissionError">
+                <p id="article-title-error" className="submissionError" role="alert">
                   {errors.title}
                 </p>
               ) : null}
@@ -333,7 +334,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 />
               </label>
               {errors.summary ? (
-                <p id="article-summary-error" className="submissionError">
+                <p id="article-summary-error" className="submissionError" role="alert">
                   {errors.summary}
                 </p>
               ) : null}
@@ -369,7 +370,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 ))}
               </div>
               {errors.topicSlugs ? (
-                <p id="article-topicSlugs-error" className="submissionError">
+                <p id="article-topicSlugs-error" className="submissionError" role="alert">
                   {errors.topicSlugs}
                 </p>
               ) : null}
@@ -393,7 +394,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 />
               </label>
               {errors.content ? (
-                <p id="article-content-error" className="submissionError">
+                <p id="article-content-error" className="submissionError" role="alert">
                   {errors.content}
                 </p>
               ) : null}
@@ -444,7 +445,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 </button>
               </div>
               {errors.resourceLinks ? (
-                <p id="article-resourceLinks-error" className="submissionError">
+                <p id="article-resourceLinks-error" className="submissionError" role="alert">
                   {errors.resourceLinks}
                 </p>
               ) : null}
@@ -467,7 +468,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 />
               </label>
               {errors.author ? (
-                <p id="article-author-error" className="submissionError">
+                <p id="article-author-error" className="submissionError" role="alert">
                   {errors.author}
                 </p>
               ) : null}
@@ -487,7 +488,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
               </label>
 
               {errors.submitterName ? (
-                <p id="article-submitterName-error" className="submissionError">
+                <p id="article-submitterName-error" className="submissionError" role="alert">
                   {errors.submitterName}
                 </p>
               ) : null}
@@ -515,7 +516,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
                 )}
               />
               {errors.submitterEmail ? (
-                <p id="article-submitterEmail-error" className="submissionError">
+                <p id="article-submitterEmail-error" className="submissionError" role="alert">
                   {errors.submitterEmail}
                 </p>
               ) : null}

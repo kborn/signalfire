@@ -16,8 +16,7 @@ function getNoResultsResponse(topicSlug?: string) {
       <p className="section-label">No actions yet</p>
       <h2>{topicSlug ? 'No actions match this issue yet.' : 'No actions available yet.'}</h2>
       <p className="metaText">
-        Try another issue, read related articles first, or check back after more action guides are
-        published.
+        Nothing here for that issue yet. Try another topic, or read up on the issue while you wait.
       </p>
       <div className="ctaRow">
         <Link href="/articles" className="secondaryCTA">
@@ -61,7 +60,9 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
       <div className="discoveryPageHeader">
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Actions</h1>
-        <p className="page-intro">Find practical ways to take meaningful action</p>
+        <p className="page-intro">
+          One concrete step, taken seriously, is worth more than ten articles saved to read later.
+        </p>
       </div>
       <TopicSelector topics={topics} basePath="/actions" params={params} />
 
