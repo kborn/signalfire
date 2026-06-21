@@ -196,6 +196,11 @@ export default function TopicEditorForm({
                 }}
                 onClick={handleDelete}
                 disabled={isDeleting || totalLinked > 0}
+                title={
+                  totalLinked > 0
+                    ? `Cannot delete — ${totalLinked} item(s) linked to this issue`
+                    : undefined
+                }
               >
                 {isDeleting ? 'Deleting…' : 'Delete Issue'}
               </button>
