@@ -71,6 +71,11 @@ background-position: top center`). This ensures the same fist size regardless of
 - **Footer.** Slightly larger fist (`clamp(380px,44vw,480px)`), top padding
   `clamp(64px,9vw,104px)` gives knuckles room to clear the nav text.
 
+- **Two late fixes.** `discoveryPageHeader` `max-width: 60rem` removed so the amber border
+  spans the full content width (text elements inside have their own max-widths). `--topic-accent`
+  defined in `:root` with `var(--color-brand-primary)` fallback — silences IDE static CSS
+  resolver warning; the variable is still set at runtime via inline JSX styles per topic.
+
 - **Screenshots deferred.** All 5 portfolio screenshots need regeneration but require
   `pnpm dev` + seeded DB. Run: `node scripts/regenerate-doc-screenshots.mjs`. Screenshots are
   still pre-Phase 14; update them before the phase 14 branch stack lands on main.
