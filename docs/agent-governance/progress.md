@@ -2017,7 +2017,8 @@ Admin mutations trigger immediate cache revalidation; `EventListPageProps` defin
 - [ ] Update README active phase reference — currently points to Phase 13.6
 - [ ] Keyboard accessibility pass: tab through the submission form, events filter, and admin moderation workflow; verify focus rings are visible, tab order is logical, and form validation errors are announced
 - [ ] Document a manual walkthrough of the submission → moderation → publish → public visibility pipeline; `rc-smoke.mjs` confirms routes respond but does not verify the full flow end-to-end
-- [ ] No structural changes, no new features — coherence, verification, and documentation only
+- [ ] **Admin list row interaction** — decide whether admin list rows (submissions, articles, actions, events, topics) should be fully clickable (entire row as link) rather than title-only links. If yes, decide whether the title underlines on hover or the full row gets a hover state. Current pattern is title-link only inside a table row. Fully clickable rows would improve scan-and-click efficiency in the admin workflow but require structural change (row-as-link or JS click delegation). Make a call and apply consistently across all admin list pages.
+- [ ] No structural changes to public pages, no new features — coherence, verification, and documentation only
 
 ###### Done condition:
 
