@@ -114,12 +114,12 @@
 .about-hero::before {
   content: '';
   position: absolute;
-  inset: -20% -10% -20% auto;
-  width: 40%;
+  inset: 0 0 0 auto;
+  width: clamp(220px, 28vw, 320px);
   background-image: url('/bg-motif.png');
-  background-size: auto 160%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: top center;
   opacity: 0.13;
   z-index: -1;
   pointer-events: none;
@@ -150,12 +150,12 @@
 .submitEntryHeader::before {
   content: '';
   position: absolute;
-  inset: -20% -10% -20% auto;
-  width: 40%;
+  inset: 0 0 0 auto;
+  width: clamp(220px, 28vw, 320px);
   background-image: url('/bg-motif.png');
-  background-size: auto 160%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: top center;
   opacity: 0.08;
   z-index: -1;
   pointer-events: none;
@@ -448,12 +448,12 @@
 .discoveryPageHeader::before {
   content: '';
   position: absolute;
-  inset: -20% -10% -20% auto;
-  width: 40%;
+  inset: 0 0 0 auto;
+  width: clamp(220px, 28vw, 320px);
   background-image: url('/bg-motif.png');
-  background-size: auto 160%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: top center;
   opacity: 0.08;
   z-index: -1;
   pointer-events: none;

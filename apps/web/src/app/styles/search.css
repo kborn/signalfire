@@ -17,12 +17,12 @@
 .searchHeader::before {
   content: '';
   position: absolute;
-  inset: -20% -10% -20% auto;
-  width: 40%;
+  inset: 0 0 0 auto;
+  width: clamp(220px, 28vw, 320px);
   background-image: url('/bg-motif.png');
-  background-size: auto 160%;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position: right top;
+  background-position: top center;
   opacity: 0.08;
   z-index: -1;
   pointer-events: none;
@@ -33,11 +33,68 @@
   z-index: 1;
 }
 
-.searchHeader h1 {
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+.searchOrDivider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.searchOrDivider::before,
+.searchOrDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
+}
+
+.searchBrowseSection {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.searchBrowseTopics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.searchBrowseTopics a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid color-mix(in srgb, var(--color-border-subtle) 82%, white 18%);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-surface-soft) 90%, white 10%);
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.searchBrowseTopics a:hover {
+  border-color: color-mix(in srgb, var(--color-brand-accent) 60%, transparent);
+  color: var(--color-brand-accent);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+
+.searchBrowseTopics a:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
 }
 
 .searchForm {

@@ -2046,6 +2046,7 @@ A reviewer navigating from homepage through an issue into an article and action 
 
 - [ ] Decide and implement default Events page behavior — current random city default is confidence-destroying; options: show-all upcoming, filter-first with no default city, or explicit demo-framing of the bounded geography
 - [ ] Add demo geography framing to the Events page — a brief note explaining the demo includes events from NY, PA, CA, TX, and PR; prevents out-of-region reviewers from concluding the platform is regional or data-thin
+- [ ] Add motif header treatment to the events page — the events page is the only public content page missing the `bg-motif.png` header section; once the events page has a stable non-filter-first header zone, apply the same `::before` pattern used on `detailHero` and `discoveryPageHeader` (fixed `clamp(220px, 28vw, 320px)` width, `background-size: 100% auto`, `background-position: top center`, 8% opacity, amber border-bottom)
 
 ###### Done condition:
 
