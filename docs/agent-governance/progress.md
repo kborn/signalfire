@@ -1964,20 +1964,27 @@ Breadcrumb on entity pages carries topic accent color; three named palette chang
 
 ---
 
-#### ▸ Phase 14.5 - Admin Visual Alignment ⏳
+#### ▸ Phase 14.5 - Admin Visual Alignment ✅
 
 ###### Phase Tasks:
 
-- [ ] Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation does not begin until spec is approved
-- [ ] Apply dark navy background to admin workspace — remove `#eef2f5` light background
-- [ ] Replace Playfair Display with Inter bold for admin headings throughout workspace
-- [ ] Remove decorative elements from admin (no motif watermark, no hero textures) — functional register only
-- [ ] Retain amber for admin CTAs and status signals
-- [ ] Login page right panel: darken overlay to 60–70% opacity; apply grain CSS treatment over the motif image
+- [x] Write and align on UI spec (`docs/specs/ui/admin.md`) — implementation does not begin until spec is approved
+- [x] Apply dark navy background to admin workspace — remove all hardcoded light-mode hex values (`#ffffff`, `#171717`, `#e5e7eb`, etc.) from admin panels, tables, badges, review banners, and text elements; replace with dark token equivalents
+- [x] Replace Playfair Display with Inter bold for admin headings throughout workspace — `adminHeader h1`, `adminSection h2/h3`, `adminPanelHeader h2/h3`, login form title
+- [x] Remove decorative elements from admin (no motif watermark, no hero textures) — verified already clean; `adminShell` scoping confirmed
+- [x] Retain amber for admin CTAs and status signals — amber token usages untouched; only hardcoded light-mode values replaced
+- [x] Login page right panel: darken overlay to flat 65% coverage; CSS SVG grain texture via `::after` pseudo-element at 3.5% opacity
+- [x] Login page left panel: amber radial glow at top center + amber-tinted border — addresses left/right panel visual cohesion gap (flat left vs. rich right)
+- [x] Fix `adminSegmentedControl`/`adminFilterGroup` default button background — `#ffffff` mix → `var(--color-page-bg)` to prevent light buttons on dark surface
 
 ###### Done condition:
 
 Admin workspace reads as the same product as the public site, different mode not different company; login page right panel text is clearly readable over the motif.
+
+###### Notes:
+
+- Login page left panel flatness was not in the original scope but was identified during spec review as a cohesion gap — addressed in the same pass.
+- Pagination and topic selector components in `admin.css` are used on public collection pages; their light active-state treatment was intentionally left unchanged.
 
 ---
 
@@ -2010,7 +2017,8 @@ Admin mutations trigger immediate cache revalidation; `EventListPageProps` defin
 - [ ] Update README active phase reference — currently points to Phase 13.6
 - [ ] Keyboard accessibility pass: tab through the submission form, events filter, and admin moderation workflow; verify focus rings are visible, tab order is logical, and form validation errors are announced
 - [ ] Document a manual walkthrough of the submission → moderation → publish → public visibility pipeline; `rc-smoke.mjs` confirms routes respond but does not verify the full flow end-to-end
-- [ ] No structural changes, no new features — coherence, verification, and documentation only
+- [ ] **Admin list row interaction** — decide whether admin list rows (submissions, articles, actions, events, topics) should be fully clickable (entire row as link) rather than title-only links. If yes, decide whether the title underlines on hover or the full row gets a hover state. Current pattern is title-link only inside a table row. Fully clickable rows would improve scan-and-click efficiency in the admin workflow but require structural change (row-as-link or JS click delegation). Make a call and apply consistently across all admin list pages.
+- [ ] No structural changes to public pages, no new features — coherence, verification, and documentation only
 
 ###### Done condition:
 

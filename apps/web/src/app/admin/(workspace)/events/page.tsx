@@ -108,16 +108,16 @@ export default async function EventsListPage({ searchParams }: EventListPageProp
                           {event.title} <span aria-hidden="true">→</span>
                         </span>
                       </Link>
+                      {normalizeDisplaySummary(event.summary) && (
+                        <p className="adminTableRecordSummary">
+                          {normalizeDisplaySummary(event.summary)}
+                        </p>
+                      )}
                     </td>
                     <td>{formatEventTypeLabel(event.eventType)}</td>
                     <td>{formatAdminDateTime(event.startTime)}</td>
                     <td>{event.status}</td>
                     <td>{formatAdminDateTime(event.updatedAt)}</td>
-                  </tr>
-                  <tr className="adminTableSummaryRow">
-                    <td className="adminTableSummaryCell" colSpan={5}>
-                      <p className="adminTableCellMeta">{normalizeDisplaySummary(event.summary)}</p>
-                    </td>
                   </tr>
                 </Fragment>
               ))
