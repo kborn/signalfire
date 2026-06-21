@@ -10,4 +10,9 @@ const requiredTrimmedString = (fieldLabel: string, max: number) =>
 export const adminTopicRequestSchema = z.object({
   name: requiredTrimmedString('Name', 120),
   description: requiredTrimmedString('Description', 500),
+  color: z
+    .string()
+    .trim()
+    .regex(/^#[0-9a-fA-F]{6}$/, 'Color must be a valid hex color (e.g. #5b88c7)')
+    .optional(),
 });

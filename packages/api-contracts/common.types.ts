@@ -18,6 +18,7 @@ export type TopicSummary = {
   slug: string;
   name: string;
   description: string;
+  color?: string;
 };
 
 export type ArticleSummary = {

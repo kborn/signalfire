@@ -212,42 +212,49 @@ const topics = [
     name: 'Democracy',
     description:
       'Issues related to democratic institutions, voting rights, election integrity, and civic participation in government.',
+    color: '#5b88c7',
   },
   {
     slug: 'consumer-activism',
     name: 'Consumer Activism',
     description:
       'Actions focused on influencing corporate behavior through consumer choices such as boycotts, ethical purchasing, and corporate accountability campaigns.',
+    color: '#c9894a',
   },
   {
     slug: 'climate',
     name: 'Climate',
     description:
-      'Issues related to climate change, environmental protection, sustainability, and policies affecting the planet’s ecological systems.',
+      "Issues related to climate change, environmental protection, sustainability, and policies affecting the planet's ecological systems.",
+    color: '#4a9e7c',
   },
   {
     slug: 'civil-rights',
     name: 'Civil Rights',
     description:
       'Issues involving the protection and advancement of equal rights and liberties, including racial justice, gender equality, LGBTQ+ rights, and disability rights.',
+    color: '#c76b5b',
   },
   {
     slug: 'economic-justice',
     name: 'Economic Justice',
     description:
       'Issues related to economic fairness, inequality, labor conditions, housing affordability, wages, and access to economic opportunity.',
+    color: '#c4a23e',
   },
   {
     slug: 'education',
     name: 'Education',
     description:
       'Issues involving public education systems, school policy, curriculum debates, student rights, and education funding.',
+    color: '#7a84c7',
   },
   {
     slug: 'local-community',
     name: 'Local Community',
     description:
       'Community-level civic engagement including local organizing, mutual aid, neighborhood initiatives, and grassroots participation.',
+    color: '#5da870',
   },
 ] as const;
 
@@ -1771,6 +1778,7 @@ async function seedTopics() {
       update: {
         name: topic.name,
         description: topic.description,
+        color: topic.color,
       },
       create: topic,
     });

@@ -3,13 +3,13 @@ import type { EntityStatus, ModerationReviewSuccess } from '@signal-fire/api-con
 
 function revalidateTopicPages(topicSlugs: string[]) {
   for (const topicSlug of topicSlugs) {
-    revalidatePath(`/topics/${topicSlug}`);
+    revalidatePath(`/issues/${topicSlug}`);
   }
 }
 
 export function revalidateTopicAdminPages(slug: string) {
-  revalidatePath('/topics');
-  revalidatePath(`/topics/${slug}`);
+  revalidatePath('/issues');
+  revalidatePath(`/issues/${slug}`);
   revalidatePath('/admin/topics');
   revalidatePath(`/admin/topics/${slug}`);
 }

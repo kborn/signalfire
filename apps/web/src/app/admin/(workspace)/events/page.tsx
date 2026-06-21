@@ -8,7 +8,7 @@ import { withAdminAuthRedirect } from '@/lib/admin/auth-redirect';
 
 export const dynamic = 'force-dynamic';
 
-type EventListPageProps = {
+type AdminEventSearchParams = {
   searchParams: Promise<{
     status?: string;
   }>;
@@ -24,7 +24,7 @@ function buildEventsHref(status: EntityStatus) {
   return `/admin/events?${params.toString()}`;
 }
 
-export default async function EventsListPage({ searchParams }: EventListPageProps) {
+export default async function EventsListPage({ searchParams }: AdminEventSearchParams) {
   const { status } = await searchParams;
   const currentStatus = parseStatus(status);
   const eventList = await withAdminAuthRedirect(buildEventsHref(currentStatus), async () => {

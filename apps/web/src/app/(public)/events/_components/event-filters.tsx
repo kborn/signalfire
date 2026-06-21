@@ -7,22 +7,13 @@ import { isDemoModeEnabled } from '@/lib/demo-mode';
 import { US_STATE_OPTIONS } from '@/lib/us-state-options';
 import { useDebounce } from '@/components/debounce';
 import { CalendarIcon } from '@/components/icons';
+import type { ResolvedEventSearchParams } from '../event-search-params';
 
-type EventListPageProps = {
-  topicSlug?: string;
-  startDate: string;
-  endDate: string;
-  city?: string;
-  region?: string;
-  page?: string;
-  pageSize?: string;
+type EventFiltersWrapper = {
+  params: ResolvedEventSearchParams;
 };
 
-type EventListPagePropsWrapper = {
-  params: EventListPageProps;
-};
-
-function buildUrl(params: EventListPageProps) {
+function buildUrl(params: ResolvedEventSearchParams) {
   const searchParams = new URLSearchParams();
 
   if (params) {
@@ -52,7 +43,7 @@ function parseDateValue(value: string): Date | null {
   return new Date(Date.UTC(Number(yearText), Number(monthText) - 1, Number(dayText)));
 }
 
-function route(router: AppRouterInstance, queryParams: EventListPageProps) {
+function route(router: AppRouterInstance, queryParams: ResolvedEventSearchParams) {
   const query = buildUrl(queryParams);
   router.replace(query ? `/events?${query}` : '/events');
 }
@@ -69,7 +60,7 @@ function CalendarGlyph({ onClick }: { onClick: () => void }) {
   );
 }
 
-export default function EventFilters({ params }: EventListPagePropsWrapper) {
+export default function EventFilters({ params }: EventFiltersWrapper) {
   const router = useRouter();
   const regionOptions = isDemoModeEnabled() ? DEMO_EVENT_REGION_OPTIONS : US_STATE_OPTIONS;
   const [city, setCity] = useState(params['city'] ?? '');
@@ -86,7 +77,7 @@ export default function EventFilters({ params }: EventListPagePropsWrapper) {
   const debouncedCity = useDebounce<string>(city, 700);
 
   const commitFilters = useCallback(
-    (nextValues?: Partial<EventListPageProps>) => {
+    (nextValues?: Partial<ResolvedEventSearchParams>) => {
       const queryParams = {
         ...params,
         ...nextValues,

@@ -99,6 +99,7 @@ export function buildActionWithTopicsEntity(
           slug: 'democracy',
           name: 'Democracy',
           description: 'desc',
+          color: null,
           createdAt: ACTION_TEST_DATE,
         },
       },

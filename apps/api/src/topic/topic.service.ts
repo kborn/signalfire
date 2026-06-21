@@ -1,17 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { TopicRepository } from './topic.repository';
-import { ArticleService } from '../article/article.service';
-import { ActionService } from '../action/action.service';
 import { TopicDetailResponse, TopicListResponse } from '@signal-fire/api-contracts';
 import { toActionSummary, toArticleSummary, toTopicSummary } from '../common/public-content.mapper';
 
 @Injectable()
 export class TopicService {
-  constructor(
-    private repository: TopicRepository,
-    private actionService: ActionService,
-    private articleService: ArticleService,
-  ) {}
+  constructor(private repository: TopicRepository) {}
 
   async getTopics(): Promise<TopicListResponse> {
     const topics = await this.repository.findAll();
@@ -21,23 +15,19 @@ export class TopicService {
   }
 
   async getTopicDetail(slug: string): Promise<TopicDetailResponse> {
-    const topic = await this.repository.findBySlug(slug);
-    if (!topic) {
+    const result = await this.repository.findBySlugWithPublishedContent(slug);
+    if (!result) {
       throw new NotFoundException(`No topic found with slug ${slug}`);
     }
 
-    const [articles, actions] = await Promise.all([
-      this.articleService.getArticlesForTopic(slug),
-      this.actionService.getActionsForTopic(slug),
-    ]);
-
     return {
-      id: topic.id,
-      slug: topic.slug,
-      name: topic.name,
-      description: topic.description,
-      articles: articles.map(toArticleSummary),
-      actions: actions.map(toActionSummary),
+      id: result.id,
+      slug: result.slug,
+      name: result.name,
+      description: result.description,
+      color: result.color ?? undefined,
+      articles: result.topicArticles.map((ta) => toArticleSummary(ta.article)),
+      actions: result.topicActions.map((ta) => toActionSummary(ta.action)),
     };
   }
 }

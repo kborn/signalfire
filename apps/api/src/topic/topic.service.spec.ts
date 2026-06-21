@@ -2,11 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { TopicService } from './topic.service';
 import { TopicRepository } from './topic.repository';
 import { NotFoundException } from '@nestjs/common';
-import { ArticleService } from '../article/article.service';
-import { ActionService } from '../action/action.service';
 import { ActionType } from '@prisma/client';
 
 const date = new Date('2025-12-17T03:24:00');
+
 const topic = {
   id: 1,
   slug: 'democracy',
@@ -41,22 +40,27 @@ const action = {
   publishedAt: date,
 };
 
+const topicArticleJoin = {
+  topicId: 1,
+  articleId: 1,
+  assignedAt: date,
+  assignedBy: 'seed',
+  article,
+};
+const topicActionJoin = { topicId: 1, actionId: 1, assignedAt: date, assignedBy: 'seed', action };
+
 describe('TopicService', () => {
   let service: TopicService;
-  const repoMock = { findAll: jest.fn(), findBySlug: jest.fn() };
-  const articleServiceMock = { getArticlesForTopic: jest.fn() };
-  const actionServiceMock = { getActionsForTopic: jest.fn() };
+  const repoMock = {
+    findAll: jest.fn(),
+    findBySlugWithPublishedContent: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.clearAllMocks();
 
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        TopicService,
-        { provide: TopicRepository, useValue: repoMock },
-        { provide: ArticleService, useValue: articleServiceMock },
-        { provide: ActionService, useValue: actionServiceMock },
-      ],
+      providers: [TopicService, { provide: TopicRepository, useValue: repoMock }],
     }).compile();
     service = module.get(TopicService);
   });
@@ -86,9 +90,11 @@ describe('TopicService', () => {
   });
 
   it('getTopicDetail', async () => {
-    repoMock.findBySlug.mockResolvedValue(topic);
-    actionServiceMock.getActionsForTopic.mockResolvedValue([action]);
-    articleServiceMock.getArticlesForTopic.mockResolvedValue([article]);
+    repoMock.findBySlugWithPublishedContent.mockResolvedValue({
+      ...topic,
+      topicArticles: [topicArticleJoin],
+      topicActions: [topicActionJoin],
+    });
 
     const slug = 'test';
     const ret = await service.getTopicDetail(slug);
@@ -118,7 +124,7 @@ describe('TopicService', () => {
         },
       ],
     });
-    expect(repoMock.findBySlug).toHaveBeenCalledWith(slug);
+    expect(repoMock.findBySlugWithPublishedContent).toHaveBeenCalledWith(slug);
   });
 
   it('getTopicDetail preserves related-content ordering returned by published lookups', async () => {
@@ -137,9 +143,14 @@ describe('TopicService', () => {
       summary: 'Second action summary.',
       actionType: ActionType.DONATE,
     };
-    repoMock.findBySlug.mockResolvedValue(topic);
-    articleServiceMock.getArticlesForTopic.mockResolvedValue([article, secondArticle]);
-    actionServiceMock.getActionsForTopic.mockResolvedValue([action, secondAction]);
+    repoMock.findBySlugWithPublishedContent.mockResolvedValue({
+      ...topic,
+      topicArticles: [
+        topicArticleJoin,
+        { ...topicArticleJoin, articleId: 2, article: secondArticle },
+      ],
+      topicActions: [topicActionJoin, { ...topicActionJoin, actionId: 2, action: secondAction }],
+    });
 
     const ret = await service.getTopicDetail('democracy');
 
@@ -154,7 +165,7 @@ describe('TopicService', () => {
   });
 
   it('findTopicNotFound', async () => {
-    repoMock.findBySlug.mockResolvedValue(null);
+    repoMock.findBySlugWithPublishedContent.mockResolvedValue(null);
 
     const slug = 'test';
     await expect(service.getTopicDetail(slug)).rejects.toThrow(NotFoundException);
