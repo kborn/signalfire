@@ -404,6 +404,16 @@
   outline-offset: 3px;
 }
 
+.adminRecordTable tbody tr {
+  position: relative;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.adminRecordTable tbody tr:hover {
+  background: color-mix(in srgb, var(--color-surface-soft) 60%, transparent);
+}
+
 .adminTableRecordLink {
   display: inline-flex;
   width: 100%;
@@ -411,14 +421,30 @@
   text-decoration: none;
 }
 
+.adminTableRecordLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
 .adminTableRecordLink:hover {
   text-decoration: none;
+}
+
+.adminTableRecordLink:hover .adminTableRecordTitle {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .adminTableRecordLink:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 4px;
   border-radius: 8px;
+}
+
+.adminTableRecordLink:focus-visible::after {
+  display: none;
 }
 
 .adminTableRecordTitle {

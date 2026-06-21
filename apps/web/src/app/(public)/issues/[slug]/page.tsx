@@ -79,7 +79,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
               <h2 id="topic-actions-label" className="issueStepTitle">
                 Act
               </h2>
-              <p className="issueStepSub">Concrete next steps you can take right now</p>
+              <p className="issueStepSub">This is where your fight gets real</p>
             </div>
             <div className="collectionList">
               {topic.actions.map((action) => (

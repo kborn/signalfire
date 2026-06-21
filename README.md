@@ -196,7 +196,7 @@ Canonical planning and decision docs:
 - `docs/agent-governance/progress.md`
 - `docs/agent-governance/decisions.md`
 
-Current active implementation phase is Phase 13.6: Review Response & Quality Closure.
+Current active implementation phase is Phase 14.7: Continuity Pass.
 
 ## Key Repo Entry Points
 

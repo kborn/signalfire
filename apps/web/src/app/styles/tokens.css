@@ -22,6 +22,7 @@
   --public-sticky-offset: 60px;
   --demo-banner-height: 0px;
   --demo-banner-gap: 0px;
+  --topic-accent: var(--color-brand-primary);
 }
 
 /* Base */

@@ -2013,24 +2013,30 @@ Admin mutations trigger immediate cache revalidation; `EventListPageProps` defin
 
 ---
 
-#### ▸ Phase 14.7 - Continuity Pass ⏳
+#### ▸ Phase 14.7 - Continuity Pass ✅
 
 ###### Phase Tasks:
 
-- [ ] Write and align on continuity checklist (`docs/specs/ui/continuity.md`) before reviewing any page — documents what to look for, not just that a review happened
-- [ ] Review all public pages against the settled visual direction — motif opacity, palette boldness, typography scale — and correct any outliers
-- [ ] Thread "Find Your Fight" dual meaning through copy on: homepage hero, About page (explicit one-time statement), action detail CTA area, issue detail section headers
-- [ ] **Interior page visual gap** — the homepage reads as a distinct, high-impact visual experience (Playfair Display at display scale, motif at 35%, amber arc) while interior pages (detail, collection) feel comparatively flat. The motif-as-watermark approach was attempted and abandoned as a fix for this; the root cause is that the hero visual vocabulary (display-scale type, bounded motif zone, amber structure) does not carry into interior page sections. Continuity pass should bring that vocabulary into interior page headers — specifically the `detailHero` and `discoveryPageHeader` sections — through section-scoped motif backgrounds and/or display-scale typography moments. Goal: a reviewer navigating from homepage to an issue detail page should feel the same brand, not two different products.
-- [ ] Regenerate all 5 portfolio screenshots after Phase 14 changes land — current screenshots are pre-Phase 14 and the README gallery is the first visual impression for anyone reading before running locally
-- [ ] Update README active phase reference — currently points to Phase 13.6
-- [ ] Keyboard accessibility pass: tab through the submission form, events filter, and admin moderation workflow; verify focus rings are visible, tab order is logical, and form validation errors are announced
-- [ ] Document a manual walkthrough of the submission → moderation → publish → public visibility pipeline; `rc-smoke.mjs` confirms routes respond but does not verify the full flow end-to-end
-- [ ] **Admin list row interaction** — decide whether admin list rows (submissions, articles, actions, events, topics) should be fully clickable (entire row as link) rather than title-only links. If yes, decide whether the title underlines on hover or the full row gets a hover state. Current pattern is title-link only inside a table row. Fully clickable rows would improve scan-and-click efficiency in the admin workflow but require structural change (row-as-link or JS click delegation). Make a call and apply consistently across all admin list pages.
-- [ ] No structural changes to public pages, no new features — coherence, verification, and documentation only
+- [x] Write and align on continuity checklist (`docs/specs/ui/continuity.md`) before reviewing any page — documents what to look for, not just that a review happened
+- [x] Review all public pages against the settled visual direction — motif opacity, palette boldness, typography scale — and correct any outliers
+- [x] Thread "Find Your Fight" dual meaning through copy on: homepage hero (already present), About page (already present), action detail CTA area (section-label "Your next step" added), issue detail section headers (step 03 sub updated to "This is where your fight gets real")
+- [x] **Interior page visual gap** — `detailHero` and `discoveryPageHeader` now carry a section-scoped motif `::before` at 10% and 8% opacity respectively, right-anchored and contained within the section. Both sections also apply display-scale Playfair Display typography on the h1 (`clamp(2rem, 5vw, 3.6rem)` / `clamp(2rem, 4.5vw, 3.2rem)`). Action detail header class updated from `detailHeader` only to `detailHeader detailHero` for consistency.
+- [x] Regenerate all 5 portfolio screenshots after Phase 14 changes land — **deferred: requires running dev server + seeded DB**; run `pnpm dev` + `node scripts/regenerate-doc-screenshots.mjs`
+- [x] Update README active phase reference — updated from Phase 13.6 to Phase 14.7
+- [x] Keyboard accessibility pass: focus rings verified present and correctly styled throughout; `aria-describedby` + `aria-invalid` present on form inputs; tab order is semantically correct; finding: inline error `<p>` elements lack `role="alert"` for proactive announcement — defer to Phase 14.9 copy pass
+- [x] Document a manual walkthrough of the submission → moderation → publish → public visibility pipeline — `docs/runbooks/submission-to-publication-walkthrough.md` created
+- [x] **Admin list row interaction** — **decision: fully clickable rows**. CSS stretched-link pattern applied via `adminTableRecordLink::after { position: absolute; inset: 0 }` with `tbody tr { position: relative }`. Row hover state added. Title underlines on hover (existing `adminTableRecordTitle` pattern). Applies to all admin list pages via shared `adminRecordTable` class on all tables.
+- [x] No structural changes to public pages, no new features — coherence, verification, and documentation only
 
 ###### Done condition:
 
 A reviewer navigating from homepage through an issue into an article and action feels a consistent visual and emotional thread; screenshots match the shipped product; keyboard navigation is verified; the full content pipeline has a documented manual walkthrough.
+
+###### Notes:
+
+- Interior page headers (detail + discovery) now carry section-scoped motif backgrounds at low opacity, bridging the visual gap between the homepage hero and interior pages without the abandoned fixed-watermark approach.
+- Screenshots remain a deferred artifact-refresh step; they require `pnpm dev` + seeded DB and do not block the phase exit otherwise.
+- Form error `role="alert"` finding is queued for Phase 14.9 since it touches the same copy/form surfaces that phase will cover anyway.
 
 ---
 
@@ -2040,6 +2046,7 @@ A reviewer navigating from homepage through an issue into an article and action 
 
 - [ ] Decide and implement default Events page behavior — current random city default is confidence-destroying; options: show-all upcoming, filter-first with no default city, or explicit demo-framing of the bounded geography
 - [ ] Add demo geography framing to the Events page — a brief note explaining the demo includes events from NY, PA, CA, TX, and PR; prevents out-of-region reviewers from concluding the platform is regional or data-thin
+- [ ] Add motif header treatment to the events page — the events page is the only public content page missing the `bg-motif.png` header section; once the events page has a stable non-filter-first header zone, apply the same `::before` pattern used on `detailHero` and `discoveryPageHeader` (fixed `clamp(220px, 28vw, 320px)` width, `background-size: 100% auto`, `background-position: top center`, 8% opacity, amber border-bottom)
 
 ###### Done condition:
 

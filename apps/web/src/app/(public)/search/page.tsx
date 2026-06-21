@@ -1,6 +1,7 @@
 import { connection } from 'next/server';
 import { getArticlesList } from '@/lib/api/articles';
 import { getActionsList } from '@/lib/api/actions';
+import { getTopicsList } from '@/lib/api/topics';
 import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { SearchInput } from './_components/search-input';
@@ -17,12 +18,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
   const query = q?.trim() ?? '';
 
-  const [articles, actions] = query
-    ? await Promise.all([
-        getArticlesList({ search: query, pageSize: '20' }),
-        getActionsList({ search: query, pageSize: '20' }),
-      ])
-    : [null, null];
+  const [articles, actions, topicsData] = await Promise.all([
+    query ? getArticlesList({ search: query, pageSize: '20' }) : Promise.resolve(null),
+    query ? getActionsList({ search: query, pageSize: '20' }) : Promise.resolve(null),
+    getTopicsList().catch(() => null),
+  ]);
+  const topics = topicsData?.items ?? [];
 
   const totalResults = (articles?.totalItems ?? 0) + (actions?.totalItems ?? 0);
 
@@ -112,6 +113,24 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             </div>
           )}
         </div>
+      )}
+
+      {topics.length > 0 && (
+        <>
+          <div className="searchOrDivider" aria-hidden="true">
+            <span>or</span>
+          </div>
+          <section className="searchBrowseSection">
+            <p className="section-label">Browse by issue</p>
+            <ul className="searchBrowseTopics" aria-label="Browse issues">
+              {topics.map((topic) => (
+                <li key={topic.id}>
+                  <Link href={`/issues/${topic.slug}`}>{topic.name}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </>
       )}
     </div>
   );
