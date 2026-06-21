@@ -1,5 +1,10 @@
 # Context for Next Agent Session — Phase 14.8
 
+> **Note:** Phase 14.7 branch (`feat/phase_14/continuity`) contains significantly more work than
+> the original phase plan — the continuity pass expanded to include a full motif threading pass
+> across all public pages, search page redesign, and footer refinements. Review this branch before
+> merging; it is larger than a typical single-subphase branch.
+
 ## State of the repo
 
 **Branch:** `feat/phase_14/continuity` — Phase 14.7 complete, all checks pass (lint, typecheck, build).
@@ -11,7 +16,7 @@
 
 ---
 
-## What changed in Phase 14.7 (for context)
+## What changed in Phase 14.7 (for context, extended)
 
 - **Continuity checklist.** `docs/specs/ui/continuity.md` written — canonical reference for what
   to check on every page before approving it. Covers typography, color, motif opacity, cards,
@@ -48,6 +53,23 @@
   confirmed on submission form inputs via `getFieldA11y`. Tab order is semantically correct.
   Finding: inline error `<p>` elements lack `role="alert"` — queued for Phase 14.9 since that
   phase touches the same form surfaces anyway.
+
+- **Motif header threading.** All public pages now carry a consistent right-anchored
+  `bg-motif.png` in their page header section using a fixed-width pseudo-element
+  (`inset: 0 0 0 auto; width: clamp(220px,28vw,320px); background-size: 100% auto;
+background-position: top center`). This ensures the same fist size regardless of element
+  height. Pages covered: `detailHero` (article/issue/action/event detail), `discoveryPageHeader`
+  (issues/articles/actions index), `about-hero`, `submitEntryHeader`. Events page is the only
+  remaining gap — tracked as a Phase 14.8 task (needs structural fix first). Amber bottom border
+  added to all non-collection page headers for structural consistency.
+
+- **Search page redesigned.** Layout restructured to two parallel paths: keyword input →
+  results (if any) → OR divider → Browse by issue (topic pills). Topic pills use compact
+  `searchBrowseTopics` pill style (not full secondaryCTA buttons). This eliminates the
+  broken empty-state where header and footer motifs bracketed a nearly-empty page.
+
+- **Footer.** Slightly larger fist (`clamp(380px,44vw,480px)`), top padding
+  `clamp(64px,9vw,104px)` gives knuckles room to clear the nav text.
 
 - **Screenshots deferred.** All 5 portfolio screenshots need regeneration but require
   `pnpm dev` + seeded DB. Run: `node scripts/regenerate-doc-screenshots.mjs`. Screenshots are
