@@ -108,18 +108,16 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
                           {action.title} <span aria-hidden="true">→</span>
                         </span>
                       </Link>
+                      {normalizeDisplaySummary(action.summary) && (
+                        <p className="adminTableRecordSummary">
+                          {normalizeDisplaySummary(action.summary)}
+                        </p>
+                      )}
                     </td>
                     <td>{action.actionType}</td>
                     <td>{action.status}</td>
                     <td>{action.topicSlugs.join(', ')}</td>
                     <td>{formatAdminDateTime(action.updatedAt)}</td>
-                  </tr>
-                  <tr className="adminTableSummaryRow">
-                    <td className="adminTableSummaryCell" colSpan={5}>
-                      <p className="adminTableCellMeta">
-                        {normalizeDisplaySummary(action.summary)}
-                      </p>
-                    </td>
                   </tr>
                 </Fragment>
               ))

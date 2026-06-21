@@ -106,17 +106,15 @@ export default async function ArticlesListPage({ searchParams }: ArticleListPage
                           {article.title} <span aria-hidden="true">→</span>
                         </span>
                       </Link>
+                      {normalizeDisplaySummary(article.summary) && (
+                        <p className="adminTableRecordSummary">
+                          {normalizeDisplaySummary(article.summary)}
+                        </p>
+                      )}
                     </td>
                     <td>{article.status}</td>
                     <td>{article.topicSlugs.join(', ')}</td>
                     <td>{formatAdminDateTime(article.updatedAt)}</td>
-                  </tr>
-                  <tr className="adminTableSummaryRow">
-                    <td className="adminTableSummaryCell" colSpan={4}>
-                      <p className="adminTableCellMeta">
-                        {normalizeDisplaySummary(article.summary)}
-                      </p>
-                    </td>
                   </tr>
                 </Fragment>
               ))

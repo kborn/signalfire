@@ -188,14 +188,14 @@ export default function TopicEditorForm({
               <button
                 type="button"
                 className="primaryCTA"
-                style={{ background: 'var(--color-status-error)' }}
+                style={{
+                  background:
+                    isDeleting || totalLinked > 0
+                      ? 'var(--color-border-subtle)'
+                      : 'var(--color-status-error)',
+                }}
                 onClick={handleDelete}
                 disabled={isDeleting || totalLinked > 0}
-                title={
-                  totalLinked > 0
-                    ? `Cannot delete — ${totalLinked} item(s) linked to this issue`
-                    : undefined
-                }
               >
                 {isDeleting ? 'Deleting…' : 'Delete Issue'}
               </button>

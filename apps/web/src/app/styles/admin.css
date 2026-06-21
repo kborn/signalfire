@@ -233,7 +233,7 @@
 
 .adminTable th,
 .adminTable td {
-  padding: 0.85rem 0.75rem;
+  padding: 1rem 0.75rem;
   border-bottom: 1px solid var(--color-border-subtle);
   text-align: left;
   vertical-align: top;
@@ -267,16 +267,12 @@
   width: 18%;
 }
 
-.adminTable tbody tr:not(.adminTableSummaryRow) td {
+.adminTable tbody tr td {
   border-bottom-color: color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
 }
 
 .adminTable tbody tr:hover td {
   background: color-mix(in srgb, var(--color-surface-soft) 55%, var(--color-page-bg) 45%);
-}
-
-.adminTable tbody tr.adminTableSummaryRow:hover td {
-  background: color-mix(in srgb, var(--color-surface-soft) 45%, var(--color-page-bg) 55%);
 }
 
 .adminTable th {
@@ -432,9 +428,11 @@
   text-underline-offset: 0.18em;
 }
 
-.adminTableSummaryRow td {
-  padding-top: 0.15rem;
-  border-bottom-color: var(--color-border-subtle);
+.adminTableRecordSummary {
+  margin: 0.35rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.88rem;
+  line-height: 1.45;
 }
 
 .adminTableCellMeta {
@@ -443,17 +441,6 @@
   color: var(--color-text-muted);
   font-size: 0.9rem;
   line-height: 1.35;
-}
-
-.adminTableSummaryCell {
-  width: 100%;
-  padding-top: 0.15rem;
-  padding-bottom: 0.9rem;
-  background: color-mix(in srgb, var(--color-surface-soft) 45%, var(--color-page-bg) 55%);
-}
-
-.adminTableSummaryRow + tr td {
-  border-top: 0;
 }
 
 .adminInlineList {

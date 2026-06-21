@@ -104,17 +104,17 @@ export default async function SubmissionListPage({ searchParams }: SubmissionLis
                   {submission.title} <span aria-hidden="true">→</span>
                 </span>
               </Link>
+              {normalizeDisplaySummary(submission.summary) && (
+                <p className="adminTableRecordSummary">
+                  {normalizeDisplaySummary(submission.summary)}
+                </p>
+              )}
             </td>
             <td>{submission.submissionType}</td>
             <td>{submission.status}</td>
             <td>{formatAdminDateTime(submission.submittedAt)}</td>
             <td>{submission.submitterName ?? 'Anonymous'}</td>
             <td>{submission.submitterEmail ?? 'Not provided'}</td>
-          </tr>
-          <tr className="adminTableSummaryRow">
-            <td className="adminTableSummaryCell" colSpan={tableHeaders.length}>
-              <p className="adminTableCellMeta">{normalizeDisplaySummary(submission.summary)}</p>
-            </td>
           </tr>
         </Fragment>
       ))
