@@ -4,6 +4,7 @@ export default function ChooseSubmitTypePage() {
   return (
     <section className="page-section submitEntryPage motifPage centeredPublicPage">
       <div className="submitEntryHeader">
+        <p className="section-label">Contribute</p>
         <h1 className="pageTitle">Contribute to Find Your Fight</h1>
         <p className="page-intro">
           Help other people get involved. Share what belongs here, and we will review it before it

@@ -64,7 +64,7 @@
   background-image: url('/bg-motif.png');
   background-size: auto 140%;
   background-repeat: no-repeat;
-  background-position: center right;
+  background-position: right top;
   opacity: 0.1;
   z-index: -1;
   pointer-events: none;
