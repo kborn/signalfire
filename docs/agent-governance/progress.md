@@ -2088,7 +2088,7 @@ Any string picked at random from any public page sounds like it belongs to the s
 
 ---
 
-#### ▸ Phase 14.10 - Nav Mark & Favicon Artwork ⏳
+#### ▸ Phase 14.10 - Nav Mark & Favicon Artwork ✅
 
 ###### Goal
 
@@ -2096,15 +2096,18 @@ Replace the placeholder amber circle with final artwork for the nav home-link ma
 
 ###### Phase Tasks:
 
-- [ ] Decide whether the nav mark and favicon are the same design or different — candidates: (a) same motif-derived image at two scales, (b) same SVG at two sizes, (c) distinct designs optimized for each context
-- [ ] Design the final mark — likely a simplified SVG trace of a motif element (fist silhouette or a single arrow), or a lettermark if the motif doesn't reduce cleanly to icon scale
-- [ ] Replace the `FYFLogo` SVG paths in `apps/web/src/components/icons.tsx` with the final mark
-- [ ] Replace `/public/fyf-mark.svg` with the final favicon artwork (amber on dark navy, 32×32 viewBox)
-- [ ] Verify both render correctly at their target sizes: nav mark at 22px height, favicon at 32px and 16px
+- [x] Decide whether the nav mark and favicon are the same design or different → text-only wordmark ("FYF") for nav; "F" lettermark favicon
+- [x] Design the final mark — text-only wordmark removes the need for an SVG mark; "F" lettermark built as SVG for favicon
+- [x] Remove `FYFLogo` from nav; clean up `.site-brand-logo`; text wordmark (`site-wordmark-text`) stands alone
+- [x] Replace `fyf-mark.svg` with bold "F" lettermark (amber serif on dark navy rounded square)
+- [x] Replace footer `::before` motif with 2px amber `border-top`
+- [x] Update `bg-motif.png` with clean transparent version (user-supplied)
+- [x] About page art question resolved: Option A (no artwork) — `about-hero::before` removed
+- [x] Visual check: homepage ✅ about ✅ search ✅ issues collection ✅ footer ✅
 
 ###### Done condition:
 
-The nav home-link mark is visually intentional and references the FYF brand identity; the favicon reads as a distinct, recognizable mark at 16px; placeholder circle is gone from both locations.
+The nav home-link mark is visually intentional and references the FYF brand identity; the favicon reads as a distinct, recognizable mark at 16px; placeholder circle is gone from both locations. ✅ All conditions met.
 
 ###### Notes:
 

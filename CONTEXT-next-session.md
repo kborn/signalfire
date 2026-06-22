@@ -1,88 +1,60 @@
-# Context for Next Agent Session — Phase 14.10 wrap-up / art strategy
+# Context for Next Agent Session — Phase 14.11 Final Nitpick Pass
 
 ## State of the repo
 
 **Branch:** `feat/phase_14/nav-mark`
 
-**Phases complete:** 14.1 ✅ through 14.9 ✅
-
-**Phase 14.10 code work is done.** One open design question remains before Phase 14.10 can close.
+**Phases complete:** 14.1 ✅ through 14.10 ✅
 
 ---
 
-## What was completed this session
+## What was completed in 14.10
 
-All code-only Phase 14.10 items are committed and clean:
+All Phase 14.10 items are done and committed:
 
 - `FYFLogo` SVG mark removed from nav — wordmark is amber Playfair Display "FYF" text only
-- Favicon (`fyf-mark.svg`) replaced with bold "F" lettermark — amber serif on dark navy square
-- Footer motif (`bg-motif.png` via `::before`) removed — replaced with 2px amber `border-top`
+- Favicon (`fyf-mark.svg`) is bold "F" lettermark — amber serif on dark navy square
+- Footer motif replaced with 2px amber `border-top`
 - Wordmark color and font aligned to favicon (both amber, both serif)
-- `bg-motif.png` replaced by user with clean version (transparent alpha, no crackle, crisp edges)
-- `fist.png` added by user as an unlinked asset — isolated fist, same palette, no arrows
+- `bg-motif.png` replaced with clean transparent version (user-supplied)
+- About page `about-hero::before` removed — no art on interior pages (Option A)
+- Art strategy doc and decisions.md updated to reflect all resolved questions
 
-Art strategy spec written: `docs/specs/ui/visual-identity-art-strategy.md`
-Decision recorded: `docs/agent-governance/decisions.md → Visual identity art strategy`
-
----
-
-## The one open question
-
-**About page: what asset, if any?**
-
-The about page (`pages.css`, `.about-hero::before`) currently shows `bg-motif.png` at 13% opacity
-in a right-side column, roughly 220–320px wide.
-
-Three options discussed but not decided:
-
-| Option | Asset                    | Rationale                                                             |
-| ------ | ------------------------ | --------------------------------------------------------------------- |
-| A      | Nothing                  | Removes all art from interior pages; color system carries the thread  |
-| B      | `fist.png`               | Simpler composition reads better at ~280px than the full motif        |
-| C      | `bg-motif.png` (current) | Consistent with homepage; but composition is too complex at this size |
-
-Option C is visually the weakest — the full motif at 280px loses its composition and reads as noise.
-The real choice is A vs B.
-
-**This decision was deliberately deferred.** Decisions made reactively mid-session are not reliable.
-The next agent should review the full visual identity strategy and make a considered recommendation
-before touching the about page CSS.
+Visual check passed: homepage motif ✅, about page clean ✅, footer amber border ✅, search/issues pages (motif on those headers is a 14.11 item).
 
 ---
 
-## What the next agent should do
+## Phase 14.11 — Final Nitpick Pass
 
-1. Read `docs/specs/ui/visual-identity-art-strategy.md` in full
-2. Read `docs/agent-governance/decisions.md → Visual identity art strategy`
-3. View the current assets: `bg-motif.png` and `fist.png` in `apps/web/public/`
-4. View the about page hero section: `pages.css` lines 107–131, and the about page route
-5. Make a principled recommendation on the A vs B question above — not based on conversation
-   momentum, but on what a UX professional would actually recommend for a civic action portfolio
-6. Implement the decision and close Phase 14.10
+This is the current open phase. Tasks are tracked in `docs/agent-governance/progress.md`.
 
-Do not make other visual identity changes in the same session without flagging them separately.
+### Motif placement — flagged during 14.10 visual check
 
----
+The following interior pages still have `bg-motif.png` in their section headers, which violates the locked art strategy ("motif on interior pages: No"). These are explicitly in the 14.11 scope ("Review motif placement and usage"):
 
-## Phase 14.10 done condition (remaining)
+| File         | Selector                       | Page                                                               |
+| ------------ | ------------------------------ | ------------------------------------------------------------------ |
+| `search.css` | `.searchHeader::before`        | Search page                                                        |
+| `detail.css` | `.detailHero::before`          | All detail pages (issues, articles, actions, events)               |
+| `pages.css`  | `.submitEntryHeader::before`   | Submit entry page                                                  |
+| `pages.css`  | `.discoveryPageHeader::before` | Collection index pages (issues, articles, actions, events, topics) |
 
-- [ ] About page art question resolved (A vs B above)
-- [ ] Full visual check after: homepage, about, search (empty state), one collection page, footer
+The homepage hero (`.heroPoster::before`) is the only correct usage — do not remove it.
 
----
+### Other 14.11 items already in progress.md
 
-## Remaining Phase 14 subphases
-
-| Subphase | Scope                      | Status           |
-| -------- | -------------------------- | ---------------- |
-| 14.10    | Nav mark & favicon artwork | 🔄 one item open |
-| 14.11    | Final nitpick pass         | ⏳               |
+- Double separator lines on about page between sections
+- Demo banner partially covered when scrolling
+- Search page "or browse by topic" wording
+- Motif still not bold enough on homepage (darker, centered?)
+- Red separator line missing on articles/issues detail pages
+- Overall consistency pass (spacing, copy, hover states, empty states)
 
 ---
 
 ## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not add the motif to any page other than the homepage hero without updating the decisions doc
-- Do not thread art to collection pages, detail pages, or search — color system only
+- Do not push without explicit user confirmation
 - Do not reopen nav mark, favicon, footer, or wordmark decisions
+- The only correct `bg-motif.png` usage is `.heroPoster::before` on the homepage
