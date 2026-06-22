@@ -1223,6 +1223,10 @@
     color-mix(in srgb, var(--color-brand-primary) 60%, var(--color-border-subtle));
 }
 
+.publicShell:not(:has(.demoBanner)) .topicSelector {
+  top: var(--public-sticky-offset);
+}
+
 .topicSelector::after {
   content: '';
   position: absolute;

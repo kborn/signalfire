@@ -37,6 +37,10 @@
     top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + var(--demo-banner-gap));
   }
 
+  .publicShell:not(:has(.demoBanner)) .topicSelector {
+    top: var(--public-sticky-offset);
+  }
+
   .topicSelectorList {
     gap: 0.5rem;
   }
@@ -189,6 +193,10 @@
 
   .topicSelector {
     top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + 8px);
+  }
+
+  .publicShell:not(:has(.demoBanner)) .topicSelector {
+    top: var(--public-sticky-offset);
   }
 
   .demoBannerActions {

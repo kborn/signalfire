@@ -2138,7 +2138,7 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
   - Collection page headers (Issues, Articles, Actions, Events): right-anchored `<img className="discoveryPageHeaderMotif">` at 25% opacity with bottom fade (`mask-image: linear-gradient(to bottom, black 15%, transparent 75%)`), positioned absolute behind text inside `.discoveryPageHeader`
   - Search, detail pages, about, submit, admin: no motif
   - Canonical decision recorded in `decisions.md` under "Visual identity art strategy"
-- [x] **Demo banner scroll positioning** — `site-header::after` removed; `--demo-banner-gap` set to `4px` in `tokens.css`; header `border-bottom` retained. Banner sits cleanly below header; accepted as resolved.
+- [ ] **Demo banner scroll positioning** — `site-header::after` removed; `--demo-banner-gap` set to `4px` in `tokens.css`; header `border-bottom` retained. Banner sits cleanly below header; accepted as resolved.
 - [x] **Gold accent overuse on entity list pages and about page** — `collectionItemEyebrow` changed from amber to `--color-text-muted`; card left border at rest changed from 40% amber to `--color-border-subtle` (amber appears on hover only); `aboutStepNum` opacity reduced from 0.7 → 0.28 (hint, not statement); `publicShell .secondaryCTA` text changed from amber to `--color-text-primary` (amber border retained).
 - [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
 - [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
