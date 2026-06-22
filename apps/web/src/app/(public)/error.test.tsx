@@ -19,7 +19,7 @@ describe('PublicError', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        'The content for this page is temporarily unavailable. Try again in a moment.',
+        'Something blocked us from loading this page. Try again and it should come back.',
       ),
     ).toBeInTheDocument();
     expect(screen.queryByText('Prisma connection refused')).not.toBeInTheDocument();

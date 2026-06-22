@@ -68,10 +68,10 @@ describe('ActionDetailsPage', () => {
     expect(markup).toContain('March 22, 2026');
     expect(markup).toContain('Steps');
     expect(markup).toContain('Call and ask for support on the bill.');
-    expect(markup).toContain('Related Topics');
+    expect(markup).toContain('Related Issues');
     expect(markup).toContain('href="/issues/climate"');
     expect(markup).toContain('Climate');
-    expect(markup).toContain('Learn More');
+    expect(markup).toContain('Read First');
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('class="relatedList"');

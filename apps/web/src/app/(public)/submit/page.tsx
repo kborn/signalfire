@@ -5,10 +5,10 @@ export default function ChooseSubmitTypePage() {
     <section className="page-section submitEntryPage motifPage centeredPublicPage">
       <div className="submitEntryHeader">
         <p className="section-label">Contribute</p>
-        <h1 className="pageTitle">Contribute to Find Your Fight</h1>
+        <h1 className="pageTitle">Share what you know.</h1>
         <p className="page-intro">
-          Help other people get involved. Share what belongs here, and we will review it before it
-          goes live.
+          If you know of an article, an event, or a resource that belongs here, send it. Everything
+          gets reviewed before it goes live.
         </p>
       </div>
       <div className="submitOptionList">
@@ -26,7 +26,10 @@ export default function ChooseSubmitTypePage() {
           <div>
             <p className="section-label">Event</p>
             <h2>Share an Event</h2>
-            <p>Share an upcoming event, rally, meeting, workshop, or volunteer opportunity.</p>
+            <p>
+              Know about a rally, town hall, workshop, or volunteer shift someone should be at? Put
+              it here.
+            </p>
           </div>
         </Link>
       </div>
@@ -34,8 +37,7 @@ export default function ChooseSubmitTypePage() {
         <div className="submitEntrySupportCard">
           <p className="section-label">Reviewed by a person</p>
           <p className="metaText">
-            Every submission is checked for clarity, fit, and basic verification before it appears
-            on the site.
+            A real person reviews every submission before it appears on the site.
           </p>
         </div>
         <div className="submitEntrySupportCard">

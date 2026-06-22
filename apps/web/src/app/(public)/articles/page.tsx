@@ -17,7 +17,8 @@ function getNoResultsResponse(topicSlug?: string) {
         {topicSlug ? 'No published articles match this issue yet.' : 'No articles available yet.'}
       </h2>
       <p className="metaText">
-        Try a different issue, browse actions, or check back after more explainers are published.
+        Nothing here for that issue yet. Try another, or look for direct action while this one fills
+        in.
       </p>
       <div className="ctaRow">
         <Link href="/actions" className="secondaryCTA">
@@ -62,7 +63,7 @@ export default async function ArticleListPage({ searchParams }: ArticleListPageP
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Articles</h1>
         <p className="page-intro">
-          Read reporting, explainers, and field guides about the issues that matter
+          Reading changes what you see. These articles give you something to work with.
         </p>
       </div>
       <TopicSelector topics={topics} basePath="/articles" params={params} />

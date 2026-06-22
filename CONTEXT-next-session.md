@@ -1,66 +1,59 @@
-# Context for Next Agent Session — Phase 14.9
+# Context for Next Agent Session — Phase 14.10
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/events-ux` — Phase 14.8 complete, all checks pass (lint, typecheck, build).
-**Merge this branch to main, then start a new branch for 14.9.**
+**Branch:** `feat/phase_14/copy` — Phase 14.9 complete, all checks pass (format, lint, typecheck, build).
 
-**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅ 14.8 ✅
+**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅ 14.8 ✅ 14.9 ✅
 
-**Start with Phase 14.9 — Copy Pass.**
-
----
-
-## What changed in Phase 14.8
-
-- **Events page header restructured.** `h1` + intro now live inside `discoveryPageHeader` — picks
-  up the `bg-motif.png` `::before` treatment (8% opacity, right-anchored, amber `border-bottom`)
-  via existing CSS. Events page now matches articles/actions discovery pages visually.
-
-- **Demo geography note added.** A `metaText` paragraph ("Demo events are seeded across NY, PA,
-  CA, TX, and PR — use the region selector to find them.") sits below the amber border and above
-  the filter panel, rendered only when `NEXT_PUBLIC_ENABLE_DEMO_MODE=true`. Kept outside the
-  header div intentionally so the amber line lands at a consistent height across all discovery pages.
-
-- **Date param mismatch fixed.** `getContents` previously received raw `params` (no dates) while
-  the filter UI showed `resolvedParams` (today → +3 months). Now passes `resolvedParams` — the
-  API call matches what the filters display.
-
-- **Phase 14.11 added to progress.md.** Final Nitpick Pass added as the last Phase 14 subphase —
-  a full walkthrough of every public and admin route to catch anything still visually or editorially
-  off before the branch stack merges.
+**Next: Phase 14.10 — Nav Mark & Favicon Artwork.**
 
 ---
 
-## Phase 14.9 scope
+## What changed in Phase 14.9
 
-**Branch:** `feat/phase_14/copy-pass` (start from main after merging 14.8)
+Full voice/tone copy pass across every public page. Changes committed in one commit on `feat/phase_14/copy`.
 
-**Voice direction (from progress.md):**
+Key rewrites:
 
-The copy should feel like an emotional plea, not a product description. The register is punk rock
-and sincere — sentences that build, not bullet points that summarize. The dual meaning of "Find
-Your Fight" (find the issue that's yours AND find the fighter within) is the emotional
-underpinning. Acknowledge the overwhelm. Acknowledge that one person feels powerless. Then turn it.
-The power and responsibility lives in each of us. Summon it. That is the through-line.
+- Homepage, about, issues/articles/actions/events index intros: all shed passive hedging and self-description
+- Issue detail step sub (Read): "Explainers and field guides" → "Read enough to understand what's actually at stake."
+- Action detail: "Related Topics" → "Related Issues"; "Learn More" → "Read First"
+- Event detail: same section header changes + contribute nudge added (was missing)
+- Search: h1 → "Search"; added one-line ILIKE framing in the intro; no-results copy explains word-match limitation
+- Submit entry: h1 → "Share what you know."; card and meta copy sharpened
+- Submission success: "Thanks for submitting" → "We've got it." + tells submitters what happens next
+- "Nothing is published automatically" → "Your submission goes to a reviewer before anything goes live."
+- `role="alert"` on all inline form error `<p>` elements (accessibility, deferred from 14.7)
+- Footer "Submit Content" → "Contribute"
 
-Avoid: trendy fragment copy ("Find. Act. Fight."), passive hedging ("submissions are reviewed
-before..."), self-explanation ("this page shows you..."), defensive moderation language.
+---
 
-**Tasks (from `progress.md`):**
+## Phase 14.10 scope
 
-1. Audit every user-facing string across all public pages: homepage, about, issues index and
-   detail, articles, actions, events, submit flow, search, error and empty states
-2. Rewrite any copy that is choppy, fragmentary, hedging, or reads as UI chrome rather than a
-   human voice
-3. Ensure the emotional build — overwhelm → collective power → personal fire → action — is present
-   in some form wherever a user might need it most (hero, issue detail, action CTA, empty states)
-4. Add honest framing on the search page about what ILIKE search can and cannot find
-5. Submission success state: tell submitters what happens next
-6. Copy should feel like the same person wrote all of it
+**Branch:** start `feat/phase_14/nav-mark` from current branch (or merge first — agent's call based on git state)
 
-**Done condition:** Any string picked at random from any public page sounds like it belongs to the
-same voice; the site reads as a rallying cry not a content directory.
+**Goal:** Replace the placeholder amber circle in the nav home-link mark and browser favicon with final artwork.
+
+**Swap points (isolated — only these two files need to change):**
+
+- `apps/web/src/components/icons.tsx` — `FYFLogo` SVG component (nav mark, renders at ~22px height)
+- `apps/web/public/fyf-mark.svg` — favicon (32×32 viewBox, amber on dark navy)
+
+**Decision to make first:** should the nav mark and favicon be the same design or different?
+
+- Candidates: (a) same SVG at two sizes, (b) motif-derived image for nav + lettermark for favicon, (c) other
+- This is an **open design question** — the previous agent deferred it here
+
+**Practical constraints:**
+
+- The nav mark renders inside a `<Link>` as an `<svg>` element with `className="site-brand-logo"`
+- The favicon is a standalone SVG file served from `/public/fyf-mark.svg`
+- Color token is `--color-brand-primary` (#cfac5a amber) in both
+- Current mark is a placeholder circle — anything more intentional is an improvement
+- If sourcing from the motif image: trace in Figma/Illustrator, export as SVG path
+
+**Done condition:** The nav home-link mark is visually intentional and references the FYF brand; the favicon reads as a recognizable mark at 16px; placeholder circle is gone from both.
 
 ---
 
@@ -68,18 +61,17 @@ same voice; the site reads as a rallying cry not a content directory.
 
 | Subphase | Scope                      | Status      |
 | -------- | -------------------------- | ----------- |
-| 14.8     | Events UX                  | ✅ complete |
-| 14.9     | Copy pass                  | ⏳ next     |
-| 14.10    | Nav mark & favicon artwork | ⏳          |
+| 14.9     | Copy pass                  | ✅ complete |
+| 14.10    | Nav mark & favicon artwork | ⏳ next     |
 | 14.11    | Final nitpick pass         | ⏳          |
 
-Full task lists and done conditions for all subphases are in `progress.md` Phase 14.
+Full task lists and done conditions are in `progress.md` Phase 14.
 
 ---
 
 ## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not expand scope mid-subphase — document discoveries in progress.md and continue
-- Do not re-open design decisions in `docs/specs/ui/global.md`
+- Do not expand scope mid-subphase
+- Do not reopen design decisions in `docs/specs/ui/global.md`
 - Screenshots require the dev server + seeded DB (`pnpm dev` + `node scripts/regenerate-doc-screenshots.mjs`)

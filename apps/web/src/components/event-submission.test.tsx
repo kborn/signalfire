@@ -148,7 +148,7 @@ describe('EventSubmissionForm', () => {
         websiteUrl: 'https://example.org/event',
       },
     });
-    expect(screen.getByText('Thanks for submitting')).toBeInTheDocument();
+    expect(screen.getByText("We've got it.")).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Browse Events' })).toHaveAttribute('href', '/events');
     expect(screen.getByRole('link', { name: 'Take Action' })).toHaveAttribute('href', '/actions');
   });
@@ -159,7 +159,9 @@ describe('EventSubmissionForm', () => {
     expect(screen.getByText('Share an event people can actually show up for.')).toBeInTheDocument();
     expect(screen.getByText('What makes an event useful here')).toBeInTheDocument();
     expect(
-      screen.getByText('Nothing is published automatically. Fields marked with * are required.'),
+      screen.getByText(
+        'Your submission goes to a reviewer before anything goes live. Fields marked with * are required.',
+      ),
     ).toBeInTheDocument();
   });
 

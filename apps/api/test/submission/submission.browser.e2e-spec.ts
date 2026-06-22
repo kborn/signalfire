@@ -52,7 +52,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Resource link 1').fill('https://example.org/source');
     await page!.getByRole('button', { name: 'Submit Article' }).click();
 
-    await pwExpect(page!.getByText('Thanks for submitting')).toBeVisible();
+    await pwExpect(page!.getByText("We've got it.")).toBeVisible();
 
     const persistedSubmission = await jestPrisma.originalClient.submission.findFirstOrThrow({
       where: { title: 'Community Solar Guide' },
@@ -118,7 +118,7 @@ describe('Submission flows (browser e2e)', () => {
     await page!.getByLabel('Website URL (optional)').fill('https://example.org/event');
     await page!.getByRole('button', { name: 'Submit Event' }).click();
 
-    await pwExpect(page!.getByText('Thanks for submitting')).toBeVisible();
+    await pwExpect(page!.getByText("We've got it.")).toBeVisible();
 
     const persistedSubmission = await jestPrisma.originalClient.submission.findFirstOrThrow({
       where: { title: 'Tenant Rights Rally' },

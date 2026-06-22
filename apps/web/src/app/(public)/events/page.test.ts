@@ -84,7 +84,7 @@ describe('EventListPage', () => {
       expect.objectContaining({ region: 'PA', page: '2', pageSize: '20' }),
     );
     expect(markup).toContain('Events');
-    expect(markup).toContain('Find upcoming events by issue, location, and date');
+    expect(markup).toContain('Protests, town halls, volunteer shifts, community meetings');
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('event-end-date');
     expect(markup).toContain('Results per page');
@@ -136,7 +136,7 @@ describe('EventListPage', () => {
       expect.objectContaining({ topicSlug: 'local-community', region: 'PA' }),
     );
     expect(markup).toContain('Events');
-    expect(markup).toContain('Find upcoming events by issue, location, and date');
+    expect(markup).toContain('Protests, town halls, volunteer shifts, community meetings');
     expect(markup).toContain('event-start-date');
     expect(markup).toContain('href="/events/10"');
     expect(markup).toContain('Neighborhood Mutual Aid Fair');

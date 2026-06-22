@@ -12,6 +12,6 @@ describe('AboutPage', () => {
     expect(markup).toContain('Take one concrete action.');
     expect(markup).toContain('href="/issues"');
     expect(markup).toContain('href="/actions"');
-    expect(markup).toContain('grounded, credible, and worth acting on.');
+    expect(markup).toContain('That review keeps');
   });
 });
