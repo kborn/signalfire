@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="6" fill="#0f1923"/>
-  <path d="M16 5C12 11 9 16 9 21a7 7 0 0 1 14 0C23 16 20 11 16 5z" fill="#cfac5a"/>
+  <rect width="32" height="32" rx="5" fill="#0f1923"/>
+  <text
+    x="16"
+    y="24"
+    font-family="'Playfair Display', Georgia, 'Times New Roman', serif"
+    font-size="22"
+    font-weight="700"
+    fill="#cfac5a"
+    text-anchor="middle"
+  >F</text>
 </svg>

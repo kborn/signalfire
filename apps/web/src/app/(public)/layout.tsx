@@ -3,7 +3,6 @@ import Link from 'next/link';
 import DemoBanner from '@/app/(public)/_components/demo-banner';
 import { SiteNav } from '@/app/(public)/_components/site-nav';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
-import { FYFLogo } from '@/components/icons';
 
 export const metadata: Metadata = {
   title: 'Find Your Fight',
@@ -19,7 +18,6 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         <header className="site-header">
           <div className="site-brand-group">
             <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
-              <FYFLogo className="site-brand-logo" />
               <span className="site-wordmark-text" aria-hidden="true">
                 FYF
               </span>
