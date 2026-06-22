@@ -2132,16 +2132,14 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off
 - [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) and note anything that reads as unfinished in the demo workflow
 - [ ] Fix the items that are clearly wrong with no tradeoff — spacing, copy, alignment, missing hover states, inconsistent labels
-- [ ] Review motif placement and usage
 - [ ] Review Search page filer by topic section
 - [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
 - [ ] Demo banner partially covered when scrolling down
 - [ ] Revisit footer motif. Too large and opaque?
-- [ ] Revisit the 'or browse by page on the search page
+- [ ] Revisit the 'or browse by issue' on the search page. Now that we have removed the footer image, this section isn't useful at all
 - [ ] double line separators on about page
-- [ ] Revisit motif image -
-  - [ ] Still not bold enough in general. Make darker and center?
-  - [ ] Still awkward on the about page
+- [ ] Review motif placement and usage. Do we intend to keep it on interior pages? Docs may say different. We should review with clear eyes and make a final decision.
+  - [ ] Is it appropriately aligned and opaque? does it feel intentional?
   - [ ] Buried on issue details pages (no red separator line on this page)
   - [ ] Red separator line missing on articles details page
   - [ ] Overall consistency pass
