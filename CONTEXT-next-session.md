@@ -1,61 +1,57 @@
-# Context for Next Agent Session — Phase 14.11 (continued) / Phase 15
+# Context for Next Agent Session — Phase 14.11 Final Review
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/nav-mark` (main, ahead of origin)
+**Branch:** `main` (local, ahead of origin — not yet pushed)
 
 **Phases complete:** 14.1 ✅ through 14.10 ✅
 
-**Phase 14.11 status:** In progress — core items committed, visual review deferred (requires running server)
+**Phase 14.11 status:** All code items resolved. Two human-eyes walkthrough tasks remain before the phase can close.
 
 ---
 
-## What was completed in 14.11 (this session)
+## What was resolved in 14.11
 
-Two commits on main:
+All concrete items are done:
 
-1. **Progress.md housekeeping** — prettier formatting fix
-2. **Core nitpick fixes:**
-   - `detailHero` border-bottom changed from subtle-blue to `var(--color-brand-accent)` — adds the missing amber separator line on article/action/event/topic detail pages
-   - `detailHero::before` opacity normalized 0.10 → 0.08 (matches all other interior headers)
-   - `about-body` `border-top` removed — was creating a double separator with `about-hero`'s amber `border-bottom` (24px gap between two lines); `about-journey` keeps its `border-top`
-   - `--demo-banner-gap` changed 0px → 16px in tokens.css — pushes demo banner below `site-header::after` overlay (which extends 16px below the header border and was covering the top of the sticky banner)
-   - Search page: removed `searchOrDivider` + `searchBrowseSection` (the "or browse by issue" topic list) — redundant with empty state CTAs and nav
-   - Search page: intro copy now links to `/issues` inline instead of pointing "below"
-
-### Motif decision (settled)
-
-**Keep interior page motifs.** Right-anchored `clamp(220px, 28vw, 320px)` at 0.08 opacity on all interior headers (`.detailHero`, `.discoveryPageHeader`, `.submitEntryHeader`, `.searchHeader`). Unified at 0.08. The CONTEXT-next-session.md from Phase 14.10 was written during a period of uncertainty — user confirmed "keep but tweak" and the implementation is defensible editorial design.
-
-### Footer motif (resolved)
-
-Already replaced with 2px amber `border-top` in Phase 14.10. The progress.md task predated that change. No further action needed.
+- `detailHero` now has amber `border-bottom` (was subtle-blue)
+- About page double separator fixed (removed `border-top` from `.about-body`)
+- Search "or browse by issue" section removed
+- Footer motif confirmed resolved from Phase 14.10
+- Demo banner scroll positioning: `site-header::after` removed, `--demo-banner-gap: 11px`
+- **Motif placement — settled** (see below)
 
 ---
 
-## Remaining Phase 14.11 items
+## Motif — locked decision
 
-The progress.md lists these as still open but they require a running server to evaluate:
+`bg-motif.png` appears in exactly two contexts. Do not change this without a deliberate decision:
 
-- Walk every public route and note anything visually or editorially off
-- Walk admin surfaces for anything that reads as unfinished
-- Overall consistency pass (spacing, hover states, empty states)
+| Surface                                                | Treatment                                                                                    |
+| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| Homepage hero                                          | Full-bleed `::before` at 35% opacity — primary brand statement                               |
+| Collection headers (Issues, Articles, Actions, Events) | Right-anchored `<img className="discoveryPageHeaderMotif">` at 25% opacity, bottom-fade mask |
+| Everything else                                        | No motif                                                                                     |
 
-These are "do with eyes" tasks — can't be done from code alone. If the user has time to run the server and do a walkthrough, the output of that review can seed the next pass. Otherwise, consider Phase 14.11 done given the concrete items are resolved and declare the phase complete.
+**Implementation:** `discoveryPageHeaderMotif` class in `pages.css`. The `.discoveryPageHeader` has `position: relative; overflow: hidden; isolation: isolate`. The `> *:not(.discoveryPageHeaderMotif)` rule lifts text children to `z-index: 1`. Do not convert the img to a `::before` without re-testing z-index/fade behavior.
+
+**Rationale recorded in:** `docs/agent-governance/decisions.md` → "Visual identity art strategy"
 
 ---
 
-## Phase 14.11 completion gate
+## What's left before 14.11 closes
 
-Phase 14.11's Done condition: "Nothing visible in a normal reviewer walkthrough reads as an obvious oversight."
+Two human-eyes walkthrough tasks. The agent cannot complete these without a running browser:
 
-The concrete flagged items are all resolved. The remaining tasks are best-effort review items, not blocking defects. The agent can mark 14.11 complete and move to Phase 15 (Deployment Infrastructure).
+1. Walk every public route (homepage, about, demo, issues, articles, actions, events, search, submit entry/forms, error states) — note anything that reads as an obvious oversight
+2. Walk admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — note anything unfinished in the demo workflow
+
+If the walkthrough finds no blockers, mark Phase 14.11 complete and advance to Phase 15.
 
 ---
 
 ## Guardrails
 
-- Run `pnpm typecheck` before every commit
 - Do not push without explicit user confirmation
-- Do not reopen nav mark, favicon, footer, wordmark, or motif decisions
-- The homepage `.heroPoster::before` is at 0.35 opacity; all interior headers use 0.08 — do not change these
+- Do not reopen motif, nav mark, favicon, footer, or wordmark decisions
+- `--demo-banner-gap: 11px` in `tokens.css` is the settled value — do not adjust without the user confirming it looks wrong

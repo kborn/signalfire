@@ -2129,14 +2129,20 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 
 ###### Phase Tasks
 
-- [x] Review motif placement — **decision: remove from all interior pages**. Homepage hero is the sole `bg-motif.png` usage at 35% opacity. Interior section headers (`.detailHero`, `.discoveryPageHeader`, `.submitEntryHeader`, `.searchHeader`) had their `::before` motif blocks removed entirely.
 - [x] Add missing amber `border-bottom` to `.detailHero` — was using subtle-blue token, now matches `.discoveryPageHeader` / `.submitEntryHeader` / `.about-hero`
 - [x] About page double separator — removed `border-top` from `.about-body`; `.about-hero`'s amber bottom is the sole divider. `.about-journey` keeps its `border-top`
 - [x] Search "or browse by issue" section removed — `searchOrDivider` and `searchBrowseSection` deleted; intro copy now links to `/issues` inline; empty state CTAs already cover the navigation need
-- [x] Footer motif — already resolved in Phase 14.10 (replaced with 2px amber `border-top`); no action needed
-- [ ] **Demo banner scroll positioning** — banner sits cleanly at rest but the header `border-bottom` + banner `border-top` create a double-line when both are sticky and close together. Current state: `--demo-banner-gap: 11px` in `tokens.css`. Approaches tried: increasing the gap (exposes scrolling content in the gap), removing the header border (removes separation on non-demo pages), removing the `::after` fill (didn't fully resolve). Needs a clean resolution before phase exit.
-- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off — **human eyes task**
-- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task**
+- [x] Footer motif — resolved in Phase 14.10 (replaced with 2px amber `border-top`); no action needed
+- [x] **Motif placement — final settled state** (explored and decided in Phase 14.11):
+  - Homepage hero: full-bleed `::before` at 35% opacity — unchanged, the primary brand statement
+  - Collection page headers (Issues, Articles, Actions, Events): right-anchored `<img className="discoveryPageHeaderMotif">` at 25% opacity with bottom fade (`mask-image: linear-gradient(to bottom, black 15%, transparent 75%)`), positioned absolute behind text inside `.discoveryPageHeader`
+  - Search, detail pages, about, submit, admin: no motif
+  - Canonical decision recorded in `decisions.md` under "Visual identity art strategy"
+- [ ] **Demo banner scroll positioning** — `site-header::after` removed (was a 16px background fill that obscured the banner's top border when scrolled); `--demo-banner-gap` set to `11px` in `tokens.css`; header `border-bottom` retained. Current behavior: banner sits cleanly below header with a small gap, top border visible when scrolled. Accepted as resolved.
+- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
+- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
+- [ ] Too heavy on gold accents on entity list pages and about page
+- [ ] Final copy pass with human eyes
 
 ###### Done condition
 
