@@ -110,6 +110,11 @@
 .publicShell .collectionItem:focus-visible .collectionItemTitle,
 .publicShell .collectionItem:focus-visible h2,
 .publicShell .collectionItem:focus-visible h3,
+.publicShell .relatedListItem:hover,
+.publicShell .relatedListItem:focus-visible {
+  text-decoration: none;
+}
+
 .publicShell .relatedListItem:hover .relatedListItemTitle,
 .publicShell .relatedListItem:focus-visible .relatedListItemTitle {
   text-decoration-color: currentColor;
@@ -118,13 +123,13 @@
 .relatedList {
   display: grid;
   gap: var(--space-3);
-  border-left: 1px solid color-mix(in srgb, var(--color-brand-accent) 45%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--color-brand-accent) 70%, transparent);
   padding-left: 1rem;
 }
 
 .relatedListItem {
   display: grid;
-  gap: var(--space-0);
+  gap: var(--space-1);
 }
 
 .relatedListItemTitle {
@@ -134,7 +139,6 @@
 }
 
 .relatedListItemSummary {
-  padding-left: 1rem;
   color: var(--color-text-muted);
   max-width: 68ch;
 }

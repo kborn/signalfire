@@ -2144,7 +2144,9 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
 - [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
 - [ ] Final copy pass with human eyes
-- [ ] Related links on details pages are not well formatted
+- [ ] Related links on details pages are not well formatted - all text is underlined on hover rather than just the title, not enouch brand accents. a bit dense. issue exists on articles, events,
+- [ ] When linking back to issues page from articles/events/actions details, shoule we used appropriate color coding?
+- [ ] Enlarge 'actions' and 'articles' sectin headers on search results page. make sections collapsible?
 
 ###### Done condition
 
