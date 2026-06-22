@@ -506,7 +506,7 @@ button.secondaryCTA {
 .publicShell .secondaryCTA {
   border-color: var(--color-brand-primary);
   background: transparent;
-  color: var(--color-brand-primary);
+  color: var(--color-text-primary);
 }
 
 .publicShell .secondaryCTA:hover {
@@ -566,6 +566,6 @@ button.secondaryCTA {
   line-height: 1;
   letter-spacing: -0.04em;
   color: var(--color-brand-primary);
-  opacity: 0.7;
+  opacity: 0.28;
   margin-bottom: var(--space-0);
 }

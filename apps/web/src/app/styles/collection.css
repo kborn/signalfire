@@ -13,7 +13,7 @@
 }
 
 .collectionItemEyebrow {
-  color: var(--color-brand-primary);
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -40,7 +40,7 @@
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
   border-left-width: 4px;
-  border-left-color: color-mix(in srgb, var(--color-brand-primary) 40%, transparent);
+  border-left-color: var(--color-border-subtle);
   border-radius: 12px;
   background: linear-gradient(
     180deg,
