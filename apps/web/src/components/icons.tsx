@@ -2,11 +2,13 @@ import type { SVGProps } from 'react';
 
 // ─── Wordmark / brand mark ────────────────────────────────────────────────────
 
-// Placeholder mark — replaced in Phase 14.10 with final artwork
 export function FYFLogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg viewBox="0 0 22 22" focusable="false" aria-hidden="true" {...props}>
-      <circle cx="11" cy="11" r="9" fill="var(--color-brand-primary)" />
+      <path
+        d="M11 2C8 7 5 11 5 15a6 6 0 0 1 12 0C17 11 14 7 11 2z"
+        fill="var(--color-brand-primary)"
+      />
     </svg>
   );
 }
