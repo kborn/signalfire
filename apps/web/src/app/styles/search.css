@@ -132,17 +132,45 @@
 }
 
 .searchResultSection {
-  display: grid;
-  gap: var(--space-3);
+  display: block;
 }
 
 .searchResultSectionTitle {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-2);
-  font-size: 1.5rem;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  cursor: pointer;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  list-style: none;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+
+.searchResultSectionTitle::-webkit-details-marker {
+  display: none;
+}
+
+.searchResultSectionTitle::after {
+  content: '+';
+  margin-left: auto;
+  font-family: var(--font-body);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--color-text-muted);
+}
+
+details[open] > .searchResultSectionTitle::after {
+  content: '−';
+}
+
+.searchResultSectionTitle:hover {
+  color: var(--color-brand-accent);
 }
 
 .searchResultCount {
@@ -150,6 +178,12 @@
   font-size: 0.9rem;
   font-weight: 400;
   color: var(--color-text-muted);
+}
+
+.searchResultContent {
+  display: grid;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
 }
 
 .searchMoreLink {

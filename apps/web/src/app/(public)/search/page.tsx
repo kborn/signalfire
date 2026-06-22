@@ -49,47 +49,51 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </p>
 
           {(articles?.totalItems ?? 0) > 0 && (
-            <section className="searchResultSection">
-              <h2 className="searchResultSectionTitle">
+            <details className="searchResultSection">
+              <summary className="searchResultSectionTitle">
                 Articles
                 <span className="searchResultCount">{articles!.totalItems}</span>
-              </h2>
-              <div className="collectionList">
-                {articles!.items.map((article) => (
-                  <ArticleSummary key={article.id} article={article} />
-                ))}
+              </summary>
+              <div className="searchResultContent">
+                <div className="collectionList">
+                  {articles!.items.map((article) => (
+                    <ArticleSummary key={article.id} article={article} />
+                  ))}
+                </div>
+                {articles!.totalItems > articles!.items.length && (
+                  <Link
+                    href={`/articles?search=${encodeURIComponent(query)}`}
+                    className="textCTA searchMoreLink"
+                  >
+                    See all {articles!.totalItems} articles
+                  </Link>
+                )}
               </div>
-              {articles!.totalItems > articles!.items.length && (
-                <Link
-                  href={`/articles?search=${encodeURIComponent(query)}`}
-                  className="textCTA searchMoreLink"
-                >
-                  See all {articles!.totalItems} articles
-                </Link>
-              )}
-            </section>
+            </details>
           )}
 
           {(actions?.totalItems ?? 0) > 0 && (
-            <section className="searchResultSection">
-              <h2 className="searchResultSectionTitle">
+            <details className="searchResultSection">
+              <summary className="searchResultSectionTitle">
                 Actions
                 <span className="searchResultCount">{actions!.totalItems}</span>
-              </h2>
-              <div className="collectionList">
-                {actions!.items.map((action) => (
-                  <ActionSummary key={action.id} action={action} />
-                ))}
+              </summary>
+              <div className="searchResultContent">
+                <div className="collectionList">
+                  {actions!.items.map((action) => (
+                    <ActionSummary key={action.id} action={action} />
+                  ))}
+                </div>
+                {actions!.totalItems > actions!.items.length && (
+                  <Link
+                    href={`/actions?search=${encodeURIComponent(query)}`}
+                    className="textCTA searchMoreLink"
+                  >
+                    See all {actions!.totalItems} actions
+                  </Link>
+                )}
               </div>
-              {actions!.totalItems > actions!.items.length && (
-                <Link
-                  href={`/actions?search=${encodeURIComponent(query)}`}
-                  className="textCTA searchMoreLink"
-                >
-                  See all {actions!.totalItems} actions
-                </Link>
-              )}
-            </section>
+            </details>
           )}
 
           {totalResults === 0 && (
