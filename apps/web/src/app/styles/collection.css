@@ -56,7 +56,7 @@
 }
 
 .publicShell .collectionItem:hover {
-  border-left-color: var(--color-brand-primary);
+  border-left-color: var(--color-brand-accent);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--color-surface-soft) 98%, white 2%) 0%,

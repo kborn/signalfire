@@ -491,7 +491,7 @@
   gap: var(--space-2);
   padding: clamp(48px, 7vw, 80px) 0 var(--space-5);
   margin-top: var(--space-5);
-  border-top: 2px solid var(--color-brand-primary);
+  border-top: 2px solid var(--color-brand-accent);
 }
 
 .site-footer-nav {
