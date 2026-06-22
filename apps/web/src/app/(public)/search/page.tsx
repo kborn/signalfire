@@ -42,11 +42,16 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
       {query && (
         <div className="searchResults">
-          <p className="searchResultsMeta">
-            {totalResults === 0
-              ? `No results for "${query}"`
-              : `${totalResults} result${totalResults === 1 ? '' : 's'} for "${query}"`}
-          </p>
+          <div className="searchResultsMeta">
+            <p>
+              {totalResults === 0
+                ? `No results for "${query}"`
+                : `${totalResults} result${totalResults === 1 ? '' : 's'} for "${query}"`}
+            </p>
+            {totalResults > 0 && (
+              <p className="searchResultsHint">Expand a section to read results.</p>
+            )}
+          </div>
 
           {(articles?.totalItems ?? 0) > 0 && (
             <details className="searchResultSection">
