@@ -414,9 +414,7 @@
   top: 0;
   right: 0;
   width: clamp(180px, 28vw, 320px);
-  height: 100%;
-  object-fit: cover;
-  object-position: top right;
+  height: auto;
   opacity: 0.25;
   z-index: 0;
   pointer-events: none;
