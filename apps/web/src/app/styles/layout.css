@@ -36,15 +36,6 @@
   margin-bottom: calc(var(--space-4) + 4px);
 }
 
-.site-header::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 -16px;
-  height: 16px;
-  background: var(--color-page-bg);
-  pointer-events: none;
-}
-
 .site-header::before {
   content: '';
   position: absolute;
