@@ -21,7 +21,7 @@
   --color-brand-primary-hover: #dec27f;
   --public-sticky-offset: 60px;
   --demo-banner-height: 0px;
-  --demo-banner-gap: 4px;
+  --demo-banner-gap: calc(var(--space-4) + 4px);
   --topic-accent: var(--color-brand-primary);
 }
 

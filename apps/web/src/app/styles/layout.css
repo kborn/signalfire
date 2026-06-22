@@ -45,6 +45,17 @@
   pointer-events: none;
 }
 
+.site-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: var(--demo-banner-gap);
+  background: var(--color-page-bg);
+  pointer-events: none;
+}
+
 .site-brand-group {
   display: flex;
   align-items: center;
