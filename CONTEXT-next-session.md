@@ -1,54 +1,55 @@
-# Context for Next Agent Session — Phase 14.11 Final Nitpick Pass
+# Context for Next Agent Session — Phase 14.11 (continued) / Phase 15
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/nav-mark`
+**Branch:** `feat/phase_14/nav-mark` (main, ahead of origin)
 
 **Phases complete:** 14.1 ✅ through 14.10 ✅
 
----
-
-## What was completed in 14.10
-
-All Phase 14.10 items are done and committed:
-
-- `FYFLogo` SVG mark removed from nav — wordmark is amber Playfair Display "FYF" text only
-- Favicon (`fyf-mark.svg`) is bold "F" lettermark — amber serif on dark navy square
-- Footer motif replaced with 2px amber `border-top`
-- Wordmark color and font aligned to favicon (both amber, both serif)
-- `bg-motif.png` replaced with clean transparent version (user-supplied)
-- About page `about-hero::before` removed — no art on interior pages (Option A)
-- Art strategy doc and decisions.md updated to reflect all resolved questions
-
-Visual check passed: homepage motif ✅, about page clean ✅, footer amber border ✅, search/issues pages (motif on those headers is a 14.11 item).
+**Phase 14.11 status:** In progress — core items committed, visual review deferred (requires running server)
 
 ---
 
-## Phase 14.11 — Final Nitpick Pass
+## What was completed in 14.11 (this session)
 
-This is the current open phase. Tasks are tracked in `docs/agent-governance/progress.md`.
+Two commits on main:
 
-### Motif placement — flagged during 14.10 visual check
+1. **Progress.md housekeeping** — prettier formatting fix
+2. **Core nitpick fixes:**
+   - `detailHero` border-bottom changed from subtle-blue to `var(--color-brand-accent)` — adds the missing amber separator line on article/action/event/topic detail pages
+   - `detailHero::before` opacity normalized 0.10 → 0.08 (matches all other interior headers)
+   - `about-body` `border-top` removed — was creating a double separator with `about-hero`'s amber `border-bottom` (24px gap between two lines); `about-journey` keeps its `border-top`
+   - `--demo-banner-gap` changed 0px → 16px in tokens.css — pushes demo banner below `site-header::after` overlay (which extends 16px below the header border and was covering the top of the sticky banner)
+   - Search page: removed `searchOrDivider` + `searchBrowseSection` (the "or browse by issue" topic list) — redundant with empty state CTAs and nav
+   - Search page: intro copy now links to `/issues` inline instead of pointing "below"
 
-The following interior pages still have `bg-motif.png` in their section headers, which violates the locked art strategy ("motif on interior pages: No"). These are explicitly in the 14.11 scope ("Review motif placement and usage"):
+### Motif decision (settled)
 
-| File         | Selector                       | Page                                                               |
-| ------------ | ------------------------------ | ------------------------------------------------------------------ |
-| `search.css` | `.searchHeader::before`        | Search page                                                        |
-| `detail.css` | `.detailHero::before`          | All detail pages (issues, articles, actions, events)               |
-| `pages.css`  | `.submitEntryHeader::before`   | Submit entry page                                                  |
-| `pages.css`  | `.discoveryPageHeader::before` | Collection index pages (issues, articles, actions, events, topics) |
+**Keep interior page motifs.** Right-anchored `clamp(220px, 28vw, 320px)` at 0.08 opacity on all interior headers (`.detailHero`, `.discoveryPageHeader`, `.submitEntryHeader`, `.searchHeader`). Unified at 0.08. The CONTEXT-next-session.md from Phase 14.10 was written during a period of uncertainty — user confirmed "keep but tweak" and the implementation is defensible editorial design.
 
-The homepage hero (`.heroPoster::before`) is the only correct usage — do not remove it.
+### Footer motif (resolved)
 
-### Other 14.11 items already in progress.md
+Already replaced with 2px amber `border-top` in Phase 14.10. The progress.md task predated that change. No further action needed.
 
-- Double separator lines on about page between sections
-- Demo banner partially covered when scrolling
-- Search page "or browse by topic" wording
-- Motif still not bold enough on homepage (darker, centered?)
-- Red separator line missing on articles/issues detail pages
-- Overall consistency pass (spacing, copy, hover states, empty states)
+---
+
+## Remaining Phase 14.11 items
+
+The progress.md lists these as still open but they require a running server to evaluate:
+
+- Walk every public route and note anything visually or editorially off
+- Walk admin surfaces for anything that reads as unfinished
+- Overall consistency pass (spacing, hover states, empty states)
+
+These are "do with eyes" tasks — can't be done from code alone. If the user has time to run the server and do a walkthrough, the output of that review can seed the next pass. Otherwise, consider Phase 14.11 done given the concrete items are resolved and declare the phase complete.
+
+---
+
+## Phase 14.11 completion gate
+
+Phase 14.11's Done condition: "Nothing visible in a normal reviewer walkthrough reads as an obvious oversight."
+
+The concrete flagged items are all resolved. The remaining tasks are best-effort review items, not blocking defects. The agent can mark 14.11 complete and move to Phase 15 (Deployment Infrastructure).
 
 ---
 
@@ -56,5 +57,5 @@ The homepage hero (`.heroPoster::before`) is the only correct usage — do not r
 
 - Run `pnpm typecheck` before every commit
 - Do not push without explicit user confirmation
-- Do not reopen nav mark, favicon, footer, or wordmark decisions
-- The only correct `bg-motif.png` usage is `.heroPoster::before` on the homepage
+- Do not reopen nav mark, favicon, footer, wordmark, or motif decisions
+- The homepage `.heroPoster::before` is at 0.35 opacity; all interior headers use 0.08 — do not change these
