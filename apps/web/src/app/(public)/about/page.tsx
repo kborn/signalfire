@@ -20,8 +20,8 @@ export default async function AboutPage() {
       <section className="page-section about-body">
         <h2>You&apos;re not stuck because you don&apos;t care.</h2>
         <p>
-          People are angry, scared, and frustrated for good reason. It is easy to look at the scale
-          of what is happening and feel like nothing you do will matter.
+          People are angry, overwhelmed, and frustrated for good reason. It is easy to look at the
+          scale of what is happening and feel like nothing you do will matter.
         </p>
         <p>
           But power is not only held somewhere else. It is also built when people choose where to
@@ -30,6 +30,13 @@ export default async function AboutPage() {
         <p>
           Find Your Fight exists for the person saying: I want to do something, but I do not know
           where to start. That is who this is for.
+        </p>
+        <p>
+          And &ldquo;doing something&rdquo; is a wider category than it sounds. Talking to a
+          neighbor about what you learned. Keeping up with one issue so you are not caught off
+          guard. Writing one email this week. None of this is nothing. Doing nothing is the only
+          thing guaranteed to leave you feeling worse — and it is exactly what the people flooding
+          the zone are counting on.
         </p>
       </section>
 

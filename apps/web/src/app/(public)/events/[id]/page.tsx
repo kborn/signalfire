@@ -200,7 +200,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       </div>
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know of another event?</p>
-        <p className="metaText">If you know of an event that belongs here, send it in.</p>
+        <p className="metaText">Know of an event we missed? Send it in.</p>
         <Link href="/submit/event" className="textCTA">
           Submit an event
         </Link>

@@ -22,9 +22,10 @@ export default async function HomePage() {
           believe there&apos;s nothing one person can do.
         </p>
         <p className="heroPosterSub">
-          But every movement that ever changed anything started the same way — with someone who
-          found the one fight that was theirs and refused to let go. That fire already exists in
-          you. This is where you find it.
+          You don&apos;t have to be the one who fixes everything. You just have to find the one
+          thing that&apos;s already yours — and refuse to let it go. Staying in it, in whatever way
+          you can, is itself a form of resistance. Find your fight. Find the part of you that keeps
+          showing up.
         </p>
         <div className="heroPosterCTA">
           <Link href="#issue-roll" className="primaryCTA">
@@ -48,8 +49,8 @@ export default async function HomePage() {
             <p className="collectionItemEyebrow">Step 1</p>
             <h3 className="collectionItemTitle">Go deep on one issue</h3>
             <p className="collectionItemSummary">
-              Your issue page pulls together context, explainers, and organizing opportunities —
-              everything you need to move from knowing to doing.
+              Issue pages bring together articles, actions, and events around the things that matter
+              — everything you need to go from knowing to doing.
             </p>
           </Link>
           <Link href="/articles" className="collectionItem homeJourneyCard">
@@ -64,8 +65,8 @@ export default async function HomePage() {
             <p className="collectionItemEyebrow">Step 3</p>
             <h3 className="collectionItemTitle">Do one concrete thing</h3>
             <p className="collectionItemSummary">
-              A contact. A donation. A volunteer slot. An event nearby. One step is enough to begin
-              — and beginning changes everything.
+              It doesn&apos;t have to be big. A call, a donation, showing up to something. Take the
+              step that&apos;s actually in reach — the next one gets easier.
             </p>
           </Link>
         </div>
@@ -104,10 +105,10 @@ export default async function HomePage() {
       {/* ── Contribute ── */}
       <section className="page-section home-contribute">
         <p className="section-label">Contribute</p>
-        <h2>Help more people find a way in.</h2>
+        <h2>If you found yours, help someone else find theirs.</h2>
         <p>
-          Know of an event, a resource, or a story worth adding? Send it in — every submission gets
-          reviewed before it goes live.
+          Have an article, a guide, or a tip about an event worth knowing? Send it in — everything
+          gets reviewed before it goes live.
         </p>
         <Link href="/submit" className="primaryCTA">
           Help someone find theirs.

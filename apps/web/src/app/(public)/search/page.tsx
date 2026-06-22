@@ -31,9 +31,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         <h1 className="pageTitle">Search</h1>
         {!query && (
           <p className="page-intro">
-            Search looks for word matches in article and action titles and content. If you
-            don&apos;t find what you&apos;re looking for, try browsing by{' '}
-            <Link href="/issues">issue</Link> — the categories cover more ground.
+            Word matches in article and action titles and content. For broader discovery,{' '}
+            <Link href="/issues">browse by issue</Link> instead.
           </p>
         )}
       </div>

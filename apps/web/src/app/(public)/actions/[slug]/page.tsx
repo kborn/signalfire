@@ -138,9 +138,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       </div>
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know of another way to act?</p>
-        <p className="metaText">
-          Know of an action, event, or resource that belongs here? Send it in.
-        </p>
+        <p className="metaText">Know of an action, event, or resource we missed? Send it in.</p>
         <Link href="/submit" className="textCTA">
           Submit content
         </Link>
