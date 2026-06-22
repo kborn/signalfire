@@ -1,15 +1,7 @@
 import type { SVGProps } from 'react';
 
 // ─── Wordmark / brand mark ────────────────────────────────────────────────────
-
-// Placeholder mark — replaced in Phase 14.10 with final artwork
-export function FYFLogo(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 22 22" focusable="false" aria-hidden="true" {...props}>
-      <circle cx="11" cy="11" r="9" fill="var(--color-brand-primary)" />
-    </svg>
-  );
-}
+// Nav wordmark is text-only ("FYF"). No SVG mark — see decisions.md.
 
 export function FlameIcon(props: SVGProps<SVGSVGElement>) {
   return (

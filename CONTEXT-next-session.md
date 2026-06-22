@@ -1,77 +1,60 @@
-# Context for Next Agent Session — Phase 14.10
+# Context for Next Agent Session — Phase 14.11 Final Nitpick Pass
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/copy` — Phase 14.9 complete, all checks pass (format, lint, typecheck, build).
+**Branch:** `feat/phase_14/nav-mark`
 
-**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅ 14.8 ✅ 14.9 ✅
-
-**Next: Phase 14.10 — Nav Mark & Favicon Artwork.**
+**Phases complete:** 14.1 ✅ through 14.10 ✅
 
 ---
 
-## What changed in Phase 14.9
+## What was completed in 14.10
 
-Full voice/tone copy pass across every public page. Changes committed in one commit on `feat/phase_14/copy`.
+All Phase 14.10 items are done and committed:
 
-Key rewrites:
+- `FYFLogo` SVG mark removed from nav — wordmark is amber Playfair Display "FYF" text only
+- Favicon (`fyf-mark.svg`) is bold "F" lettermark — amber serif on dark navy square
+- Footer motif replaced with 2px amber `border-top`
+- Wordmark color and font aligned to favicon (both amber, both serif)
+- `bg-motif.png` replaced with clean transparent version (user-supplied)
+- About page `about-hero::before` removed — no art on interior pages (Option A)
+- Art strategy doc and decisions.md updated to reflect all resolved questions
 
-- Homepage, about, issues/articles/actions/events index intros: all shed passive hedging and self-description
-- Issue detail step sub (Read): "Explainers and field guides" → "Read enough to understand what's actually at stake."
-- Action detail: "Related Topics" → "Related Issues"; "Learn More" → "Read First"
-- Event detail: same section header changes + contribute nudge added (was missing)
-- Search: h1 → "Search"; added one-line ILIKE framing in the intro; no-results copy explains word-match limitation
-- Submit entry: h1 → "Share what you know."; card and meta copy sharpened
-- Submission success: "Thanks for submitting" → "We've got it." + tells submitters what happens next
-- "Nothing is published automatically" → "Your submission goes to a reviewer before anything goes live."
-- `role="alert"` on all inline form error `<p>` elements (accessibility, deferred from 14.7)
-- Footer "Submit Content" → "Contribute"
+Visual check passed: homepage motif ✅, about page clean ✅, footer amber border ✅, search/issues pages (motif on those headers is a 14.11 item).
 
 ---
 
-## Phase 14.10 scope
+## Phase 14.11 — Final Nitpick Pass
 
-**Branch:** start `feat/phase_14/nav-mark` from current branch (or merge first — agent's call based on git state)
+This is the current open phase. Tasks are tracked in `docs/agent-governance/progress.md`.
 
-**Goal:** Replace the placeholder amber circle in the nav home-link mark and browser favicon with final artwork.
+### Motif placement — flagged during 14.10 visual check
 
-**Swap points (isolated — only these two files need to change):**
+The following interior pages still have `bg-motif.png` in their section headers, which violates the locked art strategy ("motif on interior pages: No"). These are explicitly in the 14.11 scope ("Review motif placement and usage"):
 
-- `apps/web/src/components/icons.tsx` — `FYFLogo` SVG component (nav mark, renders at ~22px height)
-- `apps/web/public/fyf-mark.svg` — favicon (32×32 viewBox, amber on dark navy)
+| File         | Selector                       | Page                                                               |
+| ------------ | ------------------------------ | ------------------------------------------------------------------ |
+| `search.css` | `.searchHeader::before`        | Search page                                                        |
+| `detail.css` | `.detailHero::before`          | All detail pages (issues, articles, actions, events)               |
+| `pages.css`  | `.submitEntryHeader::before`   | Submit entry page                                                  |
+| `pages.css`  | `.discoveryPageHeader::before` | Collection index pages (issues, articles, actions, events, topics) |
 
-**Decision to make first:** should the nav mark and favicon be the same design or different?
+The homepage hero (`.heroPoster::before`) is the only correct usage — do not remove it.
 
-- Candidates: (a) same SVG at two sizes, (b) motif-derived image for nav + lettermark for favicon, (c) other
-- This is an **open design question** — the previous agent deferred it here
+### Other 14.11 items already in progress.md
 
-**Practical constraints:**
-
-- The nav mark renders inside a `<Link>` as an `<svg>` element with `className="site-brand-logo"`
-- The favicon is a standalone SVG file served from `/public/fyf-mark.svg`
-- Color token is `--color-brand-primary` (#cfac5a amber) in both
-- Current mark is a placeholder circle — anything more intentional is an improvement
-- If sourcing from the motif image: trace in Figma/Illustrator, export as SVG path
-
-**Done condition:** The nav home-link mark is visually intentional and references the FYF brand; the favicon reads as a recognizable mark at 16px; placeholder circle is gone from both.
-
----
-
-## Remaining Phase 14 subphases
-
-| Subphase | Scope                      | Status      |
-| -------- | -------------------------- | ----------- |
-| 14.9     | Copy pass                  | ✅ complete |
-| 14.10    | Nav mark & favicon artwork | ⏳ next     |
-| 14.11    | Final nitpick pass         | ⏳          |
-
-Full task lists and done conditions are in `progress.md` Phase 14.
+- Double separator lines on about page between sections
+- Demo banner partially covered when scrolling
+- Search page "or browse by topic" wording
+- Motif still not bold enough on homepage (darker, centered?)
+- Red separator line missing on articles/issues detail pages
+- Overall consistency pass (spacing, copy, hover states, empty states)
 
 ---
 
 ## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not expand scope mid-subphase
-- Do not reopen design decisions in `docs/specs/ui/global.md`
-- Screenshots require the dev server + seeded DB (`pnpm dev` + `node scripts/regenerate-doc-screenshots.mjs`)
+- Do not push without explicit user confirmation
+- Do not reopen nav mark, favicon, footer, or wordmark decisions
+- The only correct `bg-motif.png` usage is `.heroPoster::before` on the homepage

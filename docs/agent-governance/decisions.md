@@ -1327,3 +1327,30 @@ The `/events` page shows publicly available upcoming events without any location
 - Do not "fix" the events default experience without replacing it with a proper geo-aware implementation.
 - A production release should implement IP geolocation lookup or a user-saved region preference before showing regional events as default content.
 - A review document represents the state of the product at a single point in time. Before acting on a specific finding, verify it still applies to the current codebase.
+
+---
+
+### ► Visual identity art strategy
+
+###### 2026-06-22
+
+---
+
+###### Decision
+
+The `bg-motif.png` illustration appears on the homepage hero only. It does not appear in the footer, on interior pages, on the search page, or anywhere else in the public shell. The footer carries no background artwork — a 2px amber top border is the visual anchor. The nav wordmark is text-only ("FYF"); no SVG mark appears to the left of it. The favicon is a bold "F" lettermark in brand typography (Playfair Display style) on a dark navy rounded square, built as an SVG without requiring external art.
+
+###### Rationale
+
+- The motif is a detailed illustration (raised fist, swirling arrows). It works as a hero-scale atmospheric statement at 30-35% opacity. At footer scale and below, it reads as either wallpaper or a heavy political symbol — neither is appropriate for the supporting UI.
+- Three successive attempts at an SVG nav mark (placeholder circle, broken chevron, wrong symbol category) established that a generated mark without supplied art cannot be made intentional. Removing the mark and using the text wordmark is more credible than a fourth attempt.
+- The "FYF" text lettermark favicon (previous `fyf-favicon.png`) was rejected in external review for visual weakness. A single "F" in the brand typeface is readable at 16×16 and does not compete with the motif.
+- A single clear art dependency (the cleaned motif PNG) is better than multiple open decisions. Everything else is implementable in code.
+
+###### Implications
+
+- Do not add `bg-motif.png` to footer, about page sidebar, collection pages, or any interior route without revisiting this decision.
+- Do not add an SVG mark to the nav without first agreeing on a specific supplied graphic. Generating one from scratch is not an acceptable substitute.
+- The favicon SVG (`fyf-mark.svg`) is built in code as an "F" lettermark. If the user later supplies a brand mark, replace this file.
+- The one outstanding art dependency is a cleaned `bg-motif.png`: PNG-24 with transparent alpha, ≥2400px wide, no noise layer, clean arrowhead edges. See `docs/specs/ui/visual-identity-art-strategy.md` for full delivery spec.
+- The about page currently uses `bg-motif.png` in `about-hero::before`. This should be removed when the cleaned motif is delivered (it was an interim usage, not a settled decision).
