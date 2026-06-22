@@ -1,77 +1,94 @@
-# Context for Next Agent Session — Phase 14.10
+# Context for Next Agent Session — Phase 14.10 (continued)
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/copy` — Phase 14.9 complete, all checks pass (format, lint, typecheck, build).
+**Branch:** `feat/phase_14/nav-mark`
 
 **Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅ 14.8 ✅ 14.9 ✅
 
-**Next: Phase 14.10 — Nav Mark & Favicon Artwork.**
+**Phase 14.10 is in progress.** The art strategy is now documented and decisions are locked.
+Implementation of the code-only items is ready to proceed. One art dependency is outstanding.
 
 ---
 
-## What changed in Phase 14.9
+## What changed in this session
 
-Full voice/tone copy pass across every public page. Changes committed in one commit on `feat/phase_14/copy`.
-
-Key rewrites:
-
-- Homepage, about, issues/articles/actions/events index intros: all shed passive hedging and self-description
-- Issue detail step sub (Read): "Explainers and field guides" → "Read enough to understand what's actually at stake."
-- Action detail: "Related Topics" → "Related Issues"; "Learn More" → "Read First"
-- Event detail: same section header changes + contribute nudge added (was missing)
-- Search: h1 → "Search"; added one-line ILIKE framing in the intro; no-results copy explains word-match limitation
-- Submit entry: h1 → "Share what you know."; card and meta copy sharpened
-- Submission success: "Thanks for submitting" → "We've got it." + tells submitters what happens next
-- "Nothing is published automatically" → "Your submission goes to a reviewer before anything goes live."
-- `role="alert"` on all inline form error `<p>` elements (accessibility, deferred from 14.7)
-- Footer "Submit Content" → "Contribute"
+- Committed a nav mark SVG that renders as a chevron/arrow, not a flame — **this needs to be
+  replaced** as part of the implementation below (revert `FYFLogo` to nothing, then remove it)
+- Wrote `docs/specs/ui/visual-identity-art-strategy.md` — the canonical art strategy spec
+- Added decision to `docs/agent-governance/decisions.md` — "Visual identity art strategy"
 
 ---
 
-## Phase 14.10 scope
+## Phase 14.10 scope (revised)
 
-**Branch:** start `feat/phase_14/nav-mark` from current branch (or merge first — agent's call based on git state)
+**Goal:** Replace placeholder art with intentional treatments across nav mark, favicon, and footer.
+The motif strategy is now locked — homepage hero only.
 
-**Goal:** Replace the placeholder amber circle in the nav home-link mark and browser favicon with final artwork.
+### Code-only items (no art needed — implement now)
 
-**Swap points (isolated — only these two files need to change):**
+**1. Remove the FYFLogo SVG mark from the nav**
 
-- `apps/web/src/components/icons.tsx` — `FYFLogo` SVG component (nav mark, renders at ~22px height)
-- `apps/web/public/fyf-mark.svg` — favicon (32×32 viewBox, amber on dark navy)
+- `apps/web/src/app/(public)/layout.tsx` — remove `<FYFLogo className="site-brand-logo" />`
+- `apps/web/src/components/icons.tsx` — remove or deprecate `FYFLogo` export
+- `apps/web/src/app/styles/layout.css` — remove `.site-brand-logo` if it becomes unused
 
-**Decision to make first:** should the nav mark and favicon be the same design or different?
+**2. Build and ship the "F" lettermark favicon**
 
-- Candidates: (a) same SVG at two sizes, (b) motif-derived image for nav + lettermark for favicon, (c) other
-- This is an **open design question** — the previous agent deferred it here
+- `apps/web/public/fyf-mark.svg` — currently the broken chevron from this session; replace with
+  a bold "F" in Playfair Display style: amber `#cfac5a` on dark navy `#0f1923` rounded square,
+  `viewBox="0 0 32 32"`, "F" fills ~60% of height, centered
+- Use SVG `<text>` with a serif stack OR trace the Playfair Display "F" as a path
+- Must read clearly at 16×16 (browser tab favicon rendering size)
+- Confirm `apps/web/src/app/layout.tsx` root metadata links to `/fyf-mark.svg`
 
-**Practical constraints:**
+**3. Replace footer motif with amber border**
 
-- The nav mark renders inside a `<Link>` as an `<svg>` element with `className="site-brand-logo"`
-- The favicon is a standalone SVG file served from `/public/fyf-mark.svg`
-- Color token is `--color-brand-primary` (#cfac5a amber) in both
-- Current mark is a placeholder circle — anything more intentional is an improvement
-- If sourcing from the motif image: trace in Figma/Illustrator, export as SVG path
+- `apps/web/src/app/styles/layout.css` — remove `.site-footer::before` pseudo-element entirely
+- Change `.site-footer` border-top to `2px solid var(--color-brand-primary)`
 
-**Done condition:** The nav home-link mark is visually intentional and references the FYF brand; the favicon reads as a recognizable mark at 16px; placeholder circle is gone from both.
+### Art-dependent items (wait for user to supply cleaned `bg-motif.png`)
+
+**4. Replace `bg-motif.png`**
+
+- User supplies: PNG-24 with transparent alpha, ≥2400px wide, no noise/grain layer, clean arrowhead edges
+- Drop file into `apps/web/public/bg-motif.png` (replace in place)
+- After delivery: tune `.heroPoster::before` opacity (start at 0.30, adjust visually)
+- After delivery: remove motif from `about-hero::before` in `pages.css` (lines ~114-130)
+
+---
+
+## Done condition for Phase 14.10
+
+- [ ] FYFLogo removed from nav; text-only "FYF" wordmark remains
+- [ ] Favicon SVG is a clean "F" lettermark, readable at 16px
+- [ ] Footer has no motif; amber border-top
+- [ ] Cleaned `bg-motif.png` delivered and dropped in (art dependency — user supplies)
+- [ ] About page motif sidebar removed
+- [ ] Homepage hero renders without crackle
+- [ ] Full visual check: homepage, about, search (empty), one collection page, footer
+
+---
+
+## Key decisions (locked — do not reopen)
+
+- `docs/agent-governance/decisions.md` → "Visual identity art strategy"
+- `docs/specs/ui/visual-identity-art-strategy.md` — full delivery spec and usage map
 
 ---
 
 ## Remaining Phase 14 subphases
 
-| Subphase | Scope                      | Status      |
-| -------- | -------------------------- | ----------- |
-| 14.9     | Copy pass                  | ✅ complete |
-| 14.10    | Nav mark & favicon artwork | ⏳ next     |
-| 14.11    | Final nitpick pass         | ⏳          |
-
-Full task lists and done conditions are in `progress.md` Phase 14.
+| Subphase | Scope                      | Status         |
+| -------- | -------------------------- | -------------- |
+| 14.10    | Nav mark & favicon artwork | 🔄 in progress |
+| 14.11    | Final nitpick pass         | ⏳             |
 
 ---
 
 ## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not expand scope mid-subphase
-- Do not reopen design decisions in `docs/specs/ui/global.md`
-- Screenshots require the dev server + seeded DB (`pnpm dev` + `node scripts/regenerate-doc-screenshots.mjs`)
+- Do not add the motif to any page other than the homepage hero
+- Do not attempt to generate a nav mark SVG from scratch — the decision is text-only wordmark
+- Do not implement art-dependent items until the user delivers the cleaned PNG
