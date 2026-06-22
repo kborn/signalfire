@@ -1,94 +1,88 @@
-# Context for Next Agent Session — Phase 14.10 (continued)
+# Context for Next Agent Session — Phase 14.10 wrap-up / art strategy
 
 ## State of the repo
 
 **Branch:** `feat/phase_14/nav-mark`
 
-**Phases complete:** 14.1 ✅ 14.2 ✅ 14.3 ✅ 14.4 ✅ 14.5 ✅ 14.6 ✅ 14.7 ✅ 14.8 ✅ 14.9 ✅
+**Phases complete:** 14.1 ✅ through 14.9 ✅
 
-**Phase 14.10 is in progress.** The art strategy is now documented and decisions are locked.
-Implementation of the code-only items is ready to proceed. One art dependency is outstanding.
-
----
-
-## What changed in this session
-
-- Committed a nav mark SVG that renders as a chevron/arrow, not a flame — **this needs to be
-  replaced** as part of the implementation below (revert `FYFLogo` to nothing, then remove it)
-- Wrote `docs/specs/ui/visual-identity-art-strategy.md` — the canonical art strategy spec
-- Added decision to `docs/agent-governance/decisions.md` — "Visual identity art strategy"
+**Phase 14.10 code work is done.** One open design question remains before Phase 14.10 can close.
 
 ---
 
-## Phase 14.10 scope (revised)
+## What was completed this session
 
-**Goal:** Replace placeholder art with intentional treatments across nav mark, favicon, and footer.
-The motif strategy is now locked — homepage hero only.
+All code-only Phase 14.10 items are committed and clean:
 
-### Code-only items (no art needed — implement now)
+- `FYFLogo` SVG mark removed from nav — wordmark is amber Playfair Display "FYF" text only
+- Favicon (`fyf-mark.svg`) replaced with bold "F" lettermark — amber serif on dark navy square
+- Footer motif (`bg-motif.png` via `::before`) removed — replaced with 2px amber `border-top`
+- Wordmark color and font aligned to favicon (both amber, both serif)
+- `bg-motif.png` replaced by user with clean version (transparent alpha, no crackle, crisp edges)
+- `fist.png` added by user as an unlinked asset — isolated fist, same palette, no arrows
 
-**1. Remove the FYFLogo SVG mark from the nav**
-
-- `apps/web/src/app/(public)/layout.tsx` — remove `<FYFLogo className="site-brand-logo" />`
-- `apps/web/src/components/icons.tsx` — remove or deprecate `FYFLogo` export
-- `apps/web/src/app/styles/layout.css` — remove `.site-brand-logo` if it becomes unused
-
-**2. Build and ship the "F" lettermark favicon**
-
-- `apps/web/public/fyf-mark.svg` — currently the broken chevron from this session; replace with
-  a bold "F" in Playfair Display style: amber `#cfac5a` on dark navy `#0f1923` rounded square,
-  `viewBox="0 0 32 32"`, "F" fills ~60% of height, centered
-- Use SVG `<text>` with a serif stack OR trace the Playfair Display "F" as a path
-- Must read clearly at 16×16 (browser tab favicon rendering size)
-- Confirm `apps/web/src/app/layout.tsx` root metadata links to `/fyf-mark.svg`
-
-**3. Replace footer motif with amber border**
-
-- `apps/web/src/app/styles/layout.css` — remove `.site-footer::before` pseudo-element entirely
-- Change `.site-footer` border-top to `2px solid var(--color-brand-primary)`
-
-### Art-dependent items (wait for user to supply cleaned `bg-motif.png`)
-
-**4. Replace `bg-motif.png`**
-
-- User supplies: PNG-24 with transparent alpha, ≥2400px wide, no noise/grain layer, clean arrowhead edges
-- Drop file into `apps/web/public/bg-motif.png` (replace in place)
-- After delivery: tune `.heroPoster::before` opacity (start at 0.30, adjust visually)
-- After delivery: remove motif from `about-hero::before` in `pages.css` (lines ~114-130)
+Art strategy spec written: `docs/specs/ui/visual-identity-art-strategy.md`
+Decision recorded: `docs/agent-governance/decisions.md → Visual identity art strategy`
 
 ---
 
-## Done condition for Phase 14.10
+## The one open question
 
-- [ ] FYFLogo removed from nav; text-only "FYF" wordmark remains
-- [ ] Favicon SVG is a clean "F" lettermark, readable at 16px
-- [ ] Footer has no motif; amber border-top
-- [ ] Cleaned `bg-motif.png` delivered and dropped in (art dependency — user supplies)
-- [ ] About page motif sidebar removed
-- [ ] Homepage hero renders without crackle
-- [ ] Full visual check: homepage, about, search (empty), one collection page, footer
+**About page: what asset, if any?**
+
+The about page (`pages.css`, `.about-hero::before`) currently shows `bg-motif.png` at 13% opacity
+in a right-side column, roughly 220–320px wide.
+
+Three options discussed but not decided:
+
+| Option | Asset                    | Rationale                                                             |
+| ------ | ------------------------ | --------------------------------------------------------------------- |
+| A      | Nothing                  | Removes all art from interior pages; color system carries the thread  |
+| B      | `fist.png`               | Simpler composition reads better at ~280px than the full motif        |
+| C      | `bg-motif.png` (current) | Consistent with homepage; but composition is too complex at this size |
+
+Option C is visually the weakest — the full motif at 280px loses its composition and reads as noise.
+The real choice is A vs B.
+
+**This decision was deliberately deferred.** Decisions made reactively mid-session are not reliable.
+The next agent should review the full visual identity strategy and make a considered recommendation
+before touching the about page CSS.
 
 ---
 
-## Key decisions (locked — do not reopen)
+## What the next agent should do
 
-- `docs/agent-governance/decisions.md` → "Visual identity art strategy"
-- `docs/specs/ui/visual-identity-art-strategy.md` — full delivery spec and usage map
+1. Read `docs/specs/ui/visual-identity-art-strategy.md` in full
+2. Read `docs/agent-governance/decisions.md → Visual identity art strategy`
+3. View the current assets: `bg-motif.png` and `fist.png` in `apps/web/public/`
+4. View the about page hero section: `pages.css` lines 107–131, and the about page route
+5. Make a principled recommendation on the A vs B question above — not based on conversation
+   momentum, but on what a UX professional would actually recommend for a civic action portfolio
+6. Implement the decision and close Phase 14.10
+
+Do not make other visual identity changes in the same session without flagging them separately.
+
+---
+
+## Phase 14.10 done condition (remaining)
+
+- [ ] About page art question resolved (A vs B above)
+- [ ] Full visual check after: homepage, about, search (empty state), one collection page, footer
 
 ---
 
 ## Remaining Phase 14 subphases
 
-| Subphase | Scope                      | Status         |
-| -------- | -------------------------- | -------------- |
-| 14.10    | Nav mark & favicon artwork | 🔄 in progress |
-| 14.11    | Final nitpick pass         | ⏳             |
+| Subphase | Scope                      | Status           |
+| -------- | -------------------------- | ---------------- |
+| 14.10    | Nav mark & favicon artwork | 🔄 one item open |
+| 14.11    | Final nitpick pass         | ⏳               |
 
 ---
 
 ## Guardrails
 
 - Run `pnpm typecheck` before every commit
-- Do not add the motif to any page other than the homepage hero
-- Do not attempt to generate a nav mark SVG from scratch — the decision is text-only wordmark
-- Do not implement art-dependent items until the user delivers the cleaned PNG
+- Do not add the motif to any page other than the homepage hero without updating the decisions doc
+- Do not thread art to collection pages, detail pages, or search — color system only
+- Do not reopen nav mark, favicon, footer, or wordmark decisions
