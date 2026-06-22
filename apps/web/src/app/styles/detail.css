@@ -216,6 +216,7 @@
 
 .publicShell .metaValue {
   color: var(--color-text-primary);
+  overflow-wrap: break-word;
 }
 
 .markdownContent {

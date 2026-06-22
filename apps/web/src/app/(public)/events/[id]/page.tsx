@@ -146,7 +146,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
                 <p className="metaLabel">Website</p>
                 <p className="metaValue">
                   <a href={event.website} target="_blank" rel="noreferrer">
-                    {event.website}
+                    {new URL(event.website).hostname}
                   </a>
                 </p>
               </div>
