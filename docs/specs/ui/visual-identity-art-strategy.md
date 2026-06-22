@@ -108,15 +108,13 @@
 
 | Asset                  | Homepage         | About   | Interior pages | Footer   | Admin    |
 | ---------------------- | ---------------- | ------- | -------------- | -------- | -------- |
-| `bg-motif.png`         | ✅ Hero only     | ⚠️ Open | ❌ Never       | ❌ Done  | ❌ Never |
-| `fist.png`             | —                | ⚠️ Open | ❌ Never       | ❌ Never | ❌ Never |
+| `bg-motif.png`         | ✅ Hero only     | ❌ Done | ❌ Never       | ❌ Done  | ❌ Never |
+| `fist.png`             | —                | ❌ Done | ❌ Never       | ❌ Never | ❌ Never |
 | Favicon `fyf-mark.svg` | Browser tab only | —       | —              | —        | —        |
 | FYFLogo SVG mark       | ❌ Done          | —       | —              | —        | —        |
 | "FYF" text wordmark    | ✅ Nav           | ✅ Nav  | ✅ Nav         | —        | —        |
 
-**⚠️ About page art is an open decision.** Options: nothing, `fist.png`, or `bg-motif.png` (current,
-but the full composition is too complex at the ~280px sidebar width it renders at). Resolve before
-closing Phase 14.10. See `CONTEXT-next-session.md` for full framing.
+**About page art: resolved — no artwork.** The `about-hero::before` pseudo-element has been removed. The color system (amber, dark navy, Playfair Display) carries the page without illustration. Adding `fist.png` as a one-off exception would have violated the "interior pages: No" rule from the locked decision.
 
 ---
 
