@@ -105,6 +105,7 @@
 }
 
 .about-hero {
+  padding-top: var(--space-2);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--color-brand-accent);
 }
@@ -119,6 +120,7 @@
 .submitEntryHeader {
   display: grid;
   gap: var(--space-1);
+  padding-top: var(--space-2);
   padding-bottom: var(--space-3);
   border-bottom: 1px solid var(--color-brand-accent);
 }
