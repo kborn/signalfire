@@ -148,6 +148,9 @@
 .about-body,
 .about-journey {
   padding-top: var(--space-5);
+}
+
+.about-journey {
   border-top: 1px solid var(--color-border-subtle);
 }
 
