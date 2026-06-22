@@ -102,7 +102,16 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
             <h3>Related Issues</h3>
             <ul className="relatedList">
               {action.topics.map((topic) => (
-                <li key={topic.id} className="relatedListItem">
+                <li
+                  key={topic.id}
+                  className="relatedListItem"
+                  data-topic={topic.slug}
+                  style={
+                    topic.color
+                      ? ({ '--topic-accent': topic.color } as React.CSSProperties)
+                      : undefined
+                  }
+                >
                   <Link href={`/issues/${topic.slug}`} className="relatedListItemTitle">
                     {topic.name}
                   </Link>
