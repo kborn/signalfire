@@ -41,6 +41,11 @@
   margin-bottom: var(--demo-banner-gap);
 }
 
+.site-sticky-area:not(:has(.demoBanner)) .site-header {
+  margin-bottom: 0;
+  transition: margin-bottom 0.32s ease;
+}
+
 .site-header::before {
   content: '';
   position: absolute;
