@@ -194,10 +194,10 @@
 }
 
 .demoBanner {
-  position: relative;
+  position: sticky;
+  top: calc(var(--public-sticky-offset) + var(--demo-banner-gap));
   z-index: 90;
   isolation: isolate;
-  margin-top: calc(-1 * var(--space-4));
   display: flex;
   flex-wrap: wrap;
   align-items: center;
