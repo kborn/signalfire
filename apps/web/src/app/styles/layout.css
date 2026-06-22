@@ -38,12 +38,7 @@
   gap: var(--space-2) var(--space-3);
   padding: 20px 0 12px;
   border-bottom: 1px solid var(--color-border-subtle);
-  margin-bottom: var(--demo-banner-gap);
-}
-
-.site-sticky-area:not(:has(.demoBanner)) .site-header {
   margin-bottom: 0;
-  transition: margin-bottom 0.32s ease;
 }
 
 .site-header::before {
@@ -207,6 +202,7 @@
   position: relative;
   z-index: 90;
   isolation: isolate;
+  margin-top: var(--demo-banner-gap);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
