@@ -212,7 +212,7 @@
   border-radius: 8px;
   background: var(--color-surface-soft);
   box-shadow: 0 8px 24px color-mix(in srgb, var(--color-page-bg) 55%, transparent);
-  margin-bottom: calc(var(--space-4) + 4px);
+  margin-bottom: 0;
   overflow: hidden;
   transform-origin: top center;
   animation: demoBannerEnter 0.45s cubic-bezier(0, 0, 0.2, 1);
