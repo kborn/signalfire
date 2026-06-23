@@ -245,7 +245,7 @@
 
 .heroPoster {
   position: relative;
-  padding: var(--space-5) 0 var(--space-4);
+  padding: var(--space-5) 0 var(--space-2);
   display: grid;
   gap: var(--space-3);
   isolation: isolate;
@@ -257,8 +257,8 @@
   position: absolute;
   inset: 0;
   background-image: url('/bg-motif.png');
-  background-size: 110% auto;
-  background-position: center center;
+  background-size: cover;
+  background-position: center 35%;
   background-repeat: no-repeat;
   opacity: 0.35;
   z-index: 0;
