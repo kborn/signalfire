@@ -253,10 +253,6 @@
 
 /* ── Event detail: information-first layout ──────────────────────────────── */
 
-.eventDetailHero {
-  gap: var(--space-2);
-}
-
 .eventDetailKeyInfo {
   padding: var(--space-1) 0 var(--space-2);
 }

@@ -73,11 +73,6 @@
   line-height: 1.6;
 }
 
-.homeSupportCopy {
-  color: var(--color-text-muted);
-  max-width: 58ch;
-}
-
 .home-sectionHeading {
   display: grid;
   gap: var(--space-1);
@@ -292,23 +287,6 @@
   font-weight: 500;
 }
 
-.heroPosterQuestion {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(4.5rem, 12vw, 8.5rem);
-  font-weight: 900;
-  line-height: 0.88;
-  letter-spacing: -0.035em;
-  max-width: 9ch;
-  color: var(--color-text-primary);
-}
-
-.heroPosterSub {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  line-height: 1.5;
-  color: var(--color-text-muted);
-  max-width: 52ch;
-}
-
 .heroPosterCTA {
   margin-top: var(--space-1);
 }
@@ -368,10 +346,6 @@
   color: var(--topic-accent, var(--color-brand-primary));
   border-left-color: var(--topic-accent, var(--color-brand-primary));
   background: color-mix(in srgb, var(--topic-accent, var(--color-brand-primary)) 8%, transparent);
-}
-
-.heroPosterFooter {
-  margin-top: var(--space-1);
 }
 
 .homeJourneyGrid,
