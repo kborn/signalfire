@@ -93,6 +93,11 @@ export default async function ArticleDetailsPage({
                 <ActionSummary key={action.id} action={action} variant="related" />
               ))}
             </div>
+            {article.topics.length > 0 && (
+              <Link href={`/actions?topicSlug=${article.topics[0].slug}`} className="textCTA">
+                Browse all actions on {article.topics[0].name} →
+              </Link>
+            )}
           </section>
         ) : article.topics.length > 0 ? (
           <section className="relatedSection articleActionNudge">

@@ -14,7 +14,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
 
   return (
     <div className="publicShell">
-      <div className="container site-main publicContent">
+      <div className="container site-main publicContent" data-demo={isDemoMode ? '' : undefined}>
         <div className="site-sticky-area">
           <header className="site-header">
             <div className="site-brand-group">
@@ -26,9 +26,9 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             </div>
             <SiteNav />
           </header>
-          {isDemoMode ? <DemoBanner /> : null}
         </div>
         <main>{children}</main>
+        {isDemoMode ? <DemoBanner /> : null}
         <footer className="site-footer">
           <nav className="site-footer-nav" aria-label="Footer">
             <Link href="/issues">Issues</Link>

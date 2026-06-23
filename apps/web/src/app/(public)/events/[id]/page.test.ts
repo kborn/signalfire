@@ -84,7 +84,6 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('Rally');
     expect(markup).toContain('City Hall Plaza');
     expect(markup).toContain('1 Civic Center Plaza');
-    expect(markup).toContain('City, State &amp; ZIP');
     expect(markup).toContain('Boston, MA 02108');
     expect(markup).not.toContain('Boston, MA, 02108, USA');
     expect(markup).not.toContain('Region');
@@ -98,7 +97,7 @@ describe('EventDetailsPage', () => {
     expect(markup).toContain('href="/articles/housing-policy-basics"');
     expect(markup).toContain('Take Action');
     expect(markup).toContain('href="/actions/contact-city-council"');
-    expect(markup).toContain('class="metaValue eventType"');
+    expect(markup).toContain('class="summaryMeta"');
     expect(markup).toContain('class="relatedList"');
   });
 

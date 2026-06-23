@@ -34,10 +34,6 @@
     gap: 0.5rem;
     padding-top: 0.75rem;
     padding-bottom: 0.85rem;
-    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + var(--demo-banner-gap));
-  }
-
-  .publicShell:not(:has(.demoBanner)) .topicSelector {
     top: var(--public-sticky-offset);
   }
 
@@ -183,14 +179,9 @@
 
   .demoBanner {
     align-items: flex-start;
-    top: calc(var(--public-sticky-offset) + 8px);
   }
 
   .topicSelector {
-    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + 8px);
-  }
-
-  .publicShell:not(:has(.demoBanner)) .topicSelector {
     top: var(--public-sticky-offset);
   }
 

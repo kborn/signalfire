@@ -67,7 +67,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
         )}
         {topic.actions.length > 0 && (
           <section
-            className="relatedSection issueStepSection"
+            className="relatedSection issueStepSection issueStepSection--act"
             aria-labelledby="topic-actions-label"
           >
             <div

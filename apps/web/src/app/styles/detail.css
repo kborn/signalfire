@@ -335,6 +335,15 @@
   border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 50%, transparent);
 }
 
+.issueStepSection--act {
+  border-top-color: color-mix(
+    in srgb,
+    var(--topic-accent, var(--color-brand-primary)) 60%,
+    transparent
+  );
+  border-top-width: 2px;
+}
+
 .issueStepHeader {
   display: grid;
   gap: var(--space-0);

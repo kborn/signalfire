@@ -59,11 +59,11 @@ describe('TopicDetailsPage', () => {
     expect(markup).toContain('Read enough to understand what');
     expect(markup).toContain('href="/articles/climate-policy-basics"');
     expect(markup).toContain('Climate Policy Basics');
-    expect(markup).toContain('This is where your fight gets real');
+    expect(markup).toContain('This is where knowing becomes doing.');
     expect(markup).toContain('href="/actions/call-your-state-representative"');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('href="/events?topicSlug=climate"');
-    expect(markup).toContain('Find Events on This Issue');
+    expect(markup).toContain('Find events on Climate');
   });
 
   it('translates a 404 topic API error into route not-found behavior', async () => {

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { EventSummary as EventSummaryData } from '@signal-fire/api-contracts';
-import { formatEventTime } from '@/lib/common/time';
+import { formatEventTime, formatEventDateChip } from '@/lib/common/time';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 
 export function EventSummary({ event }: { event: EventSummaryData }) {
@@ -10,6 +10,7 @@ export function EventSummary({ event }: { event: EventSummaryData }) {
 
   return (
     <Link href={`/events/${event.id}`} className="collectionItem">
+      <p className="eventDateChip">{formatEventDateChip(event.startTime)}</p>
       <h2 className="collectionItemTitle">{event.title}</h2>
       <p className="eventMeta">{formatEventTypeLabel(event.eventType)}</p>
       <p className="collectionItemSummary">{event.summary}</p>

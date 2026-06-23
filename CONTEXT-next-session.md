@@ -65,5 +65,4 @@ The public-facing product is at 8/10 by honest agent review. Key surfaces:
 
 ## Review documents
 
-All reviews are in `docs/reviews/`. The final review for Phase 14 is
-`review-2026-06-23-final.md` (8/10 overall).
+All reviews are in `docs/reviews/`.

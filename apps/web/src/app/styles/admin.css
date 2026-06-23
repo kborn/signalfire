@@ -1215,16 +1215,12 @@
   margin-top: 0;
   margin-bottom: 4px;
   position: sticky;
-  top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + var(--demo-banner-gap));
+  top: var(--public-sticky-offset);
   z-index: 80;
   isolation: isolate;
   background: var(--color-page-bg);
   border-bottom: 1px solid
     color-mix(in srgb, var(--color-brand-primary) 60%, var(--color-border-subtle));
-}
-
-.publicShell:not(:has(.demoBanner)) .topicSelector {
-  top: var(--public-sticky-offset);
 }
 
 .topicSelector::after {
