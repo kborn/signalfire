@@ -424,7 +424,8 @@ export function EventSubmissionForm({ topics }: EventSubmissionFormProps) {
           Your submission is in. A real person reviews everything before it goes live.
         </p>
         <p className="metaText">
-          If you left an email address, we&apos;ll reach out if we have questions.
+          Submissions are reviewed within a few days. If it&apos;s a good fit, it goes live —
+          we&apos;ll only be in touch if we have questions.
         </p>
         <div className="ctaRow submissionSuccessActions">
           <Link href="/events" className="primaryCTA">
