@@ -1361,3 +1361,43 @@ The footer carries no background artwork — a 2px amber `border-top` is the vis
 - The collection page implementation uses an `<img>` element (not a CSS `::before`) with `className="discoveryPageHeaderMotif"`. The CSS lives in `.discoveryPageHeader` in `pages.css`. Do not convert to a pseudo-element without verifying that the fade and z-index behavior transfers correctly.
 - Do not add an SVG mark to the nav without first agreeing on a specific supplied graphic. Generating one from scratch is not an acceptable substitute.
 - The favicon SVG (`fyf-mark.svg`) is the "F" lettermark. Replace if a brand mark is later supplied.
+
+---
+
+### ► Phase 14 review cycle: cutoff and what comes next
+
+###### 2026-06-23
+
+---
+
+###### Decision
+
+The agent-driven review cycle ends at Phase 14. No further agent-led visual review passes
+are planned before launch. The cutoff score is approximately 7.5/10 — honest, not aspirational.
+Professional UX review is the right next gate before Milestone 1 goes live.
+
+###### Rationale
+
+- Agent reviews across Phase 14 produced scores ranging from 7/10 (fresh cold session)
+  to 8/10 (session with implementation context). The spread reflects the inconsistency of
+  the method as much as real changes in product quality.
+- Agents can identify structural gaps, missing navigation, dead code, and copy problems.
+  They are not reliable for design judgment — whether something _feels right_, whether
+  visual weight is correct, or whether a product reads as credible to a real user.
+- Some Phase 14 improvements were meaningful (demo banner placement, journey strip,
+  homepage card grid, 404 shell). Others were reorganization without clear net gain.
+  The honest retrospective is that the review cycle surfaced some real problems and
+  some noise, and it's not always clear which was which.
+- Continuing to chase a higher agent score risks over-optimizing for what agents
+  notice from screenshots rather than what real users experience.
+
+###### Implications
+
+- Do not commission further agent review passes as a quality gate before launch.
+- The remaining open findings from the Phase 14 cycle are preserved in
+  `docs/future/open-ux-findings.md`.
+- A professional UX review — from a human who works in design — is the appropriate
+  next quality gate before the public demo goes live.
+- The events surface is the one area where agent reviews consistently identified
+  real problems that were not fixed. That surface should be the first agenda item
+  for the professional review.
