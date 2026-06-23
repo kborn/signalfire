@@ -8,12 +8,12 @@
 
 ## Score Tracker
 
-| Dimension     | This Review | Prior Review | Target  |
-| ------------- | ----------- | ------------ | ------- |
-| Visual Design | —           | —            | 8.0     |
-| UX / Product  | —           | —            | 8.5     |
-| Engineering   | —           | —            | 9.0     |
-| **Overall**   | **—**       | **—**        | **8.5** |
+| Dimension     | This Review |
+| ------------- | ----------- |
+| Visual Design | —           |
+| UX / Product  | —           |
+| Engineering   | —           |
+| **Overall**   | **—**       |
 
 ---
 

@@ -319,51 +319,38 @@
 
 .heroPosterRoll {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
   margin-top: var(--space-2);
 }
 
 .heroPosterIssueLink {
-  display: block;
+  display: inline-flex;
   font-family: var(--font-display), Georgia, serif;
-  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-size: clamp(1.1rem, 2.4vw, 1.55rem);
   font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
   text-decoration: none;
-  padding: 0.15em 0 0.15em 0.6em;
-  border-left: 3px solid transparent;
-  color: var(--color-text-primary);
+  padding: 0.2em 0.1em;
+  color: color-mix(
+    in srgb,
+    var(--topic-accent, var(--color-brand-primary)) 85%,
+    var(--color-text-primary)
+  );
+  border-bottom: 2px solid
+    color-mix(in srgb, var(--topic-accent, var(--color-brand-primary)) 35%, transparent);
   transition:
     color 0.15s ease,
     border-color 0.15s ease,
-    background 0.15s ease,
-    padding-left 0.15s ease;
-}
-
-.heroPosterIssueLink[data-topic] {
-  border-left-color: color-mix(
-    in srgb,
-    var(--topic-accent, var(--color-brand-primary)) 55%,
-    transparent
-  );
-  background: color-mix(in srgb, var(--topic-accent, var(--color-brand-primary)) 4%, transparent);
+    background 0.15s ease;
 }
 
 .heroPosterIssueLink:hover {
-  color: var(--color-brand-primary);
-  border-left-color: var(--color-brand-primary);
-  border-left-width: 4px;
-  padding-left: 0.9em;
-  background: color-mix(in srgb, var(--color-brand-primary) 6%, transparent);
-  text-decoration: none;
-}
-
-.heroPosterIssueLink[data-topic]:hover {
   color: var(--topic-accent, var(--color-brand-primary));
-  border-left-color: var(--topic-accent, var(--color-brand-primary));
+  border-bottom-color: var(--topic-accent, var(--color-brand-primary));
   background: color-mix(in srgb, var(--topic-accent, var(--color-brand-primary)) 8%, transparent);
+  text-decoration: none;
 }
 
 .heroPosterFooter {

@@ -19,6 +19,7 @@ export function ArticleSummary({ article, variant = 'collection' }: ArticleSumma
 
   return (
     <Link href={`/articles/${article.slug}`} className={itemClassName}>
+      {variant === 'collection' && <p className="collectionItemEyebrow">Article</p>}
       <TitleTag className={titleClassName}>{article.title}</TitleTag>
       {publishedAt && <p className="summaryMeta">Published {publishedAt}</p>}
       <p className={summaryClassName}>{article.summary}</p>

@@ -97,7 +97,7 @@ export default async function ArticleDetailsPage({
             </div>
           </section>
         )}
-        {article.actions.length > 0 && (
+        {article.actions.length > 0 ? (
           <section className="relatedSection">
             <h3>Take Action</h3>
             <div className="relatedList">
@@ -106,7 +106,17 @@ export default async function ArticleDetailsPage({
               ))}
             </div>
           </section>
-        )}
+        ) : article.topics.length > 0 ? (
+          <section className="relatedSection articleActionNudge">
+            <p className="section-label">Ready to do something?</p>
+            <p className="relatedSectionTagline">
+              Find concrete actions you can take on {article.topics[0].name}.
+            </p>
+            <Link href={`/issues/${article.topics[0].slug}`} className="textCTA">
+              See actions on {article.topics[0].name}
+            </Link>
+          </section>
+        ) : null}
       </section>
       <div className="detailPageNav">
         <Link href="/articles" className="textCTA">

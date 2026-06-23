@@ -33,9 +33,23 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
       <section className="detailContent detailContent--topic">
-        <section className="detailMetaPanel">
+        <div className="issueOverviewSection">
+          <div
+            className="issueStepHeader"
+            data-topic={topic.slug}
+            style={
+              topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
+            }
+          >
+            <span className="issueStepNum">01</span>
+            <h2 className="issueStepTitle">Go Deep</h2>
+            <p className="issueStepSub">
+              Start here. Read enough to understand what&apos;s at stake — where the pressure is and
+              where it&apos;s missing.
+            </p>
+          </div>
           <p className="detailLead">{topic.description}</p>
-        </section>
+        </div>
         {topic.articles.length > 0 && (
           <section
             className="relatedSection issueStepSection"
