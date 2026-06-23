@@ -122,7 +122,7 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
           location — use the region selector to find them.
         </p>
       )}
-      <details className="eventFilterPanel">
+      <details className="eventFilterCollapsible">
         <summary className="eventFilterToggle">Filter events</summary>
         <EventFilters params={resolvedParams} />
       </details>

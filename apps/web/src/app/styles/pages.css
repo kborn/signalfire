@@ -435,7 +435,7 @@
   padding-top: var(--space-1);
 }
 
-.eventFilterPanel {
+.eventFilterCollapsible {
   display: block;
 }
 
@@ -464,7 +464,7 @@
   transition: transform 0.15s ease;
 }
 
-details.eventFilterPanel[open] .eventFilterToggle::before {
+details.eventFilterCollapsible[open] .eventFilterToggle::before {
   transform: rotate(90deg);
 }
 
