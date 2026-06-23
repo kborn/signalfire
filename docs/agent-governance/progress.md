@@ -2207,7 +2207,7 @@ Harden the repository as a credible merge gate and add post-Milestone 1 maintena
 - Fixed `actions/checkout@v6` → `@v4` across all CI jobs (v6 does not exist; all jobs would have failed)
 - Added `audit` job to CI running `pnpm audit --prod`; resolved pre-existing `multer` DoS advisory (GHSA-72gw-mp4g-v24j, GHSA-3p4h-7m6x-2hcm) via `pnpm.overrides` pinning `multer>=2.2.0`
 - Added `.github/dependabot.yml` covering npm workspace and GitHub Actions, weekly on Mondays, grouped dev-tooling updates
-- Branch protection to apply on `main` after merge: required status checks (lint, typecheck, build, unit-test, audit), no direct push
+- Branch protection to apply on `main` after merge: required status checks (lint, typecheck, unit-test, audit), no direct push; `build` excluded until `NEXT_PUBLIC_API_URL` is wired in CI (Phase 15.3)
 - `CODEOWNERS`: skipped — solo project, adds friction with no review-clarity benefit at this stage
 
 ---
@@ -2224,6 +2224,7 @@ Wire the chosen hosting provider with the correct env vars, secrets, and migrati
 - [ ] Wire admin-auth session config for the deployed environment (cookie domain, secure flag, session secret)
 - [ ] Validate the migration workflow end-to-end against a deployed or staging database instance
 - [ ] Deploy a staging or preview instance and confirm public routes, admin auth, and the API all behave correctly
+- [ ] Add `NEXT_PUBLIC_API_URL` as a CI secret pointing to the deployed API so the `build` job passes in CI
 
 ---
 
