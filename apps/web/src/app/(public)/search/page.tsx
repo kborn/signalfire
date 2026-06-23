@@ -1,4 +1,3 @@
-import { connection } from 'next/server';
 import { getArticlesList } from '@/lib/api/articles';
 import { getActionsList } from '@/lib/api/actions';
 import { ArticleSummary } from '@/components/article-summary';
@@ -13,7 +12,6 @@ type SearchPageProps = {
 };
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  await connection();
   const { q } = await searchParams;
   const query = q?.trim() ?? '';
 

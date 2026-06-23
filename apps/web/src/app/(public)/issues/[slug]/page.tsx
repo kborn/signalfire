@@ -1,5 +1,4 @@
 import React from 'react';
-import { connection } from 'next/server';
 import { getTopicDetails } from '@/lib/api/topics';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
@@ -7,7 +6,7 @@ import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 async function fetchTopicDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -22,7 +21,6 @@ async function fetchTopicDetails(params: Promise<{ slug: string }>) {
 }
 
 export default async function TopicDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
-  await connection();
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage motifPage">

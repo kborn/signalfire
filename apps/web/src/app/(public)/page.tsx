@@ -1,13 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { connection } from 'next/server';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
 import { getTopicsList } from '@/lib/api/topics';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 export default async function HomePage() {
-  await connection();
   const isDemoMode = isDemoModeEnabled();
   const topicsData = await getTopicsList().catch(() => null);
   const issues = topicsData?.items ?? [];

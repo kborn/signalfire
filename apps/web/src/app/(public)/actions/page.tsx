@@ -1,4 +1,3 @@
-import { connection } from 'next/server';
 import { getActionsList } from '@/lib/api/actions';
 import { ActionSummary } from '@/components/action-summary';
 
@@ -8,7 +7,7 @@ import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -47,7 +46,6 @@ type ActionListPageProps = {
 };
 
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
-  await connection();
   const params = await searchParams;
   const { topicSlug, search, page, pageSize } = params;
   const [resp, topics] = await Promise.all([

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connection } from 'next/server';
 import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
 import { MarkdownContent } from '@/components/markdown-content';
@@ -9,7 +8,7 @@ import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 async function fetchArticleDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -28,7 +27,6 @@ export default async function ArticleDetailsPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  await connection();
   const article = await fetchArticleDetails(params);
   const publishedAt = formatContentDate(article.publishedAt);
   const updatedAt = formatContentDate(article.updatedAt);

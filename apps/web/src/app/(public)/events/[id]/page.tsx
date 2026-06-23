@@ -1,5 +1,4 @@
 import React from 'react';
-import { connection } from 'next/server';
 import { EventDetailResponse } from '@signal-fire/api-contracts';
 import { getEventDetails } from '@/lib/api/events';
 import { notFound } from 'next/navigation';
@@ -12,7 +11,7 @@ import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function normalizePlainText(value: string): string {
   return value
@@ -62,7 +61,6 @@ function formatEventArea({
 }
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-  await connection();
   const event = await fetchEventDetails(params);
   const eventArea = formatEventArea(event);
   const normalizedSummary = normalizePlainText(event.summary);

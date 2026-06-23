@@ -1,4 +1,3 @@
-import { connection } from 'next/server';
 import { EventSummary } from '@/components/event-summary';
 import { getEventsList } from '@/lib/api/events';
 import { TopicSelector } from '@/components/topic-selector';
@@ -11,7 +10,7 @@ import Link from 'next/link';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
 import type { EventSearchParams, ResolvedEventSearchParams } from './event-search-params';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -102,7 +101,6 @@ async function getContents(params: ResolvedEventSearchParams) {
 }
 
 export default async function EventListPage({ searchParams }: EventSearchParamsWrapper) {
-  await connection();
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventSearchParams = { ...params, ...resolveDateWindow(params) };
