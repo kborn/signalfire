@@ -37,31 +37,31 @@ export default async function HomePage() {
           </p>
         </div>
         <div className="homeJourneyGrid">
-          <Link href="/issues" className="collectionItem homeJourneyCard">
-            <p className="collectionItemEyebrow">Step 1</p>
+          <div className="collectionItem homeJourneyCard">
             <h3 className="collectionItemTitle">Go deep on one issue</h3>
             <p className="collectionItemSummary">
               Issue pages bring together articles, actions, and events around the things that matter
               — everything you need to go from knowing to doing.
             </p>
-          </Link>
-          <Link href="/articles" className="collectionItem homeJourneyCard">
-            <p className="collectionItemEyebrow">Step 2</p>
+          </div>
+          <div className="collectionItem homeJourneyCard">
             <h3 className="collectionItemTitle">Read what matters</h3>
             <p className="collectionItemSummary">
               Explainers and field guides give you enough background to stop feeling stuck and start
               seeing where your effort belongs.
             </p>
-          </Link>
-          <Link href="/actions" className="collectionItem homeJourneyCard">
-            <p className="collectionItemEyebrow">Step 3</p>
+          </div>
+          <div className="collectionItem homeJourneyCard">
             <h3 className="collectionItemTitle">Do one concrete thing</h3>
             <p className="collectionItemSummary">
               It doesn&apos;t have to be big. A call, a donation, showing up to something. Take the
               step that&apos;s actually in reach — the next one gets easier.
             </p>
-          </Link>
+          </div>
         </div>
+        <Link href="#issue-roll" className="primaryCTA">
+          Choose your issue →
+        </Link>
       </section>
 
       {/* ── Issue roll ── */}
