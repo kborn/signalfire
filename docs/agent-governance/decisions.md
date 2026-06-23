@@ -1327,6 +1327,7 @@ The `/events` page shows publicly available upcoming events without any location
 - Do not "fix" the events default experience without replacing it with a proper geo-aware implementation.
 - A production release should implement IP geolocation lookup or a user-saved region preference before showing regional events as default content.
 - A review document represents the state of the product at a single point in time. Before acting on a specific finding, verify it still applies to the current codebase.
+- The events filter form appearing before event results is also intentional for Milestone 1. In a geo-aware production release, the filter would be pre-populated from the user's location and results would appear immediately. Until that implementation exists, the filter-first UX is the correct placeholder — it explains the bounded demo geography and invites the reviewer to explore. Collapsing the filters or hiding them behind results would misrepresent the intended production UX.
 
 ---
 
