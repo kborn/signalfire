@@ -91,6 +91,14 @@
 }
 
 @media (max-width: 640px) {
+  .homeIssueGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .homeIssueGrid > *:last-child:nth-child(3n + 1) {
+    grid-column: auto;
+  }
+
   .container {
     padding: 0 24px;
   }
