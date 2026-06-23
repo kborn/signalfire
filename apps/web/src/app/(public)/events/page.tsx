@@ -118,9 +118,8 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
       </div>
       {isDemoModeEnabled() && (
         <p className="metaText eventsDemoNote">
-          In production, this page would show events near you based on your location. In this demo,
-          results are not geo-filtered — sample events are seeded across NY, PA, CA, TX, and PR. Use
-          the region selector to find them.
+          Demo events are seeded across NY, PA, CA, TX, and PR. Results are not filtered by your
+          location — use the region selector to find them.
         </p>
       )}
       <EventFilters params={resolvedParams} />
