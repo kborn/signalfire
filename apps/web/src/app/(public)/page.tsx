@@ -62,9 +62,6 @@ export default async function HomePage() {
             </p>
           </div>
         </div>
-        <Link href="#issue-roll" className="primaryCTA">
-          Choose your issue →
-        </Link>
       </section>
 
       {/* ── Issue roll ── */}
