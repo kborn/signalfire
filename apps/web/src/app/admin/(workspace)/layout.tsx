@@ -1,4 +1,4 @@
-import NavLink from '@/app/navbar';
+import NavLink from '@/app/nav-link';
 import AdminLogoutButton from '@/app/admin/(workspace)/_components/AdminLogoutButton';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

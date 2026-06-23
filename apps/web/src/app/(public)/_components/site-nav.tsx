@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import NavLink from '@/app/navbar';
+import NavLink from '@/app/nav-link';
 import { SubmitNavLink } from './submit-nav-link';
 import { SearchIcon, MenuIcon, XIcon } from '@/components/icons';
 

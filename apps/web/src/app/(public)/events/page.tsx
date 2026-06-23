@@ -116,13 +116,11 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
           near you on the issues you care about.
         </p>
       </div>
-      {isDemoModeEnabled() && (
-        <p className="metaText eventsDemoNote">
-          Demo events are seeded across NY, PA, CA, TX, and PR. Results are not filtered by your
-          location — use the region selector to find them.
-        </p>
-      )}
-      <details className="eventFilterCollapsible">
+      <p className="metaText eventsDemoNote">
+        {isDemoModeEnabled() ? 'Demo events are seeded across NY, PA, CA, TX, and PR. ' : ''}
+        Results are not filtered by your location — use the filters below to find events near you.
+      </p>
+      <details className="eventFilterCollapsible" open>
         <summary className="eventFilterToggle">Filter events</summary>
         <EventFilters params={resolvedParams} />
       </details>

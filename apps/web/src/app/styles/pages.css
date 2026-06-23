@@ -345,9 +345,10 @@
 .heroPosterIssueLink[data-topic] {
   border-left-color: color-mix(
     in srgb,
-    var(--topic-accent, var(--color-brand-primary)) 30%,
+    var(--topic-accent, var(--color-brand-primary)) 55%,
     transparent
   );
+  background: color-mix(in srgb, var(--topic-accent, var(--color-brand-primary)) 4%, transparent);
 }
 
 .heroPosterIssueLink:hover {

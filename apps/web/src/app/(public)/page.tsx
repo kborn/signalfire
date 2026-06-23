@@ -38,6 +38,7 @@ export default async function HomePage() {
         </div>
         <div className="homeJourneyGrid">
           <div className="collectionItem homeJourneyCard">
+            <p className="collectionItemEyebrow">Step 01</p>
             <h3 className="collectionItemTitle">Go deep on one issue</h3>
             <p className="collectionItemSummary">
               Issue pages bring together articles, actions, and events around the things that matter
@@ -45,6 +46,7 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="collectionItem homeJourneyCard">
+            <p className="collectionItemEyebrow">Step 02</p>
             <h3 className="collectionItemTitle">Read what matters</h3>
             <p className="collectionItemSummary">
               Explainers and field guides give you enough background to stop feeling stuck and start
@@ -52,6 +54,7 @@ export default async function HomePage() {
             </p>
           </div>
           <div className="collectionItem homeJourneyCard">
+            <p className="collectionItemEyebrow">Step 03</p>
             <h3 className="collectionItemTitle">Do one concrete thing</h3>
             <p className="collectionItemSummary">
               It doesn&apos;t have to be big. A call, a donation, showing up to something. Take the

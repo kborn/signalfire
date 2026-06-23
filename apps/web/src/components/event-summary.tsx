@@ -9,7 +9,11 @@ export function EventSummary({ event }: { event: EventSummaryData }) {
   );
 
   return (
-    <Link href={`/events/${event.id}`} className="collectionItem">
+    <Link
+      href={`/events/${event.id}`}
+      className="collectionItem eventTypeCard"
+      data-event-type={event.eventType}
+    >
       <h2 className="collectionItemTitle">{event.title}</h2>
       <p className="eventMeta">{formatEventTypeLabel(event.eventType)}</p>
       <p className="collectionItemSummary">{event.summary}</p>
