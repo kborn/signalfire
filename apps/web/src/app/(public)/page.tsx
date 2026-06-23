@@ -115,8 +115,10 @@ export default async function HomePage() {
           <p className="section-label">Admin access</p>
           <h2>Looking for the admin workspace?</h2>
           <p>
-            Use the <strong>Admin</strong> link in the demo notice above to inspect the moderation
-            and editorial workspace.
+            <Link href="/admin" className="textCTA">
+              Open the admin workspace
+            </Link>{' '}
+            to inspect the moderation and editorial workflow.
           </p>
         </section>
       ) : null}
