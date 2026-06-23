@@ -4,7 +4,7 @@
 
 **Branch:** `feat/phase-14/nitpick_pass` (local only — not pushed)
 
-**Phase 14 status:** ✅ Complete. All 11 sub-phases done.
+**Phase 14 status:** ✅ Complete.
 
 **Next phase:** Phase 15 — Deployment Infrastructure
 
@@ -13,14 +13,13 @@
 ## Before starting Phase 15
 
 The Phase 14 branch needs to land on `main` before deployment work begins.
-Confirm with the human whether to merge now or after a final review pass.
+Confirm with the human whether to merge now or open a PR for review first.
 
 ---
 
 ## What Phase 15 covers
 
-Hosting, environment management, and CI/CD. Full task list is in `progress.md`
-under Phase 15. High-level:
+Full task list is in `progress.md` under Phase 15. High-level:
 
 - Confirm hosting/runtime shape (public site, API, database, admin-auth boundary)
 - Define how schema migrations run in deployed environments
@@ -37,32 +36,34 @@ under Phase 15. High-level:
 
 The public-facing product is at 8/10 by honest agent review. Key surfaces:
 
-| Surface         | State                                                          |
-| --------------- | -------------------------------------------------------------- |
-| Homepage        | Strong hero, step-labeled journey cards, issue roll            |
-| Issues list     | Topic color grid, directive copy for direct-arrival users      |
-| Issue detail    | Read / Act / Events sections, capped at 5 items each           |
-| Article detail  | Single-column, metadata below body, "Now act" forward signal   |
-| Event detail    | Title → red separator → dek → thin separator → date/location   |
-| Events list     | Location note always visible, filter collapsible               |
-| Action detail   | External CTA above fold — strongest screen in product          |
-| Admin workspace | Submission review, moderation queue, editorial editors — solid |
+| Surface         | State                                                                |
+| --------------- | -------------------------------------------------------------------- |
+| Homepage        | Card grid for issues, floating demo pill, step-labeled journey cards |
+| Issues list     | Journey strip (step 1 active), topic color grid                      |
+| Issue detail    | Read / Act / Events sections, capped at 5 items each                 |
+| Articles list   | Journey strip (step 2 active), topic filter                          |
+| Article detail  | Journey strip, single-column, metadata below body, "Now act" CTA     |
+| Actions list    | Journey strip (step 3 active), topic filter                          |
+| Action detail   | Journey strip, external CTA above fold — strongest screen            |
+| Events list     | Location note always visible, filter collapsible                     |
+| 404 page        | Full public shell with styled recovery content and CTAs              |
+| Admin workspace | Submission review, moderation queue, editorial editors — solid       |
 
 ---
 
 ## Locked decisions (do not relitigate)
 
-- **Issue roll treatment**: vertical large-type Playfair Display column with
-  left-border accents and hover-slide. User preference. Do not change to
-  horizontal/inline without explicit approval.
-- **Motif placement**: homepage hero (full-bleed ::before) + collection headers
-  (right-anchored img with fade). Detail pages use radial-gradient mask at 0.15
-  opacity. See `decisions.md` → "Visual identity art strategy".
+- **Issue roll treatment**: homepage now uses compact 3-column card grid matching `/issues`. Do not revert to vertical roll without explicit approval.
+- **Journey strip copy**: "Choose an issue / Read what matters / Take action" — matches interior pages. Homepage journey cards use slightly different copy ("Choose one issue / Read what matters / Do one concrete thing") — this minor inconsistency is known and acceptable.
+- **Motif placement**: homepage hero (full-bleed `::before`) + collection headers (right-anchored img with fade). Detail pages use radial-gradient mask at lower opacity. See `decisions.md` → "Visual identity art strategy".
 - **Visual palette**: dark navy + amber (#cfac5a). Locked.
 - **Typography**: Playfair Display (display/headings) + Inter (body). Locked.
+- **Demo banner**: floating pill at `position: fixed; bottom: 16px`. Rise-from-bottom animation. Do not move back to top of page.
 
 ---
 
-## Review documents
+## Known deferred items (not blockers for Phase 15)
 
-All reviews are in `docs/reviews/`.
+- Events cards are still visually bare — event type color differentiation not implemented. Acceptable at current review score.
+- `topicSelector` gap against demo banner when both are visible requires a `ResizeObserver` — deferred to Milestone 2 (`docs/future/milestone-2-planning-notes.md`).
+- Journey strip copy consistency with homepage cards — known, acceptable.

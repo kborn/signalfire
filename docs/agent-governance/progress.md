@@ -1864,7 +1864,7 @@ a single "Phase 13.5 — Feature completion, UI identity, and mobile polish" com
 
 ---
 
-### ► Phase 14 — Portfolio Credibility Pass 🚧
+### ► Phase 14 — Portfolio Credibility Pass ✅
 
 ###### Goal
 
@@ -2148,6 +2148,10 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [x] When linking back to issues page from articles/events/actions details, should we used appropriate color coding?
 - [x] Enlarge 'actions' and 'articles' section headers on search results page. make sections collapsible?
 - [x] **Comprehensive review pass (2026-06-23)** — site reviewed honestly at 7/10 → 8/10 over multiple passes. Key changes: homepage hero gap fixed (double-margin bug), step labels on journey cards, "Choose one issue" copy, issue roll locked to vertical treatment. Issue detail: removed confusing step-01 "Go Deep" header, capped articles/actions at 5, promoted events CTA. Event detail: restructured separator hierarchy (title → red separator → dek → thin separator → date/location). Article detail: collapsed to single-column, metadata card below article body, "Now act" forward signal, "Explore This Issue Further" simplified to direct textCTA. Events list: location note always visible, pagination spacing fixed. Dead CSS removed throughout. Screenshot 02-topics renamed to 02-issues. README portfolio language restored (app-only change).
+- [x] **Homepage issue roll → compact card grid** — replaced vertical large-type Playfair roll with compact 3-column card grid matching `/issues`; fixed 3/3/1 orphan card with centering selector; removed redundant "Choose your issue" CTA from journey section.
+- [x] **Demo banner → floating pill** — moved from top of page to `position: fixed; bottom: 16px` floating pill with rise-from-bottom animation; hero now lands clean without a warning banner as first element.
+- [x] **Journey strip** — `JourneyStrip` component added to all six journey pages (issues list/detail, articles list/detail, actions list/detail). Large Playfair Display numerals, amber active step, muted inactive steps as navigable links. Centered `→` arrow cuts through connector line. Closes the long-standing "homepage-only journey vocabulary" gap.
+- [x] **Root 404 page** — `app/not-found.tsx` now renders the full public shell (nav, footer, demo banner) with styled "We could not find that page" content and recovery CTAs. Previously rendered outside the layout with no shell.
 
 ###### Done condition
 
