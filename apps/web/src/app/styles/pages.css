@@ -88,6 +88,50 @@
 
 .homeJourneyCard {
   min-height: 100%;
+  cursor: default;
+  overflow: hidden;
+}
+
+.publicShell .homeJourneyCard:hover {
+  border-left-color: var(--color-border-subtle);
+  transform: none;
+  box-shadow: 0 10px 20px -18px rgb(0 0 0 / 78%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--color-surface-soft) 94%, white 6%) 0%,
+    color-mix(in srgb, var(--color-surface-soft) 88%, transparent) 100%
+  );
+}
+
+.homeJourneyGrid .homeJourneyCard:nth-child(1) {
+  --step-numeral: '01';
+}
+.homeJourneyGrid .homeJourneyCard:nth-child(2) {
+  --step-numeral: '02';
+}
+.homeJourneyGrid .homeJourneyCard:nth-child(3) {
+  --step-numeral: '03';
+}
+
+.homeJourneyCard::before {
+  content: var(--step-numeral, '');
+  position: absolute;
+  bottom: -0.1em;
+  right: 0.3em;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 7rem;
+  font-weight: 900;
+  color: var(--color-brand-accent);
+  opacity: 0.22;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.homeJourneyCard > * {
+  position: relative;
+  z-index: 1;
 }
 
 .about-hero,
@@ -417,7 +461,7 @@
   right: 0;
   width: clamp(180px, 28vw, 320px);
   height: auto;
-  opacity: 0.25;
+  opacity: 0.35;
   z-index: 0;
   pointer-events: none;
   mask-image: linear-gradient(to bottom, black 15%, transparent 75%);
