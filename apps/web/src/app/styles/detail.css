@@ -147,23 +147,8 @@
   gap: var(--space-4);
 }
 
-.detailContent--article,
-.detailContent--event {
-  grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
-  align-items: start;
-}
-
-.detailContent--article > .relatedSection,
-.detailContent--event > .relatedSection,
-.detailContent--article > .ctaGroup {
-  grid-column: 1 / -1;
-}
-
 .detailContent--topic {
   gap: calc(var(--space-3) + 4px);
-}
-
-.topicEventCTA {
 }
 
 .detailMetaGroup {
@@ -327,14 +312,8 @@
   padding-left: 1.35rem;
 }
 
-/* ── Article layout: content-first, meta on right ───────────────────────── */
-
-.detailContent--article {
-  grid-template-columns: minmax(0, 1fr) minmax(0, 240px);
-}
-
 .articleMetaPanel {
-  order: 2;
+  max-width: 480px;
 }
 
 .articleLead {

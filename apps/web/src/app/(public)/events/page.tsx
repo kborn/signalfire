@@ -118,8 +118,7 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
       </div>
       <p className="metaText eventsDemoNote">
         {isDemoModeEnabled() ? 'Demo events are seeded across NY, PA, CA, TX, and PR. ' : ''}
-        Results are not yet filtered by your location — use the filters below to find events near
-        you.
+        Showing events across all regions. Filter below to narrow by location or date.
       </p>
       <details className="eventFilterCollapsible">
         <summary className="eventFilterToggle">Filter events</summary>

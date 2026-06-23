@@ -26,7 +26,7 @@ export default async function TopicListPage() {
         <h1 className="pageTitle">Issues</h1>
         <p className="page-intro">
           Some of these issues have been building for decades. Others are moving fast. All of them
-          need people willing to focus.
+          need people willing to focus. Start with the one that already has your attention.
         </p>
       </div>
       <section className="topicsGrid">

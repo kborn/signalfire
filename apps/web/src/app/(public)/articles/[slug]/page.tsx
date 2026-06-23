@@ -3,7 +3,6 @@ import { getArticleDetails } from '@/lib/api/articles';
 import { ApiError } from '@/lib/api/error';
 import { MarkdownContent } from '@/components/markdown-content';
 import { notFound } from 'next/navigation';
-import { TopicSummary } from '@/components/topic-summary';
 import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
 import Link from 'next/link';
@@ -56,7 +55,7 @@ export default async function ArticleDetailsPage({
       <section className="detailHeader detailHero">
         <h1 className="pageTitle">{article.title}</h1>
       </section>
-      <section className="detailContent detailContent--article">
+      <section className="detailContent">
         <section className="detailNarrativePanel">
           <p className="articleLead">{article.summary}</p>
           <MarkdownContent content={article.content} />
@@ -82,24 +81,13 @@ export default async function ArticleDetailsPage({
             )}
           </div>
         </aside>
-        {article.topics.length > 0 && (
-          <section className="relatedSection">
-            <div className="relatedSectionHeader">
-              <h3>Explore This Issue</h3>
-              <p className="relatedSectionTagline">
-                More context, more actions, and related events are on that issue page.
-              </p>
-            </div>
-            <div className="relatedList">
-              {article.topics.map((topic) => (
-                <TopicSummary key={topic.id} topic={topic} variant="related" />
-              ))}
-            </div>
-          </section>
-        )}
+
         {article.actions.length > 0 ? (
           <section className="relatedSection">
-            <h3>Take Action</h3>
+            <div className="relatedSectionHeader">
+              <p className="section-label">Now act</p>
+              <h3>Take Action</h3>
+            </div>
             <div className="relatedList">
               {article.actions.map((action) => (
                 <ActionSummary key={action.id} action={action} variant="related" />
@@ -108,15 +96,29 @@ export default async function ArticleDetailsPage({
           </section>
         ) : article.topics.length > 0 ? (
           <section className="relatedSection articleActionNudge">
-            <p className="section-label">Ready to do something?</p>
+            <p className="section-label">Now act</p>
             <p className="relatedSectionTagline">
               Find concrete actions you can take on {article.topics[0].name}.
             </p>
-            <Link href={`/issues/${article.topics[0].slug}`} className="textCTA">
-              See actions on {article.topics[0].name}
+            <Link href={`/actions?topicSlug=${article.topics[0].slug}`} className="textCTA">
+              Find actions on {article.topics[0].name}
             </Link>
           </section>
         ) : null}
+        {article.topics.length > 0 && (
+          <section className="relatedSection">
+            <div className="relatedSectionHeader">
+              <h3>Explore This Issue Further</h3>
+              <p className="relatedSectionTagline">
+                Find everything else on this issue in one place — more to read, actions to take, and
+                local events.
+              </p>
+            </div>
+            <Link href={`/issues/${article.topics[0].slug}`} className="textCTA">
+              Go to {article.topics[0].name}
+            </Link>
+          </section>
+        )}
       </section>
       <div className="detailPageNav">
         <Link href="/articles" className="textCTA">

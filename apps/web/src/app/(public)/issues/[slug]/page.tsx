@@ -46,7 +46,6 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
               }
             >
-              <span className="issueStepNum">01</span>
               <h2 id="topic-articles-label" className="issueStepTitle">
                 Read
               </h2>
@@ -78,7 +77,6 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
               }
             >
-              <span className="issueStepNum">02</span>
               <h2 id="topic-actions-label" className="issueStepTitle">
                 Act
               </h2>

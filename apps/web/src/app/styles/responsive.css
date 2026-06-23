@@ -55,11 +55,6 @@
     grid-template-columns: 1fr;
   }
 
-  .detailContent--article,
-  .detailContent--event {
-    grid-template-columns: 1fr;
-  }
-
   .articleEditorTextareaContent {
     min-height: 300px;
   }
