@@ -16,8 +16,8 @@ export default async function HomePage() {
       <section className="page-section heroPoster">
         <h1 className="heroPosterBrand">Find Your Fight</h1>
         <p className="heroPosterTagline">
-          The news doesn&apos;t stop. The problems feel enormous. And most days, it&apos;s easy to
-          believe there&apos;s nothing one person can do.
+          The news doesn&apos;t stop. The problems feel enormous. And most days, it&apos;s easier to
+          do nothing than to figure out where to begin.
         </p>
         <div className="heroPosterCTA">
           <Link href="#issue-roll" className="primaryCTA">

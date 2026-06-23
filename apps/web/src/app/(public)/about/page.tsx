@@ -20,12 +20,16 @@ export default async function AboutPage() {
       <section className="page-section about-body">
         <h2>You&apos;re not stuck because you don&apos;t care.</h2>
         <p>
-          People are angry, overwhelmed, and frustrated for good reason. It is easy to look at the
-          scale of what is happening and feel like nothing you do will matter.
+          People are angry, overwhelmed, and frustrated for good reason. Elections are being
+          contested. The climate is changing faster than policy is. Wealth is concentrating in ways
+          that ripple into housing, healthcare, and education. It is easy to look at all of that and
+          feel like nothing you do will matter.
         </p>
         <p>
-          But power is not only held somewhere else. It is also built when people choose where to
-          focus, learn what is actually at stake, and take action together — one person at a time.
+          What makes it worse is that the longer you stay out of it, the bigger it feels. The bigger
+          it feels, the easier it is to keep waiting. Most hard things work this way. At some point
+          you just have to step in — and the strange part is that it is almost never as dreadful as
+          you had imagined. That first step is the whole battle.
         </p>
         <p>
           Find Your Fight exists for the person saying: I want to do something, but I do not know
@@ -34,9 +38,9 @@ export default async function AboutPage() {
         <p>
           And &ldquo;doing something&rdquo; is a wider category than it sounds. Talking to a
           neighbor about what you learned. Keeping up with one issue so you are not caught off
-          guard. Writing one email this week. None of this is nothing. Doing nothing is the only
-          thing guaranteed to leave you feeling worse — and it is exactly what the people flooding
-          the zone are counting on.
+          guard. Writing one email this week. None of this is nothing. The feeling that nothing you
+          do matters — that is not an objective fact. That is the feeling winning. Don&apos;t let
+          it.
         </p>
       </section>
 
