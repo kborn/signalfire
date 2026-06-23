@@ -191,8 +191,7 @@
 }
 
 .about-steps {
-  display: grid;
-  gap: var(--space-2);
+  /* layout via .stack-md utility */
 }
 
 .about-step {
@@ -213,15 +212,7 @@
   text-decoration: none;
 }
 
-.demoPageGrid {
-  display: grid;
-  gap: var(--space-2);
-}
-
-.demoInfoBlock {
-  display: grid;
-  gap: var(--space-2);
-}
+/* .demoPageGrid and .demoInfoBlock removed — use .stack-md utility instead */
 
 .about-step .primaryCTA,
 .about-step .secondaryCTA {

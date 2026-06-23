@@ -267,6 +267,40 @@
   font-weight: 600;
 }
 
+/* ── Event detail: information-first layout ──────────────────────────────── */
+
+.eventDetailHero {
+  gap: var(--space-2);
+}
+
+.eventDetailKeyInfo {
+  padding: var(--space-2) 0;
+  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
+}
+
+.eventDetailWhen {
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  font-weight: 700;
+  color: var(--color-brand-accent);
+  line-height: 1.3;
+}
+
+.eventDetailWhere {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1.35;
+}
+
+.eventSecondaryMeta {
+  display: grid;
+  gap: var(--space-1) var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  padding: var(--space-3);
+  border: 1px solid color-mix(in srgb, var(--color-border-subtle) 70%, transparent);
+  border-radius: 12px;
+}
+
 .notFoundPanel {
   max-width: 760px;
   padding-top: var(--space-4);

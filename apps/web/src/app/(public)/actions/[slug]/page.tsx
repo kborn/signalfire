@@ -52,6 +52,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         )}
       </nav>
       <section className="detailHeader detailHero">
+        <p className="summaryMeta">{actionType}</p>
         <h1 className="pageTitle">{action.title}</h1>
       </section>
       <section className="detailContent">
@@ -73,13 +74,6 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
         <section>
           <MarkdownContent content={action.description} />
-        </section>
-
-        <section className="detailMetaGroup">
-          <div className="metaBlock">
-            <p className="metaLabel">Action Type</p>
-            <p className="metaValue">{actionType}</p>
-          </div>
         </section>
         {action.topics.length > 0 && (
           <section className="relatedSection">

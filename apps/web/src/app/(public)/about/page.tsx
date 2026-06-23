@@ -60,7 +60,7 @@ export default async function AboutPage() {
       <section className="page-section about-journey">
         <h2>Find one issue. Learn enough to act. Take the next step.</h2>
 
-        <div className="about-steps">
+        <div className="about-steps stack-md">
           <Link href="/issues" className="about-step collectionItem">
             <div className="aboutStepNum">01</div>
             <h3>Choose an issue.</h3>
