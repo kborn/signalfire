@@ -107,8 +107,6 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
   return (
     <section className="page-section discoveryPage">
       <div className="discoveryPageHeader">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/bg-motif.png" alt="" aria-hidden="true" className="discoveryPageHeaderMotif" />
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Events</h1>
         <p className="page-intro">

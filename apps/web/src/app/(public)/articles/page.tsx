@@ -60,8 +60,6 @@ export default async function ArticleListPage({ searchParams }: ArticleListPageP
     <section className="page-section discoveryPage">
       <JourneyStrip step={2} />
       <div className="discoveryPageHeader">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/bg-motif.png" alt="" aria-hidden="true" className="discoveryPageHeaderMotif" />
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Articles</h1>
         <p className="page-intro">
