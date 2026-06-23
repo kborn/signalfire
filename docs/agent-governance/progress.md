@@ -21,8 +21,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| **[14](#-phase-14--portfolio-credibility-pass-)** | **Portfolio Credibility Pass**  | **🚧 ACTIVE** |
-| [15](#-phase-15--deployment-infrastructure-)      | Release Infrastructure          | ⏳            |
+| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅            |
+| **[15](#-phase-15--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
 | [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -2117,7 +2117,7 @@ The nav home-link mark is visually intentional and references the FYF brand iden
 
 ---
 
-#### ▸ Phase 14.11 - Final Nitpick Pass 🚧
+#### ▸ Phase 14.11 - Final Nitpick Pass ✅
 
 ###### Goal
 
@@ -2147,6 +2147,7 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [x] Related links on details pages are not well formatted - all text is underlined on hover rather than just the title, not enough brand accents. a bit dense. issue exists on articles, events,
 - [x] When linking back to issues page from articles/events/actions details, should we used appropriate color coding?
 - [x] Enlarge 'actions' and 'articles' section headers on search results page. make sections collapsible?
+- [x] **Comprehensive review pass (2026-06-23)** — site reviewed honestly at 7/10 → 8/10 over multiple passes. Key changes: homepage hero gap fixed (double-margin bug), step labels on journey cards, "Choose one issue" copy, issue roll locked to vertical treatment. Issue detail: removed confusing step-01 "Go Deep" header, capped articles/actions at 5, promoted events CTA. Event detail: restructured separator hierarchy (title → red separator → dek → thin separator → date/location). Article detail: collapsed to single-column, metadata card below article body, "Now act" forward signal, "Explore This Issue Further" simplified to direct textCTA. Events list: location note always visible, pagination spacing fixed. Dead CSS removed throughout. Screenshot 02-topics renamed to 02-issues. README portfolio language restored (app-only change).
 
 ###### Done condition
 

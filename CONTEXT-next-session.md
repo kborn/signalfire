@@ -1,57 +1,69 @@
-# Context for Next Agent Session — Phase 14.11 Final Review
+# Context for Next Agent Session — Phase 15: Deployment Infrastructure
 
 ## State of the repo
 
-**Branch:** `main` (local, ahead of origin — not yet pushed)
+**Branch:** `feat/phase-14/nitpick_pass` (local only — not pushed)
 
-**Phases complete:** 14.1 ✅ through 14.10 ✅
+**Phase 14 status:** ✅ Complete. All 11 sub-phases done.
 
-**Phase 14.11 status:** All code items resolved. Two human-eyes walkthrough tasks remain before the phase can close.
-
----
-
-## What was resolved in 14.11
-
-All concrete items are done:
-
-- `detailHero` now has amber `border-bottom` (was subtle-blue)
-- About page double separator fixed (removed `border-top` from `.about-body`)
-- Search "or browse by issue" section removed
-- Footer motif confirmed resolved from Phase 14.10
-- Demo banner scroll positioning: `site-header::after` removed, `--demo-banner-gap: 11px`
-- **Motif placement — settled** (see below)
+**Next phase:** Phase 15 — Deployment Infrastructure
 
 ---
 
-## Motif — locked decision
+## Before starting Phase 15
 
-`bg-motif.png` appears in exactly two contexts. Do not change this without a deliberate decision:
-
-| Surface                                                | Treatment                                                                                    |
-| ------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
-| Homepage hero                                          | Full-bleed `::before` at 35% opacity — primary brand statement                               |
-| Collection headers (Issues, Articles, Actions, Events) | Right-anchored `<img className="discoveryPageHeaderMotif">` at 25% opacity, bottom-fade mask |
-| Everything else                                        | No motif                                                                                     |
-
-**Implementation:** `discoveryPageHeaderMotif` class in `pages.css`. The `.discoveryPageHeader` has `position: relative; overflow: hidden; isolation: isolate`. The `> *:not(.discoveryPageHeaderMotif)` rule lifts text children to `z-index: 1`. Do not convert the img to a `::before` without re-testing z-index/fade behavior.
-
-**Rationale recorded in:** `docs/agent-governance/decisions.md` → "Visual identity art strategy"
+The Phase 14 branch needs to land on `main` before deployment work begins.
+Confirm with the human whether to merge now or after a final review pass.
 
 ---
 
-## What's left before 14.11 closes
+## What Phase 15 covers
 
-Two human-eyes walkthrough tasks. The agent cannot complete these without a running browser:
+Hosting, environment management, and CI/CD. Full task list is in `progress.md`
+under Phase 15. High-level:
 
-1. Walk every public route (homepage, about, demo, issues, articles, actions, events, search, submit entry/forms, error states) — note anything that reads as an obvious oversight
-2. Walk admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — note anything unfinished in the demo workflow
-
-If the walkthrough finds no blockers, mark Phase 14.11 complete and advance to Phase 15.
+- Confirm hosting/runtime shape (public site, API, database, admin-auth boundary)
+- Define how schema migrations run in deployed environments
+- Configure environment variables and secret handling
+- Ensure CI is a credible merge gate (lint, typecheck, unit, integration, e2e)
+- Add Dependabot and dependency vulnerability validation
+- Define branch protection rules for `main`
+- Decide on `CODEOWNERS` for post-Milestone 1 maintenance
+- Lightweight traffic visibility without a paid analytics stack
 
 ---
 
-## Guardrails
+## Product state at phase close
 
-- Do not push without explicit user confirmation
-- Do not reopen motif, nav mark, favicon, footer, or wordmark decisions
-- `--demo-banner-gap: 11px` in `tokens.css` is the settled value — do not adjust without the user confirming it looks wrong
+The public-facing product is at 8/10 by honest agent review. Key surfaces:
+
+| Surface         | State                                                          |
+| --------------- | -------------------------------------------------------------- |
+| Homepage        | Strong hero, step-labeled journey cards, issue roll            |
+| Issues list     | Topic color grid, directive copy for direct-arrival users      |
+| Issue detail    | Read / Act / Events sections, capped at 5 items each           |
+| Article detail  | Single-column, metadata below body, "Now act" forward signal   |
+| Event detail    | Title → red separator → dek → thin separator → date/location   |
+| Events list     | Location note always visible, filter collapsible               |
+| Action detail   | External CTA above fold — strongest screen in product          |
+| Admin workspace | Submission review, moderation queue, editorial editors — solid |
+
+---
+
+## Locked decisions (do not relitigate)
+
+- **Issue roll treatment**: vertical large-type Playfair Display column with
+  left-border accents and hover-slide. User preference. Do not change to
+  horizontal/inline without explicit approval.
+- **Motif placement**: homepage hero (full-bleed ::before) + collection headers
+  (right-anchored img with fade). Detail pages use radial-gradient mask at 0.15
+  opacity. See `decisions.md` → "Visual identity art strategy".
+- **Visual palette**: dark navy + amber (#cfac5a). Locked.
+- **Typography**: Playfair Display (display/headings) + Inter (body). Locked.
+
+---
+
+## Review documents
+
+All reviews are in `docs/reviews/`. The final review for Phase 14 is
+`review-2026-06-23-final.md` (8/10 overall).

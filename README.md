@@ -27,7 +27,7 @@ Implemented areas:
 - editorial normalization before approval
 - publication mapping from approved submissions into public records
 - deployed admin authentication and access control
-- demo seed content for review and screenshots
+- demo seed content for portfolio/screenshot review
 
 Not included in Release 1:
 
@@ -40,7 +40,7 @@ Not included in Release 1:
 
 ### Milestone 1
 
-Milestone 1 is a deployed demo:
+Milestone 1 is a portfolio-quality deployed demo:
 
 - polished public discovery experience
 - end-to-end article and event submission flows
@@ -54,7 +54,7 @@ artifact, not proving real-user growth.
 ### Milestone 2
 
 Milestone 2 is a separate product decision: whether and how `Find Your Fight`
-should evolve from a demo into a real public product.
+should evolve from a portfolio artifact into a real public product.
 
 Likely Milestone 2 themes:
 
@@ -105,7 +105,7 @@ pnpm dev
 Notes:
 
 - `apps/api/.env.example` defaults to baseline seeding; the demo seed command
-  overrides that explicitly for local demo review.
+  overrides that explicitly for local portfolio/demo review.
 - `apps/web/.env.local.example` enables public demo mode by default so the
   banner, badge, and `Admin Demo` entry point are visible in review builds.
 
@@ -155,7 +155,7 @@ pnpm docs:screenshots
 ## Demo Review and Admin Access
 
 Demo seed mode creates Articles, Actions, Events, relationships, and moderation
-submissions suitable for local demo review and screenshots. It also creates
+submissions suitable for local portfolio review and screenshots. It also creates
 a demo admin user for the `/admin` area:
 
 - email: `admin@example.com`
@@ -221,7 +221,7 @@ public production deployment.
 
 ## License and Contributions
 
-This repository is source-available for review only.
+This repository is source-available for portfolio review only.
 
 - all rights are reserved by the author
 - no permission is granted to copy, modify, redistribute, or deploy this code
