@@ -211,6 +211,10 @@
   text-decoration: none;
 }
 
+.about-step-mainLink:hover {
+  text-decoration: none;
+}
+
 /* .demoPageGrid and .demoInfoBlock removed — use .stack-md utility instead */
 
 .about-step .primaryCTA,
