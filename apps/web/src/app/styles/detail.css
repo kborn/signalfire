@@ -58,11 +58,11 @@
   background-image: url('/bg-motif.png');
   background-size: cover;
   background-position: center;
-  opacity: 0.2;
+  opacity: 0.15;
   pointer-events: none;
   z-index: -1;
-  mask-image: linear-gradient(135deg, black 0%, transparent 65%);
-  -webkit-mask-image: linear-gradient(135deg, black 0%, transparent 65%);
+  mask-image: radial-gradient(ellipse 80% 80% at 72% 22%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 72% 22%, black 0%, transparent 100%);
 }
 
 .detailHero {
@@ -164,7 +164,6 @@
 }
 
 .topicEventCTA {
-  margin-top: var(--space-1);
 }
 
 .detailMetaGroup {
@@ -274,8 +273,7 @@
 }
 
 .eventDetailKeyInfo {
-  padding: var(--space-2) 0;
-  border-top: 1px solid color-mix(in srgb, var(--color-border-subtle) 60%, transparent);
+  padding: var(--space-1) 0 var(--space-2);
 }
 
 .eventDetailWhen {
@@ -352,9 +350,9 @@
 
 /* ── Issue step section headers ─────────────────────────────────────────── */
 
-.issueOverviewSection {
-  display: grid;
-  gap: var(--space-2);
+.detailContent--topic .detailLead {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .issueStepSection {

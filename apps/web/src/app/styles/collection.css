@@ -246,39 +246,6 @@
   box-shadow: 4px 10px 28px -14px rgb(0 0 0 / 60%);
 }
 
-/* ── Event type color accents ────────────────────────────────────────────── */
-
-.collectionItem[data-event-type='PROTEST'] {
-  --event-type-color: #c04a3a;
-}
-.collectionItem[data-event-type='RALLY'] {
-  --event-type-color: #cfac5a;
-}
-.collectionItem[data-event-type='VOLUNTEER'] {
-  --event-type-color: #4a9873;
-}
-.collectionItem[data-event-type='TOWN_HALL'] {
-  --event-type-color: #5a82a0;
-}
-.collectionItem[data-event-type='WORKSHOP'] {
-  --event-type-color: #8a6aab;
-}
-.collectionItem[data-event-type='MEETING'] {
-  --event-type-color: #7a95a8;
-}
-
-.publicShell .eventTypeCard[data-event-type] {
-  border-left-color: color-mix(
-    in srgb,
-    var(--event-type-color, var(--color-border-subtle)) 55%,
-    var(--color-border-subtle)
-  );
-}
-
-.publicShell .eventTypeCard[data-event-type]:hover {
-  border-left-color: var(--event-type-color, var(--color-brand-accent));
-}
-
 /* ── Issues index grid ───────────────────────────────────────────────────── */
 
 .topicsGrid {

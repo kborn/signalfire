@@ -98,9 +98,13 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
         )}
       </nav>
 
-      <section className="detailHeader detailHero eventDetailHero">
+      <section className="detailHeader detailHero">
         <p className="summaryMeta">{formatEventTypeLabel(event.eventType)}</p>
         <h1 className="pageTitle">{event.title}</h1>
+      </section>
+
+      <section className="detailContent">
+        {shouldRenderSummaryLead && <p className="detailLead">{event.summary}</p>}
         <div className="eventDetailKeyInfo stack-sm">
           <p className="eventDetailWhen">
             {formatEventTime(event.startTime, event.endTime, {
@@ -111,10 +115,6 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           </p>
           {locationLine && <p className="eventDetailWhere">{locationLine}</p>}
         </div>
-      </section>
-
-      <section className="detailContent">
-        {shouldRenderSummaryLead && <p className="detailLead">{event.summary}</p>}
         <MarkdownContent content={event.description} />
       </section>
 

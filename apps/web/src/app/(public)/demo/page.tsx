@@ -2,18 +2,18 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Demo — Find Your Fight',
-  description: 'Portfolio demo information and admin access for Find Your Fight.',
+  description: 'Demo information and admin access for Find Your Fight.',
 };
 
 export default function DemoPage() {
   return (
     <section className="page-section demoPage motifPage centeredPublicPage">
       <div className="page-section about-hero">
-        <p className="section-label">Portfolio demo</p>
+        <p className="section-label">Demo</p>
         <h1 className="pageTitle">About This Demo</h1>
         <p className="page-intro">
-          Find Your Fight is a portfolio project. This site runs on seeded demo content and is not a
-          live civic platform.
+          This site runs on seeded sample content. You can browse, submit, and moderate as if it
+          were live.
         </p>
       </div>
 

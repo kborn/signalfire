@@ -39,10 +39,10 @@ export default async function HomePage() {
         <div className="homeJourneyGrid">
           <div className="collectionItem homeJourneyCard">
             <p className="collectionItemEyebrow">Step 01</p>
-            <h3 className="collectionItemTitle">Go deep on one issue</h3>
+            <h3 className="collectionItemTitle">Choose one issue</h3>
             <p className="collectionItemSummary">
-              Issue pages bring together articles, actions, and events around the things that matter
-              — everything you need to go from knowing to doing.
+              Pick the one that already has your attention. Issue pages bring together everything
+              you need — articles, actions, events — in one place.
             </p>
           </div>
           <div className="collectionItem homeJourneyCard">

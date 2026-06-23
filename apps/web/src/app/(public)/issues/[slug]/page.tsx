@@ -33,23 +33,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
         <h1 className="pageTitle">{topic.name}</h1>
       </section>
       <section className="detailContent detailContent--topic">
-        <div className="issueOverviewSection">
-          <div
-            className="issueStepHeader"
-            data-topic={topic.slug}
-            style={
-              topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
-            }
-          >
-            <span className="issueStepNum">01</span>
-            <h2 className="issueStepTitle">Go Deep</h2>
-            <p className="issueStepSub">
-              Start here. Read enough to understand what&apos;s at stake — where the pressure is and
-              where it&apos;s missing.
-            </p>
-          </div>
-          <p className="detailLead">{topic.description}</p>
-        </div>
+        <p className="detailLead">{topic.description}</p>
         {topic.articles.length > 0 && (
           <section
             className="relatedSection issueStepSection"
@@ -62,7 +46,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
               }
             >
-              <span className="issueStepNum">02</span>
+              <span className="issueStepNum">01</span>
               <h2 id="topic-articles-label" className="issueStepTitle">
                 Read
               </h2>
@@ -71,10 +55,15 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
               </p>
             </div>
             <div className="collectionList">
-              {topic.articles.map((article) => (
+              {topic.articles.slice(0, 5).map((article) => (
                 <ArticleSummary key={article.id} article={article} />
               ))}
             </div>
+            {topic.articles.length > 5 && (
+              <Link href={`/articles?topicSlug=${topic.slug}`} className="textCTA">
+                Browse all {topic.articles.length} articles on {topic.name}
+              </Link>
+            )}
           </section>
         )}
         {topic.actions.length > 0 && (
@@ -89,28 +78,39 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
                 topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
               }
             >
-              <span className="issueStepNum">03</span>
+              <span className="issueStepNum">02</span>
               <h2 id="topic-actions-label" className="issueStepTitle">
                 Act
               </h2>
-              <p className="issueStepSub">This is where knowing becomes doing</p>
+              <p className="issueStepSub">This is where knowing becomes doing.</p>
             </div>
             <div className="collectionList">
-              {topic.actions.map((action) => (
+              {topic.actions.slice(0, 5).map((action) => (
                 <ActionSummary key={action.id} action={action} />
               ))}
             </div>
+            {topic.actions.length > 5 && (
+              <Link href={`/actions?topicSlug=${topic.slug}`} className="textCTA">
+                Browse all {topic.actions.length} actions on {topic.name}
+              </Link>
+            )}
           </section>
         )}
-        <section className="ctaGroup topicEventCTA">
-          <div className="relatedSectionHeader">
-            <p className="section-label">Events</p>
-            <p className="relatedSectionTagline">
-              Find in-person events and organizing opportunities near you.
+        <section className="relatedSection issueStepSection topicEventCTA">
+          <div
+            className="issueStepHeader"
+            data-topic={topic.slug}
+            style={
+              topic.color ? ({ '--topic-accent': topic.color } as React.CSSProperties) : undefined
+            }
+          >
+            <h2 className="issueStepTitle">Events</h2>
+            <p className="issueStepSub">
+              Protests, town halls, volunteer shifts — find what&apos;s happening near you.
             </p>
           </div>
-          <Link href={`/events?topicSlug=${topic.slug}`} className="secondaryCTA">
-            Find Related Events
+          <Link href={`/events?topicSlug=${topic.slug}`} className="primaryCTA">
+            Find events on {topic.name}
           </Link>
         </section>
       </section>
