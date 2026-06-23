@@ -6,6 +6,7 @@ import { notFound } from 'next/navigation';
 import { ActionSummary } from '@/components/action-summary';
 import { formatContentDate } from '@/lib/common/time';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -32,6 +33,7 @@ export default async function ArticleDetailsPage({
 
   return (
     <div className="detailPage motifPage">
+      <JourneyStrip step={2} />
       <nav
         className="detailBreadcrumb"
         aria-label="Back"

@@ -1,5 +1,6 @@
 import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -19,6 +20,7 @@ export default async function TopicListPage() {
   }
   return (
     <section className="page-section discoveryPage">
+      <JourneyStrip step={1} />
       <div className="discoveryPageHeader">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/bg-motif.png" alt="" aria-hidden="true" className="discoveryPageHeaderMotif" />

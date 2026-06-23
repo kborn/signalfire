@@ -5,6 +5,7 @@ import { TopicSelector } from '@/components/topic-selector';
 import { Pagination } from '@/components/pagination';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -57,6 +58,7 @@ export default async function ArticleListPage({ searchParams }: ArticleListPageP
 
   return (
     <section className="page-section discoveryPage">
+      <JourneyStrip step={2} />
       <div className="discoveryPageHeader">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/bg-motif.png" alt="" aria-hidden="true" className="discoveryPageHeaderMotif" />

@@ -6,6 +6,7 @@ import { TopicSelector } from '@/components/topic-selector';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -55,6 +56,7 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
 
   return (
     <section className="page-section discoveryPage">
+      <JourneyStrip step={3} />
       <div className="discoveryPageHeader">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/bg-motif.png" alt="" aria-hidden="true" className="discoveryPageHeaderMotif" />

@@ -7,6 +7,7 @@ import { ArticleSummary } from '@/components/article-summary';
 
 import { formatActionTypeLabel } from '@/lib/common/utils';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -31,6 +32,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <div className="detailPage motifPage">
+      <JourneyStrip step={3} />
       <nav
         className="detailBreadcrumb"
         aria-label="Back"

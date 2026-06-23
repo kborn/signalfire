@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { ArticleSummary } from '@/components/article-summary';
 import { ActionSummary } from '@/components/action-summary';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
 export const revalidate = 3600;
 
@@ -24,6 +25,7 @@ export default async function TopicDetailsPage({ params }: { params: Promise<{ s
   const topic = await fetchTopicDetails(params);
   return (
     <div className="detailPage motifPage">
+      <JourneyStrip step={1} />
       <nav className="detailBreadcrumb" aria-label="Back">
         <Link href="/issues" className="detailBreadcrumbLink">
           ← All Issues
