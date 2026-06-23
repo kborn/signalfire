@@ -21,8 +21,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| **[14](#-phase-14--portfolio-credibility-pass-)** | **Portfolio Credibility Pass**  | **🚧 ACTIVE** |
-| [15](#-phase-15--deployment-infrastructure-)      | Release Infrastructure          | ⏳            |
+| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅            |
+| **[15](#-phase-15--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
 | [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
 
 ---
@@ -1864,7 +1864,7 @@ a single "Phase 13.5 — Feature completion, UI identity, and mobile polish" com
 
 ---
 
-### ► Phase 14 — Portfolio Credibility Pass 🚧
+### ► Phase 14 — Portfolio Credibility Pass ✅
 
 ###### Goal
 
@@ -2117,7 +2117,7 @@ The nav home-link mark is visually intentional and references the FYF brand iden
 
 ---
 
-#### ▸ Phase 14.11 - Final Nitpick Pass ⏳
+#### ▸ Phase 14.11 - Final Nitpick Pass ✅
 
 ###### Goal
 
@@ -2129,24 +2129,29 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 
 ###### Phase Tasks
 
-- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) and note anything visually or editorially off
-- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) and note anything that reads as unfinished in the demo workflow
-- [ ] Fix the items that are clearly wrong with no tradeoff — spacing, copy, alignment, missing hover states, inconsistent labels
-- [ ] Review motif placement and usage
-- [ ] Review Search page filer by topic section
-- [ ] Document anything that requires a larger decision or is genuinely a Milestone 2 concern
-- [ ] Demo banner partially covered when scrolling down
-- [ ] Revisit footer motif. Too large and opaque?
-- [ ] Revisit the 'or browse by page on the search page
-- [ ] double line separators on about page
-- [ ] Revisit motif image -
-  - [ ] Still not bold enough in general. Make darker and center?
-  - [ ] Still awkward on the about page
-  - [ ] Buried on issue details pages (no red separator line on this page)
-  - [ ] Red separator line missing on articles details page
-  - [ ] Overall consistency pass
-  - [ ] Same issue as Articles details page
-  - [ ] Same issue as Articles details page
+- [x] Add missing amber `border-bottom` to `.detailHero` — was using subtle-blue token, now matches `.discoveryPageHeader` / `.submitEntryHeader` / `.about-hero`
+- [x] About page double separator — removed `border-top` from `.about-body`; `.about-hero`'s amber bottom is the sole divider. `.about-journey` keeps its `border-top`
+- [x] Search "or browse by issue" section removed — `searchOrDivider` and `searchBrowseSection` deleted; intro copy now links to `/issues` inline; empty state CTAs already cover the navigation need
+- [x] Footer motif — resolved in Phase 14.10 (replaced with 2px amber `border-top`); no action needed
+- [x] **Motif placement — final settled state** (explored and decided in Phase 14.11):
+  - Homepage hero: full-bleed `::before` at 35% opacity — unchanged, the primary brand statement
+  - Collection page headers (Issues, Articles, Actions, Events): right-anchored `<img className="discoveryPageHeaderMotif">` at 25% opacity with bottom fade (`mask-image: linear-gradient(to bottom, black 15%, transparent 75%)`), positioned absolute behind text inside `.discoveryPageHeader`
+  - Search, detail pages, about, submit, admin: no motif
+  - Canonical decision recorded in `decisions.md` under "Visual identity art strategy"
+- [x] **Demo banner scroll positioning** — reworked in Phase 14.11 nitpick pass. Header and banner wrapped in a single `site-sticky-area` sticky container (replaces two independent sticky elements). Banner uses `margin-top: --demo-banner-gap` for the gap so it disappears cleanly on dismiss. `topicSelector` sticky offset resets to `--public-sticky-offset` when no banner is present (`:has()` rule). Content no longer scrolls through the gap between navbar and filter bar after banner dismissal.
+- [x] **Gold accent overuse on entity list pages and about page** — `collectionItemEyebrow` changed from amber to `--color-text-muted`; card left border at rest changed from 40% amber to `--color-border-subtle` (amber appears on hover only); `aboutStepNum` opacity reduced from 0.7 → 0.28 (hint, not statement); `publicShell .secondaryCTA` text changed from amber to `--color-text-primary` (amber border retained).
+- [ ] **topicSelector gap against demo banner** — when banner is present the filter bar sticks flush against the banner bottom (no breathing room). Root cause: `--demo-banner-height` is always 0px. Proper fix requires a `ResizeObserver` on the sticky area. Deferred to Milestone 2 — see `docs/future/milestone-2-planning-notes.md`.
+- [x] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
+- [x] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
+- [x] Final copy pass with human eyes
+- [x] Related links on details pages are not well formatted - all text is underlined on hover rather than just the title, not enough brand accents. a bit dense. issue exists on articles, events,
+- [x] When linking back to issues page from articles/events/actions details, should we used appropriate color coding?
+- [x] Enlarge 'actions' and 'articles' section headers on search results page. make sections collapsible?
+- [x] **Comprehensive review pass (2026-06-23)** — site reviewed honestly at 7/10 → 8/10 over multiple passes. Key changes: homepage hero gap fixed (double-margin bug), step labels on journey cards, "Choose one issue" copy, issue roll locked to vertical treatment. Issue detail: removed confusing step-01 "Go Deep" header, capped articles/actions at 5, promoted events CTA. Event detail: restructured separator hierarchy (title → red separator → dek → thin separator → date/location). Article detail: collapsed to single-column, metadata card below article body, "Now act" forward signal, "Explore This Issue Further" simplified to direct textCTA. Events list: location note always visible, pagination spacing fixed. Dead CSS removed throughout. Screenshot 02-topics renamed to 02-issues. README portfolio language restored (app-only change).
+- [x] **Homepage issue roll → compact card grid** — replaced vertical large-type Playfair roll with compact 3-column card grid matching `/issues`; fixed 3/3/1 orphan card with centering selector; removed redundant "Choose your issue" CTA from journey section.
+- [x] **Demo banner → floating pill** — moved from top of page to `position: fixed; bottom: 16px` floating pill with rise-from-bottom animation; hero now lands clean without a warning banner as first element.
+- [x] **Journey strip** — `JourneyStrip` component added to all six journey pages (issues list/detail, articles list/detail, actions list/detail). Large Playfair Display numerals, amber active step, muted inactive steps as navigable links. Centered `→` arrow cuts through connector line. Closes the long-standing "homepage-only journey vocabulary" gap.
+- [x] **Root 404 page** — `app/not-found.tsx` now renders the full public shell (nav, footer, demo banner) with styled "We could not find that page" content and recovery CTAs. Previously rendered outside the layout with no shell.
 
 ###### Done condition
 

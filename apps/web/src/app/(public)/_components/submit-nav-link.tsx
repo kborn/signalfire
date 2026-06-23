@@ -1,4 +1,4 @@
-import NavLink from '@/app/navbar';
+import NavLink from '@/app/nav-link';
 
 export function SubmitNavLink() {
   return (

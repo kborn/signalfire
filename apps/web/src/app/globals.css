@@ -1,6 +1,9 @@
 /* Design token definitions, base reset, and global typography */
 @import './styles/tokens.css';
 
+/* Compositional layout utilities — prefer these for new page-level layout */
+@import './styles/utilities.css';
+
 /* Public shell, site header, navigation, footer */
 @import './styles/layout.css';
 

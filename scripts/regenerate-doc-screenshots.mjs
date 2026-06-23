@@ -44,7 +44,7 @@ async function capture(name, route, options = {}) {
 
 // Public pages
 await capture('01-home.png', '/');
-await capture('02-topics.png', '/topics');
+await capture('02-issues.png', '/issues');
 await capture('03-events.png', '/events');
 await capture('04-action-detail.png', '/actions/join-statewide-day-of-action-turnout-team');
 

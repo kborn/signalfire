@@ -1,60 +1,69 @@
-# Context for Next Agent Session — Phase 14.11 Final Nitpick Pass
+# Context for Next Agent Session — Phase 15: Deployment Infrastructure
 
 ## State of the repo
 
-**Branch:** `feat/phase_14/nav-mark`
+**Branch:** `feat/phase-14/nitpick_pass` (local only — not pushed)
 
-**Phases complete:** 14.1 ✅ through 14.10 ✅
+**Phase 14 status:** ✅ Complete.
 
----
-
-## What was completed in 14.10
-
-All Phase 14.10 items are done and committed:
-
-- `FYFLogo` SVG mark removed from nav — wordmark is amber Playfair Display "FYF" text only
-- Favicon (`fyf-mark.svg`) is bold "F" lettermark — amber serif on dark navy square
-- Footer motif replaced with 2px amber `border-top`
-- Wordmark color and font aligned to favicon (both amber, both serif)
-- `bg-motif.png` replaced with clean transparent version (user-supplied)
-- About page `about-hero::before` removed — no art on interior pages (Option A)
-- Art strategy doc and decisions.md updated to reflect all resolved questions
-
-Visual check passed: homepage motif ✅, about page clean ✅, footer amber border ✅, search/issues pages (motif on those headers is a 14.11 item).
+**Next phase:** Phase 15 — Deployment Infrastructure
 
 ---
 
-## Phase 14.11 — Final Nitpick Pass
+## Before starting Phase 15
 
-This is the current open phase. Tasks are tracked in `docs/agent-governance/progress.md`.
-
-### Motif placement — flagged during 14.10 visual check
-
-The following interior pages still have `bg-motif.png` in their section headers, which violates the locked art strategy ("motif on interior pages: No"). These are explicitly in the 14.11 scope ("Review motif placement and usage"):
-
-| File         | Selector                       | Page                                                               |
-| ------------ | ------------------------------ | ------------------------------------------------------------------ |
-| `search.css` | `.searchHeader::before`        | Search page                                                        |
-| `detail.css` | `.detailHero::before`          | All detail pages (issues, articles, actions, events)               |
-| `pages.css`  | `.submitEntryHeader::before`   | Submit entry page                                                  |
-| `pages.css`  | `.discoveryPageHeader::before` | Collection index pages (issues, articles, actions, events, topics) |
-
-The homepage hero (`.heroPoster::before`) is the only correct usage — do not remove it.
-
-### Other 14.11 items already in progress.md
-
-- Double separator lines on about page between sections
-- Demo banner partially covered when scrolling
-- Search page "or browse by topic" wording
-- Motif still not bold enough on homepage (darker, centered?)
-- Red separator line missing on articles/issues detail pages
-- Overall consistency pass (spacing, copy, hover states, empty states)
+The Phase 14 branch needs to land on `main` before deployment work begins.
+Confirm with the human whether to merge now or open a PR for review first.
 
 ---
 
-## Guardrails
+## What Phase 15 covers
 
-- Run `pnpm typecheck` before every commit
-- Do not push without explicit user confirmation
-- Do not reopen nav mark, favicon, footer, or wordmark decisions
-- The only correct `bg-motif.png` usage is `.heroPoster::before` on the homepage
+Full task list is in `progress.md` under Phase 15. High-level:
+
+- Confirm hosting/runtime shape (public site, API, database, admin-auth boundary)
+- Define how schema migrations run in deployed environments
+- Configure environment variables and secret handling
+- Ensure CI is a credible merge gate (lint, typecheck, unit, integration, e2e)
+- Add Dependabot and dependency vulnerability validation
+- Define branch protection rules for `main`
+- Decide on `CODEOWNERS` for post-Milestone 1 maintenance
+- Lightweight traffic visibility without a paid analytics stack
+
+---
+
+## Product state at phase close
+
+The public-facing product is at 8/10 by honest agent review. Key surfaces:
+
+| Surface         | State                                                                |
+| --------------- | -------------------------------------------------------------------- |
+| Homepage        | Card grid for issues, floating demo pill, step-labeled journey cards |
+| Issues list     | Journey strip (step 1 active), topic color grid                      |
+| Issue detail    | Read / Act / Events sections, capped at 5 items each                 |
+| Articles list   | Journey strip (step 2 active), topic filter                          |
+| Article detail  | Journey strip, single-column, metadata below body, "Now act" CTA     |
+| Actions list    | Journey strip (step 3 active), topic filter                          |
+| Action detail   | Journey strip, external CTA above fold — strongest screen            |
+| Events list     | Location note always visible, filter collapsible                     |
+| 404 page        | Full public shell with styled recovery content and CTAs              |
+| Admin workspace | Submission review, moderation queue, editorial editors — solid       |
+
+---
+
+## Locked decisions (do not relitigate)
+
+- **Issue roll treatment**: homepage now uses compact 3-column card grid matching `/issues`. Do not revert to vertical roll without explicit approval.
+- **Journey strip copy**: "Choose an issue / Read what matters / Take action" — matches interior pages. Homepage journey cards use slightly different copy ("Choose one issue / Read what matters / Do one concrete thing") — this minor inconsistency is known and acceptable.
+- **Motif placement**: homepage hero (full-bleed `::before`) + collection headers (right-anchored img with fade). Detail pages use radial-gradient mask at lower opacity. See `decisions.md` → "Visual identity art strategy".
+- **Visual palette**: dark navy + amber (#cfac5a). Locked.
+- **Typography**: Playfair Display (display/headings) + Inter (body). Locked.
+- **Demo banner**: floating pill at `position: fixed; bottom: 16px`. Rise-from-bottom animation. Do not move back to top of page.
+
+---
+
+## Known deferred items (not blockers for Phase 15)
+
+- Events cards are still visually bare — event type color differentiation not implemented. Acceptable at current review score.
+- `topicSelector` gap against demo banner when both are visible requires a `ResizeObserver` — deferred to Milestone 2 (`docs/future/milestone-2-planning-notes.md`).
+- Journey strip copy consistency with homepage cards — known, acceptable.

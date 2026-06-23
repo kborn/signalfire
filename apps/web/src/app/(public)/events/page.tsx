@@ -1,4 +1,3 @@
-import { connection } from 'next/server';
 import { EventSummary } from '@/components/event-summary';
 import { getEventsList } from '@/lib/api/events';
 import { TopicSelector } from '@/components/topic-selector';
@@ -11,7 +10,7 @@ import Link from 'next/link';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
 import type { EventSearchParams, ResolvedEventSearchParams } from './event-search-params';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -102,7 +101,6 @@ async function getContents(params: ResolvedEventSearchParams) {
 }
 
 export default async function EventListPage({ searchParams }: EventSearchParamsWrapper) {
-  await connection();
   const params = (await searchParams) ?? {};
   const topics = await getTopicsList();
   const resolvedParams: ResolvedEventSearchParams = { ...params, ...resolveDateWindow(params) };
@@ -116,13 +114,14 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
           near you on the issues you care about.
         </p>
       </div>
-      {isDemoModeEnabled() && (
-        <p className="metaText eventsDemoNote">
-          Demo events are seeded across NY, PA, CA, TX, and PR — use the region selector to find
-          them.
-        </p>
-      )}
-      <EventFilters params={resolvedParams} />
+      <p className="metaText eventsDemoNote">
+        {isDemoModeEnabled() ? 'Demo events are seeded across NY, PA, CA, TX, and PR. ' : ''}
+        Showing events across all regions. Filter below to narrow by location or date.
+      </p>
+      <details className="eventFilterCollapsible">
+        <summary className="eventFilterToggle">Filter events</summary>
+        <EventFilters params={resolvedParams} />
+      </details>
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(resolvedParams)}</div>
     </section>

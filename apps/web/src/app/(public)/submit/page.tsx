@@ -7,8 +7,8 @@ export default function ChooseSubmitTypePage() {
         <p className="section-label">Contribute</p>
         <h1 className="pageTitle">Share what you know.</h1>
         <p className="page-intro">
-          If you know of an article, an event, or a resource that belongs here, send it. Everything
-          gets reviewed before it goes live.
+          If you know of something we missed — an article, a guide, an event — send it in.
+          Everything gets reviewed before it goes live.
         </p>
       </div>
       <div className="submitOptionList">

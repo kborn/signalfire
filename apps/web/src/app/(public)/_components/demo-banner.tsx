@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
 const DISMISS_KEY = 'fyf-demo-banner-dismissed';
-const BANNER_HEIGHT_CSS_VAR = '--demo-banner-height';
 const DISMISS_ANIMATION_MS = 320;
 
 function subscribe(onStoreChange: () => void) {
@@ -24,43 +23,8 @@ function getServerSnapshot() {
 
 export default function DemoBanner() {
   const dismissed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const bannerRef = useRef<HTMLElement | null>(null);
   const dismissTimerRef = useRef<number | null>(null);
   const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    if (dismissed) {
-      document.documentElement.style.setProperty(BANNER_HEIGHT_CSS_VAR, '0px');
-      return;
-    }
-
-    const banner = bannerRef.current;
-    if (!banner) {
-      return;
-    }
-
-    const updateBannerHeight = () => {
-      document.documentElement.style.setProperty(BANNER_HEIGHT_CSS_VAR, `${banner.offsetHeight}px`);
-    };
-
-    updateBannerHeight();
-
-    const resizeObserver =
-      typeof ResizeObserver === 'undefined'
-        ? null
-        : new ResizeObserver(() => {
-            updateBannerHeight();
-          });
-
-    resizeObserver?.observe(banner);
-    window.addEventListener('resize', updateBannerHeight);
-
-    return () => {
-      resizeObserver?.disconnect();
-      window.removeEventListener('resize', updateBannerHeight);
-      document.documentElement.style.setProperty(BANNER_HEIGHT_CSS_VAR, '0px');
-    };
-  }, [dismissed]);
 
   useEffect(() => {
     return () => {
@@ -76,7 +40,6 @@ export default function DemoBanner() {
 
   return (
     <section
-      ref={bannerRef}
       className={`demoBanner${isClosing ? ' demoBannerClosing' : ''}`}
       aria-label="Demo notice"
     >

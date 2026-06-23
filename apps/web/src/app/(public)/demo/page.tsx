@@ -2,22 +2,22 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Demo — Find Your Fight',
-  description: 'Portfolio demo information and admin access for Find Your Fight.',
+  description: 'Demo information and admin access for Find Your Fight.',
 };
 
 export default function DemoPage() {
   return (
     <section className="page-section demoPage motifPage centeredPublicPage">
       <div className="page-section about-hero">
-        <p className="section-label">Portfolio demo</p>
+        <p className="section-label">Demo</p>
         <h1 className="pageTitle">About This Demo</h1>
         <p className="page-intro">
-          Find Your Fight is a portfolio project. This site runs on seeded demo content and is not a
-          live civic platform.
+          This site runs on seeded sample content. You can browse, submit, and moderate as if it
+          were live.
         </p>
       </div>
 
-      <div className="page-section about-body demoInfoBlock">
+      <div className="page-section about-body stack-md">
         <h2>What you are looking at</h2>
         <p>
           This demo shows a working civic action platform — public browsing, content filtering,
@@ -30,13 +30,13 @@ export default function DemoPage() {
         </p>
       </div>
 
-      <div className="page-section about-journey demoPageGrid">
+      <div className="page-section about-journey stack-md">
         <h2>Admin workspace access</h2>
         <p>
           The admin workspace includes the moderation queue, submission review, and article, action,
           and event editors.
         </p>
-        <div className="demoInfoBlock">
+        <div className="stack-md">
           <p className="section-label">Default demo credentials</p>
           <p>
             <strong>Email:</strong> admin@example.com
@@ -64,7 +64,7 @@ export default function DemoPage() {
         </div>
       </div>
 
-      <div className="page-section about-community demoInfoBlock">
+      <div className="page-section about-community stack-md">
         <p className="section-label">Explore the public site</p>
         <h2>Start with the public experience</h2>
         <div className="ctaRow">

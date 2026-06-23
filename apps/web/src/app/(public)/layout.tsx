@@ -14,19 +14,21 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
 
   return (
     <div className="publicShell">
-      <div className="container site-main publicContent">
-        <header className="site-header">
-          <div className="site-brand-group">
-            <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
-              <span className="site-wordmark-text" aria-hidden="true">
-                FYF
-              </span>
-            </Link>
-          </div>
-          <SiteNav />
-        </header>
-        {isDemoMode ? <DemoBanner /> : null}
+      <div className="container site-main publicContent" data-demo={isDemoMode ? '' : undefined}>
+        <div className="site-sticky-area">
+          <header className="site-header">
+            <div className="site-brand-group">
+              <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
+                <span className="site-wordmark-text" aria-hidden="true">
+                  Find Your Fight
+                </span>
+              </Link>
+            </div>
+            <SiteNav />
+          </header>
+        </div>
         <main>{children}</main>
+        {isDemoMode ? <DemoBanner /> : null}
         <footer className="site-footer">
           <nav className="site-footer-nav" aria-label="Footer">
             <Link href="/issues">Issues</Link>

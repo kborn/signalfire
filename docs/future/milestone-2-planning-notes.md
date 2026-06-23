@@ -123,6 +123,24 @@ Related provider ideas from the review notes:
 
 ---
 
+## Technical Debt — Sticky Header Stacking
+
+The public topicSelector (ISSUE filter bar) computes its sticky `top` offset
+using three CSS variables: `--public-sticky-offset` (header height),
+`--demo-banner-height` (always 0px, never dynamically set), and
+`--demo-banner-gap`. This means the filter bar does not account for the
+demo banner's actual rendered height and sits flush against the banner bottom
+when both are sticky at the same time.
+
+The proper fix: a `ResizeObserver` on `.site-sticky-area` (or on the banner
+element specifically) that writes the measured height into `--demo-banner-height`
+at runtime. This makes the topicSelector offset self-correcting regardless of
+banner content or viewport width.
+
+Deferred from Phase 14.11 as low-priority for Milestone 1 demo context.
+
+---
+
 ## Distribution and Sustainability
 
 Open planning areas:

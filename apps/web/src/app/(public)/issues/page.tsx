@@ -1,8 +1,8 @@
-import { connection } from 'next/server';
 import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
+import { JourneyStrip } from '@/components/journey-strip';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse() {
   return (
@@ -14,19 +14,19 @@ function getNoResultsResponse() {
 }
 
 export default async function TopicListPage() {
-  await connection();
   const data = await getTopicsList();
   if (data.items.length === 0) {
     return getNoResultsResponse();
   }
   return (
     <section className="page-section discoveryPage">
+      <JourneyStrip step={1} />
       <div className="discoveryPageHeader">
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Issues</h1>
         <p className="page-intro">
           Some of these issues have been building for decades. Others are moving fast. All of them
-          need people willing to focus.
+          need people willing to focus. Start with the one that already has your attention.
         </p>
       </div>
       <section className="topicsGrid">

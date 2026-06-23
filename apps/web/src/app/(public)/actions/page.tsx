@@ -1,4 +1,3 @@
-import { connection } from 'next/server';
 import { getActionsList } from '@/lib/api/actions';
 import { ActionSummary } from '@/components/action-summary';
 
@@ -7,8 +6,9 @@ import { TopicSelector } from '@/components/topic-selector';
 import { PageSizeSelector } from '@/components/page-size-selector';
 import { Pagination } from '@/components/pagination';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse(topicSlug?: string) {
   return (
@@ -47,7 +47,6 @@ type ActionListPageProps = {
 };
 
 export default async function ActionListPage({ searchParams }: ActionListPageProps) {
-  await connection();
   const params = await searchParams;
   const { topicSlug, search, page, pageSize } = params;
   const [resp, topics] = await Promise.all([
@@ -57,11 +56,12 @@ export default async function ActionListPage({ searchParams }: ActionListPagePro
 
   return (
     <section className="page-section discoveryPage">
+      <JourneyStrip step={3} />
       <div className="discoveryPageHeader">
         <p className="section-label">Browse</p>
         <h1 className="pageTitle">Actions</h1>
         <p className="page-intro">
-          One concrete step, taken seriously, is worth more than ten articles saved to read later.
+          The distance between knowing and doing is smaller than it feels. Start here.
         </p>
       </div>
       <TopicSelector topics={topics} basePath="/actions" params={params} />

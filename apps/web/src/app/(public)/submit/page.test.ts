@@ -8,9 +8,7 @@ describe('ChooseSubmitTypePage', () => {
     const markup = renderToStaticMarkup(ChooseSubmitTypePage());
 
     expect(markup).toContain('Share what you know.');
-    expect(markup).toContain(
-      'If you know of an article, an event, or a resource that belongs here, send it. Everything gets reviewed before it goes live.',
-    );
+    expect(markup).toContain('If you know of something we missed');
     expect(markup).toContain('href="/submit/article"');
     expect(markup).toContain('Submit an Article or Guide');
     expect(markup).toContain(

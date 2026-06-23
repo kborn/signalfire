@@ -1,15 +1,15 @@
 import React from 'react';
-import { connection } from 'next/server';
 import { getActionDetails } from '@/lib/api/actions';
 import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
 import { MarkdownContent } from '@/components/markdown-content';
 import { ArticleSummary } from '@/components/article-summary';
-import { formatContentDate } from '@/lib/common/time';
+
 import { formatActionTypeLabel } from '@/lib/common/utils';
 import Link from 'next/link';
+import { JourneyStrip } from '@/components/journey-strip';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 async function fetchActionDetails(params: Promise<{ slug: string }>) {
   const { slug } = await params;
@@ -24,10 +24,7 @@ async function fetchActionDetails(params: Promise<{ slug: string }>) {
 }
 
 export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
-  await connection();
   const action = await fetchActionDetails(params);
-  const publishedAt = formatContentDate(action.publishedAt);
-  const updatedAt = formatContentDate(action.updatedAt);
   const actionType = formatActionTypeLabel(action.actionType);
   const actionDomain = action.externalUrl
     ? new URL(action.externalUrl).hostname.replace(/^www\./, '')
@@ -35,6 +32,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <div className="detailPage motifPage">
+      <JourneyStrip step={3} />
       <nav
         className="detailBreadcrumb"
         aria-label="Back"
@@ -56,6 +54,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
         )}
       </nav>
       <section className="detailHeader detailHero">
+        <p className="summaryMeta">{actionType}</p>
         <h1 className="pageTitle">{action.title}</h1>
       </section>
       <section className="detailContent">
@@ -75,25 +74,6 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
           </div>
         ) : null}
 
-        <section className="detailMetaGroup">
-          <div className="metaBlock">
-            <p className="metaLabel">Action Type</p>
-            <p className="metaValue">{actionType}</p>
-          </div>
-          {publishedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Published</p>
-              <p className="metaValue">{publishedAt}</p>
-            </div>
-          )}
-          {updatedAt && (
-            <div className="metaBlock">
-              <p className="metaLabel">Updated</p>
-              <p className="metaValue">{updatedAt}</p>
-            </div>
-          )}
-        </section>
-
         <section>
           <MarkdownContent content={action.description} />
         </section>
@@ -102,7 +82,16 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
             <h3>Related Issues</h3>
             <ul className="relatedList">
               {action.topics.map((topic) => (
-                <li key={topic.id} className="relatedListItem">
+                <li
+                  key={topic.id}
+                  className="relatedListItem"
+                  data-topic={topic.slug}
+                  style={
+                    topic.color
+                      ? ({ '--topic-accent': topic.color } as React.CSSProperties)
+                      : undefined
+                  }
+                >
                   <Link href={`/issues/${topic.slug}`} className="relatedListItemTitle">
                     {topic.name}
                   </Link>
@@ -129,9 +118,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       </div>
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know of another way to act?</p>
-        <p className="metaText">
-          Know of an action, event, or resource that belongs here? Send it in.
-        </p>
+        <p className="metaText">Know of an action, event, or resource we missed? Send it in.</p>
         <Link href="/submit" className="textCTA">
           Submit content
         </Link>

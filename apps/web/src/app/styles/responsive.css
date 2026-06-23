@@ -34,7 +34,7 @@
     gap: 0.5rem;
     padding-top: 0.75rem;
     padding-bottom: 0.85rem;
-    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + var(--demo-banner-gap));
+    top: var(--public-sticky-offset);
   }
 
   .topicSelectorList {
@@ -48,11 +48,6 @@
   }
 
   .eventFilterGrid {
-    grid-template-columns: 1fr;
-  }
-
-  .detailContent--article,
-  .detailContent--event {
     grid-template-columns: 1fr;
   }
 
@@ -96,9 +91,12 @@
 }
 
 @media (max-width: 640px) {
-  .heroPosterIssueLink {
-    padding-top: 0.12em;
-    padding-bottom: 0.12em;
+  .homeIssueGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .homeIssueGrid > *:last-child:nth-child(3n + 1) {
+    grid-column: auto;
   }
 
   .container {
@@ -184,11 +182,10 @@
 
   .demoBanner {
     align-items: flex-start;
-    top: calc(var(--public-sticky-offset) + 8px);
   }
 
   .topicSelector {
-    top: calc(var(--public-sticky-offset) + var(--demo-banner-height) + 8px);
+    top: var(--public-sticky-offset);
   }
 
   .demoBannerActions {

@@ -13,7 +13,7 @@
 }
 
 .collectionItemEyebrow {
-  color: var(--color-brand-primary);
+  color: var(--color-text-muted);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -40,7 +40,7 @@
   padding: var(--space-3);
   border: 1px solid var(--color-border-subtle);
   border-left-width: 4px;
-  border-left-color: color-mix(in srgb, var(--color-brand-primary) 40%, transparent);
+  border-left-color: var(--color-border-subtle);
   border-radius: 12px;
   background: linear-gradient(
     180deg,
@@ -56,7 +56,7 @@
 }
 
 .publicShell .collectionItem:hover {
-  border-left-color: var(--color-brand-primary);
+  border-left-color: var(--color-brand-accent);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--color-surface-soft) 98%, white 2%) 0%,
@@ -110,21 +110,39 @@
 .publicShell .collectionItem:focus-visible .collectionItemTitle,
 .publicShell .collectionItem:focus-visible h2,
 .publicShell .collectionItem:focus-visible h3,
+.publicShell .relatedListItem:hover,
+.publicShell .relatedListItem:focus-visible {
+  text-decoration: none;
+}
+
 .publicShell .relatedListItem:hover .relatedListItemTitle,
 .publicShell .relatedListItem:focus-visible .relatedListItemTitle {
   text-decoration-color: currentColor;
 }
 
+.publicShell .relatedListItem[data-topic] .relatedListItemTitle {
+  color: color-mix(
+    in srgb,
+    var(--topic-accent, var(--color-text-primary)) 85%,
+    var(--color-text-primary)
+  );
+}
+
+.publicShell .relatedListItem[data-topic]:hover .relatedListItemTitle,
+.publicShell .relatedListItem[data-topic]:focus-visible .relatedListItemTitle {
+  color: var(--topic-accent, var(--color-text-primary));
+}
+
 .relatedList {
   display: grid;
   gap: var(--space-3);
-  border-left: 1px solid color-mix(in srgb, var(--color-brand-accent) 45%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--color-brand-accent) 70%, transparent);
   padding-left: 1rem;
 }
 
 .relatedListItem {
   display: grid;
-  gap: var(--space-0);
+  gap: var(--space-1);
 }
 
 .relatedListItemTitle {
@@ -134,9 +152,17 @@
 }
 
 .relatedListItemSummary {
-  padding-left: 1rem;
   color: var(--color-text-muted);
   max-width: 68ch;
+}
+
+.eventDateChip {
+  color: var(--color-brand-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 .eventMeta {
@@ -201,9 +227,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 8px;
+  width: 52px;
+  height: 52px;
+  padding: 10px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--topic-accent, var(--color-brand-accent)) 14%, transparent);
   color: var(--topic-accent, var(--color-brand-accent));

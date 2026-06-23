@@ -121,6 +121,18 @@ export function formatEventTime(
   return `${startDateLabel} at ${startTimeLabel} ${timeZoneLabel} to ${endDateLabel} at ${endTimeLabel} ${timeZoneLabel}`;
 }
 
+export function formatEventDateChip(startDateString: string): string {
+  const date = parseDate(startDateString);
+  if (!date) return '';
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  })
+    .format(date)
+    .toUpperCase();
+}
+
 export function formatAdminDateTime(dateString: string): string {
   const date = parseDate(dateString);
 

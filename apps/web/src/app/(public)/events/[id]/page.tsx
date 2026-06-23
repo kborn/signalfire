@@ -1,5 +1,4 @@
 import React from 'react';
-import { connection } from 'next/server';
 import { EventDetailResponse } from '@signal-fire/api-contracts';
 import { getEventDetails } from '@/lib/api/events';
 import { notFound } from 'next/navigation';
@@ -12,7 +11,7 @@ import { MarkdownContent } from '@/components/markdown-content';
 import { formatEventTypeLabel } from '@/lib/common/utils';
 import Link from 'next/link';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function normalizePlainText(value: string): string {
   return value
@@ -62,16 +61,22 @@ function formatEventArea({
 }
 
 export default async function EventDetailsPage({ params }: { params: Promise<{ id: string }> }) {
-  await connection();
   const event = await fetchEventDetails(params);
   const eventArea = formatEventArea(event);
   const normalizedSummary = normalizePlainText(event.summary);
   const normalizedDescription = normalizePlainText(event.description);
   const shouldRenderSummaryLead =
     normalizedSummary.length > 0 && !normalizedDescription.startsWith(normalizedSummary);
+  const locationLine = [event.locationName, eventArea].filter(Boolean).join(' · ');
+  const hasSecondaryMeta = !!(
+    event.publicLocationDescription ||
+    event.addressLine1 ||
+    event.website ||
+    event.contactEmail
+  );
 
   return (
-    <div className="detailPage">
+    <div className="detailPage motifPage">
       <nav
         className="detailBreadcrumb"
         aria-label="Back"
@@ -92,107 +97,93 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
           </Link>
         )}
       </nav>
+
       <section className="detailHeader detailHero">
+        <p className="summaryMeta">{formatEventTypeLabel(event.eventType)}</p>
         <h1 className="pageTitle">{event.title}</h1>
       </section>
-      <section className="detailContent detailContent--event">
-        <section className="detailMetaPanel">
-          {shouldRenderSummaryLead ? <p className="detailLead">{event.summary}</p> : null}
-          <section className="eventInfoBlock">
+
+      <section className="detailContent">
+        {shouldRenderSummaryLead && <p className="detailLead">{event.summary}</p>}
+        <div className="eventDetailKeyInfo stack-sm">
+          <p className="eventDetailWhen">
+            {formatEventTime(event.startTime, event.endTime, {
+              city: event.city,
+              region: event.region,
+              country: event.country,
+            })}
+          </p>
+          {locationLine && <p className="eventDetailWhere">{locationLine}</p>}
+        </div>
+        <MarkdownContent content={event.description} />
+      </section>
+
+      {hasSecondaryMeta && (
+        <section className="eventSecondaryMeta">
+          {event.publicLocationDescription && (
             <div className="metaBlock">
-              <p className="metaLabel">Event Type</p>
-              <p className="metaValue eventType">{formatEventTypeLabel(event.eventType)}</p>
+              <p className="metaLabel">Location Details</p>
+              <p className="metaValue">{event.publicLocationDescription}</p>
             </div>
+          )}
+          {event.addressLine1 && (
             <div className="metaBlock">
-              <p className="metaLabel">Date & Time</p>
+              <p className="metaLabel">Address</p>
               <p className="metaValue">
-                {formatEventTime(event.startTime, event.endTime, {
-                  city: event.city,
-                  region: event.region,
-                  country: event.country,
-                })}
+                {[event.addressLine1, event.addressLine2].filter(Boolean).join(', ')}
               </p>
             </div>
+          )}
+          {event.website && (
             <div className="metaBlock">
-              <p className="metaLabel">Location</p>
-              <p className="metaValue">{event.locationName}</p>
+              <p className="metaLabel">Website</p>
+              <p className="metaValue">
+                <a href={event.website} target="_blank" rel="noreferrer">
+                  {new URL(event.website).hostname}
+                </a>
+              </p>
             </div>
-            {event.publicLocationDescription && (
-              <div className="metaBlock">
-                <p className="metaLabel">Location Description</p>
-                <p className="metaValue">{event.publicLocationDescription}</p>
-              </div>
-            )}
-            {event.addressLine1 && (
-              <div className="metaBlock">
-                <p className="metaLabel">Address Line 1</p>
-                <p className="metaValue">{event.addressLine1}</p>
-              </div>
-            )}
-            {event.addressLine2 && (
-              <div className="metaBlock">
-                <p className="metaLabel">Address Line 2</p>
-                <p className="metaValue">{event.addressLine2}</p>
-              </div>
-            )}
-            {eventArea && (
-              <div className="metaBlock">
-                <p className="metaLabel">City, State &amp; ZIP</p>
-                <p className="metaValue">{eventArea}</p>
-              </div>
-            )}
-            {event.website && (
-              <div className="metaBlock">
-                <p className="metaLabel">Website</p>
-                <p className="metaValue">
-                  <a href={event.website} target="_blank" rel="noreferrer">
-                    {event.website}
-                  </a>
-                </p>
-              </div>
-            )}
-            {event.contactEmail && (
-              <div className="metaBlock">
-                <p className="metaLabel">Contact</p>
-                <p className="metaValue">{event.contactEmail}</p>
-              </div>
-            )}
-          </section>
+          )}
+          {event.contactEmail && (
+            <div className="metaBlock">
+              <p className="metaLabel">Contact</p>
+              <p className="metaValue">{event.contactEmail}</p>
+            </div>
+          )}
         </section>
-        <section className="detailNarrativePanel">
-          <MarkdownContent content={event.description} />
+      )}
+
+      {event.topics.length > 0 && (
+        <section className="relatedSection">
+          <h3>Related Issues</h3>
+          <div className="relatedList">
+            {event.topics.map((topic) => (
+              <TopicSummary key={topic.id} topic={topic} variant="related" />
+            ))}
+          </div>
         </section>
-        {event.topics.length > 0 && (
-          <section className="relatedSection">
-            <h3>Related Issues</h3>
-            <div className="relatedList">
-              {event.topics.map((topic) => (
-                <TopicSummary key={topic.id} topic={topic} variant="related" />
-              ))}
-            </div>
-          </section>
-        )}
-        {event.articles.length > 0 && (
-          <section className="relatedSection">
-            <h3>Read First</h3>
-            <div className="relatedList">
-              {event.articles.map((article) => (
-                <ArticleSummary key={article.id} article={article} variant="related" />
-              ))}
-            </div>
-          </section>
-        )}
-        {event.actions.length > 0 && (
-          <section className="relatedSection">
-            <h3>Take Action</h3>
-            <div className="relatedList">
-              {event.actions.map((action) => (
-                <ActionSummary key={action.id} action={action} variant="related" />
-              ))}
-            </div>
-          </section>
-        )}
-      </section>
+      )}
+      {event.articles.length > 0 && (
+        <section className="relatedSection">
+          <h3>Read First</h3>
+          <div className="relatedList">
+            {event.articles.map((article) => (
+              <ArticleSummary key={article.id} article={article} variant="related" />
+            ))}
+          </div>
+        </section>
+      )}
+      {event.actions.length > 0 && (
+        <section className="relatedSection">
+          <h3>Take Action</h3>
+          <div className="relatedList">
+            {event.actions.map((action) => (
+              <ActionSummary key={action.id} action={action} variant="related" />
+            ))}
+          </div>
+        </section>
+      )}
+
       <div className="detailPageNav">
         <Link href="/events" className="textCTA">
           Browse more events
@@ -200,7 +191,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       </div>
       <section className="page-section detailContributeNudge">
         <p className="section-label">Know of another event?</p>
-        <p className="metaText">If you know of an event that belongs here, send it in.</p>
+        <p className="metaText">Know of an event we missed? Send it in.</p>
         <Link href="/submit/event" className="textCTA">
           Submit an event
         </Link>

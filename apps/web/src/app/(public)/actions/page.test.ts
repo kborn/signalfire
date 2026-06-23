@@ -70,7 +70,7 @@ describe('ActionListPage', () => {
     expect(getTopicsList).toHaveBeenCalledTimes(1);
     expect(markup).toContain('Actions');
     expect(markup).toContain(
-      'One concrete step, taken seriously, is worth more than ten articles saved to read later.',
+      'The distance between knowing and doing is smaller than it feels. Start here.',
     );
     expect(markup).toContain('Issue');
     expect(markup).toContain('href="/actions?topicSlug=democracy&amp;pageSize=10"');
@@ -135,7 +135,7 @@ describe('ActionListPage', () => {
     expect(markup).toContain('Actions');
     expect(markup).toContain('No actions match this issue yet.');
     expect(markup).toContain(
-      'One concrete step, taken seriously, is worth more than ten articles saved to read later.',
+      'The distance between knowing and doing is smaller than it feels. Start here.',
     );
     expect(markup).toContain('Issue');
     expect(markup).toContain('Results per page');

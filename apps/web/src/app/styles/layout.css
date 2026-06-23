@@ -20,11 +20,15 @@
   font-weight: 700;
 }
 
-.site-header {
+.site-sticky-area {
   position: sticky;
   top: 0;
   z-index: 100;
-  isolation: isolate;
+  background: var(--color-page-bg);
+}
+
+.site-header {
+  position: relative;
   background: var(--color-page-bg);
   display: flex;
   flex-wrap: wrap;
@@ -33,16 +37,7 @@
   gap: var(--space-2) var(--space-3);
   padding: 20px 0 12px;
   border-bottom: 1px solid var(--color-border-subtle);
-  margin-bottom: calc(var(--space-4) + 4px);
-}
-
-.site-header::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 -16px;
-  height: 16px;
-  background: var(--color-page-bg);
-  pointer-events: none;
+  margin-bottom: 0;
 }
 
 .site-header::before {
@@ -76,9 +71,9 @@
 
 .site-wordmark-text {
   font-family: var(--font-display), Georgia, 'Times New Roman', serif;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
   line-height: 1;
   color: var(--color-brand-primary);
 }
@@ -203,29 +198,33 @@
 }
 
 .demoBanner {
-  position: sticky;
-  top: calc(var(--public-sticky-offset) + var(--demo-banner-gap));
-  z-index: 90;
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  width: calc(100% - 32px);
+  max-width: 900px;
+  transform: translateX(-50%);
+  z-index: 200;
   isolation: isolate;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-2) var(--space-3);
-  padding: 14px 16px;
+  padding: 12px 20px;
   border: 1px solid color-mix(in srgb, var(--color-brand-primary) 35%, var(--color-border-subtle));
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--color-surface-soft);
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-page-bg) 55%, transparent);
-  margin-bottom: calc(var(--space-4) + 4px);
+  box-shadow:
+    0 8px 32px color-mix(in srgb, var(--color-page-bg) 65%, transparent),
+    0 2px 8px color-mix(in srgb, var(--color-brand-primary) 8%, transparent);
   overflow: hidden;
-  transform-origin: top center;
-  animation: demoBannerEnter 0.45s cubic-bezier(0, 0, 0.2, 1);
+  animation: demoBannerEnter 0.5s cubic-bezier(0, 0, 0.2, 1);
 }
 
 .demoBannerClosing {
   pointer-events: none;
-  animation: demoBannerExit 320ms cubic-bezier(0.4, 0, 1, 1) forwards;
+  animation: demoBannerExit 300ms cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 .demoBannerBody,
@@ -242,7 +241,7 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  animation: demoBannerPulse 1.2s ease-out 1;
+  animation: demoBannerPulse 0.9s ease-out 3;
 }
 
 .demoBannerCopy {
@@ -297,17 +296,6 @@
   text-underline-offset: 0.2em;
 }
 
-.demoBanner::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -4px;
-  height: 4px;
-  background: var(--color-page-bg);
-  pointer-events: none;
-}
-
 .demoBanner::after {
   content: '';
   position: absolute;
@@ -337,24 +325,24 @@
 
 @keyframes demoBannerEnter {
   0% {
-    transform: translateY(-100px);
+    transform: translateX(-50%) translateY(120px);
     opacity: 0;
   }
 
   100% {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
 
 @keyframes demoBannerExit {
   0% {
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 
   100% {
-    transform: translateY(-100px);
+    transform: translateX(-50%) translateY(120px);
     opacity: 0;
   }
 }
@@ -366,6 +354,10 @@
 
 .publicContent.site-main {
   padding-bottom: calc(80px + var(--space-5));
+}
+
+.publicContent[data-demo] {
+  padding-bottom: calc(80px + var(--space-5) + 56px);
 }
 
 .page-section {
@@ -500,7 +492,7 @@
   gap: var(--space-2);
   padding: clamp(48px, 7vw, 80px) 0 var(--space-5);
   margin-top: var(--space-5);
-  border-top: 2px solid var(--color-brand-primary);
+  border-top: 2px solid var(--color-brand-accent);
 }
 
 .site-footer-nav {

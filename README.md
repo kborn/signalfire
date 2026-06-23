@@ -144,7 +144,7 @@ pnpm docs:screenshots
 
 ![Home](docs/screenshots/01-home.png)
 
-![Issues](docs/screenshots/02-topics.png)
+![Issues](docs/screenshots/02-issues.png)
 
 ![Events](docs/screenshots/03-events.png)
 

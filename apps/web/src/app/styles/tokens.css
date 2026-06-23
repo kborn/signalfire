@@ -20,8 +20,6 @@
   --color-status-error: #f07b67;
   --color-brand-primary-hover: #dec27f;
   --public-sticky-offset: 60px;
-  --demo-banner-height: 0px;
-  --demo-banner-gap: 0px;
   --topic-accent: var(--color-brand-primary);
 }
 

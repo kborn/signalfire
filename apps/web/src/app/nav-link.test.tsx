@@ -1,7 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import NavLink from './navbar';
+import NavLink from './nav-link';
 
 const usePathnameMock = vi.fn();
 

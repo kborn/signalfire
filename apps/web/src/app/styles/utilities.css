@@ -1,0 +1,38 @@
+/* Compositional layout utilities
+ *
+ * Prefer these over one-off page-level classes for common layout patterns.
+ * Page-specific classes should add constraints (max-width, color, border) on
+ * top of these — not re-implement the layout from scratch.
+ */
+
+/* Stack: vertical grid with gap */
+.stack-xs {
+  display: grid;
+  gap: var(--space-0);
+}
+.stack-sm {
+  display: grid;
+  gap: var(--space-1);
+}
+.stack-md {
+  display: grid;
+  gap: var(--space-2);
+}
+.stack-lg {
+  display: grid;
+  gap: var(--space-3);
+}
+.stack-xl {
+  display: grid;
+  gap: var(--space-4);
+}
+.stack-2xl {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* Section divider */
+.section-border-top {
+  border-top: 1px solid var(--color-border-subtle);
+  padding-top: var(--space-4);
+}
