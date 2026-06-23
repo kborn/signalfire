@@ -122,7 +122,10 @@ export default async function EventListPage({ searchParams }: EventSearchParamsW
           location — use the region selector to find them.
         </p>
       )}
-      <EventFilters params={resolvedParams} />
+      <details className="eventFilterPanel">
+        <summary className="eventFilterToggle">Filter events</summary>
+        <EventFilters params={resolvedParams} />
+      </details>
       <TopicSelector topics={topics} basePath="/events" params={params} />
       <div>{await getContents(resolvedParams)}</div>
     </section>
