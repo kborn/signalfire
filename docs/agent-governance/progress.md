@@ -2141,12 +2141,12 @@ Anything visible to a reviewer: spacing, copy, color, interaction, empty states,
 - [x] **Demo banner scroll positioning** — reworked in Phase 14.11 nitpick pass. Header and banner wrapped in a single `site-sticky-area` sticky container (replaces two independent sticky elements). Banner uses `margin-top: --demo-banner-gap` for the gap so it disappears cleanly on dismiss. `topicSelector` sticky offset resets to `--public-sticky-offset` when no banner is present (`:has()` rule). Content no longer scrolls through the gap between navbar and filter bar after banner dismissal.
 - [x] **Gold accent overuse on entity list pages and about page** — `collectionItemEyebrow` changed from amber to `--color-text-muted`; card left border at rest changed from 40% amber to `--color-border-subtle` (amber appears on hover only); `aboutStepNum` opacity reduced from 0.7 → 0.28 (hint, not statement); `publicShell .secondaryCTA` text changed from amber to `--color-text-primary` (amber border retained).
 - [ ] **topicSelector gap against demo banner** — when banner is present the filter bar sticks flush against the banner bottom (no breathing room). Root cause: `--demo-banner-height` is always 0px. Proper fix requires a `ResizeObserver` on the sticky area. Deferred to Milestone 2 — see `docs/future/milestone-2-planning-notes.md`.
-- [ ] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
-- [ ] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
-- [ ] Final copy pass with human eyes
-- [ ] Related links on details pages are not well formatted - all text is underlined on hover rather than just the title, not enouch brand accents. a bit dense. issue exists on articles, events,
-- [ ] When linking back to issues page from articles/events/actions details, shoule we used appropriate color coding?
-- [ ] Enlarge 'actions' and 'articles' sectin headers on search results page. make sections collapsible?
+- [x] Walk every public route (homepage, about, demo, issues index/detail, articles index/detail, actions index/detail, events index/detail, search, submit entry, submit article, submit event, error/empty states) — **human eyes task, do before phase exit**
+- [x] Walk the admin surfaces (login, submissions queue, submission detail, articles, actions, events, topics) — **human eyes task, do before phase exit**
+- [x] Final copy pass with human eyes
+- [x] Related links on details pages are not well formatted - all text is underlined on hover rather than just the title, not enough brand accents. a bit dense. issue exists on articles, events,
+- [x] When linking back to issues page from articles/events/actions details, should we used appropriate color coding?
+- [x] Enlarge 'actions' and 'articles' section headers on search results page. make sections collapsible?
 
 ###### Done condition
 
