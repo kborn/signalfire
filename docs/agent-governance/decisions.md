@@ -1401,3 +1401,19 @@ Professional UX review is the right next gate before Milestone 1 goes live.
 - The events surface is the one area where agent reviews consistently identified
   real problems that were not fixed. That surface should be the first agenda item
   for the professional review.
+
+---
+
+### ► Hosting Platform: Railway for all Milestone 1 services
+
+###### 2026-06-23
+
+---
+
+###### Decision
+
+Railway hosts all three runtime services — Next.js web app, NestJS API, and PostgreSQL — in a single project. Vercel + Railway split was evaluated and rejected due to cross-origin cookie complexity with the existing cookie-backed admin auth implementation. AWS was evaluated and rejected as overkill for portfolio-scale traffic.
+
+Full rationale, service topology, migration strategy, and admin auth boundary are documented in `docs/architecture/011-phase-15-deployment-architecture.md`.
+
+---

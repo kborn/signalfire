@@ -2167,26 +2167,75 @@ Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; 
 
 Configure hosting, environment management, and CI/CD once the product and schema shape are stable enough to justify release planning.
 
+---
+
+#### ▸ Phase 15.1 — Hosting & Runtime Decisions ✅
+
+###### Goal
+
+Decide where and how the app deploys before any deployment config is written. Pure decisions and documentation — no code.
+
 ###### Phase Tasks:
 
-- [ ] Confirm the target hosting/runtime shape for the public site, API, database, and admin-auth deployment boundary
-- [ ] Define how schema migrations run in deployed environments and validate that the chosen deployment workflow supports that path safely
-- [ ] Configure deployment environment variables, secret handling, and runtime wiring needed to support the chosen admin-auth implementation
-- [ ] Ensure CI remains a credible merge gate by confirming the required lint, typecheck, unit, integration, and e2e suites for `main`
-- [ ] Add repository security automation appropriate for post-Milestone 1 maintenance, including Dependabot update PRs and dependency vulnerability validation in CI
-- [ ] Define branch protection/status-check requirements for `main` and apply them across the primary public repository
-- [ ] Decide whether lightweight repository ownership rules such as `CODEOWNERS` are necessary for post-Milestone 1 maintenance and add them if they improve review clarity
-- [ ] Enable minimal launch-stage traffic visibility through deployment/platform logs or lightweight request logging for public routes without introducing a paid analytics stack
+- [x] Confirm target hosting provider and runtime shape for the public site (Next.js), API (NestJS), and database (PostgreSQL)
+- [x] Define the admin-auth deployment boundary — which service hosts the admin routes, how cookie-backed sessions behave across the deployed stack
+- [x] Define the migration strategy for deployed environments — when and how `prisma migrate deploy` runs relative to API startup
+- [x] Record decisions in `decisions.md`; update `CONTEXT-next-session.md` with the locked hosting choice
+
+###### Notes:
+
+- Full decision rationale, options considered, service topology, migration strategy, and auth boundary documented in `docs/architecture/011-phase-15-deployment-architecture.md`.
+
+---
+
+#### ▸ Phase 15.2 — CI & Repository Governance ⏳
+
+###### Goal
+
+Harden the repository as a credible merge gate and add post-Milestone 1 maintenance automation.
+
+###### Phase Tasks:
+
+- [ ] Confirm the CI suite covers the required gates for `main`: lint, typecheck, unit tests, and any integration coverage that can run without a container runtime
+- [ ] Add Dependabot for automated dependency update PRs
+- [ ] Add dependency vulnerability validation in CI (e.g., `pnpm audit --prod` as a required check)
+- [ ] Define and apply branch protection rules for `main` (required status checks, no direct push)
+- [ ] Decide whether `CODEOWNERS` adds review clarity for post-Milestone 1 maintenance; add if yes
+
+---
+
+#### ▸ Phase 15.3 — Deployment Configuration ⏳
+
+###### Goal
+
+Wire the chosen hosting provider with the correct env vars, secrets, and migration path so the app runs in a deployed environment.
+
+###### Phase Tasks:
+
+- [ ] Configure deployment environment variables and secret handling for the public site, API, and database connection
+- [ ] Wire admin-auth session config for the deployed environment (cookie domain, secure flag, session secret)
+- [ ] Validate the migration workflow end-to-end against a deployed or staging database instance
+- [ ] Deploy a staging or preview instance and confirm public routes, admin auth, and the API all behave correctly
+
+---
+
+#### ▸ Phase 15.4 — Observability ⏳
+
+###### Goal
+
+Establish minimal traffic visibility without a paid analytics stack.
+
+###### Phase Tasks:
+
+- [ ] Enable lightweight traffic visibility through platform/deployment logs or minimal request logging on public routes
+- [ ] Confirm error logging is sufficient to diagnose production incidents without a dedicated observability platform
 
 ---
 
 ###### Notes:
 
 - Phase order was intentionally adjusted after Phase 12 so code-facing Milestone 1 work, including DB identifier normalization, lands before release infrastructure hardens those assumptions.
-
-- This phase intentionally combines late bug fixing, public UI polish, regression work, and repo-readiness cleanup into one pre-launch pass.
 - Release 1 only needs lightweight public traffic visibility, not a paid analytics stack or full product analytics program.
-- Public copy should not lean harder on "community-powered" messaging than the actual Release 1 contributor experience can support.
 
 ---
 

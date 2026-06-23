@@ -2,68 +2,53 @@
 
 ## State of the repo
 
-**Branch:** `feat/phase-14/nitpick_pass` (local only — not pushed)
+**Branch:** `main` (clean)
 
-**Phase 14 status:** ✅ Complete.
-
-**Next phase:** Phase 15 — Deployment Infrastructure
+**Phase 15 status:** 🚧 Active — Phase 15.1 complete, Phase 15.2 next.
 
 ---
 
-## Before starting Phase 15
+## Locked hosting decision (do not relitigate)
 
-The Phase 14 branch needs to land on `main` before deployment work begins.
-Confirm with the human whether to merge now or open a PR for review first.
+**Platform: Railway — all services in one project.**
 
----
+Three Railway services: `web` (Next.js / `apps/web`), `api` (NestJS / `apps/api`), `db` (Railway-managed PostgreSQL).
 
-## What Phase 15 covers
+- Migrations run as a release command on the `api` service: `cd apps/api && pnpm exec prisma migrate deploy`
+- Admin session cookies require a shared custom domain between web and API to avoid `SameSite` cross-origin complexity
+- Milestone 2 crawler is a fourth Railway service in the same project — no provider migration needed
 
-Full task list is in `progress.md` under Phase 15. High-level:
-
-- Confirm hosting/runtime shape (public site, API, database, admin-auth boundary)
-- Define how schema migrations run in deployed environments
-- Configure environment variables and secret handling
-- Ensure CI is a credible merge gate (lint, typecheck, unit, integration, e2e)
-- Add Dependabot and dependency vulnerability validation
-- Define branch protection rules for `main`
-- Decide on `CODEOWNERS` for post-Milestone 1 maintenance
-- Lightweight traffic visibility without a paid analytics stack
+Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
 
 ---
 
-## Product state at phase close
+## What's next: Phase 15.2 — CI & Repository Governance
 
-The public-facing product is at 8/10 by honest agent review. Key surfaces:
+Tasks:
 
-| Surface         | State                                                                |
-| --------------- | -------------------------------------------------------------------- |
-| Homepage        | Card grid for issues, floating demo pill, step-labeled journey cards |
-| Issues list     | Journey strip (step 1 active), topic color grid                      |
-| Issue detail    | Read / Act / Events sections, capped at 5 items each                 |
-| Articles list   | Journey strip (step 2 active), topic filter                          |
-| Article detail  | Journey strip, single-column, metadata below body, "Now act" CTA     |
-| Actions list    | Journey strip (step 3 active), topic filter                          |
-| Action detail   | Journey strip, external CTA above fold — strongest screen            |
-| Events list     | Location note always visible, filter collapsible                     |
-| 404 page        | Full public shell with styled recovery content and CTAs              |
-| Admin workspace | Submission review, moderation queue, editorial editors — solid       |
+- Confirm CI suite covers required gates for `main`: lint, typecheck, unit, integration where possible
+- Add Dependabot for automated dependency update PRs
+- Add dependency vulnerability validation in CI (`pnpm audit --prod`)
+- Define and apply branch protection rules for `main`
+- Decide on `CODEOWNERS`
+
+Phase 15.2 is independent of the Railway setup — it's all repository and GitHub configuration.
 
 ---
 
-## Locked decisions (do not relitigate)
+## Phase 15.3 and 15.4 (upcoming)
 
-- **Issue roll treatment**: homepage now uses compact 3-column card grid matching `/issues`. Do not revert to vertical roll without explicit approval.
-- **Journey strip copy**: "Choose an issue / Read what matters / Take action" — matches interior pages. Homepage journey cards use slightly different copy ("Choose one issue / Read what matters / Do one concrete thing") — this minor inconsistency is known and acceptable.
-- **Motif placement**: homepage hero (full-bleed `::before`) + collection headers (right-anchored img with fade). Detail pages use radial-gradient mask at lower opacity. See `decisions.md` → "Visual identity art strategy".
-- **Visual palette**: dark navy + amber (#cfac5a). Locked.
-- **Typography**: Playfair Display (display/headings) + Inter (body). Locked.
-- **Demo banner**: floating pill at `position: fixed; bottom: 16px`. Rise-from-bottom animation. Do not move back to top of page.
+- **15.3** — Deployment configuration: env vars, secrets, Railway service wiring, staging deploy validation
+- **15.4** — Observability: lightweight traffic visibility via platform logs or minimal request logging
 
 ---
 
-## Known deferred items (not blockers for Phase 15)
+## Product state
 
-- Events cards are still visually bare — event type color differentiation not implemented. Acceptable at current review score.
-- `topicSelector` gap against demo banner when both are visible requires a `ResizeObserver` — deferred to Milestone 2 (`docs/future/milestone-2-planning-notes.md`).
-- Journey strip copy consistency with homepage cards — known, acceptable.
+Phase 14 is complete and on `main`. The public product is at 8/10. See prior `CONTEXT-next-session.md` content in git history for the full surface-by-surface breakdown — it remains accurate.
+
+---
+
+## Locked decisions carried forward
+
+All Phase 14 locked decisions remain in force. See `docs/agent-governance/decisions.md` for the full list. Visual palette, typography, motif placement, demo banner position, journey strip, and homepage issue roll treatment are all locked.

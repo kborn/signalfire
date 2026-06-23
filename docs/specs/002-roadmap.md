@@ -17,25 +17,49 @@ real-user growth, automated ingestion, or a production community engine.
 
 ### Milestone 2
 
-Milestone 2 begins only after Milestone 1 is complete and answers a different
-question: should `Find Your Fight` evolve from a polished portfolio artifact
-into a real public product with real users?
+Milestone 2 is a focused single-city launch. The goal is to prove the
+topic-relevance pipeline and moderation workflow against live content before
+expanding geographically.
 
-Milestone 2 is therefore driven first by product and operating decisions, not
-by implementation tickets.
+**Product shape:**
 
-Open planning themes for Milestone 2 include:
+- Launch in one target metro area with real users
+- Introduce automated event discovery via a curated-source crawler
+- Keep the human moderation review gate: no content publishes without editorial approval
+- Evaluate whether the visitor experience and contributor loop are working before expanding
 
-- whether the emotionally overwhelmed visitor is a primary target user
-- whether the product launches nationally or in one target metro area first
-- how event ingestion should work and what review model it requires
-- how submission feedback loops, distribution, and sustainability should work
-- what launch success means after 90 days with real users
-- how to close the gap between any public "community-powered" framing and the
-  actual contributor experience
+**Event crawler:**
 
-Detailed Milestone 2 exploration notes are intentionally kept outside active
-specs until they are shaped into implementation-ready plans.
+- Curated source list for the target city: local government calendars, known
+  civic org sites, Meetup and Eventbrite topic searches
+- Crawler runs on a nightly schedule and fetches candidate event pages
+- Claude API handles structured extraction (title, date, time, location,
+  description) and topic classification in a single pass
+- Extracted events enter the existing submission queue as `pending` records
+- No new database or storage infrastructure required; the existing moderation
+  workflow handles review before publication
+
+**Open questions for Milestone 2 planning:**
+
+- Which city launches first and why
+- How submission feedback loops and distribution work for real contributors
+- What launch success looks like after 90 days with real users
+- How to close the gap between any "community-powered" framing and the actual
+  contributor experience at launch scale
+
+### Milestone 3
+
+Milestone 3 is geographical expansion. The single-city Milestone 2 pass
+validates the extraction pipeline, source discovery approach, and moderation
+throughput before scale increases.
+
+- Roll the crawler pattern out to additional cities using the same curated-source model
+- Expand the topic taxonomy if new geographies surface civic themes not
+  represented in the current seed set
+- Evaluate crawler infrastructure limits as source volume grows; the current
+  Railway-hosted worker pattern is sufficient through early Milestone 3
+- Consider deeper geographic discovery features (neighborhood-level filtering,
+  distance from user) if usage data supports the investment
 
 ---
 
