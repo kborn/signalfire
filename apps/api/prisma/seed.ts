@@ -1209,7 +1209,7 @@ const demoActions = [
     summary: 'Ask local officials to expand public transit funding.',
     description:
       'Call or email your local council member and ask for dedicated bus-lane funding and improved weekend service.',
-    externalUrl: 'https://example.org/find-your-council-member',
+    externalUrl: 'https://www.usa.gov/local-governments',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-03T00:00:00.000Z'),
@@ -1222,7 +1222,7 @@ const demoActions = [
     summary: 'Work with local residents on recurring climate pressure campaigns.',
     description:
       'Join an existing local coalition or start a recurring organizing group focused on transit, housing, and emissions policy.',
-    externalUrl: 'https://example.org/local-climate-coalition-finder',
+    externalUrl: 'https://350.org/get-involved/',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-04T00:00:00.000Z'),
@@ -1239,7 +1239,7 @@ const demoActions = [
     summary: 'Show up to local election administration meetings and document decisions.',
     description:
       'Attend the next public election board meeting, take notes, and follow up on procedural changes that affect voting access.',
-    externalUrl: 'https://example.org/county-election-board-calendar',
+    externalUrl: 'https://www.eac.gov/voters/find-your-state-election-office',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-05T00:00:00.000Z'),
@@ -1252,7 +1252,7 @@ const demoActions = [
     summary: 'Shift spending away from a retailer tied to anti-worker retaliation.',
     description:
       "Move purchases away from the company's private-label products, share the campaign demand publicly, and invite others to follow the same target list.",
-    externalUrl: 'https://example.org/boycott-target-list',
+    externalUrl: 'https://goodjobsfirst.org/violation-tracker/',
     actionType: ActionType.GUIDE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-06T00:00:00.000Z'),
@@ -1265,7 +1265,7 @@ const demoActions = [
     summary: 'Support workers who need material backing during a pressure campaign.',
     description:
       'Contribute to a vetted worker solidarity fund so workers can sustain public pressure while facing retaliation, reduced hours, or strike-related costs.',
-    externalUrl: 'https://example.org/worker-solidarity-fund',
+    externalUrl: 'https://aflcio.org/about-us/donate-to-the-afl-cio',
     actionType: ActionType.DONATE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-07T00:00:00.000Z'),
@@ -1278,7 +1278,7 @@ const demoActions = [
     summary: 'Send a specific message defending access to books and librarians.',
     description:
       'Email board members before the next meeting with one concrete ask: preserve library access, oppose removals without due process, and keep review rules public.',
-    externalUrl: 'https://example.org/find-school-board-contact',
+    externalUrl: 'https://www.ala.org/advocacy/contact-your-representatives',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-08T00:00:00.000Z'),
@@ -1294,7 +1294,7 @@ const demoActions = [
     summary: 'Build durable local support around access, programming, and public visibility.',
     description:
       'Join a local library-support group to help with turnout, outreach, and public education around why free access to books and staff matters.',
-    externalUrl: 'https://example.org/friends-of-libraries-volunteer',
+    externalUrl: 'https://www.ala.org/united/chapters',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-09T00:00:00.000Z'),
@@ -1307,7 +1307,7 @@ const demoActions = [
     summary: 'Use public comment to put a clear demand into the record.',
     description:
       'Prepare a short statement, sign up early, and connect your testimony to a specific vote, funding choice, or public rule change that officials cannot ignore.',
-    externalUrl: 'https://example.org/city-council-public-comment-signup',
+    externalUrl: 'https://www.usa.gov/local-governments',
     actionType: ActionType.CONTACT,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-10T00:00:00.000Z'),
@@ -1323,7 +1323,7 @@ const demoActions = [
     summary: 'Document access problems and connect voters to rapid support.',
     description:
       'Join a local election-protection effort, learn the reporting process, and help track barriers such as long lines, polling-place confusion, or disability access failures.',
-    externalUrl: 'https://example.org/election-protection-volunteer-signup',
+    externalUrl: 'https://866ourvote.org/volunteer/',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-11T00:00:00.000Z'),
@@ -1339,7 +1339,7 @@ const demoActions = [
     summary: 'Coordinate building-level outreach around heat, housing, and emergency response.',
     description:
       'Plug into a tenant network that can check on vulnerable neighbors, document unsafe conditions, and push for neighborhood-level heat and housing protections.',
-    externalUrl: 'https://example.org/tenant-solidarity-network',
+    externalUrl: 'https://www.nlihc.org/take-action',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-12T00:00:00.000Z'),
@@ -1352,7 +1352,7 @@ const demoActions = [
     summary: 'Coordinate a concrete supply run for neighbors during a local pressure campaign.',
     description:
       'Join a scheduled supply run that supports neighbors directly while organizers document unmet needs and connect them to public demands.',
-    externalUrl: 'https://example.org/mutual-aid-network-locator',
+    externalUrl: 'https://www.mutualaidhub.org/',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-13T00:00:00.000Z'),
@@ -1365,7 +1365,7 @@ const demoActions = [
     summary: 'Read the agenda early and flag decisions that deserve public attention.',
     description:
       'Scan the next school board agenda, compare it to the prior meeting, and share any policy, library, or curriculum items that need organized turnout.',
-    externalUrl: 'https://example.org/school-board-meeting-finder',
+    externalUrl: 'https://ballotpedia.org/school_boards_overview',
     actionType: ActionType.GUIDE,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-14T00:00:00.000Z'),
@@ -1378,7 +1378,7 @@ const demoActions = [
     summary: 'Help move supporters from RSVP to real turnout and follow-up.',
     description:
       'Support phonebanks, texts, and follow-up coordination so a statewide mobilization leads to sustained local participation afterward.',
-    externalUrl: 'https://example.org/day-of-action-volunteer-registration',
+    externalUrl: 'https://www.mobilize.us',
     actionType: ActionType.VOLUNTEER,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-15T00:00:00.000Z'),
@@ -1404,7 +1404,7 @@ const demoEvents = [
     summary: 'Residents gather before the transportation budget vote.',
     description:
       'A public rally focused on transit expansion, clean mobility, and equitable budget priorities before the city council vote.',
-    website: 'https://example.org/transit-rally',
+    website: 'https://www.mobilize.us',
     eventType: EventType.RALLY,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-13T08:00:00.000Z'),
@@ -1451,7 +1451,7 @@ const demoEvents = [
     summary: 'A practical workshop on monitoring county election policy.',
     description:
       'Residents learn how to follow board agendas, submit public comments, and track local election policy changes.',
-    website: 'https://example.org/voting-workshop',
+    website: 'https://www.mobilize.us',
     eventType: EventType.WORKSHOP,
     status: EntityStatus.DRAFT,
     publishedAt: null,
@@ -1498,7 +1498,7 @@ const demoEvents = [
     summary: 'Volunteers prepare for a summer heat-safety outreach effort.',
     description:
       'A practical training for residents who want to share cooling resources, check on vulnerable neighbors, and document building-level heat concerns before summer peaks.',
-    website: 'https://example.org/heat-safety-training',
+    website: 'https://www.mobilize.us',
     eventType: EventType.WORKSHOP,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-14T08:00:00.000Z'),
@@ -1545,7 +1545,7 @@ const demoEvents = [
     summary: 'Organizers gather ahead of a coordinated statewide mobilization.',
     description:
       'A public organizing meetup focused on turnout, signage, accessibility planning, and local follow-up after a statewide day of action.',
-    website: 'https://example.org/day-of-action-launch',
+    website: 'https://www.mobilize.us',
     eventType: EventType.MEETING,
     status: EntityStatus.PUBLISHED,
     publishedAt: new Date('2026-06-15T08:00:00.000Z'),
@@ -1675,7 +1675,7 @@ const generatedDemoEvents = Array.from(
       description: `${event.summary}
 
 Come prepared to meet people working on the issue, understand the immediate ask, and leave knowing what follow-through matters after the event.`,
-      website: `https://example.org/events/${eventSlug}`,
+      website: `https://www.mobilize.us`,
       eventType: eventTypes[index % eventTypes.length],
       status: EntityStatus.PUBLISHED,
       publishedAt: publishedDateFromIndex(index),
@@ -1709,7 +1709,7 @@ Come prepared to meet people working on the issue, understand the immediate ask,
         region: regionData.region,
         postalCode: regionData.postalCode,
         country: 'USA',
-        website: `https://example.org/events/${eventSlug}`,
+        website: `https://www.mobilize.us`,
         contactEmail: 'events@example.org',
         submitterName: 'Find Your Fight Demo Organizer',
         submitterEmail: 'organizer@example.org',
@@ -1738,10 +1738,7 @@ The submission recommends linking official county pages, adding calendar reminde
     submitterName: 'Maya Patel',
     submitterEmail: 'maya.patel@example.org',
     topicSlugs: ['democracy', 'local-community'],
-    resourceLinks: [
-      'https://example.org/county-election-calendar',
-      'https://example.org/voter-registration-deadlines',
-    ],
+    resourceLinks: ['https://www.usa.gov/absentee-voting', 'https://vote.gov/register/'],
   },
   {
     submissionType: SubmissionType.EVENT,
@@ -1759,7 +1756,7 @@ The submission recommends linking official county pages, adding calendar reminde
     region: 'PA',
     postalCode: '19146',
     country: 'USA',
-    website: 'https://example.org/heat-canvass',
+    website: 'https://www.mobilize.us',
     contactEmail: 'heat-safety@example.org',
     submitterName: 'Andre Williams',
     submitterEmail: 'andre.williams@example.org',

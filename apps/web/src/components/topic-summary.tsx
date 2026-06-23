@@ -53,7 +53,7 @@ export function TopicSummary({ topic, variant = 'collection' }: TopicSummaryProp
     >
       {Icon ? (
         <span className="topicCardIcon">
-          <Icon width={24} height={24} />
+          <Icon width={30} height={30} />
         </span>
       ) : null}
       <TitleTag className={titleClassName}>{topic.name}</TitleTag>

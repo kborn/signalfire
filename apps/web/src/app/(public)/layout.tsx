@@ -20,7 +20,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <div className="site-brand-group">
               <Link href="/" className="site-wordmark" aria-label="Find Your Fight home">
                 <span className="site-wordmark-text" aria-hidden="true">
-                  FYF
+                  Find Your Fight
                 </span>
               </Link>
             </div>

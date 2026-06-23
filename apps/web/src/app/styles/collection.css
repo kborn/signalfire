@@ -218,9 +218,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  padding: 8px;
+  width: 52px;
+  height: 52px;
+  padding: 10px;
   border-radius: 10px;
   background: color-mix(in srgb, var(--topic-accent, var(--color-brand-accent)) 14%, transparent);
   color: var(--topic-accent, var(--color-brand-accent));

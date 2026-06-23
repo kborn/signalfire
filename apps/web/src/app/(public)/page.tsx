@@ -21,15 +21,9 @@ export default async function HomePage() {
           The news doesn&apos;t stop. The problems feel enormous. And most days, it&apos;s easy to
           believe there&apos;s nothing one person can do.
         </p>
-        <p className="heroPosterSub">
-          You don&apos;t have to be the one who fixes everything. You just have to find the one
-          thing that&apos;s already yours — and refuse to let it go. Staying in it, in whatever way
-          you can, is itself a form of resistance. Find your fight. Find the part of you that keeps
-          showing up.
-        </p>
         <div className="heroPosterCTA">
           <Link href="#issue-roll" className="primaryCTA">
-            Find yours →
+            Browse issues →
           </Link>
         </div>
       </section>
