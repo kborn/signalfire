@@ -13,7 +13,7 @@ import {
 } from '@/components/icons';
 import type { SVGProps } from 'react';
 
-type TopicSummaryVariant = 'collection' | 'related';
+type TopicSummaryVariant = 'collection' | 'related' | 'compact';
 
 type TopicSummaryProps = {
   topic: TopicSummaryData;
@@ -38,11 +38,8 @@ export function TopicSummary({ topic, variant = 'collection' }: TopicSummaryProp
       ? 'relatedListItem'
       : 'collectionItem topicCollectionItem topicCollectionItemTilt';
   const titleClassName = variant === 'related' ? 'relatedListItemTitle' : 'collectionItemTitle';
-  const summaryClassName =
-    variant === 'related' ? 'relatedListItemSummary' : 'collectionItemSummary';
   const TitleTag = variant === 'related' ? 'h4' : 'h2';
-  const Icon =
-    variant === 'collection' ? (TOPIC_ICON_MAP[topic.slug] ?? GenericIssueIcon) : undefined;
+  const Icon = variant !== 'related' ? (TOPIC_ICON_MAP[topic.slug] ?? GenericIssueIcon) : undefined;
 
   return (
     <Link
@@ -57,7 +54,7 @@ export function TopicSummary({ topic, variant = 'collection' }: TopicSummaryProp
         </span>
       ) : null}
       <TitleTag className={titleClassName}>{topic.name}</TitleTag>
-      <p className={summaryClassName}>{topic.description}</p>
+      {variant === 'collection' && <p className="collectionItemSummary">{topic.description}</p>}
     </Link>
   );
 }

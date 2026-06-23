@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
 import { getTopicsList } from '@/lib/api/topics';
+import { TopicSummary } from '@/components/topic-summary';
 
 export const revalidate = 3600;
 
@@ -69,23 +70,11 @@ export default async function HomePage() {
         <p className="section-label">The issues</p>
         <h2 className="homeIssueQuestion">Choose your fight.</h2>
         {issues.length > 0 && (
-          <nav className="heroPosterRoll" aria-label="Browse issues">
+          <div className="homeIssueGrid">
             {issues.map((issue) => (
-              <Link
-                key={issue.slug}
-                href={`/issues/${issue.slug}`}
-                className="heroPosterIssueLink"
-                data-topic={issue.slug}
-                style={
-                  issue.color
-                    ? ({ '--topic-accent': issue.color } as React.CSSProperties)
-                    : undefined
-                }
-              >
-                {issue.name}
-              </Link>
+              <TopicSummary key={issue.id} topic={issue} variant="compact" />
             ))}
-          </nav>
+          </div>
         )}
         <p>
           <Link href="/issues" className="textCTA">

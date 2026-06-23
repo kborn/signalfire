@@ -91,11 +91,6 @@
 }
 
 @media (max-width: 640px) {
-  .heroPosterIssueLink {
-    padding-top: 0.12em;
-    padding-bottom: 0.12em;
-  }
-
   .container {
     padding: 0 24px;
   }
