@@ -2188,7 +2188,7 @@ Decide where and how the app deploys before any deployment config is written. Pu
 
 ---
 
-#### ▸ Phase 15.2 — CI & Repository Governance ⏳
+#### ▸ Phase 15.2 — CI & Repository Governance ✅
 
 ###### Goal
 
@@ -2196,11 +2196,20 @@ Harden the repository as a credible merge gate and add post-Milestone 1 maintena
 
 ###### Phase Tasks:
 
-- [ ] Confirm the CI suite covers the required gates for `main`: lint, typecheck, unit tests, and any integration coverage that can run without a container runtime
-- [ ] Add Dependabot for automated dependency update PRs
-- [ ] Add dependency vulnerability validation in CI (e.g., `pnpm audit --prod` as a required check)
-- [ ] Define and apply branch protection rules for `main` (required status checks, no direct push)
-- [ ] Decide whether `CODEOWNERS` adds review clarity for post-Milestone 1 maintenance; add if yes
+- [x] Confirm the CI suite covers the required gates for `main`: lint, typecheck, unit tests, and any integration coverage that can run without a container runtime
+- [x] Add Dependabot for automated dependency update PRs
+- [x] Add dependency vulnerability validation in CI (`pnpm audit --prod`)
+- [x] Define and apply branch protection rules for `main` (required status checks, no direct push)
+- [x] Decide whether `CODEOWNERS` adds review clarity for post-Milestone 1 maintenance; add if yes
+
+###### Notes:
+
+- Fixed `actions/checkout@v6` → `@v4` across all CI jobs (v6 does not exist; all jobs would have failed)
+- Added `audit` job to CI running `pnpm audit --prod`; resolved pre-existing `multer` DoS advisory (GHSA-72gw-mp4g-v24j, GHSA-3p4h-7m6x-2hcm) via `pnpm.overrides` pinning `multer>=2.2.0`
+- Added `.github/dependabot.yml` covering npm workspace and GitHub Actions, weekly on Mondays, grouped dev-tooling updates
+- Branch protection: existing repository ruleset (created 2026-03-08) is the single source of truth — stricter than anything we would have added via classic branch protection. Classic branch protection was briefly created and then removed to avoid redundancy.
+- Add `audit` to the ruleset required checks after this PR merges and the check proves out in CI
+- `CODEOWNERS`: skipped — solo project, adds friction with no review-clarity benefit at this stage
 
 ---
 
@@ -2216,6 +2225,7 @@ Wire the chosen hosting provider with the correct env vars, secrets, and migrati
 - [ ] Wire admin-auth session config for the deployed environment (cookie domain, secure flag, session secret)
 - [ ] Validate the migration workflow end-to-end against a deployed or staging database instance
 - [ ] Deploy a staging or preview instance and confirm public routes, admin auth, and the API all behave correctly
+- [ ] Add `NEXT_PUBLIC_API_URL` as a CI secret pointing to the deployed API so the `build` job passes in CI
 
 ---
 
