@@ -5,7 +5,7 @@ import { ApiError } from '@/lib/api/error';
 import { notFound } from 'next/navigation';
 import { MarkdownContent } from '@/components/markdown-content';
 import { ArticleSummary } from '@/components/article-summary';
-import { formatContentDate } from '@/lib/common/time';
+
 import { formatActionTypeLabel } from '@/lib/common/utils';
 import Link from 'next/link';
 
@@ -26,8 +26,6 @@ async function fetchActionDetails(params: Promise<{ slug: string }>) {
 export default async function ActionDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   await connection();
   const action = await fetchActionDetails(params);
-  const publishedAt = formatContentDate(action.publishedAt);
-  const updatedAt = formatContentDate(action.updatedAt);
   const actionType = formatActionTypeLabel(action.actionType);
   const actionDomain = action.externalUrl
     ? new URL(action.externalUrl).hostname.replace(/^www\./, '')
