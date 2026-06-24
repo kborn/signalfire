@@ -147,52 +147,71 @@ Railway dashboard → service → **Deployments** tab → select a prior deploy 
 
 ---
 
-## Resource limits
+## Resource limits and service configuration
 
-Railway bills on actual consumption, not reserved capacity — but without explicit limits a
-memory leak or runaway process grows unchecked. These are the target limits for portfolio-scale
-traffic.
+Some Railway settings can be committed to `railway.toml`; others are dashboard-only. Both are
+documented here so changes to dashboard settings have a paper trail — update this section when
+any dashboard value changes.
 
-### Recommended limits
+### What's in railway.toml (version-controlled)
 
-| Service     | Memory | CPU  | Notes                                            |
-| ----------- | ------ | ---- | ------------------------------------------------ |
-| `web`       | 512 MB | none | Next.js SSR; 512 MB is generous for demo traffic |
-| `api`       | 512 MB | none | NestJS + Prisma; well within this at idle        |
-| `db` (disk) | 1 GB   | —    | Demo data volume; adjust if content grows        |
+Each service has a `railway.toml` at its app root. Railway reads it automatically when the
+service root directory is set to `apps/api` or `apps/web`.
 
-CPU limits are not set — Railway's usage-based billing handles low-traffic periods naturally.
-Add a CPU limit only if the Railway usage graph shows unexpected spikes.
+| Setting              | `apps/api/railway.toml`                                            | `apps/web/railway.toml`   |
+| -------------------- | ------------------------------------------------------------------ | ------------------------- |
+| Start command        | `cd apps/api && pnpm exec prisma migrate deploy && node dist/main` | `pnpm --filter web start` |
+| Healthcheck path     | `/health/ready` (DB connectivity check)                            | `/`                       |
+| Healthcheck timeout  | 30s                                                                | 30s                       |
+| Restart policy       | `ON_FAILURE`                                                       | `ON_FAILURE`              |
+| Max restart attempts | 3                                                                  | 3                         |
+| Replicas per region  | 1                                                                  | 1                         |
 
-### How to set limits (Railway dashboard — cannot be done via code)
+Railway gates traffic on the healthcheck — the old deployment keeps serving until the new one
+passes, preventing downtime during deploys.
 
-**Memory limit (web and api):**
+### Dashboard-only settings (not version-controllable)
 
-1. Railway dashboard → select service (`web` or `api`)
-2. **Settings** tab → **Resources** section
-3. Set **Memory Limit** to `512`MB → Save
+These settings cannot be expressed in `railway.toml`. They are documented here so they are
+visible and reviewable. Update this table whenever a value is changed in the dashboard.
 
-**PostgreSQL disk size:**
+**`web` service** (Railway dashboard → `web` → Settings)
 
-1. Railway dashboard → `db` service → **Settings**
-2. Confirm or adjust **Disk Size** — 1 GB is the typical starting point
+| Setting                           | Value                                      | Reason                                                                                                                                              |
+| --------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wait for CI                       | **On**                                     | Prevents deploying a build that failed lint/typecheck/tests                                                                                         |
+| Custom domain                     | `demo.findmyfight.com`                     | Already configured via GoDaddy CNAME                                                                                                                |
+| Outbound IPv6                     | **Off**                                    | No IPv6 requirement for this app                                                                                                                    |
+| CDN caching                       | **Off**                                    | Next.js ISR manages its own cache headers; an additional CDN layer creates invalidation ambiguity                                                   |
+| Max memory per replica            | **512 MB**                                 | Bounds cost and surfaces memory leaks early                                                                                                         |
+| Max CPU per replica               | **No limit**                               | Usage-based billing handles low traffic; revisit if Metrics tab shows spikes                                                                        |
+| Teardown (old deploy termination) | **Enabled** — overlap 30s, draining 3s     | 30s overlap gives the new container time to pass its healthcheck before the old one stops; 3s draining is enough for fast SSR responses to complete |
+| Serverless (scale to zero)        | **Off**                                    | Cold-start queuing would delay the first request — bad for a recruiter demo                                                                         |
+| Railway config file               | Auto-resolved from service root `apps/web` | Picks up `apps/web/railway.toml` automatically                                                                                                      |
+
+**`api` service** (Railway dashboard → `api` → Settings)
+
+| Setting                           | Value                                      | Reason                                                                         |
+| --------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------ |
+| Wait for CI                       | **On**                                     | Same as web                                                                    |
+| Outbound IPv6                     | **Off**                                    | No IPv6 requirement                                                            |
+| CDN caching                       | **Off**                                    | API responses are not static; caching would return stale data                  |
+| Max memory per replica            | **512 MB**                                 | Same rationale as web                                                          |
+| Max CPU per replica               | **No limit**                               | Same rationale as web                                                          |
+| Teardown (old deploy termination) | **Enabled** — overlap 30s, draining 3s     | Same values as web; in-flight API requests complete before old container stops |
+| Serverless (scale to zero)        | **Off**                                    | Admin and public API must respond immediately                                  |
+| Railway config file               | Auto-resolved from service root `apps/api` | Picks up `apps/api/railway.toml` automatically                                 |
+
+**`db` service** (Railway dashboard → `db` → Settings)
+
+| Setting   | Value    | Reason                                                                 |
+| --------- | -------- | ---------------------------------------------------------------------- |
+| Disk size | **1 GB** | Sufficient for demo data volume; adjust if content grows significantly |
 
 ### Verifying current usage
 
 Railway dashboard → service → **Metrics** tab — shows real CPU and memory usage over time.
-If a service is consistently using >80% of its memory limit, raise the limit before it starts
-OOM-crashing.
-
-### railway.toml
-
-Each service has a `railway.toml` committing healthcheck config and restart policy:
-
-- `apps/api/railway.toml` — healthcheck: `GET /health/ready`; restart on failure, max 3 retries
-- `apps/web/railway.toml` — healthcheck: `GET /`; restart on failure, max 3 retries
-
-Railway uses the healthcheck to gate traffic during deploys — a new version only receives
-traffic after the healthcheck passes. The `ON_FAILURE` restart policy ensures a crashed
-process is automatically restarted rather than left dead.
+If a service consistently uses >80% of its memory limit, raise the limit before OOM crashes start.
 
 ---
 

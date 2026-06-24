@@ -2291,18 +2291,20 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 **Agent:**
 
-- [x] Add `apps/web/railway.toml` — healthcheck path, restart policy
-- [x] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy
-- [x] Update `docs/runbooks/ops.md` with a "Resource limits" section: recommended values,
-      where to set them in the Railway dashboard, and how to verify current usage
+- [x] Add `apps/web/railway.toml` — healthcheck path, restart policy, replicas
+- [x] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy, replicas
+- [x] Update `docs/runbooks/ops.md` with full dashboard settings reference table for web, api,
+      and db services — documents all dashboard-only values with current settings and rationale
 
 **Human (Railway dashboard — cannot be done via code):**
 
 - [ ] Set memory limit on `web` service: 512 MB
 - [ ] Set memory limit on `api` service: 512 MB
-- [ ] Confirm PostgreSQL disk allocation is appropriate for demo data volume (1 GB is typical)
-- [ ] Verify no CPU limit is needed (Railway's default usage-based billing is fine for
-      portfolio traffic; a CPU limit can be added later if costs are unexpected)
+- [ ] Confirm PostgreSQL disk allocation: 1 GB
+- [ ] Confirm Wait for CI is On for both web and api
+- [ ] Confirm Serverless is Off for both web and api
+- [x] Enable teardown on `web` service — overlap 30s, draining 3s
+- [ ] Enable teardown on `api` service — overlap 30s, draining 3s (same values as web)
 
 ###### Notes:
 
