@@ -2,7 +2,7 @@ import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
 import { JourneyStrip } from '@/components/journey-strip';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 function getNoResultsResponse() {
   return (
