@@ -5,6 +5,6 @@ import { TopicListResponse } from '@signal-fire/api-contracts';
 import { EventSubmissionForm } from '@/components/event-submission';
 
 export default async function SubmitEventPage() {
-  const topics: TopicListResponse = await getTopicsList();
+  const topics: TopicListResponse = (await getTopicsList().catch(() => null)) ?? { items: [] };
   return <EventSubmissionForm topics={topics.items} />;
 }
