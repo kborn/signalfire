@@ -204,9 +204,9 @@ visible and reviewable. Update this table whenever a value is changed in the das
 
 **`db` service** (Railway dashboard → `db` → Settings)
 
-| Setting   | Value    | Reason                                                                 |
-| --------- | -------- | ---------------------------------------------------------------------- |
-| Disk size | **1 GB** | Sufficient for demo data volume; adjust if content grows significantly |
+| Setting   | Value    | Reason                                                                          |
+| --------- | -------- | ------------------------------------------------------------------------------- |
+| Disk size | **5 GB** | Railway's minimum — no change made; default accepted as-is for demo data volume |
 
 ### Verifying current usage
 

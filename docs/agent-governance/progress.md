@@ -2300,7 +2300,7 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 - [ ] Set memory limit on `web` service: 512 MB
 - [ ] Set memory limit on `api` service: 512 MB
-- [ ] Confirm PostgreSQL disk allocation: 1 GB
+- [x] PostgreSQL disk: 5 GB (Railway minimum — no change made, default accepted)
 - [ ] Confirm Wait for CI is On for both web and api
 - [ ] Confirm Serverless is Off for both web and api
 - [x] Enable teardown on `web` service — overlap 30s, draining 3s
