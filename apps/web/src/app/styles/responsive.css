@@ -168,6 +168,10 @@
     gap: calc(var(--space-4) + 8px);
   }
 
+  .homeJourneyGrid {
+    grid-template-columns: 1fr;
+  }
+
   .home-journey,
   .home-contribute,
   .home-demo-path,
