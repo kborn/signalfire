@@ -1,9 +1,8 @@
-import { connection } from 'next/server';
 import { TopicSummary } from '@/components/topic-summary';
 import { getTopicsList } from '@/lib/api/topics';
 import { JourneyStrip } from '@/components/journey-strip';
 
-export const revalidate = 60;
+export const revalidate = 3600;
 
 function getNoResultsResponse() {
   return (
@@ -15,7 +14,6 @@ function getNoResultsResponse() {
 }
 
 export default async function TopicListPage() {
-  await connection();
   const data = await getTopicsList().catch(() => null);
   if (!data || data.items.length === 0) {
     return getNoResultsResponse();
