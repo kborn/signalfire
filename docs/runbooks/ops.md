@@ -11,6 +11,7 @@ Not a tutorial — assumes familiarity with the stack.
 - [Local development](#local-development)
 - [Building](#building)
 - [Deployment — Railway](#deployment--railway)
+- [Resource limits](#resource-limits)
 - [Observability — reading logs](#observability--reading-logs)
 - [Database operations](#database-operations)
 - [Admin access](#admin-access)
@@ -143,6 +144,55 @@ Railway dashboard → service → **Deploy** → **Redeploy**.
 ### Rolling back
 
 Railway dashboard → service → **Deployments** tab → select a prior deploy → **Rollback**.
+
+---
+
+## Resource limits
+
+Railway bills on actual consumption, not reserved capacity — but without explicit limits a
+memory leak or runaway process grows unchecked. These are the target limits for portfolio-scale
+traffic.
+
+### Recommended limits
+
+| Service     | Memory | CPU  | Notes                                            |
+| ----------- | ------ | ---- | ------------------------------------------------ |
+| `web`       | 512 MB | none | Next.js SSR; 512 MB is generous for demo traffic |
+| `api`       | 512 MB | none | NestJS + Prisma; well within this at idle        |
+| `db` (disk) | 1 GB   | —    | Demo data volume; adjust if content grows        |
+
+CPU limits are not set — Railway's usage-based billing handles low-traffic periods naturally.
+Add a CPU limit only if the Railway usage graph shows unexpected spikes.
+
+### How to set limits (Railway dashboard — cannot be done via code)
+
+**Memory limit (web and api):**
+
+1. Railway dashboard → select service (`web` or `api`)
+2. **Settings** tab → **Resources** section
+3. Set **Memory Limit** to `512`MB → Save
+
+**PostgreSQL disk size:**
+
+1. Railway dashboard → `db` service → **Settings**
+2. Confirm or adjust **Disk Size** — 1 GB is the typical starting point
+
+### Verifying current usage
+
+Railway dashboard → service → **Metrics** tab — shows real CPU and memory usage over time.
+If a service is consistently using >80% of its memory limit, raise the limit before it starts
+OOM-crashing.
+
+### railway.toml
+
+Each service has a `railway.toml` committing healthcheck config and restart policy:
+
+- `apps/api/railway.toml` — healthcheck: `GET /health/ready`; restart on failure, max 3 retries
+- `apps/web/railway.toml` — healthcheck: `GET /`; restart on failure, max 3 retries
+
+Railway uses the healthcheck to gate traffic during deploys — a new version only receives
+traffic after the healthcheck passes. The `ON_FAILURE` restart policy ensures a crashed
+process is automatically restarted rather than left dead.
 
 ---
 

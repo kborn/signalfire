@@ -2265,33 +2265,7 @@ Establish minimal traffic visibility without a paid analytics stack.
 
 ---
 
-#### ▸ Phase 15.5 — Mobile Pass ⏳
-
-###### Goal
-
-Fix mobile layout issues identified on the live deployed site before declaring Phase 15 complete.
-
-###### Context
-
-Now that the site is live at `https://demo.findmyfight.com`, mobile issues are visible in a real
-browser on a real device rather than only through desktop viewport simulation. This subphase
-exists to capture and fix the concrete problems found.
-
-###### Phase Tasks:
-
-- [ ] Audit and document specific mobile issues found on the live site
-- [ ] Fix identified layout, spacing, or interaction problems at small viewports
-- [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
-- [ ] Confirm no regressions on desktop viewport after mobile fixes
-
-###### Notes:
-
-- Tasks will be populated with specific issues as they are identified by the human reviewer.
-- Do not invent scope — only fix what has been reported or discovered through direct mobile inspection.
-
----
-
-#### ▸ Phase 15.6 — Railway Resource Right-Sizing ⏳
+#### ▸ Phase 15.5 — Railway Resource Right-Sizing ⏳
 
 ###### Goal
 
@@ -2317,9 +2291,9 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 **Agent:**
 
-- [ ] Add `apps/web/railway.toml` — healthcheck path, restart policy
-- [ ] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy
-- [ ] Update `docs/runbooks/ops.md` with a "Resource limits" section: recommended values,
+- [x] Add `apps/web/railway.toml` — healthcheck path, restart policy
+- [x] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy
+- [x] Update `docs/runbooks/ops.md` with a "Resource limits" section: recommended values,
       where to set them in the Railway dashboard, and how to verify current usage
 
 **Human (Railway dashboard — cannot be done via code):**
@@ -2338,6 +2312,32 @@ they cannot be committed to the repository. The agent deliverable here is:
   those remain dashboard-only as of the current Railway platform.
 - Recommended limits are starting points for portfolio-scale traffic, not production targets.
   Adjust based on Railway's usage graphs after a week of live traffic.
+
+---
+
+#### ▸ Phase 15.6 — Mobile Pass ⏳
+
+###### Goal
+
+Fix mobile layout issues identified on the live deployed site before declaring Phase 15 complete.
+
+###### Context
+
+Now that the site is live at `https://demo.findmyfight.com`, mobile issues are visible in a real
+browser on a real device rather than only through desktop viewport simulation. This subphase
+exists to capture and fix the concrete problems found.
+
+###### Phase Tasks:
+
+- [ ] Audit and document specific mobile issues found on the live site
+- [ ] Fix identified layout, spacing, or interaction problems at small viewports
+- [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
+- [ ] Confirm no regressions on desktop viewport after mobile fixes
+
+###### Notes:
+
+- Tasks will be populated with specific issues as they are identified by the human reviewer.
+- Do not invent scope — only fix what has been reported or discovered through direct mobile inspection.
 
 ---
 
