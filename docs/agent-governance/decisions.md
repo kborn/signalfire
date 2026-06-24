@@ -1417,3 +1417,44 @@ Railway hosts all three runtime services — Next.js web app, NestJS API, and Po
 Full rationale, service topology, migration strategy, and admin auth boundary are documented in `docs/architecture/011-phase-15-deployment-architecture.md`.
 
 ---
+
+### ► Observability strategy for Milestone 1
+
+###### 2026-06-24
+
+---
+
+###### Decision
+
+No paid APM, analytics, or log aggregation tool for Milestone 1. Observability is provided by:
+
+1. **API request logs** — `HttpLoggingInterceptor` (globally registered in `apps/api/src/main.ts`) writes one line per request to stdout: `[Nest] ... [HTTP] METHOD /path STATUS Xms`. Railway captures stdout and makes it available in the per-service log viewer.
+2. **API error logs** — NestJS's built-in exception filter writes unhandled errors to stderr. The bootstrap logger (`Logger('Bootstrap')`) logs startup success and fatal startup failures. All stderr goes to Railway logs.
+3. **Web server logs** — Next.js writes server-side render errors and unhandled exceptions to stderr automatically. Railway captures the web service stderr stream.
+4. **Railway platform logs** — Railway records deploy events, service restarts, and crash signals in the project activity feed, separate from application stdout/stderr.
+
+###### Where to look when something breaks
+
+| Symptom                             | Where to look                                        |
+| ----------------------------------- | ---------------------------------------------------- |
+| API returning 5xx or unexpected 4xx | Railway → API service → Logs (filter by status code) |
+| API not starting / crashing on boot | Railway → API service → Logs (bootstrap error lines) |
+| Public page rendering wrong / blank | Railway → Web service → Logs (Next.js stderr)        |
+| Admin login failing                 | Railway → API service → Logs (auth guard rejections) |
+| Service restart loop                | Railway → Project → Activity (deploy/crash events)   |
+
+See `docs/runbooks/ops.md` for practical access steps.
+
+###### Rationale
+
+- Portfolio-scale traffic does not justify Datadog, Sentry, or similar paid tooling.
+- Railway's built-in log streaming is sufficient to diagnose production incidents at this volume.
+- Adding structured JSON logging or a log shipper would be appropriate if traffic grows or if the events crawler (Milestone 2) introduces background job failures that need alerting.
+
+###### Implications
+
+- Do not add `console.log` debug output in production paths — it adds noise to logs without a clear audience.
+- Do not add a third-party APM or analytics SDK without revisiting this decision.
+- If a production incident cannot be diagnosed from Railway logs, that is the signal to invest in more tooling, not to retrofit it speculatively.
+
+---

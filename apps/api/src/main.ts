@@ -1,10 +1,14 @@
 import * as dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { PrismaService } from './prisma/prisma.service';
+import { HttpLoggingInterceptor } from './common/http-logging.interceptor';
 import cookieParser from 'cookie-parser';
 
 dotenv.config({ path: '.env.local' });
+
+const logger = new Logger('Bootstrap');
 
 function getWebOrigins() {
   return (process.env.WEB_ORIGINS ?? 'http://localhost:3000')
@@ -23,11 +27,16 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
+  app.useGlobalInterceptors(new HttpLoggingInterceptor());
+
   const prisma = app.get(PrismaService);
   prisma.enableShutdownHooks(app);
-  await app.listen(process.env.PORT ?? 3001);
+
+  const port = process.env.PORT ?? 3001;
+  await app.listen(port);
+  logger.log(`API listening on port ${port}`);
 }
 bootstrap().catch((err) => {
-  console.error(err);
+  new Logger('Bootstrap').error('Failed to start', err);
   process.exit(1);
 });

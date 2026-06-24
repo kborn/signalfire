@@ -5,25 +5,25 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status        |
-| ------------------------------------------------- | ------------------------------- | ------------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
-| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅            |
-| [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
-| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
-| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅            |
-| **[15](#-phase-15--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
-| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
+| Phase                                             | Name                            | Status    |
+| ------------------------------------------------- | ------------------------------- | --------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅        |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅        |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅        |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅        |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅        |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅        |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅        |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅        |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅        |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅        |
+| [10](#-phase-10--submission-system-)              | Submission System               | ✅        |
+| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅        |
+| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
+| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
+| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | 🚧 ACTIVE |
+| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳        |
 
 ---
 
@@ -2161,7 +2161,7 @@ Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; 
 
 ---
 
-### ► Phase 15 — Deployment Infrastructure ⏳
+### ► Phase 15 — Deployment Infrastructure 🚧 ACTIVE
 
 ###### Goal
 
@@ -2237,7 +2237,7 @@ Wire the chosen hosting provider with the correct env vars, secrets, and migrati
 
 ---
 
-#### ▸ Phase 15.4 — Observability ⏳
+#### ▸ Phase 15.4 — Observability ✅
 
 ###### Goal
 
@@ -2245,8 +2245,16 @@ Establish minimal traffic visibility without a paid analytics stack.
 
 ###### Phase Tasks:
 
-- [ ] Enable lightweight traffic visibility through platform/deployment logs or minimal request logging on public routes
-- [ ] Confirm error logging is sufficient to diagnose production incidents without a dedicated observability platform
+- [x] Enable lightweight traffic visibility through platform/deployment logs or minimal request logging on public routes
+- [x] Confirm error logging is sufficient to diagnose production incidents without a dedicated observability platform
+
+###### Notes:
+
+- `HttpLoggingInterceptor` added to `apps/api/src/common/` and registered globally in `main.ts` — logs `[METHOD] /path STATUS Xms` per request to stdout; Railway captures this as service traffic logs
+- NestJS built-in logger handles bootstrap events and framework-level errors via stderr
+- `Logger('Bootstrap')` now emits startup confirmation and surfaces bootstrap failures clearly
+- Next.js writes server-side errors to stderr automatically; Railway captures both services' streams
+- No paid APM or third-party analytics tool is required for Release 1 observability
 
 ---
 
@@ -2254,6 +2262,82 @@ Establish minimal traffic visibility without a paid analytics stack.
 
 - Phase order was intentionally adjusted after Phase 12 so code-facing Milestone 1 work, including DB identifier normalization, lands before release infrastructure hardens those assumptions.
 - Release 1 only needs lightweight public traffic visibility, not a paid analytics stack or full product analytics program.
+
+---
+
+#### ▸ Phase 15.5 — Mobile Pass ⏳
+
+###### Goal
+
+Fix mobile layout issues identified on the live deployed site before declaring Phase 15 complete.
+
+###### Context
+
+Now that the site is live at `https://demo.findmyfight.com`, mobile issues are visible in a real
+browser on a real device rather than only through desktop viewport simulation. This subphase
+exists to capture and fix the concrete problems found.
+
+###### Phase Tasks:
+
+- [ ] Audit and document specific mobile issues found on the live site
+- [ ] Fix identified layout, spacing, or interaction problems at small viewports
+- [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
+- [ ] Confirm no regressions on desktop viewport after mobile fixes
+
+###### Notes:
+
+- Tasks will be populated with specific issues as they are identified by the human reviewer.
+- Do not invent scope — only fix what has been reported or discovered through direct mobile inspection.
+
+---
+
+#### ▸ Phase 15.6 — Railway Resource Right-Sizing ⏳
+
+###### Goal
+
+Set explicit resource limits on Railway services to bound cost and catch runaway processes,
+closing a gap left open during Phase 15.3 deployment configuration.
+
+###### Context
+
+Railway bills on actual consumption rather than reserved capacity, so unset limits don't
+waste money today. But without limits a memory leak or runaway process will grow unchecked
+until Railway kills the service or the bill spikes. Portfolio-scale traffic warrants tight
+limits — well below Railway's defaults.
+
+Resource limits (memory, CPU) and PostgreSQL disk size are **dashboard-only** settings —
+they cannot be committed to the repository. The agent deliverable here is:
+
+- `railway.toml` files for each service (codifying healthcheck config and deploy settings
+  that currently live only in the Railway dashboard)
+- Updated ops runbook with the recommended limits and the steps to apply them
+- Explicit task items the human must action in the Railway dashboard
+
+###### Phase Tasks:
+
+**Agent:**
+
+- [ ] Add `apps/web/railway.toml` — healthcheck path, restart policy
+- [ ] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy
+- [ ] Update `docs/runbooks/ops.md` with a "Resource limits" section: recommended values,
+      where to set them in the Railway dashboard, and how to verify current usage
+
+**Human (Railway dashboard — cannot be done via code):**
+
+- [ ] Set memory limit on `web` service: 512 MB
+- [ ] Set memory limit on `api` service: 512 MB
+- [ ] Confirm PostgreSQL disk allocation is appropriate for demo data volume (1 GB is typical)
+- [ ] Verify no CPU limit is needed (Railway's default usage-based billing is fine for
+      portfolio traffic; a CPU limit can be added later if costs are unexpected)
+
+###### Notes:
+
+- Railway resource limits live in: dashboard → service → **Settings** → **Resources**
+- PostgreSQL disk size lives in: dashboard → `db` service → **Settings**
+- `railway.toml` supports healthcheck and deploy config but not memory/CPU limits —
+  those remain dashboard-only as of the current Railway platform.
+- Recommended limits are starting points for portfolio-scale traffic, not production targets.
+  Adjust based on Railway's usage graphs after a week of live traffic.
 
 ---
 
