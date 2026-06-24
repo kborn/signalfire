@@ -1,47 +1,12 @@
-# Context for Next Agent Session — Phase 15: Deployment Infrastructure
+# Context for Next Agent Session — Phase 16: Public Launch
 
 ## State of the repo
 
-**Branch:** `feat/phase_15/deployment_configuration` (pushed, not merged)
+**Branch:** `feat/phase_15/observability` (not yet pushed or merged)
 
-**Phase 15 status:** 🚧 Active — 15.1, 15.2, 15.3 complete. Browser e2e fix applied (see below). 15.4 (Observability) is next.
+**Phase 15 status:** ✅ Complete — all subphases done.
 
----
-
-## Browser e2e CI fix — applied, needs CI verification
-
-The `connection()` workaround on `/issues/page.tsx` has been removed and `revalidate = 3600` restored. The page now matches the pattern used by the home page and submit pages (`revalidate = 3600` + `.catch(() => null)`).
-
-**What was done:**
-
-- Removed `await connection()` and its import from `/issues/page.tsx`
-- Restored `export const revalidate = 3600`
-- The `.catch(() => null)` guard added in an earlier commit was kept
-
-**What was NOT the root cause (correcting the prior context):**
-
-The previous session's note said "the harness runs `prisma migrate deploy` but not the seed script" — this was incorrect. `globalSetup.js` has had the seed step since Phase 4.1:
-
-```js
-execSync('pnpm prisma:migrate:seed', { env: { ...process.env, SEED_MODE: 'baseline' } });
-```
-
-Topics have always been seeded. The actual root cause was the missing `.catch()` guard on
-the issues page, which caused the ISR pre-render to fail when the fetch threw. Once `.catch()`
-was added, `connection()` was no longer needed — it just wasn't removed promptly.
-
-**CI verification still needed:**
-
-The e2e tests require a container runtime (Testcontainers/Docker) to run. They cannot be
-verified locally in this session. Push the branch and watch the `e2e-test` CI job to confirm
-`submission.browser.e2e-spec.ts` passes. If it still fails, the cause is something in
-Next.js 16 ISR behavior rather than data availability — and `connection()` should be
-restored as a pragmatic workaround.
-
-**ISR rendering audit complete:**
-
-All public ISR pages consistently use `revalidate = 3600` + error handling. No changes
-were needed beyond the issues page fix.
+**Phase 16 status:** ⏳ Up next.
 
 ---
 
@@ -62,29 +27,28 @@ were needed beyond the issues page fix.
 
 ---
 
-## Locked hosting decision
+## Phase 15 observability — what was added
 
-Railway, all services in one project. Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
-
----
-
-## Deployment notes from 15.3
-
-- Railway start command on API: `cd apps/api && pnpm exec prisma migrate deploy && node dist/main`
-- Cross-domain cookie fix: admin login/logout proxy through `/api/admin/auth/*` Next.js routes
-- `NEXT_PUBLIC_API_BASE_URL` wired as GitHub Actions CI secret for the `build` job
-- `demo.findmyfight.com` → Railway web service via GoDaddy CNAME + TXT verification record
+`HttpLoggingInterceptor` in `apps/api/src/common/http-logging.interceptor.ts` is registered globally.
+Logs `[METHOD] /path STATUS Xms` per request to stdout; Railway service logs surface this as traffic visibility.
+NestJS built-in logger handles bootstrap and framework-level error output.
+Next.js writes server-side errors to stderr automatically.
 
 ---
 
-## What's next: Phase 15.4 — Observability
+## What's next: Phase 16 — Public Launch
 
-Tasks:
+See `docs/agent-governance/progress.md` Phase 16 definition of done:
 
-- Enable lightweight traffic visibility through Railway platform logs or minimal request logging
-- Confirm error logging is sufficient to diagnose production incidents
+- Launch a public demo instance appropriate for portfolio and recruiter review
+- Verify deployment health, runtime config, and migration state in the live environment after launch
+- Verify deployed public site and repository provide distinct but complementary entry points
+- Confirm the live demo experience provides a clear path into the admin workflow with demo credentials
+- Ensure the demo dataset is broad and intentional enough to showcase the system credibly
 
-This is a lightweight phase — Railway already provides per-service request logs.
+**Key decision for Phase 16:** The app is already deployed at `https://demo.findmyfight.com` via Railway.
+Phase 16 is about verifying the live environment, confirming the demo is portfolio-ready, and any
+final documentation/README updates to guide recruiters and reviewers.
 
 ---
 

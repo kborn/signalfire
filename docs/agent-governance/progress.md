@@ -22,8 +22,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
 | [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅            |
-| **[15](#-phase-15--deployment-infrastructure-)**  | **Deployment Infrastructure**   | **🚧 ACTIVE** |
-| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳            |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | ✅            |
+| **[16](#-phase-16--public-launch-)**              | **Public Launch**               | **🚧 ACTIVE** |
 
 ---
 
@@ -2161,7 +2161,7 @@ Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; 
 
 ---
 
-### ► Phase 15 — Deployment Infrastructure ⏳
+### ► Phase 15 — Deployment Infrastructure ✅
 
 ###### Goal
 
@@ -2237,7 +2237,7 @@ Wire the chosen hosting provider with the correct env vars, secrets, and migrati
 
 ---
 
-#### ▸ Phase 15.4 — Observability ⏳
+#### ▸ Phase 15.4 — Observability ✅
 
 ###### Goal
 
@@ -2245,8 +2245,16 @@ Establish minimal traffic visibility without a paid analytics stack.
 
 ###### Phase Tasks:
 
-- [ ] Enable lightweight traffic visibility through platform/deployment logs or minimal request logging on public routes
-- [ ] Confirm error logging is sufficient to diagnose production incidents without a dedicated observability platform
+- [x] Enable lightweight traffic visibility through platform/deployment logs or minimal request logging on public routes
+- [x] Confirm error logging is sufficient to diagnose production incidents without a dedicated observability platform
+
+###### Notes:
+
+- `HttpLoggingInterceptor` added to `apps/api/src/common/` and registered globally in `main.ts` — logs `[METHOD] /path STATUS Xms` per request to stdout; Railway captures this as service traffic logs
+- NestJS built-in logger handles bootstrap events and framework-level errors via stderr
+- `Logger('Bootstrap')` now emits startup confirmation and surfaces bootstrap failures clearly
+- Next.js writes server-side errors to stderr automatically; Railway captures both services' streams
+- No paid APM or third-party analytics tool is required for Release 1 observability
 
 ---
 
