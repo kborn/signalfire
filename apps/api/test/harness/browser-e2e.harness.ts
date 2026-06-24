@@ -101,16 +101,24 @@ export async function startWebServer(apiOrigin: string): Promise<RunningWebServe
   const origin = `http://127.0.0.1:${port}`;
   const repoRoot = path.resolve(__dirname, '../../../../..');
 
-  execSync('pnpm --filter web build', {
-    cwd: repoRoot,
-    env: {
-      ...globalThis.process.env,
-      NEXT_PUBLIC_API_BASE_URL: apiOrigin,
-      NODE_ENV: 'production',
-      NEXT_TELEMETRY_DISABLED: '1',
-    },
-    stdio: 'pipe',
-  });
+  try {
+    execSync('pnpm --filter web build', {
+      cwd: repoRoot,
+      env: {
+        ...globalThis.process.env,
+        NEXT_PUBLIC_API_BASE_URL: apiOrigin,
+        NODE_ENV: 'production',
+        NEXT_TELEMETRY_DISABLED: '1',
+      },
+      stdio: 'pipe',
+    });
+  } catch (err) {
+    const buildErr = err as Error & { stdout?: Buffer; stderr?: Buffer };
+    const output = [buildErr.stdout?.toString() ?? '', buildErr.stderr?.toString() ?? '']
+      .filter(Boolean)
+      .join('\n');
+    throw new Error(`Next.js build failed:\n${output}`);
+  }
 
   let output = '';
   const child = spawn(
