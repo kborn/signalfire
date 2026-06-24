@@ -44,6 +44,8 @@ jobs:
         uses: ./.github/actions/setup-monorepo
 
       - name: Monorepo build
+        env:
+          NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
         run: pnpm build
 
   unit-test:
