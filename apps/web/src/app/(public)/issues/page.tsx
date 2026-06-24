@@ -14,8 +14,8 @@ function getNoResultsResponse() {
 }
 
 export default async function TopicListPage() {
-  const data = await getTopicsList();
-  if (data.items.length === 0) {
+  const data = await getTopicsList().catch(() => null);
+  if (!data || data.items.length === 0) {
     return getNoResultsResponse();
   }
   return (

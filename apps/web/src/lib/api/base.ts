@@ -2,8 +2,6 @@ import { buildUrl, type QueryParams } from '@/lib/api/base.shared';
 import { ApiError, AuthenticationError, SubmissionError } from '@/lib/api/error';
 import { type ValidationError } from '@signal-fire/api-contracts';
 
-const PUBLIC_REVALIDATE_SECONDS = 60;
-
 async function readJsonBody(response: Response): Promise<unknown> {
   try {
     return await response.json();
@@ -68,7 +66,7 @@ async function makePublicBrowserRequest<T>(
   queryParams?: QueryParams,
 ): Promise<T> {
   const response = await fetch(buildRequestUrl(endpoint, queryParams), {
-    next: { revalidate: PUBLIC_REVALIDATE_SECONDS },
+    cache: 'force-cache',
   });
   return parseJsonResponse<T>(response, endpoint);
 }

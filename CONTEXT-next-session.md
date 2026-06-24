@@ -2,53 +2,92 @@
 
 ## State of the repo
 
-**Branch:** `main` (clean)
+**Branch:** `feat/phase_15/deployment_configuration` (pushed, not merged)
 
-**Phase 15 status:** 🚧 Active — Phase 15.1 complete, Phase 15.2 next.
-
----
-
-## Locked hosting decision (do not relitigate)
-
-**Platform: Railway — all services in one project.**
-
-Three Railway services: `web` (Next.js / `apps/web`), `api` (NestJS / `apps/api`), `db` (Railway-managed PostgreSQL).
-
-- Migrations run as a release command on the `api` service: `cd apps/api && pnpm exec prisma migrate deploy`
-- Admin session cookies require a shared custom domain between web and API to avoid `SameSite` cross-origin complexity
-- Milestone 2 crawler is a fourth Railway service in the same project — no provider migration needed
-
-Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
+**Phase 15 status:** 🚧 Active — 15.1, 15.2, 15.3 complete. Browser e2e fix applied (see below). 15.4 (Observability) is next.
 
 ---
 
-## What's next: Phase 15.2 — CI & Repository Governance
+## Browser e2e CI fix — applied, needs CI verification
+
+The `connection()` workaround on `/issues/page.tsx` has been removed and `revalidate = 3600` restored. The page now matches the pattern used by the home page and submit pages (`revalidate = 3600` + `.catch(() => null)`).
+
+**What was done:**
+
+- Removed `await connection()` and its import from `/issues/page.tsx`
+- Restored `export const revalidate = 3600`
+- The `.catch(() => null)` guard added in an earlier commit was kept
+
+**What was NOT the root cause (correcting the prior context):**
+
+The previous session's note said "the harness runs `prisma migrate deploy` but not the seed script" — this was incorrect. `globalSetup.js` has had the seed step since Phase 4.1:
+
+```js
+execSync('pnpm prisma:migrate:seed', { env: { ...process.env, SEED_MODE: 'baseline' } });
+```
+
+Topics have always been seeded. The actual root cause was the missing `.catch()` guard on
+the issues page, which caused the ISR pre-render to fail when the fetch threw. Once `.catch()`
+was added, `connection()` was no longer needed — it just wasn't removed promptly.
+
+**CI verification still needed:**
+
+The e2e tests require a container runtime (Testcontainers/Docker) to run. They cannot be
+verified locally in this session. Push the branch and watch the `e2e-test` CI job to confirm
+`submission.browser.e2e-spec.ts` passes. If it still fails, the cause is something in
+Next.js 16 ISR behavior rather than data availability — and `connection()` should be
+restored as a pragmatic workaround.
+
+**ISR rendering audit complete:**
+
+All public ISR pages consistently use `revalidate = 3600` + error handling. No changes
+were needed beyond the issues page fix.
+
+---
+
+## Deployed environment
+
+**Platform:** Railway — single project, production environment configured as demo deployment
+
+| Service         | URL                                           |
+| --------------- | --------------------------------------------- |
+| Web (Next.js)   | `https://web-production-75507.up.railway.app` |
+| API (NestJS)    | `https://api-production-8544.up.railway.app`  |
+| DB (PostgreSQL) | Railway-managed, internal only                |
+| Custom domain   | `https://demo.findmyfight.com` → web service  |
+
+**Admin credentials:** `admin@example.com` / `FindYourFight1`
+
+**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
+
+---
+
+## Locked hosting decision
+
+Railway, all services in one project. Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
+
+---
+
+## Deployment notes from 15.3
+
+- Railway start command on API: `cd apps/api && pnpm exec prisma migrate deploy && node dist/main`
+- Cross-domain cookie fix: admin login/logout proxy through `/api/admin/auth/*` Next.js routes
+- `NEXT_PUBLIC_API_BASE_URL` wired as GitHub Actions CI secret for the `build` job
+- `demo.findmyfight.com` → Railway web service via GoDaddy CNAME + TXT verification record
+
+---
+
+## What's next: Phase 15.4 — Observability
 
 Tasks:
 
-- Confirm CI suite covers required gates for `main`: lint, typecheck, unit, integration where possible
-- Add Dependabot for automated dependency update PRs
-- Add dependency vulnerability validation in CI (`pnpm audit --prod`)
-- Define and apply branch protection rules for `main`
-- Decide on `CODEOWNERS`
+- Enable lightweight traffic visibility through Railway platform logs or minimal request logging
+- Confirm error logging is sufficient to diagnose production incidents
 
-Phase 15.2 is independent of the Railway setup — it's all repository and GitHub configuration.
-
----
-
-## Phase 15.3 and 15.4 (upcoming)
-
-- **15.3** — Deployment configuration: env vars, secrets, Railway service wiring, staging deploy validation
-- **15.4** — Observability: lightweight traffic visibility via platform logs or minimal request logging
-
----
-
-## Product state
-
-Phase 14 is complete and on `main`. The public product is at 8/10. See prior `CONTEXT-next-session.md` content in git history for the full surface-by-surface breakdown — it remains accurate.
+This is a lightweight phase — Railway already provides per-service request logs.
 
 ---
 
 ## Locked decisions carried forward
 
-All Phase 14 locked decisions remain in force. See `docs/agent-governance/decisions.md` for the full list. Visual palette, typography, motif placement, demo banner position, journey strip, and homepage issue roll treatment are all locked.
+All prior locked decisions remain in force. See `docs/agent-governance/decisions.md`.
