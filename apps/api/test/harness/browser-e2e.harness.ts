@@ -106,6 +106,8 @@ export async function startWebServer(apiOrigin: string): Promise<RunningWebServe
     env: {
       ...globalThis.process.env,
       NEXT_PUBLIC_API_BASE_URL: apiOrigin,
+      NODE_ENV: 'production',
+      NEXT_TELEMETRY_DISABLED: '1',
     },
     stdio: 'pipe',
   });
