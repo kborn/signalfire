@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import { App } from 'supertest/types';
 import { AppModule } from '../../src/app.module';
 import { PrismaService } from '../../src/prisma/prisma.service';
-import { execSync, spawn, type ChildProcess } from 'child_process';
+import { spawn, type ChildProcess } from 'child_process';
 import path from 'path';
 import net from 'net';
 import { once } from 'events';
@@ -101,8 +101,11 @@ export async function startWebServer(apiOrigin: string): Promise<RunningWebServe
   const origin = `http://127.0.0.1:${port}`;
   const repoRoot = path.resolve(__dirname, '../../../../..');
 
-  try {
-    execSync('pnpm --filter web build', {
+  await new Promise<void>((resolve, reject) => {
+    let stdout = '';
+    let stderr = '';
+
+    const buildProcess = spawn('pnpm', ['--filter', 'web', 'build'], {
       cwd: repoRoot,
       env: {
         ...globalThis.process.env,
@@ -112,13 +115,24 @@ export async function startWebServer(apiOrigin: string): Promise<RunningWebServe
       },
       stdio: 'pipe',
     });
-  } catch (err) {
-    const buildErr = err as Error & { stdout?: Buffer; stderr?: Buffer };
-    const output = [buildErr.stdout?.toString() ?? '', buildErr.stderr?.toString() ?? '']
-      .filter(Boolean)
-      .join('\n');
-    throw new Error(`Next.js build failed:\n${output}`);
-  }
+
+    buildProcess.stdout?.on('data', (chunk: Buffer) => {
+      stdout += chunk.toString();
+    });
+    buildProcess.stderr?.on('data', (chunk: Buffer) => {
+      stderr += chunk.toString();
+    });
+
+    buildProcess.on('close', (code) => {
+      if (code !== 0) {
+        reject(new Error(`Next.js build failed:\n${stdout}\n${stderr}`));
+      } else {
+        resolve();
+      }
+    });
+
+    buildProcess.on('error', reject);
+  });
 
   let output = '';
   const child = spawn(
