@@ -22,7 +22,7 @@ It is the canonical answer to: “Where are we in the plan?”
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
 | [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
-| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | 🚧 ACTIVE |
+| [15](#-phase-15--deployment--infrastructure-)     | Deployment Infrastructure       | 🚧 ACTIVE |
 | [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳        |
 
 ---
@@ -2161,7 +2161,7 @@ Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; 
 
 ---
 
-### ► Phase 15 — Deployment Infrastructure 🚧 ACTIVE
+### ► Phase 15 — Deployment Infrastructure 🚧
 
 ###### Goal
 
@@ -2298,13 +2298,13 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 **Human (Railway dashboard — cannot be done via code):**
 
-- [ ] Set memory limit on `web` service: 512 MB
-- [ ] Set memory limit on `api` service: 512 MB
+- [x] Set memory limit on `web` service: 512 MB
+- [x] Set memory limit on `api` service: 512 MB
 - [x] PostgreSQL disk: 5 GB (Railway minimum — no change made, default accepted)
-- [ ] Confirm Wait for CI is On for both web and api
-- [ ] Confirm Serverless is Off for both web and api
+- [x] Confirm Wait for CI is On for both web and api
+- [x] Confirm Serverless is Off for both web and api
 - [x] Enable teardown on `web` service — overlap 30s, draining 3s
-- [ ] Enable teardown on `api` service — overlap 30s, draining 3s (same values as web)
+- [x] Enable teardown on `api` service — overlap 30s, draining 3s (same values as web)
 
 ###### Notes:
 
