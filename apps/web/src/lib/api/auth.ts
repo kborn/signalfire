@@ -1,4 +1,4 @@
-import { makeAuthenticatedRequest, postAuthenticatedJson } from '@/lib/api/base';
+import { makeAuthenticatedRequest } from '@/lib/api/base';
 import { AdminLoginRequest, AdminSessionResponse } from '@signal-fire/api-contracts';
 import { ApiError, AuthenticationError } from '@/lib/api/error';
 
