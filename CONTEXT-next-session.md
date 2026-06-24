@@ -1,12 +1,12 @@
-# Context for Next Agent Session — Phase 16: Public Launch
+# Context for Next Agent Session — Phase 15.5: Mobile Pass
 
 ## State of the repo
 
 **Branch:** `feat/phase_15/observability` (not yet pushed or merged)
 
-**Phase 15 status:** ✅ Complete — all subphases done.
+**Phase 15.4 status:** ✅ Complete — HTTP request logging and bootstrap logger added.
 
-**Phase 16 status:** ⏳ Up next.
+**Phase 15.5 status:** ⏳ Up next — mobile issues found on live site.
 
 ---
 
@@ -23,35 +23,33 @@
 
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
-**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
+---
+
+## Phase 15.5 — Mobile Pass
+
+Issues were found by the human reviewer on the live site at real mobile viewport. The specific
+list of issues should be provided at session start by the human — check this context file or
+ask the user directly if no issue list is present.
+
+**When starting Phase 15.5:**
+
+1. Ask the user for the specific mobile issues they found if not already documented here
+2. Add them as explicit tasks in the Phase 15.5 section of `docs/agent-governance/progress.md`
+3. Fix, verify at mobile viewport, confirm no desktop regressions, commit
 
 ---
 
-## Phase 15 observability — what was added
+## What was done in this session (observability + docs)
 
-`HttpLoggingInterceptor` in `apps/api/src/common/http-logging.interceptor.ts` is registered globally.
-Logs `[METHOD] /path STATUS Xms` per request to stdout; Railway service logs surface this as traffic visibility.
-NestJS built-in logger handles bootstrap and framework-level error output.
-Next.js writes server-side errors to stderr automatically.
-
----
-
-## What's next: Phase 16 — Public Launch
-
-See `docs/agent-governance/progress.md` Phase 16 definition of done:
-
-- Launch a public demo instance appropriate for portfolio and recruiter review
-- Verify deployment health, runtime config, and migration state in the live environment after launch
-- Verify deployed public site and repository provide distinct but complementary entry points
-- Confirm the live demo experience provides a clear path into the admin workflow with demo credentials
-- Ensure the demo dataset is broad and intentional enough to showcase the system credibly
-
-**Key decision for Phase 16:** The app is already deployed at `https://demo.findmyfight.com` via Railway.
-Phase 16 is about verifying the live environment, confirming the demo is portfolio-ready, and any
-final documentation/README updates to guide recruiters and reviewers.
+- `HttpLoggingInterceptor` — globally registered in `apps/api/src/main.ts`, logs per-request traffic
+- `Logger('Bootstrap')` — bootstrap startup and fatal error logging in `main.ts`
+- `decisions.md` — new "Observability strategy for Milestone 1" entry with log format reference and where-to-look table
+- `docs/runbooks/ops.md` — new ops runbook covering local dev, build, Railway deploy, log access, DB ops, admin access, health checks
+- `progress.md` — Phase 15.4 ✅, Phase 15.5 added, Phase 16 remains ⏳
 
 ---
 
 ## Locked decisions carried forward
 
 All prior locked decisions remain in force. See `docs/agent-governance/decisions.md`.
+Ops runbook: `docs/runbooks/ops.md`.

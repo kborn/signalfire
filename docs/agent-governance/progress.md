@@ -5,25 +5,25 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status        |
-| ------------------------------------------------- | ------------------------------- | ------------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅            |
-| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅            |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅            |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅            |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅            |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅            |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅            |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅            |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅            |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅            |
-| [10](#-phase-10--submission-system-)              | Submission System               | ✅            |
-| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅            |
-| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅            |
-| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅            |
-| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅            |
-| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | ✅            |
-| **[16](#-phase-16--public-launch-)**              | **Public Launch**               | **🚧 ACTIVE** |
+| Phase                                             | Name                            | Status    |
+| ------------------------------------------------- | ------------------------------- | --------- |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅        |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅        |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅        |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅        |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅        |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅        |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅        |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅        |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅        |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅        |
+| [10](#-phase-10--submission-system-)              | Submission System               | ✅        |
+| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅        |
+| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
+| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
+| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | 🚧 ACTIVE |
+| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳        |
 
 ---
 
@@ -2161,7 +2161,7 @@ Nothing visible in a normal reviewer walkthrough reads as an obvious oversight; 
 
 ---
 
-### ► Phase 15 — Deployment Infrastructure ✅
+### ► Phase 15 — Deployment Infrastructure 🚧 ACTIVE
 
 ###### Goal
 
@@ -2262,6 +2262,32 @@ Establish minimal traffic visibility without a paid analytics stack.
 
 - Phase order was intentionally adjusted after Phase 12 so code-facing Milestone 1 work, including DB identifier normalization, lands before release infrastructure hardens those assumptions.
 - Release 1 only needs lightweight public traffic visibility, not a paid analytics stack or full product analytics program.
+
+---
+
+#### ▸ Phase 15.5 — Mobile Pass ⏳
+
+###### Goal
+
+Fix mobile layout issues identified on the live deployed site before declaring Phase 15 complete.
+
+###### Context
+
+Now that the site is live at `https://demo.findmyfight.com`, mobile issues are visible in a real
+browser on a real device rather than only through desktop viewport simulation. This subphase
+exists to capture and fix the concrete problems found.
+
+###### Phase Tasks:
+
+- [ ] Audit and document specific mobile issues found on the live site
+- [ ] Fix identified layout, spacing, or interaction problems at small viewports
+- [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
+- [ ] Confirm no regressions on desktop viewport after mobile fixes
+
+###### Notes:
+
+- Tasks will be populated with specific issues as they are identified by the human reviewer.
+- Do not invent scope — only fix what has been reported or discovered through direct mobile inspection.
 
 ---
 
