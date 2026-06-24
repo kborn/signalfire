@@ -22,7 +22,7 @@ It is the canonical answer to: “Where are we in the plan?”
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
 | [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
-| [15](#-phase-15--deployment--infrastructure-)     | Deployment Infrastructure       | 🚧 ACTIVE |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | 🚧 ACTIVE |
 | [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳        |
 
 ---
