@@ -11,6 +11,7 @@ Not a tutorial — assumes familiarity with the stack.
 - [Local development](#local-development)
 - [Building](#building)
 - [Deployment — Railway](#deployment--railway)
+- [Resource limits](#resource-limits)
 - [Observability — reading logs](#observability--reading-logs)
 - [Database operations](#database-operations)
 - [Admin access](#admin-access)
@@ -20,11 +21,18 @@ Not a tutorial — assumes familiarity with the stack.
 
 ## Environments
 
-| Environment | Web                                           | API                                          | Notes                        |
-| ----------- | --------------------------------------------- | -------------------------------------------- | ---------------------------- |
-| Local       | `http://localhost:3000`                       | `http://localhost:3001`                      | Docker Compose for DB        |
-| Production  | `https://demo.findmyfight.com`                | `https://api-production-8544.up.railway.app` | Railway, single project      |
-| Production  | `https://web-production-75507.up.railway.app` | (same as above)                              | Railway internal URL for web |
+| Environment | Web                                    | API                                    | Notes                        |
+| ----------- | -------------------------------------- | -------------------------------------- | ---------------------------- |
+| Local       | `http://localhost:3000`                | `http://localhost:3001`                | Docker Compose for DB        |
+| Demo        | `https://demo.findmyfight.com`         | `https://api-demo-b566.up.railway.app` | Railway demo environment     |
+| Demo        | `https://web-demo-132f.up.railway.app` | (same as above)                        | Railway internal URL for web |
+
+### Domain routing
+
+- `demo.findmyfight.com` → Railway web service via GoDaddy CNAME
+- `findmyfight.com` → GoDaddy domain forwarding (HTTP redirect) → `https://demo.findmyfight.com`
+
+GoDaddy domain forwarding is configured in: GoDaddy dashboard → **My Products** → domain → **DNS** → **Forwarding**.
 
 ---
 
@@ -70,8 +78,8 @@ pnpm --filter web build
 
 ### Environment files
 
-- `apps/api/.env.local` — API runtime config (DATABASE_URL, SESSION_SECRET, WEB_ORIGINS, PORT)
-- `apps/web/.env.local` — Web runtime config (NEXT_PUBLIC_API_BASE_URL, API_BASE_URL)
+- `apps/api/.env.local` — API runtime config (DATABASE_URL, NODE_ENV, WEB_ORIGINS, PORT)
+- `apps/web/.env.local` — Web runtime config (NEXT_PUBLIC_API_BASE_URL)
 - `.env.example` files exist at each app root as the canonical variable contract
 
 ---
@@ -124,14 +132,23 @@ Railway watches the `main` branch. On merge:
 
 Managed in the Railway dashboard under each service's **Variables** tab.
 
-| Variable                   | Service | Description                                            |
-| -------------------------- | ------- | ------------------------------------------------------ |
-| `DATABASE_URL`             | API     | PostgreSQL connection string (Railway-injected)        |
-| `SESSION_SECRET`           | API     | Cookie signing secret — must be set, never committed   |
-| `WEB_ORIGINS`              | API     | Comma-separated allowed CORS origins (web service URL) |
-| `PORT`                     | API     | Set by Railway automatically                           |
-| `NEXT_PUBLIC_API_BASE_URL` | Web     | Public API URL, used in browser-side fetches           |
-| `API_BASE_URL`             | Web     | Internal API URL, used in server-side fetches          |
+**API service variables (5):**
+
+| Variable         | Description                                                          |
+| ---------------- | -------------------------------------------------------------------- |
+| `DATABASE_URL`   | PostgreSQL connection string — Railway-injected, do not set manually |
+| `NODE_ENV`       | `production` — enables production runtime mode for NestJS and Node   |
+| `WEB_ORIGINS`    | Comma-separated allowed CORS origins (web service URL)               |
+| `ADMIN_EMAIL`    | Demo admin login email — read by the seed script only                |
+| `ADMIN_PASSWORD` | Demo admin login password — read by the seed script only             |
+
+**Web service variables (3):**
+
+| Variable                       | Description                                                                  |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL`     | API URL used by both browser and server-side fetches                         |
+| `NEXT_PUBLIC_ENABLE_DEMO_MODE` | `true` to show the demo banner and events framing                            |
+| `PORT`                         | Required explicitly for Next.js on Railway despite Railway also injecting it |
 
 `NEXT_PUBLIC_API_BASE_URL` is also a GitHub Actions secret for CI builds.
 
@@ -143,6 +160,74 @@ Railway dashboard → service → **Deploy** → **Redeploy**.
 ### Rolling back
 
 Railway dashboard → service → **Deployments** tab → select a prior deploy → **Rollback**.
+
+---
+
+## Resource limits and service configuration
+
+Some Railway settings can be committed to `railway.toml`; others are dashboard-only. Both are
+documented here so changes to dashboard settings have a paper trail — update this section when
+any dashboard value changes.
+
+### What's in railway.toml (version-controlled)
+
+Each service has a `railway.toml` at its app root. Railway reads it automatically when the
+service root directory is set to `apps/api` or `apps/web`.
+
+| Setting              | `apps/api/railway.toml`                                            | `apps/web/railway.toml`   |
+| -------------------- | ------------------------------------------------------------------ | ------------------------- |
+| Start command        | `cd apps/api && pnpm exec prisma migrate deploy && node dist/main` | `pnpm --filter web start` |
+| Healthcheck path     | `/health/ready` (DB connectivity check)                            | `/`                       |
+| Healthcheck timeout  | 30s                                                                | 30s                       |
+| Restart policy       | `ON_FAILURE`                                                       | `ON_FAILURE`              |
+| Max restart attempts | 3                                                                  | 3                         |
+| Replicas per region  | 1                                                                  | 1                         |
+
+Railway gates traffic on the healthcheck — the old deployment keeps serving until the new one
+passes, preventing downtime during deploys.
+
+### Dashboard-only settings (not version-controllable)
+
+These settings cannot be expressed in `railway.toml`. They are documented here so they are
+visible and reviewable. Update this table whenever a value is changed in the dashboard.
+
+**`web` service** (Railway dashboard → `web` → Settings)
+
+| Setting                           | Value                                      | Reason                                                                                                                                              |
+| --------------------------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Wait for CI                       | **On**                                     | Prevents deploying a build that failed lint/typecheck/tests                                                                                         |
+| Custom domain                     | `demo.findmyfight.com`                     | Already configured via GoDaddy CNAME                                                                                                                |
+| Outbound IPv6                     | **Off**                                    | No IPv6 requirement for this app                                                                                                                    |
+| CDN caching                       | **Off**                                    | Next.js ISR manages its own cache headers; an additional CDN layer creates invalidation ambiguity                                                   |
+| Max memory per replica            | **512 MB**                                 | Bounds cost and surfaces memory leaks early                                                                                                         |
+| Max CPU per replica               | **No limit**                               | Usage-based billing handles low traffic; revisit if Metrics tab shows spikes                                                                        |
+| Teardown (old deploy termination) | **Enabled** — overlap 30s, draining 3s     | 30s overlap gives the new container time to pass its healthcheck before the old one stops; 3s draining is enough for fast SSR responses to complete |
+| Serverless (scale to zero)        | **Off**                                    | Cold-start queuing would delay the first request — bad for a recruiter demo                                                                         |
+| Railway config file               | Auto-resolved from service root `apps/web` | Picks up `apps/web/railway.toml` automatically                                                                                                      |
+
+**`api` service** (Railway dashboard → `api` → Settings)
+
+| Setting                           | Value                                      | Reason                                                                         |
+| --------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------ |
+| Wait for CI                       | **On**                                     | Same as web                                                                    |
+| Outbound IPv6                     | **Off**                                    | No IPv6 requirement                                                            |
+| CDN caching                       | **Off**                                    | API responses are not static; caching would return stale data                  |
+| Max memory per replica            | **512 MB**                                 | Same rationale as web                                                          |
+| Max CPU per replica               | **No limit**                               | Same rationale as web                                                          |
+| Teardown (old deploy termination) | **Enabled** — overlap 30s, draining 3s     | Same values as web; in-flight API requests complete before old container stops |
+| Serverless (scale to zero)        | **Off**                                    | Admin and public API must respond immediately                                  |
+| Railway config file               | Auto-resolved from service root `apps/api` | Picks up `apps/api/railway.toml` automatically                                 |
+
+**`db` service** (Railway dashboard → `db` → Settings)
+
+| Setting   | Value    | Reason                                                                          |
+| --------- | -------- | ------------------------------------------------------------------------------- |
+| Disk size | **5 GB** | Railway's minimum — no change made; default accepted as-is for demo data volume |
+
+### Verifying current usage
+
+Railway dashboard → service → **Metrics** tab — shows real CPU and memory usage over time.
+If a service consistently uses >80% of its memory limit, raise the limit before OOM crashes start.
 
 ---
 
@@ -276,7 +361,7 @@ Railway uses these to determine service health. Both endpoints are unauthenticat
 
 After merging to `main` and Railway completing the deploy:
 
-1. Check `GET https://api-production-8544.up.railway.app/health/ready` → should return `200`
+1. Check `GET https://api-demo-b566.up.railway.app/health/ready` → should return `200`
 2. Load `https://demo.findmyfight.com` → homepage should render
 3. Load `https://demo.findmyfight.com/admin` → should redirect to login
 4. Check Railway API logs for `[Bootstrap] API listening on port ...` confirming clean startup
