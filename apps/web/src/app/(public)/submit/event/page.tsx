@@ -1,4 +1,4 @@
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 import { getTopicsList } from '@/lib/api/topics';
 import { TopicListResponse } from '@signal-fire/api-contracts';

@@ -4,7 +4,7 @@ import { isDemoModeEnabled } from '@/lib/demo-mode';
 import { getTopicsList } from '@/lib/api/topics';
 import { TopicSummary } from '@/components/topic-summary';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
   const isDemoMode = isDemoModeEnabled();
