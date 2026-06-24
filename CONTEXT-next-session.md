@@ -2,53 +2,53 @@
 
 ## State of the repo
 
-**Branch:** `main` (clean)
+**Branch:** `feat/phase_15/deployment_configuration` (pushed, not merged)
 
-**Phase 15 status:** 🚧 Active — Phase 15.1 complete, Phase 15.2 next.
-
----
-
-## Locked hosting decision (do not relitigate)
-
-**Platform: Railway — all services in one project.**
-
-Three Railway services: `web` (Next.js / `apps/web`), `api` (NestJS / `apps/api`), `db` (Railway-managed PostgreSQL).
-
-- Migrations run as a release command on the `api` service: `cd apps/api && pnpm exec prisma migrate deploy`
-- Admin session cookies require a shared custom domain between web and API to avoid `SameSite` cross-origin complexity
-- Milestone 2 crawler is a fourth Railway service in the same project — no provider migration needed
-
-Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
+**Phase 15 status:** 🚧 Active — 15.1, 15.2, 15.3 complete. 15.4 (Observability) is next.
 
 ---
 
-## What's next: Phase 15.2 — CI & Repository Governance
+## Deployed environment
+
+**Platform:** Railway — single project, production environment configured as demo deployment
+
+| Service         | URL                                           |
+| --------------- | --------------------------------------------- |
+| Web (Next.js)   | `https://web-production-75507.up.railway.app` |
+| API (NestJS)    | `https://api-production-8544.up.railway.app`  |
+| DB (PostgreSQL) | Railway-managed, internal only                |
+
+**Admin credentials:** `admin@example.com` / `FindYourFight1`
+
+**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
+
+---
+
+## Locked hosting decision
+
+Railway, all services in one project. Full rationale in `docs/architecture/011-phase-15-deployment-architecture.md`.
+
+---
+
+## Known open items from 15.3
+
+- `NEXT_PUBLIC_API_BASE_URL` needs to be added as a GitHub Actions CI secret (`https://api-production-8544.up.railway.app`) so the `build` CI job passes. Currently the build job fails in CI because it tries to fetch topics at build time with no API available.
+- Railway start command on API: `cd apps/api && pnpm exec prisma migrate deploy && node dist/main` — migrations run automatically on every deploy.
+- Cross-domain cookie fix landed: admin login/logout proxy through `/api/admin/auth/*` Next.js routes. Session cookie is scoped to web domain. No custom domain required for this to work.
+
+---
+
+## What's next: Phase 15.4 — Observability
 
 Tasks:
 
-- Confirm CI suite covers required gates for `main`: lint, typecheck, unit, integration where possible
-- Add Dependabot for automated dependency update PRs
-- Add dependency vulnerability validation in CI (`pnpm audit --prod`)
-- Define and apply branch protection rules for `main`
-- Decide on `CODEOWNERS`
+- Enable lightweight traffic visibility through Railway platform logs or minimal request logging on public routes
+- Confirm error logging is sufficient to diagnose production incidents
 
-Phase 15.2 is independent of the Railway setup — it's all repository and GitHub configuration.
-
----
-
-## Phase 15.3 and 15.4 (upcoming)
-
-- **15.3** — Deployment configuration: env vars, secrets, Railway service wiring, staging deploy validation
-- **15.4** — Observability: lightweight traffic visibility via platform logs or minimal request logging
-
----
-
-## Product state
-
-Phase 14 is complete and on `main`. The public product is at 8/10. See prior `CONTEXT-next-session.md` content in git history for the full surface-by-surface breakdown — it remains accurate.
+This is a lightweight phase — Railway already provides request logs per service. The main question is whether anything additional is needed at the application level.
 
 ---
 
 ## Locked decisions carried forward
 
-All Phase 14 locked decisions remain in force. See `docs/agent-governance/decisions.md` for the full list. Visual palette, typography, motif placement, demo banner position, journey strip, and homepage issue roll treatment are all locked.
+All prior locked decisions remain in force. See `docs/agent-governance/decisions.md` for the full list.
