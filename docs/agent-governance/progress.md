@@ -2291,6 +2291,56 @@ exists to capture and fix the concrete problems found.
 
 ---
 
+#### ▸ Phase 15.6 — Railway Resource Right-Sizing ⏳
+
+###### Goal
+
+Set explicit resource limits on Railway services to bound cost and catch runaway processes,
+closing a gap left open during Phase 15.3 deployment configuration.
+
+###### Context
+
+Railway bills on actual consumption rather than reserved capacity, so unset limits don't
+waste money today. But without limits a memory leak or runaway process will grow unchecked
+until Railway kills the service or the bill spikes. Portfolio-scale traffic warrants tight
+limits — well below Railway's defaults.
+
+Resource limits (memory, CPU) and PostgreSQL disk size are **dashboard-only** settings —
+they cannot be committed to the repository. The agent deliverable here is:
+
+- `railway.toml` files for each service (codifying healthcheck config and deploy settings
+  that currently live only in the Railway dashboard)
+- Updated ops runbook with the recommended limits and the steps to apply them
+- Explicit task items the human must action in the Railway dashboard
+
+###### Phase Tasks:
+
+**Agent:**
+
+- [ ] Add `apps/web/railway.toml` — healthcheck path, restart policy
+- [ ] Add `apps/api/railway.toml` — healthcheck path (`/health/ready`), restart policy
+- [ ] Update `docs/runbooks/ops.md` with a "Resource limits" section: recommended values,
+      where to set them in the Railway dashboard, and how to verify current usage
+
+**Human (Railway dashboard — cannot be done via code):**
+
+- [ ] Set memory limit on `web` service: 512 MB
+- [ ] Set memory limit on `api` service: 512 MB
+- [ ] Confirm PostgreSQL disk allocation is appropriate for demo data volume (1 GB is typical)
+- [ ] Verify no CPU limit is needed (Railway's default usage-based billing is fine for
+      portfolio traffic; a CPU limit can be added later if costs are unexpected)
+
+###### Notes:
+
+- Railway resource limits live in: dashboard → service → **Settings** → **Resources**
+- PostgreSQL disk size lives in: dashboard → `db` service → **Settings**
+- `railway.toml` supports healthcheck and deploy config but not memory/CPU limits —
+  those remain dashboard-only as of the current Railway platform.
+- Recommended limits are starting points for portfolio-scale traffic, not production targets.
+  Adjust based on Railway's usage graphs after a week of live traffic.
+
+---
+
 ---
 
 ### ► Phase 16 — Public Launch ⏳
