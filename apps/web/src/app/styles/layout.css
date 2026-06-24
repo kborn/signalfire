@@ -4,6 +4,7 @@
   min-height: 100vh;
   background: var(--color-page-bg);
   color: var(--color-text-primary);
+  overflow-x: hidden;
 }
 
 .publicContent.container {
