@@ -2225,7 +2225,7 @@ Wire the chosen hosting provider with the correct env vars, secrets, and migrati
 - [x] Wire admin-auth session config for the deployed environment (cookie domain, secure flag, session secret)
 - [x] Validate the migration workflow end-to-end against a deployed or staging database instance
 - [x] Deploy a staging or preview instance and confirm public routes, admin auth, and the API all behave correctly
-- [ ] Add `NEXT_PUBLIC_API_BASE_URL` as a CI secret pointing to the deployed API so the `build` job passes in CI
+- [x] Add `NEXT_PUBLIC_API_BASE_URL` as a CI secret pointing to the deployed API so the `build` job passes in CI
 
 ###### Notes:
 
