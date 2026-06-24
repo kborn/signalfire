@@ -1,51 +1,61 @@
-# Context for Next Agent Session — Phase 15.5: Mobile Pass
+# Context for Next Agent Session — Phase 15.6: Mobile Pass
 
 ## State of the repo
 
-**Branch:** `feat/phase_15/observability` (not yet pushed or merged)
+**Branch:** `feat/phase_15/mobile_pass` — already created, one commit ahead of main
 
-**Phase 15.4 status:** ✅ Complete — HTTP request logging and bootstrap logger added.
+**Current commit on branch:** fixes `force-cache` → `no-store` in
+`apps/web/src/lib/api/base.ts:makePublicServerRequest` (renamed from
+`makePublicBrowserRequest`). This fixes Next.js's persistent data cache
+swallowing empty API responses after a deploy-before-seed scenario, and
+ensures ISR revalidation actually hits the API on each render cycle.
 
-**Phase 15.5 status:** ⏳ Up next — mobile issues found on live site.
+**Main is clean** at the squash commit from Phase 15.5 (`7b599af`).
 
 ---
 
 ## Deployed environment
 
-**Platform:** Railway — single project, production environment configured as demo deployment
-
-| Service         | URL                                           |
-| --------------- | --------------------------------------------- |
-| Web (Next.js)   | `https://web-production-75507.up.railway.app` |
-| API (NestJS)    | `https://api-production-8544.up.railway.app`  |
-| DB (PostgreSQL) | Railway-managed, internal only                |
-| Custom domain   | `https://demo.findmyfight.com` → web service  |
+| Service         | URL                                    |
+| --------------- | -------------------------------------- |
+| Web (Next.js)   | `https://demo.findmyfight.com`         |
+| API (NestJS)    | `https://api-demo-b566.up.railway.app` |
+| DB (PostgreSQL) | Railway-managed, internal only         |
 
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
----
+**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
 
-## Phase 15.5 — Mobile Pass
-
-Issues were found by the human reviewer on the live site at real mobile viewport. The specific
-list of issues should be provided at session start by the human — check this context file or
-ask the user directly if no issue list is present.
-
-**When starting Phase 15.5:**
-
-1. Ask the user for the specific mobile issues they found if not already documented here
-2. Add them as explicit tasks in the Phase 15.5 section of `docs/agent-governance/progress.md`
-3. Fix, verify at mobile viewport, confirm no desktop regressions, commit
+**Pending Railway action:** Redeploy the `web` service to bust the stale
+Next.js data cache so articles/actions/issues pages show seeded content.
+Railway dashboard → `web` → Deployments → Redeploy.
 
 ---
 
-## What was done in this session (observability + docs)
+## Phase 15.6 — Mobile Pass
 
-- `HttpLoggingInterceptor` — globally registered in `apps/api/src/main.ts`, logs per-request traffic
-- `Logger('Bootstrap')` — bootstrap startup and fatal error logging in `main.ts`
-- `decisions.md` — new "Observability strategy for Milestone 1" entry with log format reference and where-to-look table
-- `docs/runbooks/ops.md` — new ops runbook covering local dev, build, Railway deploy, log access, DB ops, admin access, health checks
-- `progress.md` — Phase 15.4 ✅, Phase 15.5 added, Phase 16 remains ⏳
+The specific mobile issues need to be provided by the human at session start.
+Ask for the issue list before doing anything else.
+
+**When starting Phase 15.6:**
+
+1. Ask the user for the specific mobile issues they found on the live site
+2. Add them as explicit tasks in the Phase 15.6 section of `docs/agent-governance/progress.md`
+3. Fix on `feat/phase_15/mobile_pass` branch, verify at mobile viewport, confirm no desktop regressions
+4. The cache fix commit is already on this branch — the mobile fixes go on top of it
+
+---
+
+## Key decisions made this session (not yet in decisions.md)
+
+- `force-cache` → `no-store` in public server fetches: ISR `revalidate` controls
+  staleness at page level; `revalidatePath()` after admin mutations handles
+  on-demand invalidation. `force-cache` was undermining both.
+- GoDaddy: `demo.findmyfight.com` via CNAME → Railway web service;
+  `findmyfight.com` via GoDaddy HTTP forwarding redirect → `demo.findmyfight.com`
+- `SESSION_SECRET` does not exist in the codebase — sessions are DB-backed UUIDs
+- `SEED_MODE` removed from Railway env vars — it's a CLI argument only
+- Railway PostgreSQL disk: 5 GB is Railway minimum, no change made
 
 ---
 
