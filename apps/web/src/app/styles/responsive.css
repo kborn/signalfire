@@ -91,6 +91,38 @@
 }
 
 @media (max-width: 640px) {
+  .journeyStrip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: var(--space-2) 0;
+  }
+
+  .journeyStripConnector {
+    display: none;
+  }
+
+  .journeyStripStep {
+    align-items: center;
+    text-align: center;
+    padding: 6px 4px;
+    border-right: 1px solid color-mix(in srgb, var(--color-border-subtle) 40%, transparent);
+  }
+
+  .journeyStripStep:last-child {
+    border-right: none;
+  }
+
+  .journeyStripNum {
+    font-size: 1.5rem;
+  }
+
+  .journeyStripLabel {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
   .homeIssueGrid {
     grid-template-columns: repeat(2, 1fr);
   }
