@@ -57,7 +57,7 @@ about an issue, then take a specific action on it. Those links exist only
 because the demo seed created them. There is no admin UI or submitter pathway
 to create these connections in practice. This is the most important editorial
 workflow gap to close before the platform can operate without manual database
-intervention. See `docs/future/milestone-2-planning-notes.md` for candidate
+intervention. See [docs/future/milestone-2-planning-notes.md](docs/future/milestone-2-planning-notes.md) for candidate
 approaches.
 
 **The contributor loop is incomplete.** Community members who submit articles
@@ -76,7 +76,7 @@ content. Submissions are unlikely to arrive organically on an empty site.
 A credible Milestone 2 launch requires enough editorial inventory to give
 first visitors a reason to return and contribute.
 
-For the fuller roadmap, see `docs/specs/002-roadmap.md`.
+For the fuller roadmap, see [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md).
 
 ## Architecture
 
@@ -196,17 +196,17 @@ Suggested reviewer path:
 Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
 history live in:
 
-- `docs/specs/016-phase-13-milestone-1-release-readiness.md`
+- [docs/specs/016-phase-13-milestone-1-release-readiness.md](docs/specs/016-phase-13-milestone-1-release-readiness.md)
 
 ## Planning Docs
 
 Canonical planning and decision docs:
 
-- `docs/specs/002-roadmap.md`
-- `docs/agent-governance/progress.md`
-- `docs/agent-governance/decisions.md`
+- [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md)
+- [docs/agent-governance/progress.md](docs/agent-governance/progress.md)
+- [docs/agent-governance/decisions.md](docs/agent-governance/decisions.md)
 
-Current active implementation phase is Phase 14.7: Continuity Pass.
+Current active implementation phase is Phase 16: Public Launch.
 
 ## Key Repo Entry Points
 
@@ -214,11 +214,11 @@ If you are reviewing the repository rather than running the app first, start
 here:
 
 - `README.md` - setup, scope, demo access, and review flow
-- `docs/specs/001-release1-scope.md` - current product scope
-- `docs/specs/002-roadmap.md` - milestone framing beyond Release 1
-- `docs/specs/016-phase-13-milestone-1-release-readiness.md` - release checklist, deferreds, and launch-readiness notes
-- `docs/architecture/001-system-architecture.md` - system structure
-- `docs/agent-governance/progress.md` - current implementation phase and completion status
+- [docs/specs/001-release1-scope.md](docs/specs/001-release1-scope.md) - current product scope
+- [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md) - milestone framing beyond Release 1
+- [docs/specs/016-phase-13-milestone-1-release-readiness.md](docs/specs/016-phase-13-milestone-1-release-readiness.md) - release checklist, deferreds, and launch-readiness notes
+- [docs/architecture/001-system-architecture.md](docs/architecture/001-system-architecture.md) - system structure
+- [docs/agent-governance/progress.md](docs/agent-governance/progress.md) - current implementation phase and completion status
 
 ## Admin Deployment Caveat
 
@@ -237,4 +237,4 @@ This repository is source-available for portfolio review only.
 - no permission is granted to copy, modify, redistribute, or deploy this code
 - external contributions are not being solicited at this stage
 
-See `LICENSE` for full terms.
+See [LICENSE](LICENSE) for full terms.
