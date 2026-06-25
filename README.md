@@ -1,5 +1,7 @@
 # SignalFire (Product: Find Your Fight)
 
+**Live demo: [findmyfight.com](https://findmyfight.com)**
+
 SignalFire is a full-stack civic action platform built for release-quality
 content discovery and moderation workflows. The public product identity is
 **Find Your Fight**.

@@ -1,7 +1,7 @@
 {
   "name": "signal-fire",
   "version": "1.0.0",
-  "description": "",
+  "description": "Full-stack civic action platform: content discovery, community submissions, and moderation workflows",
   "private": true,
   "main": "index.js",
   "scripts": {
