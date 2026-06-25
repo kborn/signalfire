@@ -2317,32 +2317,29 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 ---
 
-#### ▸ Phase 15.6 — Mobile Pass ⏳
+#### ▸ Phase 15.6 — Live Site Review Pass ⏳
 
 ###### Goal
 
-Fix mobile layout issues identified on the live deployed site before declaring Phase 15 complete.
-
-###### Context
-
-Now that the site is live at `https://demo.findmyfight.com`, mobile issues are visible in a real
-browser on a real device rather than only through desktop viewport simulation. This subphase
-exists to capture and fix the concrete problems found.
+Fix bugs and mobile layout issues identified on the live deployed site (`https://demo.findmyfight.com`)
+before declaring Phase 15 complete. Issues here are real-device and real-URL discoveries that
+desktop viewport simulation did not surface.
 
 ###### Phase Tasks:
 
-- [ ] Audit and document specific mobile issues found on the live site
-- [ ] Fix identified layout, spacing, or interaction problems at small viewports
-- [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
-- [ ] Confirm no regressions on desktop viewport after mobile fixes
-- [x] Journey strip runs beyond viewport on smaller screens
-- [x] Home page
-- [ ] Submit button not working
+- [x] Journey strip horizontal overflow — reimagined as full-width 3-column tab bar on mobile
+- [x] Homepage "The Path" journey cards overflow — switched to single-column stack on mobile
+- [x] Homepage issue grid clipping on right edge — compact icon+title row layout, single column on mobile; `overflow-x: clip` on publicShell
+- [x] "Contribute" link in mobile nav drawer renders as yellow circle and doesn't close drawer — fixed CSS cascade, added `onClick={close}` prop
+- [x] Submission success state doesn't scroll to top — `window.scrollTo` added to both article and event forms
+- [ ] CORS error blocking submissions from `demo.findmyfight.com` — **dashboard fix**: add `https://demo.findmyfight.com` to `WEB_ORIGINS` env var on Railway API service
+- [ ] Verify all fixes on real device after Railway redeploy
+- [ ] Confirm no desktop regressions
 
 ###### Notes:
 
-- Tasks will be populated with specific issues as they are identified by the human reviewer.
-- Do not invent scope — only fix what has been reported or discovered through direct mobile inspection.
+- CORS fix is a Railway dashboard change (env var), not a code change — human must apply in Railway → api → Variables.
+- Desktop layout is unchanged by all mobile fixes; responsive rules are scoped to `max-width: 640px` or `max-width: 960px`.
 
 ---
 
