@@ -234,6 +234,7 @@ export function ArticleSubmissionForm({ topics }: ArticleSubmissionFormProps) {
           },
         });
         setIsSuccess(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (error) {
         if (error instanceof SubmissionError) {
           const { fieldErrors, formError } = mapSubmissionApiErrors(
