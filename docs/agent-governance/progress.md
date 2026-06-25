@@ -22,8 +22,8 @@ It is the canonical answer to: “Where are we in the plan?”
 | [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
 | [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
 | [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
-| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | 🚧 ACTIVE |
-| [16](#-phase-16--public-launch-)                  | Public Launch                   | ⏳        |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | ✅        |
+| [16](#-phase-16--public-launch-)                  | Public Launch                   | 🚧 ACTIVE |
 
 ---
 
@@ -2317,7 +2317,7 @@ they cannot be committed to the repository. The agent deliverable here is:
 
 ---
 
-#### ▸ Phase 15.6 — Live Site Review Pass ⏳
+#### ▸ Phase 15.6 — Live Site Review Pass ✅
 
 ###### Goal
 
@@ -2332,9 +2332,9 @@ desktop viewport simulation did not surface.
 - [x] Homepage issue grid clipping on right edge — compact icon+title row layout, single column on mobile; `overflow-x: clip` on publicShell
 - [x] "Contribute" link in mobile nav drawer renders as yellow circle and doesn't close drawer — fixed CSS cascade, added `onClick={close}` prop
 - [x] Submission success state doesn't scroll to top — `window.scrollTo` added to both article and event forms
-- [ ] CORS error blocking submissions from `demo.findmyfight.com` — **dashboard fix**: add `https://demo.findmyfight.com` to `WEB_ORIGINS` env var on Railway API service
-- [ ] Verify all fixes on real device after Railway redeploy
-- [ ] Confirm no desktop regressions
+- [x] CORS error blocking submissions from `demo.findmyfight.com` — **dashboard fix**: add `https://demo.findmyfight.com` to `WEB_ORIGINS` env var on Railway API service
+- [x] Verify all fixes on real device after Railway redeploy
+- [x] Confirm no desktop regressions
 
 ###### Notes:
 

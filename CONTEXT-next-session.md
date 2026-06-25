@@ -1,16 +1,10 @@
-# Context for Next Agent Session — Phase 15.6: Mobile Pass
+# Context for Next Agent Session — Phase 16: Public Launch
 
 ## State of the repo
 
-**Branch:** `feat/phase_15/mobile_pass` — already created, one commit ahead of main
+**Branch:** `feat/phase_15/mobile_pass` — ready to push/merge. All commits are clean.
 
-**Current commit on branch:** fixes `force-cache` → `no-store` in
-`apps/web/src/lib/api/base.ts:makePublicServerRequest` (renamed from
-`makePublicBrowserRequest`). This fixes Next.js's persistent data cache
-swallowing empty API responses after a deploy-before-seed scenario, and
-ensures ISR revalidation actually hits the API on each render cycle.
-
-**Main is clean** at the squash commit from Phase 15.5 (`7b599af`).
+**Main is clean** at the squash commit from Phase 15.5.
 
 ---
 
@@ -26,36 +20,32 @@ ensures ISR revalidation actually hits the API on each render cycle.
 
 **Demo seed:** Applied — topics, articles, actions, events, admin user all present.
 
-**Pending Railway action:** Redeploy the `web` service to bust the stale
-Next.js data cache so articles/actions/issues pages show seeded content.
-Railway dashboard → `web` → Deployments → Redeploy.
+---
+
+## Phase 15.6 — What was fixed (this branch)
+
+All fixes are CSS/JS only — no schema or API changes.
+
+| Fix                                                          | File(s)                                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Journey strip horizontal overflow on mobile                  | `responsive.css` — full-width 3-col tab grid                              |
+| Homepage journey cards overflow                              | `responsive.css` — single column stack                                    |
+| Homepage issue grid clipping                                 | `responsive.css` — icon+title row layout; `layout.css` — overflow-x: clip |
+| Contribute link in mobile nav drawer (circle bug + no close) | `layout.css`, `submit-nav-link.tsx`, `site-nav.tsx`                       |
+| Submission forms don't scroll to top on success              | `article-submission.tsx`, `event-submission.tsx`                          |
+| Admin login doesn't redirect on mobile (cookie race)         | `LoginForm.tsx` — router.push → window.location.href                      |
+| `screenshots_review/` tracked by git                         | `.prettierignore`                                                         |
+
+**One Railway dashboard action still needed:**
+Add `https://demo.findmyfight.com` to the `WEB_ORIGINS` env var on the Railway `api` service to fix CORS on public submissions. This is a dashboard-only change, no code.
 
 ---
 
-## Phase 15.6 — Mobile Pass
+## Phase 16 — Public Launch
 
-The specific mobile issues need to be provided by the human at session start.
-Ask for the issue list before doing anything else.
-
-**When starting Phase 15.6:**
-
-1. Ask the user for the specific mobile issues they found on the live site
-2. Add them as explicit tasks in the Phase 15.6 section of `docs/agent-governance/progress.md`
-3. Fix on `feat/phase_15/mobile_pass` branch, verify at mobile viewport, confirm no desktop regressions
-4. The cache fix commit is already on this branch — the mobile fixes go on top of it
-
----
-
-## Key decisions made this session (not yet in decisions.md)
-
-- `force-cache` → `no-store` in public server fetches: ISR `revalidate` controls
-  staleness at page level; `revalidatePath()` after admin mutations handles
-  on-demand invalidation. `force-cache` was undermining both.
-- GoDaddy: `demo.findmyfight.com` via CNAME → Railway web service;
-  `findmyfight.com` via GoDaddy HTTP forwarding redirect → `demo.findmyfight.com`
-- `SESSION_SECRET` does not exist in the codebase — sessions are DB-backed UUIDs
-- `SEED_MODE` removed from Railway env vars — it's a CLI argument only
-- Railway PostgreSQL disk: 5 GB is Railway minimum, no change made
+The next phase is Phase 16 — Public Launch. See `docs/agent-governance/progress.md` for
+the definition of done. The core tasks are verifying the live deployment, confirming the
+reviewer journey works end-to-end, and declaring Milestone 1 complete.
 
 ---
 
@@ -63,3 +53,4 @@ Ask for the issue list before doing anything else.
 
 All prior locked decisions remain in force. See `docs/agent-governance/decisions.md`.
 Ops runbook: `docs/runbooks/ops.md`.
+Milestone 2 planning: `docs/future/milestone-2-planning-notes.md`.
