@@ -35,6 +35,7 @@ Not included in Release 1:
 - social feed/comment features
 - production deployment hardening
 - topic CRUD beyond seeded Release 1 topics
+- cross-entity relationship management (Article ↔ Action ↔ Event): the data model and public UI support these links, but there is no admin interface or submitter pathway to create them — relationships in the demo are seed-populated; see `docs/future/milestone-2-planning-notes.md`
 
 ## Roadmap
 
@@ -53,20 +54,37 @@ artifact, not proving real-user growth.
 
 ### Milestone 2
 
-Milestone 2 is a separate product decision: whether and how `Find Your Fight`
-should evolve from a portfolio artifact into a real public product.
+Milestone 2 is a product decision: whether and how `Find Your Fight` evolves
+from a portfolio artifact into a real public product.
 
-Likely Milestone 2 themes:
+Several gaps currently stand between this demo and a live product:
 
-- contributor feedback loops such as submission-status emails
-- local-first launch strategy and stronger geographic discovery
-- event ingestion / crawler workflow
-- distribution and sustainability planning
+**Content relationships are seed-managed.** The public site shows curated
+article ↔ action links that demonstrate the intended editorial ideal — read
+about an issue, then take a specific action on it. Those links exist only
+because the demo seed created them. There is no admin UI or submitter pathway
+to create these connections in practice. This is the most important editorial
+workflow gap to close before the platform can operate without manual database
+intervention. See `docs/future/milestone-2-planning-notes.md` for candidate
+approaches.
 
-For the fuller roadmap, see:
+**The contributor loop is incomplete.** Community members who submit articles
+or events receive no feedback. There is no submission status email, no
+rejection notice, no confirmation that their contribution reached a real
+person. This gap makes it difficult to build a recurring contributor base.
 
-- `docs/specs/002-roadmap.md`
-- `docs/agent-governance/progress.md`
+**Event discovery at scale requires ingestion.** The current event model
+assumes manual admin entry or community submission. A real-user product needs
+a crawler that pulls from curated civic sources (local government calendars,
+Mobilize, Eventbrite topic searches) and feeds candidates into the existing
+moderation queue.
+
+**Editorial inventory precedes community.** The site currently relies on seed
+content. Submissions are unlikely to arrive organically on an empty site.
+A credible Milestone 2 launch requires enough editorial inventory to give
+first visitors a reason to return and contribute.
+
+For the fuller roadmap, see `docs/specs/002-roadmap.md`.
 
 ## Architecture
 
