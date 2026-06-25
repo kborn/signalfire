@@ -22,14 +22,14 @@ export default async function AboutPage() {
         <p>
           People are angry, overwhelmed, and frustrated for good reason. Elections are being
           contested. The climate is changing faster than policy is. Wealth is concentrating in ways
-          that ripple into housing, healthcare, and education. It is easy to look at all of that and
-          feel like nothing you do will matter.
+          that ripple into housing, healthcare, and education. It&#39;s easy to look at all of that
+          and feel like nothing you do will matter.
         </p>
         <p>
           What makes it worse is that the longer you stay out of it, the bigger it feels. The bigger
           it feels, the easier it is to keep waiting. Most hard things work this way. At some point
-          you just have to step in — and the strange part is that it is almost never as hard as you
-          had imagined. That first step is the hardest part.
+          you just have to step in — and the strange part is that it&#39;s almost never as hard as
+          you had imagined. That first step is the hardest part.
         </p>
         <p>
           Find Your Fight exists for the person saying: I want to do something, but I do not know
