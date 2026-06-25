@@ -1,51 +1,57 @@
-# Context for Next Agent Session — Phase 15.5: Mobile Pass
+# Context for Next Agent Session — Phase 16: Public Launch
 
 ## State of the repo
 
-**Branch:** `feat/phase_15/observability` (not yet pushed or merged)
+**Branch:** `feat/phase_15/mobile_pass` — ready to merge. All commits are clean,
+typecheck passes, tests pass.
 
-**Phase 15.4 status:** ✅ Complete — HTTP request logging and bootstrap logger added.
-
-**Phase 15.5 status:** ⏳ Up next — mobile issues found on live site.
+**Main is clean** at the squash commit from Phase 15.5.
 
 ---
 
 ## Deployed environment
 
-**Platform:** Railway — single project, production environment configured as demo deployment
-
-| Service         | URL                                           |
-| --------------- | --------------------------------------------- |
-| Web (Next.js)   | `https://web-production-75507.up.railway.app` |
-| API (NestJS)    | `https://api-production-8544.up.railway.app`  |
-| DB (PostgreSQL) | Railway-managed, internal only                |
-| Custom domain   | `https://demo.findmyfight.com` → web service  |
+| Service         | URL                                    |
+| --------------- | -------------------------------------- |
+| Web (Next.js)   | `https://demo.findmyfight.com`         |
+| API (NestJS)    | `https://api-demo-b566.up.railway.app` |
+| DB (PostgreSQL) | Railway-managed, internal only         |
 
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
----
-
-## Phase 15.5 — Mobile Pass
-
-Issues were found by the human reviewer on the live site at real mobile viewport. The specific
-list of issues should be provided at session start by the human — check this context file or
-ask the user directly if no issue list is present.
-
-**When starting Phase 15.5:**
-
-1. Ask the user for the specific mobile issues they found if not already documented here
-2. Add them as explicit tasks in the Phase 15.5 section of `docs/agent-governance/progress.md`
-3. Fix, verify at mobile viewport, confirm no desktop regressions, commit
+**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
 
 ---
 
-## What was done in this session (observability + docs)
+## What's on this branch (Phase 15.6)
 
-- `HttpLoggingInterceptor` — globally registered in `apps/api/src/main.ts`, logs per-request traffic
-- `Logger('Bootstrap')` — bootstrap startup and fatal error logging in `main.ts`
-- `decisions.md` — new "Observability strategy for Milestone 1" entry with log format reference and where-to-look table
-- `docs/runbooks/ops.md` — new ops runbook covering local dev, build, Railway deploy, log access, DB ops, admin access, health checks
-- `progress.md` — Phase 15.4 ✅, Phase 15.5 added, Phase 16 remains ⏳
+All fixes are CSS/JS only — no schema or API changes.
+
+| Fix                                                          | File(s)                                                                   |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Journey strip horizontal overflow on mobile                  | `responsive.css` — full-width 3-col tab grid                              |
+| Homepage journey cards overflow                              | `responsive.css` — single column stack                                    |
+| Homepage issue grid clipping                                 | `responsive.css` — icon+title row layout; `layout.css` — overflow-x: clip |
+| Contribute link in mobile nav drawer (circle bug + no close) | `layout.css`, `submit-nav-link.tsx`, `site-nav.tsx`                       |
+| Submission forms don't scroll to top on success              | `article-submission.tsx`, `event-submission.tsx`                          |
+| Admin login doesn't redirect on mobile (cookie race)         | `LoginForm.tsx` — router.push → window.location.href                      |
+| `screenshots_review/` tracked by git                         | `.prettierignore`                                                         |
+| robots.txt                                                   | `apps/web/src/app/robots.ts`                                              |
+| sitemap.xml (dynamic, fetches from API)                      | `apps/web/src/app/sitemap.ts`                                             |
+| Security headers                                             | `apps/web/next.config.ts`                                                 |
+| Index cards 116–119 + CSP deferral decision                  | `docs/learnings/index-cards/`, `docs/agent-governance/decisions.md`       |
+
+**One Railway dashboard action still needed:**
+Add `https://demo.findmyfight.com` to the `WEB_ORIGINS` env var on the Railway
+`api` service to fix CORS on public submissions. Dashboard-only, no code.
+
+---
+
+## Phase 16 — Public Launch
+
+The active phase. See `docs/agent-governance/progress.md` for the definition
+of done. Core tasks: verify the live deployment end-to-end, confirm the
+reviewer journey works, declare Milestone 1 complete.
 
 ---
 
@@ -53,3 +59,5 @@ ask the user directly if no issue list is present.
 
 All prior locked decisions remain in force. See `docs/agent-governance/decisions.md`.
 Ops runbook: `docs/runbooks/ops.md`.
+Web infrastructure: `docs/runbooks/web-infrastructure-hygiene.md`.
+Milestone 2 planning: `docs/future/milestone-2-planning-notes.md`.

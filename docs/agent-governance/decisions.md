@@ -1458,3 +1458,34 @@ See `docs/runbooks/ops.md` for practical access steps.
 - If a production incident cannot be diagnosed from Railway logs, that is the signal to invest in more tooling, not to retrofit it speculatively.
 
 ---
+
+## 2026-06-25 — CSP deferred; nonce-based approach required for Next.js
+
+###### Decision
+
+Content Security Policy (CSP) was not added during the Phase 15.6 web
+infrastructure hygiene pass and is deferred to Milestone 2.
+
+###### Rationale
+
+Next.js RSC hydration injects inline `<script>` tags that require either
+`'unsafe-inline'` in `script-src` (which defeats CSP for scripts entirely)
+or a per-request nonce wired through middleware, `_document`, and every
+script tag. The nonce approach is the correct one but is non-trivial to
+implement without breaking the app. Getting it wrong causes silent failures
+(blank pages, broken hydration) rather than graceful degradation.
+
+The four headers already in place (`X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy`, `Permissions-Policy`) provide meaningful protection without
+this complexity.
+
+###### Implications
+
+- Do not add a naive `Content-Security-Policy` header without implementing
+  the nonce pattern — `'unsafe-inline'` in `script-src` provides no XSS
+  protection and gives a false sense of security.
+- When revisiting, use Next.js middleware to generate a per-request nonce and
+  thread it through the RSC pipeline. See card 119 for context.
+- Reference: `docs/runbooks/web-infrastructure-hygiene.md`
+
+---

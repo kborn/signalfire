@@ -91,12 +91,66 @@
 }
 
 @media (max-width: 640px) {
+  .journeyStrip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: var(--space-2) 0;
+  }
+
+  .journeyStripConnector {
+    display: none;
+  }
+
+  .journeyStripStep {
+    align-items: center;
+    text-align: center;
+    padding: 6px 4px;
+    border-right: 1px solid color-mix(in srgb, var(--color-border-subtle) 40%, transparent);
+  }
+
+  .journeyStripStep:last-child {
+    border-right: none;
+  }
+
+  .journeyStripNum {
+    font-size: 1.5rem;
+  }
+
+  .journeyStripLabel {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+
   .homeIssueGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 
   .homeIssueGrid > *:last-child:nth-child(3n + 1) {
     grid-column: auto;
+  }
+
+  .homeIssueGrid .collectionItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+  }
+
+  .homeIssueGrid .topicCardIcon {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    margin-bottom: 0;
+  }
+
+  .homeIssueGrid .collectionItemTitle {
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    flex: 1;
   }
 
   .container {
@@ -134,6 +188,10 @@
 
   .home-page {
     gap: calc(var(--space-4) + 8px);
+  }
+
+  .homeJourneyGrid {
+    grid-template-columns: 1fr;
   }
 
   .home-journey,

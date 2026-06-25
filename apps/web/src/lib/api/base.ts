@@ -11,7 +11,7 @@ async function readJsonBody(response: Response): Promise<unknown> {
 }
 
 export async function makeRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
-  return makePublicBrowserRequest<T>(endpoint, queryParams);
+  return makePublicServerRequest<T>(endpoint, queryParams);
 }
 
 export async function makeAuthenticatedRequest<T>(
@@ -61,12 +61,9 @@ export async function deleteAuthenticated(endpoint: string): Promise<void> {
   }
 }
 
-async function makePublicBrowserRequest<T>(
-  endpoint: string,
-  queryParams?: QueryParams,
-): Promise<T> {
+async function makePublicServerRequest<T>(endpoint: string, queryParams?: QueryParams): Promise<T> {
   const response = await fetch(buildRequestUrl(endpoint, queryParams), {
-    cache: 'force-cache',
+    cache: 'no-store',
   });
   return parseJsonResponse<T>(response, endpoint);
 }

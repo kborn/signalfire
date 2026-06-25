@@ -7,26 +7,30 @@ import { ApiError } from '@/lib/api/error';
 
 import LoginForm from './LoginForm';
 
-const routerMock = vi.hoisted(() => ({
-  push: vi.fn(),
-}));
-
-vi.mock('next/navigation', () => ({
-  useRouter: () => routerMock,
-}));
-
 vi.mock('@/lib/api/auth', () => ({
   login: vi.fn(),
 }));
 
 describe('LoginForm', () => {
+  let locationHref: string;
+
   beforeEach(() => {
     process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE = 'true';
+    locationHref = '';
+    vi.stubGlobal('location', {
+      get href() {
+        return locationHref;
+      },
+      set href(value: string) {
+        locationHref = value;
+      },
+    });
   });
 
   afterEach(() => {
     cleanup();
     vi.clearAllMocks();
+    vi.unstubAllGlobals();
     delete process.env.NEXT_PUBLIC_ENABLE_DEMO_MODE;
   });
 
@@ -46,7 +50,7 @@ describe('LoginForm', () => {
     });
 
     await waitFor(() => {
-      expect(routerMock.push).toHaveBeenCalledWith('/admin/articles/community-article');
+      expect(locationHref).toBe('/admin/articles/community-article');
     });
   });
 
@@ -61,7 +65,7 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: 'Log in' }));
 
     await waitFor(() => {
-      expect(routerMock.push).toHaveBeenCalledWith('/admin');
+      expect(locationHref).toBe('/admin');
     });
   });
 
@@ -79,7 +83,7 @@ describe('LoginForm', () => {
     expect(
       screen.getByText('Invalid admin credentials. Check your email and password and try again.'),
     ).toBeInTheDocument();
-    expect(routerMock.push).not.toHaveBeenCalled();
+    expect(locationHref).toBe('');
   });
 
   it('shows the demo credentials guidance link on the default login view', () => {

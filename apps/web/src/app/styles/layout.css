@@ -4,6 +4,7 @@
   min-height: 100vh;
   background: var(--color-page-bg);
   color: var(--color-text-primary);
+  overflow-x: clip;
 }
 
 .publicContent.container {
@@ -480,9 +481,24 @@
 }
 
 .site-nav-drawer .site-submit-link {
-  margin-top: var(--space-3);
-  align-self: flex-start;
-  font-size: 1rem;
+  display: block;
+  border: none;
+  border-bottom: 1px solid var(--color-border-subtle);
+  border-radius: 0;
+  margin-top: 0;
+  padding: var(--space-2) 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  min-height: auto;
+  align-self: auto;
+  color: var(--color-brand-primary);
+  background: transparent;
+}
+
+.site-nav-drawer .site-submit-link:hover {
+  background: transparent;
+  color: var(--color-brand-primary);
+  opacity: 0.8;
 }
 
 /* Footer */

@@ -55,7 +55,7 @@ export function SiteNav() {
           <NavLink href="/about" onClick={close}>
             About
           </NavLink>
-          <SubmitNavLink />
+          <SubmitNavLink onClick={close} />
         </nav>
       )}
     </>

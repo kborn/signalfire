@@ -123,6 +123,25 @@ Related provider ideas from the review notes:
 
 ---
 
+## Admin Content Deletion
+
+Currently the admin workspace supports create/edit/publish for Actions, Articles,
+and Events, but has no delete capability. Unpublishing is available but records
+persist in the database.
+
+Planned for Milestone 2:
+
+- Delete action from admin action editor/list
+- Delete article from admin article editor/list
+- Delete event from admin event editor/list
+- Soft-delete (set a `deletedAt` timestamp, exclude from public and admin list
+  views) is preferred over hard-delete to preserve submission audit trails and
+  prevent accidental data loss
+- Deletion should be blocked or warn when content has linked submissions or
+  related records that would become orphaned
+
+---
+
 ## Technical Debt — Sticky Header Stacking
 
 The public topicSelector (ISSUE filter bar) computes its sticky `top` offset

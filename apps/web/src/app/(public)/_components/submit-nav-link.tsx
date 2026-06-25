@@ -1,9 +1,13 @@
 import NavLink from '@/app/nav-link';
 
-export function SubmitNavLink() {
+type SubmitNavLinkProps = {
+  onClick?: () => void;
+};
+
+export function SubmitNavLink({ onClick }: SubmitNavLinkProps) {
   return (
-    <NavLink href="/submit" className="site-submit-link">
-      Submit
+    <NavLink href="/submit" className="site-submit-link" onClick={onClick}>
+      Contribute
     </NavLink>
   );
 }
