@@ -2336,7 +2336,8 @@ exists to capture and fix the concrete problems found.
 - [ ] Verify fixes on real device or accurate mobile viewport simulation after each change
 - [ ] Confirm no regressions on desktop viewport after mobile fixes
 - [x] Journey strip runs beyond viewport on smaller screens
-- [ ] Home page
+- [x] Home page
+- [ ] Submit button not working
 
 ###### Notes:
 
