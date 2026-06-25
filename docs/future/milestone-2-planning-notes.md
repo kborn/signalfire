@@ -123,6 +123,84 @@ Related provider ideas from the review notes:
 
 ---
 
+## Cross-Entity Relationship Management
+
+### Current state
+
+The data model supports many-to-many relationships between Articles, Actions, and
+Events via join tables (`articleActions`, `articleEvents`, `actionEvents`). The
+public detail pages query and render these relationships: article detail shows
+linked actions under "Take Action," action detail shows linked articles under
+"Read First," event detail shows linked articles and actions.
+
+The demo seed populates all of these relationships, so the live demo demonstrates
+the intended editorial ideal — an article about climate policy links directly to
+the specific actions a reader can take on that issue.
+
+### The gap
+
+**No admin UI exists to manage cross-entity relationships.** The article and
+action editors support topic assignment only. Any content created through the
+admin has zero cross-entity links. The public pages fall back gracefully to
+topic-filtered CTAs ("Find actions on {topic}") when explicit links are absent,
+but that is a generic fallback, not curated editorial connection.
+
+There is also **no submitter pathway**. Community members who submit articles or
+events have no mechanism to express editorial intent — they cannot say "this
+article pairs with that action" or "this event is the on-ramp for this article."
+The submission form captures content only. Cross-entity mapping, if it ever
+happens, must currently be done by a curator after publication, and only by
+directly manipulating the database.
+
+### Why this matters for a real-user product
+
+The explicit article ↔ action link is the most important editorial unit on this
+platform. The journey model (issue → read → act) depends on a curator having
+assembled that path. Without relationship management, every published article is
+editorially disconnected from the actions a reader would take next unless a
+developer seeds the connection manually.
+
+At demo scale this is invisible — the seed is coherent. At any real content
+volume it becomes the central editorial workflow problem.
+
+### Candidate Milestone 2 approaches
+
+**Option A — Admin relationship UI**
+Add multi-select relationship pickers to the article, action, and event editors.
+An editor creating an article selects which actions it pairs with. Standard
+many-to-many join table writes. No new infrastructure, just form scope. This is
+the minimal correct fix for editorial workflow.
+
+**Option B — AI-assisted relationship suggestions with editorial validation**
+When content is published, run an LLM pass over the new record and the existing
+published content pool to suggest likely relationships based on topic overlap,
+entity mentions, and thematic similarity. Surface suggestions in the admin for
+a curator to accept or dismiss. This removes the burden of knowing what to link
+while keeping editorial control. Adds LLM dependency and a review step to the
+publication workflow.
+
+**Option C — Submission-time intent capture**
+Add optional free-text or structured fields to the submission form so submitters
+can signal intent ("this relates to action X," "I wrote this in response to
+article Y"). Not a binding link — purely editorial signal for the moderator
+during review normalization. Low implementation cost, low signal quality.
+
+**Option D — Topic-derived implicit relationships (no explicit links)**
+Drop the join tables from the public UI and replace explicit cross-entity sections
+with topic-filtered queries ("Other actions in this issue"). Simpler operationally,
+removes the editorial curation requirement, but loses the ability to surface a
+specific pairing — "read this article, then take this action" — which is the core
+product value proposition of the journey model.
+
+### Recommendation
+
+Option A is the minimum viable editorial workflow fix. Option B is the right
+long-term approach for a content-at-scale product. Option D should be treated as
+a fallback posture, not a design goal, since it eliminates the curated signal that
+differentiates this platform from a generic content directory.
+
+---
+
 ## Admin Content Deletion
 
 Currently the admin workspace supports create/edit/publish for Actions, Articles,

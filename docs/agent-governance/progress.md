@@ -5,25 +5,25 @@ It is the canonical answer to: “Where are we in the plan?”
 
 ---
 
-| Phase                                             | Name                            | Status    |
-| ------------------------------------------------- | ------------------------------- | --------- |
-| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅        |
-| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅        |
-| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅        |
-| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅        |
-| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅        |
-| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅        |
-| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅        |
-| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅        |
-| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅        |
-| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅        |
-| [10](#-phase-10--submission-system-)              | Submission System               | ✅        |
-| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅        |
-| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅        |
-| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅        |
-| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅        |
-| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | ✅        |
-| [16](#-phase-16--public-launch-)                  | Public Launch                   | 🚧 ACTIVE |
+| Phase                                             | Name                            | Status |
+| ------------------------------------------------- | ------------------------------- | ------ |
+| [0](#-phase-0--repo-bootstrap-)                   | Repo Bootstrap                  | ✅     |
+| [1](#-phase-1--platform-skeleton-)                | Repository & Platform Skeleton  | ✅     |
+| [2](#-phase-2--backend-foundations-)              | Backend Foundations             | ✅     |
+| [3](#-phase-3--core-domain-model-)                | Core Domain Model               | ✅     |
+| [4](#-phase-4--test-infrastructure-)              | Test Infrastructure             | ✅     |
+| [5](#-phase-5--topic--content-apis-)              | Topic & Content APIs            | ✅     |
+| [6](#-phase-6--content-discovery-ui-)             | Content Discovery UI            | ✅     |
+| [7](#-phase-7--event-domain--apis-)               | Event Domain & APIs             | ✅     |
+| [8](#-phase-8--event-ui-)                         | Event UI                        | ✅     |
+| [9](#-phase-9--ui-polish-)                        | UI Polish                       | ✅     |
+| [10](#-phase-10--submission-system-)              | Submission System               | ✅     |
+| [11](#-phase-11--moderation--admin-interface-)    | Moderation & Admin Interface    | ✅     |
+| [12](#-phase-12--search--discovery-improvements-) | Search & Discovery Improvements | ✅     |
+| [13](#-phase-13--release-prep--final-polish-)     | Release Prep & Final Polish     | ✅     |
+| [14](#-phase-14--portfolio-credibility-pass-)     | Portfolio Credibility Pass      | ✅     |
+| [15](#-phase-15--deployment-infrastructure-)      | Deployment Infrastructure       | ✅     |
+| [16](#-phase-16--public-launch-)                  | Public Launch                   | ✅     |
 
 ---
 
@@ -2354,7 +2354,7 @@ desktop viewport simulation did not surface.
 
 ---
 
-### ► Phase 16 — Public Launch 🚧 ACTIVE
+### ► Phase 16 — Public Launch ✅
 
 ###### Goal
 
@@ -2362,17 +2362,31 @@ Deploy the public demo and verify the live release behaves the way Milestone 1 i
 
 ###### Definition of Done
 
-- [ ] Launch a public demo instance that is appropriate for portfolio and
+- [x] Launch a public demo instance that is appropriate for portfolio and
       recruiter review at the end of Milestone 1
-- [ ] Verify deployment health, runtime configuration, and migration state in
+- [x] Verify deployment health, runtime configuration, and migration state in
       the live environment after launch
-- [ ] Verify the deployed public site and the repository provide distinct but
+- [x] Verify the deployed public site and the repository provide distinct but
       complementary entry points for their audiences: live-site demo discovery
       for recruiters and repository/docs depth for engineering reviewers
-- [ ] Confirm the live demo experience provides a clear, intentional path into
+- [x] Confirm the live demo experience provides a clear, intentional path into
       the admin workflow and any required demo credentials or instructions
       without forcing visitors to discover them from the repository
-- [ ] Ensure the demo dataset is broad and intentional enough to showcase the
+- [x] Ensure the demo dataset is broad and intentional enough to showcase the
       system credibly, including sufficient volume, moderation-state variety,
       and either geographically diverse content or explicit demo/example
       framing when geography is intentionally concentrated
+
+###### Notes
+
+- Live site: `https://findmyfight.com` (redirects to `https://demo.findmyfight.com`)
+- Demo admin: `admin@example.com` / `FindYourFight1`
+- Milestone 1 complete as of 2026-06-25
+- Key repo polish completed this phase: live URL in README, AI collaboration
+  methodology documented, stale CONTEXT files removed, memory/ untracked,
+  cross-entity relationship gap documented in milestone-2-planning-notes.md,
+  GitHub repo topics/description/homepage set, social preview image uploaded
+- Notable known gap documented and deferred: cross-entity relationship
+  management (Article ↔ Action ↔ Event) has no admin UI or submitter pathway;
+  seed data demonstrates the intended editorial ideal; see
+  `docs/future/milestone-2-planning-notes.md`

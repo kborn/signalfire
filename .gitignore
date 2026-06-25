@@ -23,6 +23,7 @@ packages/admin-auth-shared/.turbo
 
 # Personal working notes
 .ai/phase-notes/
+memory/
 
 
 packages/api-contracts/.turbo

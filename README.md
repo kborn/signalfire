@@ -1,5 +1,7 @@
 # SignalFire (Product: Find Your Fight)
 
+**Live demo: [findmyfight.com](https://findmyfight.com)**
+
 SignalFire is a full-stack civic action platform built for release-quality
 content discovery and moderation workflows. The public product identity is
 **Find Your Fight**.
@@ -29,13 +31,6 @@ Implemented areas:
 - deployed admin authentication and access control
 - demo seed content for portfolio/screenshot review
 
-Not included in Release 1:
-
-- public user accounts
-- social feed/comment features
-- production deployment hardening
-- topic CRUD beyond seeded Release 1 topics
-
 ## Roadmap
 
 ### Milestone 1
@@ -53,20 +48,52 @@ artifact, not proving real-user growth.
 
 ### Milestone 2
 
-Milestone 2 is a separate product decision: whether and how `Find Your Fight`
-should evolve from a portfolio artifact into a real public product.
+Milestone 2 is a product decision: whether and how `Find Your Fight` evolves
+from a portfolio artifact into a real public product.
 
-Likely Milestone 2 themes:
+Several gaps currently stand between this demo and a live product:
 
-- contributor feedback loops such as submission-status emails
-- local-first launch strategy and stronger geographic discovery
-- event ingestion / crawler workflow
-- distribution and sustainability planning
+**Content relationships are seed-managed.** The public site shows curated
+article ↔ action links that demonstrate the intended editorial ideal — read
+about an issue, then take a specific action on it. Those links exist only
+because the demo seed created them. There is no admin UI or submitter pathway
+to create these connections in practice. This is the most important editorial
+workflow gap to close before the platform can operate without manual database
+intervention. See [docs/future/milestone-2-planning-notes.md](docs/future/milestone-2-planning-notes.md) for candidate
+approaches.
 
-For the fuller roadmap, see:
+**The contributor loop is incomplete.** Community members who submit articles
+or events receive no feedback. There is no submission status email, no
+rejection notice, no confirmation that their contribution reached a real
+person. This gap makes it difficult to build a recurring contributor base.
 
-- `docs/specs/002-roadmap.md`
-- `docs/agent-governance/progress.md`
+**Event discovery at scale requires ingestion.** The current event model
+assumes manual admin entry or community submission. A real-user product needs
+a crawler that pulls from curated civic sources (local government calendars,
+Mobilize, Eventbrite topic searches) and feeds candidates into the existing
+moderation queue.
+
+**Editorial inventory precedes community.** The site currently relies on seed
+content. Submissions are unlikely to arrive organically on an empty site.
+A credible Milestone 2 launch requires enough editorial inventory to give
+first visitors a reason to return and contribute.
+
+For the fuller roadmap, see [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md).
+
+## AI Collaboration
+
+This project was built primarily with OpenAI Codex as the development agent,
+governed by `AGENTS.md` and the role and session framework in `.ai/`. That
+framework defined structured roles (staff engineer, PM, strategist), session
+bootstrap contracts, and editorial conventions used across the bulk of
+implementation.
+
+Later phases used Claude Code for project reviews, final polish, and
+deployment, governed by `CLAUDE.md`.
+
+Both governance frameworks remain in the repository as documentation of the
+development methodology — they are artifacts of how the project was built,
+not scaffolding.
 
 ## Architecture
 
@@ -186,17 +213,17 @@ Suggested reviewer path:
 Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
 history live in:
 
-- `docs/specs/016-phase-13-milestone-1-release-readiness.md`
+- [docs/specs/016-phase-13-milestone-1-release-readiness.md](docs/specs/016-phase-13-milestone-1-release-readiness.md)
 
 ## Planning Docs
 
 Canonical planning and decision docs:
 
-- `docs/specs/002-roadmap.md`
-- `docs/agent-governance/progress.md`
-- `docs/agent-governance/decisions.md`
+- [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md)
+- [docs/agent-governance/progress.md](docs/agent-governance/progress.md)
+- [docs/agent-governance/decisions.md](docs/agent-governance/decisions.md)
 
-Current active implementation phase is Phase 14.7: Continuity Pass.
+Current active implementation phase is Phase 16: Public Launch.
 
 ## Key Repo Entry Points
 
@@ -204,11 +231,11 @@ If you are reviewing the repository rather than running the app first, start
 here:
 
 - `README.md` - setup, scope, demo access, and review flow
-- `docs/specs/001-release1-scope.md` - current product scope
-- `docs/specs/002-roadmap.md` - milestone framing beyond Release 1
-- `docs/specs/016-phase-13-milestone-1-release-readiness.md` - release checklist, deferreds, and launch-readiness notes
-- `docs/architecture/001-system-architecture.md` - system structure
-- `docs/agent-governance/progress.md` - current implementation phase and completion status
+- [docs/specs/001-release1-scope.md](docs/specs/001-release1-scope.md) - current product scope
+- [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md) - milestone framing beyond Release 1
+- [docs/specs/016-phase-13-milestone-1-release-readiness.md](docs/specs/016-phase-13-milestone-1-release-readiness.md) - release checklist, deferreds, and launch-readiness notes
+- [docs/architecture/001-system-architecture.md](docs/architecture/001-system-architecture.md) - system structure
+- [docs/agent-governance/progress.md](docs/agent-governance/progress.md) - current implementation phase and completion status
 
 ## Admin Deployment Caveat
 
@@ -227,4 +254,4 @@ This repository is source-available for portfolio review only.
 - no permission is granted to copy, modify, redistribute, or deploy this code
 - external contributions are not being solicited at this stage
 
-See `LICENSE` for full terms.
+See [LICENSE](LICENSE) for full terms.
