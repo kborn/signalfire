@@ -29,14 +29,6 @@ Implemented areas:
 - deployed admin authentication and access control
 - demo seed content for portfolio/screenshot review
 
-Not included in Release 1:
-
-- public user accounts
-- social feed/comment features
-- production deployment hardening
-- topic CRUD beyond seeded Release 1 topics
-- cross-entity relationship management (Article ↔ Action ↔ Event): the data model and public UI support these links, but there is no admin interface or submitter pathway to create them — relationships in the demo are seed-populated; see `docs/future/milestone-2-planning-notes.md`
-
 ## Roadmap
 
 ### Milestone 1
