@@ -2,7 +2,6 @@
 
 import { type ComponentProps, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api/auth';
 import { ApiError } from '@/lib/api/error';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
@@ -42,7 +41,6 @@ function getRequestedDestinationLabel(next: string | null): string | null {
 }
 
 export default function LoginForm({ next }: LoginFormProps) {
-  const router = useRouter();
   const isDemoMode = isDemoModeEnabled();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -62,7 +60,7 @@ export default function LoginForm({ next }: LoginFormProps) {
     try {
       await login({ email, password });
       const destination = next?.startsWith('/admin') ? next : '/admin';
-      router.push(destination);
+      window.location.href = destination;
     } catch (submitError) {
       if (submitError instanceof ApiError && submitError.status === 401) {
         setError('Invalid admin credentials. Check your email and password and try again.');
