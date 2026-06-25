@@ -80,6 +80,21 @@ first visitors a reason to return and contribute.
 
 For the fuller roadmap, see [docs/specs/002-roadmap.md](docs/specs/002-roadmap.md).
 
+## AI Collaboration
+
+This project was built primarily with OpenAI Codex as the development agent,
+governed by `AGENTS.md` and the role and session framework in `.ai/`. That
+framework defined structured roles (staff engineer, PM, strategist), session
+bootstrap contracts, and editorial conventions used across the bulk of
+implementation.
+
+Later phases used Claude Code for project reviews, final polish, and
+deployment, governed by `CLAUDE.md`.
+
+Both governance frameworks remain in the repository as documentation of the
+development methodology — they are artifacts of how the project was built,
+not scaffolding.
+
 ## Architecture
 
 pnpm monorepo:
