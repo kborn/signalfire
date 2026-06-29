@@ -22,7 +22,7 @@
     "@signal-fire/admin-auth-shared": "workspace:*",
     "@signal-fire/api-contracts": "workspace:*",
     "next": "16.2.6",
-    "react": "19.2.3",
+    "react": "19.2.7",
     "react-dom": "19.2.3",
     "react-markdown": "^10.1.0"
   },
