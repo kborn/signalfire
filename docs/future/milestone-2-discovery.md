@@ -91,10 +91,68 @@ Secondary (raise only if conversation goes well):
 
 ---
 
+## Event Source Research
+
+### Mobilize (mobilize.us)
+
+Mobilize is not a general civic events API — it is a **progressive organizing
+platform** used by Indivisible, Swing Left, labor unions, and advocacy orgs.
+It happens to align well with Find Your Fight's target audience.
+
+**API:** Public REST API, no auth required for read access, 15 req/sec limit.
+Deprecated global endpoint (`GET /v1/events`) still works; preferred path is
+org-specific (`GET /v1/organizations/:id/events`). Write access and full
+address data require an API key (request via support@mobilize.us).
+
+**Portland, ME coverage:** 44 upcoming events within 50 miles of zip 04101
+as of 2026-07-09. Events were relevant: Indivisible standouts, Swing Left
+strategy sessions, ICE protest actions.
+
+**Schema fit:** Clean mapping to the Event entity.
+
+| Mobilize field                 | Event field                         |
+| ------------------------------ | ----------------------------------- |
+| `title`                        | `title`                             |
+| `description`                  | `description`                       |
+| `timeslots[0].start_date`      | `startDate` (Unix timestamp → Date) |
+| `location.locality` + `region` | `location`                          |
+| `browser_url`                  | `externalUrl`                       |
+| `featured_image_url`           | image                               |
+
+**Gotcha:** Events with `address_visibility: PRIVATE` hide the venue address.
+Always use `browser_url` as the CTA link rather than displaying an address.
+
+**For multi-city expansion:** The `GET /v1/organizations` endpoint is public
+and lists all orgs with their state and event feed URL. Useful for identifying
+partner orgs when branching to new cities.
+
+### Other sources evaluated
+
+| Source                          | Verdict                                                                                                                                                                                |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Local government calendars**  | High value for town halls, public hearings, city council meetings — fills Mobilize's nonpartisan gap. No standard API; requires scraping per city. Worth adding for Portland, ME beta. |
+| **Eventbrite**                  | Public API, wide coverage, but very noisy. Would need heavy category filtering. Secondary source at best.                                                                              |
+| **Action Network**              | Similar to Mobilize, used by labor and environmental orgs. API requires per-org keys — only viable if orgs share access willingly.                                                     |
+| **iCal feeds**                  | Some nonprofits publish `.ics` files. Parseable if you know the URL. Worth checking for specific partner orgs.                                                                         |
+| **Facebook Events**             | API closed post-Cambridge Analytica. Not viable.                                                                                                                                       |
+| **Meetup**                      | API heavily restricted. Wrong content type (social/professional, not civic action).                                                                                                    |
+| **Mobilize SQL Mirror**         | Postgres mirror of full Mobilize data — but only available to Mobilize org customers, not third-party builders.                                                                        |
+| **Mobilize Zapier integration** | Outbound only (Mobilize → other apps). Not useful for ingestion.                                                                                                                       |
+| **Mobilize-to-VAN integration** | Internal ops tool for pushing volunteer data to NGP VAN. Not relevant.                                                                                                                 |
+
+### Coverage assessment for Portland, ME beta
+
+Mobilize alone covers organized progressive events well. The meaningful gap
+is local government and nonpartisan civic events, which would require scraping
+Portland's city calendar. Small orgs that don't post on any platform are only
+reachable through direct relationships — which is why org outreach matters
+independent of any API strategy.
+
+---
+
 ## Next Steps
 
 - [ ] Follow up with any non-responses after 1 week
-- [ ] Test Mobilize API for Maine events (independent of org outreach)
 - [ ] Update response column above as replies come in
 - [ ] After conversations: decide whether to commit to Milestone 2 and which
       gap to address first
