@@ -66,13 +66,15 @@ Sent 2026-07-09.
 
 ## Organizations Contacted
 
-| Org                     | URL                               | Contacted  | Response |
-| ----------------------- | --------------------------------- | ---------- | -------- |
-| Indivisible PWM         | https://indivisiblepwm.com/       | 2026-07-09 | —        |
-| Maine Civic Action      | https://www.mainecivicaction.org/ | 2026-07-09 | —        |
-| Maine People's Alliance | https://mainepeoplesalliance.org/ | 2026-07-09 | —        |
-| Maine Initiatives       | https://maineinitiatives.org/     | 2026-07-09 | —        |
-| Justice Maine           | https://justicemaine.org/         | 2026-07-09 | —        |
+| Org                     | URL                                          | Contacted  | Response |
+| ----------------------- | -------------------------------------------- | ---------- | -------- |
+| Indivisible PWM         | https://indivisiblepwm.com/                  | 2026-07-17 | —        |
+| Maine Civic Action      | https://www.mainecivicaction.org/            | 2026-07-17 | —        |
+| Maine People's Alliance | https://mainepeoplesalliance.org/ (facebook) | 2026-07-17 | —        |
+| Maine Initiatives       | https://maineinitiatives.org/ (email)        | 2026-07-15 | —        |
+| Justice Maine           | https://justicemaine.org/                    | 2026-07-17 | —        |
+| Activate Maine          | https://www.activatemaine.com/               | 2026-07-17 | —        |
+| ACLU Maine              | http://aclumaine.org/ (email)                | 2026-07-15 | 7/17     |
 
 ---
 
