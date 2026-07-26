@@ -45,7 +45,12 @@ Do not read or output a bootstrap header. Start working.
 
 ## What matters to this project
 
-- It is a portfolio piece targeting Milestone 1 deployment. Credibility over completeness.
+- Milestone 1 shipped and the user has since accepted a job offer (2026-07-26) — this is no
+  longer an active portfolio piece for a job search. It now runs as a general-audience demo app,
+  with `NEXT_PUBLIC_SITE_MODE` (`portfolio` | `demo`, see `apps/web/src/lib/site-mode.ts`)
+  controlling whether admin access is exposed to visitors, in case the user re-enters the job
+  market. See `docs/agent-governance/decisions.md` (2026-07-26 entry) before touching this flag
+  or anything reviewer/recruiter-framed.
 - The product is a civic action platform. The core gap: actions don't help users take action.
   The `externalUrl` field on Action was added to fix this — surface it wherever it matters.
 - Visual identity: Playfair Display (display/headings), Inter (body), dark navy + amber palette.

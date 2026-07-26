@@ -1489,3 +1489,73 @@ this complexity.
 - Reference: `docs/runbooks/web-infrastructure-hygiene.md`
 
 ---
+
+### ► Post-Milestone: `NEXT_PUBLIC_SITE_MODE` gates admin exposure by career status
+
+###### 2026-07-26
+
+---
+
+###### Decision
+
+The user is no longer using this project as an active portfolio piece for a
+job search (a job offer was accepted). The site now runs primarily as a
+general-audience demo, with the option to flip back to a recruiter-facing
+posture if the user re-enters the job market. A new env var,
+`NEXT_PUBLIC_SITE_MODE` (`portfolio` | `demo`, default `portfolio`), controls
+this. `portfolio` mode is today's existing behavior, unchanged. `demo` mode
+hides the Admin entry points from the public UI: the footer "Admin" link
+(public layout and 404 page), the demo banner's "Admin →" CTA and its
+admin-oriented copy, and the `/demo` page's "Admin workspace access" section
+(credentials + "Go to Admin" link).
+
+This var is orthogonal to the existing `NEXT_PUBLIC_ENABLE_DEMO_MODE`, which
+controls only the "this is a demo site with sample data" banner and is
+unaffected by this change. The two were deliberately kept separate rather
+than merged into one flag — see Rationale.
+
+This flag is intended to be set only on the deployed demo environment
+(`demo.findmyfight.com` / the `api-demo` Railway service). There is currently
+no separate prod deployment; if one is added later, it should default to
+`portfolio` (unset) unless explicitly configured otherwise.
+
+###### Rationale
+
+- The two "demo" concepts are semantically different and answer different
+  questions: `NEXT_PUBLIC_ENABLE_DEMO_MODE` answers "is the content on this
+  page real?" while `NEXT_PUBLIC_SITE_MODE` answers "should this deployment
+  advertise admin access to visitors?" Conflating them into one flag would
+  make either concern harder to reason about independently in the future.
+- The user's own framing: `portfolio` mode is for when they're actively job
+  hunting and want recruiters/hiring managers to discover the admin
+  workspace; `demo` mode is for general readers when there's no active job
+  search and no live prod environment to separately showcase engineering
+  depth.
+- Enforcement is intentionally UI-only (hiding links and page sections), not
+  a hard block at the Next.js middleware or NestJS `AdminAuthGuard` layer.
+  `/admin/login` and the API continue to function normally underneath in
+  both modes — this was an explicit, considered tradeoff, not an oversight.
+
+###### Implications
+
+- `apps/web/src/lib/site-mode.ts` exports `getSiteMode()` and
+  `isAdminExposed()`; check `isAdminExposed()` before adding any new
+  admin-discovery surface (nav links, callouts, etc.).
+- The README's "Demo Review and Admin Access" section (with plaintext
+  credentials) is **not** gated by this var — it's a static file and always
+  publicly readable in the repository regardless of deployment mode. This is
+  a known, accepted residual exposure: `demo` mode reduces admin
+  _discoverability from the live site_, it does not make the admin
+  workspace or its credentials secret. If stronger guarantees are ever
+  needed, the credentials themselves (not just the links to them) would
+  need to change per-environment.
+- `/admin/login`'s demo-mode helper text (linking to the README's admin
+  access section) is unchanged and still keyed off
+  `NEXT_PUBLIC_ENABLE_DEMO_MODE`, not `NEXT_PUBLIC_SITE_MODE` — that text
+  only appears to someone already on the login page, which is not a
+  discovery surface for anonymous visitors.
+- Other subtle framing tweaks tied to career status (copy, messaging) should
+  read `getSiteMode()` from `site-mode.ts` rather than introducing another
+  parallel flag.
+
+---

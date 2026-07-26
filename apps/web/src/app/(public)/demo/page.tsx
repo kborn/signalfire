@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { isAdminExposed } from '@/lib/site-mode';
 
 export const metadata = {
   title: 'Demo — Find Your Fight',
@@ -6,6 +7,8 @@ export const metadata = {
 };
 
 export default function DemoPage() {
+  const adminExposed = isAdminExposed();
+
   return (
     <section className="page-section demoPage motifPage centeredPublicPage">
       <div className="page-section about-hero">
@@ -30,29 +33,42 @@ export default function DemoPage() {
         </p>
       </div>
 
-      <div className="page-section about-journey stack-md">
-        <h2>Admin workspace access</h2>
-        <p>
-          The admin workspace includes the moderation queue, submission review, and article, action,
-          and event editors.
-        </p>
-        <div className="stack-md">
-          <p className="section-label">Default demo credentials</p>
+      {adminExposed ? (
+        <div className="page-section about-journey stack-md">
+          <h2>Admin workspace access</h2>
           <p>
-            <strong>Email:</strong> admin@example.com
+            The admin workspace includes the moderation queue, submission review, and article,
+            action, and event editors.
           </p>
-          <p>
-            <strong>Password:</strong> FindYourFight1
-          </p>
-          <p className="metaText">
-            Credentials may differ if this instance was deployed with custom environment variables.
-            Check the README for environment setup.
-          </p>
+          <div className="stack-md">
+            <p className="section-label">Default demo credentials</p>
+            <p>
+              <strong>Email:</strong> admin@example.com
+            </p>
+            <p>
+              <strong>Password:</strong> FindYourFight1
+            </p>
+            <p className="metaText">
+              Credentials may differ if this instance was deployed with custom environment
+              variables. Check the README for environment setup.
+            </p>
+          </div>
+          <div className="ctaRow">
+            <Link href="/admin" className="primaryCTA">
+              Go to Admin
+            </Link>
+            <Link
+              href="https://github.com/kborn/signalfire"
+              className="secondaryCTA"
+              target="_blank"
+              rel="noreferrer"
+            >
+              View Repository
+            </Link>
+          </div>
         </div>
-        <div className="ctaRow">
-          <Link href="/admin" className="primaryCTA">
-            Go to Admin
-          </Link>
+      ) : (
+        <div className="page-section about-journey stack-md">
           <Link
             href="https://github.com/kborn/signalfire"
             className="secondaryCTA"
@@ -62,7 +78,7 @@ export default function DemoPage() {
             View Repository
           </Link>
         </div>
-      </div>
+      )}
 
       <div className="page-section about-community stack-md">
         <p className="section-label">Explore the public site</p>

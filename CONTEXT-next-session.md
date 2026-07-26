@@ -1,11 +1,13 @@
-# Context for Next Agent Session — Phase 16: Public Launch
+# Context for Next Agent Session
 
 ## State of the repo
 
-**Branch:** `feat/phase_15/mobile_pass` — ready to merge. All commits are clean,
-typecheck passes, tests pass.
+**Branch:** `main`. Milestone 1 (through Phase 16) is merged and closed. No
+active phase is in progress — post-Milestone-1, small changes land directly
+on `main` without a formal phase entry.
 
-**Main is clean** at the squash commit from Phase 15.5.
+**Uncommitted local changes** (small site-mode admin-exposure change, see
+below — awaiting user commit).
 
 ---
 
@@ -19,39 +21,43 @@ typecheck passes, tests pass.
 
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
-**Demo seed:** Applied — topics, articles, actions, events, admin user all present.
+There is no separate prod deployment. `demo.findmyfight.com` is the only
+live instance.
 
 ---
 
-## What's on this branch (Phase 15.6)
+## Recent/in-flight: site-mode admin exposure toggle
 
-All fixes are CSS/JS only — no schema or API changes.
+The user accepted a job offer (2026-07-26) and no longer needs this project
+to actively support a job search. The site can now run as a general-audience
+demo by default, with the option to flip back to a recruiter-facing posture
+later. See `docs/agent-governance/decisions.md` (2026-07-26 entry) for full
+rationale — this was a small, non-phase change, not a new milestone.
 
-| Fix                                                          | File(s)                                                                   |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------- |
-| Journey strip horizontal overflow on mobile                  | `responsive.css` — full-width 3-col tab grid                              |
-| Homepage journey cards overflow                              | `responsive.css` — single column stack                                    |
-| Homepage issue grid clipping                                 | `responsive.css` — icon+title row layout; `layout.css` — overflow-x: clip |
-| Contribute link in mobile nav drawer (circle bug + no close) | `layout.css`, `submit-nav-link.tsx`, `site-nav.tsx`                       |
-| Submission forms don't scroll to top on success              | `article-submission.tsx`, `event-submission.tsx`                          |
-| Admin login doesn't redirect on mobile (cookie race)         | `LoginForm.tsx` — router.push → window.location.href                      |
-| `screenshots_review/` tracked by git                         | `.prettierignore`                                                         |
-| robots.txt                                                   | `apps/web/src/app/robots.ts`                                              |
-| sitemap.xml (dynamic, fetches from API)                      | `apps/web/src/app/sitemap.ts`                                             |
-| Security headers                                             | `apps/web/next.config.ts`                                                 |
-| Index cards 116–119 + CSP deferral decision                  | `docs/learnings/index-cards/`, `docs/agent-governance/decisions.md`       |
+**What changed (uncommitted on `main`):**
 
-**One Railway dashboard action still needed:**
-Add `https://demo.findmyfight.com` to the `WEB_ORIGINS` env var on the Railway
-`api` service to fix CORS on public submissions. Dashboard-only, no code.
+| Change                                                      | File(s)                                                                  |
+| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
+| New `NEXT_PUBLIC_SITE_MODE` (`portfolio` default \| `demo`) | `apps/web/src/lib/site-mode.ts`                                          |
+| Footer "Admin" link gated on `isAdminExposed()`             | `apps/web/src/app/(public)/layout.tsx`, `apps/web/src/app/not-found.tsx` |
+| Demo banner Admin CTA/copy gated                            | `apps/web/src/app/(public)/_components/demo-banner.tsx`                  |
+| `/demo` page admin-credentials section gated                | `apps/web/src/app/(public)/demo/page.tsx`                                |
+| Env examples updated                                        | `apps/web/.env.local.example`, `apps/web/.env.local`                     |
 
----
+**Not changed (deliberate):** `/admin/login` and the NestJS `AdminAuthGuard`
+still work identically in both modes — this is a UI-discoverability toggle,
+not an auth hard-block. The README's plaintext demo credentials are also
+unaffected (static file, always public). Both are documented residual
+exposures in decisions.md, not oversights.
 
-## Phase 16 — Public Launch
+**Still open:**
 
-The active phase. See `docs/agent-governance/progress.md` for the definition
-of done. Core tasks: verify the live deployment end-to-end, confirm the
-reviewer journey works, declare Milestone 1 complete.
+- [ ] Decide whether/when to set `NEXT_PUBLIC_SITE_MODE=demo` on the Railway
+      `web` service for `demo.findmyfight.com` (dashboard-only, no code —
+      there's no repo file enumerating deployed env vars for this service)
+- [ ] Sweep for any other reviewer/recruiter-oriented framing (copy, README
+      sections) that should also flex on career status — decisions.md flags
+      this as future work, not yet scoped
 
 ---
 

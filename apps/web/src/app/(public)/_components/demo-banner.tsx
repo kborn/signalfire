@@ -21,7 +21,11 @@ function getServerSnapshot() {
   return false;
 }
 
-export default function DemoBanner() {
+type DemoBannerProps = {
+  showAdminLink?: boolean;
+};
+
+export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
   const dismissed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const dismissTimerRef = useRef<number | null>(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -46,14 +50,17 @@ export default function DemoBanner() {
       <div className="demoBannerBody">
         <p className="demoBannerEyebrow">Demo Site</p>
         <p className="demoBannerCopy">
-          This is a demo site with sample data. Use the Admin link to explore the moderation and
-          content management workflow.
+          {showAdminLink
+            ? 'This is a demo site with sample data. Use the Admin link to explore the moderation and content management workflow.'
+            : 'This is a demo site with sample data.'}
         </p>
       </div>
       <div className="demoBannerActions">
-        <Link href="/demo" className="demoBannerAdminLink">
-          Admin →
-        </Link>
+        {showAdminLink ? (
+          <Link href="/demo" className="demoBannerAdminLink">
+            Admin →
+          </Link>
+        ) : null}
         <button
           type="button"
           className="demoBannerDismiss"
