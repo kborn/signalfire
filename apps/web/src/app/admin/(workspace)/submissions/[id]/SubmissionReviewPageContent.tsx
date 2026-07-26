@@ -213,8 +213,7 @@ export default function SubmissionReviewPageContent({
 }) {
   const router = useRouter();
   type ValidationResult<TPayload> =
-    | { ok: true; payload: TPayload }
-    | { ok: false; errors: ReviewFormErrors };
+    { ok: true; payload: TPayload } | { ok: false; errors: ReviewFormErrors };
 
   function handleReviewRequestError(error: unknown) {
     if (error instanceof SubmissionError) {

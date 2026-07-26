@@ -26,8 +26,7 @@ export type ActionWithTopics = Prisma.ActionGetPayload<{
 }>;
 
 type ActionOrderBy =
-  | Prisma.ActionOrderByWithRelationInput
-  | Prisma.ActionOrderByWithRelationInput[];
+  Prisma.ActionOrderByWithRelationInput | Prisma.ActionOrderByWithRelationInput[];
 
 @Injectable()
 export class ActionRepository {
