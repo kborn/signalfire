@@ -22,8 +22,7 @@ const articleWithTopicsInclude = {
 } satisfies Prisma.ArticleInclude;
 
 type ArticleOrderBy =
-  | Prisma.ArticleOrderByWithRelationInput
-  | Prisma.ArticleOrderByWithRelationInput[];
+  Prisma.ArticleOrderByWithRelationInput | Prisma.ArticleOrderByWithRelationInput[];
 
 export type ArticleWithTopics = Prisma.ArticleGetPayload<{
   include: typeof articleWithTopicsInclude;
