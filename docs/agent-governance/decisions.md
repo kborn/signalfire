@@ -1504,10 +1504,21 @@ general-audience demo, with the option to flip back to a recruiter-facing
 posture if the user re-enters the job market. A new env var,
 `NEXT_PUBLIC_SITE_MODE` (`portfolio` | `demo`, default `portfolio`), controls
 this. `portfolio` mode is today's existing behavior, unchanged. `demo` mode
-hides the Admin entry points from the public UI: the footer "Admin" link
-(public layout and 404 page), the demo banner's "Admin →" CTA and its
-admin-oriented copy, and the `/demo` page's "Admin workspace access" section
-(credentials + "Go to Admin" link).
+hides only the _admin-specific_ content of these surfaces, not the surfaces
+themselves: the footer link (public layout and 404 page) and the demo
+banner's CTA still appear whenever `NEXT_PUBLIC_ENABLE_DEMO_MODE` is on —
+they still point to `/demo` and are still how a visitor discovers that page
+— but they're labeled "Demo"/"Learn more →" instead of "Admin" and the copy
+drops the admin-workflow language. The `/demo` page's "Admin workspace
+access" section (credentials + "Go to Admin" link) is the one piece that's
+actually removed in `demo` mode; the rest of the page (what the demo is,
+links to browse the public site) stays reachable.
+
+(First pass at this wrongly hid the footer/banner link entirely behind
+`isAdminExposed()`, which made `/demo` itself undiscoverable in `demo` mode
+— caught and fixed same day. The link's _presence_ should track
+`NEXT_PUBLIC_ENABLE_DEMO_MODE` same as before; only its _label and
+destination content_ should track `isAdminExposed()`.)
 
 This var is orthogonal to the existing `NEXT_PUBLIC_ENABLE_DEMO_MODE`, which
 controls only the "this is a demo site with sample data" banner and is

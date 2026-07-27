@@ -56,11 +56,9 @@ export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
         </p>
       </div>
       <div className="demoBannerActions">
-        {showAdminLink ? (
-          <Link href="/demo" className="demoBannerAdminLink">
-            Admin →
-          </Link>
-        ) : null}
+        <Link href="/demo" className="demoBannerAdminLink">
+          {showAdminLink ? 'Admin →' : 'Learn more →'}
+        </Link>
         <button
           type="button"
           className="demoBannerDismiss"
