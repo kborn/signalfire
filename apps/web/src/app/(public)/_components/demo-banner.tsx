@@ -1,83 +1,20 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 
-const DISMISS_KEY = 'fyf-demo-banner-dismissed';
-const DISMISS_ANIMATION_MS = 320;
-
-function subscribe(onStoreChange: () => void) {
-  window.addEventListener('storage', onStoreChange);
-  return () => {
-    window.removeEventListener('storage', onStoreChange);
-  };
-}
-
-function getSnapshot() {
-  return window.sessionStorage.getItem(DISMISS_KEY) === '1';
-}
-
-function getServerSnapshot() {
-  return false;
-}
-
-type DemoBannerProps = {
-  showAdminLink?: boolean;
-};
-
-export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
-  const dismissed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const dismissTimerRef = useRef<number | null>(null);
-  const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      if (dismissTimerRef.current != null) {
-        window.clearTimeout(dismissTimerRef.current);
-      }
-    };
-  }, []);
-
-  if (dismissed) {
-    return null;
-  }
-
+export default function DemoBanner() {
   return (
-    <section
-      className={`demoBanner${isClosing ? ' demoBannerClosing' : ''}`}
-      aria-label="Demo notice"
-    >
+    <section className="demoBanner" aria-label="Demo notice">
       <div className="demoBannerBody">
         <p className="demoBannerEyebrow">Demo Site</p>
         <p className="demoBannerCopy">
-          {showAdminLink
-            ? 'This is a demo site with sample data. Use the Admin link to explore the moderation and content management workflow.'
-            : 'This is a demo site with sample data.'}
+          Note: the events, actions, and articles here were randomly generated to demonstrate this
+          site&apos;s capabilities — none of them are real. A future version will feature properly
+          curated content.
         </p>
       </div>
       <div className="demoBannerActions">
-        <Link href="/demo" className="demoBannerAdminLink">
-          {showAdminLink ? 'Admin →' : 'Learn more →'}
+        <Link href="/story" className="demoBannerLink">
+          The Story
         </Link>
-        <button
-          type="button"
-          className="demoBannerDismiss"
-          onClick={() => {
-            if (isClosing) {
-              return;
-            }
-
-            setIsClosing(true);
-            dismissTimerRef.current = window.setTimeout(() => {
-              window.sessionStorage.setItem(DISMISS_KEY, '1');
-              window.dispatchEvent(
-                new StorageEvent('storage', { key: DISMISS_KEY, newValue: '1' }),
-              );
-            }, DISMISS_ANIMATION_MS);
-          }}
-        >
-          Dismiss
-        </button>
       </div>
     </section>
   );

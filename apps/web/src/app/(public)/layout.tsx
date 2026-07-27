@@ -3,7 +3,7 @@ import Link from 'next/link';
 import DemoBanner from '@/app/(public)/_components/demo-banner';
 import { SiteNav } from '@/app/(public)/_components/site-nav';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
-import { isAdminExposed } from '@/lib/site-mode';
+import { getSiteMode } from '@/lib/site-mode';
 
 export const metadata: Metadata = {
   title: 'Find Your Fight',
@@ -12,11 +12,11 @@ export const metadata: Metadata = {
 
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const isDemoMode = isDemoModeEnabled();
-  const adminExposed = isAdminExposed();
+  const contactMailto = `mailto:hello@findmyfight.com?subject=${encodeURIComponent(`Feedback from Find Your Fight (${getSiteMode()})`)}`;
 
   return (
     <div className="publicShell">
-      <div className="container site-main publicContent" data-demo={isDemoMode ? '' : undefined}>
+      <div className="container site-main publicContent">
         <div className="site-sticky-area">
           <header className="site-header">
             <div className="site-brand-group">
@@ -28,9 +28,9 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             </div>
             <SiteNav />
           </header>
+          {isDemoMode ? <DemoBanner /> : null}
         </div>
         <main>{children}</main>
-        {isDemoMode ? <DemoBanner showAdminLink={adminExposed} /> : null}
         <footer className="site-footer">
           <nav className="site-footer-nav" aria-label="Footer">
             <Link href="/issues">Issues</Link>
@@ -40,7 +40,8 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
             <Link href="/search">Search</Link>
             <Link href="/about">About</Link>
             <Link href="/submit">Contribute</Link>
-            {isDemoMode && <Link href="/demo">{adminExposed ? 'Admin' : 'Demo'}</Link>}
+            <Link href="/story">Story</Link>
+            <a href={contactMailto}>Contact</a>
           </nav>
           <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
         </footer>

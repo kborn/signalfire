@@ -6,8 +6,9 @@
 active phase is in progress — post-Milestone-1, small changes land directly
 on `main` without a formal phase entry.
 
-**Uncommitted local changes** (small site-mode admin-exposure change, see
-below — awaiting user commit).
+**Uncommitted local changes** (site-mode admin-exposure + `/story` +
+persistent-banner work, see below — explicitly not committed yet per user
+instruction; do not commit without asking).
 
 ---
 
@@ -22,42 +23,102 @@ below — awaiting user commit).
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
 There is no separate prod deployment. `demo.findmyfight.com` is the only
-live instance.
+live instance. `NEXT_PUBLIC_SITE_MODE` is **not yet set** on the Railway
+`web` service; it defaults to `portfolio`, so admin is still exposed live
+today. None of the work below is deployed yet.
 
 ---
 
-## Recent/in-flight: site-mode admin exposure toggle
+## Your task this session: an independent review, then (if clean) a copy pass
 
-The user accepted a job offer (2026-07-26) and no longer needs this project
-to actively support a job search. The site can now run as a general-audience
-demo by default, with the option to flip back to a recruiter-facing posture
-later. See `docs/agent-governance/decisions.md` (2026-07-26 entry) for full
-rationale — this was a small, non-phase change, not a new milestone.
+This is a repeat of a review that already happened once. Read
+`docs/agent-governance/decisions.md`, all entries dated 2026-07-26 and
+2026-07-27 in order — the last one
+("Independent review found a real gap; badge/dismiss approach replaced
+with a permanent, sticky banner") is the important one; it explains what an
+earlier review session found wrong (a real bug: the homepage kept a
+hard-coded admin link that ignored the whole point of this effort) and what
+changed as a result. Don't take that entry's own verification claims at
+face value — re-derive them.
 
-**What changed (uncommitted on `main`):**
+**Do this the way that entry's review was done, not by reading the diff
+alone:**
 
-| Change                                                      | File(s)                                                                  |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
-| New `NEXT_PUBLIC_SITE_MODE` (`portfolio` default \| `demo`) | `apps/web/src/lib/site-mode.ts`                                          |
-| Footer "Admin" link gated on `isAdminExposed()`             | `apps/web/src/app/(public)/layout.tsx`, `apps/web/src/app/not-found.tsx` |
-| Demo banner Admin CTA/copy gated                            | `apps/web/src/app/(public)/_components/demo-banner.tsx`                  |
-| `/demo` page admin-credentials section gated                | `apps/web/src/app/(public)/demo/page.tsx`                                |
-| Env examples updated                                        | `apps/web/.env.local.example`, `apps/web/.env.local`                     |
+1. Start `apps/api` (`pnpm api:dev`) and `apps/web` (`pnpm --filter web dev
+-- -p 3000`) locally against real seeded Postgres data — check with
+   `docker ps` first, Postgres is usually already running on 5432.
+2. Actually load the pages — homepage, `/story`, `/issues`, `/articles`,
+   `/actions`, `/events`, an article/action/event **detail** page, footer,
+   mobile viewport — in both `NEXT_PUBLIC_SITE_MODE=portfolio` and
+   `NEXT_PUBLIC_SITE_MODE=demo`. A scripted headless browser (Playwright,
+   installed ad hoc via `npm install playwright && npx playwright install
+chromium` in a scratch dir if not already available) beats guessing from
+   markup.
+3. If you change `NEXT_PUBLIC_SITE_MODE` between runs, delete
+   `apps/web/.next` before restarting — Turbopack has cached a stale
+   inlined value across restarts before and produced a false read.
+4. Judge it as a visitor, not a code reviewer: did the stated goal
+   (admin access not discoverable in `demo` mode; sample content clearly
+   marked as fake) actually land, cleanly, without new UI/UX damage?
+5. Free ports 3000/3001 when you're done so the user can run it themselves.
 
-**Not changed (deliberate):** `/admin/login` and the NestJS `AdminAuthGuard`
-still work identically in both modes — this is a UI-discoverability toggle,
-not an auth hard-block. The README's plaintext demo credentials are also
-unaffected (static file, always public). Both are documented residual
-exposures in decisions.md, not oversights.
+**Specifically worth re-checking, not just trusting the last entry's word
+for it:**
 
-**Still open:**
+- Is the homepage now clean of any admin-related content/links in both
+  modes? (It should be — the section was deleted, not gated.)
+- Does the banner (`apps/web/src/app/(public)/_components/demo-banner.tsx`)
+  actually stay pinned in view when you scroll, including immediately
+  after clicking from a scrolled-down list page into a detail page?
+- Is `.site-demo-indicator` (the old "Demo" badge) actually gone
+  everywhere — header, all four list pages? Grep for it; it should return
+  nothing outside CSS history/decisions.md.
+- Does `/story` read coherently top to bottom now, in both modes? (A
+  heading was added mid-page and the hero paragraph was rewritten since
+  the last full review — that's new territory, not yet independently
+  checked by anyone other than the session that wrote it.)
+- Footer "Contact" link and `/story`'s "email me" link — do both produce
+  a sensible `mailto:` with a non-empty subject?
+- `pnpm typecheck`, `pnpm lint`, `pnpm --filter web test` — all should
+  pass (143 tests as of the last entry; confirm the count hasn't quietly
+  dropped).
 
-- [ ] Decide whether/when to set `NEXT_PUBLIC_SITE_MODE=demo` on the Railway
-      `web` service for `demo.findmyfight.com` (dashboard-only, no code —
-      there's no repo file enumerating deployed env vars for this service)
-- [ ] Sweep for any other reviewer/recruiter-oriented framing (copy, README
-      sections) that should also flex on career status — decisions.md flags
-      this as future work, not yet scoped
+**If you find nothing wrong:** say so plainly, and then move to the actual
+next task — `/story`'s two mode-branch paragraphs
+(`apps/web/src/app/(public)/story/page.tsx`, both wrapped in
+`{/* DRAFT — invented copy, edit freely. */}` comments) are still an
+agent's invented copy, not the user's own words. The user wants to work
+through a voice/content pass on that copy with you directly once the
+functional review is clean. Don't rewrite it unprompted — wait for their
+input.
+
+**If you find something wrong:** report it the way the last review did —
+plainly, with reasoning, without softening it because a prior session
+already "fixed" this once. Fix it if the fix is small and you're confident;
+otherwise describe it and ask.
+
+---
+
+## What changed, for orientation (see decisions.md for the full account)
+
+- `NEXT_PUBLIC_SITE_MODE` (`portfolio` default | `demo`) in
+  `apps/web/src/lib/site-mode.ts` — independent of the pre-existing
+  `NEXT_PUBLIC_ENABLE_DEMO_MODE`, which controls whether the banner renders
+  at all.
+- **Rule now in force:** mode-dependent rendering
+  (`isAdminExposed()`/`isDemoModeEnabled()` branches) is constrained to
+  exactly two places — `/story` and the demo banner. Nowhere else should
+  branch on either flag. If you find a third place, that's a bug.
+- `/story` (`apps/web/src/app/(public)/story/page.tsx`) — mode-dependent
+  "why this exists" content, admin credentials shown only in `portfolio`
+  mode. `/about` is untouched, no mode dependency.
+- The demo banner is now permanent (no Dismiss button, no
+  `sessionStorage`) and lives inside `.site-sticky-area`, pinned under the
+  header.
+- The old "Demo" badge (`.site-demo-indicator`) and its per-page
+  `.pageTitleRow` wrapper are fully removed.
+- Footer has an unconditional "Contact" mailto link
+  (`hello@findmyfight.com`, live via `forwardemail.net` MX records).
 
 ---
 

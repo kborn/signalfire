@@ -20,6 +20,7 @@ export function SiteNav() {
             <SearchIcon width={17} height={17} style={{ display: 'block' }} />
           </NavLink>
           <NavLink href="/about">About</NavLink>
+          <NavLink href="/story">Story</NavLink>
         </nav>
         <div className="site-header-actions">
           <SubmitNavLink />
@@ -54,6 +55,9 @@ export function SiteNav() {
           </NavLink>
           <NavLink href="/about" onClick={close}>
             About
+          </NavLink>
+          <NavLink href="/story" onClick={close}>
+            Story
           </NavLink>
           <SubmitNavLink onClick={close} />
         </nav>

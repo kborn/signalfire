@@ -134,7 +134,8 @@ Notes:
 - `apps/api/.env.example` defaults to baseline seeding; the demo seed command
   overrides that explicitly for local portfolio/demo review.
 - `apps/web/.env.local.example` enables public demo mode by default so the
-  banner, badge, and `Admin Demo` entry point are visible in review builds.
+  banner is visible in review builds. The nav/footer `Story` link is always
+  present regardless of this flag.
 
 Run only baseline seed (without demo content):
 
@@ -200,14 +201,29 @@ Enable the public demo treatment in `apps/web/.env.local`:
 NEXT_PUBLIC_ENABLE_DEMO_MODE=true
 ```
 
-Without that flag, the public demo badge, banner, and header `Admin Demo` entry
-do not render.
+Without that flag, the public demo banner does not render.
 
-Suggested reviewer path:
+Admin access is additionally gated by `NEXT_PUBLIC_SITE_MODE`:
+
+```bash
+NEXT_PUBLIC_SITE_MODE=portfolio  # default; set to "demo" to hide admin from the /story page
+```
+
+The primary nav's and footer's **Story** links (`/story`) are always present,
+in both modes — it's the "why this exists" page, distinct from `/about` (the
+platform's own civic-mission page, unaffected by either flag). `portfolio`
+mode adds an admin-credentials section to
+`/story`; `demo` mode omits it (admin auth itself is unaffected either way —
+this only controls discoverability in the UI). See
+`docs/agent-governance/decisions.md` (2026-07-26/07-27 entries) for the full
+rationale.
+
+Suggested reviewer path (`portfolio` mode):
 
 1. Start on the homepage to understand the public demo posture
 2. Browse Issues, Articles, Actions, or the Event finder
-3. Click **Admin Demo** in the header — this opens the `/demo` page with admin access instructions and credentials
+3. Click **Story** in the nav or footer — this opens `/story` with admin
+   access instructions and credentials
 4. Log into the admin workspace to review moderation queue, submission review, and content-management flows
 
 Milestone 1 release-readiness notes, checklist, deferred items, and admin-boundary
