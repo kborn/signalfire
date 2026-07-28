@@ -2,13 +2,14 @@
 
 ## State of the repo
 
-**Branch:** `main`. Milestone 1 (through Phase 16) is merged and closed. No
-active phase is in progress — post-Milestone-1, small changes land directly
-on `main` without a formal phase entry.
+**Branch:** `site-mode-story-banner`, tracking `main`. Everything described
+below is committed and pushed — working tree is clean, nothing local-only.
+Open as **PR #98** (`Retire /demo, restore /story, make demo banner permanent
+and sticky`), not yet merged.
 
-**Uncommitted local changes** (site-mode admin-exposure + `/story` +
-persistent-banner work, see below — explicitly not committed yet per user
-instruction; do not commit without asking).
+Milestone 1 (through Phase 16) is merged and closed. No active phase is in
+progress — post-Milestone-1, small changes land directly via PR without a
+formal phase entry.
 
 ---
 
@@ -25,100 +26,67 @@ instruction; do not commit without asking).
 There is no separate prod deployment. `demo.findmyfight.com` is the only
 live instance. `NEXT_PUBLIC_SITE_MODE` is **not yet set** on the Railway
 `web` service; it defaults to `portfolio`, so admin is still exposed live
-today. None of the work below is deployed yet.
+today. None of PR #98's work is deployed yet — it only takes effect once
+merged and released.
 
 ---
 
-## Your task this session: an independent review, then (if clean) a copy pass
+## What PR #98 did, end to end
 
-This is a repeat of a review that already happened once. Read
-`docs/agent-governance/decisions.md`, all entries dated 2026-07-26 and
-2026-07-27 in order — the last one
-("Independent review found a real gap; badge/dismiss approach replaced
-with a permanent, sticky banner") is the important one; it explains what an
-earlier review session found wrong (a real bug: the homepage kept a
-hard-coded admin link that ignored the whole point of this effort) and what
-changed as a result. Don't take that entry's own verification claims at
-face value — re-derive them.
+See `docs/agent-governance/decisions.md` — all entries from
+`Post-Milestone: NEXT_PUBLIC_SITE_MODE gates admin exposure by career status`
+(2026-07-26) through `Demo banner dismiss restored; sample-content flags
+added; /story copy finalized with the user` (2026-07-28, the newest entry on
+this topic) — for the full account, including two internal reversals
+(`/demo` → folded into `/about` → split back out as `/story`; banner
+dismiss removed → restored). Read the newest entry on a topic first;
+`decisions.md` is append-only history, not always current-state truth on its
+own — check `###### Superseded` notes.
 
-**Do this the way that entry's review was done, not by reading the diff
-alone:**
-
-1. Start `apps/api` (`pnpm api:dev`) and `apps/web` (`pnpm --filter web dev
--- -p 3000`) locally against real seeded Postgres data — check with
-   `docker ps` first, Postgres is usually already running on 5432.
-2. Actually load the pages — homepage, `/story`, `/issues`, `/articles`,
-   `/actions`, `/events`, an article/action/event **detail** page, footer,
-   mobile viewport — in both `NEXT_PUBLIC_SITE_MODE=portfolio` and
-   `NEXT_PUBLIC_SITE_MODE=demo`. A scripted headless browser (Playwright,
-   installed ad hoc via `npm install playwright && npx playwright install
-chromium` in a scratch dir if not already available) beats guessing from
-   markup.
-3. If you change `NEXT_PUBLIC_SITE_MODE` between runs, delete
-   `apps/web/.next` before restarting — Turbopack has cached a stale
-   inlined value across restarts before and produced a false read.
-4. Judge it as a visitor, not a code reviewer: did the stated goal
-   (admin access not discoverable in `demo` mode; sample content clearly
-   marked as fake) actually land, cleanly, without new UI/UX damage?
-5. Free ports 3000/3001 when you're done so the user can run it themselves.
-
-**Specifically worth re-checking, not just trusting the last entry's word
-for it:**
-
-- Is the homepage now clean of any admin-related content/links in both
-  modes? (It should be — the section was deleted, not gated.)
-- Does the banner (`apps/web/src/app/(public)/_components/demo-banner.tsx`)
-  actually stay pinned in view when you scroll, including immediately
-  after clicking from a scrolled-down list page into a detail page?
-- Is `.site-demo-indicator` (the old "Demo" badge) actually gone
-  everywhere — header, all four list pages? Grep for it; it should return
-  nothing outside CSS history/decisions.md.
-- Does `/story` read coherently top to bottom now, in both modes? (A
-  heading was added mid-page and the hero paragraph was rewritten since
-  the last full review — that's new territory, not yet independently
-  checked by anyone other than the session that wrote it.)
-- Footer "Contact" link and `/story`'s "email me" link — do both produce
-  a sensible `mailto:` with a non-empty subject?
-- `pnpm typecheck`, `pnpm lint`, `pnpm --filter web test` — all should
-  pass (143 tests as of the last entry; confirm the count hasn't quietly
-  dropped).
-
-**If you find nothing wrong:** say so plainly, and then move to the actual
-next task — `/story`'s two mode-branch paragraphs
-(`apps/web/src/app/(public)/story/page.tsx`, both wrapped in
-`{/* DRAFT — invented copy, edit freely. */}` comments) are still an
-agent's invented copy, not the user's own words. The user wants to work
-through a voice/content pass on that copy with you directly once the
-functional review is clean. Don't rewrite it unprompted — wait for their
-input.
-
-**If you find something wrong:** report it the way the last review did —
-plainly, with reasoning, without softening it because a prior session
-already "fixed" this once. Fix it if the fix is small and you're confident;
-otherwise describe it and ask.
-
----
-
-## What changed, for orientation (see decisions.md for the full account)
+Current shipped state, in brief:
 
 - `NEXT_PUBLIC_SITE_MODE` (`portfolio` default | `demo`) in
-  `apps/web/src/lib/site-mode.ts` — independent of the pre-existing
-  `NEXT_PUBLIC_ENABLE_DEMO_MODE`, which controls whether the banner renders
-  at all.
-- **Rule now in force:** mode-dependent rendering
+  `apps/web/src/lib/site-mode.ts` gates admin discoverability, independent of
+  `NEXT_PUBLIC_ENABLE_DEMO_MODE` (whether the sample-data banner renders at
+  all).
+- **Rule in force:** mode-dependent rendering
   (`isAdminExposed()`/`isDemoModeEnabled()` branches) is constrained to
-  exactly two places — `/story` and the demo banner. Nowhere else should
-  branch on either flag. If you find a third place, that's a bug.
-- `/story` (`apps/web/src/app/(public)/story/page.tsx`) — mode-dependent
-  "why this exists" content, admin credentials shown only in `portfolio`
-  mode. `/about` is untouched, no mode dependency.
-- The demo banner is now permanent (no Dismiss button, no
-  `sessionStorage`) and lives inside `.site-sticky-area`, pinned under the
-  header.
-- The old "Demo" badge (`.site-demo-indicator`) and its per-page
-  `.pageTitleRow` wrapper are fully removed.
-- Footer has an unconditional "Contact" mailto link
-  (`hello@findmyfight.com`, live via `forwardemail.net` MX records).
+  exactly `/story` and the demo banner. Nowhere else should branch on either
+  flag — if you find a third place, that's a bug.
+- `/story` (`apps/web/src/app/(public)/story/page.tsx`) holds "why this
+  instance exists" content, admin credentials shown only in `portfolio`
+  mode. `/about` is untouched and has no mode dependency. `/story`'s copy is
+  **finalized** — written together with the user, no DRAFT markers remain.
+  Don't treat it as a placeholder to rewrite unprompted.
+- The demo banner (`demo-banner.tsx`) is dismissible again (sessionStorage),
+  redesigned with the close control paired against the eyebrow, and lives
+  inside `.site-sticky-area` so it can't scroll out of view while shown.
+- Article/action/event detail pages each carry an unconditional "randomly
+  generated, not real" line under the headline (`.sampleContentFlag`) —
+  independent of site mode, since the seeded content is fake either way.
+- Footer has an unconditional "Story" link (nav + footer, both modes) and an
+  unconditional "Contact" mailto (`hello@findmyfight.com`, live via
+  `forwardemail.net` MX records).
+- Test coverage: `pnpm typecheck` / `pnpm lint` / `pnpm --filter web test`
+  all pass, 149 tests. New coverage this round: `story/page.test.tsx`,
+  sample-content-flag assertions on the three detail-page tests, and
+  `apps/web/src/app/not-found.test.tsx` (the root 404 — distinct from
+  `apps/web/src/app/(public)/not-found.test.tsx`, which this PR doesn't
+  touch).
+
+---
+
+## Still open
+
+- **Merge PR #98.** Content and functional review are both done (an
+  independent review session plus a direct copy pass with the user); nothing
+  is blocking merge that's known of right now.
+- **Decide when to set `NEXT_PUBLIC_SITE_MODE=demo`** on the Railway `web`
+  service for `demo.findmyfight.com` (dashboard-only, no code change — no
+  repo file enumerates deployed env vars for this service).
+- **Sweep for other reviewer/recruiter-oriented framing** (copy, README
+  sections) that should also flex on career status — flagged as future work
+  in the original 2026-07-26 entry, not yet scoped.
 
 ---
 

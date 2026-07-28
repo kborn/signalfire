@@ -1910,3 +1910,120 @@ Separately, the draft copy from the original round was revised:
 - Still nothing committed. Still open: the `/story` copy itself (next
   step, explicitly handed to the user), and deciding when to set
   `NEXT_PUBLIC_SITE_MODE=demo` on the Railway `web` service.
+
+###### Superseded
+
+The "banner is no longer dismissible" claim and the "`/story` still marked
+DRAFT" claim above are both superseded by `Demo banner dismiss restored;
+sample-content flags added; /story copy finalized with the user` dated
+2026-07-28, below. Left in place as historical context for the state that
+existed when this entry was written — not current behavior. Don't trust
+either claim without checking the code.
+
+---
+
+### ► Demo banner dismiss restored; sample-content flags added; `/story` copy finalized with the user
+
+###### 2026-07-28
+
+---
+
+###### Decision
+
+Two follow-up commits landed on top of the previous entry, both still part of
+the same not-yet-merged PR (#98):
+
+**Banner dismiss restored.** The demo banner's non-dismissible behavior
+(previous entry) turned out to be a worse tradeoff in practice than the
+badge-mania it was meant to avoid: a permanent banner that can't be dismissed
+is an annoyance on every single page view for the rest of a session, not just
+a one-time signal. `Dismiss` (now a plain "×", `aria-label="Dismiss"`,
+grouped with the "Demo Site" eyebrow in a `.demoBannerHead` row),
+`sessionStorage` persistence, and the closing animation are all back in
+`demo-banner.tsx`. The `/story` link moved from a separate CTA pill into the
+banner copy itself ("Read the full story.", `.inlineLink`). **The sticky
+positioning fix is unaffected** — the banner still lives inside
+`.site-sticky-area` and still can't scroll out of view while visible; only
+whether it can be dismissed changed back.
+
+**Sample-content flag added to individual detail pages.** A quiet italic line
+— "Randomly generated sample content — not based on anything real" on
+article/action pages, "Randomly generated sample event — not actually taking
+place" on event pages (`.sampleContentFlag`, `detail.css`) — now renders
+under the headline on all three detail page types. This is **unconditional**,
+not gated by `isAdminExposed()` or `isDemoModeEnabled()`: the seeded content
+is fake regardless of site mode, so there's no mode branch to make here. This
+doesn't reopen the "mode-dependent rendering constrained to `/story` and the
+banner" rule from the previous entry — that rule is about branching on the
+site-mode/demo-mode flags specifically, and this flag doesn't branch on
+anything.
+
+**`/story` copy finalized with the user.** The two mode-branch paragraphs are
+no longer wrapped in `{/* DRAFT */}` JSX comments — this was a real,
+sentence-by-sentence editing pass done together with the user (not another
+agent-invented draft), covering:
+
+- The redundant heading stack at the top ("The Story" label → "Why Find Your
+  Fight exists" h1 → "The story" h2) was cut; the body `<h2>` now reads "I
+  found my fight."
+- Portfolio-mode paragraph 1 was split from one long multi-clause sentence
+  into one sentence per example (admin sessions, moderation queue, search,
+  CI pipeline).
+- "I picked Railway over a Vercel/Railway split" reworded to "an all-Railway
+  deployment over splitting frontend (Vercel) and backend (Railway)" —
+  clearer on first read.
+- The demo-mode paragraph no longer names a sitting president
+  ("Trump's second inauguration" → "the 2025 inauguration"). Explicitly
+  discussed and kept deliberately: the date is load-bearing (it's the actual
+  trigger for the actual thing the paragraph describes), and if this project
+  hasn't moved on Milestone 2 by the time that date reads as stale, that's
+  itself a legitimate signal to flip `NEXT_PUBLIC_SITE_MODE` back to
+  `portfolio` — not a copy bug to hedge around.
+- Voice asymmetry between the two branches (portfolio: dry/technical, no
+  signature; demo: first-person narrative, signed "— Kevin Born") was raised
+  and confirmed intentional, not an oversight.
+
+**Test coverage added**, since none of the above had any before this entry:
+`apps/web/src/app/(public)/story/page.test.tsx` (new — both mode branches,
+admin section presence/absence, host-based mailto subject), sample-content
+assertions added to the three existing detail-page test files, and
+`apps/web/src/app/not-found.test.tsx` (new — the root 404 page had zero
+coverage before this; note this is distinct from
+`apps/web/src/app/(public)/not-found.test.tsx`, the route-group 404, which
+this PR does not touch). `pnpm typecheck`/`lint`/test now pass at 149 tests
+(up from 143 in the previous entry).
+
+###### Rationale
+
+- A disclaimer that can never go away optimizes for one visitor's first page
+  view at the cost of every subsequent page view, for every visitor, for the
+  rest of the session. That's the wrong tradeoff once the underlying
+  discoverability problem (banner dismissed → signal gone) is checked against
+  reality: the sticky positioning fix already guarantees the banner is
+  visible _while present_; dismissibility only affects whether a visitor who
+  has already seen and understood the disclaimer keeps seeing it forever.
+- Putting the "not real" signal directly on individual detail pages (not just
+  the banner) covers the case the previous entry already identified as the
+  actual risk — a visitor landing on a detail page directly via search or a
+  shared link, banner state notwithstanding — without needing the banner
+  itself to be undismissable to do it.
+- This is the first time `/story`'s copy reflects the user's own editing
+  decisions rather than an agent's first draft. Treat it as final unless the
+  user says otherwise.
+
+###### Implications
+
+- Don't assume any single `decisions.md` entry describes current behavior
+  without checking the code — entries here are append-only history, and
+  later entries can (and did, twice now, on this same banner) reverse earlier
+  ones. Check the newest entry on a topic first, and read `###### Superseded`
+  notes before trusting an older one.
+- `demo-banner.test.tsx` was updated in the same commit that restored
+  dismissibility; it now asserts dismiss behavior again instead of asserting
+  its absence.
+- `story/page.tsx` has no remaining DRAFT markers. Any further edits to its
+  copy are real content changes, not draft cleanup.
+- PR #98 (`site-mode-story-banner` → `main`) covers this entire line of work,
+  from the original `NEXT_PUBLIC_SITE_MODE` flag through this entry. Still
+  open, per the previous entry: deciding when to set
+  `NEXT_PUBLIC_SITE_MODE=demo` on the Railway `web` service.

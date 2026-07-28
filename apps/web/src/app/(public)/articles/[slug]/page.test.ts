@@ -57,6 +57,7 @@ describe('ArticleDetailsPage', () => {
     );
 
     expect(getArticleDetails).toHaveBeenCalledWith('climate-policy-basics');
+    expect(markup).toContain('Randomly generated sample content — not based on anything real');
     expect(markup).toContain('Climate Policy Basics');
     expect(markup).toContain('Learn the baseline policy tradeoffs.');
     expect(markup).toContain('Find Your Fight Editorial');
