@@ -2,12 +2,14 @@
 
 ## State of the repo
 
-**Branch:** `main`. Milestone 1 (through Phase 16) is merged and closed. No
-active phase is in progress — post-Milestone-1, small changes land directly
-on `main` without a formal phase entry.
+**Branch:** `site-mode-story-banner`, tracking `main`. Everything described
+below is committed and pushed — working tree is clean, nothing local-only.
+Open as **PR #98** (`Retire /demo, restore /story, make demo banner permanent
+and sticky`), not yet merged.
 
-**Uncommitted local changes** (small site-mode admin-exposure change, see
-below — awaiting user commit).
+Milestone 1 (through Phase 16) is merged and closed. No active phase is in
+progress — post-Milestone-1, small changes land directly via PR without a
+formal phase entry.
 
 ---
 
@@ -22,42 +24,69 @@ below — awaiting user commit).
 **Admin credentials:** `admin@example.com` / `FindYourFight1`
 
 There is no separate prod deployment. `demo.findmyfight.com` is the only
-live instance.
+live instance. `NEXT_PUBLIC_SITE_MODE` is **not yet set** on the Railway
+`web` service; it defaults to `portfolio`, so admin is still exposed live
+today. None of PR #98's work is deployed yet — it only takes effect once
+merged and released.
 
 ---
 
-## Recent/in-flight: site-mode admin exposure toggle
+## What PR #98 did, end to end
 
-The user accepted a job offer (2026-07-26) and no longer needs this project
-to actively support a job search. The site can now run as a general-audience
-demo by default, with the option to flip back to a recruiter-facing posture
-later. See `docs/agent-governance/decisions.md` (2026-07-26 entry) for full
-rationale — this was a small, non-phase change, not a new milestone.
+See `docs/agent-governance/decisions.md` — all entries from
+`Post-Milestone: NEXT_PUBLIC_SITE_MODE gates admin exposure by career status`
+(2026-07-26) through `Demo banner dismiss restored; sample-content flags
+added; /story copy finalized with the user` (2026-07-28, the newest entry on
+this topic) — for the full account, including two internal reversals
+(`/demo` → folded into `/about` → split back out as `/story`; banner
+dismiss removed → restored). Read the newest entry on a topic first;
+`decisions.md` is append-only history, not always current-state truth on its
+own — check `###### Superseded` notes.
 
-**What changed (uncommitted on `main`):**
+Current shipped state, in brief:
 
-| Change                                                      | File(s)                                                                  |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------ |
-| New `NEXT_PUBLIC_SITE_MODE` (`portfolio` default \| `demo`) | `apps/web/src/lib/site-mode.ts`                                          |
-| Footer "Admin" link gated on `isAdminExposed()`             | `apps/web/src/app/(public)/layout.tsx`, `apps/web/src/app/not-found.tsx` |
-| Demo banner Admin CTA/copy gated                            | `apps/web/src/app/(public)/_components/demo-banner.tsx`                  |
-| `/demo` page admin-credentials section gated                | `apps/web/src/app/(public)/demo/page.tsx`                                |
-| Env examples updated                                        | `apps/web/.env.local.example`, `apps/web/.env.local`                     |
+- `NEXT_PUBLIC_SITE_MODE` (`portfolio` default | `demo`) in
+  `apps/web/src/lib/site-mode.ts` gates admin discoverability, independent of
+  `NEXT_PUBLIC_ENABLE_DEMO_MODE` (whether the sample-data banner renders at
+  all).
+- **Rule in force:** mode-dependent rendering
+  (`isAdminExposed()`/`isDemoModeEnabled()` branches) is constrained to
+  exactly `/story` and the demo banner. Nowhere else should branch on either
+  flag — if you find a third place, that's a bug.
+- `/story` (`apps/web/src/app/(public)/story/page.tsx`) holds "why this
+  instance exists" content, admin credentials shown only in `portfolio`
+  mode. `/about` is untouched and has no mode dependency. `/story`'s copy is
+  **finalized** — written together with the user, no DRAFT markers remain.
+  Don't treat it as a placeholder to rewrite unprompted.
+- The demo banner (`demo-banner.tsx`) is dismissible again (sessionStorage),
+  redesigned with the close control paired against the eyebrow, and lives
+  inside `.site-sticky-area` so it can't scroll out of view while shown.
+- Article/action/event detail pages each carry an unconditional "randomly
+  generated, not real" line under the headline (`.sampleContentFlag`) —
+  independent of site mode, since the seeded content is fake either way.
+- Footer has an unconditional "Story" link (nav + footer, both modes) and an
+  unconditional "Contact" mailto (`hello@findmyfight.com`, live via
+  `forwardemail.net` MX records).
+- Test coverage: `pnpm typecheck` / `pnpm lint` / `pnpm --filter web test`
+  all pass, 149 tests. New coverage this round: `story/page.test.tsx`,
+  sample-content-flag assertions on the three detail-page tests, and
+  `apps/web/src/app/not-found.test.tsx` (the root 404 — distinct from
+  `apps/web/src/app/(public)/not-found.test.tsx`, which this PR doesn't
+  touch).
 
-**Not changed (deliberate):** `/admin/login` and the NestJS `AdminAuthGuard`
-still work identically in both modes — this is a UI-discoverability toggle,
-not an auth hard-block. The README's plaintext demo credentials are also
-unaffected (static file, always public). Both are documented residual
-exposures in decisions.md, not oversights.
+---
 
-**Still open:**
+## Still open
 
-- [ ] Decide whether/when to set `NEXT_PUBLIC_SITE_MODE=demo` on the Railway
-      `web` service for `demo.findmyfight.com` (dashboard-only, no code —
-      there's no repo file enumerating deployed env vars for this service)
-- [ ] Sweep for any other reviewer/recruiter-oriented framing (copy, README
-      sections) that should also flex on career status — decisions.md flags
-      this as future work, not yet scoped
+- **Merge PR #98.** Content and functional review are both done (an
+  independent review session plus a direct copy pass with the user); nothing
+  is blocking merge that's known of right now.
+- **Decide when to set `NEXT_PUBLIC_SITE_MODE=demo`** on the Railway `web`
+  service for `demo.findmyfight.com` (dashboard-only, no code change — no
+  repo file enumerates deployed env vars for this service).
+- **Sweep for other reviewer/recruiter-oriented framing** (copy, README
+  sections) that should also flex on career status — flagged as future work
+  in the original 2026-07-26 entry, not yet scoped.
 
 ---
 

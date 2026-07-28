@@ -1,13 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { isDemoModeEnabled } from '@/lib/demo-mode';
 import { getTopicsList } from '@/lib/api/topics';
 import { TopicSummary } from '@/components/topic-summary';
 
 export const revalidate = 3600;
 
 export default async function HomePage() {
-  const isDemoMode = isDemoModeEnabled();
   const topicsData = await getTopicsList().catch(() => null);
   const issues = topicsData?.items ?? [];
 
@@ -95,19 +93,6 @@ export default async function HomePage() {
           Help someone find theirs.
         </Link>
       </section>
-
-      {isDemoMode ? (
-        <section className="page-section home-demo-path">
-          <p className="section-label">Admin access</p>
-          <h2>Looking for the admin workspace?</h2>
-          <p>
-            <Link href="/admin" className="textCTA">
-              Open the admin workspace
-            </Link>{' '}
-            to inspect the moderation and editorial workflow.
-          </p>
-        </section>
-      ) : null}
     </div>
   );
 }

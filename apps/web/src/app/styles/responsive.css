@@ -196,7 +196,6 @@
 
   .home-journey,
   .home-contribute,
-  .home-demo-path,
   .about-hero,
   .about-body,
   .about-community,
@@ -238,16 +237,8 @@
     flex: 0 0 auto;
   }
 
-  .demoBanner {
-    align-items: flex-start;
-  }
-
   .topicSelector {
     top: var(--public-sticky-offset);
-  }
-
-  .demoBannerActions {
-    width: 100%;
   }
 
   .adminMetadataBar {

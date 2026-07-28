@@ -40,8 +40,7 @@
 
 .home-issues,
 .home-journey,
-.home-contribute,
-.home-demo-path {
+.home-contribute {
   padding: var(--space-3) 0 0;
   border-top: 1px solid var(--color-border-subtle);
 }
@@ -49,7 +48,6 @@
 .home-issues,
 .home-journey,
 .home-contribute,
-.home-demo-path,
 .about-hero,
 .about-body,
 .about-community,
@@ -60,15 +58,13 @@
 
 .home-issues h2:not(.homeIssueQuestion),
 .home-journey h2,
-.home-contribute h2,
-.home-demo-path h2 {
+.home-contribute h2 {
   font-size: 1.5rem;
 }
 
 .home-issues p,
 .home-journey p,
-.home-contribute p,
-.home-demo-path p {
+.home-contribute p {
   max-width: 60ch;
   line-height: 1.6;
 }
@@ -187,6 +183,14 @@
   font-size: 1.125rem;
   line-height: 1.6;
   max-width: 68ch;
+}
+
+.storySignature {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  text-align: right;
 }
 
 .about-steps {
@@ -317,8 +321,7 @@
 
 .homeJourneyGrid,
 .home-issues,
-.home-contribute,
-.home-demo-path {
+.home-contribute {
   max-width: 58rem;
 }
 
@@ -569,6 +572,19 @@ button.secondaryCTA {
 
 .textCTA::after {
   content: ' \2192';
+}
+
+.inlineLink {
+  color: var(--color-brand-primary);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--color-brand-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+}
+
+.inlineLink:hover {
+  color: var(--color-brand-primary-hover);
 }
 
 .publicError {

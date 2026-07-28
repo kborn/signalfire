@@ -57,6 +57,7 @@ describe('ActionDetailsPage', () => {
     );
 
     expect(getActionDetails).toHaveBeenCalledWith('call-your-state-representative');
+    expect(markup).toContain('Randomly generated sample content — not based on anything real');
     expect(markup).toContain('Call Your State Representative');
     expect(markup).toContain('Ask for support on climate legislation.');
     expect(markup).toContain('Contact');

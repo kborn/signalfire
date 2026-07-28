@@ -79,6 +79,7 @@ describe('EventDetailsPage', () => {
     );
 
     expect(getEventDetails).toHaveBeenCalledWith(5);
+    expect(markup).toContain('Randomly generated sample event — not actually taking place');
     expect(markup).toContain('Downtown Housing Rally');
     expect(markup).toContain('Join local organizers calling for housing reform.');
     expect(markup).toContain('Rally');

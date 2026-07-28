@@ -21,11 +21,7 @@ function getServerSnapshot() {
   return false;
 }
 
-type DemoBannerProps = {
-  showAdminLink?: boolean;
-};
-
-export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
+export default function DemoBanner() {
   const dismissed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const dismissTimerRef = useRef<number | null>(null);
   const [isClosing, setIsClosing] = useState(false);
@@ -47,23 +43,12 @@ export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
       className={`demoBanner${isClosing ? ' demoBannerClosing' : ''}`}
       aria-label="Demo notice"
     >
-      <div className="demoBannerBody">
+      <div className="demoBannerHead">
         <p className="demoBannerEyebrow">Demo Site</p>
-        <p className="demoBannerCopy">
-          {showAdminLink
-            ? 'This is a demo site with sample data. Use the Admin link to explore the moderation and content management workflow.'
-            : 'This is a demo site with sample data.'}
-        </p>
-      </div>
-      <div className="demoBannerActions">
-        {showAdminLink ? (
-          <Link href="/demo" className="demoBannerAdminLink">
-            Admin →
-          </Link>
-        ) : null}
         <button
           type="button"
           className="demoBannerDismiss"
+          aria-label="Dismiss"
           onClick={() => {
             if (isClosing) {
               return;
@@ -78,9 +63,19 @@ export default function DemoBanner({ showAdminLink = false }: DemoBannerProps) {
             }, DISMISS_ANIMATION_MS);
           }}
         >
-          Dismiss
+          ×
         </button>
       </div>
+      <p className="demoBannerCopy">
+        Note: the events, actions, and articles here were randomly generated to demonstrate this
+        site&apos;s capabilities — none of them are real. A future version will feature properly
+        curated content.
+      </p>
+      <p className="demoBannerCopy">
+        <Link href="/story" className="inlineLink">
+          Read the full story.
+        </Link>
+      </p>
     </section>
   );
 }

@@ -79,22 +79,6 @@
   color: var(--color-brand-primary);
 }
 
-.site-demo-indicator {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0.32rem 0.72rem;
-  border: 1px solid color-mix(in srgb, var(--color-brand-primary) 72%, transparent);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--color-brand-primary) 14%, var(--color-surface-soft));
-  color: var(--color-brand-primary);
-  font-size: 0.82rem;
-  font-weight: 700;
-  line-height: 1;
-  text-transform: uppercase;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--color-brand-accent) 22%, transparent);
-}
-
 .site-nav-group {
   display: flex;
   flex-wrap: wrap;
@@ -199,20 +183,14 @@
 }
 
 .demoBanner {
-  position: fixed;
-  bottom: 16px;
-  left: 50%;
+  position: relative;
   width: calc(100% - 32px);
   max-width: 900px;
-  transform: translateX(-50%);
-  z-index: 200;
+  margin: 16px auto 0;
   isolation: isolate;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2) var(--space-3);
-  padding: 12px 20px;
+  display: grid;
+  gap: 10px;
+  padding: 14px 20px 16px;
   border: 1px solid color-mix(in srgb, var(--color-brand-primary) 35%, var(--color-border-subtle));
   border-radius: 12px;
   background: var(--color-surface-soft);
@@ -228,11 +206,10 @@
   animation: demoBannerExit 300ms cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
-.demoBannerBody,
-.demoBannerActions {
+.demoBannerHead {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-2);
 }
 
@@ -250,51 +227,35 @@
   max-width: 72ch;
 }
 
-.demoBannerLink,
 .demoBannerDismiss {
   display: inline-flex;
   align-items: center;
-  min-height: 34px;
-  padding: 0.45rem 0.8rem;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  margin: -4px -6px -4px 0;
+  border: 1px solid transparent;
   border-radius: 999px;
-  font: inherit;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.demoBannerLink {
-  border: 1px solid var(--color-brand-primary);
-  color: var(--color-brand-primary);
-}
-
-.demoBannerLink:hover {
-  background: var(--color-brand-primary);
-  color: var(--color-page-bg);
-  text-decoration: none;
-}
-
-.demoBannerDismiss {
-  border: 1px solid var(--color-border-subtle);
   background: transparent;
   color: var(--color-text-muted);
+  font-size: 1.2rem;
+  line-height: 1;
   cursor: pointer;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .demoBannerDismiss:hover {
-  color: var(--color-text-primary);
+  border-color: color-mix(in srgb, var(--color-brand-primary) 40%, transparent);
+  background: color-mix(in srgb, var(--color-brand-primary) 12%, transparent);
+  color: var(--color-brand-primary);
 }
 
-.demoBannerAdminLink {
-  color: var(--color-text-muted);
-  font-size: 0.875rem;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.demoBannerAdminLink:hover {
-  color: var(--color-text-primary);
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
+.demoBannerDismiss:focus-visible {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
 }
 
 .demoBanner::after {
@@ -326,24 +287,24 @@
 
 @keyframes demoBannerEnter {
   0% {
-    transform: translateX(-50%) translateY(120px);
+    transform: translateY(-24px);
     opacity: 0;
   }
 
   100% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 @keyframes demoBannerExit {
   0% {
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
     opacity: 1;
   }
 
   100% {
-    transform: translateX(-50%) translateY(120px);
+    transform: translateY(-16px);
     opacity: 0;
   }
 }
@@ -355,10 +316,6 @@
 
 .publicContent.site-main {
   padding-bottom: calc(80px + var(--space-5));
-}
-
-.publicContent[data-demo] {
-  padding-bottom: calc(80px + var(--space-5) + 56px);
 }
 
 .page-section {

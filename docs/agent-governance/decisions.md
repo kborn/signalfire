@@ -1504,10 +1504,21 @@ general-audience demo, with the option to flip back to a recruiter-facing
 posture if the user re-enters the job market. A new env var,
 `NEXT_PUBLIC_SITE_MODE` (`portfolio` | `demo`, default `portfolio`), controls
 this. `portfolio` mode is today's existing behavior, unchanged. `demo` mode
-hides the Admin entry points from the public UI: the footer "Admin" link
-(public layout and 404 page), the demo banner's "Admin →" CTA and its
-admin-oriented copy, and the `/demo` page's "Admin workspace access" section
-(credentials + "Go to Admin" link).
+hides only the _admin-specific_ content of these surfaces, not the surfaces
+themselves: the footer link (public layout and 404 page) and the demo
+banner's CTA still appear whenever `NEXT_PUBLIC_ENABLE_DEMO_MODE` is on —
+they still point to `/demo` and are still how a visitor discovers that page
+— but they're labeled "Demo"/"Learn more →" instead of "Admin" and the copy
+drops the admin-workflow language. The `/demo` page's "Admin workspace
+access" section (credentials + "Go to Admin" link) is the one piece that's
+actually removed in `demo` mode; the rest of the page (what the demo is,
+links to browse the public site) stays reachable.
+
+(First pass at this wrongly hid the footer/banner link entirely behind
+`isAdminExposed()`, which made `/demo` itself undiscoverable in `demo` mode
+— caught and fixed same day. The link's _presence_ should track
+`NEXT_PUBLIC_ENABLE_DEMO_MODE` same as before; only its _label and
+destination content_ should track `isAdminExposed()`.)
 
 This var is orthogonal to the existing `NEXT_PUBLIC_ENABLE_DEMO_MODE`, which
 controls only the "this is a demo site with sample data" banner and is
@@ -1559,3 +1570,460 @@ no separate prod deployment; if one is added later, it should default to
   parallel flag.
 
 ---
+
+### ► `/demo` route retired; folded into `/about`; banner returns to single job
+
+###### 2026-07-26
+
+---
+
+###### Decision
+
+The standalone `/demo` page is removed. The two things it used to do —
+explain what this build is/why it exists, and (in `portfolio` mode) offer
+admin credentials — move into a new section at the bottom of the existing
+`/about` page (`id="build-note"`, heading "A note on this build"). That
+section's content is mode-dependent: `portfolio` mode includes the
+engineering/recruiter framing plus admin credentials and a "Go to Admin"
+link; `demo` mode includes only general-audience framing, no admin content.
+`/about` itself (the existing civic-mission copy above this new section) is
+unchanged in both modes — it stays in-universe product writing, not meta
+commentary about the build.
+
+The demo banner (`DemoBanner`, gated by the pre-existing
+`NEXT_PUBLIC_ENABLE_DEMO_MODE`) returns to a single job: the sample-data
+disclaimer, with a Dismiss button and no other link or CTA. It carries zero
+mode-awareness now.
+
+The footer/404-page "Admin" link is restored to a simple, single-purpose,
+all-or-nothing affordance gated on `isAdminExposed()` alone (not on
+`NEXT_PUBLIC_ENABLE_DEMO_MODE`), pointing to `/about#build-note`. In `demo`
+mode it renders nothing.
+
+###### Rationale
+
+- An earlier pass discovered that hiding this same footer/banner link
+  entirely behind `isAdminExposed()` made the general "what is this"
+  content undiscoverable too, because that content had no other home. The
+  fix isn't to keep the link always visible and relabel it (the previous
+  same-day fix) — it's to give the general content a permanent, mode-
+  independent home (`/about`, already in primary nav) so the admin link no
+  longer carries any content-discoverability weight and can safely be
+  all-or-nothing again.
+- The banner, `/demo`, and `/about` had drifted into an identity crisis:
+  the banner was simultaneously trying to be a disclaimer and a context-
+  giving nagivation element; `/demo` was doing recruiter pitch, general
+  reader context, and admin credentials all at once; `/about` was sitting
+  right next to it doing a _different, unrelated_ kind of "about." Three
+  overlapping concerns, one clean split: disclaimer (banner) / product
+  mission (`/about`, untouched) / behind-the-build meta content (new
+  `/about` section, mode-dependent).
+- This mirrors the shift documented in the "Post-Milestone" decision above:
+  the target audience is no longer primarily tech recruiters, so content
+  aimed at a general reader needs to be a first-class mode, not an
+  afterthought bolted onto a recruiter-oriented page.
+
+###### Implications
+
+- `apps/web/src/app/(public)/demo/` is deleted. Anything that linked to
+  `/demo` (README, footer, banner) now points at `/about#build-note` or has
+  no link at all.
+- `docs/learnings/` or other historical artifacts that reference `/demo`
+  are unaffected — see `docs/learnings/README.md` on historical accuracy of
+  phase artifacts.
+- The "why this exists" copy in both the `portfolio` and `demo` branches of
+  the new `/about` section is placeholder text pending the user's own
+  wording — do not treat the placeholder framing as final copy.
+- `.demoBannerAdminLink` CSS is removed as dead code (its only caller is
+  gone). `.demoBannerLink` was already dead before this change and is
+  unrelated — left alone, out of scope.
+
+---
+
+### ► `/story` restored as its own route, separate from `/about`; header badge made functional
+
+###### 2026-07-27
+
+---
+
+###### Decision
+
+The previous day's decision folded "why this exists"/admin content into a
+new section on `/about`. That's reverted. `/about` is back to exactly what
+it was before 2026-07-26 — pure, mode-independent civic-mission copy, the
+kind of thing that would be identical on a real production deployment.
+
+A new route, `/story`, holds the "why this specific instance exists"
+content instead: mode-dependent (recruiter/engineering framing + admin
+credentials in `portfolio` mode; general-reader framing only in `demo`
+mode), reusing the same `about-hero`/`about-body`/`about-journey`/
+`about-community` shared layout classes the original (now-deleted) `/demo`
+page used — no new CSS needed.
+
+The footer link to it (`Story`) is unconditional in both modes — same
+treatment as `About` — since the general content needs a permanent home
+regardless of admin exposure (this was the actual lesson from the
+2026-07-26 same-day misstep, not "merge into `/about`"). The header's
+"Demo" badge (`.site-demo-indicator`, previously decorative/dead CSS wired
+up the day before) is now also a link to `/story`, giving the persistent
+indicator an actual job.
+
+The demo banner is unchanged by this — still disclaimer-only, no link.
+Rejected explicitly: putting the "why this exists"/admin content inside the
+banner itself.
+
+###### Rationale
+
+- `/about` answers "why does this platform exist," which is true regardless
+  of who's running it or why. `/story` answers "why does _this instance_,
+  run by _this person_, exist right now" — which changes over time (started
+  as a learning project, now also a test bed for gauging interest in real
+  curated content) and has no business living inside a page meant to be
+  portable to a real production deployment unedited.
+- The fix for the 2026-07-26 discoverability bug was never "merge into
+  `/about`" — it was "the general content's link must be unconditional."
+  Those are separable. Restoring a dedicated route doesn't reintroduce the
+  bug as long as the _link_ to it stays unconditional, which it now is.
+- Putting this content in the banner instead (considered and rejected) would
+  make the exact problem worse: bigger banners read more like the
+  cookie-consent pattern users reflexively dismiss, and whatever lives only
+  in the (dismissible, session-scoped) banner is gone for the rest of the
+  session once dismissed — including admin access in `portfolio` mode. A
+  persistent header link doesn't have that failure mode.
+- Naming: `/demo` itself was never really the problem (the overloaded word
+  was in the env var names, not the route) but `/story` was chosen anyway
+  since the page's purpose has grown past "explain the demo."
+
+###### Implications
+
+- `apps/web/src/app/(public)/about/page.tsx` has no `site-mode` dependency;
+  don't reintroduce mode-conditional content there.
+- `apps/web/src/app/(public)/story/page.tsx` is the new home for this
+  content; `isAdminExposed()` gates only its admin section.
+- The "why this exists" copy in both branches of `/story` is a first draft
+  written by the agent from conversation context (portfolio project to
+  learn full-stack development; now also floated as a way to gauge interest
+  in real curated content) — treat it as a draft for the user to edit, not
+  final copy.
+- `.about-build` CSS (added 2026-07-26) is removed; `/story` reuses the
+  pre-existing `about-*` shared classes instead, same as the original
+  `/demo` page did.
+- README's reviewer path updated: entry point is the header "Demo" badge or
+  footer "Story" link, not a footer "Admin" link.
+
+---
+
+### ► Demo indicator split into two roles: contextual badge vs. navigation link
+
+###### 2026-07-27 (later same day)
+
+---
+
+###### Decision
+
+The single "Demo" badge next to the wordmark (added earlier the same day as
+a link to `/story`) is split into two separate things:
+
+1. A plain, non-interactive **badge** (`.site-demo-indicator`, reverted to a
+   `<span>`, no link) that now appears in two places: next to the wordmark
+   in the header (as before, just no longer clickable), and next to the
+   `<h1 className="pageTitle">` on the four discovery list pages — Issues,
+   Articles, Actions, Events (`.pageTitleRow` wrapper). This puts the "this
+   isn't real" signal directly next to the content most likely to be
+   mistaken for real (an event with a date and city, an action with a
+   contact target), not just in a header corner easy to miss.
+2. A plain-text **"Story" nav link**, unconditional (same treatment as
+   "About"), added to the primary header nav (`site-nav.tsx`, desktop +
+   mobile drawer) and kept in the footer. This is the actual navigation
+   path to `/story` — decoupled from the badge, which is now purely
+   informational.
+
+The demo banner also gains a link — "The Story →" — using the
+`.demoBannerLink` pill-button style (pre-existing, previously dead CSS),
+visually distinct from the muted `.demoBannerDismiss` button, sitting
+alongside Dismiss.
+
+###### Rationale
+
+- Splitting "this is fake" (badge) from "here's more info" (link) lets each
+  do one job well. A badge that's also a link has to compromise on both:
+  too subtle to invite a click, but also implying interactivity everywhere
+  it appears. A plain badge next to page titles is a much stronger signal
+  in exactly the place it's needed most, precisely because it doesn't need
+  to double as a discovery mechanism anymore — that job now belongs to a
+  conventional, unmistakable text nav link.
+- Putting the "why this exists" content directly inside the banner was
+  reconsidered again and still rejected (see the entry above) — but a plain
+  navigational _link_ to `/story` inside the banner doesn't have the same
+  problem, since the content itself still lives permanently at `/story`
+  regardless of whether the banner is dismissed. The link is just one more
+  (redundant, low-cost) entry point alongside the header/footer nav.
+
+###### Implications
+
+- `.site-demo-indicator` has no hover/link styling anymore — it's decorative
+  only. Don't wire it back to a link without also reconsidering whether
+  that makes the page-title instances confusing (only the header one would
+  make sense as a link back to itself).
+- New shared class: `.pageTitleRow` (`apps/web/src/app/styles/pages.css`) —
+  a simple flex row for pairing an `<h1 className="pageTitle">` with a
+  badge. Reuse it if other pages need the same treatment.
+- `demo-banner.tsx` re-imports `next/link` for the Story CTA.
+
+### ► Independent review found a real gap; badge/dismiss approach replaced with a permanent, sticky banner
+
+###### 2026-07-27 (later same day, separate session)
+
+---
+
+###### Decision
+
+A fresh session, briefed only with a neutral written account of the prior
+day's work (not the conversation that produced it), was asked to review the
+site-mode/`/story` changes from a user-experience angle rather than a code
+review. It ran the app locally (both `apps/api` and `apps/web`, real
+Postgres data) and used a scripted headless browser to compare `portfolio`
+and `demo` mode side by side, rather than relying on the diff alone. That
+review surfaced one real functional gap and prompted a design change:
+
+**Bug found:** `apps/web/src/app/(public)/page.tsx` (the homepage) had its
+own "Admin access — Open the admin workspace" section, gated on
+`isDemoModeEnabled()` (`NEXT_PUBLIC_ENABLE_DEMO_MODE`) — a different flag
+than the one this whole effort was built around
+(`isAdminExposed()`/`NEXT_PUBLIC_SITE_MODE`). Since the real deployment runs
+both flags simultaneously, the homepage — the first page every visitor
+sees — would have kept advertising `/admin` in `demo` mode, regardless of
+everything done to `/story` and the banner. This file was never part of the
+original diff, which is why it was missed across five prior decision
+entries.
+
+**Fix, and a stated rule going forward:** rather than gating the homepage
+section on the correct flag, it was deleted outright. The rule adopted:
+mode-dependent rendering (anything that branches on `isAdminExposed()` or
+`isDemoModeEnabled()`) is constrained to exactly two places — **`/story`**
+and **the demo banner**. Everything else on the site renders identically
+regardless of mode/env; only those two resources are allowed to carry
+"which version of this deployment am I" logic. `/story` already covers
+admin-access discovery (with full context) in `portfolio` mode, so the
+homepage section was redundant as well as buggy.
+
+That rule also forced a rethink of the badge/link split from the entry
+above:
+
+- **The `.site-demo-indicator` "Demo" badge is removed entirely** — from
+  the header and from all four discovery list pages (Issues, Articles,
+  Actions, Events). It was a third place carrying mode-dependent-flavored
+  logic (per-page conditionals), which the new rule doesn't allow, and it
+  only ever appeared on list pages — not on the individual article/action/
+  event detail pages where fabricated content (byline, dates, full body)
+  actually lives and where `robots.ts` permits indexing. A person arriving
+  at a detail page directly (search engine, shared link) got no signal at
+  all once the banner had been dismissed once, elsewhere, in that session.
+- **The banner is no longer dismissible.** `Dismiss`, the `sessionStorage`
+  persistence, `useSyncExternalStore`, and the closing animation were all
+  removed from `demo-banner.tsx`. It's now a static, always-rendered
+  component — the simplest way to guarantee the "this is sample content"
+  signal is never absent for the rest of a session, without adding
+  per-page markup anywhere.
+- **The banner is nested inside `.site-sticky-area`**, immediately after
+  `.site-header`, instead of rendering as a sibling below it. Both now pin
+  together at `top: 0` on scroll. This was prompted by a related report:
+  clicking from a scrolled-down list page into a detail page could leave
+  the banner scrolled out of view, because Next.js App Router's
+  scroll-restoration on client-side navigation only guarantees the new
+  route segment (`<main>`) is scrolled into view, not layout content above
+  it — which mattered once the banner became in-flow content instead of a
+  `position: fixed` overlay. Making the banner `position: sticky` (via its
+  parent) sidesteps the question entirely: a sticky element can't be
+  scrolled past regardless of what Next decides to do with `scrollY`.
+
+###### Verification note on a separate, unrelated scroll symptom
+
+While investigating the above, a second, cosmetic-only symptom was found
+and deliberately **not fixed**: under `next dev` (Turbopack), navigating
+from a scrolled-down list page to a detail page lands at `scrollY ≈ 340`
+instead of `0`. The same navigation against a local production build
+(`next build && next start`, same code) lands at `scrollY = 0` correctly.
+This is a Turbopack dev-server-only scroll-restoration timing quirk, not
+present in what Railway actually deploys (`next start`) — confirmed by
+directly comparing the two locally, not inferred. No code change was made
+for this; don't chase it again without first re-confirming it still
+reproduces in a production build.
+
+###### `/story` content pass
+
+Separately, the draft copy from the original round was revised:
+
+- Added an `<h2>Why I built this</h2>` above the mode-dependent body
+  paragraph — previously the only content section on the page without a
+  heading, which made the (correctly-sized, not actually a bug)
+  `padding-top: var(--space-5)` from the shared `.about-body` class read as
+  an odd blank gap.
+- The hero paragraph no longer states "this site runs on seeded, randomly
+  generated sample content" — now that the banner is permanent, `/story`
+  doesn't need to carry that disclosure as its lede. Replaced with a
+  neutral framing line ("This isn't a company product or a client
+  project..."). The fact that content is sample data still comes up
+  naturally further down, in a new paragraph in both mode branches
+  explaining _why_ (a content-sourcing problem deliberately deferred, plan
+  to focus on one launch city rather than the whole country).
+- The `demo`-mode paragraph now explicitly calls back to the homepage's
+  "choose one issue / read what matters / do one concrete thing" framing —
+  building this site is framed as the user's own "one concrete thing."
+- A `mailto:hello@findmyfight.com` feedback link was added to `/story`'s
+  `demo`-mode paragraph (subject line built from the request `Host` header
+  via `next/headers`, which is why `/story` is dynamically rendered —
+  confirmed in build output as `ƒ /story`). A second, unconditional
+  "Contact" link was added to the shared footer
+  (`apps/web/src/app/(public)/layout.tsx` and `apps/web/src/app/not-found.tsx`)
+  using the same mailbox, with the subject line built from
+  `getSiteMode()` (`NEXT_PUBLIC_SITE_MODE`, build-time) instead of the
+  request host — deliberately **not** using `headers()` in the shared
+  layout, because doing so would opt every page under `(public)` into
+  per-request dynamic rendering and break the `revalidate = 3600` ISR
+  caching every discovery page relies on. `hello@findmyfight.com` is now a
+  live address — `forwardemail.net` MX/TXT records are configured on the
+  domain (verified via `dig MX`), so both links should actually deliver.
+- `/story`'s two mode-branch paragraphs are still marked
+  `{/* DRAFT — invented copy, edit freely. */}` in JSX comments — still not
+  the user's own words, still the explicit next open item.
+
+###### Implications
+
+- **New rule for future agents:** if you're about to add a conditional on
+  `isAdminExposed()` or `isDemoModeEnabled()` anywhere other than
+  `apps/web/src/app/(public)/story/page.tsx` or
+  `apps/web/src/app/(public)/_components/demo-banner.tsx`, stop and check
+  this entry first — that's very likely a sign the wrong place is being
+  touched.
+- `.site-demo-indicator`, `.pageTitleRow`, `.home-demo-path`,
+  `.demoBannerDismiss`, `.demoBannerClosing`, and the `demoBannerExit`
+  keyframe are all fully removed (not just unreferenced) from
+  `layout.css`/`pages.css`/`responsive.css`. Don't expect to find them.
+- `.inlineLink` is a new small CSS class (`pages.css`, next to `.textCTA`)
+  for an inline text link that should **not** get the arrow
+  `.textCTA::after` appends — used for the `/story` "email me" link.
+- Full `pnpm typecheck`/`lint`/test (143 tests) pass as of this entry.
+  Verified visually via a scripted headless browser against both a local
+  dev server and a local production build (`next build && next start`),
+  for both `SITE_MODE` values.
+- Still nothing committed. Still open: the `/story` copy itself (next
+  step, explicitly handed to the user), and deciding when to set
+  `NEXT_PUBLIC_SITE_MODE=demo` on the Railway `web` service.
+
+###### Superseded
+
+The "banner is no longer dismissible" claim and the "`/story` still marked
+DRAFT" claim above are both superseded by `Demo banner dismiss restored;
+sample-content flags added; /story copy finalized with the user` dated
+2026-07-28, below. Left in place as historical context for the state that
+existed when this entry was written — not current behavior. Don't trust
+either claim without checking the code.
+
+---
+
+### ► Demo banner dismiss restored; sample-content flags added; `/story` copy finalized with the user
+
+###### 2026-07-28
+
+---
+
+###### Decision
+
+Two follow-up commits landed on top of the previous entry, both still part of
+the same not-yet-merged PR (#98):
+
+**Banner dismiss restored.** The demo banner's non-dismissible behavior
+(previous entry) turned out to be a worse tradeoff in practice than the
+badge-mania it was meant to avoid: a permanent banner that can't be dismissed
+is an annoyance on every single page view for the rest of a session, not just
+a one-time signal. `Dismiss` (now a plain "×", `aria-label="Dismiss"`,
+grouped with the "Demo Site" eyebrow in a `.demoBannerHead` row),
+`sessionStorage` persistence, and the closing animation are all back in
+`demo-banner.tsx`. The `/story` link moved from a separate CTA pill into the
+banner copy itself ("Read the full story.", `.inlineLink`). **The sticky
+positioning fix is unaffected** — the banner still lives inside
+`.site-sticky-area` and still can't scroll out of view while visible; only
+whether it can be dismissed changed back.
+
+**Sample-content flag added to individual detail pages.** A quiet italic line
+— "Randomly generated sample content — not based on anything real" on
+article/action pages, "Randomly generated sample event — not actually taking
+place" on event pages (`.sampleContentFlag`, `detail.css`) — now renders
+under the headline on all three detail page types. This is **unconditional**,
+not gated by `isAdminExposed()` or `isDemoModeEnabled()`: the seeded content
+is fake regardless of site mode, so there's no mode branch to make here. This
+doesn't reopen the "mode-dependent rendering constrained to `/story` and the
+banner" rule from the previous entry — that rule is about branching on the
+site-mode/demo-mode flags specifically, and this flag doesn't branch on
+anything.
+
+**`/story` copy finalized with the user.** The two mode-branch paragraphs are
+no longer wrapped in `{/* DRAFT */}` JSX comments — this was a real,
+sentence-by-sentence editing pass done together with the user (not another
+agent-invented draft), covering:
+
+- The redundant heading stack at the top ("The Story" label → "Why Find Your
+  Fight exists" h1 → "The story" h2) was cut; the body `<h2>` now reads "I
+  found my fight."
+- Portfolio-mode paragraph 1 was split from one long multi-clause sentence
+  into one sentence per example (admin sessions, moderation queue, search,
+  CI pipeline).
+- "I picked Railway over a Vercel/Railway split" reworded to "an all-Railway
+  deployment over splitting frontend (Vercel) and backend (Railway)" —
+  clearer on first read.
+- The demo-mode paragraph no longer names a sitting president
+  ("Trump's second inauguration" → "the 2025 inauguration"). Explicitly
+  discussed and kept deliberately: the date is load-bearing (it's the actual
+  trigger for the actual thing the paragraph describes), and if this project
+  hasn't moved on Milestone 2 by the time that date reads as stale, that's
+  itself a legitimate signal to flip `NEXT_PUBLIC_SITE_MODE` back to
+  `portfolio` — not a copy bug to hedge around.
+- Voice asymmetry between the two branches (portfolio: dry/technical, no
+  signature; demo: first-person narrative, signed "— Kevin Born") was raised
+  and confirmed intentional, not an oversight.
+
+**Test coverage added**, since none of the above had any before this entry:
+`apps/web/src/app/(public)/story/page.test.tsx` (new — both mode branches,
+admin section presence/absence, host-based mailto subject), sample-content
+assertions added to the three existing detail-page test files, and
+`apps/web/src/app/not-found.test.tsx` (new — the root 404 page had zero
+coverage before this; note this is distinct from
+`apps/web/src/app/(public)/not-found.test.tsx`, the route-group 404, which
+this PR does not touch). `pnpm typecheck`/`lint`/test now pass at 149 tests
+(up from 143 in the previous entry).
+
+###### Rationale
+
+- A disclaimer that can never go away optimizes for one visitor's first page
+  view at the cost of every subsequent page view, for every visitor, for the
+  rest of the session. That's the wrong tradeoff once the underlying
+  discoverability problem (banner dismissed → signal gone) is checked against
+  reality: the sticky positioning fix already guarantees the banner is
+  visible _while present_; dismissibility only affects whether a visitor who
+  has already seen and understood the disclaimer keeps seeing it forever.
+- Putting the "not real" signal directly on individual detail pages (not just
+  the banner) covers the case the previous entry already identified as the
+  actual risk — a visitor landing on a detail page directly via search or a
+  shared link, banner state notwithstanding — without needing the banner
+  itself to be undismissable to do it.
+- This is the first time `/story`'s copy reflects the user's own editing
+  decisions rather than an agent's first draft. Treat it as final unless the
+  user says otherwise.
+
+###### Implications
+
+- Don't assume any single `decisions.md` entry describes current behavior
+  without checking the code — entries here are append-only history, and
+  later entries can (and did, twice now, on this same banner) reverse earlier
+  ones. Check the newest entry on a topic first, and read `###### Superseded`
+  notes before trusting an older one.
+- `demo-banner.test.tsx` was updated in the same commit that restored
+  dismissibility; it now asserts dismiss behavior again instead of asserting
+  its absence.
+- `story/page.tsx` has no remaining DRAFT markers. Any further edits to its
+  copy are real content changes, not draft cleanup.
+- PR #98 (`site-mode-story-banner` → `main`) covers this entire line of work,
+  from the original `NEXT_PUBLIC_SITE_MODE` flag through this entry. Still
+  open, per the previous entry: deciding when to set
+  `NEXT_PUBLIC_SITE_MODE=demo` on the Railway `web` service.

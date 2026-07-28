@@ -2,15 +2,15 @@ import Link from 'next/link';
 import { SiteNav } from '@/app/(public)/_components/site-nav';
 import DemoBanner from '@/app/(public)/_components/demo-banner';
 import { isDemoModeEnabled } from '@/lib/demo-mode';
-import { isAdminExposed } from '@/lib/site-mode';
+import { getSiteMode } from '@/lib/site-mode';
 
 export default function NotFoundPage() {
   const isDemoMode = isDemoModeEnabled();
-  const adminExposed = isAdminExposed();
+  const contactMailto = `mailto:hello@findmyfight.com?subject=${encodeURIComponent(`Feedback from Find Your Fight (${getSiteMode()})`)}`;
 
   return (
     <div className="publicShell">
-      <div className="container site-main publicContent" data-demo={isDemoMode ? '' : undefined}>
+      <div className="container site-main publicContent">
         <div className="site-sticky-area">
           <header className="site-header">
             <div className="site-brand-group">
@@ -22,6 +22,7 @@ export default function NotFoundPage() {
             </div>
             <SiteNav />
           </header>
+          {isDemoMode ? <DemoBanner /> : null}
         </div>
         <main>
           <section className="page-section notFoundPanel">
@@ -41,7 +42,6 @@ export default function NotFoundPage() {
             </div>
           </section>
         </main>
-        {isDemoMode ? <DemoBanner showAdminLink={adminExposed} /> : null}
         <footer className="site-footer">
           <nav className="site-footer-nav" aria-label="Footer">
             <Link href="/issues">Issues</Link>
@@ -51,7 +51,8 @@ export default function NotFoundPage() {
             <Link href="/search">Search</Link>
             <Link href="/about">About</Link>
             <Link href="/submit">Contribute</Link>
-            {adminExposed && <Link href="/demo">Admin</Link>}
+            <Link href="/story">Story</Link>
+            <a href={contactMailto}>Contact</a>
           </nav>
           <p className="site-footer-tagline">Find Your Fight — a civic action guide.</p>
         </footer>

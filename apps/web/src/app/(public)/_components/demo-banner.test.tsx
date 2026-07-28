@@ -1,42 +1,38 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act } from 'react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { afterEach, describe, expect, it } from 'vitest';
 
 import DemoBanner from './demo-banner';
 
 describe('DemoBanner', () => {
-  beforeEach(() => {
-    window.sessionStorage.clear();
-    vi.useFakeTimers();
-  });
-
   afterEach(() => {
     cleanup();
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
-    vi.restoreAllMocks();
   });
 
-  it('renders the demo notice by default', () => {
+  it('renders the demo notice', () => {
     render(<DemoBanner />);
 
     expect(screen.getByText('Demo Site')).toBeInTheDocument();
-    expect(screen.getByText(/This is a demo site with sample data/)).toBeInTheDocument();
+    expect(screen.getByText(/Note: the events, actions, and articles here/)).toBeInTheDocument();
   });
 
-  it('persists dismissal in sessionStorage', () => {
+  it('links to the story page', () => {
     render(<DemoBanner />);
 
-    fireEvent.click(screen.getByRole('button', { name: 'Dismiss' }));
+    expect(screen.getByRole('link', { name: 'Read the full story.' })).toHaveAttribute(
+      'href',
+      '/story',
+    );
+  });
 
-    expect(screen.getByText('Demo Site')).toBeInTheDocument();
-    expect(screen.getByLabelText('Demo notice')).toHaveClass('demoBannerClosing');
+  it('dismisses when the close button is clicked', async () => {
+    const user = userEvent.setup();
+    render(<DemoBanner />);
 
-    act(() => {
-      vi.advanceTimersByTime(320);
+    await user.click(screen.getByRole('button', { name: 'Dismiss' }));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Demo Site')).not.toBeInTheDocument();
     });
-
-    expect(window.sessionStorage.getItem('fyf-demo-banner-dismissed')).toBe('1');
-    expect(screen.queryByText('Demo Site')).not.toBeInTheDocument();
   });
 });
