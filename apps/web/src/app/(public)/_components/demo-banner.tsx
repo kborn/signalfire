@@ -69,7 +69,9 @@ export default function DemoBanner() {
       <p className="demoBannerCopy">
         Note: the events, actions, and articles here were randomly generated to demonstrate this
         site&apos;s capabilities — none of them are real. A future version will feature properly
-        curated content.{' '}
+        curated content.
+      </p>
+      <p className="demoBannerCopy">
         <Link href="/story" className="inlineLink">
           Read the full story.
         </Link>
