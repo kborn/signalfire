@@ -185,6 +185,14 @@
   max-width: 68ch;
 }
 
+.storySignature {
+  font-family: var(--font-display), Georgia, serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--color-text-muted);
+  text-align: right;
+}
+
 .about-steps {
   /* layout via .stack-md utility */
 }
