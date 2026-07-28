@@ -25,7 +25,7 @@ export default async function StoryPage() {
       </section>
 
       <section className="page-section about-body stack-md">
-        <h2>The story</h2>
+        <h2>I found my fight.</h2>
         {adminExposed ? (
           <>
             <p>
@@ -35,31 +35,37 @@ export default async function StoryPage() {
               Railway over a Vercel/Railway split because cookie-backed admin sessions would have
               meant fighting cross-origin cookie behavior for no real benefit. The interesting parts
               of this project were never the CRUD screens. They were the pieces that only show up
-              once software has to behave like it has real users to protect: an authenticated admin
-              surface with server-managed sessions, a moderation queue that has to separate good
-              community submissions from bad ones, search and filtering that has to stay fast as
-              content grows, a CI/CD pipeline that has to trust its own tests enough to deploy
-              without a person watching.
+              once software has to behave like it has real users to protect. The admin surface runs
+              on server-managed sessions — a signed, httpOnly cookie backed by a real session table,
+              not a JWT sitting in a browser&apos;s localStorage — so a session can be revoked or
+              expired without trusting the client to behave itself. Community submissions don&apos;t
+              go live directly: they sit in a moderation queue until an editor approves one into a
+              real article or event, or rejects it with a note back to whoever submitted it. Search
+              and filtering has to work across a growing library of issues, articles, actions, and
+              events, kept simple for now with room to swap in something more sophisticated once
+              there&apos;s real content to search. And a CI pipeline gates every merge on lint, a
+              full type check, the complete test suite, and a dependency audit — nothing reaches{' '}
+              <code>main</code> without clearing all four.
             </p>
             <p>
               The result is a fully working system running on placeholder content, not a finished
               product. Writing the real content wouldn&apos;t have proven anything the architecture
               doesn&apos;t already, so I left it for later rather than building it first. Sourcing,
               validating and keeping an events calendar current is a genuinely interesting
-              engineering problem, and one I&apos;m already comfortable with, so it wasn&apos;t the
-              differentiator here. Real articles and actions are a different kind of dependency:
-              they need a community of local writers and organizers that doesn&apos;t exist yet, and
-              that&apos;s not something I can build alone. I&apos;d like this to become real one
-              day. Right now, I&apos;m using this version to gauge interest before taking on that
-              work.
+              engineering problem, and one I&apos;m already comfortable with — building it out here
+              wouldn&apos;t have taught me anything new. Real articles and actions are a different
+              kind of dependency: they need a community of local writers and organizers that
+              doesn&apos;t exist yet, and that&apos;s not something I can build alone. I&apos;d like
+              this to become real one day. Right now, I&apos;m using this version to gauge interest
+              before taking on that work.
             </p>
           </>
         ) : (
           <>
             <p>
-              Shortly after Trump&apos;s second inauguration, my brain went into a kind of panic
-              mode: mind racing, catastrophizing and completely unable to shake it. I think a lot of
-              people felt some version of that, even if less intensely.
+              Shortly after the 2025 inauguration, my brain went into a kind of panic mode: mind
+              racing, catastrophizing and completely unable to shake it. I think a lot of people
+              felt some version of that, even if less intensely.
             </p>
             <p>
               What pulled me out of that wasn&apos;t fixing everything. It was showing up to one
@@ -75,9 +81,11 @@ export default async function StoryPage() {
               What you&apos;re looking at right now is a working demonstration of the idea, not a
               live community yet. The events, actions and articles here aren&apos;t real. Articles
               and actions need real writing or curating and editorial judgment, both of which take
-              time to get right. Events can be sourced but need a live pipeline to keep them current
-              — another time-consuming endeavor. I&apos;m holding off on real content until I know
-              the idea is worth it.
+              time to get right. Events can be sourced but need ongoing upkeep to stay current —
+              another time-consuming endeavor. And it&apos;s not just content: plenty of the
+              day-to-day experience still needs work before this could hold up as something people
+              actually rely on. I&apos;m holding off on all of that until I know the idea is worth
+              it.
             </p>
             <p>
               So, I&apos;m using this demo to find out whether the idea is worth turning into the
