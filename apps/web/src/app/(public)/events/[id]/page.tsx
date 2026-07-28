@@ -101,6 +101,7 @@ export default async function EventDetailsPage({ params }: { params: Promise<{ i
       <section className="detailHeader detailHero">
         <p className="summaryMeta">{formatEventTypeLabel(event.eventType)}</p>
         <h1 className="pageTitle">{event.title}</h1>
+        <p className="sampleContentFlag">Sample content — not real</p>
       </section>
 
       <section className="detailContent">

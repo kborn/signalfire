@@ -56,6 +56,7 @@ export default async function ArticleDetailsPage({
       </nav>
       <section className="detailHeader detailHero">
         <h1 className="pageTitle">{article.title}</h1>
+        <p className="sampleContentFlag">Sample content — not real</p>
       </section>
       <section className="detailContent">
         <section className="detailNarrativePanel">

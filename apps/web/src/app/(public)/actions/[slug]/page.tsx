@@ -56,6 +56,7 @@ export default async function ActionDetailsPage({ params }: { params: Promise<{ 
       <section className="detailHeader detailHero">
         <p className="summaryMeta">{actionType}</p>
         <h1 className="pageTitle">{action.title}</h1>
+        <p className="sampleContentFlag">Sample content — not real</p>
       </section>
       <section className="detailContent">
         <p className="detailLead">{action.summary}</p>

@@ -77,6 +77,14 @@
   letter-spacing: -0.02em;
 }
 
+.sampleContentFlag {
+  font-family: var(--font-body), Arial, sans-serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: color-mix(in srgb, var(--color-brand-accent) 70%, var(--color-text-muted));
+}
+
 .discoveryEmptyState {
   display: grid;
   gap: var(--space-1);
